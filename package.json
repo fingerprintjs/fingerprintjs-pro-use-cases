@@ -1,0 +1,21 @@
+{
+  "name": "next-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@fingerprintjs/fingerprintjs-pro": "^3.6.2",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "next": "^12.1.0",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "sequelize": "^6.19.0",
+    "sqlite3": "^5.0.8"
+  }
+}

@@ -1,0 +1,103 @@
+/* Colors */
+:root {
+  --primary: #ff5d22;
+}
+
+body,
+html {
+  height: 100%;
+  font-family: 'Roboto', sans-serif, -apple-system, Arial;
+}
+
+.ExternalLayout_wrapper {
+  width: 100%;
+  min-height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+}
+
+.ExternalLayout_main {
+  width: 100%;
+  padding: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1;
+}
+
+.AuthWrapper_authWrapper {
+  max-width: 533px;
+  flex: 1 1;
+}
+
+.AuthWrapper_title {
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-weight: 600;
+}
+
+.AuthWrapper_helper {
+  margin-bottom: 0.75rem;
+  text-align: center;
+  color: #0d102b;
+  opacity: 0.72;
+}
+
+.AuthWrapper_alert {
+  margin-top: 36px;
+}
+
+.AuthWrapper_link {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.AuthWrapper_container {
+  padding: 42px 36px;
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 10px rgb(0 0 0 / 5%), 0 16px 24px rgb(0 0 0 / 8%),
+    0 6px 30px rgb(0 0 0 / 5%) !important;
+}
+
+.AuthForm_container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.AuthForm_container > .AuthForm_button {
+  margin-top: 24px;
+}
+
+.UsernameInput_label,
+.PasswordInput_label {
+  margin-bottom: 4px !important;
+  font-size: 14px !important;
+  color: #212121;
+}
+
+/* Base */
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+code {
+  font-size: 1rem;
+  color: #d63384;
+  word-wrap: break-word;
+}
