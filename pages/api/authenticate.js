@@ -25,19 +25,30 @@ const LoginAttempt = sequelize.define('login-attempt', {
 
 LoginAttempt.sync({ force: true });
 
+// Mocked user with leaked credentials asociated with visitorIds.
+const mockedUser = {
+  userName: 'user',
+  password: 'password',
+  knownVisitorIds: [
+    'QYvLgKyLefAr3uAjn0uv',
+    'ABvLgKyH3fAr6uAjn0vq',
+    'BNvLgKyHefAr9iOjn0ul',
+  ],
+};
+
 export default async (req, res) => {
   // Get requestId and visitorId from the client
   const visitorId = req.body.visitorId;
-  const requestId = req.body.requestId; //.replace(/.$/, 'a');
+  const requestId = req.body.requestId;
   const userName = req.body.userName;
   const password = req.body.password;
 
-  // Get data about identification from FingerprintJS Pro Servers
+  // Get data about identification from FingerprintJS Pro servers
   const visitorData = await getVisitorData(visitorId, requestId);
 
   res.setHeader('Content-Type', 'application/json');
 
-  // VisitorId does not match to requestId
+  // VisitorId does not match the requestId
   if (visitorData.visits.length === 0) {
     // Report suspicious user activity according to internal processes here
 
@@ -65,7 +76,7 @@ export default async (req, res) => {
 
     return getForbiddenReponse(
       res,
-      "Low confidence score, we'd rather verify you with the second factor"
+      "Low confidence score, we'd rather verify you with the second factor,"
     );
   }
   //#endregion
@@ -99,6 +110,7 @@ export default async (req, res) => {
         loginAttemptResult: {
           [Sequelize.Op.not]: loginAttemptResult.Passed,
           [Sequelize.Op.not]: loginAttemptResult.TooManyAttempts,
+          [Sequelize.Op.not]: loginAttemptResult.Challenged,
         },
       },
     });
@@ -122,14 +134,33 @@ export default async (req, res) => {
 
   //#region Check provided credentials
   if (areCredentialsCorrect(userName, password)) {
-    await logLoginAttempt(
-      visitorData.visitorId,
-      userName,
-      loginAttemptResult.Passed
-    );
+    if (
+      isLoggingInFromKnownDevice(
+        visitorData.visitorId,
+        mockedUser.knownVisitorIds
+      )
+    ) {
+      await logLoginAttempt(
+        visitorData.visitorId,
+        userName,
+        loginAttemptResult.Passed
+      );
 
-    return getOkReponse(res);
+      return getOkReponse(res, 'We logged you in successfully.');
+    } else {
+      await logLoginAttempt(
+        visitorData.visitorId,
+        userName,
+        loginAttemptResult.Challenged
+      );
+
+      return getOkReponse(
+        res,
+        "Provided credentials are correct but we've never seen you logging in using this device. Proof your identify with a second factor."
+      );
+    }
   } else {
+    // Report suspicious user activity according to internal processes here
     await logLoginAttempt(
       visitorData.visitorId,
       userName,
@@ -150,7 +181,7 @@ async function getVisitorData(visitorId, requestId) {
 
   fingerprintJSProServerApiUrl.searchParams.append(
     'api_key',
-    'F6gQ8H8vQLc7mVsVKaFx' // In the real world use-case we recommend using Auth-API-Key header instead: https://dev.fingerprintjs.com/docs/server-api#api-methods
+    'F6gQ8H8vQLc7mVsVKaFx' // In the real world use-case we recommend using Auth-API-Key header instead: https://dev.fingerprintjs.com/docs/server-api#api-methods. Api key should be stored in the environment variables
   );
   fingerprintJSProServerApiUrl.searchParams.append('request_id', requestId);
 
@@ -181,13 +212,17 @@ const loginAttemptResult = Object.freeze({
   OldTimestamp: 'OldTimestamp',
   TooManyAttempts: 'TooManyAttempts',
   IncorrectCredentials: 'IncorrectCredentials',
+  Challenged: 'Challenged',
   Passed: 'Passed',
 });
 
 // Dummy action simulating authentication
 function areCredentialsCorrect(name, password) {
-  if (name === 'user' && password === 'password') return true;
-  return false;
+  return name === mockedUser.userName && password === mockedUser.password;
+}
+
+function isLoggingInFromKnownDevice(providedVisitorId, knownVisitorIds) {
+  return knownVisitorIds.includes(providedVisitorId);
 }
 
 async function logLoginAttempt(visitorId, userName, loginAttemptResult) {
@@ -200,8 +235,8 @@ async function logLoginAttempt(visitorId, userName, loginAttemptResult) {
   await sequelize.sync();
 }
 
-function getOkReponse(res) {
-  return res.status(200).json({ message: 'We logged you in successfully.' });
+function getOkReponse(res, message) {
+  return res.status(200).json({ message });
 }
 
 function getForbiddenReponse(res, message) {

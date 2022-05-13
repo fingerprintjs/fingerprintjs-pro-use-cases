@@ -48,6 +48,13 @@ html {
   opacity: 0.72;
 }
 
+.AuthWrapper_notes {
+  margin-bottom: 0.75rem;
+  text-align: left;
+  color: #0d102b;
+  opacity: 0.72;
+}
+
 .AuthWrapper_alert {
   margin-top: 36px;
 }

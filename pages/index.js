@@ -91,26 +91,38 @@ export default function Index() {
               attack. To test solution, user username: <code>user</code> and
               password: <code>password</code>
             </p>
-            <Paper
-              // elevation={0}
-              // square={false}
-              className="AuthWrapper_container"
-            >
+            <ul className="AuthWrapper_notes">
+              <li>
+                Even with correct credentials you cannot log in if the system
+                does not recognise your <code>visitorId</code>. The legit
+                account owner can :)
+              </li>
+              <li>
+                If you provide wrong credentials 5 time, you'd be locked out!
+              </li>
+              <li>
+                Can you use an old <code>requestId</code>? Try it!
+              </li>
+              <li>
+                Try to intercept and forge <code>visitorId</code> in the
+                authentication request.
+              </li>
+              <li>
+                Try to edit <code>confidence score</code> treshold on the server
+                side. How did it change behavior?
+              </li>
+            </ul>
+            <Paper className="AuthWrapper_container">
               <form onSubmit={handleSubmit} className="AuthForm_container">
                 <FormControl
                   fullWidth
                   className={clsx(useStyles().margin)}
                   variant="outlined"
                 >
-                  <Typography
-                    variant="caption"
-                    // display="block"
-                    className="UsernameInput_label"
-                  >
+                  <Typography variant="caption" className="UsernameInput_label">
                     Username
                   </Typography>
                   <TextField
-                    // id="outlined-basic"
                     placeholder="Username"
                     variant="outlined"
                     onChange={(e) => setUserName(e.target.value)}
@@ -122,11 +134,7 @@ export default function Index() {
                   className={clsx(useStyles().margin)}
                   variant="outlined"
                 >
-                  <Typography
-                    variant="caption"
-                    // display="block"
-                    className="PasswordInput_label"
-                  >
+                  <Typography variant="caption" className="PasswordInput_label">
                     Password
                   </Typography>
                   <OutlinedInput
@@ -137,7 +145,6 @@ export default function Index() {
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
-                          // aria-label="toggle password visibility"
                           onClick={handleClickShowPassword}
                           onMouseDown={handleMouseDownPassword}
                           edge="end"
@@ -164,7 +171,6 @@ export default function Index() {
             </Paper>
             {httpResponseStatus ? (
               <Alert
-                // icon={false}
                 severity={httpResponseStatus === 200 ? 'success' : 'error'}
                 className="AuthWrapper_alert"
               >
