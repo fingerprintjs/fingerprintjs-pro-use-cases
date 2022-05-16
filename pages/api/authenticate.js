@@ -29,6 +29,7 @@ const LoginAttempt = sequelize.define('login-attempt', {
 LoginAttempt.sync({ force: true });
 
 // Demo origins.
+// It is recommended to use production origins instead.
 const ourOrigins = [
   'https://nextjs-dmv5c7--3000.local.webcontainer.io',
   'https://jellyfish-app-cnbob.ondigitalocean.app',
