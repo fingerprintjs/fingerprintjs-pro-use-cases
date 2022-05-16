@@ -159,7 +159,7 @@ async function verifyIdentificationRequestFromSeverApi(req, res, visitorData, us
 }
 
 async function checkConfidenceScore(req, res, visitorData, userName) {
-  if (visitorData.visits[0].confidence.score < 0.99) {
+  if (visitorData.visits[0].confidence.score < 0.98) {
     reportSuspiciousActivityAccordintInternalProcesses(req);
     await logLoginAttempt(
       visitorData.visitorId,
@@ -175,7 +175,7 @@ async function checkConfidenceScore(req, res, visitorData, userName) {
 }
 
 async function checkAgeOfIdentification(req, res, visitorData, userName) {
-  if (new Date().getTime() - visitorData.visits[0].timestamp > 3000) {
+  if (new Date().getTime() - visitorData.visits[0].timestamp > 2000) {
     reportSuspiciousActivityAccordintInternalProcesses(req);
     await logLoginAttempt(
       visitorData.visitorId,
