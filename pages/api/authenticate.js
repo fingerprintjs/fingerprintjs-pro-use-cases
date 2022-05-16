@@ -145,8 +145,23 @@ export default async (req, res) => {
     );
   }
 
-  // TODO: Check if the authentication request comes from the same IP adress as identification request.
-  console.log(req.headers['x-forwarded-for'].split(',')[0]); // Get the client IP address
+  // Check if the authentication request comes from the same IP adress as identification request.
+  // This check is disabled on purpose in the Stackblitz environment.
+  // if (
+  //   req.headers['x-forwarded-for'].split(',')[0] !== visitorData.visits[0].ip
+  // ) {
+  //   reportSuspiciousActivityAccordintInternalProcesses(req);
+  //   await logLoginAttempt(
+  //     visitorData.visitorId,
+  //     userName,
+  //     loginAttemptResult.IpMismatch
+  //   );
+
+  //   return getForbiddenReponse(
+  //     res,
+  //     'IP mismatch. An attacker might have tried to phish the victim.'
+  //   );
+  // }
 
   // Check if the authentication request comes from the known origin
   // Check if the authentication request's origin corresponds to the origin/URL provided by the FingerprintJSPro Server API.
@@ -157,6 +172,7 @@ export default async (req, res) => {
     !ourOrigins.includes(visitorDataOrigin) ||
     !ourOrigins.includes(req.headers['origin'])
   ) {
+    reportSuspiciousActivityAccordintInternalProcesses(req);
     await logLoginAttempt(
       visitorData.visitorId,
       userName,
@@ -249,6 +265,7 @@ const loginAttemptResult = Object.freeze({
   IncorrectCredentials: 'IncorrectCredentials',
   Challenged: 'Challenged',
   ForeignOrigin: 'ForeignOrigin',
+  IpMismatch: 'IpMismatch',
   Passed: 'Passed',
 });
 
