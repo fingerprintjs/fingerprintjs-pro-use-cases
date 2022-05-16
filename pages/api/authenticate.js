@@ -48,6 +48,7 @@ const mockedUser = {
   ],
 };
 
+// TODO: Fix returning from internal functions, middleware handlers maybe?
 export default async (req, res) => {
   // This API route accepts only POST requests.
   if (req.method !== 'POST') {
