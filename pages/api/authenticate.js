@@ -69,162 +69,34 @@ export default async (req, res) => {
 
   // Check if the Server API contains info about this specific identification request.
   // If not, the request might have been edited and we don't trust this identification attempt.
-  if (visitorData.visits.length === 0) {
-    reportSuspiciousActivityAccordintInternalProcesses(req);
-    await logLoginAttempt(
-      visitorData.visitorId,
-      userName,
-      loginAttemptResult.RequestIdMissmatch
-    );
-    return getForbiddenReponse(
-      res,
-      'Hmmm, sneaky trying to forge information from the client-side, no luck this time, no login attempt was performed.'
-    );
-  }
+  await verifyIdentificationRequestFromSeverApi(req, res, visitorData, userName);
 
   // The Confidence Score reflects the system's degree of certainty that the visitor identifier is correct.
   // If it's lower than the certain threshold we recommend using an additional way of verification, e.g. 2FA or email.
   // More info: https://dev.fingerprintjs.com/docs/understanding-your-confidence-score
-  if (visitorData.visits[0].confidence.score < 0.99) {
-    reportSuspiciousActivityAccordintInternalProcesses(req);
-    await logLoginAttempt(
-      visitorData.visitorId,
-      userName,
-      loginAttemptResult.LowConfidenceScore
-    );
-
-    return getForbiddenReponse(
-      res,
-      "Low confidence score, we'd rather verify you with the second factor,"
-    );
-  }
+  await checkConfidenceScore(req, res, visitorData, userName);
 
   // An attacker might have acquired valid requestId and visitorId via phishing.
   // It's recommended to check age of the identification request with the Server API.
-  if (new Date().getTime() - visitorData.visits[0].timestamp > 3000) {
-    reportSuspiciousActivityAccordintInternalProcesses(req);
-    await logLoginAttempt(
-      visitorData.visitorId,
-      userName,
-      loginAttemptResult.OldTimestamp
-    );
-
-    return getForbiddenReponse(
-      res,
-      'Old requestId detected. Login attempt ignored and logged.'
-    );
-  }
+  await checkAgeOfIdentification(req, res, visitorData, userName);
 
   // Get all unsuccessful attempts during the last 24 hours.
   // If the visitorId performed 5 unsuccessful login attempts during the last 24 hours we do not perform login and we notify the user with the next steps according to internal processes.
   // The count of attempts and time window might vary.
-  const visitorLoginAttemptCountQueryResult =
-    await LoginAttempt.findAndCountAll({
-      where: {
-        visitorId: visitorData.visitorId,
-        timestamp: {
-          [Sequelize.Op.gt]: new Date().getTime() - 24 * 60 * 1000,
-        },
-        loginAttemptResult: {
-          [Sequelize.Op.not]: loginAttemptResult.Passed,
-          [Sequelize.Op.not]: loginAttemptResult.TooManyAttempts,
-          [Sequelize.Op.not]: loginAttemptResult.Challenged,
-        },
-      },
-    });
-
-  if (visitorLoginAttemptCountQueryResult.count > 4) {
-    reportSuspiciousActivityAccordintInternalProcesses(req);
-    await logLoginAttempt(
-      visitorData.visitorId,
-      userName,
-      loginAttemptResult.TooManyAttempts
-    );
-
-    return getForbiddenReponse(
-      res,
-      'You had more than 5 attempts during the last 24 hours. This login attempt was not performed.'
-    );
-  }
+  await checkUnsuccessfulIdentifications(req, res, visitorData, userName);
 
   // Check if the authentication request comes from the same IP adress as identification request.
   // This check is disabled on purpose in the Stackblitz environment.
-  // if (
-  //   req.headers['x-forwarded-for'].split(',')[0] !== visitorData.visits[0].ip
-  // ) {
-  //   reportSuspiciousActivityAccordintInternalProcesses(req);
-  //   await logLoginAttempt(
-  //     visitorData.visitorId,
-  //     userName,
-  //     loginAttemptResult.IpMismatch
-  //   );
-
-  //   return getForbiddenReponse(
-  //     res,
-  //     'IP mismatch. An attacker might have tried to phish the victim.'
-  //   );
-  // }
+  // await checkIpAddressIntegrity(req, res, visitorData, userName);
 
   // Check if the authentication request comes from the known origin
   // Check if the authentication request's origin corresponds to the origin/URL provided by the FingerprintJSPro Server API.
   // Additionally, one should set Request Filtering settings in the dashboard: https://dev.fingerprintjs.com/docs/request-filtering
-  const visitorDataOrigin = new URL(visitorData.visits[0].url).origin;
-  if (
-    // visitorDataOrigin !== req.headers['origin'] || // This check is commented out because of different origins on the Stackblitz environment
-    !ourOrigins.includes(visitorDataOrigin) ||
-    !ourOrigins.includes(req.headers['origin'])
-  ) {
-    reportSuspiciousActivityAccordintInternalProcesses(req);
-    await logLoginAttempt(
-      visitorData.visitorId,
-      userName,
-      loginAttemptResult.ForeignOrigin
-    );
-
-    return getForbiddenReponse(
-      res,
-      'Origin mismatch. An attacker might have tried to phish the victim.'
-    );
-  }
+  await checkOriginsIntegrity(req, res, visitorData, userName);
 
   // Check if the provided credentials are correct.
   // If they provided valid credentials but they never logged in using this visitorId, we recommend using an additional way of verification, e.g. 2FA or email.
-  if (areCredentialsCorrect(userName, password)) {
-    if (
-      isLoggingInFromKnownDevice(
-        visitorData.visitorId,
-        mockedUser.knownVisitorIds
-      )
-    ) {
-      await logLoginAttempt(
-        visitorData.visitorId,
-        userName,
-        loginAttemptResult.Passed
-      );
-
-      return getOkReponse(res, 'We logged you in successfully.');
-    } else {
-      await logLoginAttempt(
-        visitorData.visitorId,
-        userName,
-        loginAttemptResult.Challenged
-      );
-
-      return getOkReponse(
-        res,
-        "Provided credentials are correct but we've never seen you logging in using this device. Proof your identify with a second factor."
-      );
-    }
-  } else {
-    reportSuspiciousActivityAccordintInternalProcesses(req);
-    await logLoginAttempt(
-      visitorData.visitorId,
-      userName,
-      loginAttemptResult.IncorrectCredentials
-    );
-
-    return getForbiddenReponse(res, 'Incorrect credentials, try again.');
-  }
+  await checkCredentialsAndKnownVisitorIds(req, res, visitorData, userName, password);
 };
 
 // Every identification request should be validated using FingerprintJS Pro Server API.
@@ -271,6 +143,162 @@ const loginAttemptResult = Object.freeze({
   Passed: 'Passed',
 });
 
+async function verifyIdentificationRequestFromSeverApi(req, res, visitorData, userName) {
+  if (visitorData.visits.length === 0) {
+    reportSuspiciousActivityAccordintInternalProcesses(req);
+    await logLoginAttempt(
+      visitorData.visitorId,
+      userName,
+      loginAttemptResult.RequestIdMissmatch
+    );
+    return getForbiddenReponse(
+      res,
+      'Hmmm, sneaky trying to forge information from the client-side, no luck this time, no login attempt was performed.'
+    );
+  }
+}
+
+async function checkConfidenceScore(req, res, visitorData, userName) {
+  if (visitorData.visits[0].confidence.score < 0.99) {
+    reportSuspiciousActivityAccordintInternalProcesses(req);
+    await logLoginAttempt(
+      visitorData.visitorId,
+      userName,
+      loginAttemptResult.LowConfidenceScore
+    );
+
+    return getForbiddenReponse(
+      res,
+      "Low confidence score, we'd rather verify you with the second factor,"
+    );
+  }
+}
+
+async function checkAgeOfIdentification(req, res, visitorData, userName) {
+  if (new Date().getTime() - visitorData.visits[0].timestamp > 3000) {
+    reportSuspiciousActivityAccordintInternalProcesses(req);
+    await logLoginAttempt(
+      visitorData.visitorId,
+      userName,
+      loginAttemptResult.OldTimestamp
+    );
+
+    return getForbiddenReponse(
+      res,
+      'Old requestId detected. Login attempt ignored and logged.'
+    );
+  }
+}
+
+async function checkUnsuccessfulIdentifications(req, res, visitorData, userName) {
+  const visitorLoginAttemptCountQueryResult =
+    await LoginAttempt.findAndCountAll({
+      where: {
+        visitorId: visitorData.visitorId,
+        timestamp: {
+          [Sequelize.Op.gt]: new Date().getTime() - 24 * 60 * 1000,
+        },
+        loginAttemptResult: {
+          [Sequelize.Op.not]: loginAttemptResult.Passed,
+          [Sequelize.Op.not]: loginAttemptResult.TooManyAttempts,
+          [Sequelize.Op.not]: loginAttemptResult.Challenged,
+        },
+      },
+    });
+
+  if (visitorLoginAttemptCountQueryResult.count > 4) {
+    reportSuspiciousActivityAccordintInternalProcesses(req);
+    await logLoginAttempt(
+      visitorData.visitorId,
+      userName,
+      loginAttemptResult.TooManyAttempts
+    );
+
+    return getForbiddenReponse(
+      res,
+      'You had more than 5 attempts during the last 24 hours. This login attempt was not performed.'
+    );
+  }
+}
+
+async function checkIpAddressIntegrity(req, res, visitorData, userName) {
+  if (
+    req.headers['x-forwarded-for'].split(',')[0] !== visitorData.visits[0].ip
+  ) {
+    reportSuspiciousActivityAccordintInternalProcesses(req);
+    await logLoginAttempt(
+      visitorData.visitorId,
+      userName,
+      loginAttemptResult.IpMismatch
+    );
+
+    return getForbiddenReponse(
+      res,
+      'IP mismatch. An attacker might have tried to phish the victim.'
+    );
+  }
+}
+
+async function checkOriginsIntegrity(req, res, visitorData, userName) {
+  const visitorDataOrigin = new URL(visitorData.visits[0].url).origin;
+  if (
+    // visitorDataOrigin !== req.headers['origin'] || // This check is commented out because of different origins on the Stackblitz environment
+    !ourOrigins.includes(visitorDataOrigin) ||
+    !ourOrigins.includes(req.headers['origin'])
+  ) {
+    reportSuspiciousActivityAccordintInternalProcesses(req);
+    await logLoginAttempt(
+      visitorData.visitorId,
+      userName,
+      loginAttemptResult.ForeignOrigin
+    );
+
+    return getForbiddenReponse(
+      res,
+      'Origin mismatch. An attacker might have tried to phish the victim.'
+    );
+  }
+}
+
+async function checkCredentialsAndKnownVisitorIds(req, res, visitorData, userName, password) {
+  if (areCredentialsCorrect(userName, password)) {
+    if (
+      isLoggingInFromKnownDevice(
+        visitorData.visitorId,
+        mockedUser.knownVisitorIds
+      )
+    ) {
+      await logLoginAttempt(
+        visitorData.visitorId,
+        userName,
+        loginAttemptResult.Passed
+      );
+
+      return getOkReponse(res, 'We logged you in successfully.');
+    } else {
+      await logLoginAttempt(
+        visitorData.visitorId,
+        userName,
+        loginAttemptResult.Challenged
+      );
+
+      return getOkReponse(
+        res,
+        "Provided credentials are correct but we've never seen you logging in using this device. Proof your identify with a second factor."
+      );
+    }
+  } else {
+    reportSuspiciousActivityAccordintInternalProcesses(req);
+    await logLoginAttempt(
+      visitorData.visitorId,
+      userName,
+      loginAttemptResult.IncorrectCredentials
+    );
+
+    return getForbiddenReponse(res, 'Incorrect credentials, try again.');
+  }
+}
+
 // Dummy action simulating authentication.
 function areCredentialsCorrect(name, password) {
   return name === mockedUser.userName && password === mockedUser.password;
@@ -283,7 +311,7 @@ function isLoggingInFromKnownDevice(providedVisitorId, knownVisitorIds) {
 
 // Report suspicious user activity according to internal processes here.
 // Possibly this action could also lock the user's account temporarily.
-function reportSuspiciousActivityAccordintInternalProcesses(context) {}
+function reportSuspiciousActivityAccordintInternalProcesses(context) { }
 
 // Persists login attempt to the database.
 async function logLoginAttempt(visitorId, userName, loginAttemptResult) {
