@@ -1,8 +1,9 @@
 import { Sequelize } from 'sequelize';
 import fetch from 'node-fetch';
 
-// Provision database
-// In the Stackblitz environment, this db is stored locally in your browser. On the deployed demo, db is cleaned after each deployment.
+// Provision the database.
+// In the Stackblitz environment, this db is stored locally in your browser.
+// On the deployed demo, db is cleaned after each deployment.
 const sequelize = new Sequelize('database', '', '', {
   dialect: 'sqlite',
   storage: '.data/database.sqlite',
@@ -27,7 +28,7 @@ const LoginAttempt = sequelize.define('login-attempt', {
 
 LoginAttempt.sync({ force: true });
 
-// Demo origins
+// Demo origins.
 const ourOrigins = [
   'https://nextjs-dmv5c7--3000.local.webcontainer.io',
   'https://jellyfish-app-cnbob.ondigitalocean.app',
@@ -46,7 +47,7 @@ const mockedUser = {
 };
 
 export default async (req, res) => {
-  // This APIroute acceptsonly POST requests
+  // This API route accepts only POST requests.
   if (req.method !== 'POST') {
     res.status(405).send({ message: 'Only POST requests allowed' });
     return;
@@ -54,7 +55,7 @@ export default async (req, res) => {
 
   res.setHeader('Content-Type', 'application/json');
 
-  // Get requestId and visitorId from the client
+  // Get requestId and visitorId from the client.
   const visitorId = req.body.visitorId;
   const requestId = req.body.requestId;
   const userName = req.body.userName;
@@ -144,9 +145,8 @@ export default async (req, res) => {
     );
   }
 
-  // TODO: Check if the authentication request comes from the same IP adress as identification request
-  console.log(req.socket.remoteAddress);
-  console.log(req.headers['x-forwarded-for']);
+  // TODO: Check if the authentication request comes from the same IP adress as identification request.
+  console.log(req.headers['x-forwarded-for'].split(',')[0]); // Get the client IP address
 
   // Check if the authentication request comes from the known origin
   // Check if the authentication request's origin corresponds to the origin/URL provided by the FingerprintJSPro Server API.
