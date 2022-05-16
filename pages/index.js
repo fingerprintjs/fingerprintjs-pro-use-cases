@@ -28,12 +28,13 @@ export default function Index() {
   const [password, setPassword] = useState();
   const [authMessage, setAuthMessage] = useState();
   const [severity, setSeverity] = useState();
+  const [isWaitingForReponse, setIsWaitingForReponse] = useState(false);
   const [httpResponseStatus, setHttpResponseStatus] = useState();
   const [showPassword, setShowPassword] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
-
+    setIsWaitingForReponse(true);
     // This example demonstrates using the NPM package for the FingerprintJS Pro agent.
     // In the real world react-powerred apps we recommend using our FingerprintJS Pro React/NextJS library instead: https://github.com/fingerprintjs/fingerprintjs-pro-react
     // FingerprintJS Pro API key is availablee from the dashboard at: https://dashboard.fingerprintjs.com/login
@@ -69,6 +70,7 @@ export default function Index() {
     setAuthMessage(responseJson.message);
     setSeverity(responseJson.severity);
     setHttpResponseStatus(responseStatus);
+    setIsWaitingForReponse(false);
   }
 
   const handleClickShowPassword = () => {
@@ -158,6 +160,7 @@ export default function Index() {
                 </FormControl>
                 <Button
                   className="AuthForm_button"
+                  disabled={isWaitingForReponse}
                   size="large"
                   type="submit"
                   variant="contained"
@@ -165,7 +168,7 @@ export default function Index() {
                   disableElevation
                   fullWidth
                 >
-                  Log In
+                  {isWaitingForReponse ? "Hold on, doing magic..." : "Log In"}
                 </Button>
               </form>
             </Paper>
