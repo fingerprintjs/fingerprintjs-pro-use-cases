@@ -25,12 +25,19 @@ const LoginAttempt = sequelize.define('login-attempt', {
 
 LoginAttempt.sync({ force: true });
 
+// Demo origins
+const ourOrigins = [
+  'https://nextjs-dmv5c7--3000.local.webcontainer.io',
+  'https://jellyfish-app-cnbob.ondigitalocean.app',
+  'https://localhost:3000',
+];
+
 // Mocked user with leaked credentials asociated with visitorIds.
 const mockedUser = {
   userName: 'user',
   password: 'password',
   knownVisitorIds: [
-    'QYvLgKyLefAr3uAjn0uv',
+    'bXbwuhCBRB9lLTK692vw',
     'ABvLgKyH3fAr6uAjn0vq',
     'BNvLgKyHefAr9iOjn0ul',
   ],
@@ -132,6 +139,28 @@ export default async (req, res) => {
   }
   //#endregion
 
+  // TODO: Check if the authentication request comes from the same IP adress as identification request
+
+  // Check if the authentication request comes from our origin
+  // Additionaly, there's Request Filtering settings in the dashboard: https://dev.fingerprintjs.com/docs/request-filtering
+  const visitorDataOrigin = new URL(visitorData.visits[0].url).origin;
+  if (
+    // visitorDataOrigin !== req.headers['origin'] || // This check is commented out because of different origins on the Stackblitz environment
+    !ourOrigins.includes(visitorDataOrigin) ||
+    !ourOrigins.includes(req.headers['origin'])
+  ) {
+    await logLoginAttempt(
+      visitorData.visitorId,
+      userName,
+      loginAttemptResult.ForeignOrigin
+    );
+
+    return getForbiddenReponse(
+      res,
+      'Origin mismatch. An attacker might have tried to phish the victim.'
+    );
+  }
+
   //#region Check provided credentials
   if (areCredentialsCorrect(userName, password)) {
     if (
@@ -213,6 +242,7 @@ const loginAttemptResult = Object.freeze({
   TooManyAttempts: 'TooManyAttempts',
   IncorrectCredentials: 'IncorrectCredentials',
   Challenged: 'Challenged',
+  ForeignOrigin: 'ForeignOrigin',
   Passed: 'Passed',
 });
 
