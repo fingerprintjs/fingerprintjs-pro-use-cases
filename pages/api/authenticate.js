@@ -2,12 +2,14 @@ import { Sequelize } from 'sequelize';
 import fetch from 'node-fetch';
 
 // Provision database
+// In the Stackblitz environment, this db is stored locally in your browser. On the deployed demo, db is cleaned after each deployment.
 const sequelize = new Sequelize('database', '', '', {
   dialect: 'sqlite',
   storage: '.data/database.sqlite',
   logging: false,
 });
 
+// Defines db model for login attempt
 const LoginAttempt = sequelize.define('login-attempt', {
   visitorId: {
     type: Sequelize.STRING,
@@ -44,21 +46,28 @@ const mockedUser = {
 };
 
 export default async (req, res) => {
+  // This APIroute acceptsonly POST requests
+  if (req.method !== 'POST') {
+    res.status(405).send({ message: 'Only POST requests allowed' });
+    return;
+  }
+
+  res.setHeader('Content-Type', 'application/json');
+
   // Get requestId and visitorId from the client
   const visitorId = req.body.visitorId;
   const requestId = req.body.requestId;
   const userName = req.body.userName;
   const password = req.body.password;
 
-  // Get data about identification from FingerprintJS Pro servers
+  // Information from the client side might have been tampered.
+  // It's a best practice to validate provided information with Server API. It is recommended to use the requestId and visitorId pair.
   const visitorData = await getVisitorData(visitorId, requestId);
 
-  res.setHeader('Content-Type', 'application/json');
-
-  // VisitorId does not match the requestId
+  // Check if the Server API contains info about this specific identification request.
+  // If not, the request might have been edited and we don't trust this identification attempt.
   if (visitorData.visits.length === 0) {
-    // Report suspicious user activity according to internal processes here
-
+    reportSuspiciousActivityAccordintInternalProcesses(req);
     await logLoginAttempt(
       visitorData.visitorId,
       userName,
@@ -69,12 +78,12 @@ export default async (req, res) => {
       'Hmmm, sneaky trying to forge information from the client-side, no luck this time, no login attempt was performed.'
     );
   }
-  //#endregion
 
-  //#region Check confidence score
+  // The Confidence Score reflects the system's degree of certainty that the visitor identifier is correct.
+  // If it's lower than the certain threshold we recommend using an additional way of verification, e.g. 2FA or email.
+  // More info: https://dev.fingerprintjs.com/docs/understanding-your-confidence-score
   if (visitorData.visits[0].confidence.score < 0.99) {
-    // Report suspicious user activity according to internal processes here
-
+    reportSuspiciousActivityAccordintInternalProcesses(req);
     await logLoginAttempt(
       visitorData.visitorId,
       userName,
@@ -86,12 +95,11 @@ export default async (req, res) => {
       "Low confidence score, we'd rather verify you with the second factor,"
     );
   }
-  //#endregion
 
-  //#region Check age of requestId
-  if (new Date().getTime() - visitorData.visits[0].timestamp > 5000) {
-    // Report suspicious user activity according to internal processes here
-
+  // An attacker might have acquired valid requestId and visitorId via phishing.
+  // It's recommended to check age of the identification request with the Server API.
+  if (new Date().getTime() - visitorData.visits[0].timestamp > 3000) {
+    reportSuspiciousActivityAccordintInternalProcesses(req);
     await logLoginAttempt(
       visitorData.visitorId,
       userName,
@@ -103,16 +111,16 @@ export default async (req, res) => {
       'Old requestId detected. Login attempt ignored and logged.'
     );
   }
-  //#endregion
 
-  //#region Check all unsuccessful attempt during last 24 hours
-  // Get all unsuccessful attempts during last 24 hours
+  // Get all unsuccessful attempts during the last 24 hours.
+  // If the visitorId performed 5 unsuccessful login attempts during the last 24 hours we do not perform login and we notify the user with the next steps according to internal processes.
+  // The count of attempts and time window might vary.
   const visitorLoginAttemptCountQueryResult =
     await LoginAttempt.findAndCountAll({
       where: {
         visitorId: visitorData.visitorId,
         timestamp: {
-          [Sequelize.Op.gt]: new Date().getTime() - 24 * 60 * 1000, // 24 hours
+          [Sequelize.Op.gt]: new Date().getTime() - 24 * 60 * 1000,
         },
         loginAttemptResult: {
           [Sequelize.Op.not]: loginAttemptResult.Passed,
@@ -122,10 +130,8 @@ export default async (req, res) => {
       },
     });
 
-  // Trying credentials, if visitorId performed 5 unsuccessful login attempts during the last 24 hours, do not perform login
   if (visitorLoginAttemptCountQueryResult.count > 4) {
-    // Report suspicious user activity according to internal processes here
-
+    reportSuspiciousActivityAccordintInternalProcesses(req);
     await logLoginAttempt(
       visitorData.visitorId,
       userName,
@@ -137,12 +143,14 @@ export default async (req, res) => {
       'You had more than 5 attempts during the last 24 hours. This login attempt was not performed.'
     );
   }
-  //#endregion
 
   // TODO: Check if the authentication request comes from the same IP adress as identification request
+  console.log(req.socket.remoteAddress);
+  console.log(req.headers['x-forwarded-for']);
 
-  // Check if the authentication request comes from our origin
-  // Additionaly, there's Request Filtering settings in the dashboard: https://dev.fingerprintjs.com/docs/request-filtering
+  // Check if the authentication request comes from the known origin
+  // Check if the authentication request's origin corresponds to the origin/URL provided by the FingerprintJSPro Server API.
+  // Additionally, one should set Request Filtering settings in the dashboard: https://dev.fingerprintjs.com/docs/request-filtering
   const visitorDataOrigin = new URL(visitorData.visits[0].url).origin;
   if (
     // visitorDataOrigin !== req.headers['origin'] || // This check is commented out because of different origins on the Stackblitz environment
@@ -161,7 +169,8 @@ export default async (req, res) => {
     );
   }
 
-  //#region Check provided credentials
+  // Check if the provided credentials are correct.
+  // If they provided valid credentials but they never logged in using this visitorId, we recommend using an additional way of verification, e.g. 2FA or email.
   if (areCredentialsCorrect(userName, password)) {
     if (
       isLoggingInFromKnownDevice(
@@ -189,7 +198,7 @@ export default async (req, res) => {
       );
     }
   } else {
-    // Report suspicious user activity according to internal processes here
+    reportSuspiciousActivityAccordintInternalProcesses(req);
     await logLoginAttempt(
       visitorData.visitorId,
       userName,
@@ -198,19 +207,30 @@ export default async (req, res) => {
 
     return getForbiddenReponse(res, 'Incorrect credentials, try again.');
   }
-  //#endregion
 };
 
-// Why we want to check it on server side
+// Every identification request should be validated using FingerprintJS Pro Server API.
+// Alternatively, on the Node.js environment one can use Server API Node.js library: https://github.com/fingerprintjs/fingerprintjs-pro-server-api-node-sdk
+// const client = new FingerprintJsServerApiClient({
+//   region: Region.Global,
+//   apiKey: 'F6gQ8H8vQLc7mVsVKaFx',
+//   authenticationMode: AuthenticationMode.QueryParameter,
+// });
+
+// const serverApiFilter = { request_id: requestId };
+// const visitorData = await client.getVisitorHistory(
+//   visitorId,
+//   serverApiFilter
+// );
+// return visitorData;
 async function getVisitorData(visitorId, requestId) {
-  // There are different Base URLs for different regions: https://dev.fingerprintjs.com/docs/server-api#regions
   const fingerprintJSProServerApiUrl = new URL(
     `https://api.fpjs.io/visitors/${visitorId}`
   );
 
   fingerprintJSProServerApiUrl.searchParams.append(
     'api_key',
-    'F6gQ8H8vQLc7mVsVKaFx' // In the real world use-case we recommend using Auth-API-Key header instead: https://dev.fingerprintjs.com/docs/server-api#api-methods. Api key should be stored in the environment variables
+    'F6gQ8H8vQLc7mVsVKaFx' // In the real world use-case, we recommend using Auth-API-Key header instead: https://dev.fingerprintjs.com/docs/server-api#api-methods. Api key should be stored in the environment variables/secrets.
   );
   fingerprintJSProServerApiUrl.searchParams.append('request_id', requestId);
 
@@ -219,20 +239,6 @@ async function getVisitorData(visitorId, requestId) {
   );
 
   return await visitorServerApiResponse.json();
-
-  // Alternatively, on the Node.js environment one can use Server API Node.js library: https://github.com/fingerprintjs/fingerprintjs-pro-server-api-node-sdk
-  // const client = new FingerprintJsServerApiClient({
-  //   region: Region.Global,
-  //   apiKey: 'F6gQ8H8vQLc7mVsVKaFx', // In real-world apps api token should be stored in the environment variables
-  //   authenticationMode: AuthenticationMode.QueryParameter,
-  // });
-
-  // const serverApiFilter = { request_id: requestId };
-  // const visitorData = await client.getVisitorHistory(
-  //   visitorId,
-  //   serverApiFilter
-  // );
-  // return visitorData;
 }
 
 const loginAttemptResult = Object.freeze({
@@ -246,15 +252,21 @@ const loginAttemptResult = Object.freeze({
   Passed: 'Passed',
 });
 
-// Dummy action simulating authentication
+// Dummy action simulating authentication.
 function areCredentialsCorrect(name, password) {
   return name === mockedUser.userName && password === mockedUser.password;
 }
 
+// Checks if the provided visitorId is associated with the user.
 function isLoggingInFromKnownDevice(providedVisitorId, knownVisitorIds) {
   return knownVisitorIds.includes(providedVisitorId);
 }
 
+// Report suspicious user activity according to internal processes here.
+// Possibly this action could also lock the user's account temporarily.
+function reportSuspiciousActivityAccordintInternalProcesses(context) {}
+
+// Persists login attempt to the database.
 async function logLoginAttempt(visitorId, userName, loginAttemptResult) {
   await LoginAttempt.create({
     visitorId,

@@ -33,15 +33,14 @@ export default function Index() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    // This example demonstrates using the NPM package for FingerprintJS Pro agent.
+    // This example demonstrates using the NPM package for the FingerprintJS Pro agent.
     // In the real world react-powerred apps we recommend using our FingerprintJS Pro react library instead: https://github.com/fingerprintjs/fingerprintjs-pro-react
-    const fpPromise = FingerprintJS.load({ token: 'rzpSduhT63F6jaS35HFo' }); // FingerprintJS Pro API key is avaialble from the dashboard at: https://dashboard.fingerprintjs.com/login
-
+    // FingerprintJS Pro API key is availablee from the dashboard at: https://dashboard.fingerprintjs.com/login
     // Alternatively, one can also use the CDN approach instead of NPM: https://dev.fingerprintjs.com/docs#js-agent
     // const fpPromise = import('https://fpcdn.io/v3/rzpSduhT63F6jaS35HFo').then(
     //   (FingerprintJS) => FingerprintJS.load()
     // );
-
+    const fpPromise = FingerprintJS.load({ token: 'rzpSduhT63F6jaS35HFo' });
     const fp = await fpPromise;
     const result = await fp.get();
     const visitorId = result.visitorId;
@@ -54,6 +53,7 @@ export default function Index() {
       requestId,
     };
 
+    // Serverside handler for this route is located in api/authneticate.js file.
     const response = await fetch('/api/authenticate', {
       method: 'POST',
       body: JSON.stringify(loginData),
@@ -107,7 +107,7 @@ export default function Index() {
               </li>
               <li>
                 U h4ck3r? You can try to generate new <code>visitorId</code> and{' '}
-                <code>reqeustId</code> and try to log in. Good luck.
+                <code>reqeustId</code> and try to log in. Good luck :)
               </li>
             </ul>
             <Paper className="AuthWrapper_container">
