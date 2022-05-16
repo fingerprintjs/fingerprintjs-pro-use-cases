@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FingerprintJS from '@fingerprintjs/fingerprintjs-pro';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -31,6 +31,14 @@ export default function Index() {
   const [isWaitingForReponse, setIsWaitingForReponse] = useState(false);
   const [httpResponseStatus, setHttpResponseStatus] = useState();
   const [showPassword, setShowPassword] = useState(false);
+  const [fp, setFp] = useState();
+  
+
+  useEffect(async () => {
+    const fpPromise = FingerprintJS.load({ token: 'rzpSduhT63F6jaS35HFo' });
+    const fp = await fpPromise;
+    setFp(fp);
+  }, [])
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -42,8 +50,6 @@ export default function Index() {
     // const fpPromise = import('https://fpcdn.io/v3/rzpSduhT63F6jaS35HFo').then(
     //   (FingerprintJS) => FingerprintJS.load()
     // );
-    const fpPromise = FingerprintJS.load({ token: 'rzpSduhT63F6jaS35HFo' });
-    const fp = await fpPromise;
     const result = await fp.get();
     const visitorId = result.visitorId;
     const requestId = result.requestId;
