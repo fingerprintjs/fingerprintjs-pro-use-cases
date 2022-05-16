@@ -88,28 +88,26 @@ export default function Index() {
               <a href="https://fingerprintjs.com/blog/credential-stuffing-prevention-checklist/">
                 Credential Stuffing
               </a>{' '}
-              attack. To test solution, user username: <code>user</code> and
-              password: <code>password</code>
+              attack. Martin reused the same password among different sites and
+              his credentials leaked. Luckily for Martin, this service uses
+              FingeprintJS Pro and Martin's account is still protected even
+              though his credentials are known. Try to hack into Martin's
+              account using his credentials <code>user</code> and{' '}
+              <code>password</code>. It will be very hard...
             </p>
             <ul className="AuthWrapper_notes">
               <li>
-                Even with correct credentials you cannot log in if the system
-                does not recognise your <code>visitorId</code>. The legit
+                Even with correct credentials, you cannot log in if the system
+                does not recognize your <code>visitorId</code>. The legit
                 account owner can :)
               </li>
               <li>
-                If you provide wrong credentials 5 time, you'd be locked out!
+                If you provide the wrong credentials 5 times, you'd be locked
+                out!
               </li>
               <li>
-                Can you use an old <code>requestId</code>? Try it!
-              </li>
-              <li>
-                Try to intercept and forge <code>visitorId</code> in the
-                authentication request.
-              </li>
-              <li>
-                Try to edit <code>confidence score</code> treshold on the server
-                side. How did it change behavior?
+                U h4ck3r? You can try to generate new <code>visitorId</code> and{' '}
+                <code>reqeustId</code> and try to log in. Good luck.
               </li>
             </ul>
             <Paper className="AuthWrapper_container">
