@@ -34,6 +34,7 @@ const ourOrigins = [
   'https://nextjs-dmv5c7--3000.local.webcontainer.io',
   'https://jellyfish-app-cnbob.ondigitalocean.app',
   'https://localhost:3000',
+  'http://localhost:3000'
 ];
 
 // Mocked user with leaked credentials asociated with visitorIds.
