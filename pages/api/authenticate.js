@@ -274,7 +274,7 @@ async function checkCredentialsAndKnownVisitorIds(req, res, visitorData, userNam
         loginAttemptResult.Passed
       );
 
-      return getOkReponse(res, 'We logged you in successfully.');
+      return getOkReponse(res, 'We logged you in successfully.', "success");
     } else {
       await logLoginAttempt(
         visitorData.visitorId,
@@ -284,7 +284,8 @@ async function checkCredentialsAndKnownVisitorIds(req, res, visitorData, userNam
 
       return getOkReponse(
         res,
-        "Provided credentials are correct but we've never seen you logging in using this device. Proof your identify with a second factor."
+        "Provided credentials are correct but we've never seen you logging in using this device. Proof your identify with a second factor.",
+        "warning"
       );
     }
   } else {
@@ -324,10 +325,10 @@ async function logLoginAttempt(visitorId, userName, loginAttemptResult) {
   await sequelize.sync();
 }
 
-function getOkReponse(res, message) {
-  return res.status(200).json({ message });
+function getOkReponse(res, message, severity) {
+  return res.status(200).json({ message, severity });
 }
 
 function getForbiddenReponse(res, message) {
-  return res.status(403).json({ message });
+  return res.status(403).json({ message, severity: 'error' });
 }

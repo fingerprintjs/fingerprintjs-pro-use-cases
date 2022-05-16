@@ -27,6 +27,7 @@ export default function Index() {
   const [userName, setUserName] = useState();
   const [password, setPassword] = useState();
   const [authMessage, setAuthMessage] = useState();
+  const [severity, setSeverity] = useState();
   const [httpResponseStatus, setHttpResponseStatus] = useState();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -66,6 +67,7 @@ export default function Index() {
     const responseJson = await response.json();
     const responseStatus = await response.status;
     setAuthMessage(responseJson.message);
+    setSeverity(responseJson.severity);
     setHttpResponseStatus(responseStatus);
   }
 
@@ -169,7 +171,7 @@ export default function Index() {
             </Paper>
             {httpResponseStatus ? (
               <Alert
-                severity={httpResponseStatus === 200 ? 'success' : 'error'}
+                severity={severity}
                 className="AuthWrapper_alert"
               >
                 {authMessage}
