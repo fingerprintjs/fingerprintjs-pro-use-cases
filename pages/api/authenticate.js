@@ -31,7 +31,6 @@ LoginAttempt.sync({ force: true });
 // Demo origins.
 // It is recommended to use production origins instead.
 const ourOrigins = [
-  'https://nextjs-dmv5c7--3000.local.webcontainer.io',
   'https://jellyfish-app-cnbob.ondigitalocean.app',
   'https://localhost:3000',
   'http://localhost:3000',
@@ -75,7 +74,6 @@ const messageSeverity = Object.freeze({
 });
 
 async function login(req, res, ruleChecks) {
-  console.log(process.env);
   // Get requestId and visitorId from the client.
   const visitorId = req.body.visitorId;
   const requestId = req.body.requestId;
@@ -120,7 +118,7 @@ export default async (req, res) => {
     checkFreshIdentificationRequest,
     checkConfidenceScore,
     checkUnsuccessfulIdentifications,
-    // checkIpAddressIntegrity, // This check is disabled on purpose in the Stackblitz environment.
+    checkIpAddressIntegrity,
     checkOriginsIntegrity,
     checkCredentialsAndKnownVisitorIds,
   ]);
@@ -228,6 +226,7 @@ async function checkUnsuccessfulIdentifications(visitorData) {
 function checkIpAddressIntegrity(visitorData, request) {
   // Checks if the authentication request comes from the same IP adress as the identification request.
   if (
+    process.env.NODE_ENV !== 'development' && // This check is disabled on purpose in the Stackblitz and localhost environments.
     // This is an example of obtaining the client IP address.
     // In most cases, it's a good idea to look for the right-most external IP address in the list to prevent spoofing.
     request.headers['x-forwarded-for'].split(',')[0] !==
@@ -247,9 +246,10 @@ function checkOriginsIntegrity(visitorData, request) {
   // Additionally, one should set Request Filtering settings in the dashboard: https://dev.fingerprintjs.com/docs/request-filtering
   const visitorDataOrigin = new URL(visitorData.visits[0].url).origin;
   if (
-    // visitorDataOrigin !== request.headers['origin'] || // This check is commented out because of different origins on the Stackblitz environment
-    !ourOrigins.includes(visitorDataOrigin) ||
-    !ourOrigins.includes(request.headers['origin'])
+    process.env.NODE_ENV !== 'development' && // This check is disabled on purpose in the Stackblitz and localhost environments.
+    (visitorDataOrigin !== request.headers['origin'] ||
+      !ourOrigins.includes(visitorDataOrigin) ||
+      !ourOrigins.includes(request.headers['origin']))
   ) {
     return new CheckResult(
       'Origin mismatch. An attacker might have tried to phish the victim.',
