@@ -1,6 +1,7 @@
 import '../styles/globals.css';
 import { ThemeProvider } from '@material-ui/core';
 import { createTheme } from '@material-ui/core/styles';
+import Head from 'next/head';
 
 const theme = createTheme({
   palette: {
@@ -16,6 +17,10 @@ const theme = createTheme({
 function App({ Component, pageProps }) {
   return (
     <ThemeProvider theme={theme}>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
+
       <Component {...pageProps} />
     </ThemeProvider>
   );

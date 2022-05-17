@@ -1,17 +1,19 @@
 /* Colors */
 :root {
   --primary: #ff5d22;
+  --text-primary: #212121;
+  --text-secondary: #757575;
 }
 
 body,
 html {
+  margin: 0;
   height: 100%;
   font-family: 'Roboto', sans-serif, -apple-system, Arial;
 }
 
 .ExternalLayout_wrapper {
   width: 100%;
-  min-height: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -21,7 +23,8 @@ html {
 
 .ExternalLayout_main {
   width: 100%;
-  padding: 42px;
+  padding: 8px 42px;
+  padding-top: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,30 +32,47 @@ html {
 }
 
 .AuthWrapper_authWrapper {
+  padding: 0 16px;
   max-width: 533px;
   flex: 1 1;
 }
 
 .AuthWrapper_title {
   width: 75%;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  font-weight: 600;
+  font-weight: 500;
+  font-size: 32px;
+  color: var(--text-primary);
+
+  @media only screen and (max-width: 600px) {
+    background: red;
+  }
 }
 
 .AuthWrapper_helper {
-  margin-bottom: 0.75rem;
-  text-align: center;
-  color: #0d102b;
+  margin-bottom: 1rem;
+  text-align: left;
+  color: var(--text-primary);
   opacity: 0.72;
+  font-size: 16px;
+}
+
+.AuthWrapper_divider {
+  color: var(--text-secondary);
+  opacity: 0.5;
 }
 
 .AuthWrapper_notes {
+  padding-left: 16px;
+  font-size: 14px;
+  font-weight: 400;
+  margin-top: 1rem;
   margin-bottom: 0.75rem;
   text-align: left;
-  color: #0d102b;
-  opacity: 0.72;
+  color: var(--text-secondary);
+}
+
+.AuthWrapper_notes li {
+  margin-bottom: 12px;
 }
 
 .AuthWrapper_alert {
@@ -66,6 +86,7 @@ html {
 
 .AuthWrapper_container {
   padding: 42px 36px;
+  padding-top: 24px;
   margin-top: 24px;
   display: flex;
   align-items: center;
@@ -93,7 +114,7 @@ html {
 .PasswordInput_label {
   margin-bottom: 4px !important;
   font-size: 14px !important;
-  color: #212121;
+  color: var(--text-primary);
 }
 
 /* Base */

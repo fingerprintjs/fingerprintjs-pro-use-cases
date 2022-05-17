@@ -32,13 +32,12 @@ export default function Index() {
   const [httpResponseStatus, setHttpResponseStatus] = useState();
   const [showPassword, setShowPassword] = useState(false);
   const [fp, setFp] = useState();
-  
 
   useEffect(async () => {
     const fpPromise = FingerprintJS.load({ token: 'rzpSduhT63F6jaS35HFo' });
     const fp = await fpPromise;
     setFp(fp);
-  }, [])
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -105,6 +104,7 @@ export default function Index() {
               account using his credentials <code>user</code> and{' '}
               <code>password</code>. It will be very hard...
             </p>
+            <hr className="AuthWrapper_divider" />
             <ul className="AuthWrapper_notes">
               <li>
                 Even with correct credentials, you cannot log in if the system
@@ -119,7 +119,15 @@ export default function Index() {
                 U h4ck3r? You can try to generate new <code>visitorId</code> and{' '}
                 <code>reqeustId</code> and try to log in. Good luck :)
               </li>
-              <li>Need src? < a href="https://github.com/makma/use-cases-credential-stuffing" target="_blank">Sure!</a></li>
+              <li>
+                Need src?{' '}
+                <a
+                  href="https://github.com/makma/use-cases-credential-stuffing"
+                  target="_blank"
+                >
+                  Sure!
+                </a>
+              </li>
             </ul>
             <Paper className="AuthWrapper_container">
               <form onSubmit={handleSubmit} className="AuthForm_container">
@@ -173,16 +181,14 @@ export default function Index() {
                   variant="contained"
                   color="primary"
                   disableElevation
-                  fullWidth                >
-                  {isWaitingForReponse ? "Hold on, doing magic..." : "Log In"}
+                  fullWidth
+                >
+                  {isWaitingForReponse ? 'Hold on, doing magic...' : 'Log In'}
                 </Button>
               </form>
             </Paper>
             {httpResponseStatus ? (
-              <Alert
-                severity={severity}
-                className="AuthWrapper_alert"
-              >
+              <Alert severity={severity} className="AuthWrapper_alert">
                 {authMessage}
               </Alert>
             ) : null}
