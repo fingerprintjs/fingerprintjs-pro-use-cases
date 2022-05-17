@@ -94,12 +94,9 @@ async function login(req, res, ruleChecks) {
       switch (result.type) {
         case loginAttemptResult.Passed:
         case loginAttemptResult.Challenged:
-          console.log(JSON.stringify(result));
           return getOkReponse(res, result.message, result.messageSeverity);
         default:
           reportSuspiciousActivity(req);
-          console.log(JSON.stringify(result));
-
           return getForbiddenReponse(res, result.message, result.messageSeverity);
       }
     }
