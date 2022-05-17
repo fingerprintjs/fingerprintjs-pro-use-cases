@@ -75,6 +75,7 @@ const messageSeverity = Object.freeze({
 });
 
 async function login(req, res, ruleChecks) {
+  console.log(process.env);
   // Get requestId and visitorId from the client.
   const visitorId = req.body.visitorId;
   const requestId = req.body.requestId;
@@ -97,7 +98,11 @@ async function login(req, res, ruleChecks) {
           return getOkReponse(res, result.message, result.messageSeverity);
         default:
           reportSuspiciousActivity(req);
-          return getForbiddenReponse(res, result.message, result.messageSeverity);
+          return getForbiddenReponse(
+            res,
+            result.message,
+            result.messageSeverity
+          );
       }
     }
   }
@@ -298,7 +303,7 @@ function isLoggingInFromKnownDevice(providedVisitorId, knownVisitorIds) {
 
 // Report suspicious user activity according to internal processes here.
 // Possibly this action could also lock the user's account temporarily.
-function reportSuspiciousActivity(context) { }
+function reportSuspiciousActivity(context) {}
 
 // Persists login attempt to the database.
 async function logLoginAttempt(visitorId, userName, loginAttemptResult) {

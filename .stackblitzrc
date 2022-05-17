@@ -1,0 +1,7 @@
+{
+  "startCommand": "npm start",
+  "env": {
+    "IS_STACKBLITZ": "true",
+    "hello": "world"
+  }
+}
