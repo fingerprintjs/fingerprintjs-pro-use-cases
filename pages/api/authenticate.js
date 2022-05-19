@@ -79,6 +79,19 @@ async function login(req, res, ruleChecks) {
   const requestId = req.body.requestId;
   const userName = req.body.userName;
 
+  // Validate format of visitorId and requestId.
+  const isRequestIdFormatValid = /^\d{13}\.[a-zA-Z0-9]{6}$/.test(requestId);
+  const isVisitorIdFormatValid = /^[a-zA-Z0-9]{20}$/.test(visitorId);
+
+  if (!isRequestIdFormatValid || !isVisitorIdFormatValid) {
+    reportSuspiciousActivity(req);
+    return getForbiddenReponse(
+      res,
+      "Forged visitorId or requestId detected. Try harder next time.",
+      messageSeverity.Error,
+    );
+  }
+
   // Information from the client side might have been tampered.
   // It's best practice to validate provided information with the Server API.
   // It is recommended to use the requestId and visitorId pair.
@@ -141,6 +154,12 @@ export default async (req, res) => {
 // return visitorData;
 
 async function getVisitorData(visitorId, requestId) {
+  // Do not request Server API if provided data is obviously forged,
+  // return an error instead.
+  if (!visitorId || !requestId) {
+    return {error: "visitorId or requestId not provided."};
+  }
+
   const fingerprintJSProServerApiUrl = new URL(
     `https://api.fpjs.io/visitors/${visitorId}`
   );
@@ -157,13 +176,19 @@ async function getVisitorData(visitorId, requestId) {
     fingerprintJSProServerApiUrl.href
   );
 
+  // If there's something wrong with provided data, Server API might return non 200 response.
+  // We consider these data unreliable.
+  if (visitorServerApiResponse.status !== 200) {
+    return {error: "Server API error."};
+  }
+
   return await visitorServerApiResponse.json();
 }
 
 function checkFreshIdentificationRequest(visitorData) {
   // The Server API must contain information about this specific identification request.
   // If not, the request might have been tampered with and we don't trust this identification attempt.
-  if (visitorData.visits.length === 0) {
+  if (visitorData.error || visitorData.visits.length !== 1) {
     return new CheckResult(
       'Hmmm, sneaky trying to forge information from the client-side, no luck this time, no login attempt was performed.',
       messageSeverity.Error,
