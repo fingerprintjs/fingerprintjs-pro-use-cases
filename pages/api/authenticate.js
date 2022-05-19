@@ -79,6 +79,19 @@ async function login(req, res, ruleChecks) {
   const requestId = req.body.requestId;
   const userName = req.body.userName;
 
+  // Validate format of visitorId and requestId.
+  const isRequestIdFormatValid = /^\d{13}\.[a-zA-Z0-9]{6}$/.test(requestId);
+  const isVisitorIdFormatValid = /^[a-zA-Z0-9]{20}$/.test(visitorId);
+
+  if (!isRequestIdFormatValid || !isVisitorIdFormatValid) {
+    reportSuspiciousActivity(req);
+    return getForbiddenReponse(
+      res,
+      "Forged visitorId or requestId detected. Try harder next time.",
+      messageSeverity.Error,
+    );
+  }
+
   // Information from the client side might have been tampered.
   // It's best practice to validate provided information with the Server API.
   // It is recommended to use the requestId and visitorId pair.
