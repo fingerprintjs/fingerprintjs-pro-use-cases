@@ -179,7 +179,7 @@ async function getVisitorData(visitorId, requestId) {
   // If there's something wrong with provided data, Server API might return non 200 response.
   // We consider these data unreliable.
   if (visitorServerApiResponse.status !== 200) {
-    return {error: "Server API error"};
+    return {error: "Server API error."};
   }
 
   return await visitorServerApiResponse.json();
