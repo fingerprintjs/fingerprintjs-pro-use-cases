@@ -34,7 +34,7 @@ export default function Index() {
   const [fp, setFp] = useState();
 
   useEffect(async () => {
-    const fpPromise = FingerprintJS.load({ token: 'rzpSduhT63F6jaS35HFo' });
+    const fpPromise = FingerprintJS.load({ token: 'rzpSduhT63F6jaS35HFo', endpoint: 'https://metrics.fingerprinthub.com' });
     const fp = await fpPromise;
     setFp(fp);
   }, []);
