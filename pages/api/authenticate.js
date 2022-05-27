@@ -31,7 +31,7 @@ LoginAttempt.sync({ force: true });
 // Demo origins.
 // It is recommended to use production origins instead.
 const ourOrigins = [
-  'https://jellyfish-app-cnbob.ondigitalocean.app',
+  'https://fingerprinthub.com',
   'https://localhost:3000',
   'http://localhost:3000',
 ];
