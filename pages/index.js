@@ -1,8 +1,12 @@
+import Link from 'next/link'
+
 export default function Index() {
   return (
     <ul>
       <li>
-        <a href="/credential-stuffing">Credential Stuffing</a>
+      <Link href="/credential-stuffing">
+        <a>Credential Stuffing</a>
+      </Link>
       </li>
     </ul>
   )
