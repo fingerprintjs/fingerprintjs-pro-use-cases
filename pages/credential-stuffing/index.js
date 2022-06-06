@@ -33,8 +33,11 @@ export default function Index() {
   const [showPassword, setShowPassword] = useState(false);
   const [fp, setFp] = useState();
 
-  useEffect(async () => {
-    await getFingerprintJS(setFp);
+  useEffect(() => {
+    async function getFingerprint() {
+      await getFingerprintJS(setFp);
+    }
+    getFingerprint();
   }, []);
 
   async function handleSubmit(e) {
@@ -91,8 +94,8 @@ export default function Index() {
               </a>{' '}
               attack. Martin reused the same password among different sites and
               his credentials leaked. Luckily for Martin, this service uses
-              FingeprintJS Pro and Martin's account is still protected even
-              though his credentials are known. Try to hack into Martin's
+              FingeprintJS Pro and Martin&apos;s account is still protected even
+              though his credentials are known. Try to hack into Martin&apos;s
               account using his credentials <code>user</code> and{' '}
               <code>password</code>. It will be very hard...
             </p>
@@ -104,7 +107,7 @@ export default function Index() {
                 account owner can :)
               </li>
               <li>
-                If you provide the wrong credentials 5 times, you'd be locked
+                If you provide the wrong credentials 5 times, you&apos;d be locked
                 out!
               </li>
               <li>
@@ -115,7 +118,7 @@ export default function Index() {
                 Need src?{' '}
                 <a
                   href="https://github.com/makma/use-cases-credential-stuffing"
-                  target="_blank"
+                  target="_blank" rel="noreferrer"
                 >
                   Sure!
                 </a>

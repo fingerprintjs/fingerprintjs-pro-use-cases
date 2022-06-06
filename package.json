@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "lint": "next lint",
     "start": "next start"
   },
   "dependencies": {
@@ -17,5 +18,9 @@
     "react-dom": "17.0.1",
     "sequelize": "^6.19.0",
     "sqlite3": "^5.0.8"
+  },
+  "devDependencies": {
+    "eslint": "^8.17.0",
+    "eslint-config-next": "^12.1.6"
   }
 }
