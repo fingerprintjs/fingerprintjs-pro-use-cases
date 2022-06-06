@@ -84,6 +84,7 @@ html {
   margin-bottom: 2.5rem;
 }
 
+.ActionWrapper_container, 
 .AuthWrapper_container {
   padding: 42px 36px;
   padding-top: 24px;
@@ -106,10 +107,12 @@ html {
   flex-direction: column;
 }
 
+.Form_container > .Form_button,
 .AuthForm_container > .AuthForm_button {
   margin-top: 24px;
 }
 
+.UserInputField,
 .UsernameInput_label,
 .PasswordInput_label {
   margin-bottom: 4px !important;
