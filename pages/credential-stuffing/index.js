@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Alert from '@material-ui/lab/Alert';
 import Button from '@material-ui/core/Button';
-import { getFingerprintJS } from '../shared/shared';
+import { getFingerprintJS } from '../../shared/shared';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -34,7 +34,7 @@ export default function Index() {
   const [fp, setFp] = useState();
 
   useEffect(async () => {
-    await getFingerprintJS(setFp)
+    await getFingerprintJS(setFp);
   }, []);
 
   async function handleSubmit(e) {
