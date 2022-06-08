@@ -89,8 +89,6 @@ async function tryToProcessPayment(req, res, ruleChecks) {
     const result = await ruleCheck(visitorData, req);
 
     if (result) {
-      console.log(JSON.stringify(result));
-
       await logPaymentAttempt(visitorId, applyChargeback, result.type);
 
       switch (result.type) {
