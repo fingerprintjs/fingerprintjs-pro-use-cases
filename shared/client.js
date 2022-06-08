@@ -8,7 +8,10 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs-pro';
 //   (FingerprintJS) => FingerprintJS.load()
 // );
 export async function getFingerprintJS(setFingerprintToState) {
-    const fpPromise = FingerprintJS.load({ token: 'rzpSduhT63F6jaS35HFo', endpoint: 'https://metrics.fingerprinthub.com' });
-    const fp = await fpPromise;
-    setFingerprintToState(fp);
+  const fpPromise = FingerprintJS.load({
+    token: 'rzpSduhT63F6jaS35HFo',
+    endpoint: 'https://metrics.fingerprinthub.com',
+  });
+  const fp = await fpPromise;
+  setFingerprintToState(fp);
 }
