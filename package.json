@@ -5,8 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "lint": "eslint pages shared",
+    "lint:fix": "yarn lint --fix",
+    "prettier": "prettier pages shared --check",
+    "prettier:fix": "yarn prettier --write",
+    "format": "yarn prettier:fix && yarn lint:fix"
   },
   "dependencies": {
     "@fingerprintjs/fingerprintjs-pro": "^3.6.2",
@@ -21,6 +25,8 @@
   },
   "devDependencies": {
     "eslint": "^8.17.0",
-    "eslint-config-next": "^12.1.6"
+    "eslint-config-next": "^12.1.6",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "2.6.2"
   }
 }
