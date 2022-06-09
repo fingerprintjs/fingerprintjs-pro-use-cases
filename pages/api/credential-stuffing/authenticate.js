@@ -135,11 +135,7 @@ async function checkCredentialsAndKnownVisitorIds(visitorData, request) {
   // Checks if the provided credentials are correct.
   if (areCredentialsCorrect(request.body.userName, request.body.password)) {
     if (isLoggingInFromKnownDevice(visitorData.visitorId, mockedUser.knownVisitorIds)) {
-      return new CheckResult(
-        'We logged you in successfully.',
-        messageSeverity.Success,
-        checkResultType.Passed
-      );
+      return new CheckResult('We logged you in successfully.', messageSeverity.Success, checkResultType.Passed);
       // If they provided valid credentials but they never logged in using this visitorId,
       // we recommend using an additional way of verification, e.g. 2FA or email.
     } else {
