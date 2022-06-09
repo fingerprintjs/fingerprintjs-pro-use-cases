@@ -9,6 +9,9 @@
   </a>
 </p>
 
+> **Warning**
+> This repository is a work in progress.
+
 # FingerprintJS Pro Use Cases
 
 This repository demonstrates various use cases for FingerprintJS Pro. Each scenario covers frontend and backend sample implementation with a persistent data layer. Deployed demo of each use case is available at [fingerprinthub.com](https://fingerprinthub.com/).
