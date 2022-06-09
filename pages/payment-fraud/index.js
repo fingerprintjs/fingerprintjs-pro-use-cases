@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Alert from '@material-ui/lab/Alert';
@@ -25,13 +24,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Index() {
-  const [userName, setUserName] = useState();
-  const [password, setPassword] = useState();
-  const [authMessage, setAuthMessage] = useState();
+  const [cardNumber, setCardNumber] = useState();
+  const [cardCvv, setCardCvv] = useState();
+  const [cardExpiration, setCardExpiration] = useState();
+  const [orderStatusMessage, setOrderStatusMessage] = useState();
+  const [applyChargeback, setApplyChargeback] = useState(false);
   const [severity, setSeverity] = useState();
   const [isWaitingForReponse, setIsWaitingForReponse] = useState(false);
   const [httpResponseStatus, setHttpResponseStatus] = useState();
-  const [showPassword, setShowPassword] = useState(false);
   const [fp, setFp] = useState();
 
   useEffect(() => {
@@ -49,17 +49,19 @@ export default function Index() {
     const visitorId = fpResult.visitorId;
     const requestId = fpResult.requestId;
 
-    const loginData = {
-      userName,
-      password,
+    const orderData = {
+      cardNumber,
+      cardCvv,
+      cardExpiration,
+      applyChargeback,
       visitorId,
       requestId,
     };
 
-    // Serverside handler for this route is located in api/credential-stuffing/authneticate.js file.
-    const response = await fetch('/api/credential-stuffing/authenticate', {
+    // Serverside handler for this route is located in api/authneticate.js file.
+    const response = await fetch('/api/payment-fraud/place-order', {
       method: 'POST',
-      body: JSON.stringify(loginData),
+      body: JSON.stringify(orderData),
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -68,44 +70,26 @@ export default function Index() {
 
     const responseJson = await response.json();
     const responseStatus = response.status;
-    setAuthMessage(responseJson.message);
+    setOrderStatusMessage(responseJson.message);
     setSeverity(responseJson.severity);
     setHttpResponseStatus(responseStatus);
     setIsWaitingForReponse(false);
   }
-
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
 
   return (
     <>
       <div className="ExternalLayout_wrapper">
         <div className="ExternalLayout_main">
           <div className="UsecaseWrapper_wrapper">
-            <h1 className="UsecaseWrapper_title">Credential Stuffing problem</h1>
+            <h1 className="UsecaseWrapper_title">Payment Fraud problem</h1>
             <p className="UsecaseWrapper_helper">
-              This page demonstrates login form protected against{' '}
-              <a href="https://fingerprintjs.com/blog/credential-stuffing-prevention-checklist/">Credential Stuffing</a>{' '}
-              attack. Martin reused the same password among different sites and his credentials leaked. Luckily for
-              Martin, this service uses FingeprintJS Pro and Martin&apos;s account is still protected even though his
-              credentials are known. Try to hack into Martin&apos;s account using his credentials <code>user</code> and{' '}
-              <code>password</code>. It will be very hard...
+              This page demonstrates protected credit card form protected against different fraud.
             </p>
             <hr className="UsecaseWrapper_divider" />
             <ul className="UsecaseWrapper_notes">
               <li>
-                Even with correct credentials, you cannot log in if the system does not recognize your{' '}
-                <code>visitorId</code>. The legit account owner can :)
-              </li>
-              <li>If you provide the wrong credentials 5 times, you&apos;d be locked out!</li>
-              <li>
-                U h4ck3r? You can try to generate new <code>visitorId</code> and <code>reqeustId</code> and try to log
-                in. Good luck :)
+                If you have a positive chargeback history, can you place your order? Try to place a regular order after
+                two chargebacks. You can also try switching to the incognito mode.
               </li>
               <li>
                 Need src?{' '}
@@ -118,34 +102,52 @@ export default function Index() {
               <form onSubmit={handleSubmit} className="Form_container">
                 <FormControl fullWidth className={clsx(useStyles().margin)} variant="outlined">
                   <Typography variant="caption" className="UserInput_label">
-                    Username
+                    Card Number
                   </Typography>
                   <TextField
-                    placeholder="Username"
+                    placeholder="Card Number"
+                    value="4242 4242 4242 4242"
                     variant="outlined"
-                    onChange={(e) => setUserName(e.target.value)}
+                    onChange={(e) => setCardNumber(e.target.value)}
                     required
                   />
                 </FormControl>
-                <FormControl fullWidth className={clsx(useStyles().margin)} variant="outlined">
-                  <Typography variant="caption" className="UserInput_label">
-                    Password
-                  </Typography>
-                  <OutlinedInput
-                    placeholder="Password"
-                    type={showPassword ? 'text' : 'password'}
-                    value={password || ''}
-                    onChange={(e) => setPassword(e.target.value)}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
-                          {showPassword ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    required
-                  />
-                </FormControl>
+                <Grid container spacing={3}>
+                  <Grid item xs={6}>
+                    <FormControl className={clsx(useStyles().margin)} variant="outlined" fullWidth>
+                      <Typography variant="caption" className="UserInput_label">
+                        Expiration
+                      </Typography>
+                      <TextField
+                        placeholder="Expiration"
+                        value="04/28"
+                        variant="outlined"
+                        onChange={(e) => setCardExpiration(e.target.value)}
+                        required
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <FormControl className={clsx(useStyles().margin)} variant="outlined" fullWidth>
+                      <Typography variant="caption" className="UserInput_label">
+                        CVV
+                      </Typography>
+                      <OutlinedInput
+                        placeholder="CVV"
+                        value="123"
+                        variant="outlined"
+                        onChange={(e) => setCardCvv(e.target.value)}
+                        required
+                      />
+                    </FormControl>
+                  </Grid>
+                </Grid>
+                <FormControlLabel
+                  className={clsx(useStyles().margin)}
+                  control={<Checkbox color="primary" />}
+                  label="Ask for chargeback"
+                  onChange={(e) => setApplyChargeback(e.target.checked)}
+                />
                 <Button
                   className="Form_button"
                   disabled={isWaitingForReponse}
@@ -156,13 +158,13 @@ export default function Index() {
                   disableElevation
                   fullWidth
                 >
-                  {isWaitingForReponse ? 'Hold on, doing magic...' : 'Log In'}
+                  {isWaitingForReponse ? 'Hold on, doing magic...' : 'Place an order'}
                 </Button>
               </form>
             </Paper>
             {httpResponseStatus ? (
               <Alert severity={severity} className="UsecaseWrapper_alert">
-                {authMessage}
+                {orderStatusMessage}
               </Alert>
             ) : null}
           </div>
