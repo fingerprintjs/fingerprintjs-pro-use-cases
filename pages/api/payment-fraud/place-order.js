@@ -41,12 +41,6 @@ const PaymentAttempt = sequelize.define('payment-attempt', {
 
 PaymentAttempt.sync({ force: false });
 
-const mockedCard = {
-  cardNumber: '4242 4242 4242 4242',
-  cardExpiration: '04/28',
-  cardCvv: '123',
-};
-
 export default async function handler(req, res) {
   // This API route accepts only POST requests.
   if (req.method !== 'POST') {

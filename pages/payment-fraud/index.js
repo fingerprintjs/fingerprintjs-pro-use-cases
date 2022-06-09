@@ -69,7 +69,7 @@ export default function Index() {
     });
 
     const responseJson = await response.json();
-    const responseStatus = await response.status;
+    const responseStatus = response.status;
     setOrderStatusMessage(responseJson.message);
     setSeverity(responseJson.severity);
     setHttpResponseStatus(responseStatus);
