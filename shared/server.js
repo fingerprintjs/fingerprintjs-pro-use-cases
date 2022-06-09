@@ -159,4 +159,4 @@ export function getForbiddenReponse(res, message, messageSeverity) {
 
 // Report suspicious user activity according to internal processes here.
 // Possibly this action could also lock the user's account temporarily or ban a specific action.
-export function reportSuspiciousActivity(context) { }
+export function reportSuspiciousActivity(context) {}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
@@ -89,7 +89,7 @@ export default function Index() {
             <ul className="UsecaseWrapper_notes">
               <li>
                 If you have a positive chargeback history, can you place your order? Try to place a regular order after
-                two chargebacks. You can also try switching to the incognito mode.
+                two chargebacks. You can also try switching to the incognito mode or clearing cookies.
               </li>
               <li>
                 Need src?{' '}
