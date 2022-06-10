@@ -22,6 +22,7 @@ export const checkResultType = Object.freeze({
   OldTimestamp: 'OldTimestamp',
   TooManyLoginAttempts: 'TooManyLoginAttempts',
   TooManyChargebacks: 'TooManyChargebacks',
+  PaidWithStolenCard: 'PaidWithStolenCard',
   IncorrectCredentials: 'IncorrectCredentials',
   IncorrectCardDetails: 'IncorrectCardDetails',
   Challenged: 'Challenged',

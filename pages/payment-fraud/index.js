@@ -29,6 +29,7 @@ export default function Index() {
   const [cardExpiration, setCardExpiration] = useState();
   const [orderStatusMessage, setOrderStatusMessage] = useState();
   const [applyChargeback, setApplyChargeback] = useState(false);
+  const [usingStolenCard, setUsingStolenCard] = useState(false);
   const [severity, setSeverity] = useState();
   const [isWaitingForReponse, setIsWaitingForReponse] = useState(false);
   const [httpResponseStatus, setHttpResponseStatus] = useState();
@@ -54,6 +55,7 @@ export default function Index() {
       cardCvv,
       cardExpiration,
       applyChargeback,
+      usingStolenCard,
       visitorId,
       requestId,
     };
@@ -142,12 +144,18 @@ export default function Index() {
                     </FormControl>
                   </Grid>
                 </Grid>
-                <FormControlLabel
-                  className={clsx(useStyles().margin)}
-                  control={<Checkbox color="primary" />}
-                  label="Ask for chargeback"
-                  onChange={(e) => setApplyChargeback(e.target.checked)}
-                />
+                <Grid container justifyContent="flex-start">
+                  <FormControlLabel
+                    control={<Checkbox color="primary" />}
+                    label="Ask for chargeback after purchase"
+                    onChange={(e) => setApplyChargeback(e.target.checked)}
+                  />
+                  <FormControlLabel
+                    control={<Checkbox color="primary" />}
+                    label="Flag this visitor using stolen card after purchase"
+                    onChange={(e) => setUsingStolenCard(e.target.checked)}
+                  />
+                </Grid>
                 <Button
                   className="Form_button"
                   disabled={isWaitingForReponse}

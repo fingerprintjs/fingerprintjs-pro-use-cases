@@ -31,6 +31,9 @@ const PaymentAttempt = sequelize.define('payment-attempt', {
   isChargebacked: {
     type: Sequelize.BOOLEAN,
   },
+  usedStolenCard: {
+    type: Sequelize.BOOLEAN,
+  },
   checkResult: {
     type: Sequelize.STRING,
   },
@@ -54,6 +57,7 @@ export default async function handler(req, res) {
     checkConfidenceScore,
     checkIpAddressIntegrity,
     checkOriginsIntegrity,
+    checkVisitorIdForStolenCard,
     checkVisitorIdForChargebacks,
     processPayment,
   ]);
@@ -64,6 +68,7 @@ async function tryToProcessPayment(req, res, ruleChecks) {
   const visitorId = req.body.visitorId;
   const requestId = req.body.requestId;
   const applyChargeback = req.body.applyChargeback;
+  const usedStolenCard = req.body.usingStolenCard;
 
   if (!areVisitorIdAndRequestIdValid(visitorId, requestId)) {
     reportSuspiciousActivity(req);
@@ -83,7 +88,7 @@ async function tryToProcessPayment(req, res, ruleChecks) {
     const result = await ruleCheck(visitorData, req);
 
     if (result) {
-      await logPaymentAttempt(visitorId, applyChargeback, result.type);
+      await logPaymentAttempt(visitorId, applyChargeback, usedStolenCard, result.type);
 
       switch (result.type) {
         case checkResultType.Passed:
@@ -94,6 +99,26 @@ async function tryToProcessPayment(req, res, ruleChecks) {
           return getForbiddenReponse(res, result.message, result.messageSeverity);
       }
     }
+  }
+}
+
+async function checkVisitorIdForStolenCard(visitorData) {
+  // Get all stolen card records for the visitorId
+  const stoleCardUsedCount = await PaymentAttempt.findAndCountAll({
+    where: {
+      visitorId: visitorData.visitorId,
+      usedStolenCard: true,
+    },
+  });
+
+  // If the visitorId performed more than 1 chargeback during the last 1 year we do not process the payment.
+  // The count of chargebacks and time window might vary.
+  if (stoleCardUsedCount.count > 0) {
+    return new CheckResult(
+      'According to our records, you paid with a stolen card. We did not process the payment.',
+      messageSeverity.Error,
+      checkResultType.PaidWithStolenCard
+    );
   }
 }
 
@@ -143,10 +168,11 @@ function areCardDetailsCorrect() {
 }
 
 // Persists placed order to the database.
-async function logPaymentAttempt(visitorId, isChargebacked, paymentAttemptCheckResult) {
+async function logPaymentAttempt(visitorId, isChargebacked, usedStolenCard, paymentAttemptCheckResult) {
   await PaymentAttempt.create({
     visitorId,
     isChargebacked,
+    usedStolenCard,
     checkResult: paymentAttemptCheckResult,
     timestamp: new Date().getTime(),
   });
