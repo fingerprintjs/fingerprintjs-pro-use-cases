@@ -24,7 +24,7 @@ const sequelize = new Sequelize('database', '', '', {
 });
 
 // Defines db model for login attempt.
-const LoginAttempt = sequelize.define('login-attempt', {
+export const LoginAttempt = sequelize.define('login-attempt', {
   visitorId: {
     type: Sequelize.STRING,
   },
