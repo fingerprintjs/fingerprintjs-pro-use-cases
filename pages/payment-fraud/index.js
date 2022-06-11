@@ -91,8 +91,10 @@ export default function Index() {
             <ul className="UsecaseWrapper_notes">
               <li>
                 If you have a positive chargeback history, can you place your order? Try to place a regular order after
-                two chargebacks. You can also try switching to the incognito mode or clearing cookies.
+                two chargebacks.
               </li>
+              <li>Simulate a visitor using a stolen card. Can you place another order from the same browser?</li>
+              <li>You can also try switching to the incognito mode or clearing cookies.</li>
               <li>
                 Need src?{' '}
                 <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases" target="_blank" rel="noreferrer">
