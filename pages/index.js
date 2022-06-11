@@ -13,6 +13,10 @@ export default function Index() {
               backend sample implementation with a persistent data layer. The open-source repository is available at{' '}
               <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases">GithHub</a>.
             </p>
+            <p className='UsecaseWrapper_helper'>
+              On the <a href="/admin">admin</a> page, you can remove all info obtained from this browser. This will reenable some scenarios for
+              you if you were locked out from the specific action.
+            </p>
             <hr className="UsecaseWrapper_divider" />
             <ul>
               <li>
