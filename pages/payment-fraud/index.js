@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
@@ -33,14 +33,17 @@ export default function Index() {
   const [severity, setSeverity] = useState();
   const [isWaitingForReponse, setIsWaitingForReponse] = useState(false);
   const [httpResponseStatus, setHttpResponseStatus] = useState();
-  const [fp, setFp] = useState();
+  const [fp, setFp] = useState(null);
+
+  const messageRef = useRef();
 
   useEffect(() => {
     async function getFingerprint() {
       await getFingerprintJS(setFp);
     }
-    getFingerprint();
-  }, []);
+    !fp && getFingerprint();
+    !isWaitingForReponse && messageRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [isWaitingForReponse, fp]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -173,7 +176,7 @@ export default function Index() {
               </form>
             </Paper>
             {httpResponseStatus ? (
-              <Alert severity={severity} className="UsecaseWrapper_alert">
+              <Alert ref={messageRef} severity={severity} className="UsecaseWrapper_alert">
                 {orderStatusMessage}
               </Alert>
             ) : null}

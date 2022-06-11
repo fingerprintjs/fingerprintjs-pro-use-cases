@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
@@ -32,14 +32,17 @@ export default function Index() {
   const [isWaitingForReponse, setIsWaitingForReponse] = useState(false);
   const [httpResponseStatus, setHttpResponseStatus] = useState();
   const [showPassword, setShowPassword] = useState(false);
-  const [fp, setFp] = useState();
+  const [fp, setFp] = useState(null);
+
+  const messageRef = useRef();
 
   useEffect(() => {
     async function getFingerprint() {
       await getFingerprintJS(setFp);
     }
-    getFingerprint();
-  }, []);
+    !fp && getFingerprint();
+    !isWaitingForReponse && messageRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [isWaitingForReponse, fp]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -161,7 +164,7 @@ export default function Index() {
               </form>
             </Paper>
             {httpResponseStatus ? (
-              <Alert severity={severity} className="UsecaseWrapper_alert">
+              <Alert ref={messageRef} severity={severity} className="UsecaseWrapper_alert">
                 {authMessage}
               </Alert>
             ) : null}
