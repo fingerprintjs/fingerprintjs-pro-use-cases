@@ -1,3 +1,14 @@
+import { Sequelize } from 'sequelize';
+
+// Provision the database.
+// In the Stackblitz environment, this db is stored locally in your browser.
+// On the deployed demo, db is cleaned after each deployment.
+export const sequelize = new Sequelize('database', '', '', {
+  dialect: 'sqlite',
+  storage: '.data/database.sqlite',
+  logging: false,
+});
+
 // Demo origins.
 // It is recommended to use production origins instead.
 export const ourOrigins = ['https://fingerprinthub.com', 'https://localhost:3000', 'http://localhost:3000'];

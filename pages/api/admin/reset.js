@@ -1,4 +1,3 @@
-import { Sequelize } from 'sequelize';
 import {
   areVisitorIdAndRequestIdValid,
   messageSeverity,
@@ -15,12 +14,6 @@ import {
 } from '../../../shared/server';
 import { LoginAttempt } from '../credential-stuffing/authenticate';
 import { PaymentAttempt } from '../payment-fraud/place-order';
-
-const sequelize = new Sequelize('database', '', '', {
-  dialect: 'sqlite',
-  storage: '.data/database.sqlite',
-  logging: false,
-});
 
 export default async function handler(req, res) {
   // This API route accepts only POST requests.

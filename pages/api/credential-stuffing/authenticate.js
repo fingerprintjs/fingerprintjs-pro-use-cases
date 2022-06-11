@@ -1,5 +1,6 @@
 import { Sequelize } from 'sequelize';
 import {
+  sequelize,
   areVisitorIdAndRequestIdValid,
   messageSeverity,
   CheckResult,
@@ -13,15 +14,6 @@ import {
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
 } from '../../../shared/server';
-
-// Provision the database.
-// In the Stackblitz environment, this db is stored locally in your browser.
-// On the deployed demo, db is cleaned after each deployment.
-const sequelize = new Sequelize('database', '', '', {
-  dialect: 'sqlite',
-  storage: '.data/database.sqlite',
-  logging: false,
-});
 
 // Defines db model for login attempt.
 export const LoginAttempt = sequelize.define('login-attempt', {
