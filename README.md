@@ -24,4 +24,6 @@ This repository demonstrates various use cases for FingerprintJS Pro. Each scena
 Alternatively, one can use also the [Stackblitz environment](https://stackblitz.com/edit/nextjs-dmv5c7) to run the project in their Chromium-based browsers.
 
 ## Covered Scenarios
+
 - [Credential Stuffing](https://fingerprinthub.com/credential-stuffing)
+- [Payment Fraud](https://fingerprinthub.com/payment-fraud)
