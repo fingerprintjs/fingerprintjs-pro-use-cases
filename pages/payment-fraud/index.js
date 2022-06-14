@@ -28,7 +28,7 @@ export default function Index() {
   const [cardNumber, setCardNumber] = useState('4242 4242 4242 4242');
   const [cardCvv, setCardCvv] = useState('123');
   const [cardExpiration, setCardExpiration] = useState('04/28');
-  
+
   const [orderStatusMessage, setOrderStatusMessage] = useState();
   const [applyChargeback, setApplyChargeback] = useState(false);
   const [usingStolenCard, setUsingStolenCard] = useState(false);
@@ -95,8 +95,8 @@ export default function Index() {
             <hr className="UsecaseWrapper_divider" />
             <ul className="UsecaseWrapper_notes">
               <li>
-                Only prefilled card details are correct. When you change them, the system will check if you try to
-                perform Card Cracking. After 5 unsuccessful attempt is this visitor flagged as suspicious and cannot
+                Only prefilled card details are correct. When you change them, the system will check if you tried to
+                perform Card Cracking. After 3 unsuccessful attempts is this visitor flagged as suspicious and cannot
                 place orders anymore.
               </li>
               <li>
