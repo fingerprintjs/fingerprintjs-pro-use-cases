@@ -24,9 +24,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Index() {
-  const [cardNumber, setCardNumber] = useState();
-  const [cardCvv, setCardCvv] = useState();
-  const [cardExpiration, setCardExpiration] = useState();
+  // Default mocked card data
+  const [cardNumber, setCardNumber] = useState('4242 4242 4242 4242');
+  const [cardCvv, setCardCvv] = useState('123');
+  const [cardExpiration, setCardExpiration] = useState('04/28');
+  
   const [orderStatusMessage, setOrderStatusMessage] = useState();
   const [applyChargeback, setApplyChargeback] = useState(false);
   const [usingStolenCard, setUsingStolenCard] = useState(false);
@@ -93,6 +95,11 @@ export default function Index() {
             <hr className="UsecaseWrapper_divider" />
             <ul className="UsecaseWrapper_notes">
               <li>
+                Only prefilled card details are correct. When you change them, the system will check if you try to
+                perform Card Cracking. After 5 unsuccessful attempt is this visitor flagged as suspicious and cannot
+                place orders anymore.
+              </li>
+              <li>
                 If you have a positive chargeback history, can you place your order? Try to place a regular order after
                 two chargebacks.
               </li>
@@ -113,7 +120,7 @@ export default function Index() {
                   </Typography>
                   <TextField
                     placeholder="Card Number"
-                    value="4242 4242 4242 4242"
+                    defaultValue={cardNumber}
                     variant="outlined"
                     onChange={(e) => setCardNumber(e.target.value)}
                     required
@@ -127,7 +134,7 @@ export default function Index() {
                       </Typography>
                       <TextField
                         placeholder="Expiration"
-                        value="04/28"
+                        defaultValue={cardExpiration}
                         variant="outlined"
                         onChange={(e) => setCardExpiration(e.target.value)}
                         required
@@ -141,7 +148,7 @@ export default function Index() {
                       </Typography>
                       <OutlinedInput
                         placeholder="CVV"
-                        value="123"
+                        defaultValue={cardCvv}
                         variant="outlined"
                         onChange={(e) => setCardCvv(e.target.value)}
                         required

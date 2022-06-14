@@ -32,14 +32,17 @@ export const checkResultType = Object.freeze({
   RequestIdMissmatch: 'RequestIdMissmatch',
   OldTimestamp: 'OldTimestamp',
   TooManyLoginAttempts: 'TooManyLoginAttempts',
-  TooManyChargebacks: 'TooManyChargebacks',
-  PaidWithStolenCard: 'PaidWithStolenCard',
-  IncorrectCredentials: 'IncorrectCredentials',
-  IncorrectCardDetails: 'IncorrectCardDetails',
-  Challenged: 'Challenged',
   ForeignOrigin: 'ForeignOrigin',
+  Challenged: 'Challenged',
   IpMismatch: 'IpMismatch',
   Passed: 'Passed',
+  // Login specific checks.
+  IncorrectCredentials: 'IncorrectCredentials',
+  // Payment specific checks.
+  TooManyChargebacks: 'TooManyChargebacks',
+  TooManyUnsuccessfulPayments: 'TooManyUnsuccessfulPayments',
+  PaidWithStolenCard: 'PaidWithStolenCard',
+  IncorrectCardDetails: 'IncorrectCardDetails',
 });
 
 // Validates format of visitorId and requestId.

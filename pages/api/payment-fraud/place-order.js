@@ -15,7 +15,7 @@ import {
   checkOriginsIntegrity,
 } from '../../../shared/server';
 
-// Defines db model for login attempt.
+// Defines db model for payment attempt.
 export const PaymentAttempt = sequelize.define('payment-attempt', {
   visitorId: {
     type: Sequelize.STRING,
@@ -34,6 +34,13 @@ export const PaymentAttempt = sequelize.define('payment-attempt', {
   },
 });
 
+// Mocked credit card details.
+const mockedCard = {
+  number: '4242 4242 4242 4242',
+  expiration: '04/28',
+  cvv: '123',
+};
+
 PaymentAttempt.sync({ force: false });
 
 export default async function handler(req, res) {
@@ -51,6 +58,7 @@ export default async function handler(req, res) {
     checkOriginsIntegrity,
     checkVisitorIdForStolenCard,
     checkVisitorIdForChargebacks,
+    checkForCardCracking,
     processPayment,
   ]);
 }
@@ -114,6 +122,31 @@ async function checkVisitorIdForStolenCard(visitorData) {
   }
 }
 
+async function checkForCardCracking(visitorData) {
+  // Gets all unsuccessful attempts for the visitor during the last 365 days.
+  const invalidCardAttemptCountQueryResult = await PaymentAttempt.findAndCountAll({
+    where: {
+      visitorId: visitorData.visitorId,
+      timestamp: {
+        [Sequelize.Op.gt]: new Date().getTime() - 365 * 24 * 60 * 1000,
+      },
+      checkResult: {
+        [Sequelize.Op.not]: checkResultType.Passed,
+      },
+    },
+  });
+
+  // If the visitorId performed 3 unsuccessful payments during the last 365 days we do not process any further payments.
+  // The count of attempts and time window might vary.
+  if (invalidCardAttemptCountQueryResult.count > 2) {
+    return new CheckResult(
+      'You placed more than 3 unsuccessful payment attempts during the last 365 days. This payment attempt was not performed.',
+      messageSeverity.Error,
+      checkResultType.TooManyUnsuccessfulPayments
+    );
+  }
+}
+
 async function checkVisitorIdForChargebacks(visitorData) {
   // Gets all unsuccessful attempts during the last 24 hours.
   const countOfChargebacksForVisitorId = await PaymentAttempt.findAndCountAll({
@@ -139,7 +172,7 @@ async function checkVisitorIdForChargebacks(visitorData) {
 
 async function processPayment(visitorData, request) {
   // Checks if the provided card details are correct.
-  if (areCardDetailsCorrect()) {
+  if (areCardDetailsCorrect(request)) {
     return new CheckResult(
       'Thank you for your payment. Everything is OK.',
       messageSeverity.Success,
@@ -154,9 +187,13 @@ async function processPayment(visitorData, request) {
   }
 }
 
-// Dummy payment action.
-function areCardDetailsCorrect() {
-  return true;
+// Dummy action simulating card verification.
+function areCardDetailsCorrect(request) {
+  return (
+    request.body.cardNumber === mockedCard.number &&
+    request.body.cardExpiration === mockedCard.expiration &&
+    request.body.cardCvv === mockedCard.cvv
+  );
 }
 
 // Persists placed order to the database.

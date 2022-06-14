@@ -25,8 +25,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Index() {
-  const [userName, setUserName] = useState();
-  const [password, setPassword] = useState();
+  // Default mocked user data
+  const [userName, setUserName] = useState('user');
+  const [password, setPassword] = useState('password');
+
   const [authMessage, setAuthMessage] = useState();
   const [severity, setSeverity] = useState();
   const [isWaitingForReponse, setIsWaitingForReponse] = useState(false);
@@ -126,6 +128,7 @@ export default function Index() {
                   <TextField
                     placeholder="Username"
                     variant="outlined"
+                    defaultValue={userName}
                     onChange={(e) => setUserName(e.target.value)}
                     required
                   />
@@ -137,6 +140,7 @@ export default function Index() {
                   <OutlinedInput
                     placeholder="Password"
                     type={showPassword ? 'text' : 'password'}
+                    defaultValue={password}
                     value={password || ''}
                     onChange={(e) => setPassword(e.target.value)}
                     endAdornment={
