@@ -104,16 +104,16 @@ async function tryToProcessPayment(req, res, ruleChecks) {
 
 async function checkVisitorIdForStolenCard(visitorData) {
   // Get all stolen card records for the visitorId
-  const stoleCardUsedCount = await PaymentAttempt.findAndCountAll({
+  const stolenCardUsedCount = await PaymentAttempt.findAndCountAll({
     where: {
       visitorId: visitorData.visitorId,
       usedStolenCard: true,
     },
   });
 
-  // If the visitorId performed more than 1 chargeback during the last 1 year we do not process the payment.
-  // The count of chargebacks and time window might vary.
-  if (stoleCardUsedCount.count > 0) {
+  // If the visitorId performed more than 1 payment with a stolen card during the last 1 year we do not process the payment.
+  // The time window duration might vary.
+  if (stolenCardUsedCount.count > 0) {
     return new CheckResult(
       'According to our records, you paid with a stolen card. We did not process the payment.',
       messageSeverity.Error,
@@ -148,7 +148,7 @@ async function checkForCardCracking(visitorData) {
 }
 
 async function checkVisitorIdForChargebacks(visitorData) {
-  // Gets all unsuccessful attempts during the last 24 hours.
+  // Gets all unsuccessful attempts during the last 365  days.
   const countOfChargebacksForVisitorId = await PaymentAttempt.findAndCountAll({
     where: {
       visitorId: visitorData.visitorId,
