@@ -1,5 +1,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
+
+const useStyles = makeStyles((theme) => ({
+  margin: {
+    'margin-top': theme.spacing(1),
+    'margin-bottom': theme.spacing(1),
+  },
+}));
 
 export default function Index() {
   return (
@@ -23,14 +32,14 @@ export default function Index() {
             </p>
             <hr className="UsecaseWrapper_divider" />
             <ul>
-              <li>
+              <li className={clsx(useStyles().margin)}>
                 <Link href="/credential-stuffing">
-                  <a>Credential Stuffing</a>
+                  <a>Account Takeover, Credential Stuffing, Credential Cracking</a>
                 </Link>
               </li>
-              <li>
+              <li className={clsx(useStyles().margin)}>
                 <Link href="/payment-fraud">
-                  <a>Payment Fraud</a>
+                  <a>Payment Fraud, Chargeback Fraud, Card Cracking, Stolen Card</a>
                 </Link>
               </li>
             </ul>
