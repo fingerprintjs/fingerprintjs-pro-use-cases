@@ -20,7 +20,7 @@ export default function Index() {
             <p className="UsecaseWrapper_helper">
               This project demonstrates various use cases for FingerprintJS Pro. Each scenario covers frontend and
               backend sample implementation with a persistent data layer. The open-source repository is available at{' '}
-              <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases">GithHub</a>.
+              <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases">GitHub</a>.
             </p>
             <p className="UsecaseWrapper_helper">
               On the{' '}
