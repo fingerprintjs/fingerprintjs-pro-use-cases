@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import Paper from '@material-ui/core/Paper';
-import Alert from '@material-ui/lab/Alert';
-import Button from '@material-ui/core/Button';
+import Paper from '@mui/material/Paper';
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
 import { getFingerprintJS } from '../../shared/client';
 
 export default function Index() {

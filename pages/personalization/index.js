@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { getFingerprintJS } from "../../shared/client";
-import Paper from "@material-ui/core/Paper";
+import Paper from "@mui/material/Paper";
 
 export default function Index() {
   const messageRef = useRef();
