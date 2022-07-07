@@ -11,7 +11,9 @@ const theme = createTheme({
     secondary: {
       main: 'rgba(0, 0, 0, 0.87)',
     },
+
   },
+
 });
 
 function App({ Component, pageProps }) {

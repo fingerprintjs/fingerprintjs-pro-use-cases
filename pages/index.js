@@ -42,6 +42,11 @@ export default function Index() {
                   <a>Payment Fraud, Chargeback Fraud, Card Cracking, Stolen Card</a>
                 </Link>
               </li>
+              <li className={clsx(useStyles().margin)}>
+                <Link href="/personalization">
+                  <a>Remember user preferences, personalization, user activity history</a>
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
