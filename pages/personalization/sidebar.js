@@ -26,20 +26,23 @@ function SidebarItem({ children, title }) {
   );
 }
 
-export function Sidebar() {
+export function Sidebar({ search, onSearch }) {
   return (
     <Stack
       spacing={12}
       sx={{
-        position: 'sticky',
         top: '10px',
         height: '100%',
         minWidth: 300,
-        paddingTop: (theme) => theme.spacing(3),
+        paddingX: (theme) => theme.spacing(3),
       }}
     >
       <SidebarItem title="Search">
         <TextField
+          value={search}
+          onChange={(event) => {
+            onSearch?.(event.target.value);
+          }}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -47,7 +50,7 @@ export function Sidebar() {
               </InputAdornment>
             ),
           }}
-          placeholder="Find perfect dog..."
+          placeholder="Find perfect coffee..."
           fullWidth
         />
       </SidebarItem>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getFingerprintJS } from '../../shared/client';
 import Paper from '@mui/material/Paper';
 import { CircularProgress } from '@mui/material';
@@ -7,23 +7,17 @@ import Grid from '@mui/material/Grid';
 import { ProductItem } from './product-item';
 import { Sidebar } from './sidebar';
 import Stack from '@mui/material/Stack';
+import { useDebounce } from 'react-use';
+import Typography from '@mui/material/Typography';
 
 export default function Index() {
-  const [userDataReady, setUserDataReady] = useState(false);
+  const [loading, setLoading] = useState(false);
   const messageRef = useRef();
   const [isWaitingForReponse, setIsWaitingForReponse] = useState(false);
   const [fp, setFp] = useState(null);
   const [products, setProducts] = useState([]);
 
-  const fetchData = useCallback(async () => {
-    const [products] = await Promise.all([fetch('/api/personalization/get-products').then((res) => res.json())]);
-
-    setProducts(products);
-
-    console.log({ products });
-
-    setUserDataReady(true);
-  }, []);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     async function getFingerprint() {
@@ -33,11 +27,26 @@ export default function Index() {
     !isWaitingForReponse && messageRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [isWaitingForReponse, fp]);
 
-  useEffect(fetchData, [fetchData]);
+  useDebounce(
+    () => {
+      setLoading(true);
+
+      fetch(`/api/personalization/get-products?query=${search}`)
+        .then((res) => res.json())
+        .then((json) => {
+          setProducts(json);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    },
+    1000,
+    [search]
+  );
 
   return (
     <>
-      {userDataReady && <Header />}
+      {loading && <Header />}
       <div className="ExternalLayout_wrapper">
         <div className="ExternalLayout_main">
           <div className="UsecaseWrapper_wrapper">
@@ -71,31 +80,47 @@ export default function Index() {
           </div>
         </div>
       </div>
-      <Paper
-        className="ActionWrapper_container full"
-        sx={{
-          position: 'relative',
-        }}
-      >
-        {!userDataReady && <CircularProgress />}
-        {userDataReady && (
-          <Stack
-            spacing={3}
-            direction="row"
-            sx={{
-              paddingX: (theme) => theme.spacing(3),
-            }}
-          >
-            <Sidebar />
-            <Grid width="100%" container spacing={4}>
-              {products.data.map((product) => (
-                <Grid item xs={12} md={4} key={product.id}>
-                  <ProductItem product={product} />
-                </Grid>
-              ))}
+      <Paper className="ActionWrapper_container full">
+        <Stack
+          spacing={3}
+          direction="row"
+          sx={{
+            width: '100%',
+          }}
+        >
+          <Sidebar search={search} onSearch={setSearch} />
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <Grid
+              width="100%"
+              container
+              columnSpacing={4}
+              sx={{
+                paddingX: (theme) => theme.spacing(3),
+                minHeight: '100vh',
+              }}
+            >
+              {products?.data?.length ? (
+                products?.data?.map((product) => (
+                  <Grid
+                    item
+                    xs={12}
+                    md={4}
+                    key={product.id}
+                    sx={{
+                      marginBottom: (theme) => theme.spacing(4),
+                    }}
+                  >
+                    <ProductItem product={product} />
+                  </Grid>
+                ))
+              ) : (
+                <Typography>No coffees found :(</Typography>
+              )}
             </Grid>
-          </Stack>
-        )}
+          )}
+        </Stack>
       </Paper>
     </>
   );
