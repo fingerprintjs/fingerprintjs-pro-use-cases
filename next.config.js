@@ -1,6 +1,6 @@
 module.exports = {
   images: {
-    domains: ['source.unsplash.com', 'images.dog.ceo', 'localhost'],
+    domains: ['images.unsplash.com', 'localhost'],
     formats: ['image/webp'],
   },
 };
