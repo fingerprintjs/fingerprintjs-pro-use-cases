@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getFingerprintJS } from '../../shared/client';
 import Paper from '@mui/material/Paper';
-import { CircularProgress } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 import { Header } from './header';
 import Grid from '@mui/material/Grid';
 import { ProductItem } from './product-item';
@@ -9,44 +9,66 @@ import { Sidebar } from './sidebar';
 import Stack from '@mui/material/Stack';
 import { useDebounce } from 'react-use';
 import Typography from '@mui/material/Typography';
+import { useSearchHistory } from './hooks/useSearchHistory';
 
 export default function Index() {
   const [loading, setLoading] = useState(false);
-  const messageRef = useRef();
-  const [isWaitingForReponse, setIsWaitingForReponse] = useState(false);
   const [fp, setFp] = useState(null);
   const [products, setProducts] = useState([]);
+  const [fpData, setFpData] = useState(null);
+
+  const searchHistoryQuery = useSearchHistory(fpData);
 
   const [search, setSearch] = useState('');
+
+  const isLoading = loading || !fpData;
 
   useEffect(() => {
     async function getFingerprint() {
       await getFingerprintJS(setFp);
     }
     !fp && getFingerprint();
-    !isWaitingForReponse && messageRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [isWaitingForReponse, fp]);
+  }, [fp]);
 
   useDebounce(
-    () => {
+    async () => {
+      if (!fpData) {
+        return;
+      }
+
       setLoading(true);
 
-      fetch(`/api/personalization/get-products?query=${search}`)
+      fetch(`/api/personalization/get-products`, {
+        method: 'POST',
+        body: JSON.stringify({
+          query: search,
+          requestId: fpData.requestId,
+          visitorId: fpData.visitorId,
+        }),
+      })
         .then((res) => res.json())
         .then((json) => {
           setProducts(json);
+
+          searchHistoryQuery.refetch();
         })
         .finally(() => {
           setLoading(false);
         });
     },
-    1000,
-    [search]
+    250,
+    [search, fpData]
   );
+
+  useEffect(() => {
+    if (fp) {
+      fp.get().then(setFpData);
+    }
+  }, [fp]);
 
   return (
     <>
-      {loading && <Header />}
+      {!isLoading && <Header />}
       <div className="ExternalLayout_wrapper">
         <div className="ExternalLayout_main">
           <div className="UsecaseWrapper_wrapper">
@@ -86,19 +108,30 @@ export default function Index() {
           direction="row"
           sx={{
             width: '100%',
+            minHeight: '100vh',
           }}
         >
-          <Sidebar search={search} onSearch={setSearch} />
-          {loading ? (
+          <Sidebar
+            search={search}
+            onSearch={setSearch}
+            searchHistory={searchHistoryQuery.data}
+            onSearchHistoryClick={(query) => {
+              setSearch(query);
+            }}
+          />
+          {isLoading ? (
             <CircularProgress />
           ) : (
             <Grid
-              width="100%"
+              justifyContent="center"
+              alignItems="center"
+              width="70%"
               container
               columnSpacing={4}
               sx={{
                 paddingX: (theme) => theme.spacing(3),
-                minHeight: '100vh',
+                // TODO Remove !important
+                margin: '0 auto !important',
               }}
             >
               {products?.data?.length ? (
@@ -116,7 +149,7 @@ export default function Index() {
                   </Grid>
                 ))
               ) : (
-                <Typography>No coffees found :(</Typography>
+                <Typography variant="h5">No coffees found :(</Typography>
               )}
             </Grid>
           )}

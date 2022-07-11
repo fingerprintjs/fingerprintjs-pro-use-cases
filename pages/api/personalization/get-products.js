@@ -1,5 +1,5 @@
-import { Product } from './database';
-import { sequelize } from '../../../shared/server';
+import { Product, UserSearchHistory } from './database';
+import { areVisitorIdAndRequestIdValid, ensurePostRequest, getVisitorData, sequelize } from '../../../shared/server';
 import { Op } from 'sequelize';
 
 const coffees = ['smooth', 'medium', 'strong', 'extra strong'];
@@ -24,6 +24,7 @@ async function seedProducts() {
         name: `${coffee} coffee`,
         image: await getRandomCoffeeImage(),
         tags: [coffee],
+        timestamp: new Date().getTime(),
       });
     })
   );
@@ -45,14 +46,53 @@ function searchProducts(query) {
   });
 }
 
+async function persistSearchPhrase(query, visitorId) {
+  const existingHistory = await UserSearchHistory.findOne({
+    where: {
+      query: {
+        [Op.eq]: query,
+      },
+      visitorId: {
+        [Op.eq]: visitorId,
+      },
+    },
+  });
+
+  if (existingHistory) {
+    existingHistory.timestamp = new Date().getTime();
+
+    await existingHistory.save();
+
+    return;
+  }
+
+  await UserSearchHistory.create({
+    visitorId,
+    query,
+    timestamp: new Date().getTime(),
+  });
+}
+
 export default async function handler(req, res) {
+  if (!ensurePostRequest(req, res)) {
+    return;
+  }
+
+  const { query, requestId, visitorId } = JSON.parse(req.body);
+
   let productsCount = await Product.count();
 
   if (!productsCount) {
     await seedProducts();
   }
 
-  const products = await searchProducts(req.query.query);
+  const products = await searchProducts(query);
+
+  if (query && areVisitorIdAndRequestIdValid(visitorId, requestId)) {
+    const userData = await getVisitorData(visitorId, requestId);
+
+    await persistSearchPhrase(query.trim(), userData.visitorId);
+  }
 
   return res.status(200).json({
     data: products,

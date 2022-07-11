@@ -52,6 +52,17 @@ export function areVisitorIdAndRequestIdValid(visitorId, requestId) {
   return isRequestIdFormatValid && isVisitorIdFormatValid;
 }
 
+export function ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId) {
+  if (!areVisitorIdAndRequestIdValid(visitorId, requestId)) {
+    reportSuspiciousActivity(req);
+    getForbiddenReponse(res, 'Forged visitorId or requestId detected. Try harder next time.', messageSeverity.Error);
+
+    return false;
+  }
+
+  return true;
+}
+
 // Every identification request should be validated using the FingerprintJS Pro Server API.
 // Alternatively, on the Node.js environment one can use Server API Node.js library: https://github.com/fingerprintjs/fingerprintjs-pro-server-api-node-sdk
 // const client = new FingerprintJsServerApiClient({
@@ -175,3 +186,13 @@ export function getForbiddenReponse(res, message, messageSeverity) {
 // Report suspicious user activity according to internal processes here.
 // Possibly this action could also lock the user's account temporarily or ban a specific action.
 export function reportSuspiciousActivity(context) {}
+
+export function ensurePostRequest(req, res) {
+  if (req.method !== 'POST') {
+    res.status(405).send({ message: 'Only POST requests allowed' });
+
+    return false;
+  }
+
+  return true;
+}
