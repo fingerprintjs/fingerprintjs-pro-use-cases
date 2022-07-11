@@ -109,11 +109,11 @@ export function Sidebar({ search, onSearch, searchHistory, onSearchHistoryClick 
     <Stack
       spacing={12}
       sx={{
+        flex: 1,
         top: '10px',
         height: '100%',
-        minWidth: 300,
-        maxWidth: 500,
-        paddingX: (theme) => theme.spacing(3),
+        minWidth: 250,
+        maxWidth: 400,
       }}
     >
       <SidebarItem title="Search">
