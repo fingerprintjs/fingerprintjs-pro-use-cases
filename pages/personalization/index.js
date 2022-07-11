@@ -11,18 +11,21 @@ import { useDebounce } from 'react-use';
 import Typography from '@mui/material/Typography';
 import { useSearchHistory } from './hooks/useSearchHistory';
 import { UseCaseWrapper } from '../../components/use-case-wrapper';
+import { Box } from '@mui/material';
+import { useProducts } from './hooks/useProducts';
 
 export default function Index() {
-  const [loading, setLoading] = useState(false);
   const [fp, setFp] = useState(null);
-  const [products, setProducts] = useState([]);
   const [fpData, setFpData] = useState(null);
 
   const searchHistoryQuery = useSearchHistory(fpData);
 
   const [search, setSearch] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const isLoading = loading || !fpData;
+  const productsQuery = useProducts(fpData, searchQuery);
+
+  const isLoading = productsQuery.isLoading || !fpData;
 
   useEffect(() => {
     async function getFingerprint() {
@@ -32,33 +35,11 @@ export default function Index() {
   }, [fp]);
 
   useDebounce(
-    async () => {
-      if (!fpData) {
-        return;
-      }
-
-      setLoading(true);
-
-      fetch(`/api/personalization/get-products`, {
-        method: 'POST',
-        body: JSON.stringify({
-          query: search,
-          requestId: fpData.requestId,
-          visitorId: fpData.visitorId,
-        }),
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          setProducts(json);
-
-          searchHistoryQuery.refetch();
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+    () => {
+      setSearchQuery(search);
     },
-    250,
-    [search, fpData]
+    750,
+    [search, setSearchQuery]
   );
 
   useEffect(() => {
@@ -69,7 +50,7 @@ export default function Index() {
 
   return (
     <>
-      {!isLoading && <Header />}
+      <Header />
       <UseCaseWrapper
         title="Personalization"
         listItems={[<>TODO Detailed description</>]}
@@ -80,8 +61,8 @@ export default function Index() {
           spacing={0}
           direction="row"
           sx={{
-            minHeight: '100vh',
             paddingX: (theme) => theme.spacing(6),
+            width: 'fill-available',
           }}
         >
           <Sidebar
@@ -93,7 +74,13 @@ export default function Index() {
             }}
           />
           {isLoading ? (
-            <CircularProgress />
+            <Box display="flex" width="70%" height="100%" justifyContent="center" alignItems="center">
+              <CircularProgress
+                sx={{
+                  marginLeft: (theme) => theme.spacing(3),
+                }}
+              />
+            </Box>
           ) : (
             <Grid
               justifyContent="center"
@@ -108,8 +95,8 @@ export default function Index() {
                 padding: 0,
               }}
             >
-              {products?.data?.length ? (
-                products?.data?.map((product) => (
+              {productsQuery.data?.data?.length ? (
+                productsQuery.data?.data?.map((product) => (
                   <Grid
                     item
                     xs={12}

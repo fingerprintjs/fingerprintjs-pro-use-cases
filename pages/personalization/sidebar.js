@@ -52,7 +52,7 @@ function SearchHistory({ searchHistory, onSearchHistoryClick }) {
       <Typography variant="caption">Last searches:</Typography>
       {displaySearchHistory.map((searchHistory, index, arr) => (
         <Typography
-          maxWidth="100px"
+          maxWidth="80px"
           whiteSpace="nowrap"
           overflow="hidden"
           textOverflow="ellipsis"
@@ -91,7 +91,14 @@ function SearchHistory({ searchHistory, onSearchHistoryClick }) {
             <Paper>
               <List subheader={<ListSubheader>Last searches:</ListSubheader>}>
                 {searchHistory.data.slice(SEARCH_HISTORY_DISPLAY_LIMIT).map((searchHistory) => (
-                  <ListItemButton onClick={() => onSearchHistoryClick(searchHistory.query)} key={searchHistory.id}>
+                  <ListItemButton
+                    onClick={() => {
+                      onSearchHistoryClick(searchHistory.query);
+
+                      setPopoverOpen(false);
+                    }}
+                    key={searchHistory.id}
+                  >
                     {searchHistory.query}
                   </ListItemButton>
                 ))}
