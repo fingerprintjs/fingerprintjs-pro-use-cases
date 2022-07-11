@@ -65,7 +65,7 @@ export default function Index() {
       requestId,
     };
 
-    // Serverside handler for this route is located in api/authneticate.js file.
+    // Serverside handler for this route is located in api/payment-fraud/place-order.js file.
     const response = await fetch('/api/payment-fraud/place-order', {
       method: 'POST',
       body: JSON.stringify(orderData),
