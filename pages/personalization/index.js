@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
-import { getFingerprintJS } from '../../shared/client';
-import Paper from '@mui/material/Paper';
+import { useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Header } from './header';
 import Grid from '@mui/material/Grid';
@@ -13,26 +11,19 @@ import { useSearchHistory } from './hooks/useSearchHistory';
 import { UseCaseWrapper } from '../../components/use-case-wrapper';
 import { Box } from '@mui/material';
 import { useProducts } from './hooks/useProducts';
+import { useVisitorData } from '../../shared/client/useVisitorData';
 
 export default function Index() {
-  const [fp, setFp] = useState(null);
-  const [fpData, setFpData] = useState(null);
+  const { isLoading: isFpDataLoading } = useVisitorData();
 
-  const searchHistoryQuery = useSearchHistory(fpData);
+  const searchHistoryQuery = useSearchHistory();
 
   const [search, setSearch] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const productsQuery = useProducts(fpData, searchQuery);
+  const productsQuery = useProducts(searchQuery);
 
-  const isLoading = productsQuery.isLoading || !fpData;
-
-  useEffect(() => {
-    async function getFingerprint() {
-      await getFingerprintJS(setFp);
-    }
-    !fp && getFingerprint();
-  }, [fp]);
+  const isLoading = productsQuery.isLoading || isFpDataLoading;
 
   useDebounce(
     () => {
@@ -42,21 +33,15 @@ export default function Index() {
     [search, setSearchQuery]
   );
 
-  useEffect(() => {
-    if (fp) {
-      fp.get().then(setFpData);
-    }
-  }, [fp]);
-
   return (
     <>
       <Header />
       <UseCaseWrapper
+        variant="full"
         title="Personalization"
         listItems={[<>TODO Detailed description</>]}
         description={<>TODO Description</>}
-      />
-      <Paper className="ActionWrapper_container full">
+      >
         <Stack
           spacing={0}
           direction="row"
@@ -115,7 +100,7 @@ export default function Index() {
             </Grid>
           )}
         </Stack>
-      </Paper>
+      </UseCaseWrapper>
     </>
   );
 }

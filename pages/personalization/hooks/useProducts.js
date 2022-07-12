@@ -1,5 +1,6 @@
 import { useQuery, useQueryClient } from 'react-query';
 import { SEARCH_HISTORY_QUERY } from './useSearchHistory';
+import { useVisitorData } from '../../../shared/client/useVisitorData';
 
 function getProducts(fpData, search) {
   return fetch(`/api/personalization/get-products`, {
@@ -14,7 +15,9 @@ function getProducts(fpData, search) {
 
 export const GET_PRODUCTS_QUERY = 'GET_PRODUCTS_QUERY';
 
-export function useProducts(fpData, search) {
+export function useProducts(search) {
+  const { data: fpData } = useVisitorData();
+
   const queryClient = useQueryClient();
 
   return useQuery([GET_PRODUCTS_QUERY, search], () => getProducts(fpData, search), {
