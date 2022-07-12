@@ -1,7 +1,8 @@
 import '../styles/globals.css';
-import { ThemeProvider } from '@material-ui/core';
-import { createTheme } from '@material-ui/core/styles';
+import { StyledEngineProvider, ThemeProvider } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 import Head from 'next/head';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const theme = createTheme({
   palette: {
@@ -12,19 +13,38 @@ const theme = createTheme({
       main: 'rgba(0, 0, 0, 0.87)',
     },
   },
+  components: {
+    MuiTextField: {
+      defaultProps: {
+        variant: 'outlined',
+      },
+    },
+  },
+});
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
 });
 
 function App({ Component, pageProps }) {
   return (
-    <ThemeProvider theme={theme}>
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        <title>FingerprintJS Pro Use Cases</title>
-      </Head>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <QueryClientProvider client={queryClient}>
+          <Head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+            <title>FingerprintJS Pro Use Cases</title>
+          </Head>
 
-      <Component {...pageProps} />
-    </ThemeProvider>
+          <Component {...pageProps} />
+        </QueryClientProvider>
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 }
 

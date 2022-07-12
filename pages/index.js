@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,6 +40,11 @@ export default function Index() {
               <li className={clsx(useStyles().margin)}>
                 <Link href="/payment-fraud">
                   <a>Payment Fraud, Chargeback Fraud, Card Cracking, Stolen Card</a>
+                </Link>
+              </li>
+              <li className={clsx(useStyles().margin)}>
+                <Link href="/personalization">
+                  <a>Remember user preferences, personalization, user activity history</a>
                 </Link>
               </li>
             </ul>
