@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { useVisitorData } from '../../../shared/client/useVisitorData';
+import { useVisitorData } from '../../../shared/client/use-visitor-data';
 
 function getSearchHistory(fpData) {
   return fetch('/api/personalization/get-search-history', {

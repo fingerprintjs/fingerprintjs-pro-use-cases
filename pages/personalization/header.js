@@ -6,7 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import { DarkMode, LightMode, ShoppingCart } from '@mui/icons-material';
 import Badge from '@mui/material/Badge';
-import { useUserPreferences } from './hooks/useUserPreferences';
+import { useUserPreferences } from './hooks/use-user-preferences';
 
 export function Header() {
   const { update, hasDarkMode } = useUserPreferences();

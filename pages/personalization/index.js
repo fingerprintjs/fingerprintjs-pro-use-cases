@@ -7,11 +7,11 @@ import { Sidebar } from './sidebar';
 import Stack from '@mui/material/Stack';
 import { useDebounce } from 'react-use';
 import Typography from '@mui/material/Typography';
-import { useSearchHistory } from './hooks/useSearchHistory';
+import { useSearchHistory } from './hooks/use-search-history';
 import { UseCaseWrapper } from '../../components/use-case-wrapper';
 import { Box } from '@mui/material';
-import { useProducts } from './hooks/useProducts';
-import { useVisitorData } from '../../shared/client/useVisitorData';
+import { useProducts } from './hooks/use-products';
+import { useVisitorData } from '../../shared/client/use-visitor-data';
 
 export default function Index() {
   const { isLoading: isFpDataLoading } = useVisitorData();

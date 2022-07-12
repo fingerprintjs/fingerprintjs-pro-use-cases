@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 import { StyledEngineProvider, ThemeProvider as MuiThemeProvider } from '@mui/material';
-import { useUserPreferences } from '../../pages/personalization/hooks/useUserPreferences';
+import { useUserPreferences } from '../../pages/personalization/hooks/use-user-preferences';
 import { useMemo } from 'react';
 
 export function ThemeProvider({ children }) {

@@ -1,6 +1,6 @@
 import '../styles/globals.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ThemeProvider } from '../shared/client/ThemeProvider';
+import { ThemeProvider } from '../shared/client/theme-provider';
 import Head from 'next/head';
 
 const queryClient = new QueryClient({
