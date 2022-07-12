@@ -16,7 +16,7 @@ export const SEARCH_HISTORY_QUERY = 'SEARCH_HISTORY_QUERY';
 export function useSearchHistory() {
   const { data: fpData } = useVisitorData();
 
-  return useQuery('SEARCH_HISTORY_QUERY', () => getSearchHistory(fpData), {
+  return useQuery(SEARCH_HISTORY_QUERY, () => getSearchHistory(fpData), {
     enabled: Boolean(fpData),
     initialData: {
       data: [],
