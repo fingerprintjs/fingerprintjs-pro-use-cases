@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import makeStyles from '@mui/styles/makeStyles';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -8,10 +8,10 @@ import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import { getFingerprintJS } from '../../shared/client';
+import { UseCaseWrapper } from '../../components/use-case-wrapper';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -84,112 +84,96 @@ export default function Index() {
   }
 
   return (
-    <>
-      <div className="ExternalLayout_wrapper">
-        <div className="ExternalLayout_main">
-          <div className="UsecaseWrapper_wrapper">
-            <h1 className="UsecaseWrapper_title">Payment Fraud problem</h1>
-            <p className="UsecaseWrapper_helper">
-              This page demonstrates protected credit card form protected against different fraud.
-            </p>
-            <hr className="UsecaseWrapper_divider" />
-            <ul className="UsecaseWrapper_notes">
-              <li>
-                Only prefilled card details are correct. When you change them, the system will check if you tried to
-                perform Card Cracking. After 3 unsuccessful attempts is this visitor flagged as suspicious and cannot
-                place orders anymore.
-              </li>
-              <li>
-                If you have a positive chargeback history, can you place your order? Try to place a regular order after
-                two chargebacks.
-              </li>
-              <li>Simulate a visitor using a stolen card. Can you place another order from the same browser?</li>
-              <li>You can also try switching to the incognito mode or clearing cookies.</li>
-              <li>
-                Need src?{' '}
-                <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases" target="_blank" rel="noreferrer">
-                  Sure!
-                </a>
-              </li>
-            </ul>
-            <Paper className="ActionWrapper_container">
-              <form onSubmit={handleSubmit} className="Form_container">
-                <FormControl fullWidth className={clsx(useStyles().margin)} variant="outlined">
-                  <Typography variant="caption" className="UserInput_label">
-                    Card Number
-                  </Typography>
-                  <TextField
-                    placeholder="Card Number"
-                    defaultValue={cardNumber}
-                    variant="outlined"
-                    onChange={(e) => setCardNumber(e.target.value)}
-                    required
-                  />
-                </FormControl>
-                <Grid container spacing={3}>
-                  <Grid item xs={6}>
-                    <FormControl className={clsx(useStyles().margin)} variant="outlined" fullWidth>
-                      <Typography variant="caption" className="UserInput_label">
-                        Expiration
-                      </Typography>
-                      <TextField
-                        placeholder="Expiration"
-                        defaultValue={cardExpiration}
-                        variant="outlined"
-                        onChange={(e) => setCardExpiration(e.target.value)}
-                        required
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <FormControl className={clsx(useStyles().margin)} variant="outlined" fullWidth>
-                      <Typography variant="caption" className="UserInput_label">
-                        CVV
-                      </Typography>
-                      <OutlinedInput
-                        placeholder="CVV"
-                        defaultValue={cardCvv}
-                        variant="outlined"
-                        onChange={(e) => setCardCvv(e.target.value)}
-                        required
-                      />
-                    </FormControl>
-                  </Grid>
-                </Grid>
-                <Grid container justifyContent="flex-start">
-                  <FormControlLabel
-                    control={<Checkbox color="primary" />}
-                    label="Ask for chargeback after purchase"
-                    onChange={(e) => setApplyChargeback(e.target.checked)}
-                  />
-                  <FormControlLabel
-                    control={<Checkbox color="primary" />}
-                    label="Flag this visitor using stolen card after purchase"
-                    onChange={(e) => setUsingStolenCard(e.target.checked)}
-                  />
-                </Grid>
-                <Button
-                  className="Form_button"
-                  disabled={isWaitingForReponse}
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  disableElevation
-                  fullWidth
-                >
-                  {isWaitingForReponse ? 'Hold on, doing magic...' : 'Place an order'}
-                </Button>
-              </form>
-            </Paper>
-            {httpResponseStatus ? (
-              <Alert ref={messageRef} severity={severity} className="UsecaseWrapper_alert">
-                {orderStatusMessage}
-              </Alert>
-            ) : null}
-          </div>
-        </div>
-      </div>
-    </>
+    <UseCaseWrapper
+      title="Payment Fraud problem"
+      description=" This page demonstrates protected credit card form protected against different fraud."
+      listItems={[
+        <>
+          Only prefilled card details are correct. When you change them, the system will check if you tried to perform
+          Card Cracking. After 3 unsuccessful attempts is this visitor flagged as suspicious and cannot place orders
+          anymore.
+        </>,
+        <>
+          If you have a positive chargeback history, can you place your order? Try to place a regular order after two
+          chargebacks.
+        </>,
+        <>Simulate a visitor using a stolen card. Can you place another order from the same browser?</>,
+        <>You can also try switching to the incognito mode or clearing cookies.</>,
+      ]}
+    >
+      <form onSubmit={handleSubmit} className="Form_container">
+        <FormControl fullWidth className={clsx(useStyles().margin)} variant="outlined">
+          <Typography variant="caption" className="UserInput_label">
+            Card Number
+          </Typography>
+          <TextField
+            placeholder="Card Number"
+            defaultValue={cardNumber}
+            variant="outlined"
+            onChange={(e) => setCardNumber(e.target.value)}
+            required
+          />
+        </FormControl>
+        <Grid container spacing={3}>
+          <Grid item xs={6}>
+            <FormControl className={clsx(useStyles().margin)} variant="outlined" fullWidth>
+              <Typography variant="caption" className="UserInput_label">
+                Expiration
+              </Typography>
+              <TextField
+                placeholder="Expiration"
+                defaultValue={cardExpiration}
+                variant="outlined"
+                onChange={(e) => setCardExpiration(e.target.value)}
+                required
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl className={clsx(useStyles().margin)} variant="outlined" fullWidth>
+              <Typography variant="caption" className="UserInput_label">
+                CVV
+              </Typography>
+              <OutlinedInput
+                placeholder="CVV"
+                defaultValue={cardCvv}
+                variant="outlined"
+                onChange={(e) => setCardCvv(e.target.value)}
+                required
+              />
+            </FormControl>
+          </Grid>
+        </Grid>
+        <Grid container justifyContent="flex-start">
+          <FormControlLabel
+            control={<Checkbox color="primary" />}
+            label="Ask for chargeback after purchase"
+            onChange={(e) => setApplyChargeback(e.target.checked)}
+          />
+          <FormControlLabel
+            control={<Checkbox color="primary" />}
+            label="Flag this visitor using stolen card after purchase"
+            onChange={(e) => setUsingStolenCard(e.target.checked)}
+          />
+        </Grid>
+        <Button
+          className="Form_button"
+          disabled={isWaitingForReponse}
+          size="large"
+          type="submit"
+          variant="contained"
+          color="primary"
+          disableElevation
+          fullWidth
+        >
+          {isWaitingForReponse ? 'Hold on, doing magic...' : 'Place an order'}
+        </Button>
+      </form>
+      {httpResponseStatus ? (
+        <Alert ref={messageRef} severity={severity} className="UsecaseWrapper_alert">
+          {orderStatusMessage}
+        </Alert>
+      ) : null}
+    </UseCaseWrapper>
   );
 }

@@ -2,7 +2,6 @@ import Paper from '@mui/material/Paper';
 import clsx from 'clsx';
 import Divider from '@mui/material/Divider';
 
-// TODO Use in other use cases as well
 export function UseCaseWrapper({ title, description, listItems, children, variant }) {
   return (
     <Paper variant="outlined" className="ExternalLayout_wrapper" square>
