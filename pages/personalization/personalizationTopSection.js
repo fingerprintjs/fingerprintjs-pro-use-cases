@@ -17,6 +17,7 @@ const SEARCH_HISTORY_DISPLAY_LIMIT = 3;
 function PersonalizationTopSectionItem({ children, title }) {
   return (
     <Paper
+      variant="outlined"
       sx={{
         padding: (theme) => theme.spacing(2),
       }}

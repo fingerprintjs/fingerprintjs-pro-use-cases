@@ -23,7 +23,14 @@ export function UseCaseWrapper({ title, description, listItems, children, varian
               </li>
             </ul>
           </div>
-          {children}
+          <Paper
+            variant="elevation"
+            sx={{
+              padding: (theme) => theme.spacing(4),
+            }}
+          >
+            {children}
+          </Paper>
         </div>
       </div>
     </Paper>

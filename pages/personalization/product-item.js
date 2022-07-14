@@ -9,6 +9,7 @@ import CardActions from '@mui/material/CardActions';
 export function ProductItem({ product: { price, name, image } }) {
   return (
     <Card
+      variant="outlined"
       style={{
         width: '100%',
         position: 'relative',
