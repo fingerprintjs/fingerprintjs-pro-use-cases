@@ -11,9 +11,6 @@ import { UseCaseWrapper } from '../../components/use-case-wrapper';
 import { Box } from '@mui/material';
 import { useProducts } from './hooks/use-products';
 import { useVisitorData } from '../../shared/client/use-visitor-data';
-import Badge from '@mui/material/Badge';
-import { ShoppingCart } from '@mui/icons-material';
-import IconButton from '@mui/material/IconButton';
 
 export default function Index() {
   const { isLoading: isFpDataLoading } = useVisitorData();
@@ -106,11 +103,3 @@ export default function Index() {
     </UseCaseWrapper>
   );
 }
-
-Index.headerAddonRight = () => (
-  <IconButton disableRipple color="primary" aria-label="Cart">
-    <Badge badgeContent={4} color="info">
-      <ShoppingCart />
-    </Badge>
-  </IconButton>
-);

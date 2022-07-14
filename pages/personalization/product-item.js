@@ -28,7 +28,13 @@ export function ProductItem({ product: { price, name, image } }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button variant="contained" color="primary">
+        <Button
+          onClick={() => {
+            window.alert('Not yet implemented');
+          }}
+          variant="contained"
+          color="primary"
+        >
           Add to cart
         </Button>
       </CardActions>
