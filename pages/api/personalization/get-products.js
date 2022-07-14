@@ -1,4 +1,4 @@
-import { Product, UserSearchHistory } from './database';
+import { initProducts, Product, UserSearchHistory } from './database';
 import { areVisitorIdAndRequestIdValid, ensurePostRequest, getVisitorData, sequelize } from '../../../shared/server';
 import { Op } from 'sequelize';
 
@@ -77,6 +77,8 @@ export default async function handler(req, res) {
   if (!ensurePostRequest(req, res)) {
     return;
   }
+
+  await initProducts();
 
   const { query, requestId, visitorId } = JSON.parse(req.body);
 

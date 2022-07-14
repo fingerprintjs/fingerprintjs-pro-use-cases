@@ -1,11 +1,13 @@
 import { ensurePostRequest, ensureValidRequestIdAndVisitorId } from '../../../shared/server';
 import { Op } from 'sequelize';
-import { UserPreferences } from './database';
+import { initProducts, UserPreferences } from './database';
 
 export default async function updateUserPreferences(req, res) {
   if (!ensurePostRequest(req, res)) {
     return;
   }
+
+  await initProducts();
 
   res.setHeader('Content-Type', 'application/json');
 

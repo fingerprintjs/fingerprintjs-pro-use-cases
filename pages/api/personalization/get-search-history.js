@@ -1,10 +1,14 @@
-import { UserSearchHistory } from './database';
+import { initProducts, UserSearchHistory } from './database';
 import { ensurePostRequest, ensureValidRequestIdAndVisitorId } from '../../../shared/server';
 
 export default async function handler(req, res) {
   if (!ensurePostRequest(req, res)) {
     return;
   }
+
+  await initProducts();
+
+  res.setHeader('Content-Type', 'application/json');
 
   const { requestId, visitorId } = JSON.parse(req.body);
 

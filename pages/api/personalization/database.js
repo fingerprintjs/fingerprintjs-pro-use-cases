@@ -58,7 +58,16 @@ export const UserCartItem = sequelize.define('user_cart_item', {
 Product.belongsTo(UserCartItem);
 UserCartItem.hasMany(Product);
 
-// TODO Better way to sync DB before seeding
-Promise.all([Product, UserCartItem, UserPreferences, UserCartItem].map((model) => model.sync({ force: false }))).catch(
-  console.error
-);
+let didInit = false;
+
+export async function initProducts() {
+  if (didInit) {
+    return;
+  }
+
+  didInit = true;
+
+  const productModels = [Product, UserCartItem, UserPreferences, UserCartItem, UserSearchHistory];
+
+  await Promise.all(productModels.map((model) => model.sync({ force: false }))).catch(console.error);
+}
