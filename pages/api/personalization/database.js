@@ -2,11 +2,6 @@ import { sequelize } from '../../../shared/server';
 import * as Sequelize from 'sequelize';
 
 export const Product = sequelize.define('product', {
-  id: {
-    type: Sequelize.UUID,
-    defaultValue: Sequelize.UUIDV4, // Generates a UUID V4
-    primaryKey: true,
-  },
   price: {
     type: Sequelize.FLOAT,
   },
@@ -25,11 +20,6 @@ export const Product = sequelize.define('product', {
 });
 
 export const UserPreferences = sequelize.define('user_data', {
-  id: {
-    type: Sequelize.UUID,
-    defaultValue: Sequelize.UUIDV4, // Generates a UUID V4
-    primaryKey: true,
-  },
   visitorId: {
     type: Sequelize.STRING,
   },
@@ -42,11 +32,6 @@ export const UserPreferences = sequelize.define('user_data', {
 });
 
 export const UserSearchHistory = sequelize.define('user_search_history', {
-  id: {
-    type: Sequelize.UUID,
-    defaultValue: Sequelize.UUIDV4, // Generates a UUID V4
-    primaryKey: true,
-  },
   visitorId: {
     type: Sequelize.STRING,
   },
@@ -59,11 +44,6 @@ export const UserSearchHistory = sequelize.define('user_search_history', {
 });
 
 export const UserCartItem = sequelize.define('user_cart_item', {
-  id: {
-    type: Sequelize.UUID,
-    defaultValue: Sequelize.UUIDV4, // Generates a UUID V4
-    primaryKey: true,
-  },
   visitorId: {
     type: Sequelize.STRING,
   },
