@@ -152,8 +152,6 @@ export function Sidebar({ search, onSearch, searchHistory, onSearchHistoryClick 
           )}
         </Stack>
       </SidebarItem>
-      <SidebarItem title="Last seen"></SidebarItem>
-      <SidebarItem title="You might like"></SidebarItem>
     </Stack>
   );
 }
