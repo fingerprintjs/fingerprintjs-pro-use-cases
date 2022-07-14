@@ -115,13 +115,16 @@ export function Sidebar({ search, onSearch, searchHistory, onSearchHistoryClick 
   return (
     <Stack
       spacing={12}
-      sx={{
-        flex: 1,
+      sx={(theme) => ({
         top: '10px',
         height: '100%',
         minWidth: 250,
-        maxWidth: 400,
-      }}
+
+        [theme.breakpoints.up('md')]: {
+          maxWidth: 400,
+          flex: 1,
+        },
+      })}
     >
       <SidebarItem title="Search">
         <Stack direction="column" spacing={2}>
