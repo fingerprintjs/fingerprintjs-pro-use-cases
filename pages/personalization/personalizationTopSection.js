@@ -14,7 +14,7 @@ import IconButton from '@mui/material/IconButton';
 
 const SEARCH_HISTORY_DISPLAY_LIMIT = 3;
 
-function SidebarItem({ children, title }) {
+function PersonalizationTopSectionItem({ children, title }) {
   return (
     <Paper
       sx={{
@@ -111,22 +111,17 @@ function SearchHistory({ searchHistory, onSearchHistoryClick }) {
   );
 }
 
-export function Sidebar({ search, onSearch, searchHistory, onSearchHistoryClick }) {
+export function PersonalizationTopSection({ search, onSearch, searchHistory, onSearchHistoryClick }) {
   return (
     <Stack
       spacing={12}
-      sx={(theme) => ({
+      sx={{
         top: '10px',
         height: '100%',
-        minWidth: 250,
-
-        [theme.breakpoints.up('md')]: {
-          maxWidth: 400,
-          flex: 1,
-        },
-      })}
+        width: '100%',
+      }}
     >
-      <SidebarItem title="Search">
+      <PersonalizationTopSectionItem title="Search">
         <Stack direction="column" spacing={2}>
           <TextField
             value={search}
@@ -154,7 +149,7 @@ export function Sidebar({ search, onSearch, searchHistory, onSearchHistoryClick 
             <SearchHistory onSearchHistoryClick={onSearchHistoryClick} searchHistory={searchHistory} />
           )}
         </Stack>
-      </SidebarItem>
+      </PersonalizationTopSectionItem>
     </Stack>
   );
 }

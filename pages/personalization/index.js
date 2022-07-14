@@ -2,8 +2,7 @@ import { useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import { ProductItem } from './product-item';
-import { Sidebar } from './sidebar';
-import Stack from '@mui/material/Stack';
+import { PersonalizationTopSection } from './personalizationTopSection';
 import { useDebounce } from 'react-use';
 import Typography from '@mui/material/Typography';
 import { useSearchHistory } from './hooks/use-search-history';
@@ -37,7 +36,6 @@ export default function Index() {
 
   return (
     <UseCaseWrapper
-      variant="full"
       title="Personalization"
       listItems={[
         <>Try to search for some products, we keep history of your last searches.</>,
@@ -46,85 +44,62 @@ export default function Index() {
       ]}
       description="This page demonstrates user personalization that it achieved by using fingerprinting. Users are not required to login in order to get experience that is tailored to them."
     >
-      <Stack
-        spacing={0}
-        direction={isSmallerScreen ? 'column' : 'row'}
-        sx={(theme) => ({
-          width: 'fill-available',
-
-          [theme.breakpoints.up('md')]: {
-            paddingX: (theme) => theme.spacing(6),
-          },
-        })}
-      >
-        <Sidebar
-          search={search}
-          onSearch={setSearch}
-          searchHistory={searchHistoryQuery.data}
-          onSearchHistoryClick={(query) => {
-            setSearch(query);
-          }}
-        />
-        {isLoading ? (
-          <Box
-            sx={(theme) => ({
-              [theme.breakpoints.down('md')]: {
-                marginTop: theme.spacing(6),
-              },
-            })}
-            display="flex"
-            width={isSmallerScreen ? '100%' : '70%'}
-            height="100%"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <CircularProgress
-              sx={{
-                marginLeft: (theme) => theme.spacing(3),
-              }}
-            />
-          </Box>
-        ) : (
-          <Grid
-            justifyContent="center"
-            alignItems="center"
-            container
-            columnSpacing={isSmallerScreen ? 0 : 4}
-            sx={(theme) => ({
-              margin: '0 auto',
-              padding: 0,
-              width: '70%',
-
-              [theme.breakpoints.down('md')]: {
-                width: '100%',
-                marginTop: theme.spacing(6),
-              },
-
-              [theme.breakpoints.up('md')]: {
-                paddingX: theme.spacing(3),
-              },
-            })}
-          >
-            {productsQuery.data?.data?.length ? (
-              productsQuery.data?.data?.map((product) => (
-                <Grid
-                  item
-                  xs={12}
-                  md={4}
-                  key={product.id}
-                  sx={{
-                    marginBottom: (theme) => theme.spacing(4),
-                  }}
-                >
-                  <ProductItem product={product} />
-                </Grid>
-              ))
-            ) : (
-              <Typography variant="h5">No coffees found :(</Typography>
-            )}
-          </Grid>
-        )}
-      </Stack>
+      <PersonalizationTopSection
+        search={search}
+        onSearch={setSearch}
+        searchHistory={searchHistoryQuery.data}
+        onSearchHistoryClick={(query) => {
+          setSearch(query);
+        }}
+      />
+      {isLoading ? (
+        <Box
+          sx={(theme) => ({
+            marginTop: theme.spacing(6),
+          })}
+          display="flex"
+          width="100%"
+          height="100%"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <CircularProgress
+            sx={{
+              marginLeft: (theme) => theme.spacing(3),
+            }}
+          />
+        </Box>
+      ) : (
+        <Grid
+          justifyContent="center"
+          alignItems="center"
+          container
+          columnSpacing={isSmallerScreen ? 0 : 2}
+          sx={(theme) => ({
+            padding: 0,
+            width: '100%',
+            marginTop: theme.spacing(6),
+          })}
+        >
+          {productsQuery.data?.data?.length ? (
+            productsQuery.data?.data?.map((product) => (
+              <Grid
+                item
+                xs={12}
+                md={4}
+                key={product.id}
+                sx={{
+                  marginBottom: (theme) => theme.spacing(4),
+                }}
+              >
+                <ProductItem product={product} />
+              </Grid>
+            ))
+          ) : (
+            <Typography variant="h5">No coffees found :(</Typography>
+          )}
+        </Grid>
+      )}
     </UseCaseWrapper>
   );
 }
