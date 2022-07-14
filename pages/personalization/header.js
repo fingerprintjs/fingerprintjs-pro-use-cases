@@ -41,10 +41,14 @@ export function Header({ addonRight }) {
             {navLinks.map((link) => (
               <Link href={link.url} key={link.name} passHref>
                 <Button
-                  sx={{
-                    color: (theme) =>
+                  sx={(theme) => ({
+                    color:
                       router.pathname === link.url ? theme.palette.primary.main : theme.palette.primary.contrastText,
-                  }}
+
+                    [theme.breakpoints.down('md')]: {
+                      display: 'none',
+                    },
+                  })}
                   component="a"
                 >
                   {link.name}

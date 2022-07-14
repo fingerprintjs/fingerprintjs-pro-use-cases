@@ -8,12 +8,15 @@ import { useDebounce } from 'react-use';
 import Typography from '@mui/material/Typography';
 import { useSearchHistory } from './hooks/use-search-history';
 import { UseCaseWrapper } from '../../components/use-case-wrapper';
-import { Box } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { useProducts } from './hooks/use-products';
 import { useVisitorData } from '../../shared/client/use-visitor-data';
 
 export default function Index() {
   const { isLoading: isFpDataLoading } = useVisitorData();
+
+  const theme = useTheme();
+  const isSmallerScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const searchHistoryQuery = useSearchHistory();
 
@@ -45,11 +48,14 @@ export default function Index() {
     >
       <Stack
         spacing={0}
-        direction="row"
-        sx={{
-          paddingX: (theme) => theme.spacing(6),
+        direction={isSmallerScreen ? 'column' : 'row'}
+        sx={(theme) => ({
           width: 'fill-available',
-        }}
+
+          [theme.breakpoints.up('md')]: {
+            paddingX: (theme) => theme.spacing(6),
+          },
+        })}
       >
         <Sidebar
           search={search}
@@ -60,7 +66,18 @@ export default function Index() {
           }}
         />
         {isLoading ? (
-          <Box display="flex" width="70%" height="100%" justifyContent="center" alignItems="center">
+          <Box
+            sx={(theme) => ({
+              [theme.breakpoints.down('md')]: {
+                marginTop: theme.spacing(6),
+              },
+            })}
+            display="flex"
+            width={isSmallerScreen ? '100%' : '70%'}
+            height="100%"
+            justifyContent="center"
+            alignItems="center"
+          >
             <CircularProgress
               sx={{
                 marginLeft: (theme) => theme.spacing(3),
@@ -71,14 +88,22 @@ export default function Index() {
           <Grid
             justifyContent="center"
             alignItems="center"
-            width="70%"
             container
-            columnSpacing={4}
-            sx={{
-              paddingX: (theme) => theme.spacing(3),
+            columnSpacing={isSmallerScreen ? 0 : 4}
+            sx={(theme) => ({
               margin: '0 auto',
               padding: 0,
-            }}
+              width: '70%',
+
+              [theme.breakpoints.down('md')]: {
+                width: '100%',
+                marginTop: theme.spacing(6),
+              },
+
+              [theme.breakpoints.up('md')]: {
+                paddingX: theme.spacing(3),
+              },
+            })}
           >
             {productsQuery.data?.data?.length ? (
               productsQuery.data?.data?.map((product) => (
