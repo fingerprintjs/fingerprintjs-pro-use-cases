@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
+import Paper from '@mui/material/Paper';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -12,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Index() {
   return (
-    <>
+    <Paper variant="outlined">
       <div className="ExternalLayout_wrapper">
         <div className="ExternalLayout_main">
           <div className="UsecaseWrapper_wrapper">
@@ -51,6 +52,6 @@ export default function Index() {
           </div>
         </div>
       </div>
-    </>
+    </Paper>
   );
 }
