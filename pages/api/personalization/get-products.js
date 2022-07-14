@@ -9,14 +9,14 @@ function getRandomArrayElement(array) {
 }
 
 async function getRandomCoffeeImage() {
-  const response = await fetch('https://source.unsplash.com/random/?coffee');
+  const response = await fetch('https://source.unsplash.com/random/?coffee&w=320');
 
   return response.url;
 }
 
 async function seedProducts() {
   await Promise.all(
-    Array.from({ length: 50 }).map(async () => {
+    Array.from({ length: 15 }).map(async () => {
       const coffee = getRandomArrayElement(coffees);
 
       return Product.create({
