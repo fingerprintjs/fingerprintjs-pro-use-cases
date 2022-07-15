@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize';
 
 const ALLOWED_REQUEST_TIMESTAMP_DIFF_MS = 3000;
+const MIN_CONFIDENCE_SCORE = 0.9;
 
 // Provision the database.
 // In the Stackblitz environment, this db is stored locally in your browser.
@@ -135,7 +136,7 @@ export function checkFreshIdentificationRequest(visitorData) {
 // If it's lower than the certain threshold we recommend using an additional way of verification, e.g. 2FA or email.
 // More info: https://dev.fingerprintjs.com/docs/understanding-your-confidence-score
 export function checkConfidenceScore(visitorData) {
-  if (visitorData.visits[0].confidence.score < 0.95) {
+  if (visitorData.visits[0].confidence.score < MIN_CONFIDENCE_SCORE) {
     return new CheckResult(
       "Low confidence score, we'd rather verify you with the second factor,",
       messageSeverity.Error,
