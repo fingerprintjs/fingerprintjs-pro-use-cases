@@ -1,5 +1,7 @@
 import { Sequelize } from 'sequelize';
 
+const ALLOWED_REQUEST_TIMESTAMP_DIFF_MS = 3000;
+
 // Provision the database.
 // In the Stackblitz environment, this db is stored locally in your browser.
 // On the deployed demo, db is cleaned after each deployment.
@@ -118,7 +120,9 @@ export function checkFreshIdentificationRequest(visitorData) {
 
   // An attacker might have acquired a valid requestId and visitorId via phishing.
   // It's recommended to check freshness of the identification request to prevent replay attacks.
-  if (new Date().getTime() - visitorData.visits[0].timestamp > 3000) {
+  const requestTimestampDiff = new Date().getTime() - visitorData.visits[0].timestamp;
+
+  if (requestTimestampDiff > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
     return new CheckResult(
       'Old requestId detected. Action ignored and logged.',
       messageSeverity.Error,

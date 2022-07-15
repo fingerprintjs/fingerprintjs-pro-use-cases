@@ -1,6 +1,7 @@
-import { ensurePostRequest, ensureValidRequestIdAndVisitorId } from '../../../shared/server';
+import { ensurePostRequest } from '../../../shared/server';
 import { initProducts, UserPreferences } from './database';
 import { Op } from 'sequelize';
+import { validatePersonalizationRequest } from './shared';
 
 export default async function handler(req, res) {
   if (!ensurePostRequest(req, res)) {
@@ -11,10 +12,12 @@ export default async function handler(req, res) {
 
   res.setHeader('Content-Type', 'application/json');
 
-  const { requestId, visitorId } = JSON.parse(req.body);
+  const { visitorId, usePersonalizedData } = await validatePersonalizationRequest(req, res);
 
-  if (!ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId)) {
-    return;
+  if (!usePersonalizedData) {
+    return res.status(404).json({
+      data: null,
+    });
   }
 
   const result = await UserPreferences.findOne({

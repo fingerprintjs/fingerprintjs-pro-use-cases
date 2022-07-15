@@ -1,6 +1,7 @@
 import { initProducts, Product, UserSearchHistory } from './database';
-import { areVisitorIdAndRequestIdValid, ensurePostRequest, getVisitorData, sequelize } from '../../../shared/server';
+import { ensurePostRequest, sequelize } from '../../../shared/server';
 import { Op } from 'sequelize';
+import { validatePersonalizationRequest } from './shared';
 
 const coffees = ['smooth', 'medium', 'strong', 'extra strong'];
 
@@ -78,9 +79,11 @@ export default async function handler(req, res) {
     return;
   }
 
+  const { usePersonalizedData, visitorId } = await validatePersonalizationRequest(req, res);
+
   await initProducts();
 
-  const { query, requestId, visitorId } = JSON.parse(req.body);
+  const { query } = JSON.parse(req.body);
 
   let productsCount = await Product.count();
 
@@ -90,10 +93,8 @@ export default async function handler(req, res) {
 
   const products = await searchProducts(query);
 
-  if (query && areVisitorIdAndRequestIdValid(visitorId, requestId)) {
-    const userData = await getVisitorData(visitorId, requestId);
-
-    await persistSearchPhrase(query.trim(), userData.visitorId);
+  if (query && usePersonalizedData) {
+    await persistSearchPhrase(query.trim(), visitorId);
   }
 
   return res.status(200).json({

@@ -1,6 +1,7 @@
-import { ensurePostRequest, ensureValidRequestIdAndVisitorId } from '../../../shared/server';
+import { ensurePostRequest } from '../../../shared/server';
 import { Op } from 'sequelize';
 import { initProducts, UserPreferences } from './database';
+import { validatePersonalizationRequest } from './shared';
 
 export default async function updateUserPreferences(req, res) {
   if (!ensurePostRequest(req, res)) {
@@ -11,12 +12,16 @@ export default async function updateUserPreferences(req, res) {
 
   res.setHeader('Content-Type', 'application/json');
 
-  const { requestId, visitorId, hasDarkMode } = JSON.parse(req.body);
-  const hasDarkModeBool = Boolean(hasDarkMode);
+  const { usePersonalizedData, visitorId } = await validatePersonalizationRequest(req, res);
 
-  if (!ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId)) {
-    return;
+  if (!usePersonalizedData) {
+    return res.status(400).json({
+      data: null,
+    });
   }
+
+  const { hasDarkMode } = JSON.parse(req.body);
+  const hasDarkModeBool = Boolean(hasDarkMode);
 
   const [userPreferences, created] = await UserPreferences.findOrCreate({
     where: {
