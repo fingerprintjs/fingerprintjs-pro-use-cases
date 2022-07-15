@@ -45,7 +45,7 @@ export default function Index() {
               </li>
               <li className={clsx(useStyles().margin)}>
                 <Link href="/personalization">
-                  <a>Remember user preferences, personalization, user activity history</a>
+                  <a>[WIP] Remember user preferences, personalization, user activity history</a>
                 </Link>
               </li>
             </ul>

@@ -1,6 +1,7 @@
 import { sequelize } from '../../../shared/server';
 import * as Sequelize from 'sequelize';
 
+// Defines db model for product.
 export const Product = sequelize.define('product', {
   price: {
     type: Sequelize.FLOAT,
@@ -19,6 +20,7 @@ export const Product = sequelize.define('product', {
   },
 });
 
+// Defines db model for user preferences.
 export const UserPreferences = sequelize.define('user_data', {
   visitorId: {
     type: Sequelize.STRING,
@@ -31,6 +33,7 @@ export const UserPreferences = sequelize.define('user_data', {
   },
 });
 
+// Defines db model for search history.
 export const UserSearchHistory = sequelize.define('user_search_history', {
   visitorId: {
     type: Sequelize.STRING,
@@ -43,6 +46,7 @@ export const UserSearchHistory = sequelize.define('user_search_history', {
   },
 });
 
+// Defines db model for cart item.
 export const UserCartItem = sequelize.define('user_cart_item', {
   visitorId: {
     type: Sequelize.STRING,
