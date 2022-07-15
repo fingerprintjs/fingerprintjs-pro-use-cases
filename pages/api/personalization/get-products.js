@@ -1,7 +1,7 @@
 import { initProducts, Product, UserSearchHistory } from './database';
 import { ensurePostRequest, sequelize } from '../../../shared/server';
 import { Op } from 'sequelize';
-import { validatePersonalizationRequest } from './shared';
+import { validatePersonalizationRequest } from './visitor-validations';
 
 const coffees = ['smooth', 'medium', 'strong', 'extra strong'];
 

@@ -1,7 +1,7 @@
 import { ensurePostRequest } from '../../../shared/server';
 import { Op } from 'sequelize';
 import { initProducts, UserPreferences } from './database';
-import { validatePersonalizationRequest } from './shared';
+import { validatePersonalizationRequest } from './visitor-validations';
 
 export default async function updateUserPreferences(req, res) {
   if (!ensurePostRequest(req, res)) {

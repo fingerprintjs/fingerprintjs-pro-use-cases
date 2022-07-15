@@ -1,6 +1,6 @@
 import { initProducts, UserSearchHistory } from './database';
 import { ensurePostRequest } from '../../../shared/server';
-import { validatePersonalizationRequest } from './shared';
+import { validatePersonalizationRequest } from './visitor-validations';
 import { Op } from 'sequelize';
 
 export default async function handler(req, res) {

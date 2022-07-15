@@ -2,7 +2,7 @@ import { useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import { ProductItem } from './product-item';
-import { PersonalizationTopSection } from './personalizationTopSection';
+import { PersonalizationTopSection } from './personalization-top-section';
 import { useDebounce } from 'react-use';
 import Typography from '@mui/material/Typography';
 import { useSearchHistory } from './hooks/use-search-history';
