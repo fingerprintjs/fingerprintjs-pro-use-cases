@@ -27,7 +27,7 @@ export async function validatePersonalizationRequest(req, res) {
   const checks = [
     /**
      * We don't need to check if the request is "fresh" for this use case.
-     * It's better to fetch visitor data once, and re-use it for every request that usespersonalizationn to reducethe  amount of API calls.
+     * It's better to fetch visitor data once, and re-use it for every request that uses personalization to reduce the amount of API calls.
      * */
     //checkFreshIdentificationRequest,
     checkConfidenceScore,
