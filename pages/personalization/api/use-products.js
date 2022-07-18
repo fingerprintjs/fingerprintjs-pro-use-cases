@@ -1,16 +1,12 @@
 import { useQuery, useQueryClient } from 'react-query';
 import { SEARCH_HISTORY_QUERY } from './use-search-history';
 import { useVisitorData } from '../../../shared/client/use-visitor-data';
+import { personalizationRequest } from './api';
 
-function getProducts(fpData, search) {
-  return fetch(`/api/personalization/get-products`, {
-    method: 'POST',
-    body: JSON.stringify({
-      query: search,
-      requestId: fpData.requestId,
-      visitorId: fpData.visitorId,
-    }),
-  }).then((res) => res.json());
+function getProducts(fpData, query) {
+  return personalizationRequest('/api/personalization/get-products', fpData, {
+    query,
+  });
 }
 
 export const GET_PRODUCTS_QUERY = 'GET_PRODUCTS_QUERY';

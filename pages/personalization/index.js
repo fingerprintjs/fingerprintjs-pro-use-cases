@@ -5,10 +5,10 @@ import { ProductItem } from './product-item';
 import { PersonalizationTopSection } from './personalization-top-section';
 import { useDebounce } from 'react-use';
 import Typography from '@mui/material/Typography';
-import { useSearchHistory } from './hooks/use-search-history';
+import { useSearchHistory } from './api/use-search-history';
 import { UseCaseWrapper } from '../../components/use-case-wrapper';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
-import { useProducts } from './hooks/use-products';
+import { useProducts } from './api/use-products';
 import { useVisitorData } from '../../shared/client/use-visitor-data';
 
 export default function Index() {
