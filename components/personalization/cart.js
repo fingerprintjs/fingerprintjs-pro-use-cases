@@ -92,7 +92,7 @@ export function Cart() {
   return (
     <Box
       sx={{
-        height: 400,
+        height: !cartQuery.data?.size && !isLoading ? 'auto' : 300,
         width: '100%',
         overflowX: 'hidden',
         overflowY: 'auto',
