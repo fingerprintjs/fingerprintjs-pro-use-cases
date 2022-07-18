@@ -6,9 +6,24 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import { useCart } from './api/use-cart';
 import { LoadingButton } from '@mui/lab';
+import { useState } from 'react';
+import { useDebounce } from 'react-use';
+import { Check } from '@mui/icons-material';
 
 export function ProductItem({ product: { price, name, image, id } }) {
   const { addCartItemMutation } = useCart();
+
+  const [wasAdded, setWasAdded] = useState(false);
+
+  useDebounce(
+    () => {
+      if (wasAdded) {
+        setWasAdded(false);
+      }
+    },
+    1000,
+    [wasAdded]
+  );
 
   return (
     <Card
@@ -33,12 +48,18 @@ export function ProductItem({ product: { price, name, image, id } }) {
       </CardContent>
       <CardActions>
         <LoadingButton
+          fullWidth
+          startIcon={wasAdded ? <Check /> : undefined}
           loading={addCartItemMutation.isLoading}
-          onClick={() => addCartItemMutation.mutate({ productId: id })}
+          onClick={async () => {
+            await addCartItemMutation.mutateAsync({ productId: id });
+
+            setWasAdded(true);
+          }}
           variant="contained"
-          color="primary"
+          color={wasAdded ? 'success' : 'primary'}
         >
-          Add to cart
+          {wasAdded ? 'Added' : 'Add to cart'}
         </LoadingButton>
       </CardActions>
     </Card>

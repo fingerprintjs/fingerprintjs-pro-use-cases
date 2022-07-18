@@ -15,13 +15,30 @@ export function CartItem({ item }) {
 
   return (
     <Card
-      sx={{
-        padding: (theme) => theme.spacing(2),
+      sx={(theme) => ({
+        padding: theme.spacing(2),
         width: '90%',
-      }}
+
+        [theme.breakpoints.down('md')]: {
+          paddingX: 0,
+          paddingY: (theme) => theme.spacing(2),
+        },
+      })}
       variant="outlined"
     >
-      <Stack direction="row" justifyContent="space-between" height="100%">
+      <Stack
+        justifyContent="space-between"
+        alignItems="center"
+        height="100%"
+        spacing={2}
+        sx={(theme) => ({
+          flexDirection: 'row',
+
+          [theme.breakpoints.down('md')]: {
+            flexDirection: 'column',
+          },
+        })}
+      >
         <Image
           src={item.product.image}
           height="100%"
@@ -30,11 +47,21 @@ export function CartItem({ item }) {
           objectFit="cover"
           layout="fixed"
         />
-        <Stack direction="column" justifyContent="center">
+        <Stack direction="column" justifyContent="center" alignItems="center">
           <Typography variant="subtitle2">{item.product.name}</Typography>
           <Typography variant="body1">${price}</Typography>
         </Stack>
-        <Stack direction="column" alignItems="center" justifyContent="space-evenly">
+        <Stack
+          alignItems="center"
+          justifyContent="space-evenly"
+          sx={(theme) => ({
+            flexDirection: 'column',
+
+            [theme.breakpoints.down('md')]: {
+              flexDirection: 'row',
+            },
+          })}
+        >
           <IconButton
             disabled={addCartItemMutation.isLoading}
             size="small"
