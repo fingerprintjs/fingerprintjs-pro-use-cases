@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
+import Paper from '@mui/material/Paper';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -12,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Index() {
   return (
-    <>
+    <Paper variant="outlined">
       <div className="ExternalLayout_wrapper">
         <div className="ExternalLayout_main">
           <div className="UsecaseWrapper_wrapper">
@@ -42,10 +43,15 @@ export default function Index() {
                   <a>Payment Fraud, Chargeback Fraud, Card Cracking, Stolen Card</a>
                 </Link>
               </li>
+              <li className={clsx(useStyles().margin)}>
+                <Link href="/personalization">
+                  <a>[WIP] Remember user preferences, personalization, user activity history</a>
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
       </div>
-    </>
+    </Paper>
   );
 }

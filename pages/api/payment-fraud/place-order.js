@@ -1,18 +1,19 @@
 import { Sequelize } from 'sequelize';
 import {
-  sequelize,
-  areVisitorIdAndRequestIdValid,
-  messageSeverity,
-  CheckResult,
-  checkResultType,
-  getOkReponse,
-  getForbiddenReponse,
-  reportSuspiciousActivity,
-  getVisitorData,
-  checkFreshIdentificationRequest,
   checkConfidenceScore,
+  checkFreshIdentificationRequest,
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
+  CheckResult,
+  checkResultType,
+  ensurePostRequest,
+  ensureValidRequestIdAndVisitorId,
+  getForbiddenReponse,
+  getOkReponse,
+  getVisitorData,
+  messageSeverity,
+  reportSuspiciousActivity,
+  sequelize,
 } from '../../../shared/server';
 
 // Defines db model for payment attempt.
@@ -45,10 +46,10 @@ PaymentAttempt.sync({ force: false });
 
 export default async function handler(req, res) {
   // This API route accepts only POST requests.
-  if (req.method !== 'POST') {
-    res.status(405).send({ message: 'Only POST requests allowed' });
+  if (!ensurePostRequest(req, res)) {
     return;
   }
+
   res.setHeader('Content-Type', 'application/json');
 
   return await tryToProcessPayment(req, res, [
@@ -70,13 +71,8 @@ async function tryToProcessPayment(req, res, ruleChecks) {
   const applyChargeback = req.body.applyChargeback;
   const usedStolenCard = req.body.usingStolenCard;
 
-  if (!areVisitorIdAndRequestIdValid(visitorId, requestId)) {
-    reportSuspiciousActivity(req);
-    return getForbiddenReponse(
-      res,
-      'Forged visitorId or requestId detected. Try harder next time.',
-      messageSeverity.Error
-    );
+  if (!ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId)) {
+    return;
   }
 
   // Information from the client side might have been tampered.

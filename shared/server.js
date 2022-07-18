@@ -1,5 +1,8 @@
 import { Sequelize } from 'sequelize';
 
+const ALLOWED_REQUEST_TIMESTAMP_DIFF_MS = 3000;
+const MIN_CONFIDENCE_SCORE = 0.9;
+
 // Provision the database.
 // In the Stackblitz environment, this db is stored locally in your browser.
 // On the deployed demo, db is cleaned after each deployment.
@@ -50,6 +53,17 @@ export function areVisitorIdAndRequestIdValid(visitorId, requestId) {
   const isVisitorIdFormatValid = /^[a-zA-Z0-9]{20}$/.test(visitorId);
   const isRequestIdFormatValid = /^\d{13}\.[a-zA-Z0-9]{6}$/.test(requestId);
   return isRequestIdFormatValid && isVisitorIdFormatValid;
+}
+
+export function ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId) {
+  if (!areVisitorIdAndRequestIdValid(visitorId, requestId)) {
+    reportSuspiciousActivity(req);
+    getForbiddenReponse(res, 'Forged visitorId or requestId detected. Try harder next time.', messageSeverity.Error);
+
+    return false;
+  }
+
+  return true;
 }
 
 // Every identification request should be validated using the FingerprintJS Pro Server API.
@@ -107,7 +121,9 @@ export function checkFreshIdentificationRequest(visitorData) {
 
   // An attacker might have acquired a valid requestId and visitorId via phishing.
   // It's recommended to check freshness of the identification request to prevent replay attacks.
-  if (new Date().getTime() - visitorData.visits[0].timestamp > 3000) {
+  const requestTimestampDiff = new Date().getTime() - visitorData.visits[0].timestamp;
+
+  if (requestTimestampDiff > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
     return new CheckResult(
       'Old requestId detected. Action ignored and logged.',
       messageSeverity.Error,
@@ -120,7 +136,7 @@ export function checkFreshIdentificationRequest(visitorData) {
 // If it's lower than the certain threshold we recommend using an additional way of verification, e.g. 2FA or email.
 // More info: https://dev.fingerprintjs.com/docs/understanding-your-confidence-score
 export function checkConfidenceScore(visitorData) {
-  if (visitorData.visits[0].confidence.score < 0.95) {
+  if (visitorData.visits[0].confidence.score < MIN_CONFIDENCE_SCORE) {
     return new CheckResult(
       "Low confidence score, we'd rather verify you with the second factor,",
       messageSeverity.Error,
@@ -175,3 +191,13 @@ export function getForbiddenReponse(res, message, messageSeverity) {
 // Report suspicious user activity according to internal processes here.
 // Possibly this action could also lock the user's account temporarily or ban a specific action.
 export function reportSuspiciousActivity(context) {}
+
+export function ensurePostRequest(req, res) {
+  if (req.method !== 'POST') {
+    res.status(405).send({ message: 'Only POST requests allowed' });
+
+    return false;
+  }
+
+  return true;
+}

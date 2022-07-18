@@ -1,30 +1,30 @@
 import '../styles/globals.css';
-import { ThemeProvider } from '@material-ui/core';
-import { createTheme } from '@material-ui/core/styles';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ThemeProvider } from '../shared/client/theme-provider';
 import Head from 'next/head';
+import { Header } from './personalization/header';
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#FF5D22',
-    },
-    secondary: {
-      main: 'rgba(0, 0, 0, 0.87)',
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
     },
   },
 });
 
 function App({ Component, pageProps }) {
   return (
-    <ThemeProvider theme={theme}>
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        <title>FingerprintJS Pro Use Cases</title>
-      </Head>
-
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+          <title>FingerprintJS Pro Use Cases</title>
+        </Head>
+        <Header addonRight={Component.headerAddonRight?.()} />
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 

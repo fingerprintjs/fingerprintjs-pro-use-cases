@@ -1,16 +1,15 @@
 import {
-  areVisitorIdAndRequestIdValid,
-  messageSeverity,
-  CheckResult,
-  checkResultType,
-  getOkReponse,
-  getForbiddenReponse,
-  reportSuspiciousActivity,
-  getVisitorData,
-  checkFreshIdentificationRequest,
   checkConfidenceScore,
+  checkFreshIdentificationRequest,
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
+  CheckResult,
+  checkResultType,
+  ensureValidRequestIdAndVisitorId,
+  getForbiddenReponse,
+  getOkReponse,
+  getVisitorData,
+  messageSeverity,
 } from '../../../shared/server';
 import { LoginAttempt } from '../credential-stuffing/authenticate';
 import { PaymentAttempt } from '../payment-fraud/place-order';
@@ -37,13 +36,8 @@ async function tryToReset(req, res, ruleChecks) {
   const visitorId = req.body.visitorId;
   const requestId = req.body.requestId;
 
-  if (!areVisitorIdAndRequestIdValid(visitorId, requestId)) {
-    reportSuspiciousActivity(req);
-    return getForbiddenReponse(
-      res,
-      'Forged visitorId or requestId detected. Try harder next time.',
-      messageSeverity.Error
-    );
+  if (!ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId)) {
+    return;
   }
 
   const visitorData = await getVisitorData(visitorId, requestId);
