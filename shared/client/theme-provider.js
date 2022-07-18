@@ -11,13 +11,14 @@ export function ThemeProvider({ children }) {
 
     return createTheme({
       palette: {
-        header: hasDarkMode ? '#f2f2f7' : secondary,
+        header: hasDarkMode ? secondary : '#f2f2f7',
         primary: {
           main: '#FF5D22',
         },
         secondary: {
           main: secondary,
         },
+        mode: hasDarkMode ? 'dark' : 'light',
       },
       components: {
         MuiTextField: {

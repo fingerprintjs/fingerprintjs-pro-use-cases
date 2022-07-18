@@ -1,5 +1,5 @@
 import { personalizationEndpoint } from '../personalization-endpoint';
-import { UserCartItem } from '../database';
+import { Product, UserCartItem } from '../database';
 import { Op } from 'sequelize';
 
 export default personalizationEndpoint(async (req, res, { usePersonalizedData, visitorId }) => {
@@ -14,6 +14,7 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData, v
       },
     },
     order: [['timestamp', 'DESC']],
+    include: Product,
   });
 
   return res.status(200).json({

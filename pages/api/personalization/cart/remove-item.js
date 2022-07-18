@@ -7,16 +7,30 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData })
     return res.status(400);
   }
 
-  const itemId = req.params.itemId;
+  let removed = false;
 
-  await UserCartItem.destroy({
+  const { itemId } = JSON.parse(req.body);
+
+  const item = await UserCartItem.findOne({
     where: {
       id: {
         [Op.eq]: itemId,
       },
     },
   });
+
+  item.count--;
+
+  if (item.count <= 0) {
+    removed = true;
+
+    await item.destroy();
+  } else {
+    await item.save();
+  }
+
   return res.status(200).json({
-    data: true,
+    data: item,
+    removed,
   });
 });

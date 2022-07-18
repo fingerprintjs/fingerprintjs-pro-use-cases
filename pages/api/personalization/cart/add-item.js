@@ -1,5 +1,5 @@
 import { personalizationEndpoint } from '../personalization-endpoint';
-import { UserCartItem } from '../database';
+import { Product, UserCartItem } from '../database';
 import { Op } from 'sequelize';
 
 export default personalizationEndpoint(async (req, res, { usePersonalizedData, visitorId }) => {
@@ -9,7 +9,21 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData, v
 
   const { productId } = JSON.parse(req.body);
 
-  const [cartItem, created] = UserCartItem.findOrCreate({
+  const product = await Product.findOne({
+    where: {
+      id: {
+        [Op.eq]: productId,
+      },
+    },
+  });
+
+  if (!product) {
+    return res.status(500).json({
+      error: new Error('Product not found'),
+    });
+  }
+
+  const [cartItem, created] = await UserCartItem.findOrCreate({
     where: {
       visitorId: {
         [Op.eq]: visitorId,
