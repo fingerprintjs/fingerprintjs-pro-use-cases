@@ -1,7 +1,7 @@
-import { initProducts, Product, UserSearchHistory } from './database';
-import { ensurePostRequest, sequelize } from '../../../shared/server';
+import { Product, UserSearchHistory } from './database';
+import { sequelize } from '../../../shared/server';
 import { Op } from 'sequelize';
-import { validatePersonalizationRequest } from './visitor-validations';
+import { personalizationEndpoint } from './personalization-endpoint';
 
 const coffeeAdjectives = ['Smooth', 'Medium', 'Strong', 'Extra strong', 'Decaf'];
 
@@ -74,15 +74,7 @@ async function persistSearchPhrase(query, visitorId) {
   });
 }
 
-export default async function handler(req, res) {
-  if (!ensurePostRequest(req, res)) {
-    return;
-  }
-
-  const { usePersonalizedData, visitorId } = await validatePersonalizationRequest(req, res);
-
-  await initProducts();
-
+export default personalizationEndpoint(async (req, res, { usePersonalizedData, visitorId }) => {
   const { query } = JSON.parse(req.body);
 
   let productsCount = await Product.count();
@@ -101,4 +93,4 @@ export default async function handler(req, res) {
     data: products,
     size: products.length,
   });
-}
+});

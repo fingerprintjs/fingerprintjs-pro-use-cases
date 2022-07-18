@@ -1,19 +1,8 @@
-import { ensurePostRequest } from '../../../shared/server';
-import { initProducts, UserPreferences } from './database';
+import { UserPreferences } from './database';
 import { Op } from 'sequelize';
-import { validatePersonalizationRequest } from './visitor-validations';
+import { personalizationEndpoint } from './personalization-endpoint';
 
-export default async function handler(req, res) {
-  if (!ensurePostRequest(req, res)) {
-    return;
-  }
-
-  await initProducts();
-
-  res.setHeader('Content-Type', 'application/json');
-
-  const { visitorId, usePersonalizedData } = await validatePersonalizationRequest(req, res);
-
+export default personalizationEndpoint(async (req, res, { visitorId, usePersonalizedData }) => {
   if (!usePersonalizedData) {
     return res.status(404).json({
       data: null,
@@ -37,4 +26,4 @@ export default async function handler(req, res) {
   return res.status(200).json({
     data: result,
   });
-}
+});
