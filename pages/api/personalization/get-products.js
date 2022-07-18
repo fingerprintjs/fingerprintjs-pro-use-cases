@@ -3,7 +3,7 @@ import { ensurePostRequest, sequelize } from '../../../shared/server';
 import { Op } from 'sequelize';
 import { validatePersonalizationRequest } from './visitor-validations';
 
-const coffees = ['smooth', 'medium', 'strong', 'extra strong'];
+const coffeeAdjectives = ['Smooth', 'Medium', 'Strong', 'Extra strong', 'Decaf'];
 
 function getRandomArrayElement(array) {
   return array[Math.floor(Math.random() * array.length)];
@@ -18,7 +18,7 @@ async function getRandomCoffeeImage() {
 async function seedProducts() {
   await Promise.all(
     Array.from({ length: 15 }).map(async () => {
-      const coffee = getRandomArrayElement(coffees);
+      const coffee = getRandomArrayElement(coffeeAdjectives);
 
       return Product.create({
         price: Math.floor(Math.random() * 100),

@@ -38,11 +38,11 @@ export default function Index() {
     <UseCaseWrapper
       title="Personalization"
       listItems={[
-        <>Try to search for some products, we keep history of your last searches.</>,
+        <>Try to search for products, we keep a history of your last searches.</>,
         <>We remember your dark mode preference.</>,
         <>Try to open this page in incognito mode. Your preferences will still be there!</>,
       ]}
-      description="This page demonstrates user personalization that it achieved by using fingerprinting. Users are not required to login in order to get experience that is tailored to them."
+      description="This page demonstrates user personalization that is achieved by Fingerprint Pro. Users don't need to login in to get a tailored experience."
     >
       <PersonalizationTopSection
         search={search}
