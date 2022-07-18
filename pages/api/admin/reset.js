@@ -13,6 +13,7 @@ import {
 } from '../../../shared/server';
 import { LoginAttempt } from '../credential-stuffing/authenticate';
 import { PaymentAttempt } from '../payment-fraud/place-order';
+import { UserCartItem, UserPreferences, UserSearchHistory } from '../../../api/personalization/database';
 
 export default async function handler(req, res) {
   // This API route accepts only POST requests.
@@ -56,17 +57,22 @@ async function tryToReset(req, res, ruleChecks) {
   }
 }
 
-async function deleteVisitorIdData(visitorData, request) {
-  const loginAttemptsRowsRemoved = await LoginAttempt.destroy({
+async function deleteVisitorIdData(visitorData) {
+  const options = {
     where: { visitorId: visitorData.visitorId },
-  });
+  };
 
-  const paymentAttemptsRowsRemoved = await PaymentAttempt.destroy({
-    where: { visitorId: visitorData.visitorId },
-  });
+  const loginAttemptsRowsRemoved = await LoginAttempt.destroy(options);
+
+  const paymentAttemptsRowsRemoved = await PaymentAttempt.destroy(options);
+
+  const deletedPersonalizationResult = await Promise.all(
+    [UserCartItem, UserPreferences, UserCartItem, UserSearchHistory].map((model) => model.destroy(options))
+  );
+  const deletedPersonalizationCount = deletedPersonalizationResult.reduce((acc, cur) => acc + cur, 0);
 
   return new CheckResult(
-    `Deleted ${loginAttemptsRowsRemoved} rows for Credential Stuffing problem, ${paymentAttemptsRowsRemoved} rows for Payment Fraud problem.`,
+    `Deleted ${loginAttemptsRowsRemoved} rows for Credential Stuffing problem, ${paymentAttemptsRowsRemoved} rows for Payment Fraud problem. Deleted ${deletedPersonalizationCount} entries related to personalization.`,
     messageSeverity.Success,
     checkResultType.Passed
   );

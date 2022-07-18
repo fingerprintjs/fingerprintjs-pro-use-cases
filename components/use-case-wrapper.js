@@ -2,7 +2,7 @@ import Paper from '@mui/material/Paper';
 import clsx from 'clsx';
 import Divider from '@mui/material/Divider';
 
-export function UseCaseWrapper({ title, description, listItems, children, variant }) {
+export function UseCaseWrapper({ title, description, listItems, children, variant, hideSrcListItem = false }) {
   return (
     <Paper variant="outlined" className="ExternalLayout_wrapper" square>
       <div className="ExternalLayout_main">
@@ -12,15 +12,21 @@ export function UseCaseWrapper({ title, description, listItems, children, varian
             <p className="UsecaseWrapper_helper">{description}</p>
             <Divider className="UsecaseWrapper_divider" />
             <ul className="UsecaseWrapper_notes">
-              {listItems.map((item, index) => (
+              {listItems?.map((item, index) => (
                 <li key={index}>{item}</li>
               ))}
-              <li>
-                Need src?{' '}
-                <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases" target="_blank" rel="noreferrer">
-                  Sure!
-                </a>
-              </li>
+              {!hideSrcListItem && (
+                <li>
+                  Need src?{' '}
+                  <a
+                    href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Sure!
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
           <Paper

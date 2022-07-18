@@ -64,14 +64,14 @@ UserCartItem.belongsTo(Product);
 
 let didInit = false;
 
+const productModels = [Product, UserCartItem, UserPreferences, UserCartItem, UserSearchHistory];
+
 export async function initProducts() {
   if (didInit) {
     return;
   }
 
   didInit = true;
-
-  const productModels = [Product, UserCartItem, UserPreferences, UserCartItem, UserSearchHistory];
 
   await Promise.all(productModels.map((model) => model.sync({ force: false }))).catch(console.error);
 }
