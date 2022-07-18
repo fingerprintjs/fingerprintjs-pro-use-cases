@@ -63,19 +63,20 @@ export function CartItem({ item }) {
           })}
         >
           <IconButton
-            disabled={addCartItemMutation.isLoading}
-            size="small"
-            onClick={() => addCartItemMutation.mutate({ productId: item.product.id })}
-          >
-            <Add />
-          </IconButton>
-          <Typography variant="caption">{item.count}</Typography>
-          <IconButton
             size="small"
             disabled={removeCartItemMutation.isLoading}
             onClick={() => removeCartItemMutation.mutate({ itemId: item.id })}
           >
             <Remove />
+          </IconButton>
+
+          <Typography variant="caption">{item.count}</Typography>
+          <IconButton
+            disabled={addCartItemMutation.isLoading}
+            size="small"
+            onClick={() => addCartItemMutation.mutate({ productId: item.product.id })}
+          >
+            <Add />
           </IconButton>
         </Stack>
       </Stack>

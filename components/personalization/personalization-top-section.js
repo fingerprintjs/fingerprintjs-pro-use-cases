@@ -123,6 +123,9 @@ export function PersonalizationTopSection({ search, onSearch, searchHistory, onS
         width: '100%',
       }}
     >
+      <PersonalizationTopSectionItem title="Cart">
+        <Cart />
+      </PersonalizationTopSectionItem>
       <PersonalizationTopSectionItem title="Search">
         <Stack direction="column" spacing={2}>
           <TextField
@@ -151,9 +154,6 @@ export function PersonalizationTopSection({ search, onSearch, searchHistory, onS
             <SearchHistory onSearchHistoryClick={onSearchHistoryClick} searchHistory={searchHistory} />
           )}
         </Stack>
-      </PersonalizationTopSectionItem>
-      <PersonalizationTopSectionItem title="Cart">
-        <Cart />
       </PersonalizationTopSectionItem>
     </Stack>
   );
