@@ -29,7 +29,13 @@ export function Header({ addonRight }) {
   const router = useRouter();
 
   return (
-    <AppBar color="secondary" position="static" height={300}>
+    <AppBar
+      position="static"
+      height={300}
+      sx={{
+        backgroundColor: (theme) => theme.palette.header,
+      }}
+    >
       <Toolbar>
         <Stack direction="row" justifyContent="space-between" width="100%">
           <Stack direction="row" alignItems="center" spacing={1}>
@@ -43,7 +49,9 @@ export function Header({ addonRight }) {
                 <Button
                   sx={(theme) => ({
                     color:
-                      router.pathname === link.url ? theme.palette.primary.main : theme.palette.primary.contrastText,
+                      router.pathname === link.url
+                        ? theme.palette.primary.main
+                        : theme.palette.getContrastText(theme.palette.header),
 
                     [theme.breakpoints.down('md')]: {
                       display: 'none',

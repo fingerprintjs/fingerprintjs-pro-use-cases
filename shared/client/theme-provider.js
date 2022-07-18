@@ -6,28 +6,30 @@ import { useMemo } from 'react';
 export function ThemeProvider({ children }) {
   const { hasDarkMode } = useUserPreferences();
 
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: hasDarkMode ? 'dark' : 'light',
-          primary: {
-            main: '#FF5D22',
-          },
-          secondary: {
-            main: 'rgba(0, 0, 0, 0.87)',
+  const theme = useMemo(() => {
+    const secondary = 'rgba(0, 0, 0, 0.87)';
+
+    return createTheme({
+      palette: {
+        header: hasDarkMode ? '#f2f2f7' : secondary,
+        primary: {
+          main: '#FF5D22',
+        },
+        secondary: {
+          main: secondary,
+        },
+      },
+      components: {
+        MuiTextField: {
+          defaultProps: {
+            variant: 'outlined',
           },
         },
-        components: {
-          MuiTextField: {
-            defaultProps: {
-              variant: 'outlined',
-            },
-          },
-        },
-      }),
-    [hasDarkMode]
-  );
+      },
+    });
+  }, [hasDarkMode]);
+
+  console.log({ theme });
 
   return (
     <StyledEngineProvider injectFirst>
