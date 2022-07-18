@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import Paper from '@mui/material/Paper';
+import { useEffect, useState } from 'react';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import { getFingerprintJS } from '../../shared/client';
+import { UseCaseWrapper } from '../../components/use-case-wrapper';
 
 export default function Index() {
   const [statusMessage, setStatusMessage] = useState();
   const [severity, setSeverity] = useState();
-  const [isWaitingForReponse, setIsWaitingForReponse] = useState(false);
+  const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   const [httpResponseStatus, setHttpResponseStatus] = useState();
   const [fp, setFp] = useState();
 
@@ -20,7 +20,7 @@ export default function Index() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setIsWaitingForReponse(true);
+    setIsWaitingForResponse(true);
 
     const fpResult = await fp.get();
     const visitorId = fpResult.visitorId;
@@ -45,44 +45,42 @@ export default function Index() {
     setStatusMessage(responseJson.message);
     setSeverity(responseJson.severity);
     setHttpResponseStatus(responseStatus);
-    setIsWaitingForReponse(false);
+    setIsWaitingForResponse(false);
   }
 
   return (
-    <>
-      <div className="ExternalLayout_wrapper">
-        <div className="ExternalLayout_main">
-          <div className="UsecaseWrapper_wrapper">
-            <h1 className="UsecaseWrapper_title">Administration </h1>
-            <p className="UsecaseWrapper_helper">
-              On this page, you can remove all info obtained from this browser. This will reenable some scenarios for
-              you if you were locked out from the specific action.{' '}
-            </p>
-            <hr className="UsecaseWrapper_divider" />
-            <Paper className="ActionWrapper_container">
-              <form onSubmit={handleSubmit} className="Form_container">
-                <Button
-                  className="Form_button"
-                  disabled={isWaitingForReponse}
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  disableElevation
-                  fullWidth
-                >
-                  {isWaitingForReponse ? 'Working...' : 'Reset all data for this visitorId'}
-                </Button>
-              </form>
-            </Paper>
-            {httpResponseStatus ? (
-              <Alert severity={severity} className="UsecaseWrapper_alert">
-                {statusMessage}
-              </Alert>
-            ) : null}
-          </div>
-        </div>
-      </div>
-    </>
+    <UseCaseWrapper
+      hideSrcListItem
+      title="Administration"
+      description=" On this page, you can remove all info obtained from this browser. This will reenable some scenarios for
+              you if you were locked out from the specific action."
+    >
+      <form onSubmit={handleSubmit} className="Form_container">
+        <Button
+          disabled={isWaitingForResponse}
+          size="large"
+          type="submit"
+          variant="contained"
+          color="primary"
+          disableElevation
+          fullWidth
+        >
+          {isWaitingForResponse ? 'Working...' : 'Reset all data for this visitorId'}
+        </Button>
+      </form>
+      {httpResponseStatus ? (
+        <Alert
+          severity={severity}
+          className="UsecaseWrapper_alert"
+          sx={{
+            '&.UsecaseWrapper_alert': {
+              marginBottom: 0,
+            },
+          }}
+        >
+          {statusMessage}
+        </Alert>
+      ) : null}
+    </UseCaseWrapper>
   );
 }
