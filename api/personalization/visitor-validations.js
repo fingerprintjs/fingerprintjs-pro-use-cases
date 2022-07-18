@@ -5,7 +5,7 @@ import {
   checkResultType,
   ensureValidRequestIdAndVisitorId,
   getVisitorData,
-} from '../../../shared/server';
+} from '../../shared/server';
 
 /**
  * Custom logic for validation personalization request.

@@ -11,6 +11,7 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListSubheader from '@mui/material/ListSubheader';
 import IconButton from '@mui/material/IconButton';
+import { Cart } from './cart';
 
 const SEARCH_HISTORY_DISPLAY_LIMIT = 3;
 
@@ -115,13 +116,16 @@ function SearchHistory({ searchHistory, onSearchHistoryClick }) {
 export function PersonalizationTopSection({ search, onSearch, searchHistory, onSearchHistoryClick }) {
   return (
     <Stack
-      spacing={12}
+      spacing={6}
       sx={{
         top: '10px',
         height: '100%',
         width: '100%',
       }}
     >
+      <PersonalizationTopSectionItem title="Cart">
+        <Cart />
+      </PersonalizationTopSectionItem>
       <PersonalizationTopSectionItem title="Search">
         <Stack direction="column" spacing={2}>
           <TextField

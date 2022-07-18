@@ -10,6 +10,7 @@ html {
     margin: 0;
     height: 100%;
     font-family: 'Roboto', sans-serif, -apple-system, Arial;
+    overflow-x: hidden;
 }
 
 .ExternalLayout_wrapper {

@@ -1,12 +1,30 @@
 import Image from 'next/image';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
+import { useCart } from '../../shared/client/api/use-cart';
+import { LoadingButton } from '@mui/lab';
+import { useState } from 'react';
+import { useDebounce } from 'react-use';
+import { Check } from '@mui/icons-material';
 
-export function ProductItem({ product: { price, name, image } }) {
+export function ProductItem({ product: { price, name, image, id } }) {
+  const { addCartItemMutation } = useCart();
+
+  const [wasAdded, setWasAdded] = useState(false);
+
+  useDebounce(
+    () => {
+      if (wasAdded) {
+        setWasAdded(false);
+      }
+    },
+    1000,
+    [wasAdded]
+  );
+
   return (
     <Card
       variant="outlined"
@@ -29,15 +47,20 @@ export function ProductItem({ product: { price, name, image } }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button
-          onClick={() => {
-            window.alert('Not yet implemented');
+        <LoadingButton
+          fullWidth
+          startIcon={wasAdded ? <Check /> : undefined}
+          loading={addCartItemMutation.isLoading}
+          onClick={async () => {
+            await addCartItemMutation.mutateAsync({ productId: id });
+
+            setWasAdded(true);
           }}
           variant="contained"
-          color="primary"
+          color={wasAdded ? 'success' : 'primary'}
         >
-          Add to cart
-        </Button>
+          {wasAdded ? 'Added' : 'Add to cart'}
+        </LoadingButton>
       </CardActions>
     </Card>
   );

@@ -1,4 +1,4 @@
-import { sequelize } from '../../../shared/server';
+import { sequelize } from '../../shared/server';
 import * as Sequelize from 'sequelize';
 
 // Defines db model for product.
@@ -59,8 +59,8 @@ export const UserCartItem = sequelize.define('user_cart_item', {
   },
 });
 
-Product.belongsTo(UserCartItem);
-UserCartItem.hasMany(Product);
+Product.hasMany(UserCartItem);
+UserCartItem.belongsTo(Product);
 
 let didInit = false;
 

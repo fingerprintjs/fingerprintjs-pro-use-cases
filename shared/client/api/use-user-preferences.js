@@ -1,27 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useVisitorData } from '../../../shared/client/use-visitor-data';
+import { useVisitorData } from '../use-visitor-data';
+import { personalizationRequest } from './api';
 
 const GET_USER_PREFERENCES_QUERY = 'GET_USER_PREFERENCES_QUERY';
 
 function getUserPreferences(fpData) {
-  return fetch(`/api/personalization/get-user-preferences`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requestId: fpData.requestId,
-      visitorId: fpData.visitorId,
-    }),
-  }).then((res) => res.json());
+  return personalizationRequest('/api/personalization/get-user-preferences', fpData);
 }
 
 function updateUserPreferences(fpData, hasDarkMode) {
-  return fetch(`/api/personalization/update-user-preferences`, {
-    method: 'POST',
-    body: JSON.stringify({
-      hasDarkMode,
-      requestId: fpData.requestId,
-      visitorId: fpData.visitorId,
-    }),
-  }).then((res) => res.json());
+  return personalizationRequest('/api/personalization/update-user-preferences', fpData, { hasDarkMode });
 }
 
 export function useUserPreferences() {

@@ -2,7 +2,7 @@ import '../styles/globals.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider } from '../shared/client/theme-provider';
 import Head from 'next/head';
-import { Header } from './personalization/header';
+import { Header } from '../components/personalization/header';
 
 const queryClient = new QueryClient({
   defaultOptions: {

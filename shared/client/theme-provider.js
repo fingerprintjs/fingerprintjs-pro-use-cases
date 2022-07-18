@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 import { StyledEngineProvider, ThemeProvider as MuiThemeProvider } from '@mui/material';
-import { useUserPreferences } from '../../pages/personalization/hooks/use-user-preferences';
+import { useUserPreferences } from './api/use-user-preferences';
 import { useMemo } from 'react';
 
 export function ThemeProvider({ children }) {
@@ -11,13 +11,14 @@ export function ThemeProvider({ children }) {
 
     return createTheme({
       palette: {
-        header: hasDarkMode ? '#f2f2f7' : secondary,
+        header: hasDarkMode ? secondary : '#f2f2f7',
         primary: {
           main: '#FF5D22',
         },
         secondary: {
           main: secondary,
         },
+        mode: hasDarkMode ? 'dark' : 'light',
       },
       components: {
         MuiTextField: {
