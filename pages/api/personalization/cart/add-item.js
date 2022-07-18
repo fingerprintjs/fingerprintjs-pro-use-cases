@@ -1,5 +1,5 @@
-import { personalizationEndpoint } from '../personalization-endpoint';
-import { Product, UserCartItem } from '../database';
+import { personalizationEndpoint } from '../../../../api/personalization/personalization-endpoint';
+import { Product, UserCartItem } from '../../../../api/personalization/database';
 import { Op } from 'sequelize';
 
 export default personalizationEndpoint(async (req, res, { usePersonalizedData, visitorId }) => {

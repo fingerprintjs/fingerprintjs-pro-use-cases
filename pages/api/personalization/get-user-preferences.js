@@ -1,6 +1,6 @@
-import { UserPreferences } from './database';
+import { UserPreferences } from '../../../api/personalization/database';
 import { Op } from 'sequelize';
-import { personalizationEndpoint } from './personalization-endpoint';
+import { personalizationEndpoint } from '../../../api/personalization/personalization-endpoint';
 
 export default personalizationEndpoint(async (req, res, { visitorId, usePersonalizedData }) => {
   if (!usePersonalizedData) {

@@ -1,6 +1,6 @@
 import { personalizationRequest } from './api';
 import { useMutation, useQuery } from 'react-query';
-import { useVisitorData } from '../../../shared/client/use-visitor-data';
+import { useVisitorData } from '../use-visitor-data';
 import { useCallback } from 'react';
 
 function getCart(fpData) {

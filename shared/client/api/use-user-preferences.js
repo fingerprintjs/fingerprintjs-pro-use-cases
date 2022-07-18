@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useVisitorData } from '../../../shared/client/use-visitor-data';
+import { useVisitorData } from '../use-visitor-data';
 import { personalizationRequest } from './api';
 
 const GET_USER_PREFERENCES_QUERY = 'GET_USER_PREFERENCES_QUERY';

@@ -1,4 +1,4 @@
-import { sequelize } from '../../../shared/server';
+import { sequelize } from '../../shared/server';
 import * as Sequelize from 'sequelize';
 
 // Defines db model for product.

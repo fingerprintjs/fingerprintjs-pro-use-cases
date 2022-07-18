@@ -1,7 +1,7 @@
-import { Product, UserSearchHistory } from './database';
+import { Product, UserSearchHistory } from '../../../api/personalization/database';
 import { sequelize } from '../../../shared/server';
 import { Op } from 'sequelize';
-import { personalizationEndpoint } from './personalization-endpoint';
+import { personalizationEndpoint } from '../../../api/personalization/personalization-endpoint';
 
 const coffeeAdjectives = ['Smooth', 'Medium', 'Strong', 'Extra strong', 'Decaf'];
 
