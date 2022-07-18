@@ -92,7 +92,8 @@ export function Cart() {
   return (
     <Box
       sx={{
-        height: !cartQuery.data?.size && !isLoading ? 'auto' : 300,
+        maxHeight: !cartQuery.data?.size && !isLoading ? 'auto' : 300,
+        minHeight: isLoading ? 50 : 'auto',
         width: '100%',
         overflowX: 'hidden',
         overflowY: 'auto',
@@ -104,7 +105,7 @@ export function Cart() {
         direction="column"
         spacing={2}
         alignItems="center"
-        justifyContent={cartQuery.data?.size ? 'flex-start' : 'center'}
+        justifyContent="center"
         sx={{
           minHeight: '100%',
         }}
