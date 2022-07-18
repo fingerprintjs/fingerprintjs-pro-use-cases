@@ -39,7 +39,7 @@ export function Header({ addonRight }) {
       <Toolbar>
         <Stack direction="row" justifyContent="space-between" width="100%">
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Link href="/pages">
+            <Link href="/">
               <a>
                 <Image src="/logo.svg" width={300} height="100%" alt="Fingerprint logo" />
               </a>
