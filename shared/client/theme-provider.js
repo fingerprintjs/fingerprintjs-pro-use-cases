@@ -29,8 +29,6 @@ export function ThemeProvider({ children }) {
     });
   }, [hasDarkMode]);
 
-  console.log({ theme });
-
   return (
     <StyledEngineProvider injectFirst>
       <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
