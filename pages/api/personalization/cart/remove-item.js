@@ -2,7 +2,7 @@ import { personalizationEndpoint } from '../../../../api/personalization/persona
 import { UserCartItem } from '../../../../api/personalization/database';
 import { Op } from 'sequelize';
 
-// Removes item from cart related to given visitorId
+// Removes an item from cart for given visitorId
 export default personalizationEndpoint(async (req, res, { usePersonalizedData }) => {
   if (!usePersonalizedData) {
     return res.status(400);

@@ -10,9 +10,9 @@ const pages = [
     title: 'Credential Stuffing',
     url: '/credential-stuffing',
     icon: <People />,
-    description: `Confirm that every visitor on your website is real and not an advanced bot using multiple techniques to create fake accounts.
+    description: `Protect your users and your business against Credential Stuffing and other account takeover attacks with the proposed approaches.
     
-You can mitigate account takeover attempts, prevent password sharing and significantly reduce the number of fake accounts.`,
+At the same time, your legit users won’t experience any additional friction.`,
   },
   {
     title: 'Payment Fraud',
@@ -20,15 +20,15 @@ You can mitigate account takeover attempts, prevent password sharing and signifi
     icon: <CreditScore />,
     description: `Identify anonymous visitors behind every transaction. Instantly recognize repeated card testing activity and link it to specific users.
 
-Significantly reduce chargebacks and fraudulent payments just one month after integrating Fingerprint on your website.`,
+As a result, you will protect your users and your business against various payment frauds with the demonstrated approaches.`,
   },
   {
     title: 'Personalization',
     url: '/personalization',
     icon: <Settings />,
-    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. .
+    description: `Provide your users with tailored experience between incognito and normal mode even without cookies.
      
-     Integer porta mi a neque porttitor, sit amet cursus justo molestie. Vestibulum ligula ante, rhoncus ut turpis laoreet, consequat tempus odio.`,
+      Personalize content such as search history, customized user interface, or even shopping cart.`,
   },
 ];
 

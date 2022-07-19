@@ -28,7 +28,7 @@ function App({ Component, pageProps }) {
           <Head>
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-            <title>FingerprintJS Pro Use Cases</title>
+            <title>Fingerprint Pro Use Cases</title>
           </Head>
           <Header addonRight={Component.headerAddonRight?.()} />
           <Component {...pageProps} />
