@@ -49,7 +49,8 @@ export default function Index() {
       listItems={[
         <>Try to search for products, we keep a history of your last searches.</>,
         <>We remember your dark mode preference.</>,
-        <>Try to open this page in incognito mode. Your preferences will still be there!</>,
+        <>Add some items to your very own cart.</>,
+        <>Try to open this page in incognito mode. Your preferences, search history, and cart content will still be there!</>,
       ]}
       description="This page demonstrates user personalization that is achieved by Fingerprint Pro. Users don't need to login in to get a tailored experience."
     >

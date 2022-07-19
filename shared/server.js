@@ -66,7 +66,7 @@ export function ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId)
   return true;
 }
 
-// Every identification request should be validated using the FingerprintJS Pro Server API.
+// Every identification request should be validated using the Fingerprint Pro Server API.
 // Alternatively, on the Node.js environment one can use Server API Node.js library: https://github.com/fingerprintjs/fingerprintjs-pro-server-api-node-sdk
 // const client = new FingerprintJsServerApiClient({
 //   region: Region.Global,
@@ -91,7 +91,7 @@ export async function getVisitorData(visitorId, requestId) {
 
   fingerprintJSProServerApiUrl.searchParams.append(
     'api_key',
-    // In a real world use-case, we recommend using Auth-API-Key header instead: https://dev.fingerprintjs.com/docs/server-api#api-methods.
+    // In a real world use-case, we recommend using Auth-API-Key header instead: https://dev.fingerprint.com/docs/server-api#api-methods.
     // The API key should be stored in the environment variables/secrets.
     'F6gQ8H8vQLc7mVsVKaFx'
   );
@@ -134,7 +134,7 @@ export function checkFreshIdentificationRequest(visitorData) {
 
 // The Confidence Score reflects the system's degree of certainty that the visitor identifier is correct.
 // If it's lower than the certain threshold we recommend using an additional way of verification, e.g. 2FA or email.
-// More info: https://dev.fingerprintjs.com/docs/understanding-your-confidence-score
+// More info: https://dev.fingerprint.com/docs/understanding-your-confidence-score
 export function checkConfidenceScore(visitorData) {
   if (visitorData.visits[0].confidence.score < MIN_CONFIDENCE_SCORE) {
     return new CheckResult(
@@ -162,8 +162,8 @@ export function checkIpAddressIntegrity(visitorData, request) {
 }
 
 // Checks if the authentication request comes from a known origin and
-// if the authentication request's origin corresponds to the origin/URL provided by the FingerprintJSPro Server API.
-// Additionally, one should set Request Filtering settings in the dashboard: https://dev.fingerprintjs.com/docs/request-filtering
+// if the authentication request's origin corresponds to the origin/URL provided by the Fingerprint Pro Server API.
+// Additionally, one should set Request Filtering settings in the dashboard: https://dev.fingerprint.com/docs/request-filtering
 export function checkOriginsIntegrity(visitorData, request) {
   const visitorDataOrigin = new URL(visitorData.visits[0].url).origin;
   if (

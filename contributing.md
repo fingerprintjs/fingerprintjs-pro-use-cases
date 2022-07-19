@@ -1,4 +1,4 @@
-# Contributing to FingerprintJS use cases
+# Contributing to Fingerprint Pro use cases
 
 ## Working with code
 

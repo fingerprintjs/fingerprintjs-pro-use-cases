@@ -93,7 +93,7 @@ export default function Index() {
       description={
         <>
           This page demonstrates login form protected against{' '}
-          <a href="https://fingerprintjs.com/blog/credential-stuffing-prevention-checklist/">Credential Stuffing</a>{' '}
+          <a href="https://fingerprint.com/blog/credential-stuffing-prevention-checklist/">Credential Stuffing</a>{' '}
           attack. Martin reused the same password among different sites and his credentials leaked. Luckily for Martin,
           this service uses FingeprintJS Pro and Martin&apos;s account is still protected even though his credentials
           are known. Try to hack into Martin&apos;s account using his credentials <code>user</code> and{' '}
