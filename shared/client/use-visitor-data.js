@@ -15,7 +15,9 @@ async function getVisitorData() {
   });
   const fp = await fpPromise;
 
-  return fp.get();
+  return fp.get({
+    extendedResult: true,
+  });
 }
 
 export const VISITOR_DATA_QUERY = 'VISITOR_DATA_QUERY';
