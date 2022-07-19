@@ -2,6 +2,7 @@ import { UserPreferences } from '../../../api/personalization/database';
 import { Op } from 'sequelize';
 import { personalizationEndpoint } from '../../../api/personalization/personalization-endpoint';
 
+// Fetches user preferences (for now only dark mode preference) for given visitorId
 export default personalizationEndpoint(async (req, res, { visitorId, usePersonalizedData }) => {
   if (!usePersonalizedData) {
     return res.status(404).json({

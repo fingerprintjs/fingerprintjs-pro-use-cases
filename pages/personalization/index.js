@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import { ProductItem } from '../../components/personalization/product-item';
@@ -10,6 +10,7 @@ import { UseCaseWrapper } from '../../components/use-case-wrapper';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { useProducts } from '../../shared/client/api/use-products';
 import { useVisitorData } from '../../shared/client/use-visitor-data';
+import { usePersonalizationNotification } from '../../hooks/use-personalization-notification';
 
 export default function Index() {
   const { isLoading: isFpDataLoading } = useVisitorData();
@@ -25,6 +26,14 @@ export default function Index() {
   const productsQuery = useProducts(searchQuery);
 
   const isLoading = productsQuery.isLoading || isFpDataLoading;
+
+  const { showNotification } = usePersonalizationNotification();
+
+  useEffect(() => {
+    if (productsQuery.data?.data?.querySaved) {
+      showNotification('Search query saved!');
+    }
+  }, [productsQuery.data, showNotification]);
 
   useDebounce(
     () => {
@@ -81,8 +90,8 @@ export default function Index() {
             marginTop: theme.spacing(6),
           })}
         >
-          {productsQuery.data?.data?.length ? (
-            productsQuery.data?.data?.map((product) => (
+          {productsQuery.data?.data?.products?.length ? (
+            productsQuery.data.data.products.map((product) => (
               <Grid
                 item
                 xs={12}

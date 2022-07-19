@@ -59,6 +59,7 @@ export const UserCartItem = sequelize.define('user_cart_item', {
   },
 });
 
+// Setup relations
 Product.hasMany(UserCartItem);
 UserCartItem.belongsTo(Product);
 

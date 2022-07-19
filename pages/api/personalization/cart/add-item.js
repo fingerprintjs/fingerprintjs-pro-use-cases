@@ -2,6 +2,7 @@ import { personalizationEndpoint } from '../../../../api/personalization/persona
 import { Product, UserCartItem } from '../../../../api/personalization/database';
 import { Op } from 'sequelize';
 
+// Adds an item to cart for the given visitorId
 export default personalizationEndpoint(async (req, res, { usePersonalizedData, visitorId }) => {
   if (!usePersonalizedData) {
     return res.status(400);
