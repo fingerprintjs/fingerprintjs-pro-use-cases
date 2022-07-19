@@ -80,6 +80,8 @@ async function persistSearchPhrase(query, visitorId) {
 }
 
 export default personalizationEndpoint(async (req, res, { usePersonalizedData, visitorId }) => {
+  let querySaved = false;
+
   const { query } = JSON.parse(req.body);
 
   let productsCount = await Product.count();
@@ -92,10 +94,15 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData, v
 
   if (query && usePersonalizedData) {
     await persistSearchPhrase(query.trim(), visitorId);
+
+    querySaved = true;
   }
 
   return res.status(200).json({
-    data: products,
+    data: {
+      products,
+      querySaved,
+    },
     size: products.length,
   });
 });

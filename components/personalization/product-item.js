@@ -9,9 +9,12 @@ import { LoadingButton } from '@mui/lab';
 import { useState } from 'react';
 import { useDebounce } from 'react-use';
 import { Check } from '@mui/icons-material';
+import { usePersonalizationNotification } from '../../hooks/use-personalization-notification';
 
 export function ProductItem({ product: { price, name, image, id } }) {
   const { addCartItemMutation } = useCart();
+
+  const { showNotification } = usePersonalizationNotification();
 
   const [wasAdded, setWasAdded] = useState(false);
 
@@ -53,6 +56,8 @@ export function ProductItem({ product: { price, name, image, id } }) {
           loading={addCartItemMutation.isLoading}
           onClick={async () => {
             await addCartItemMutation.mutateAsync({ productId: id });
+
+            showNotification('Product added to cart!');
 
             setWasAdded(true);
           }}
