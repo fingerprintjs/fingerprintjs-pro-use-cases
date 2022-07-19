@@ -40,7 +40,7 @@ export default function Index() {
           <div className="UsecaseWrapper_wrapper">
             <Logo width={500} />
             <p className="UsecaseWrapper_helper">
-              This project demonstrates various use cases for FingerprintJS Pro. Each scenario covers frontend and
+              This project demonstrates various use cases for Fingerprint Pro. Each scenario covers frontend and
               backend sample implementation with a persistent data layer. The open-source repository is available at{' '}
               <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases">GitHub</a>.
             </p>

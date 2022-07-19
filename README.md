@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://fingerprintjs.com">
-    <img src="https://user-images.githubusercontent.com/10922372/126062498-31921b6c-c7fd-47cb-bf85-9e172e08b664.png" alt="FingerprintJS" width="312px" />
+  <a href="https://fingerprint.com">
+    <img src="https://user-images.githubusercontent.com/10922372/126062498-31921b6c-c7fd-47cb-bf85-9e172e08b664.png" alt="Fingerprint" width="312px" />
   </a>
 </p>
 <p align="center">
@@ -12,9 +12,9 @@
 > **Warning**
 > This repository is a work in progress.
 
-# FingerprintJS Pro Use Cases
+# Fingerprint Pro Use Cases
 
-This repository demonstrates various use cases for FingerprintJS Pro. Each scenario covers frontend and backend sample implementation with a persistent data layer. Deployed demo of each use case is available at [fingerprinthub.com](https://fingerprinthub.com/).
+This repository demonstrates various use cases for Fingerprint Pro. Each scenario covers frontend and backend sample implementation with a persistent data layer. Deployed demo of each use case is available at [fingerprinthub.com](https://fingerprinthub.com/).
 
 ## How to run
 
