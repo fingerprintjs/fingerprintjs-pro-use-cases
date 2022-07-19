@@ -4,6 +4,7 @@ import { ThemeProvider } from '../shared/client/theme-provider';
 import Head from 'next/head';
 import { Header } from '../components/personalization/header';
 import { SnackbarProvider } from 'notistack';
+import { SnackbarAction } from '../components/snackbar-action';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,6 +19,7 @@ function App({ Component, pageProps }) {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <SnackbarProvider
+          action={(snackbarId) => <SnackbarAction snackbarId={snackbarId} />}
           maxSnack={3}
           autoHideDuration={5000}
           anchorOrigin={{

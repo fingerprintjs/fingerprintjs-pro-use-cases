@@ -11,19 +11,26 @@ import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { useProducts } from '../../shared/client/api/use-products';
 import { useVisitorData } from '../../shared/client/use-visitor-data';
 import { usePersonalizationNotification } from '../../hooks/use-personalization-notification';
+import { useSnackbar } from 'notistack';
+import { useUserPreferences } from '../../shared/client/api/use-user-preferences';
+import { useCart } from '../../shared/client/api/use-cart';
 
 export default function Index() {
-  const { isLoading: isFpDataLoading } = useVisitorData();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const { isLoading: isFpDataLoading, data } = useVisitorData();
 
   const theme = useTheme();
   const isSmallerScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-  const searchHistoryQuery = useSearchHistory();
-
   const [search, setSearch] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [userWelcomed, setUserWelcomed] = useState(false);
 
+  const searchHistoryQuery = useSearchHistory();
+  const { cartQuery } = useCart();
   const productsQuery = useProducts(searchQuery);
+  const { hasDarkMode } = useUserPreferences();
 
   const isLoading = productsQuery.isLoading || isFpDataLoading;
 
@@ -43,6 +50,21 @@ export default function Index() {
     [search, setSearchQuery]
   );
 
+  useEffect(() => {
+    if (
+      data?.incognito &&
+      data.visitorFound &&
+      !userWelcomed &&
+      (searchHistoryQuery.data.data?.length || hasDarkMode || cartQuery.data?.data?.length)
+    ) {
+      enqueueSnackbar('Welcome back! We applied your dark mode preference and synced your cart and search terms.', {
+        variant: 'info',
+      });
+
+      setUserWelcomed(true);
+    }
+  }, [cartQuery.data, data, enqueueSnackbar, hasDarkMode, searchHistoryQuery.data, userWelcomed]);
+
   return (
     <UseCaseWrapper
       title="Personalization"
@@ -50,7 +72,10 @@ export default function Index() {
         <>Try to search for products, we keep a history of your last searches.</>,
         <>We remember your dark mode preference.</>,
         <>Add some items to your very own cart.</>,
-        <>Try to open this page in incognito mode. Your preferences, search history, and cart content will still be there!</>,
+        <>
+          Try to open this page in incognito mode. Your preferences, search history, and cart content will still be
+          there!
+        </>,
       ]}
       description="This page demonstrates user personalization that is achieved by Fingerprint Pro. Users don't need to login in to get a tailored experience."
     >

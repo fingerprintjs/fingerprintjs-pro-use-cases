@@ -14,11 +14,6 @@ export function usePersonalizationNotification() {
 
       enqueueSnackbar('Link copied! You can now open it in incognito mode.', {
         variant: 'success',
-        action: (snackbarId) => (
-          <Button color="inherit" onClick={() => closeSnackbar(snackbarId)}>
-            Close
-          </Button>
-        ),
       });
     },
     [closeSnackbar, enqueueSnackbar]
