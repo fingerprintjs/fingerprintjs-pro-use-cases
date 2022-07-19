@@ -1,42 +1,7 @@
 import { Product, UserSearchHistory } from '../../../api/personalization/database';
-import { sequelize } from '../../../shared/server';
 import { Op } from 'sequelize';
 import { personalizationEndpoint } from '../../../api/personalization/personalization-endpoint';
-
-const coffeeAdjectives = ['Smooth', 'Medium', 'Strong', 'Extra strong', 'Decaf'];
-
-const coffeeImages = [
-  'https://images.unsplash.com/photo-1519682577862-22b62b24e493?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-1.2.1&q=80&w=720',
-  'https://images.unsplash.com/photo-1520790564652-5e2e07fc9454?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-1.2.1&q=80&w=720',
-  'https://images.unsplash.com/photo-1562537238-971da66934df?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-1.2.1&q=80&w=720',
-  'https://images.unsplash.com/photo-1501612636467-ddc0346d843d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-1.2.1&q=80&w=720',
-];
-
-function getRandomArrayElement(array) {
-  return array[Math.floor(Math.random() * array.length)];
-}
-
-function getRandomCoffeeImage() {
-  return getRandomArrayElement(coffeeImages);
-}
-
-async function seedProducts() {
-  await Promise.all(
-    Array.from({ length: 15 }).map(async () => {
-      const coffee = getRandomArrayElement(coffeeAdjectives);
-
-      return Product.create({
-        price: Math.floor(Math.random() * 100),
-        name: `${coffee} coffee`,
-        image: getRandomCoffeeImage(),
-        tags: [coffee],
-        timestamp: new Date().getTime(),
-      });
-    })
-  );
-
-  await sequelize.sync();
-}
+import { seedProducts } from '../../../api/personalization/seed';
 
 function searchProducts(query) {
   if (!query) {
@@ -52,6 +17,7 @@ function searchProducts(query) {
   });
 }
 
+// Persists search query for given visitorId
 async function persistSearchPhrase(query, visitorId) {
   const existingHistory = await UserSearchHistory.findOne({
     where: {
@@ -79,6 +45,8 @@ async function persistSearchPhrase(query, visitorId) {
   });
 }
 
+// Returns products from database, supports simple search query.
+// If search query is provided and visitorId is valid it is saved in database.
 export default personalizationEndpoint(async (req, res, { usePersonalizedData, visitorId }) => {
   let querySaved = false;
 
