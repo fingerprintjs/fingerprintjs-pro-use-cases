@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import Paper from '@mui/material/Paper';
 import { CreditScore, People, Settings } from '@mui/icons-material';
 import { PageTile } from '../components/page-tile';
 import Grid from '@mui/material/Grid';
+import { Logo } from '../components/logo';
 
 const pages = [
   {
@@ -38,7 +38,7 @@ export default function Index() {
       <div className="ExternalLayout_wrapper">
         <div className="ExternalLayout_main">
           <div className="UsecaseWrapper_wrapper">
-            <Image src="/logo.svg" alt="me" width="500" height="100%" />
+            <Logo width={500} />
             <p className="UsecaseWrapper_helper">
               This project demonstrates various use cases for FingerprintJS Pro. Each scenario covers frontend and
               backend sample implementation with a persistent data layer. The open-source repository is available at{' '}
