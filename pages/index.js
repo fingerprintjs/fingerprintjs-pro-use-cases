@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Paper from '@mui/material/Paper';
-import { CreditScore, People, Settings } from '@mui/icons-material';
+import { CreditScore, Money, People, Settings } from '@mui/icons-material';
 import { PageTile } from '../components/page-tile';
 import Grid from '@mui/material/Grid';
 import { Logo } from '../components/logo';
@@ -30,6 +30,12 @@ As a result, you will protect your users and your business against various payme
      
       Personalize content such as search history, customized user interface, or even shopping cart.`,
   },
+  {
+    title: 'Loan Risk',
+    url: '/loan-risk',
+    icon: <Money />,
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  },
 ];
 
 export default function Index() {
@@ -40,8 +46,8 @@ export default function Index() {
           <div className="UsecaseWrapper_wrapper">
             <Logo width={500} />
             <p className="UsecaseWrapper_helper">
-              This project demonstrates various use cases for Fingerprint Pro. Each scenario covers frontend and
-              backend sample implementation with a persistent data layer. The open-source repository is available at{' '}
+              This project demonstrates various use cases for Fingerprint Pro. Each scenario covers frontend and backend
+              sample implementation with a persistent data layer. The open-source repository is available at{' '}
               <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases">GitHub</a>.
             </p>
             <p className="UsecaseWrapper_helper">
