@@ -40,7 +40,14 @@ As a result, you will protect your users and your business against various payme
 
 export default function Index() {
   return (
-    <Paper variant="outlined">
+    <Paper
+      square
+      variant="outlined"
+      sx={{
+        overflow: 'auto',
+        paddingBottom: (theme) => theme.spacing(6),
+      }}
+    >
       <div className="ExternalLayout_wrapper">
         <div className="ExternalLayout_main">
           <div className="UsecaseWrapper_wrapper">
@@ -67,6 +74,10 @@ export default function Index() {
             md: 'row',
           }}
           spacing={3}
+          rowSpacing={{
+            xs: 4,
+            lg: 9,
+          }}
           sx={{
             marginTop: (theme) => theme.spacing(3),
             paddingX: (theme) => theme.spacing(6),
