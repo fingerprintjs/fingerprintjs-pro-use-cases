@@ -1,10 +1,10 @@
 import { useQuery, useQueryClient } from 'react-query';
 import { SEARCH_HISTORY_QUERY } from './use-search-history';
 import { useVisitorData } from '../use-visitor-data';
-import { personalizationRequest } from './api';
+import { apiRequest } from './api';
 
 function getProducts(fpData, query) {
-  return personalizationRequest('/api/personalization/get-products', fpData, {
+  return apiRequest('/api/personalization/get-products', fpData, {
     query,
   });
 }

@@ -14,6 +14,7 @@ import {
 import { LoginAttempt } from '../credential-stuffing/authenticate';
 import { PaymentAttempt } from '../payment-fraud/place-order';
 import { UserCartItem, UserPreferences, UserSearchHistory } from '../../../api/personalization/database';
+import { LoanRequest } from '../../../api/loan-risk/database';
 
 export default async function handler(req, res) {
   // This API route accepts only POST requests.
@@ -70,9 +71,10 @@ async function deleteVisitorIdData(visitorData) {
     [UserCartItem, UserPreferences, UserCartItem, UserSearchHistory].map((model) => model.destroy(options))
   );
   const deletedPersonalizationCount = deletedPersonalizationResult.reduce((acc, cur) => acc + cur, 0);
+  const deletedLoanRequests = await LoanRequest.destroy(options);
 
   return new CheckResult(
-    `Deleted ${loginAttemptsRowsRemoved} rows for Credential Stuffing problem, ${paymentAttemptsRowsRemoved} rows for Payment Fraud problem. Deleted ${deletedPersonalizationCount} entries related to personalization.`,
+    `Deleted ${loginAttemptsRowsRemoved} rows for Credential Stuffing problem, ${paymentAttemptsRowsRemoved} rows for Payment Fraud problem. Deleted ${deletedPersonalizationCount} entries related to personalization. Deleted ${deletedLoanRequests} loan request entries.`,
     messageSeverity.Success,
     checkResultType.Passed
   );

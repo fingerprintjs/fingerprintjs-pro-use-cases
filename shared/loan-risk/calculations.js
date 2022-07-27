@@ -12,6 +12,9 @@ export function calculateMonthInstallment({ loanValue, loanDuration }) {
   return totalValue / loanDuration;
 }
 
+/**
+ * Provides simplified calculations for loan, and decides whether it will be approved or not.
+ * */
 export function calculateLoanValues({ loanValue, monthIncome, loanDuration }) {
   const monthInstallment = calculateMonthInstallment({ loanValue, loanDuration });
   const remainingIncome = monthIncome - monthInstallment;

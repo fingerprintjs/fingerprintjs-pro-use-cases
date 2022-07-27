@@ -1,5 +1,5 @@
 import { UseCaseWrapper } from '../../components/use-case-wrapper';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -9,6 +9,9 @@ import TextField from '@mui/material/TextField';
 import { loanDurationValidation, loanValueValidation, monthIncomeValidation } from '../../shared/loan-risk/validation';
 import { calculateMonthInstallment } from '../../shared/loan-risk/calculations';
 import Button from '@mui/material/Button';
+import { useVisitorData } from '../../shared/client/use-visitor-data';
+import { useRequestLoan } from '../../shared/client/api/use-request-loan';
+import Alert from '@mui/material/Alert';
 
 function SliderField({ label, min, max, value, onChange, prefix, suffix }) {
   return (
@@ -43,6 +46,12 @@ function SliderField({ label, min, max, value, onChange, prefix, suffix }) {
 }
 
 export default function LoanRisk() {
+  const visitorDataQuery = useVisitorData({
+    // Don't invoke query on mount
+    enabled: false,
+  });
+  const loanRequestMutation = useRequestLoan();
+
   const [loanValue, setLoanValue] = useState(loanValueValidation.min);
   const [monthIncome, setMonthIncome] = useState(monthIncomeValidation.min);
   const [loanDuration, setLoanDuration] = useState(loanDurationValidation.min);
@@ -56,9 +65,27 @@ export default function LoanRisk() {
     [loanDuration, loanValue]
   );
 
+  const handleSubmit = useCallback(
+    async (event) => {
+      event.preventDefault();
+
+      const fpData = await visitorDataQuery.refetch();
+
+      await loanRequestMutation.mutateAsync({
+        loanValue,
+        monthIncome,
+        loanDuration,
+        fpData: fpData.data,
+      });
+    },
+    [loanDuration, loanRequestMutation, loanValue, monthIncome, visitorDataQuery]
+  );
+
+  const isLoading = visitorDataQuery.isLoading || loanRequestMutation.isLoading;
+
   return (
     <UseCaseWrapper title="Loan Risk problem" description="Lorem ipsum ...">
-      <form>
+      <form onSubmit={handleSubmit}>
         <Stack direction="column" spacing={6}>
           <SliderField
             prefix="$"
@@ -87,11 +114,16 @@ export default function LoanRisk() {
           <Typography>
             Your month installment is: <strong>${monthInstallment.toFixed(2)}</strong>
           </Typography>
-          <Button variant="contained" size="large">
-            Send loan request
+          <Button type="submit" variant="contained" size="large" disabled={isLoading}>
+            {isLoading ? 'Hold on, doing magic...' : 'Request loan'}
           </Button>
         </Stack>
       </form>
+      {loanRequestMutation.data?.message && !loanRequestMutation.isLoading && (
+        <Alert severity={loanRequestMutation.data.severity} className="UsecaseWrapper_alert">
+          {loanRequestMutation.data.message}
+        </Alert>
+      )}
     </UseCaseWrapper>
   );
 }

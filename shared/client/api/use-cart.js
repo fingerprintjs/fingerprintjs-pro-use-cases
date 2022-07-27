@@ -1,20 +1,20 @@
-import { personalizationRequest } from './api';
+import { apiRequest } from './api';
 import { useMutation, useQuery } from 'react-query';
 import { useVisitorData } from '../use-visitor-data';
 import { useCallback } from 'react';
 
 function getCart(fpData) {
-  return personalizationRequest('/api/personalization/cart/get-items', fpData);
+  return apiRequest('/api/personalization/cart/get-items', fpData);
 }
 
 function addCartItem(productId, fpData) {
-  return personalizationRequest('/api/personalization/cart/add-item', fpData, {
+  return apiRequest('/api/personalization/cart/add-item', fpData, {
     productId,
   });
 }
 
 function removeCartItem(itemId, fpData) {
-  return personalizationRequest('/api/personalization/cart/remove-item', fpData, { itemId });
+  return apiRequest('/api/personalization/cart/remove-item', fpData, { itemId });
 }
 
 const GET_CART_QUERY = 'GET_CART_QUERY';

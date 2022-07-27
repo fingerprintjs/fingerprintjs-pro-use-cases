@@ -24,6 +24,8 @@ export const VISITOR_DATA_QUERY = 'VISITOR_DATA_QUERY';
 
 // TODO User in other places as well
 // TODO Add comments
-export function useVisitorData() {
-  return useQuery(VISITOR_DATA_QUERY, () => getVisitorData());
+export function useVisitorData({ enabled = true } = {}) {
+  return useQuery(VISITOR_DATA_QUERY, () => getVisitorData(), {
+    enabled,
+  });
 }
