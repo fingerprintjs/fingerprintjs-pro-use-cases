@@ -13,7 +13,7 @@ import { calculateLoanValues } from '../../../shared/loan-risk/calculations';
  * Returning error here act as a example, you could potentially use this data to eg: avoid doing expensive credit checks for this user.
  * */
 async function checkPreviousLoanRequests(visitorData, req) {
-  const { monthIncome } = JSON.parse(req.body);
+  const { monthlyIncome } = JSON.parse(req.body);
 
   const timestampStart = new Date();
   const timestampEnd = new Date();
@@ -35,7 +35,7 @@ async function checkPreviousLoanRequests(visitorData, req) {
 
   if (previousLoanRequests.length) {
     // Check if month income is the same as in every previous loan request
-    const isValidIncome = previousLoanRequests.every((loanRequest) => loanRequest.monthIncome === monthIncome);
+    const isValidIncome = previousLoanRequests.every((loanRequest) => loanRequest.monthlyIncome === monthlyIncome);
 
     // Whoops, looks like the income is not the same!
     // You could potentially mark this user in your database as fraud, or perform some other actions.
@@ -44,7 +44,7 @@ async function checkPreviousLoanRequests(visitorData, req) {
       return new CheckResult(
         'Provided month income is not the same than previously provided one.',
         messageSeverity.Error,
-        checkResultType.InvalidMonthIncome
+        checkResultType.InvalidmonthlyIncome
       );
     }
   }
@@ -52,18 +52,18 @@ async function checkPreviousLoanRequests(visitorData, req) {
 
 export default loanRiskEndpoint(
   async (req, res, visitorData) => {
-    const { loanValue, monthIncome, loanDuration } = JSON.parse(req.body);
+    const { loanValue, monthlyIncome, loanDuration } = JSON.parse(req.body);
 
     const calculations = calculateLoanValues({
       loanValue,
-      monthIncome,
+      monthlyIncome,
       loanDuration,
     });
 
     await LoanRequest.create({
       visitorId: visitorData.visitorId,
       timestamp: new Date(),
-      monthIncome,
+      monthlyIncome,
       loanDuration,
       loanValue,
     });

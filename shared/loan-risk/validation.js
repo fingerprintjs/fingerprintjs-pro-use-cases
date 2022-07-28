@@ -3,7 +3,7 @@ export const loanValueValidation = {
   max: 1_000_000,
 };
 
-export const monthIncomeValidation = {
+export const monthlyIncomeValidation = {
   min: 500,
   max: 1_000_00,
 };

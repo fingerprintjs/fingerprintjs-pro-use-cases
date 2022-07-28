@@ -6,7 +6,11 @@ import Typography from '@mui/material/Typography';
 import FormLabel from '@mui/material/FormLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
-import { loanDurationValidation, loanValueValidation, monthIncomeValidation } from '../../shared/loan-risk/validation';
+import {
+  loanDurationValidation,
+  loanValueValidation,
+  monthlyIncomeValidation,
+} from '../../shared/loan-risk/validation';
 import { calculateMonthInstallment } from '../../shared/loan-risk/calculations';
 import Button from '@mui/material/Button';
 import { useVisitorData } from '../../shared/client/use-visitor-data';
@@ -53,7 +57,7 @@ export default function LoanRisk() {
   const loanRequestMutation = useRequestLoan();
 
   const [loanValue, setLoanValue] = useState(loanValueValidation.min);
-  const [monthIncome, setMonthIncome] = useState(monthIncomeValidation.min);
+  const [monthlyIncome, setmonthlyIncome] = useState(monthlyIncomeValidation.min);
   const [loanDuration, setLoanDuration] = useState(loanDurationValidation.min);
 
   const monthInstallment = useMemo(
@@ -73,12 +77,12 @@ export default function LoanRisk() {
 
       await loanRequestMutation.mutateAsync({
         loanValue,
-        monthIncome,
+        monthlyIncome,
         loanDuration,
         fpData: fpData.data,
       });
     },
-    [loanDuration, loanRequestMutation, loanValue, monthIncome, visitorDataQuery]
+    [loanDuration, loanRequestMutation, loanValue, monthlyIncome, visitorDataQuery]
   );
 
   const isLoading = visitorDataQuery.isLoading || loanRequestMutation.isLoading;
@@ -97,11 +101,11 @@ export default function LoanRisk() {
           />
           <SliderField
             prefix="$"
-            min={monthIncomeValidation.min}
-            max={monthIncomeValidation.max}
+            min={monthlyIncomeValidation.min}
+            max={monthlyIncomeValidation.max}
             label="How much do you make per month?"
-            value={monthIncome}
-            onChange={setMonthIncome}
+            value={monthlyIncome}
+            onChange={setmonthlyIncome}
           />
           <SliderField
             suffix="Months"

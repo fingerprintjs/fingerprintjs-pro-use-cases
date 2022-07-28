@@ -5,7 +5,7 @@ export const LoanRequest = sequelize.define('loan_request', {
   visitorId: {
     type: Sequelize.STRING,
   },
-  monthIncome: {
+  monthlyIncome: {
     type: Sequelize.DOUBLE,
   },
   loanDuration: {
