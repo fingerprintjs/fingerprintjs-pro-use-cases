@@ -88,7 +88,16 @@ export default function LoanRisk() {
   const isLoading = visitorDataQuery.isLoading || loanRequestMutation.isLoading;
 
   return (
-    <UseCaseWrapper title="Loan Risk problem" description="Lorem ipsum ...">
+    <UseCaseWrapper
+      title="Loan Risk problem"
+      description="This page demonstrates loan request form form protected against a fraud. Thanks to Fingerprint Pro you can compare previous loan requests sent by given user, without requiring this user to log in."
+      listItems={[
+        `We perform simple calculations to check if you can get the loan.`,
+        `Try to change your monthly income, first or last name after first submission. If we will find your other records
+          that will have different values, you will receive a warning and we won't preform any calculations.`,
+        `You can also try switching to the incognito mode or clearing cookies.`,
+      ]}
+    >
       <form onSubmit={handleSubmit}>
         <Stack direction="column" spacing={6}>
           <TextField
