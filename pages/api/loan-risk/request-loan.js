@@ -52,7 +52,7 @@ async function checkPreviousLoanRequests(visitorData, req) {
 
 export default loanRiskEndpoint(
   async (req, res, visitorData) => {
-    const { loanValue, monthlyIncome, loanDuration } = JSON.parse(req.body);
+    const { loanValue, monthlyIncome, loanDuration, firstName, lastName } = JSON.parse(req.body);
 
     const calculations = calculateLoanValues({
       loanValue,
@@ -66,6 +66,8 @@ export default loanRiskEndpoint(
       monthlyIncome,
       loanDuration,
       loanValue,
+      firstName,
+      lastName,
     });
 
     let result;

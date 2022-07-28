@@ -56,8 +56,10 @@ export default function LoanRisk() {
   });
   const loanRequestMutation = useRequestLoan();
 
+  const [firstName, setFirstName] = useState('John');
+  const [lastName, setLastName] = useState('Doe');
   const [loanValue, setLoanValue] = useState(loanValueValidation.min);
-  const [monthlyIncome, setmonthlyIncome] = useState(monthlyIncomeValidation.min);
+  const [monthlyIncome, setMonthlyIncome] = useState(monthlyIncomeValidation.min);
   const [loanDuration, setLoanDuration] = useState(loanDurationValidation.min);
 
   const monthInstallment = useMemo(
@@ -76,13 +78,11 @@ export default function LoanRisk() {
       const fpData = await visitorDataQuery.refetch();
 
       await loanRequestMutation.mutateAsync({
-        loanValue,
-        monthlyIncome,
-        loanDuration,
         fpData: fpData.data,
+        body: { loanValue, monthlyIncome, loanDuration, firstName, lastName },
       });
     },
-    [loanDuration, loanRequestMutation, loanValue, monthlyIncome, visitorDataQuery]
+    [firstName, lastName, loanDuration, loanRequestMutation, loanValue, monthlyIncome, visitorDataQuery]
   );
 
   const isLoading = visitorDataQuery.isLoading || loanRequestMutation.isLoading;
@@ -91,6 +91,18 @@ export default function LoanRisk() {
     <UseCaseWrapper title="Loan Risk problem" description="Lorem ipsum ...">
       <form onSubmit={handleSubmit}>
         <Stack direction="column" spacing={6}>
+          <TextField
+            label="First name"
+            value={firstName}
+            onChange={(event) => setFirstName(event.target.value)}
+            required
+          />
+          <TextField
+            label="Last name"
+            value={lastName}
+            onChange={(event) => setLastName(event.target.value)}
+            required
+          />
           <SliderField
             prefix="$"
             min={loanValueValidation.min}
@@ -105,7 +117,7 @@ export default function LoanRisk() {
             max={monthlyIncomeValidation.max}
             label="How much do you make per month?"
             value={monthlyIncome}
-            onChange={setmonthlyIncome}
+            onChange={setMonthlyIncome}
           />
           <SliderField
             suffix="Months"
