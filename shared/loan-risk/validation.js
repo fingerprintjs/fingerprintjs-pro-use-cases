@@ -10,5 +10,5 @@ export const monthlyIncomeValidation = {
 
 export const loanDurationValidation = {
   min: 2,
-  max: 120,
+  max: 48,
 };
