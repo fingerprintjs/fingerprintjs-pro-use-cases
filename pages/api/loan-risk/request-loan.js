@@ -13,7 +13,7 @@ import { calculateLoanValues } from '../../../shared/loan-risk/calculations';
  * Returning error here act as a example, you could potentially use this data to eg: avoid doing expensive credit checks for this user.
  * */
 async function checkPreviousLoanRequests(visitorData, req) {
-  const { monthlyIncome } = JSON.parse(req.body);
+  const { monthlyIncome, firstName, lastName } = JSON.parse(req.body);
 
   const timestampStart = new Date();
   const timestampEnd = new Date();
@@ -34,17 +34,22 @@ async function checkPreviousLoanRequests(visitorData, req) {
   });
 
   if (previousLoanRequests.length) {
-    // Check if month income is the same as in every previous loan request
-    const isValidIncome = previousLoanRequests.every((loanRequest) => loanRequest.monthlyIncome === monthlyIncome);
+    // Check if month income, first and last name are the same as in every previous loan request
+    const hasValidFields = previousLoanRequests.every(
+      (loanRequest) =>
+        loanRequest.monthlyIncome === monthlyIncome &&
+        loanRequest.firstName === firstName &&
+        loanRequest.lastName === lastName
+    );
 
-    // Whoops, looks like the income is not the same!
+    // Whoops, looks like the data is not the same!
     // You could potentially mark this user in your database as fraud, or perform some other actions.
-    // In our case, we just return an error.
-    if (!isValidIncome) {
+    // In our case, we just return an warning.
+    if (!hasValidFields) {
       return new CheckResult(
-        'Provided month income is not the same than previously provided one.',
-        messageSeverity.Error,
-        checkResultType.InvalidmonthlyIncome
+        'We are unable to approve your loan automatically, please contact our agents.',
+        messageSeverity.Warning,
+        checkResultType.PossibleLoanFraud
       );
     }
   }

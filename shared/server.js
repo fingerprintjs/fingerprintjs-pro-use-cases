@@ -48,7 +48,7 @@ export const checkResultType = Object.freeze({
   IncorrectCardDetails: 'IncorrectCardDetails',
 
   // Loan risk specific checks.
-  InvalidmonthlyIncome: 'InvalidmonthlyIncome',
+  PossibleLoanFraud: 'PossibleLoanFraud',
 });
 
 // Validates format of visitorId and requestId.
