@@ -15,6 +15,12 @@ const pages = [
 At the same time, your legit users won’t experience any additional friction.`,
   },
   {
+    title: 'Loan Risk',
+    url: '/loan-risk',
+    icon: <Money />,
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  },
+  {
     title: 'Payment Fraud',
     url: '/payment-fraud',
     icon: <CreditScore />,
@@ -29,12 +35,6 @@ As a result, you will protect your users and your business against various payme
     description: `Provide your users with tailored experience between incognito and normal mode even without cookies.
      
       Personalize content such as search history, customized user interface, or even shopping cart.`,
-  },
-  {
-    title: 'Loan Risk',
-    url: '/loan-risk',
-    icon: <Money />,
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   },
 ];
 

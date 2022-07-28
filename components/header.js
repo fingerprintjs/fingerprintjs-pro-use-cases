@@ -15,16 +15,16 @@ const navLinks = [
     url: '/credential-stuffing',
   },
   {
+    name: 'Loan Risk',
+    url: '/loan-risk',
+  },
+  {
     name: 'Payment Fraud',
     url: '/payment-fraud',
   },
   {
     name: 'Personalization',
     url: '/personalization',
-  },
-  {
-    name: 'Loan Risk',
-    url: '/loan-risk',
   },
 ];
 
