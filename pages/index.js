@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Paper from '@mui/material/Paper';
-import { CreditScore, Money, People, Settings } from '@mui/icons-material';
+import { Block, CreditScore, Money, People, Settings } from '@mui/icons-material';
 import { PageTile } from '../client/components/page-tile';
 import Grid from '@mui/material/Grid';
 import { Logo } from '../client/components/logo';
@@ -37,6 +37,12 @@ As a result, you will protect your users and your business against various payme
     description: `Provide your users with a tailored experience without cookies. 
     
     Demonstration of personalized content such as search history, customized user interface, or even shopping cart.`,
+  },
+  {
+    title: 'Paywall',
+    url: '/paywall',
+    icon: <Block />,
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   },
 ];
 

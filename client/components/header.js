@@ -26,6 +26,10 @@ const navLinks = [
     name: 'Personalization',
     url: '/personalization',
   },
+  {
+    name: 'Paywall',
+    url: '/paywall',
+  },
 ];
 
 export function Header({ addonRight }) {
@@ -51,6 +55,7 @@ export function Header({ addonRight }) {
             {navLinks.map((link) => (
               <Link href={link.url} key={link.name} passHref>
                 <Button
+                  size="small"
                   sx={(theme) => ({
                     color:
                       router.pathname === link.url
