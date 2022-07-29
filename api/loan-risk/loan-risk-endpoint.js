@@ -12,7 +12,7 @@ import {
 } from '../../shared/server';
 import { initLoanRisk } from './database';
 
-// Base checks for every endpoint related to loan risk
+// Server API validations.
 const loanChecks = [
   checkFreshIdentificationRequest,
   checkConfidenceScore,

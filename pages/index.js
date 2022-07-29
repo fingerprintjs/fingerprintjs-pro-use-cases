@@ -18,7 +18,9 @@ At the same time, your legit users won’t experience any additional friction.`,
     title: 'Loan Risk',
     url: '/loan-risk',
     icon: <Money />,
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    description: `Loan application protection is the practice of validating applications against prior submissions by users, either anonymous or authenticated.
+
+Essentially, it is to check for consistency between applications and ignore submissions from previously rejected applicants.`
   },
   {
     title: 'Payment Fraud',

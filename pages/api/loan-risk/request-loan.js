@@ -5,12 +5,11 @@ import { CheckResult, checkResultType, messageSeverity } from '../../../shared/s
 import { calculateLoanValues } from '../../../shared/loan-risk/calculations';
 
 /**
- * Validates previous loan requests sent by given user.
+ * Validates previous loan requests sent by a given user.
  *
- * In our case, we check loan requests that were sent on the same day and compare month income provided by user.
- * If month income is not the same as in previous request, we return error.
+ * As an example, we check loan requests received on the same day and we compare the monthly income provided by a user.
+ * If monthly income is not the same as in the previous request, we return a warning.
  *
- * Returning error here act as a example, you could potentially use this data to eg: avoid doing expensive credit checks for this user.
  * */
 async function checkPreviousLoanRequests(visitorData, req) {
   const { monthlyIncome, firstName, lastName } = JSON.parse(req.body);
@@ -21,7 +20,7 @@ async function checkPreviousLoanRequests(visitorData, req) {
   timestampStart.setHours(0, 0, 0, 0);
   timestampEnd.setHours(23, 59, 59, 59);
 
-  // Find previous loan requests that were sent by this user today
+  // Find previous loan requests that were sent by this visitorId today.
   const previousLoanRequests = await LoanRequest.findAll({
     where: {
       visitorId: {
@@ -34,7 +33,7 @@ async function checkPreviousLoanRequests(visitorData, req) {
   });
 
   if (previousLoanRequests.length) {
-    // Check if month income, first and last name are the same as in every previous loan request
+    // Check if monthly income, first name, and last name are the same as in previous loan requests.
     const hasValidFields = previousLoanRequests.every(
       (loanRequest) =>
         loanRequest.monthlyIncome === monthlyIncome &&
@@ -42,9 +41,9 @@ async function checkPreviousLoanRequests(visitorData, req) {
         loanRequest.lastName === lastName
     );
 
-    // Whoops, looks like the data is not the same!
-    // You could potentially mark this user in your database as fraud, or perform some other actions.
-    // In our case, we just return an warning.
+    // Whoops, it looks like the data is not the same!
+    // You could potentially mark this user in your database as fraudalent, or perform some other actions.
+    // In our case, we just return a warning.
     if (!hasValidFields) {
       return new CheckResult(
         'We are unable to approve your loan automatically, please contact our agents.',
@@ -85,7 +84,7 @@ export default loanRiskEndpoint(
       );
     } else {
       result = new CheckResult(
-        'Sorry, your month income is too low for this loan.',
+        'Sorry, your monthly income is too low for this loan.',
         messageSeverity.Warning,
         checkResultType.Challenged
       );
