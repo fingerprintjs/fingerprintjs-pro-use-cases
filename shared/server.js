@@ -46,6 +46,9 @@ export const checkResultType = Object.freeze({
   TooManyUnsuccessfulPayments: 'TooManyUnsuccessfulPayments',
   PaidWithStolenCard: 'PaidWithStolenCard',
   IncorrectCardDetails: 'IncorrectCardDetails',
+
+  // Loan risk specific checks.
+  PossibleLoanFraud: 'PossibleLoanFraud',
 });
 
 // Validates format of visitorId and requestId.

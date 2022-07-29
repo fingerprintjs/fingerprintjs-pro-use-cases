@@ -3,16 +3,20 @@ import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import { DarkMode, LightMode } from '@mui/icons-material';
-import { useUserPreferences } from '../../shared/client/api/use-user-preferences';
+import { useUserPreferences } from '../shared/client/api/use-user-preferences';
 import Link from 'next/link';
 import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
-import { Logo } from '../logo';
+import { Logo } from './logo';
 
 const navLinks = [
   {
     name: 'Credential Stuffing',
     url: '/credential-stuffing',
+  },
+  {
+    name: 'Loan Risk',
+    url: '/loan-risk',
   },
   {
     name: 'Payment Fraud',

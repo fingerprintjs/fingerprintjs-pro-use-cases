@@ -1,9 +1,9 @@
 import { useQuery } from 'react-query';
 import { useVisitorData } from '../use-visitor-data';
-import { personalizationRequest } from './api';
+import { apiRequest } from './api';
 
 function getSearchHistory(fpData) {
-  return personalizationRequest('/api/personalization/get-search-history', fpData);
+  return apiRequest('/api/personalization/get-search-history', fpData);
 }
 
 export const SEARCH_HISTORY_QUERY = 'SEARCH_HISTORY_QUERY';

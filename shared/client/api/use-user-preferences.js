@@ -1,15 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useVisitorData } from '../use-visitor-data';
-import { personalizationRequest } from './api';
+import { apiRequest } from './api';
 
 const GET_USER_PREFERENCES_QUERY = 'GET_USER_PREFERENCES_QUERY';
 
 function getUserPreferences(fpData) {
-  return personalizationRequest('/api/personalization/get-user-preferences', fpData);
+  return apiRequest('/api/personalization/get-user-preferences', fpData);
 }
 
 function updateUserPreferences(fpData, hasDarkMode) {
-  return personalizationRequest('/api/personalization/update-user-preferences', fpData, { hasDarkMode });
+  return apiRequest('/api/personalization/update-user-preferences', fpData, { hasDarkMode });
 }
 
 export function useUserPreferences() {

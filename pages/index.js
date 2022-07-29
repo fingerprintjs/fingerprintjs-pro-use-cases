@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Paper from '@mui/material/Paper';
-import { CreditScore, People, Settings } from '@mui/icons-material';
+import { CreditScore, Money, People, Settings } from '@mui/icons-material';
 import { PageTile } from '../components/page-tile';
 import Grid from '@mui/material/Grid';
 import { Logo } from '../components/logo';
@@ -13,6 +13,14 @@ const pages = [
     description: `Protect your users and your business against Credential Stuffing and other account takeover attacks with the proposed approaches.
     
 At the same time, your legit users won’t experience any additional friction.`,
+  },
+  {
+    title: 'Loan Risk',
+    url: '/loan-risk',
+    icon: <Money />,
+    description: `Loan application protection is the practice of validating applications against prior submissions by users, either anonymous or authenticated.
+
+Essentially, it is to check for consistency between applications and ignore submissions from previously rejected applicants.`
   },
   {
     title: 'Payment Fraud',
@@ -34,14 +42,21 @@ As a result, you will protect your users and your business against various payme
 
 export default function Index() {
   return (
-    <Paper variant="outlined">
+    <Paper
+      square
+      variant="outlined"
+      sx={{
+        overflow: 'auto',
+        paddingBottom: (theme) => theme.spacing(6),
+      }}
+    >
       <div className="ExternalLayout_wrapper">
         <div className="ExternalLayout_main">
           <div className="UsecaseWrapper_wrapper">
             <Logo width={500} />
             <p className="UsecaseWrapper_helper">
-              This project demonstrates various use cases for Fingerprint Pro. Each scenario covers frontend and
-              backend sample implementation with a persistent data layer. The open-source repository is available at{' '}
+              This project demonstrates various use cases for Fingerprint Pro. Each scenario covers frontend and backend
+              sample implementation with a persistent data layer. The open-source repository is available at{' '}
               <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases">GitHub</a>.
             </p>
             <p className="UsecaseWrapper_helper">
@@ -61,6 +76,10 @@ export default function Index() {
             md: 'row',
           }}
           spacing={3}
+          rowSpacing={{
+            xs: 4,
+            lg: 9,
+          }}
           sx={{
             marginTop: (theme) => theme.spacing(3),
             paddingX: (theme) => theme.spacing(6),

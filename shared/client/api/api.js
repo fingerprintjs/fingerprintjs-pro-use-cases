@@ -1,4 +1,4 @@
-export function personalizationRequest(pathname, fpData, body = {}) {
+export function apiRequest(pathname, fpData, body = {}) {
   return fetch(pathname, {
     method: 'POST',
     body: JSON.stringify({
