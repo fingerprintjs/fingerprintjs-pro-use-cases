@@ -22,8 +22,9 @@ async function getVisitorData() {
 
 export const VISITOR_DATA_QUERY = 'VISITOR_DATA_QUERY';
 
-// TODO User in other places as well
-// TODO Add comments
+/**
+ * Query for fetching visitorData using our Fingerprint Pro agent.
+ * */
 export function useVisitorData({ enabled = true } = {}) {
   return useQuery(VISITOR_DATA_QUERY, () => getVisitorData(), {
     enabled,

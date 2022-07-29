@@ -11,8 +11,8 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
-import { getFingerprintJS } from '../../shared/client';
 import { UseCaseWrapper } from '../../components/use-case-wrapper';
+import { useVisitorData } from '../../shared/client/use-visitor-data';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -25,6 +25,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Index() {
+  const visitorDataQuery = useVisitorData({
+    // Don't fetch visitorData on mount
+    enabled: false,
+  });
+
   // Default mocked user data
   const [userName, setUserName] = useState('user');
   const [password, setPassword] = useState('password');
@@ -34,25 +39,19 @@ export default function Index() {
   const [isWaitingForReponse, setIsWaitingForReponse] = useState(false);
   const [httpResponseStatus, setHttpResponseStatus] = useState();
   const [showPassword, setShowPassword] = useState(false);
-  const [fp, setFp] = useState(null);
 
   const messageRef = useRef();
 
   useEffect(() => {
-    async function getFingerprint() {
-      await getFingerprintJS(setFp);
-    }
-    !fp && getFingerprint();
     !isWaitingForReponse && messageRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [isWaitingForReponse, fp]);
+  }, [isWaitingForReponse]);
 
   async function handleSubmit(e) {
     e.preventDefault();
     setIsWaitingForReponse(true);
 
-    const fpResult = await fp.get();
-    const visitorId = fpResult.visitorId;
-    const requestId = fpResult.requestId;
+    const fpQuery = await visitorDataQuery.refetch();
+    const { requestId, visitorId } = fpQuery.data;
 
     const loginData = {
       userName,
