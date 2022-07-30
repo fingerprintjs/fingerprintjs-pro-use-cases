@@ -26,4 +26,5 @@ Alternatively, one can use also the [Stackblitz environment](https://stackblitz.
 ## Covered Scenarios
 
 - [Credential Stuffing](https://fingerprinthub.com/credential-stuffing)
+- [Loan Risk](https://fingerprinthub.com/loan-risk)
 - [Payment Fraud](https://fingerprinthub.com/payment-fraud)

@@ -59,7 +59,7 @@ export default function LoanRisk() {
   const [firstName, setFirstName] = useState('John');
   const [lastName, setLastName] = useState('Doe');
   const [loanValue, setLoanValue] = useState(loanValueValidation.min);
-  const [monthlyIncome, setMonthlyIncome] = useState(monthlyIncomeValidation.min);
+  const [monthlyIncome, setMonthlyIncome] = useState(10000);
   const [loanDuration, setLoanDuration] = useState(loanDurationValidation.min);
 
   const monthInstallment = useMemo(
@@ -131,7 +131,7 @@ export default function LoanRisk() {
             suffix="Months"
             min={loanDurationValidation.min}
             max={loanDurationValidation.max}
-            label="How long do you need the loan?"
+            label="Loan term (months)"
             value={loanDuration}
             onChange={setLoanDuration}
           />
