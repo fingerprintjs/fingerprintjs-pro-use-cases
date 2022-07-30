@@ -1,6 +1,7 @@
 import Paper from '@mui/material/Paper';
 import clsx from 'clsx';
 import Divider from '@mui/material/Divider';
+import Link from 'next/link';
 
 export function UseCaseWrapper({ title, description, listItems, children, variant, hideSrcListItem = false }) {
   return (
@@ -16,16 +17,21 @@ export function UseCaseWrapper({ title, description, listItems, children, varian
                 <li key={index}>{item}</li>
               ))}
               {!hideSrcListItem && (
-                <li>
-                  Need src?{' '}
-                  <a
-                    href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Sure!
-                  </a>
-                </li>
+                <>
+                  <li>
+                  You can reset this scenario on the <Link href="/admin">admin page</Link>.
+                  </li>
+                  <li>
+                    Need src?{' '}
+                    <a
+                      href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Sure!
+                    </a>
+                  </li>
+                </>
               )}
             </ul>
           </div>
