@@ -3,9 +3,10 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
+import { SITE_URL } from '../../shared/const';
 
 export async function getStaticProps() {
-  const articles = await fetch('/api/paywall/get-articles').then((res) => res.json());
+  const articles = await fetch(`${SITE_URL}/api/paywall/get-articles`).then((res) => res.json());
 
   return {
     props: {

@@ -49,6 +49,9 @@ export const checkResultType = Object.freeze({
 
   // Loan risk specific checks.
   PossibleLoanFraud: 'PossibleLoanFraud',
+
+  // Paywall specific checks.
+  ArticleViewLimitExceeded: 'ArticleViewLimitExceeded',
 });
 
 // Validates format of visitorId and requestId.
