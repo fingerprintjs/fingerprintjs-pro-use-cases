@@ -2,9 +2,11 @@ import { Op } from 'sequelize';
 import { ArticleView } from './database';
 import { CheckResult, checkResultType, messageSeverity } from '../../shared/server';
 import { getTodayDateRange } from '../../shared/utils/date';
+import { ARTICLE_VIEW_LIMIT } from '../../shared/paywall/constants';
 
-export const ARTICLE_VIEW_LIMIT = 3;
-
+/**
+ * Saves article view into database. If it already exists, we update its timestamp.
+ * */
 export async function saveArticleView(articleId, visitorId) {
   const { timestampEnd, timestampStart } = getTodayDateRange();
 
@@ -36,6 +38,9 @@ export async function saveArticleView(articleId, visitorId) {
   return view;
 }
 
+/**
+ * Returns count of all articles that were viewed by given visitorId today.
+ * */
 export async function countViewedArticles(visitorId) {
   const { timestampEnd, timestampStart } = getTodayDateRange();
 
@@ -51,6 +56,9 @@ export async function countViewedArticles(visitorId) {
   });
 }
 
+/**
+ * Checks if given visitor has exceeded his daily limit of free article views.
+ * */
 export async function checkCountOfViewedArticles(visitorData, req) {
   const { timestampEnd, timestampStart } = getTodayDateRange();
 

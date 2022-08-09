@@ -19,9 +19,11 @@ const loanChecks = [
   checkConfidenceScore,
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
+  // Additional checks that returns error if user exceeded his daily free article views
   checkCountOfViewedArticles,
 ];
 
+// Provides common logic used in paywall use-case
 export const paywallEndpoint =
   (requestCallback, optionalChecks = []) =>
   async (req, res) => {
@@ -53,6 +55,7 @@ export const paywallEndpoint =
           case checkResultType.Challenged:
             continue;
           case checkResultType.ArticleViewLimitExceeded:
+            // No need to report suspicious activity for this error
             return getForbiddenReponse(res, result.message, result.messageSeverity);
           default:
             reportSuspiciousActivity(req);

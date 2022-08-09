@@ -42,7 +42,9 @@ As a result, you will protect your users and your business against various payme
     title: 'Paywall',
     url: '/paywall',
     icon: <Block />,
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    description: `Provide limited access to your content and ensure that your users are not able to exceed it.
+      
+      Users won't be able to bypass it even by clearing cookies or switching to incognito mode.`,
   },
 ];
 

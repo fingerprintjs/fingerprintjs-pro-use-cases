@@ -1,3 +1,6 @@
+/**
+ * Mock articles "database". In a real world, these articles could be fetched from anywhere.
+ * */
 export const articles = [
   {
     id: '1',

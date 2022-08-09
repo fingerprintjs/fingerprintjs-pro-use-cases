@@ -1,7 +1,12 @@
 import { articles } from '../../../../api/paywall/articles';
 import { paywallEndpoint } from '../../../../api/paywall/paywall-endpoint';
-import { ARTICLE_VIEW_LIMIT, countViewedArticles, saveArticleView } from '../../../../api/paywall/article-views';
+import { countViewedArticles, saveArticleView } from '../../../../api/paywall/article-views';
+import { ARTICLE_VIEW_LIMIT } from '../../../../shared/paywall/constants';
 
+/**
+ * Fetches article by its ID. Supports paywall logic, which means that we keep track how many articles were viewed by given user.
+ * If user has exceeded limit of articles that he can view for free, we return an error.
+ */
 export default paywallEndpoint(async (req, res, visitorData) => {
   const { id } = req.query;
 

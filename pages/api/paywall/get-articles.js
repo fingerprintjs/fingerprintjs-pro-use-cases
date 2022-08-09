@@ -2,6 +2,9 @@ import { articles } from '../../../api/paywall/articles';
 
 const SHORT_ARTICLE_CONTENT_LENGTH = 100;
 
+/**
+ * Returns articles with trimmed description from the database.
+ */
 export default function getArticles(req, res) {
   const mappedArticles = articles.map((article) => ({
     ...article,
