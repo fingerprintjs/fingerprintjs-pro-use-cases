@@ -46,7 +46,7 @@ async function checkPreviousLoanRequests(visitorData, req) {
     // In our case, we just return a warning.
     if (!hasValidFields) {
       return new CheckResult(
-        'We are unable to approve your loan automatically, because you requested loan previously with different income and/or different personal details. Please contact our agents.',
+        'We are unable to approve your loan automatically since you had requested a loan with a different income or personal details before. We need to verify provided information manually this time. Please, reach out to our agent.',
         messageSeverity.Warning,
         checkResultType.PossibleLoanFraud
       );
