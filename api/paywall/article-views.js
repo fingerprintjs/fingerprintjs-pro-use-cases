@@ -1,10 +1,13 @@
 import { Op } from 'sequelize';
 import { ArticleView } from './database';
 import { CheckResult, checkResultType, messageSeverity } from '../../shared/server';
+import { getTodayDateRange } from '../../shared/utils/date';
 
 export const ARTICLE_VIEW_LIMIT = 3;
 
 export async function saveArticleView(articleId, visitorId) {
+  const { timestampEnd, timestampStart } = getTodayDateRange();
+
   const [view, created] = await ArticleView.findOrCreate({
     where: {
       articleId: {
@@ -12,6 +15,9 @@ export async function saveArticleView(articleId, visitorId) {
       },
       visitorId: {
         [Op.eq]: visitorId,
+      },
+      timestamp: {
+        [Op.between]: [timestampStart, timestampEnd],
       },
     },
     defaults: {
@@ -31,16 +37,23 @@ export async function saveArticleView(articleId, visitorId) {
 }
 
 export async function countViewedArticles(visitorId) {
+  const { timestampEnd, timestampStart } = getTodayDateRange();
+
   return await ArticleView.count({
     where: {
       visitorId: {
         [Op.eq]: visitorId,
+      },
+      timestamp: {
+        [Op.between]: [timestampStart, timestampEnd],
       },
     },
   });
 }
 
 export async function checkCountOfViewedArticles(visitorData, req) {
+  const { timestampEnd, timestampStart } = getTodayDateRange();
+
   const [count, existingView] = await Promise.all([
     countViewedArticles(visitorData.visitorId),
     ArticleView.findOne({
@@ -50,6 +63,9 @@ export async function checkCountOfViewedArticles(visitorData, req) {
         },
         articleId: {
           [Op.eq]: req.query.id,
+        },
+        timestamp: {
+          [Op.between]: [timestampStart, timestampEnd],
         },
       },
     }),

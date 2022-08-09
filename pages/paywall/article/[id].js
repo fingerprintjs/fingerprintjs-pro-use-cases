@@ -84,7 +84,7 @@ export default function Article() {
       <Alert severity="warning" className="UsecaseWrapper_alert">
         {data.remainingViews > 0
           ? `You have ${data.remainingViews} remaining free article views.`
-          : 'You have exceeded your free article views.'}
+          : 'You have exceeded your free daily article views.'}
       </Alert>
     </UseCaseWrapper>
   );
