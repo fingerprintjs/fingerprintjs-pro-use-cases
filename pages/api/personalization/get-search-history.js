@@ -5,7 +5,7 @@ import { personalizationEndpoint } from '../../../api/personalization/personaliz
 // Endpoint for fetching user search history for given visitorId
 export default personalizationEndpoint(async (req, res, { usePersonalizedData, visitorId }) => {
   if (!usePersonalizedData) {
-    return res.status(404).json({
+    return res.status(200).json({
       data: [],
       size: 0,
     });

@@ -5,7 +5,7 @@ import { personalizationEndpoint } from '../../../api/personalization/personaliz
 // Fetches user preferences (for now only dark mode preference) for given visitorId
 export default personalizationEndpoint(async (req, res, { visitorId, usePersonalizedData }) => {
   if (!usePersonalizedData) {
-    return res.status(404).json({
+    return res.status(200).json({
       data: null,
     });
   }
@@ -19,7 +19,7 @@ export default personalizationEndpoint(async (req, res, { visitorId, usePersonal
   });
 
   if (!result) {
-    return res.status(404).json({
+    return res.status(200).json({
       data: null,
     });
   }
