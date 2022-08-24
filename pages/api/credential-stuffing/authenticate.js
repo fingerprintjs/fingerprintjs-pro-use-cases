@@ -128,7 +128,7 @@ async function checkCredentialsAndKnownVisitorIds(visitorData, request) {
       // we recommend using an additional way of verification, e.g. 2FA or email.
     } else {
       return new CheckResult(
-        "Provided credentials are correct but we've never seen you logging in using this device. Proof your identify with a second factor.",
+        "Provided credentials are correct but we've never seen you logging in using this device. Confirm your identity with a second factor.",
         messageSeverity.Warning,
         checkResultType.Challenged
       );
