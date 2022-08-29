@@ -79,7 +79,7 @@ export default function Index() {
   return (
     <>
       <Dialog open={!didAcknowledge}>
-        <DialogTitle>Warning</DialogTitle>
+        <DialogTitle>Heads up!</DialogTitle>
         <DialogContent>
           <DialogContentText whiteSpace="pre-line">
             Fingerprint Pro technology cannot be used to circumvent GDPR and other regulations and must fully comply
@@ -91,7 +91,7 @@ export default function Index() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDidAcknowledge(true)}>I understand</Button>
+          <Button onClick={() => setDidAcknowledge(true)}>Okay, I understand</Button>
         </DialogActions>
       </Dialog>
       <UseCaseWrapper
