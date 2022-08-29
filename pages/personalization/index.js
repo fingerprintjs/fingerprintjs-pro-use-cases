@@ -1,13 +1,23 @@
 import { useEffect, useState } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
-import Grid from '@mui/material/Grid';
 import { ProductItem } from '../../components/personalization/product-item';
 import { PersonalizationTopSection } from '../../components/personalization/personalization-top-section';
-import { useDebounce } from 'react-use';
-import Typography from '@mui/material/Typography';
+import { useDebounce, useSessionStorage } from 'react-use';
 import { useSearchHistory } from '../../shared/client/api/use-search-history';
 import { UseCaseWrapper } from '../../components/use-case-wrapper';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { useProducts } from '../../shared/client/api/use-products';
 import { useVisitorData } from '../../shared/client/use-visitor-data';
 import { usePersonalizationNotification } from '../../hooks/use-personalization-notification';
@@ -23,6 +33,7 @@ export default function Index() {
   const theme = useTheme();
   const isSmallerScreen = useMediaQuery(theme.breakpoints.down('md'));
 
+  const [didAcknowledge, setDidAcknowledge] = useSessionStorage('didAcknowledgePersonalizationUseCaseWarning', false);
   const [search, setSearch] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [userWelcomed, setUserWelcomed] = useState(false);
@@ -66,75 +77,93 @@ export default function Index() {
   }, [cartQuery.data, data, enqueueSnackbar, hasDarkMode, searchHistoryQuery.data, userWelcomed]);
 
   return (
-    <UseCaseWrapper
-      title="Personalization"
-      listItems={[
-        <>Try to search for products, we keep a history of your last searches.</>,
-        <>We remember your dark mode preference.</>,
-        <>Add some items to your very own cart.</>,
-        <>
-          Try to open this page in incognito mode. Your preferences, search history, and cart content will still be
-          there!
-        </>,
-      ]}
-      description="This page demonstrates user personalization that is achieved by Fingerprint Pro. Users don't need to login in to get a tailored experience."
-    >
-      <PersonalizationTopSection
-        search={search}
-        onSearch={setSearch}
-        searchHistory={searchHistoryQuery.data}
-        onSearchHistoryClick={(query) => {
-          setSearch(query);
-        }}
-      />
-      {isLoading ? (
-        <Box
-          sx={(theme) => ({
-            marginTop: theme.spacing(6),
-          })}
-          display="flex"
-          width="100%"
-          height="100%"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <CircularProgress
-            sx={{
-              marginLeft: (theme) => theme.spacing(3),
-            }}
-          />
-        </Box>
-      ) : (
-        <Grid
-          justifyContent="center"
-          alignItems="center"
-          container
-          columnSpacing={isSmallerScreen ? 0 : 2}
-          sx={(theme) => ({
-            padding: 0,
-            width: '100%',
-            marginTop: theme.spacing(6),
-          })}
-        >
-          {productsQuery.data?.data?.products?.length ? (
-            productsQuery.data.data.products.map((product) => (
-              <Grid
-                item
-                xs={12}
-                md={4}
-                key={product.id}
-                sx={{
-                  marginBottom: (theme) => theme.spacing(4),
-                }}
-              >
-                <ProductItem product={product} />
-              </Grid>
-            ))
-          ) : (
-            <Typography variant="h5">No coffees found :(</Typography>
-          )}
-        </Grid>
-      )}
-    </UseCaseWrapper>
+    <>
+      <Dialog open={!didAcknowledge}>
+        <DialogTitle>Warning</DialogTitle>
+        <DialogContent>
+          <DialogContentText whiteSpace="pre-line">
+            Fingerprint Pro technology cannot be used to circumvent GDPR and other regulations and must fully comply
+            with the laws in the jurisdiction. You should not do personalization across incognito mode and normal mode
+            because it violates the users expectations and will lead to a bad experience.
+            <br />
+            <br />
+            This technical demo only uses incognito mode to demonstrate cookie expiration for non-technical folks.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDidAcknowledge(true)}>I understand</Button>
+        </DialogActions>
+      </Dialog>
+      <UseCaseWrapper
+        title="Personalization"
+        listItems={[
+          <>Try to search for products, we keep a history of your last searches.</>,
+          <>We remember your dark mode preference.</>,
+          <>Add some items to your very own cart.</>,
+          <>
+            Try to open this page in incognito mode. Your preferences, search history, and cart content will still be
+            there!
+          </>,
+        ]}
+        description="This page demonstrates user personalization that is achieved by Fingerprint Pro. Users don't need to login in to get a tailored experience."
+      >
+        <PersonalizationTopSection
+          search={search}
+          onSearch={setSearch}
+          searchHistory={searchHistoryQuery.data}
+          onSearchHistoryClick={(query) => {
+            setSearch(query);
+          }}
+        />
+        {isLoading ? (
+          <Box
+            sx={(theme) => ({
+              marginTop: theme.spacing(6),
+            })}
+            display="flex"
+            width="100%"
+            height="100%"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <CircularProgress
+              sx={{
+                marginLeft: (theme) => theme.spacing(3),
+              }}
+            />
+          </Box>
+        ) : (
+          <Grid
+            justifyContent="center"
+            alignItems="center"
+            container
+            columnSpacing={isSmallerScreen ? 0 : 2}
+            sx={(theme) => ({
+              padding: 0,
+              width: '100%',
+              marginTop: theme.spacing(6),
+            })}
+          >
+            {productsQuery.data?.data?.products?.length ? (
+              productsQuery.data.data.products.map((product) => (
+                <Grid
+                  item
+                  xs={12}
+                  md={4}
+                  key={product.id}
+                  sx={{
+                    marginBottom: (theme) => theme.spacing(4),
+                  }}
+                >
+                  <ProductItem product={product} />
+                </Grid>
+              ))
+            ) : (
+              <Typography variant="h5">No coffees found :(</Typography>
+            )}
+          </Grid>
+        )}
+      </UseCaseWrapper>
+    </>
   );
 }

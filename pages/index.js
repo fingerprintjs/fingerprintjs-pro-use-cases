@@ -20,7 +20,7 @@ At the same time, your legit users won’t experience any additional friction.`,
     icon: <Money />,
     description: `Loan application protection is the practice of validating applications against prior submissions by users, either anonymous or authenticated.
 
-Essentially, it is to check for consistency between applications and ignore submissions from previously rejected applicants.`
+Essentially, it is to check for consistency between applications and ignore submissions from previously rejected applicants.`,
   },
   {
     title: 'Payment Fraud',
@@ -34,9 +34,9 @@ As a result, you will protect your users and your business against various payme
     title: 'Personalization',
     url: '/personalization',
     icon: <Settings />,
-    description: `Provide your users with tailored experience between incognito and normal mode even without cookies.
-     
-      Personalize content such as search history, customized user interface, or even shopping cart.`,
+    description: `Provide your users with a tailored experience without cookies. 
+    
+    Demonstration of personalized content such as search history, customized user interface, or even shopping cart.`,
   },
 ];
 
