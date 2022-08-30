@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import Paper from '@mui/material/Paper';
 import { CreditScore, Money, People, Settings } from '@mui/icons-material';
-import { PageTile } from '../components/page-tile';
+import { PageTile } from '../client/components/page-tile';
 import Grid from '@mui/material/Grid';
-import { Logo } from '../components/logo';
+import { Logo } from '../client/components/logo';
 
 const pages = [
   {

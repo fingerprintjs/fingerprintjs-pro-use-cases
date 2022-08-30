@@ -1,10 +1,10 @@
 import '../styles/globals.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ThemeProvider } from '../shared/client/theme-provider';
+import { ThemeProvider } from '../client/theme-provider';
 import Head from 'next/head';
-import { Header } from '../components/header';
+import { Header } from '../client/components/header';
 import { SnackbarProvider } from 'notistack';
-import { SnackbarAction } from '../components/snackbar-action';
+import { SnackbarAction } from '../client/components/snackbar-action';
 
 const queryClient = new QueryClient({
   defaultOptions: {

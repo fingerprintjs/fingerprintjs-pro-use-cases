@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import { DarkMode, LightMode } from '@mui/icons-material';
-import { useUserPreferences } from '../shared/client/api/use-user-preferences';
+import { useUserPreferences } from '../api/use-user-preferences';
 import Link from 'next/link';
 import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
@@ -43,7 +43,7 @@ export function Header({ addonRight }) {
       <Toolbar>
         <Stack direction="row" justifyContent="space-between" width="100%">
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Link href="/">
+            <Link href="/pages">
               <a>
                 <Logo width={300} />
               </a>

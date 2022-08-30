@@ -1,4 +1,4 @@
-import { sequelize } from '../../shared/server';
+import { sequelize } from '../server';
 import * as Sequelize from 'sequelize';
 
 export const LoanRequest = sequelize.define('loan_request', {

@@ -1,7 +1,7 @@
-import { loanRiskEndpoint } from '../../../api/loan-risk/loan-risk-endpoint';
-import { LoanRequest } from '../../../api/loan-risk/database';
+import { loanRiskEndpoint } from '../../../server/loan-risk/loan-risk-endpoint';
+import { LoanRequest } from '../../../server/loan-risk/database';
 import { Op } from 'sequelize';
-import { CheckResult, checkResultType, messageSeverity } from '../../../shared/server';
+import { CheckResult, checkResultType, messageSeverity } from '../../../server/server';
 import { calculateLoanValues } from '../../../shared/loan-risk/calculations';
 
 /**

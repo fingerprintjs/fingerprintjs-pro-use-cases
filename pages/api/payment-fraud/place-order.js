@@ -14,7 +14,7 @@ import {
   messageSeverity,
   reportSuspiciousActivity,
   sequelize,
-} from '../../../shared/server';
+} from '../../../server/server';
 
 // Defines db model for payment attempt.
 export const PaymentAttempt = sequelize.define('payment-attempt', {

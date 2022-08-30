@@ -1,4 +1,4 @@
-import { ensurePostRequest } from '../../shared/server';
+import { ensurePostRequest } from '../server';
 import { initProducts } from './database';
 import { validatePersonalizationRequest } from './visitor-validations';
 

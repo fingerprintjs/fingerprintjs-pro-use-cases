@@ -1,4 +1,4 @@
-import { useCart } from '../../shared/client/api/use-cart';
+import { useCart } from '../../api/use-cart';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Image from 'next/image';

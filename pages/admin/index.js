@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
-import { getFingerprintJS } from '../../shared/client';
-import { UseCaseWrapper } from '../../components/use-case-wrapper';
+import { getFingerprintJS } from '../../client/client';
+import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 
 export default function Index() {
   const [statusMessage, setStatusMessage] = useState();

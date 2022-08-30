@@ -1,5 +1,5 @@
-import { personalizationEndpoint } from '../../../../api/personalization/personalization-endpoint';
-import { Product, UserCartItem } from '../../../../api/personalization/database';
+import { personalizationEndpoint } from '../../../../server/personalization/personalization-endpoint';
+import { Product, UserCartItem } from '../../../../server/personalization/database';
 import { Op } from 'sequelize';
 
 // Adds an item to cart for the given visitorId
