@@ -79,11 +79,11 @@ export default function Index() {
   return (
     <>
       <Dialog open={!didAcknowledge}>
-        <DialogTitle>Warning</DialogTitle>
+        <DialogTitle>Heads up!</DialogTitle>
         <DialogContent>
           <DialogContentText whiteSpace="pre-line">
             Fingerprint Pro technology cannot be used to circumvent GDPR and other regulations and must fully comply
-            with the laws in the jurisdiction. You should not do personalization across incognito mode and normal mode
+            with the laws in the jurisdiction. You should not implement personalization elements across incognito mode and normal mode
             because it violates the users expectations and will lead to a bad experience.
             <br />
             <br />
@@ -91,7 +91,7 @@ export default function Index() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDidAcknowledge(true)}>I understand</Button>
+          <Button onClick={() => setDidAcknowledge(true)}>Okay, I understand</Button>
         </DialogActions>
       </Dialog>
       <UseCaseWrapper
