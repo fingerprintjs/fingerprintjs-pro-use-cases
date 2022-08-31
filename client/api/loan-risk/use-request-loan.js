@@ -1,4 +1,4 @@
-import { apiRequest } from './api';
+import { apiRequest } from '../api';
 import { useMutation } from 'react-query';
 
 function requestLoan({ fpData, body }) {

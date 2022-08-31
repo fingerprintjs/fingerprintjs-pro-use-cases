@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import { DarkMode, LightMode } from '@mui/icons-material';
-import { useUserPreferences } from '../api/use-user-preferences';
+import { useUserPreferences } from '../api/personalization/use-user-preferences';
 import Link from 'next/link';
 import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';

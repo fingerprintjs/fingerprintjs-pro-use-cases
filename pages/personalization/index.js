@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { ProductItem } from '../../client/components/personalization/product-item';
 import { PersonalizationTopSection } from '../../client/components/personalization/personalization-top-section';
 import { useDebounce, useSessionStorage } from 'react-use';
-import { useSearchHistory } from '../../client/api/use-search-history';
+import { useSearchHistory } from '../../client/api/personalization/use-search-history';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import {
   Box,
@@ -18,12 +18,12 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { useProducts } from '../../client/api/use-products';
+import { useProducts } from '../../client/api/personalization/use-products';
 import { useVisitorData } from '../../client/use-visitor-data';
 import { usePersonalizationNotification } from '../../client/hooks/personalization/use-personalization-notification';
 import { useSnackbar } from 'notistack';
-import { useUserPreferences } from '../../client/api/use-user-preferences';
-import { useCart } from '../../client/api/use-cart';
+import { useUserPreferences } from '../../client/api/personalization/use-user-preferences';
+import { useCart } from '../../client/api/personalization/use-cart';
 
 export default function Index() {
   const { enqueueSnackbar } = useSnackbar();

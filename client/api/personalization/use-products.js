@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from 'react-query';
 import { SEARCH_HISTORY_QUERY } from './use-search-history';
-import { useVisitorData } from '../use-visitor-data';
-import { apiRequest } from './api';
+import { useVisitorData } from '../../use-visitor-data';
+import { apiRequest } from '../api';
 
 function getProducts(fpData, query) {
   return apiRequest('/api/personalization/get-products', fpData, {
