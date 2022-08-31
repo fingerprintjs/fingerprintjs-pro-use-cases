@@ -10,12 +10,12 @@ import {
   loanDurationValidation,
   loanValueValidation,
   monthlyIncomeValidation,
-} from '../../shared/loan-risk/validation';
-import { calculateMonthInstallment } from '../../shared/loan-risk/calculations';
+} from '../../client/loan-risk/validation';
 import Button from '@mui/material/Button';
 import { useVisitorData } from '../../client/use-visitor-data';
 import { useRequestLoan } from '../../client/api/use-request-loan';
 import Alert from '@mui/material/Alert';
+import { calculateMonthInstallment } from '../../shared/loan-risk/calculate-month-installment';
 
 function SliderField({ label, min, max, value, onChange, prefix, suffix }) {
   return (

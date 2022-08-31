@@ -1,16 +1,10 @@
-import { LOAN_FEE_PERCENT } from './constants';
+import { calculateMonthInstallment } from '../../shared/loan-risk/calculate-month-installment';
 
 /**
  * Required minimal income.
  * If $MONTHLY_INCOME - $LOAN_AMOUNT < $MIN_INCOME, then the loan won't be approved.
  * */
 export const MIN_INCOME_PER_MONTH = 500;
-
-export function calculateMonthInstallment({ loanValue, loanDuration }) {
-  const totalValue = loanValue + loanValue * LOAN_FEE_PERCENT;
-
-  return totalValue / loanDuration;
-}
 
 /**
  * Provides simplified calculations for a loan, and decides whether it will be approved or not.

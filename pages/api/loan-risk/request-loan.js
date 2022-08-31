@@ -2,7 +2,7 @@ import { loanRiskEndpoint } from '../../../server/loan-risk/loan-risk-endpoint';
 import { LoanRequest } from '../../../server/loan-risk/database';
 import { Op } from 'sequelize';
 import { CheckResult, checkResultType, messageSeverity } from '../../../server/server';
-import { calculateLoanValues } from '../../../shared/loan-risk/calculations';
+import { calculateLoanValues } from '../../../server/loan-risk/calculate-loan-values';
 
 /**
  * Validates previous loan requests sent by a given user.
