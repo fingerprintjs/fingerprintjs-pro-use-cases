@@ -9,7 +9,7 @@ import {
   getForbiddenReponse,
   getVisitorData,
   reportSuspiciousActivity,
-} from '../../shared/server';
+} from '../server';
 import { initLoanRisk } from './database';
 
 // Server API validations.

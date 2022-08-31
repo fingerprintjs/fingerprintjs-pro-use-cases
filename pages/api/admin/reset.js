@@ -10,11 +10,11 @@ import {
   getOkReponse,
   getVisitorData,
   messageSeverity,
-} from '../../../shared/server';
+} from '../../../server/server';
 import { LoginAttempt } from '../credential-stuffing/authenticate';
 import { PaymentAttempt } from '../payment-fraud/place-order';
-import { UserCartItem, UserPreferences, UserSearchHistory } from '../../../api/personalization/database';
-import { LoanRequest } from '../../../api/loan-risk/database';
+import { UserCartItem, UserPreferences, UserSearchHistory } from '../../../server/personalization/database';
+import { LoanRequest } from '../../../server/loan-risk/database';
 
 export default async function handler(req, res) {
   // This API route accepts only POST requests.

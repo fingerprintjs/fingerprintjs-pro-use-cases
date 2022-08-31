@@ -10,8 +10,8 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
-import { UseCaseWrapper } from '../../components/use-case-wrapper';
-import { useVisitorData } from '../../shared/client/use-visitor-data';
+import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { useVisitorData } from '../../client/use-visitor-data';
 
 const useStyles = makeStyles((theme) => ({
   margin: {

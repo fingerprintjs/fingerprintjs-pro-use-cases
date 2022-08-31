@@ -1,5 +1,5 @@
-import { personalizationEndpoint } from '../../../../api/personalization/personalization-endpoint';
-import { UserCartItem } from '../../../../api/personalization/database';
+import { personalizationEndpoint } from '../../../../server/personalization/personalization-endpoint';
+import { UserCartItem } from '../../../../server/personalization/database';
 import { Op } from 'sequelize';
 
 // Removes an item from cart for given visitorId

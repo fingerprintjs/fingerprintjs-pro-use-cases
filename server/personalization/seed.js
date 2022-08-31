@@ -1,5 +1,5 @@
 import { Product } from './database';
-import { sequelize } from '../../shared/server';
+import { sequelize } from '../server';
 
 const coffeeAdjectives = ['Smooth', 'Medium', 'Strong', 'Extra strong', 'Decaf'];
 const coffeeImages = [

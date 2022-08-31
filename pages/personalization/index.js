@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { ProductItem } from '../../components/personalization/product-item';
-import { PersonalizationTopSection } from '../../components/personalization/personalization-top-section';
+import { ProductItem } from '../../client/components/personalization/product-item';
+import { PersonalizationTopSection } from '../../client/components/personalization/personalization-top-section';
 import { useDebounce, useSessionStorage } from 'react-use';
-import { useSearchHistory } from '../../shared/client/api/use-search-history';
-import { UseCaseWrapper } from '../../components/use-case-wrapper';
+import { useSearchHistory } from '../../client/api/personalization/use-search-history';
+import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import {
   Box,
   Button,
@@ -18,12 +18,12 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { useProducts } from '../../shared/client/api/use-products';
-import { useVisitorData } from '../../shared/client/use-visitor-data';
-import { usePersonalizationNotification } from '../../hooks/use-personalization-notification';
+import { useProducts } from '../../client/api/personalization/use-products';
+import { useVisitorData } from '../../client/use-visitor-data';
+import { usePersonalizationNotification } from '../../client/hooks/personalization/use-personalization-notification';
 import { useSnackbar } from 'notistack';
-import { useUserPreferences } from '../../shared/client/api/use-user-preferences';
-import { useCart } from '../../shared/client/api/use-cart';
+import { useUserPreferences } from '../../client/api/personalization/use-user-preferences';
+import { useCart } from '../../client/api/personalization/use-cart';
 
 export default function Index() {
   const { enqueueSnackbar } = useSnackbar();
@@ -83,8 +83,8 @@ export default function Index() {
         <DialogContent>
           <DialogContentText whiteSpace="pre-line">
             Fingerprint Pro technology cannot be used to circumvent GDPR and other regulations and must fully comply
-            with the laws in the jurisdiction. You should not implement personalization elements across incognito mode and normal mode
-            because it violates the users expectations and will lead to a bad experience.
+            with the laws in the jurisdiction. You should not implement personalization elements across incognito mode
+            and normal mode because it violates the users expectations and will lead to a bad experience.
             <br />
             <br />
             This technical demo only uses incognito mode to demonstrate cookie expiration for non-technical folks.

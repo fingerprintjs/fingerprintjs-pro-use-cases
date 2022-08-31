@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
-import { useVisitorData } from '../use-visitor-data';
-import { apiRequest } from './api';
+import { useVisitorData } from '../../use-visitor-data';
+import { apiRequest } from '../api';
 
 function getSearchHistory(fpData) {
   return apiRequest('/api/personalization/get-search-history', fpData);

@@ -1,6 +1,6 @@
-import { UserSearchHistory } from '../../../api/personalization/database';
+import { UserSearchHistory } from '../../../server/personalization/database';
 import { Op } from 'sequelize';
-import { personalizationEndpoint } from '../../../api/personalization/personalization-endpoint';
+import { personalizationEndpoint } from '../../../server/personalization/personalization-endpoint';
 
 // Endpoint for fetching user search history for given visitorId
 export default personalizationEndpoint(async (req, res, { usePersonalizedData, visitorId }) => {

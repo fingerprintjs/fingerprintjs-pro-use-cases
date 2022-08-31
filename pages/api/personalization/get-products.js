@@ -1,7 +1,7 @@
-import { Product, UserSearchHistory } from '../../../api/personalization/database';
+import { Product, UserSearchHistory } from '../../../server/personalization/database';
 import { Op } from 'sequelize';
-import { personalizationEndpoint } from '../../../api/personalization/personalization-endpoint';
-import { seedProducts } from '../../../api/personalization/seed';
+import { personalizationEndpoint } from '../../../server/personalization/personalization-endpoint';
+import { seedProducts } from '../../../server/personalization/seed';
 
 function searchProducts(query) {
   if (!query) {

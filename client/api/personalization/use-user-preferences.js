@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useVisitorData } from '../use-visitor-data';
-import { apiRequest } from './api';
+import { useVisitorData } from '../../use-visitor-data';
+import { apiRequest } from '../api';
 
 const GET_USER_PREFERENCES_QUERY = 'GET_USER_PREFERENCES_QUERY';
 

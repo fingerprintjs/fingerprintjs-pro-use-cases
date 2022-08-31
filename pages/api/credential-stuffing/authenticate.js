@@ -14,7 +14,7 @@ import {
   messageSeverity,
   reportSuspiciousActivity,
   sequelize,
-} from '../../../shared/server';
+} from '../../../server/server';
 
 // Defines db model for login attempt.
 export const LoginAttempt = sequelize.define('login-attempt', {

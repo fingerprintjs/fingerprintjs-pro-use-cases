@@ -1,6 +1,6 @@
-import { UserPreferences } from '../../../api/personalization/database';
+import { UserPreferences } from '../../../server/personalization/database';
 import { Op } from 'sequelize';
-import { personalizationEndpoint } from '../../../api/personalization/personalization-endpoint';
+import { personalizationEndpoint } from '../../../server/personalization/personalization-endpoint';
 
 // Fetches user preferences (for now only dark mode preference) for given visitorId
 export default personalizationEndpoint(async (req, res, { visitorId, usePersonalizedData }) => {

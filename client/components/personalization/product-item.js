@@ -4,12 +4,12 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import { useCart } from '../../shared/client/api/use-cart';
+import { useCart } from '../../api/personalization/use-cart';
 import { LoadingButton } from '@mui/lab';
 import { useState } from 'react';
 import { useDebounce } from 'react-use';
 import { Check } from '@mui/icons-material';
-import { usePersonalizationNotification } from '../../hooks/use-personalization-notification';
+import { usePersonalizationNotification } from '../../hooks/personalization/use-personalization-notification';
 
 export function ProductItem({ product: { price, name, image, id } }) {
   const { addCartItemMutation } = useCart();
