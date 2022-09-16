@@ -9,9 +9,6 @@
   </a>
 </p>
 
-> **Warning**
-> This repository is a work in progress.
-
 # Fingerprint Pro Use Cases
 
 This repository demonstrates various use cases for Fingerprint Pro. Each scenario covers frontend and backend sample implementation with a persistent data layer. Deployed demo of each use case is available at [fingerprinthub.com](https://fingerprinthub.com/).
@@ -28,3 +25,5 @@ Alternatively, one can use also the [Stackblitz environment](https://stackblitz.
 - [Credential Stuffing](https://fingerprinthub.com/credential-stuffing)
 - [Loan Risk](https://fingerprinthub.com/loan-risk)
 - [Payment Fraud](https://fingerprinthub.com/payment-fraud)
+- [Paywall](https://fingerprinthub.com/paywall)
+- [Personalization](https://fingerprinthub.com/personalization)
