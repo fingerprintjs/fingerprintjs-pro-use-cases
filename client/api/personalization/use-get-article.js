@@ -9,7 +9,7 @@ async function getArticle(articleId, fpData) {
 export const GET_ARTICLE_QUERY = 'GET_ARTICLE_QUERY';
 
 export function useGetArticle(articleId) {
-  const visitorDataQuery = useVisitorData();
+  const visitorDataQuery = useVisitorData({ extendedResult: false });
 
   return useQuery([GET_ARTICLE_QUERY, articleId], () => getArticle(articleId, visitorDataQuery.data), {
     enabled: Boolean(visitorDataQuery.data),
