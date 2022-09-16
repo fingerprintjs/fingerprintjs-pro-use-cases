@@ -1,53 +1,26 @@
 import { useRouter } from 'next/router';
 import { useGetArticle } from '../../../shared/client/api/use-get-article';
 import { UseCaseWrapper } from '../../../components/use-case-wrapper';
-import { Tooltip } from '@mui/material';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Skeleton, Tooltip } from '@mui/material';
+import { ArrowBack } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import { ArrowBack } from '@mui/icons-material';
 import Link from 'next/link';
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
-import { FullPagePaper } from '../../../components/full-page-paper';
+
+function ArticleSkeleton({ animation = true }) {
+  const skeletons = Array.from({ length: 4 }).map((_, index) => <Skeleton key={index} animation={animation} />);
+
+  return <>{skeletons}</>;
+}
 
 export default function Article() {
   const router = useRouter();
 
   const articleQuery = useGetArticle(router.query.id);
 
-  if (articleQuery.isLoading) {
-    return (
-      <FullPagePaper variant="outlined">
-        <CircularProgress />
-      </FullPagePaper>
-    );
-  }
-
   const queryData = articleQuery.data;
   const data = queryData?.data;
-
-  if (queryData?.message && queryData?.severity) {
-    return (
-      <FullPagePaper variant="outlined">
-        <Alert
-          severity={queryData.severity}
-          className="UsecaseWrapper_alert"
-          action={
-            <Link passHref href="/paywall">
-              <Button component="a">Go back</Button>
-            </Link>
-          }
-        >
-          {queryData.message}
-        </Alert>
-      </FullPagePaper>
-    );
-  }
-
-  if (!data?.article) {
-    return null;
-  }
 
   return (
     <UseCaseWrapper
@@ -79,13 +52,21 @@ export default function Article() {
           marginTop: (theme) => theme.spacing(6),
         }}
       >
-        {data?.article.content}
+        {data?.article.content ?? <ArticleSkeleton animation={articleQuery.isLoading ? 'wave' : false} />}
       </Typography>
-      <Alert severity="warning" className="UsecaseWrapper_alert">
-        {data.remainingViews > 0
-          ? `You have ${data.remainingViews} remaining free article views.`
-          : 'You have exceeded your free daily article views.'}
-      </Alert>
+      {queryData?.message && queryData?.severity ? (
+        <Alert severity={queryData.severity} className="UsecaseWrapper_alert">
+          {queryData.message}
+        </Alert>
+      ) : (
+        typeof data?.remainingViews === 'number' && (
+          <Alert severity="warning" className="UsecaseWrapper_alert">
+            {data.remainingViews > 0
+              ? `You have ${data.remainingViews} remaining free article views.`
+              : 'You have exceeded your free daily article views.'}
+          </Alert>
+        )
+      )}
     </UseCaseWrapper>
   );
 }
