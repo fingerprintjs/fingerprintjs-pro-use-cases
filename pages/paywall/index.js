@@ -20,7 +20,7 @@ export default function LoanRisk({ articles }) {
   return (
     <UseCaseWrapper
       title="Paywall"
-      description="This page demonstrates paywall implementation using Fingerprint PRO."
+      description="This page demonstrates paywall implementation using Fingerprint Pro."
       listItems={[
         <>
           We keep track of how many articles you have viewed per day. You can view {ARTICLE_VIEW_LIMIT} articles daily.
