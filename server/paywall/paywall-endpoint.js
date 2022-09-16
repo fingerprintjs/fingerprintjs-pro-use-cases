@@ -13,7 +13,7 @@ import {
 import { initPaywall } from './database';
 import { checkCountOfViewedArticles } from './article-views';
 
-// Base checks for every endpoint related to loan risk
+// Base checks for every endpoint related to paywall
 const paywallChecks = [
   checkFreshIdentificationRequest,
   checkConfidenceScore,
