@@ -14,7 +14,7 @@ import { initPaywall } from './database';
 import { checkCountOfViewedArticles } from './article-views';
 
 // Base checks for every endpoint related to loan risk
-const loanChecks = [
+const paywallChecks = [
   checkFreshIdentificationRequest,
   checkConfidenceScore,
   checkIpAddressIntegrity,
@@ -46,7 +46,7 @@ export const paywallEndpoint =
     // It is recommended to use the requestId and visitorId pair.
     const visitorData = await getVisitorData(visitorId, requestId);
 
-    for (const ruleCheck of [...loanChecks, ...optionalChecks]) {
+    for (const ruleCheck of [...paywallChecks, ...optionalChecks]) {
       const result = await ruleCheck(visitorData, req);
 
       if (result) {
