@@ -57,7 +57,7 @@ export async function countViewedArticles(visitorId) {
 }
 
 /**
- * Checks if given visitor has exceeded his daily limit of free article views.
+ * Checks if the given visitor has exceeded his daily limit of free article views.
  * */
 export async function checkCountOfViewedArticles(visitorData, req) {
   const { timestampEnd, timestampStart } = getTodayDateRange();
