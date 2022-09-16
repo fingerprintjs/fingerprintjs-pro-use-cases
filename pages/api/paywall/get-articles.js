@@ -1,4 +1,4 @@
-import { articles } from '../../../api/paywall/articles';
+import { articles } from '../../../server/paywall/articles';
 
 const SHORT_ARTICLE_CONTENT_LENGTH = 100;
 

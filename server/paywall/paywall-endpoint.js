@@ -9,7 +9,7 @@ import {
   getForbiddenReponse,
   getVisitorData,
   reportSuspiciousActivity,
-} from '../../shared/server';
+} from '../server';
 import { initPaywall } from './database';
 import { checkCountOfViewedArticles } from './article-views';
 

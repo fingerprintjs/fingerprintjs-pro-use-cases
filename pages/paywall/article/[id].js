@@ -1,12 +1,13 @@
 import { useRouter } from 'next/router';
-import { useGetArticle } from '../../../shared/client/api/use-get-article';
-import { UseCaseWrapper } from '../../../components/use-case-wrapper';
+
 import { Skeleton, Tooltip } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Link from 'next/link';
 import Alert from '@mui/material/Alert';
+import { useGetArticle } from '../../../client/api/personalization/use-get-article';
+import { UseCaseWrapper } from '../../../client/components/use-case-wrapper';
 
 function ArticleSkeleton({ animation = true }) {
   const skeletons = Array.from({ length: 4 }).map((_, index) => <Skeleton key={index} animation={animation} />);

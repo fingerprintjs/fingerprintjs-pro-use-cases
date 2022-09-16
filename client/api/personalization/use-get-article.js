@@ -1,6 +1,6 @@
-import { apiRequest } from './api';
-import { useVisitorData } from '../use-visitor-data';
 import { useQuery } from 'react-query';
+import { apiRequest } from '../api';
+import { useVisitorData } from '../../use-visitor-data';
 
 async function getArticle(articleId, fpData) {
   return apiRequest(`/api/paywall/article/${articleId}`, fpData);

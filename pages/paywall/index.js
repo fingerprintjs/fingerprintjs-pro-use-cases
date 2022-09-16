@@ -1,10 +1,10 @@
-import { UseCaseWrapper } from '../../components/use-case-wrapper';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { SITE_URL } from '../../shared/const';
 import { ARTICLE_VIEW_LIMIT } from '../../shared/paywall/constants';
+import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 
 export async function getStaticProps() {
   const articles = await fetch(`${SITE_URL}/api/paywall/get-articles`).then((res) => res.json());

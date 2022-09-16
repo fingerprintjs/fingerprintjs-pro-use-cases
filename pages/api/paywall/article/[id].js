@@ -1,6 +1,6 @@
-import { articles } from '../../../../api/paywall/articles';
-import { paywallEndpoint } from '../../../../api/paywall/paywall-endpoint';
-import { countViewedArticles, saveArticleView } from '../../../../api/paywall/article-views';
+import { articles } from '../../../../server/paywall/articles';
+import { paywallEndpoint } from '../../../../server/paywall/paywall-endpoint';
+import { countViewedArticles, saveArticleView } from '../../../../server/paywall/article-views';
 import { ARTICLE_VIEW_LIMIT } from '../../../../shared/paywall/constants';
 
 /**
