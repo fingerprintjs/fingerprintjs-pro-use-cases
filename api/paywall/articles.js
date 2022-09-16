@@ -1,5 +1,5 @@
 /**
- * Mock articles "database". In a real world, these articles could be fetched from anywhere.
+ * Mock articles "database". In the real world, these articles could be fetched from anywhere.
  * */
 export const articles = [
   {

@@ -23,7 +23,7 @@ const loanChecks = [
   checkCountOfViewedArticles,
 ];
 
-// Provides common logic used in paywall use-case
+// Provides common logic used in the paywall use-case
 export const paywallEndpoint =
   (requestCallback, optionalChecks = []) =>
   async (req, res) => {

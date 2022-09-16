@@ -5,7 +5,7 @@ import { getTodayDateRange } from '../../shared/utils/date';
 import { ARTICLE_VIEW_LIMIT } from '../../shared/paywall/constants';
 
 /**
- * Saves article view into database. If it already exists, we update its timestamp.
+ * Saves article view into the database. If it already exists, we update its timestamp.
  * */
 export async function saveArticleView(articleId, visitorId) {
   const { timestampEnd, timestampStart } = getTodayDateRange();
