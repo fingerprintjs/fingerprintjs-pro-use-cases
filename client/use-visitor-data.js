@@ -8,7 +8,7 @@ import { useQuery } from 'react-query';
 // const fpPromise = import('https://fpcdn.io/v3/rzpSduhT63F6jaS35HFo').then(
 //   (FingerprintJS) => FingerprintJS.load()
 // );
-async function getVisitorData() {
+async function getVisitorData({ extendedResult = true }) {
   const fpPromise = FingerprintJS.load({
     token: 'rzpSduhT63F6jaS35HFo',
     endpoint: 'https://metrics.fingerprinthub.com',
@@ -16,7 +16,7 @@ async function getVisitorData() {
   const fp = await fpPromise;
 
   return fp.get({
-    extendedResult: true,
+    extendedResult,
   });
 }
 
@@ -25,8 +25,8 @@ export const VISITOR_DATA_QUERY = 'VISITOR_DATA_QUERY';
 /**
  * Query for fetching visitorData using our Fingerprint Pro agent.
  * */
-export function useVisitorData({ enabled = true } = {}) {
-  return useQuery(VISITOR_DATA_QUERY, () => getVisitorData(), {
+export function useVisitorData({ enabled = true, extendedResult = true } = {}) {
+  return useQuery(VISITOR_DATA_QUERY, () => getVisitorData({ extendedResult }), {
     enabled,
   });
 }
