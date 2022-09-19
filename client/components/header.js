@@ -47,7 +47,7 @@ export function Header({ addonRight }) {
       <Toolbar>
         <Stack direction="row" justifyContent="space-between" width="100%">
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Link href="/pages">
+            <Link href="/">
               <a>
                 <Logo width={300} />
               </a>
