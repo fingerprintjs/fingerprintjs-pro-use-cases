@@ -151,13 +151,13 @@ export function checkConfidenceScore(visitorData) {
   }
 }
 
-// Checks if the authentication request comes from the same IP adress as the identification request.
+// Checks if the authentication request comes from the same IP address as the identification request.
 export function checkIpAddressIntegrity(visitorData, request) {
   if (
     process.env.NODE_ENV !== 'development' && // This check is disabled on purpose in the Stackblitz and localhost environments.
     // This is an example of obtaining the client IP address.
     // In most cases, it's a good idea to look for the right-most external IP address in the list to prevent spoofing.
-    request.headers['x-forwarded-for'].split(',')[0] !== visitorData.visits[0].ip
+    request.headers['x-forwarded-for']?.split(',')[0] !== visitorData.visits[0].ip
   ) {
     return new CheckResult(
       'IP mismatch. An attacker might have tried to phish the victim.',
