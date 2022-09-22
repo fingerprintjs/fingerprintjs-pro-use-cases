@@ -23,12 +23,12 @@ const navLinks = [
     url: '/payment-fraud',
   },
   {
-    name: 'Personalization',
-    url: '/personalization',
-  },
-  {
     name: 'Paywall',
     url: '/paywall',
+  },
+  {
+    name: 'Personalization',
+    url: '/personalization',
   },
 ];
 
