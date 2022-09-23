@@ -17,7 +17,7 @@ You can learn more about these use cases in our [website](https://fingerprint.co
 ## How to run
 
 1. `yarn install`
-2. `yarn develop`
+2. `yarn dev`
 
 Alternatively, one can use also the [Stackblitz environment](https://stackblitz.com/edit/nextjs-dmv5c7) to run the project in their Chromium-based browsers.
 
