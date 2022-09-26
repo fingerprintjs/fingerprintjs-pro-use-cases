@@ -31,20 +31,20 @@ Essentially, it is to check for consistency between applications and ignore subm
 As a result, you will protect your users and your business against various payment frauds with the demonstrated approaches.`,
   },
   {
-    title: 'Personalization',
-    url: '/personalization',
-    icon: <Settings />,
-    description: `Provide your users with a tailored experience without cookies. 
-    
-    Demonstration of personalized content such as search history, customized user interface, or even shopping cart.`,
-  },
-  {
     title: 'Paywall',
     url: '/paywall',
     icon: <Block />,
     description: `Provide limited access to your content and ensure that your users are not able to exceed it.
       
       Users won't be able to bypass it even by clearing cookies or switching to incognito mode.`,
+  },
+  {
+    title: 'Personalization',
+    url: '/personalization',
+    icon: <Settings />,
+    description: `Provide your users with a tailored experience without cookies. 
+    
+    Demonstration of personalized content such as search history, customized user interface, or even shopping cart.`,
   },
 ];
 
