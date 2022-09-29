@@ -1,0 +1,59 @@
+.checkoutContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.productContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.productItem {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.productInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.productTitle {
+    font-size: 18px;
+}
+
+.productImage img {
+    width: 256px;
+    height: 200px;
+    object-fit: contain;
+}
+
+.priceInfo {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.couponContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.couponInfo {
+    font-size: 18px;
+}
+
+.couponForm {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+.couponForm div {
+    min-width: 70%;
+}
+
+.couponMessage {
+
+}

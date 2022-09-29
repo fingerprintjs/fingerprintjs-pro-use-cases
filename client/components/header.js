@@ -27,6 +27,10 @@ const navLinks = [
     url: '/paywall',
   },
   {
+    name: 'Coupon Fraud',
+    url: '/coupon-fraud',
+  },
+  {
     name: 'Personalization',
     url: '/personalization',
   },
