@@ -1,6 +1,6 @@
 import { useVisitorData } from '../../client/use-visitor-data';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -18,15 +18,13 @@ export default function CouponFraudUseCase() {
 
   const couponClaimMutation = useRequestCouponClaim();
 
-  const [couponCode, setCouponCode] = useState();
+  const [couponCode, setCouponCode] = useState('');
   const [price, setPrice] = useState(1119);
 
   const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault();
       const fpData = await visitorDataQuery.refetch();
-
-      console.log({ fpData: fpData.data });
 
       await couponClaimMutation.mutateAsync({
         fpData: fpData.data,
@@ -63,20 +61,18 @@ export default function CouponFraudUseCase() {
           <div className={styles.productContainer}>
             <div className={styles.productItem}>
               <div className={styles.productInfo}>
-                <Typography className={styles.productTitle} fontSize={20}>
-                  iPhone 14 Pro Max 256 GB - Deep Purple
-                </Typography>
+                <Typography fontSize={20}>iPhone 14 Pro Max 256 GB - Deep Purple</Typography>
                 <div className={styles.productImage}>
                   <Image width={256} height={256} src="/iphone14.png" alt="iPhone image" />
                 </div>
               </div>
-              <Typography className={styles.priceInfo} fontWeight="bold">
+              <Typography fontWeight="bold">
                 {new Intl.NumberFormat('en-US', { currency: 'USD', style: 'currency' }).format(price)}
               </Typography>
             </div>
           </div>
           <div className={styles.couponContainer}>
-            <Typography className={styles.couponInfo}>Do you have a coupon? Apply to get discount!</Typography>
+            <Typography>Do you have a coupon? Apply to get discount!</Typography>
             <div className={styles.couponForm}>
               <FormControl fullWidth variant="outlined">
                 <TextField
@@ -100,7 +96,7 @@ export default function CouponFraudUseCase() {
                 {isLoading ? 'Applying...' : 'Apply'}
               </Button>
             </div>
-            <div className={styles.couponMessage}>
+            <div>
               {couponClaimMutation.data?.message && !couponClaimMutation.isLoading && (
                 <Alert severity={couponClaimMutation.data.severity} className="UsecaseWrapper_alert">
                   {couponClaimMutation.data.message}

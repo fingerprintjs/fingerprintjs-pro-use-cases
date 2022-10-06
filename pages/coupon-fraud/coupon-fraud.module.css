@@ -19,9 +19,6 @@
     flex-direction: column;
 }
 
-.productTitle {
-}
-
 .productImage img {
     width: 256px;
     height: 200px;
@@ -33,9 +30,6 @@
     flex-direction: column;
 }
 
-.couponInfo {
-}
-
 .couponForm {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -45,8 +39,4 @@
 
 .couponForm div {
     min-width: 70%;
-}
-
-.couponMessage {
-
 }
