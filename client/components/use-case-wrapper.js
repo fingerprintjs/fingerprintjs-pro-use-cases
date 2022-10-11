@@ -6,6 +6,7 @@ import Link from 'next/link';
 export function UseCaseWrapper({
   title,
   description,
+  articleURL,
   listItems,
   children,
   variant,
@@ -25,22 +26,33 @@ export function UseCaseWrapper({
               {listItems?.map((item, index) => (
                 <li key={index}>{item}</li>
               ))}
+              <li>
+                You can reset this scenario on the <Link href="/admin">admin page</Link>.
+              </li>
+              {articleURL && (
+                <li>
+                  Learn more about this scenario in the{' '}
+                  <a
+                  href={articleURL}
+                  target="_blank"
+                  rel="noreferrer"
+                  >
+                    {title}
+                  </a>
+                  {' '}article.
+                </li>
+              )}
               {!hideSrcListItem && (
-                <>
-                  <li>
-                  You can reset this scenario on the <Link href="/admin">admin page</Link>.
-                  </li>
-                  <li>
-                    Need src?{' '}
-                    <a
-                      href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Sure!
-                    </a>
-                  </li>
-                </>
+                <li>
+                  Need src?{' '}
+                  <a
+                    href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Sure!
+                  </a>
+                </li>
               )}
             </ul>
           </div>

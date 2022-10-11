@@ -99,6 +99,7 @@ export default function Index() {
           <code>password</code>. It will be very hard...
         </>
       }
+      articleURL="https://fingerprint.com/use-cases/credential-stuffing/"
       listItems={[
         <>
           Even with correct credentials, you cannot log in if the system does not recognize your <code>visitorId</code>.
