@@ -71,7 +71,7 @@ export default function CouponFraudUseCase() {
             </div>
           </div>
           <div className={styles.couponContainer}>
-            <Typography>Do you have a coupon? Apply to get discount!</Typography>
+            <Typography>Do you have a coupon? Apply to get a discount!</Typography>
             <div className={styles.couponForm}>
               <FormControl fullWidth variant="outlined">
                 <TextField
