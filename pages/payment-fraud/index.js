@@ -86,6 +86,7 @@ export default function Index() {
     <UseCaseWrapper
       title="Payment Fraud problem"
       description=" This page demonstrates protected credit card form protected against different fraud."
+      articleURL="https://fingerprint.com/use-cases/payment-fraud/"
       listItems={[
         <>
           Only prefilled card details are correct. When you change them, the system will check if you tried to perform

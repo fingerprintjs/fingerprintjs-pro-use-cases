@@ -17,7 +17,6 @@ import { UserCartItem, UserPreferences, UserSearchHistory } from '../../../serve
 import { LoanRequest } from '../../../server/loan-risk/database';
 import { ArticleView } from '../../../server/paywall/database';
 
-
 export default async function handler(req, res) {
   // This API route accepts only POST requests.
   if (req.method !== 'POST') {
