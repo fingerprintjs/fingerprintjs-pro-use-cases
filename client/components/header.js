@@ -11,6 +11,10 @@ import { Logo } from './logo';
 
 const navLinks = [
   {
+    name: 'Coupon Fraud',
+    url: '/coupon-fraud',
+  },
+  {
     name: 'Credential Stuffing',
     url: '/credential-stuffing',
   },
@@ -25,10 +29,6 @@ const navLinks = [
   {
     name: 'Paywall',
     url: '/paywall',
-  },
-  {
-    name: 'Coupon Fraud',
-    url: '/coupon-fraud',
   },
   {
     name: 'Personalization',
