@@ -49,7 +49,7 @@ export default function CouponFraudUseCase() {
       listItems={[
         <>You can apply a coupon to the specific item only once.</>,
         <>You cannot spam coupon codes, there is a 1 hour threshold.</>,
-        <>You can&apos;t apply the same coupon in incognito mode</>,
+        <>You cannot apply the same coupon in incognito mode.</>,
         <>
           Sample coupon codes are <code>123456</code> and <code>098765</code>
         </>,
