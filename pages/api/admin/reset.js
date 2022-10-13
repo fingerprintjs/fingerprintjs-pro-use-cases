@@ -16,8 +16,7 @@ import { PaymentAttempt } from '../payment-fraud/place-order';
 import { UserCartItem, UserPreferences, UserSearchHistory } from '../../../server/personalization/database';
 import { LoanRequest } from '../../../server/loan-risk/database';
 import { ArticleView } from '../../../server/paywall/database';
-import {CouponClaim} from "../coupon-fraud/claim";
-
+import { CouponClaim } from '../coupon-fraud/claim';
 
 export default async function handler(req, res) {
   // This API route accepts only POST requests.
