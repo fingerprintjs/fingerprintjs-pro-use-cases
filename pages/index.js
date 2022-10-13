@@ -1,11 +1,19 @@
 import Link from 'next/link';
 import Paper from '@mui/material/Paper';
-import {AirplaneTicket, Block, CreditScore, Money, People, Settings} from '@mui/icons-material';
+import { AirplaneTicket, Block, CreditScore, Money, People, Settings } from '@mui/icons-material';
 import { PageTile } from '../client/components/page-tile';
 import Grid from '@mui/material/Grid';
 import { Logo } from '../client/components/logo';
 
 const pages = [
+  {
+    title: 'Coupon Fraud',
+    url: '/coupon-fraud',
+    icon: <AirplaneTicket />,
+    description: `Identify your visitors every request.
+    
+    As a result you will protect your coupons against abuse.`,
+  },
   {
     title: 'Credential Stuffing',
     url: '/credential-stuffing',
@@ -45,14 +53,6 @@ As a result, you will protect your users and your business against various payme
     description: `Provide your users with a tailored experience without cookies. 
     
     Demonstration of personalized content such as search history, customized user interface, or even shopping cart.`,
-  },
-  {
-    title: 'Coupon Fraud',
-    url: '/coupon-fraud',
-    icon: <AirplaneTicket />,
-    description: `Identify your visitors every request.
-    
-    As a result you will protect your coupons against abuse.`
   },
 ];
 
