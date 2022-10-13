@@ -44,7 +44,7 @@ export default function CouponFraudUseCase() {
 
   return (
     <UseCaseWrapper
-      title="Coupon fraud problem"
+      title="Coupon Fraud problem"
       description={<>This page demonstrates how to solve coupon fraud problem.</>}
       listItems={[
         <>You can apply coupon to this item only once</>,
