@@ -48,7 +48,6 @@ export default function CouponFraudUseCase() {
       description={<>This page demonstrates how to solve coupon fraud problem.</>}
       listItems={[
         <>You can apply a coupon to the specific item only once.</>,
-        <>You can&apos;t apply same coupon more than once</>,
         <>You can&apos;t spam coupon codes, there is a 1 hour threshold</>,
         <>You can&apos;t apply the same coupon in incognito mode</>,
         <>
