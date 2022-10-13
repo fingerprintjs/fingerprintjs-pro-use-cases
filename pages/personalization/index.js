@@ -106,6 +106,7 @@ export default function Index() {
           </>,
         ]}
         description="This page demonstrates user personalization that is achieved by Fingerprint Pro. Users don't need to login in to get a tailored experience."
+        articleURL="https://fingerprint.com/use-cases/personalization/"
       >
         <PersonalizationTopSection
           search={search}

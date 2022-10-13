@@ -99,6 +99,7 @@ export default function Index() {
           <code>password</code>. It will be very hard...
         </>
       }
+      articleURL="https://fingerprint.com/use-cases/credential-stuffing/"
       listItems={[
         <>
           Even with correct credentials, you cannot log in if the system does not recognize your <code>visitorId</code>.
@@ -107,7 +108,7 @@ export default function Index() {
         <>If you provide the wrong credentials 5 times, you&apos;d be locked out!</>,
         <>
           {' '}
-          U h4ck3r? You can try to generate new <code>visitorId</code> and <code>reqeustId</code> and try to log in.
+          U h4ck3r? You can try to generate new <code>visitorId</code> and <code>requestId</code> and try to log in.
           Good luck :)
         </>,
       ]}
