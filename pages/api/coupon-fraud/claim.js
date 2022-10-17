@@ -24,7 +24,7 @@ async function getVisitorClaim(visitorId, couponCode) {
 }
 
 /**
- * Checks if coupon exists with given coupon code.
+ * Checks if a coupon exists with the given coupon code.
  */
 export async function checkCoupon(code) {
   return await CouponCode.findOne({
@@ -53,25 +53,25 @@ export async function claimCoupon(visitorId, couponCode) {
 export default couponEndpoint(async (req, res, { visitorId, couponCode }) => {
   const coupon = await checkCoupon(couponCode);
 
-  // Check if the coupon exists
+  // Check if the coupon exists.
   if (!coupon) {
     return getForbiddenReponse(res, 'Provided coupon code does not exist.', 'error');
   }
 
   const wasCouponClaimedByVisitor = await getVisitorClaim(visitorId, couponCode);
 
-  // Check if the visitor claimed this coupon before
+  // Check if the visitor claimed this coupon before.
   if (wasCouponClaimedByVisitor) {
-    return getForbiddenReponse(res, 'Visitor used this coupon before', 'error');
+    return getForbiddenReponse(res, 'The visitor used this coupon before.', 'error');
   }
 
   const visitorClaimedAnotherCouponRecently = await checkVisitorClaimedRecently(visitorId);
 
   if (visitorClaimedAnotherCouponRecently) {
-    return getForbiddenReponse(res, 'Visitor claimed another coupon recently', 'error');
+    return getForbiddenReponse(res, 'The visitor claimed another coupon recently.\n', 'error');
   }
 
   await claimCoupon(visitorId, couponCode);
 
-  return getOkReponse(res, `Coupon claimed, you get 119 USD discount!`, 'success');
+  return getOkReponse(res, `Coupon claimed you get a 119 USD discount!`, 'success');
 });

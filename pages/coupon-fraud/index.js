@@ -45,10 +45,10 @@ export default function CouponFraudUseCase() {
   return (
     <UseCaseWrapper
       title="Coupon Fraud problem"
-      description={<>This page demonstrates how to solve coupon fraud problem.</>}
+      description={<>This page demonstrates how to solve the coupon fraud problem.</>}
       listItems={[
         <>You can apply a coupon to the specific item only once.</>,
-        <>You cannot spam coupon codes, there is a 1 hour threshold.</>,
+        <>You cannot spam coupon codes, there is a 1-hour threshold.</>,
         <>You cannot apply the same coupon in incognito mode.</>,
         <>
           Sample coupon codes are <code>123456</code> and <code>098765</code>.
