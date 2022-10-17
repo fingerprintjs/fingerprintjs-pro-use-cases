@@ -1,0 +1,42 @@
+.checkoutContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.productContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.productItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.productInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.productImage img {
+  width: 256px;
+  height: 200px;
+  object-fit: contain;
+}
+
+.couponContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.couponForm {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+}
+
+.couponForm div {
+  min-width: 70%;
+}

@@ -1,11 +1,19 @@
 import Link from 'next/link';
 import Paper from '@mui/material/Paper';
-import { Block, CreditScore, Money, People, Settings } from '@mui/icons-material';
+import { AirplaneTicket, Block, CreditScore, Money, People, Settings } from '@mui/icons-material';
 import { PageTile } from '../client/components/page-tile';
 import Grid from '@mui/material/Grid';
 import { Logo } from '../client/components/logo';
 
 const pages = [
+  {
+    title: 'Coupon Fraud',
+    url: '/coupon-fraud',
+    icon: <AirplaneTicket />,
+    description: `While increased sales are good for your business, customers acting in bad-faith can dry up available promotional campaign dollars by repeatedly using coupon codes.
+    
+    Preventing customers, either signed-in or guests, from abusing your coupons and promotions can help you prevent financial losses and increase sales.`,
+  },
   {
     title: 'Credential Stuffing',
     url: '/credential-stuffing',

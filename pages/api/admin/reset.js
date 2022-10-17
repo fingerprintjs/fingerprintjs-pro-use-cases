@@ -16,6 +16,7 @@ import { PaymentAttempt } from '../payment-fraud/place-order';
 import { UserCartItem, UserPreferences, UserSearchHistory } from '../../../server/personalization/database';
 import { LoanRequest } from '../../../server/loan-risk/database';
 import { ArticleView } from '../../../server/paywall/database';
+import { CouponClaim } from '../coupon-fraud/claim';
 
 export default async function handler(req, res) {
   // This API route accepts only POST requests.
@@ -68,6 +69,8 @@ async function deleteVisitorIdData(visitorData) {
 
   const paymentAttemptsRowsRemoved = await PaymentAttempt.destroy(options);
 
+  const couponsRemoved = await CouponClaim.destroy(options);
+
   const deletedPersonalizationResult = await Promise.all(
     [UserCartItem, UserPreferences, UserCartItem, UserSearchHistory].map((model) => model.destroy(options))
   );
@@ -77,7 +80,7 @@ async function deleteVisitorIdData(visitorData) {
   const deletedPaywallData = await ArticleView.destroy(options);
 
   return new CheckResult(
-    `Deleted ${loginAttemptsRowsRemoved} rows for Credential Stuffing problem. Deleted ${paymentAttemptsRowsRemoved} rows for Payment Fraud problem. Deleted ${deletedPersonalizationCount} entries related to personalization.  Deleted ${deletedLoanRequests} loan request entries. Deleted ${deletedPaywallData} rows for the Paywall problem.`,
+    `Deleted ${loginAttemptsRowsRemoved} rows for Credential Stuffing problem. Deleted ${paymentAttemptsRowsRemoved} rows for Payment Fraud problem. Deleted ${deletedPersonalizationCount} entries related to personalization.  Deleted ${deletedLoanRequests} loan request entries. Deleted ${deletedPaywallData} rows for the Paywall problem. Deleted ${couponsRemoved} rows for the Coupon fraud problem.`,
     messageSeverity.Success,
     checkResultType.Passed
   );
