@@ -67,7 +67,6 @@ export default couponEndpoint(async (req, res, { visitorId, couponCode }) => {
 
   const visitorClaimedAnotherCouponRecently = await checkVisitorClaimedRecently(visitorId);
 
-  // Check if the visitor claimed a coupon recently
   if (visitorClaimedAnotherCouponRecently) {
     return getForbiddenReponse(res, 'Visitor claimed another coupon recently', 'error');
   }
