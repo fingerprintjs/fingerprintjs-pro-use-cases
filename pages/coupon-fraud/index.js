@@ -51,7 +51,7 @@ export default function CouponFraudUseCase() {
         <>You cannot spam coupon codes, there is a 1-hour threshold.</>,
         <>You cannot apply the same coupon in incognito mode.</>,
         <>
-          Sample coupon codes are <code>123456</code> and <code>098765</code>.
+          Sample coupon codes are <code>Promo3000</code> and <code>BlackFriday</code>.
         </>,
       ]}
     >
@@ -75,7 +75,7 @@ export default function CouponFraudUseCase() {
             <div className={styles.couponForm}>
               <FormControl fullWidth variant="outlined">
                 <TextField
-                  placeholder="123456"
+                  placeholder="Enter a coupon"
                   variant="outlined"
                   defaultValue={couponCode}
                   onChange={(e) => setCouponCode(e.target.value)}
