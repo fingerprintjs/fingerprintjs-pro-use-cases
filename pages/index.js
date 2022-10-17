@@ -10,9 +10,9 @@ const pages = [
     title: 'Coupon Fraud',
     url: '/coupon-fraud',
     icon: <AirplaneTicket />,
-    description: `Identify your visitors every request.
+    description: `While increased sales are good for your business, customers acting in bad-faith can dry up available promotional campaign dollars by repeatedly using coupon codes.
     
-    As a result you will protect your coupons against abuse.`,
+    Preventing customers, either signed-in or guests, from abusing your coupons and promotions can help you prevent financial losses and increase sales.`,
   },
   {
     title: 'Credential Stuffing',
