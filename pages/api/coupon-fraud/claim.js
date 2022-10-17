@@ -37,7 +37,7 @@ export async function checkCoupon(code) {
 }
 
 /**
- * Claim coupon behalf of visitor
+ * Claim coupon on behalf of the visitor.
  */
 export async function claimCoupon(visitorId, couponCode) {
   const claim = await CouponClaim.create({
