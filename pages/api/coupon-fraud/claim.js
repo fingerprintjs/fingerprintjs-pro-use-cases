@@ -55,7 +55,7 @@ export default couponEndpoint(async (req, res, { visitorId, couponCode }) => {
 
   // Check if the coupon exists
   if (!coupon) {
-    return getForbiddenReponse(res, 'Coupon code not exists', 'error');
+    return getForbiddenReponse(res, 'Provided coupon code does not exist.', 'error');
   }
 
   const wasCouponClaimedByVisitor = await getVisitorClaim(visitorId, couponCode);
