@@ -33,6 +33,6 @@ export async function initCoupons() {
 
   await Promise.all(couponModels.map((model) => model.sync({ force: false }))).catch(console.error);
 
-  await CouponCode.findOrCreate({ where: { code: { [Op.eq]: '123456' } }, defaults: { code: '123456' } });
-  await CouponCode.findOrCreate({ where: { code: { [Op.eq]: '098765' } }, defaults: { code: '098765' } });
+  await CouponCode.findOrCreate({ where: { code: { [Op.eq]: 'Promo3000' } }, defaults: { code: 'Promo3000' } });
+  await CouponCode.findOrCreate({ where: { code: { [Op.eq]: 'BlackFriday' } }, defaults: { code: 'BlackFriday' } });
 }
