@@ -65,20 +65,13 @@ async function deleteVisitorIdData(visitorData) {
     where: { visitorId: visitorData.visitorId },
   };
 
-  let loginAttemptsRowsRemoved,
-    paymentAttemptsRowsRemoved,
-    couponsRemoved,
-    deletedPersonalizationResult,
-    deletedLoanRequests,
-    deletedPaywallData;
+  const loginAttemptsRowsRemoved = await tryToDestroy(() => LoginAttempt.destroy(options));
 
-  loginAttemptsRowsRemoved = await tryToDestroy(() => LoginAttempt.destroy(options));
+  const paymentAttemptsRowsRemoved = await tryToDestroy(() => PaymentAttempt.destroy(options));
 
-  paymentAttemptsRowsRemoved = await tryToDestroy(() => PaymentAttempt.destroy(options));
+  const couponsRemoved = await tryToDestroy(() => CouponClaim.destroy(options));
 
-  couponsRemoved = await tryToDestroy(() => CouponClaim.destroy(options));
-
-  deletedPersonalizationResult = await Promise.all(
+  const deletedPersonalizationResult = await Promise.all(
     [UserCartItem, UserPreferences, UserCartItem, UserSearchHistory].map((model) =>
       tryToDestroy(() => model.destroy(options))
     )
@@ -86,8 +79,8 @@ async function deleteVisitorIdData(visitorData) {
 
   const deletedPersonalizationCount = deletedPersonalizationResult.reduce((acc, cur) => acc + cur, 0);
 
-  deletedLoanRequests = await tryToDestroy(() => LoanRequest.destroy(options));
-  deletedPaywallData = await tryToDestroy(() => ArticleView.destroy(options));
+  const deletedLoanRequests = await tryToDestroy(() => LoanRequest.destroy(options));
+  const deletedPaywallData = await tryToDestroy(() => ArticleView.destroy(options));
 
   return new CheckResult(
     `Deleted ${loginAttemptsRowsRemoved} rows for Credential Stuffing problem. Deleted ${paymentAttemptsRowsRemoved} rows for Payment Fraud problem. Deleted ${deletedPersonalizationCount} entries related to personalization.  Deleted ${deletedLoanRequests} loan request entries. Deleted ${deletedPaywallData} rows for the Paywall problem. Deleted ${couponsRemoved} rows for the Coupon fraud problem.`,
