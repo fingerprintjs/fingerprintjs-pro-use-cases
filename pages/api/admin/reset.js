@@ -91,7 +91,7 @@ async function deleteVisitorIdData(visitorData) {
 
 const tryToDestroy = async (callback) => {
   try {
-    return callback();
+    return await callback();
   } catch (err) {
     return 0;
   }
