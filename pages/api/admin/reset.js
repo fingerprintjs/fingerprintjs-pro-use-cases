@@ -65,19 +65,29 @@ async function deleteVisitorIdData(visitorData) {
     where: { visitorId: visitorData.visitorId },
   };
 
-  const loginAttemptsRowsRemoved = await LoginAttempt.destroy(options);
+  let loginAttemptsRowsRemoved,
+    paymentAttemptsRowsRemoved,
+    couponsRemoved,
+    deletedPersonalizationResult,
+    deletedLoanRequests,
+    deletedPaywallData;
 
-  const paymentAttemptsRowsRemoved = await PaymentAttempt.destroy(options);
+  loginAttemptsRowsRemoved = await tryToDestroy(() => LoginAttempt.destroy(options));
 
-  const couponsRemoved = await CouponClaim.destroy(options);
+  paymentAttemptsRowsRemoved = await tryToDestroy(() => PaymentAttempt.destroy(options));
 
-  const deletedPersonalizationResult = await Promise.all(
-    [UserCartItem, UserPreferences, UserCartItem, UserSearchHistory].map((model) => model.destroy(options))
+  couponsRemoved = await tryToDestroy(() => CouponClaim.destroy(options));
+
+  deletedPersonalizationResult = await Promise.all(
+    [UserCartItem, UserPreferences, UserCartItem, UserSearchHistory].map((model) =>
+      tryToDestroy(() => model.destroy(options))
+    )
   );
-  const deletedPersonalizationCount = deletedPersonalizationResult.reduce((acc, cur) => acc + cur, 0);
-  const deletedLoanRequests = await LoanRequest.destroy(options);
 
-  const deletedPaywallData = await ArticleView.destroy(options);
+  const deletedPersonalizationCount = deletedPersonalizationResult.reduce((acc, cur) => acc + cur, 0);
+
+  deletedLoanRequests = await tryToDestroy(() => LoanRequest.destroy(options));
+  deletedPaywallData = await tryToDestroy(() => ArticleView.destroy(options));
 
   return new CheckResult(
     `Deleted ${loginAttemptsRowsRemoved} rows for Credential Stuffing problem. Deleted ${paymentAttemptsRowsRemoved} rows for Payment Fraud problem. Deleted ${deletedPersonalizationCount} entries related to personalization.  Deleted ${deletedLoanRequests} loan request entries. Deleted ${deletedPaywallData} rows for the Paywall problem. Deleted ${couponsRemoved} rows for the Coupon fraud problem.`,
@@ -85,3 +95,11 @@ async function deleteVisitorIdData(visitorData) {
     checkResultType.Passed
   );
 }
+
+const tryToDestroy = async (callback) => {
+  try {
+    return await callback();
+  } catch (err) {
+    return 0;
+  }
+};
