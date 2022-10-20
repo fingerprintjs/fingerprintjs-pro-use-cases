@@ -93,6 +93,7 @@ const tryToDestroy = async (callback) => {
   try {
     return await callback();
   } catch (err) {
+    console.log(err);
     return 0;
   }
 };
