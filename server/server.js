@@ -1,7 +1,9 @@
 import { Sequelize } from 'sequelize';
 
 const ALLOWED_REQUEST_TIMESTAMP_DIFF_MS = 3000;
-const MIN_CONFIDENCE_SCORE = 0.9;
+
+// Confidence score thresholds might be different for different scenarios
+const MIN_CONFIDENCE_SCORE = 0.85;
 
 // Provision the database.
 // In the Stackblitz environment, this db is stored locally in your browser.
