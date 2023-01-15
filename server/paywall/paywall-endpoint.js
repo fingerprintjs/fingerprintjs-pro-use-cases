@@ -6,7 +6,7 @@ import {
   checkResultType,
   ensurePostRequest,
   ensureValidRequestIdAndVisitorId,
-  getForbiddenReponse,
+  getForbiddenResponse,
   getVisitorData,
   reportSuspiciousActivity,
 } from '../server';
@@ -56,10 +56,10 @@ export const paywallEndpoint =
             continue;
           case checkResultType.ArticleViewLimitExceeded:
             // No need to report suspicious activity for this error
-            return getForbiddenReponse(res, result.message, result.messageSeverity);
+            return getForbiddenResponse(res, result.message, result.messageSeverity);
           default:
             reportSuspiciousActivity(req);
-            return getForbiddenReponse(res, result.message, result.messageSeverity);
+            return getForbiddenResponse(res, result.message, result.messageSeverity);
         }
       }
     }

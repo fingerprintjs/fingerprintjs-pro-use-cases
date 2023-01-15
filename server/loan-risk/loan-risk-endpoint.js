@@ -6,7 +6,7 @@ import {
   checkResultType,
   ensurePostRequest,
   ensureValidRequestIdAndVisitorId,
-  getForbiddenReponse,
+  getForbiddenResponse,
   getVisitorData,
   reportSuspiciousActivity,
 } from '../server';
@@ -52,7 +52,7 @@ export const loanRiskEndpoint =
             continue;
           default:
             reportSuspiciousActivity(req);
-            return getForbiddenReponse(res, result.message, result.messageSeverity);
+            return getForbiddenResponse(res, result.message, result.messageSeverity);
         }
       }
     }

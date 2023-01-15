@@ -6,8 +6,8 @@ import {
   CheckResult,
   checkResultType,
   ensureValidRequestIdAndVisitorId,
-  getForbiddenReponse,
-  getOkReponse,
+  getForbiddenResponse,
+  getOkResponse,
   getVisitorData,
   messageSeverity,
 } from '../../../server/server';
@@ -52,9 +52,9 @@ async function tryToReset(req, res, ruleChecks) {
     if (result) {
       switch (result.type) {
         case checkResultType.Passed:
-          return getOkReponse(res, result.message, result.messageSeverity);
+          return getOkResponse(res, result.message, result.messageSeverity);
         default:
-          return getForbiddenReponse(res, result.message, result.messageSeverity);
+          return getForbiddenResponse(res, result.message, result.messageSeverity);
       }
     }
   }

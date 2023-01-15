@@ -1,4 +1,4 @@
-import { getForbiddenReponse, getOkReponse } from '../../../server/server';
+import { getForbiddenResponse, getOkResponse } from '../../../server/server';
 import { Op } from 'sequelize';
 import { couponEndpoint } from '../../../server/coupon-fraud/coupon-endpoint';
 import { CouponClaim, CouponCode } from '../../../server/coupon-fraud/database';
@@ -55,23 +55,23 @@ export default couponEndpoint(async (req, res, { visitorId, couponCode }) => {
 
   // Check if the coupon exists.
   if (!coupon) {
-    return getForbiddenReponse(res, 'Provided coupon code does not exist.', 'error');
+    return getForbiddenResponse(res, 'Provided coupon code does not exist.', 'error');
   }
 
   const wasCouponClaimedByVisitor = await getVisitorClaim(visitorId, couponCode);
 
   // Check if the visitor claimed this coupon before.
   if (wasCouponClaimedByVisitor) {
-    return getForbiddenReponse(res, 'The visitor used this coupon before.', 'error');
+    return getForbiddenResponse(res, 'The visitor used this coupon before.', 'error');
   }
 
   const visitorClaimedAnotherCouponRecently = await checkVisitorClaimedRecently(visitorId);
 
   if (visitorClaimedAnotherCouponRecently) {
-    return getForbiddenReponse(res, 'The visitor claimed another coupon recently.\n', 'error');
+    return getForbiddenResponse(res, 'The visitor claimed another coupon recently.\n', 'error');
   }
 
   await claimCoupon(visitorId, couponCode);
 
-  return getOkReponse(res, `Coupon claimed you get a 119 USD discount!`, 'success');
+  return getOkResponse(res, `Coupon claimed you get a 119 USD discount!`, 'success');
 });

@@ -66,7 +66,7 @@ export function areVisitorIdAndRequestIdValid(visitorId, requestId) {
 export function ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId) {
   if (!areVisitorIdAndRequestIdValid(visitorId, requestId)) {
     reportSuspiciousActivity(req);
-    getForbiddenReponse(res, 'Forged visitorId or requestId detected. Try harder next time.', messageSeverity.Error);
+    getForbiddenResponse(res, 'Forged visitorId or requestId detected. Try harder next time.', messageSeverity.Error);
 
     return false;
   }
@@ -188,11 +188,11 @@ export function checkOriginsIntegrity(visitorData, request) {
   }
 }
 
-export function getOkReponse(res, message, messageSeverity) {
+export function getOkResponse(res, message, messageSeverity) {
   return res.status(200).json({ message, severity: messageSeverity });
 }
 
-export function getForbiddenReponse(res, message, messageSeverity) {
+export function getForbiddenResponse(res, message, messageSeverity) {
   return res.status(403).json({ message, severity: messageSeverity });
 }
 

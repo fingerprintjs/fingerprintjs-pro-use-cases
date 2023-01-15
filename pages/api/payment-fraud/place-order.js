@@ -8,8 +8,8 @@ import {
   checkResultType,
   ensurePostRequest,
   ensureValidRequestIdAndVisitorId,
-  getForbiddenReponse,
-  getOkReponse,
+  getForbiddenResponse,
+  getOkResponse,
   getVisitorData,
   messageSeverity,
   reportSuspiciousActivity,
@@ -89,10 +89,10 @@ async function tryToProcessPayment(req, res, ruleChecks) {
       switch (result.type) {
         case checkResultType.Passed:
         case checkResultType.Challenged:
-          return getOkReponse(res, result.message, result.messageSeverity);
+          return getOkResponse(res, result.message, result.messageSeverity);
         default:
           reportSuspiciousActivity(req);
-          return getForbiddenReponse(res, result.message, result.messageSeverity);
+          return getForbiddenResponse(res, result.message, result.messageSeverity);
       }
     }
   }
