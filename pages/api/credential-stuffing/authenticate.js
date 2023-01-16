@@ -8,8 +8,8 @@ import {
   checkResultType,
   ensurePostRequest,
   ensureValidRequestIdAndVisitorId,
-  getForbiddenReponse,
-  getOkReponse,
+  getForbiddenResponse,
+  getOkResponse,
   getVisitorData,
   messageSeverity,
   reportSuspiciousActivity,
@@ -34,7 +34,7 @@ export const LoginAttempt = sequelize.define('login-attempt', {
 
 LoginAttempt.sync({ force: false });
 
-// Mocked user with leaked credentials asociated with visitorIds.
+// Mocked user with leaked credentials associated with visitorIds.
 const mockedUser = {
   userName: 'user',
   password: 'password',
@@ -83,10 +83,10 @@ async function tryToLogin(req, res, ruleChecks) {
       switch (result.type) {
         case checkResultType.Passed:
         case checkResultType.Challenged:
-          return getOkReponse(res, result.message, result.messageSeverity);
+          return getOkResponse(res, result.message, result.messageSeverity);
         default:
           reportSuspiciousActivity(req);
-          return getForbiddenReponse(res, result.message, result.messageSeverity);
+          return getForbiddenResponse(res, result.message, result.messageSeverity);
       }
     }
   }

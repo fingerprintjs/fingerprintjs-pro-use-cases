@@ -10,7 +10,7 @@ const pages = [
     title: 'Coupon Fraud',
     url: '/coupon-fraud',
     icon: <AirplaneTicket />,
-    description: `While increased sales are good for your business, customers acting in bad-faith can dry up available promotional campaign dollars by repeatedly using coupon codes.
+    description: `While increased sales are good for your business, customers acting in bad faith can dry up available promotional campaign dollars by repeatedly using coupon codes.
     
     Preventing customers, either signed-in or guests, from abusing your coupons and promotions can help you prevent financial losses and increase sales.`,
   },
@@ -52,7 +52,7 @@ As a result, you will protect your users and your business against various payme
     icon: <Settings />,
     description: `Provide your users with a tailored experience without cookies. 
     
-    Demonstration of personalized content such as search history, customized user interface, or even shopping cart.`,
+    Demonstration of personalized content such as search history, customized user interface, or even a shopping cart.`,
   },
 ];
 

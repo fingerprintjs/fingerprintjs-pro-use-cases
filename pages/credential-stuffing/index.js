@@ -36,19 +36,19 @@ export default function Index() {
 
   const [authMessage, setAuthMessage] = useState();
   const [severity, setSeverity] = useState();
-  const [isWaitingForReponse, setIsWaitingForReponse] = useState(false);
+  const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   const [httpResponseStatus, setHttpResponseStatus] = useState();
   const [showPassword, setShowPassword] = useState(false);
 
   const messageRef = useRef();
 
   useEffect(() => {
-    !isWaitingForReponse && messageRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [isWaitingForReponse]);
+    !isWaitingForResponse && messageRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [isWaitingForResponse]);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setIsWaitingForReponse(true);
+    setIsWaitingForResponse(true);
 
     const fpQuery = await visitorDataQuery.refetch();
     const { requestId, visitorId } = fpQuery.data;
@@ -60,7 +60,7 @@ export default function Index() {
       requestId,
     };
 
-    // Serverside handler for this route is located in api/credential-stuffing/authneticate.js file.
+    // Server-side handler for this route is located in api/credential-stuffing/authenticate.js file.
     const response = await fetch('/api/credential-stuffing/authenticate', {
       method: 'POST',
       body: JSON.stringify(loginData),
@@ -75,7 +75,7 @@ export default function Index() {
     setAuthMessage(responseJson.message);
     setSeverity(responseJson.severity);
     setHttpResponseStatus(responseStatus);
-    setIsWaitingForReponse(false);
+    setIsWaitingForResponse(false);
   }
 
   const handleClickShowPassword = () => {
@@ -153,7 +153,7 @@ export default function Index() {
         </FormControl>
         <Button
           className="Form_button"
-          disabled={isWaitingForReponse}
+          disabled={isWaitingForResponse}
           size="large"
           type="submit"
           variant="contained"
@@ -161,7 +161,7 @@ export default function Index() {
           disableElevation
           fullWidth
         >
-          {isWaitingForReponse ? 'Hold on, doing magic...' : 'Log In'}
+          {isWaitingForResponse ? 'Hold on, doing magic...' : 'Log In'}
         </Button>
       </form>
       {httpResponseStatus ? (

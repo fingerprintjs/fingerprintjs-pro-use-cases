@@ -38,18 +38,18 @@ export default function Index() {
   const [applyChargeback, setApplyChargeback] = useState(false);
   const [usingStolenCard, setUsingStolenCard] = useState(false);
   const [severity, setSeverity] = useState();
-  const [isWaitingForReponse, setIsWaitingForReponse] = useState(false);
+  const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   const [httpResponseStatus, setHttpResponseStatus] = useState();
 
   const messageRef = useRef();
 
   useEffect(() => {
-    !isWaitingForReponse && messageRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [isWaitingForReponse]);
+    !isWaitingForResponse && messageRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [isWaitingForResponse]);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setIsWaitingForReponse(true);
+    setIsWaitingForResponse(true);
 
     const fpQuery = await visitorDataQuery.refetch();
     const { requestId, visitorId } = fpQuery.data;
@@ -64,7 +64,7 @@ export default function Index() {
       requestId,
     };
 
-    // Serverside handler for this route is located in api/payment-fraud/place-order.js file.
+    // Server-side handler for this route is located in api/payment-fraud/place-order.js file.
     const response = await fetch('/api/payment-fraud/place-order', {
       method: 'POST',
       body: JSON.stringify(orderData),
@@ -79,7 +79,7 @@ export default function Index() {
     setOrderStatusMessage(responseJson.message);
     setSeverity(responseJson.severity);
     setHttpResponseStatus(responseStatus);
-    setIsWaitingForReponse(false);
+    setIsWaitingForResponse(false);
   }
 
   return (
@@ -158,7 +158,7 @@ export default function Index() {
         </Grid>
         <Button
           className="Form_button"
-          disabled={isWaitingForReponse}
+          disabled={isWaitingForResponse}
           size="large"
           type="submit"
           variant="contained"
@@ -166,7 +166,7 @@ export default function Index() {
           disableElevation
           fullWidth
         >
-          {isWaitingForReponse ? 'Hold on, doing magic...' : 'Place an order'}
+          {isWaitingForResponse ? 'Hold on, doing magic...' : 'Place an order'}
         </Button>
       </form>
       {httpResponseStatus ? (

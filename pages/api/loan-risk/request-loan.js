@@ -42,7 +42,7 @@ async function checkPreviousLoanRequests(visitorData, req) {
     );
 
     // Whoops, it looks like the data is not the same!
-    // You could potentially mark this user in your database as fraudalent, or perform some other actions.
+    // You could potentially mark this user in your database as fraudulent, or perform some other actions.
     // In our case, we just return a warning.
     if (!hasValidFields) {
       return new CheckResult(

@@ -6,7 +6,7 @@ import {
   checkFreshIdentificationRequest,
   getVisitorData,
   checkResultType,
-  getForbiddenReponse,
+  getForbiddenResponse,
 } from '../server';
 
 export async function validateCouponRequest(req, res) {
@@ -41,7 +41,7 @@ export async function validateCouponRequest(req, res) {
         case checkResultType.Passed:
           continue;
         case checkResultType.Challenged:
-          getForbiddenReponse(res, checkResult.message, 'error');
+          getForbiddenResponse(res, checkResult.message, 'error');
           break;
 
         default:
