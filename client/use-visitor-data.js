@@ -11,13 +11,9 @@ import { useQuery } from 'react-query';
 async function getVisitorData({ extendedResult = true }) {
   const fpPromise = FingerprintJS.load({
     token: 'rzpSduhT63F6jaS35HFo',
-    // replace with https://metrics.fingerprinthub.com/DBqbMN7zXxwl4Ei8/J5XlHIBN67YHskdR?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>
-    // after switching subdomain to cloudfront distribution
     scriptUrlPattern:
-      'https://d1ulg2zuhz9u95.cloudfront.net/DBqbMN7zXxwl4Ei8/J5XlHIBN67YHskdR?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
-    // replace with https://metrics.fingerprinthub.com/DBqbMN7zXxwl4Ei8/S7lqsWfAyw2lq4Za
-    // after switching subdomain to cloudfront distribution
-    endpoint: 'https://d1ulg2zuhz9u95.cloudfront.net/DBqbMN7zXxwl4Ei8/S7lqsWfAyw2lq4Za',
+      'https://fpcf.fingerprinthub.com/DBqbMN7zXxwl4Ei8/J5XlHIBN67YHskdR?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+    endpoint: 'https://fpcf.fingerprinthub.com/DBqbMN7zXxwl4Ei8/S7lqsWfAyw2lq4Za',
   });
   const fp = await fpPromise;
 
