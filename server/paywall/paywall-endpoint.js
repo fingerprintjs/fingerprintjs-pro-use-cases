@@ -1,9 +1,4 @@
 import {
-  checkConfidenceScore,
-  checkFreshIdentificationRequest,
-  checkIpAddressIntegrity,
-  checkOriginsIntegrity,
-  checkResultType,
   ensurePostRequest,
   ensureValidRequestIdAndVisitorId,
   getForbiddenResponse,
@@ -12,6 +7,13 @@ import {
 } from '../server';
 import { initPaywall } from './database';
 import { checkCountOfViewedArticles } from './article-views';
+import { checkResultType } from '../checkResult';
+import {
+  checkConfidenceScore,
+  checkFreshIdentificationRequest,
+  checkIpAddressIntegrity,
+  checkOriginsIntegrity,
+} from '../checks';
 
 // Base checks for every endpoint related to paywall
 const paywallChecks = [

@@ -1,10 +1,4 @@
 import {
-  checkConfidenceScore,
-  checkFreshIdentificationRequest,
-  checkIpAddressIntegrity,
-  checkOriginsIntegrity,
-  CheckResult,
-  checkResultType,
   ensureValidRequestIdAndVisitorId,
   getForbiddenResponse,
   getOkResponse,
@@ -17,6 +11,13 @@ import { UserCartItem, UserPreferences, UserSearchHistory } from '../../../serve
 import { LoanRequest } from '../../../server/loan-risk/database';
 import { ArticleView } from '../../../server/paywall/database';
 import { CouponClaim } from '../../../server/coupon-fraud/database';
+import { CheckResult, checkResultType } from '../../../server/checkResult';
+import {
+  checkConfidenceScore,
+  checkFreshIdentificationRequest,
+  checkIpAddressIntegrity,
+  checkOriginsIntegrity,
+} from '../../../server/checks';
 
 export default async function handler(req, res) {
   // This API route accepts only POST requests.

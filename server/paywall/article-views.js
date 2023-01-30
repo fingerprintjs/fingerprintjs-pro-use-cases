@@ -2,7 +2,8 @@ import { Op } from 'sequelize';
 import { ArticleView } from './database';
 import { getTodayDateRange } from '../../shared/utils/date';
 import { ARTICLE_VIEW_LIMIT } from '../../shared/paywall/constants';
-import { CheckResult, checkResultType, messageSeverity } from '../server';
+import { messageSeverity } from '../server';
+import { CheckResult, checkResultType } from '../checkResult';
 
 /**
  * Saves article view into the database. If it already exists, we update its timestamp.

@@ -1,9 +1,4 @@
 import {
-  checkConfidenceScore,
-  checkFreshIdentificationRequest,
-  checkIpAddressIntegrity,
-  checkOriginsIntegrity,
-  checkResultType,
   ensurePostRequest,
   ensureValidRequestIdAndVisitorId,
   getForbiddenResponse,
@@ -11,6 +6,13 @@ import {
   reportSuspiciousActivity,
 } from '../server';
 import { initLoanRisk } from './database';
+import { checkResultType } from '../checkResult';
+import {
+  checkConfidenceScore,
+  checkFreshIdentificationRequest,
+  checkIpAddressIntegrity,
+  checkOriginsIntegrity,
+} from '../checks';
 
 // Server API validations.
 const loanChecks = [

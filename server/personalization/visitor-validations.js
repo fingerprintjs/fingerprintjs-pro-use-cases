@@ -1,11 +1,6 @@
-import {
-  checkConfidenceScore,
-  checkIpAddressIntegrity,
-  checkOriginsIntegrity,
-  checkResultType,
-  ensureValidRequestIdAndVisitorId,
-  getVisitorData,
-} from '../server';
+import { ensureValidRequestIdAndVisitorId, getVisitorData } from '../server';
+import { checkResultType } from '../checkResult';
+import { checkConfidenceScore, checkIpAddressIntegrity, checkOriginsIntegrity } from '../checks';
 
 /**
  * Custom logic for validation personalization request.
