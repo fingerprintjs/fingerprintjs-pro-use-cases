@@ -55,7 +55,7 @@ export function Header({ addonRight }) {
               <Logo width={300} />
             </Link>
             {navLinks.map((link) => (
-              <Link href={link.url} key={link.name} passHref>
+              <Link href={link.url} key={link.name} passHref legacyBehavior>
                 <Button
                   size="small"
                   sx={(theme) => ({
