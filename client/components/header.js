@@ -52,12 +52,10 @@ export function Header({ addonRight }) {
         <Stack direction="row" justifyContent="space-between" width="100%">
           <Stack direction="row" alignItems="center" spacing={1}>
             <Link href="/">
-              <a>
-                <Logo width={300} />
-              </a>
+              <Logo width={300} />
             </Link>
             {navLinks.map((link) => (
-              <Link href={link.url} key={link.name} passHref>
+              <Link href={link.url} key={link.name} passHref legacyBehavior>
                 <Button
                   size="small"
                   sx={(theme) => ({

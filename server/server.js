@@ -1,10 +1,5 @@
 import { Sequelize } from 'sequelize';
 
-const ALLOWED_REQUEST_TIMESTAMP_DIFF_MS = 3000;
-
-// Confidence score thresholds might be different for different scenarios
-const MIN_CONFIDENCE_SCORE = 0.85;
-
 // Provision the database.
 // In the Stackblitz environment, this db is stored locally in your browser.
 // On the deployed demo, db is cleaned after each deployment.
@@ -22,38 +17,6 @@ export const messageSeverity = Object.freeze({
   Success: 'success',
   Warning: 'warning',
   Error: 'error',
-});
-
-export class CheckResult {
-  constructor(message, messageSeverity, type) {
-    this.message = message;
-    this.messageSeverity = messageSeverity;
-    this.type = type;
-  }
-}
-
-export const checkResultType = Object.freeze({
-  LowConfidenceScore: 'LowConfidenceScore',
-  RequestIdMissmatch: 'RequestIdMissmatch',
-  OldTimestamp: 'OldTimestamp',
-  TooManyLoginAttempts: 'TooManyLoginAttempts',
-  ForeignOrigin: 'ForeignOrigin',
-  Challenged: 'Challenged',
-  IpMismatch: 'IpMismatch',
-  Passed: 'Passed',
-  // Login specific checks.
-  IncorrectCredentials: 'IncorrectCredentials',
-  // Payment specific checks.
-  TooManyChargebacks: 'TooManyChargebacks',
-  TooManyUnsuccessfulPayments: 'TooManyUnsuccessfulPayments',
-  PaidWithStolenCard: 'PaidWithStolenCard',
-  IncorrectCardDetails: 'IncorrectCardDetails',
-
-  // Loan risk specific checks.
-  PossibleLoanFraud: 'PossibleLoanFraud',
-
-  // Paywall specific checks.
-  ArticleViewLimitExceeded: 'ArticleViewLimitExceeded',
 });
 
 // Validates format of visitorId and requestId.
@@ -114,78 +77,6 @@ export async function getVisitorData(visitorId, requestId) {
   }
 
   return await visitorServerApiResponse.json();
-}
-
-export function checkFreshIdentificationRequest(visitorData) {
-  // The Server API must contain information about this specific identification request.
-  // If not, the request might have been tampered with and we don't trust this identification attempt.
-  if (visitorData.error || visitorData.visits.length !== 1) {
-    return new CheckResult(
-      'Hmmm, sneaky trying to forge information from the client-side, no luck this time, no sensitive action was performed.',
-      messageSeverity.Error,
-      checkResultType.RequestIdMissmatch
-    );
-  }
-
-  // An attacker might have acquired a valid requestId and visitorId via phishing.
-  // It's recommended to check freshness of the identification request to prevent replay attacks.
-  const requestTimestampDiff = new Date().getTime() - visitorData.visits[0].timestamp;
-
-  if (requestTimestampDiff > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
-    return new CheckResult(
-      'Old requestId detected. Action ignored and logged.',
-      messageSeverity.Error,
-      checkResultType.OldTimestamp
-    );
-  }
-}
-
-// The Confidence Score reflects the system's degree of certainty that the visitor identifier is correct.
-// If it's lower than the certain threshold we recommend using an additional way of verification, e.g. 2FA or email.
-// More info: https://dev.fingerprint.com/docs/understanding-your-confidence-score
-export function checkConfidenceScore(visitorData) {
-  if (visitorData.visits[0].confidence.score < MIN_CONFIDENCE_SCORE) {
-    return new CheckResult(
-      "Low confidence score, we'd rather verify you with the second factor,",
-      messageSeverity.Error,
-      checkResultType.LowConfidenceScore
-    );
-  }
-}
-
-// Checks if the authentication request comes from the same IP address as the identification request.
-export function checkIpAddressIntegrity(visitorData, request) {
-  if (
-    process.env.NODE_ENV !== 'development' && // This check is disabled on purpose in the Stackblitz and localhost environments.
-    // This is an example of obtaining the client IP address.
-    // In most cases, it's a good idea to look for the right-most external IP address in the list to prevent spoofing.
-    request.headers['x-forwarded-for']?.split(',')[0] !== visitorData.visits[0].ip
-  ) {
-    return new CheckResult(
-      'IP mismatch. An attacker might have tried to phish the victim.',
-      messageSeverity.Error,
-      checkResultType.IpMismatch
-    );
-  }
-}
-
-// Checks if the authentication request comes from a known origin and
-// if the authentication request's origin corresponds to the origin/URL provided by the Fingerprint Pro Server API.
-// Additionally, one should set Request Filtering settings in the dashboard: https://dev.fingerprint.com/docs/request-filtering
-export function checkOriginsIntegrity(visitorData, request) {
-  const visitorDataOrigin = new URL(visitorData.visits[0].url).origin;
-  if (
-    process.env.NODE_ENV !== 'development' && // This check is disabled on purpose in the Stackblitz and localhost environments.
-    (visitorDataOrigin !== request.headers['origin'] ||
-      !ourOrigins.includes(visitorDataOrigin) ||
-      !ourOrigins.includes(request.headers['origin']))
-  ) {
-    return new CheckResult(
-      'Origin mismatch. An attacker might have tried to phish the victim.',
-      messageSeverity.Error,
-      checkResultType.ForeignOrigin
-    );
-  }
 }
 
 export function getOkResponse(res, message, messageSeverity) {

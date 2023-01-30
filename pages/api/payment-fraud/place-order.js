@@ -1,11 +1,5 @@
 import { Sequelize } from 'sequelize';
 import {
-  checkConfidenceScore,
-  checkFreshIdentificationRequest,
-  checkIpAddressIntegrity,
-  checkOriginsIntegrity,
-  CheckResult,
-  checkResultType,
   ensurePostRequest,
   ensureValidRequestIdAndVisitorId,
   getForbiddenResponse,
@@ -15,6 +9,13 @@ import {
   reportSuspiciousActivity,
   sequelize,
 } from '../../../server/server';
+import { CheckResult, checkResultType } from '../../../server/checkResult';
+import {
+  checkConfidenceScore,
+  checkFreshIdentificationRequest,
+  checkIpAddressIntegrity,
+  checkOriginsIntegrity,
+} from '../../../server/checks';
 
 // Defines db model for payment attempt.
 export const PaymentAttempt = sequelize.define('payment-attempt', {

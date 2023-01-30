@@ -63,6 +63,7 @@ export default function Index() {
       variant="outlined"
       sx={{
         overflow: 'auto',
+        overflowX: 'hidden',
         paddingBottom: (theme) => theme.spacing(6),
       }}
     >
@@ -76,12 +77,8 @@ export default function Index() {
               <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases">GitHub</a>.
             </p>
             <p className="UsecaseWrapper_helper">
-              On the{' '}
-              <Link href="/admin">
-                <a>admin</a>
-              </Link>{' '}
-              page, you can remove all info obtained from this browser. This will reenable some scenarios for you if you
-              were locked out from the specific action.
+              On the <Link href="/admin">admin</Link> page, you can remove all info obtained from this browser. This
+              will reenable some scenarios for you if you were locked out from the specific action.
             </p>
           </div>
         </div>
