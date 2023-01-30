@@ -10,7 +10,7 @@ export function PageTile({ page }) {
   const [elevation, setElevation] = useState(1);
 
   return (
-    <Link key={page.url} href={page.url} passHref>
+    <Link key={page.url} href={page.url} passHref legacyBehavior>
       <Paper
         elevation={elevation}
         onMouseEnter={() => {

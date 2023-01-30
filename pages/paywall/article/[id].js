@@ -35,7 +35,7 @@ export default function Article() {
       }}
     >
       <Tooltip title="Go back">
-        <Link href="/paywall" passHref>
+        <Link href="/paywall" passHref legacyBehavior>
           <IconButton
             component="a"
             sx={{

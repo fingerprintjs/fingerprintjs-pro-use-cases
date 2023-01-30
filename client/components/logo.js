@@ -7,7 +7,7 @@ export function Logo(props) {
   return (
     <Image
       src={`/logo_${theme.palette.mode === 'dark' ? 'light' : 'dark'}.svg`}
-      height="100%"
+      height={100}
       alt="Fingerprint logo"
       {...props}
     />
