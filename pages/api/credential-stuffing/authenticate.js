@@ -17,6 +17,13 @@ import {
   checkOriginsIntegrity,
 } from '../../../server/checks';
 
+// Mocked user with leaked credentials associated with visitorIds.
+const mockedUser = {
+  userName: 'user',
+  password: 'password',
+  knownVisitorIds: getKnownVisitorIds(),
+};
+
 // Defines db model for login attempt.
 export const LoginAttempt = sequelize.define('login-attempt', {
   visitorId: {
@@ -35,12 +42,14 @@ export const LoginAttempt = sequelize.define('login-attempt', {
 
 LoginAttempt.sync({ force: false });
 
-// Mocked user with leaked credentials associated with visitorIds.
-const mockedUser = {
-  userName: 'user',
-  password: 'password',
-  knownVisitorIds: ['bXbwuhCBRB9lLTK692vw', 'ABvLgKyH3fAr6uAjn0vq', 'BNvLgKyHefAr9iOjn0ul'],
-};
+function getKnownVisitorIds() {
+  const defaultVisitorIds = ['bXbwuhCBRB9lLTK692vw', 'ABvLgKyH3fAr6uAjn0vq', 'BNvLgKyHefAr9iOjn0ul'];
+  const visitorIdsFromEnv = process.env.KNOWN_VISITOR_IDS?.split(',');
+
+  console.info(`Extracted ${visitorIdsFromEnv?.length ?? 0} visitorIds from env.`);
+
+  return visitorIdsFromEnv ? [...defaultVisitorIds, ...visitorIdsFromEnv] : defaultVisitorIds;
+}
 
 export default async function handler(req, res) {
   // This API route accepts only POST requests.
