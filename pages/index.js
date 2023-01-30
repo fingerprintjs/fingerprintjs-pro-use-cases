@@ -63,6 +63,7 @@ export default function Index() {
       variant="outlined"
       sx={{
         overflow: 'auto',
+        overflowX: 'hidden',
         paddingBottom: (theme) => theme.spacing(6),
       }}
     >
