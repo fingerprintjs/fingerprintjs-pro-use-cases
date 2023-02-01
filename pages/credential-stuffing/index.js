@@ -37,9 +37,15 @@ export default function Index() {
   const [authMessage, setAuthMessage] = useState();
   const [severity, setSeverity] = useState();
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
+  /**
+   * @type {[number, React.Dispatch<React.SetStateAction<number>>]}
+   */
   const [httpResponseStatus, setHttpResponseStatus] = useState();
   const [showPassword, setShowPassword] = useState(false);
 
+  /**
+   * @type {React.MutableRefObject<HTMLDivElement | null>}
+   */
   const messageRef = useRef();
 
   useEffect(() => {

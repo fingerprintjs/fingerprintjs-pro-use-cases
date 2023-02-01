@@ -2,7 +2,26 @@ import Paper from '@mui/material/Paper';
 import clsx from 'clsx';
 import Divider from '@mui/material/Divider';
 import Link from 'next/link';
+import React from 'react';
 
+/**
+ * @typedef {Object} UseCaseWrapperProps
+ * @property {string} title 
+ * @property {React.ReactNode} description
+ * @property {string} articleURL
+ * @property {Array<React.ReactNode>} listItems
+ * @property {Array<React.ReactNode>} children
+ * @property {string} [variant] - Variant of the InfoCard
+ * @property {boolean} [hideSrcListItem=false] - Flag to hide the source list item
+ * @property {boolean} [hideDivider=false] - Flag to hide the divider
+ * @property {Object} [sx] - Styled-components sx prop
+ */
+
+/**
+ * InfoCard component
+ * @param {UseCaseWrapperProps} props - Props for the component
+ * @returns {JSX.Element} React component
+ */
 export function UseCaseWrapper({
   title,
   description,
