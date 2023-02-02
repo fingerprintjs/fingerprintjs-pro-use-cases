@@ -10,7 +10,7 @@ export const WebScrapingUseCase = () => {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const { data } = useVisitorData();
-  const { requestId } = data;
+  const { requestId, visitorId } = data;
 
   /**
   //  * @type {React.FormEventHandler<HTMLFormElement>}
@@ -52,7 +52,7 @@ export const WebScrapingUseCase = () => {
               <MenuItem value={'London'}>London</MenuItem>
               <MenuItem value={'Tokyo'}>Tokyo</MenuItem>
             </Select>
-            <Link href={`/web-scraping/results?from=${from}&to=${to}&requestId=${requestId}`}>
+            <Link href={`/web-scraping/results?from=${from}&to=${to}&requestId=${requestId}&visitorId=${visitorId}`}>
               <Button size="large" variant="contained" color="primary" disableElevation fullWidth>
                 Search flights
               </Button>

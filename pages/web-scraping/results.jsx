@@ -1,15 +1,16 @@
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { areVisitorIdAndRequestIdValid, getVisitorData } from '../../server/server';
 
 /**
  * @typedef {Object} FlightResultsProps
- * @property {boolean} isBadBot 
+ * @property {boolean} isBadBot
  */
 
 /**
  * @param {FlightResultsProps} props - Props for the component
  * @returns {JSX.Element} React component
  */
-export const FlightResults = ({isBadBot}) => {
+export const FlightResults = ({ isBadBot }) => {
   return (
     <>
       <UseCaseWrapper
@@ -35,8 +36,18 @@ export const FlightResults = ({isBadBot}) => {
  * @type {import('next').GetServerSideProps<FlightResultsProps>}
  */
 export async function getServerSideProps({ req, query }) {
-    console.log(query.from, query.to, query.requestId);
-  return { props: { isBadBot: true } } ;
+  const { from, to, requestId, visitorId } = query;
+
+  if (!areVisitorIdAndRequestIdValid(visitorId, requestId)) {
+    return { props: { isBadBot: true } };
+  }
+
+  const visitorData = await getVisitorData(visitorId, requestId);
+  console.log(visitorData);
+
+
+
+  return { props: { isBadBot: false } };
 }
 
 export default FlightResults;
