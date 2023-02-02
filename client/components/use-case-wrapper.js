@@ -8,9 +8,9 @@ import React from 'react';
  * @typedef {Object} UseCaseWrapperProps
  * @property {string} title 
  * @property {React.ReactNode} description
- * @property {string} articleURL
- * @property {Array<React.ReactNode>} listItems
- * @property {Array<React.ReactNode>} children
+ * @property {string} [articleURL]
+ * @property {Array<React.ReactNode>} [listItems]
+ * @property {React.ReactNode} children
  * @property {string} [variant] - Variant of the InfoCard
  * @property {boolean} [hideSrcListItem=false] - Flag to hide the source list item
  * @property {boolean} [hideDivider=false] - Flag to hide the divider

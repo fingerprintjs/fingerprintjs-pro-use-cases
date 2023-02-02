@@ -38,7 +38,7 @@ export default function Index() {
   const [severity, setSeverity] = useState();
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   /**
-   * @type {[number, React.Dispatch<React.SetStateAction<number>>]}
+   * @type {[number, React.Dispatch<number>]}
    */
   const [httpResponseStatus, setHttpResponseStatus] = useState();
   const [showPassword, setShowPassword] = useState(false);
