@@ -6,11 +6,23 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { ArrowForward } from '@mui/icons-material';
 
-export function PageTile({ page }) {
+/** 
+ * @typedef {Object} TileProps
+ * @property {string} title
+ * @property {string} url
+ * @property {React.ReactNode} icon
+ * @property {string} description
+ */
+
+/**
+ * @param {TileProps} props 
+ * @returns {JSX.Element}
+ */
+export function Tile({ url, title, icon, description }) {
   const [elevation, setElevation] = useState(1);
 
   return (
-    <Link key={page.url} href={page.url} passHref legacyBehavior>
+    <Link key={url} href={url} passHref legacyBehavior>
       <Paper
         elevation={elevation}
         onMouseEnter={() => {
@@ -85,7 +97,7 @@ export function PageTile({ page }) {
             }}
             spacing={3}
           >
-            <span className="Usecase_Icon">{page.icon}</span>
+            <span className="Usecase_Icon">{icon}</span>
             <Stack direction="column" spacing={3}>
               <Typography
                 className="Usecase_PageTitle"
@@ -94,9 +106,9 @@ export function PageTile({ page }) {
                   fontWeight: 'bold',
                 }}
               >
-                {page.title}
+                {title}
               </Typography>
-              <Typography whiteSpace="pre-line">{page.description}</Typography>
+              <Typography whiteSpace="pre-line">{description}</Typography>
             </Stack>
           </Stack>
           <Button

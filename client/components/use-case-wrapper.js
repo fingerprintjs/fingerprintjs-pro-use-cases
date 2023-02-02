@@ -18,7 +18,6 @@ import React from 'react';
  */
 
 /**
- * InfoCard component
  * @param {UseCaseWrapperProps} props - Props for the component
  * @returns {JSX.Element} React component
  */
