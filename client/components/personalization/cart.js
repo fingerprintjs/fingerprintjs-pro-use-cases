@@ -1,7 +1,7 @@
 import { useCart } from '../../api/personalization/use-cart';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
