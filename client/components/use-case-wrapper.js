@@ -14,7 +14,7 @@ import React from 'react';
  * @property {string} [variant] - Variant of the InfoCard
  * @property {boolean} [hideSrcListItem=false] - Flag to hide the source list item
  * @property {boolean} [hideDivider=false] - Flag to hide the divider
- * @property {Object} [sx] - Styled-components sx prop
+ * @property {Object} [sx] 
  */
 
 /**

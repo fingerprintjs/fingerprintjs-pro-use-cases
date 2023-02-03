@@ -10,7 +10,8 @@
     "lint:fix": "yarn lint --fix",
     "prettier": "prettier pages shared --check",
     "prettier:fix": "yarn prettier --write",
-    "format": "yarn prettier:fix && yarn lint:fix"
+    "format": "yarn prettier:fix && yarn lint:fix",
+    "cypress": "cypress open --e2e --browser chrome"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
@@ -34,6 +35,7 @@
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.27",
     "@vitejs/plugin-react": "^3.0.1",
+    "cypress": "^12.5.1",
     "eslint": "^8.17.0",
     "eslint-config-next": "^13.1.6",
     "eslint-config-prettier": "^8.5.0",

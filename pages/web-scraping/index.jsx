@@ -10,8 +10,9 @@ export const WebScrapingUseCase = () => {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const { data } = useVisitorData();
-  const { requestId, visitorId } = data;
-
+  console.log(data);
+  const requestId = data?.requestId;
+  const visitorId = data?.visitorId;
   /**
   //  * @type {React.FormEventHandler<HTMLFormElement>}
   //  */
