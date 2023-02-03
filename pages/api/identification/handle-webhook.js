@@ -1,4 +1,4 @@
-import { initPresentationDemo, Visit } from '../../../server/presentation-demo/database';
+import { initIdentification, Visit } from '../../../server/identification/database';
 
 export default function handler(req, res) {
   handle(req).catch(console.error);
@@ -7,7 +7,7 @@ export default function handler(req, res) {
 }
 
 async function handle(req) {
-  await initPresentationDemo();
+  await initIdentification();
 
   const visit = req.body;
 

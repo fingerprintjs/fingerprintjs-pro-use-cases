@@ -15,7 +15,7 @@ export const Visit = sequelize.define('visit', {
 
 let didInit = false;
 
-export async function initPresentationDemo() {
+export async function initIdentification() {
   if (didInit) {
     return;
   }

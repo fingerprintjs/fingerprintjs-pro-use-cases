@@ -3,6 +3,7 @@ import { useVisitorData } from '../../client/use-visitor-data';
 import { Alert, CircularProgress } from '@mui/material';
 import { useGetVisits } from '../../client/api/identification/useGetVisits';
 import { IdentificationCard } from '../../client/components/presentation-demo/identification-card';
+import Link from 'next/link';
 
 export function getServerSideProps(ctx) {
   return {
@@ -34,6 +35,12 @@ export default function Index({ linkedId }) {
         },
       }}
       title="Presentation demo"
+      listItems={[
+        <>
+          Click <Link href={linkedId ? `/presentation-demo/list?${linkedId}` : '/presentation-demo/list'}>here</Link> to
+          see all identified users
+        </>,
+      ]}
       description={
         <>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in urna sapien. Sed varius imperdiet risus,
@@ -49,7 +56,7 @@ export default function Index({ linkedId }) {
       {isLoading && <CircularProgress />}
       {error && <Alert severity="error">Failed to get visitor data: {error.message}</Alert>}
       {visitorData.data && visits.data && (
-        <IdentificationCard variant="extended" visitorData={visitorData.data} visits={visits.data} />
+        <IdentificationCard variant="extended" visitorId={visitorData.data.visitorId} visits={visits.data} />
       )}
     </UseCaseWrapper>
   );

@@ -18,7 +18,7 @@ function KeyValue({ name, value, direction = 'column', textColor = 'textPrimary'
   );
 }
 
-function ExtendedCard({ visitorData, visits }) {
+function ExtendedCard({ visitorId, visits }) {
   return (
     <Stack
       direction={{ xs: 'column', sm: 'row' }}
@@ -27,11 +27,11 @@ function ExtendedCard({ visitorData, visits }) {
       spacing={3}
     >
       <Stack direction="column" spacing={3}>
-        <KeyValue name="Your visitor ID" value={visitorData.visitorId} textVariant="h5" textColor="primary" />
+        <KeyValue name="Your visitor ID" value={visitorId} textVariant="h5" textColor="primary" />
         <KeyValue
           textColor="textPrimary"
           name="Your visit summary"
-          value={`You visited ${visits.visits.length} times`}
+          value={`You visited ${visits.visits?.length ?? 0} times`}
         />
       </Stack>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3}>
@@ -43,11 +43,11 @@ function ExtendedCard({ visitorData, visits }) {
   );
 }
 
-function CompactCard({ visitorData, visits }) {
+function CompactCard({ visitorId, visits }) {
   return (
     <Stack direction="row" sx={{ width: '100%' }} justifyContent="space-between" alignItems="center">
       <Stack direction="column" spacing={2}>
-        <KeyValue name="Visitor ID" value={visitorData.visitorId} textVariant="h5" textColor="primary" />
+        <KeyValue name="Visitor ID" value={visitorId} textVariant="h5" textColor="primary" />
         <KeyValue textColor="textPrimary" name="Visit summary" value={`Visited ${visits.visits.length} times`} />
       </Stack>
       <Stack direction="column" spacing={2}>
@@ -58,7 +58,11 @@ function CompactCard({ visitorData, visits }) {
   );
 }
 
-export function IdentificationCard({ visitorData, visits, variant = 'extended', ...cardProps }) {
+export function IdentificationCard({ visitorId, visits, variant = 'extended', ...cardProps }) {
+  if (!visits) {
+    return null;
+  }
+
   return (
     <Card
       {...cardProps}
@@ -67,8 +71,8 @@ export function IdentificationCard({ visitorData, visits, variant = 'extended', 
         ...cardProps?.sx,
       }}
     >
-      {variant === 'extended' && <ExtendedCard visitorData={visitorData} visits={visits} />}
-      {variant === 'compact' && <CompactCard visitorData={visitorData} visits={visits} />}
+      {variant === 'extended' && <ExtendedCard visitorId={visitorId} visits={visits} />}
+      {variant === 'compact' && <CompactCard visitorId={visitorId} visits={visits} />}
     </Card>
   );
 }

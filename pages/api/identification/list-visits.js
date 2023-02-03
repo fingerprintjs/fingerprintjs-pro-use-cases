@@ -1,42 +1,31 @@
-import { ensurePostRequest } from '../../../server/server';
-import { uniqArray } from '../../../shared/utils/array';
-import { initPresentationDemo, Visit } from '../../../server/presentation-demo/database';
+import { initIdentification, Visit } from '../../../server/identification/database';
+import { decorateWebhookVisits } from '../../../server/identification/decorate-visits';
 
 export default async function handler(req, res) {
-  await initPresentationDemo();
-  ensurePostRequest(req, res);
+  await initIdentification();
 
   try {
-    const { visitorId, linkedId } = JSON.parse(req.body);
+    const { linkedId } = req.query;
 
-    const rawVisit = await Visit.findOne({
+    const rawVisits = await Visit.findAll({
       where: {
-        visitorId,
         linkedId: linkedId ?? null,
       },
     });
 
-    const visits = rawVisit ? JSON.parse(rawVisit.visits) : [];
-
-    return res.status(200).json({
-      visitorId,
-      visits,
-      ...decorateData(visits),
+    const visits = rawVisits.map((rawVisit) => {
+      const visits = JSON.parse(rawVisit.visits);
+      return {
+        ...rawVisit.toJSON(),
+        visits,
+        ...decorateWebhookVisits(visits),
+      };
     });
+
+    return res.status(200).json(visits);
   } catch (error) {
     console.error(error);
 
     return res.status(400).json({ message: error.message });
   }
-}
-
-/**
- * @param visits {import('@fingerprintjs/fingerprintjs-pro-server-api').VisitWebhook[]}
- * */
-function decorateData(visits) {
-  return {
-    incognitoSessionsCount: visits.filter((visit) => visit.incognito).length,
-    ipAddresses: uniqArray(visits.map((visit) => visit.ip)).length,
-    locations: uniqArray(visits.map((visit) => `${visit.ipLocation.latitude}-${visit.ipLocation.longitude}`)).length,
-  };
 }

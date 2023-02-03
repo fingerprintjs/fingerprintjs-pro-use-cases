@@ -3,13 +3,17 @@ import { useQuery } from 'react-query';
 export const GET_VISITS_QUERY = 'GET_VISITS_QUERY';
 
 async function getVisits({ visitorId, linkedId }) {
-  return fetch('/api/identification/get-visits', {
-    method: 'POST',
-    body: JSON.stringify({
-      visitorId,
-      linkedId,
-    }),
-  })
+  const url = new URL(`${location.origin}/api/identification/get-visits`);
+
+  if (linkedId) {
+    url.searchParams.set('linkedId', linkedId);
+  }
+
+  if (visitorId) {
+    url.searchParams.set('visitorId', visitorId);
+  }
+
+  return fetch(url.toString())
     .then((response) => response.json())
     .then((data) => {
       if (data.message) {
