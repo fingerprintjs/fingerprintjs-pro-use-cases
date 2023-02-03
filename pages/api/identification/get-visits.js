@@ -1,19 +1,26 @@
 import { ensurePostRequest } from '../../../server/server';
-import { fingerprintJsApiClient } from '../../../server/fingerprint-api';
 import { uniqArray } from '../../../shared/utils/array';
+import { initPresentationDemo, Visit } from '../../../server/presentation-demo/database';
 
 export default async function handler(req, res) {
+  await initPresentationDemo();
   ensurePostRequest(req, res);
 
   try {
     const { visitorId, linkedId } = JSON.parse(req.body);
 
-    const filter = linkedId ? { linked_id: linkedId } : undefined;
+    const rawVisit = await Visit.findOne({
+      where: {
+        visitorId,
+        linkedId: linkedId ?? null,
+      },
+    });
 
-    const visits = await fingerprintJsApiClient.getVisitorHistory(visitorId, filter);
+    const visits = rawVisit ? JSON.parse(rawVisit.visits) : [];
 
     return res.status(200).json({
-      ...visits,
+      visitorId,
+      visits,
       ...decorateData(visits),
     });
   } catch (error) {
@@ -24,13 +31,12 @@ export default async function handler(req, res) {
 }
 
 /**
- * @param visits {import('@fingerprintjs/fingerprintjs-pro-server-api').VisitorsResponse}
+ * @param visits {import('@fingerprintjs/fingerprintjs-pro-server-api').VisitorsResponse.visits}
  * */
 function decorateData(visits) {
   return {
-    incognitoSessionsCount: visits.visits.filter((visit) => visit.incognito).length,
-    ipAddresses: uniqArray(visits.visits.map((visit) => visit.ip)).length,
-    locations: uniqArray(visits.visits.map((visit) => `${visit.ipLocation.latitude}-${visit.ipLocation.longitude}`))
-      .length,
+    incognitoSessionsCount: visits.filter((visit) => visit.incognito).length,
+    ipAddresses: uniqArray(visits.map((visit) => visit.ip)).length,
+    locations: uniqArray(visits.map((visit) => `${visit.ipLocation.latitude}-${visit.ipLocation.longitude}`)).length,
   };
 }
