@@ -2,7 +2,7 @@ import {
   ensurePostRequest,
   ensureValidRequestIdAndVisitorId,
   getForbiddenResponse,
-  getVisitorData,
+  getVisitorDataWithRequestId,
   reportSuspiciousActivity,
 } from '../server';
 import { initPaywall } from './database';
@@ -46,7 +46,7 @@ export const paywallEndpoint =
     // Information from the client side might have been tampered.
     // It's best practice to validate provided information with the Server API.
     // It is recommended to use the requestId and visitorId pair.
-    const visitorData = await getVisitorData(visitorId, requestId);
+    const visitorData = await getVisitorDataWithRequestId(visitorId, requestId);
 
     for (const ruleCheck of [...paywallChecks, ...optionalChecks]) {
       const result = await ruleCheck(visitorData, req);

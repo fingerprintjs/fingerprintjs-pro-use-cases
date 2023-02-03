@@ -1,4 +1,4 @@
-import { ensureValidRequestIdAndVisitorId, getForbiddenResponse, getVisitorData } from '../server';
+import { ensureValidRequestIdAndVisitorId, getForbiddenResponse, getVisitorDataWithRequestId } from '../server';
 import { checkResultType } from '../checkResult';
 import {
   checkConfidenceScore,
@@ -26,7 +26,7 @@ export async function validateCouponRequest(req, res) {
     checkOriginsIntegrity,
   ];
 
-  const visitorData = await getVisitorData(visitorId, requestId);
+  const visitorData = await getVisitorDataWithRequestId(visitorId, requestId);
 
   result.visitorId = visitorData.visitorId;
   result.couponCode = couponCode;
