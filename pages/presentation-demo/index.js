@@ -1,25 +1,8 @@
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import { useVisitorData } from '../../client/use-visitor-data';
-import { CircularProgress, Stack, Typography } from '@mui/material';
+import { Alert, CircularProgress } from '@mui/material';
 import { useGetVisits } from '../../client/api/identification/useGetVisits';
-
-function MetadataItem({ name, value, direction = 'column', textColor = 'textPrimary', textVariant = 'body1' }) {
-  return (
-    <Stack
-      spacing={direction === 'column' ? 0 : 1}
-      direction={direction}
-      alignItems={direction === 'column' ? 'flex-start' : 'baseline'}
-      justifyContent="center"
-    >
-      <Typography fontWeight="bold" variant="overline" color="textPrimary">
-        {name}
-      </Typography>
-      <Typography gutterBottom={false} color={textColor} variant={textVariant}>
-        {value}
-      </Typography>
-    </Stack>
-  );
-}
+import { IdentificationCard } from '../../client/components/presentation-demo/identification-card';
 
 export function getServerSideProps(ctx) {
   return {
@@ -37,10 +20,15 @@ export default function Index({ linkedId }) {
   });
 
   const isLoading = visitorData.isLoading || visits.isLoading;
+  const error = visitorData.error || visits.error;
 
   return (
     <UseCaseWrapper
       sx={{
+        '& .UsecaseWrapper_content': {
+          boxShadow: 'none',
+          padding: 0,
+        },
         '& .UsecaseWrapper_wrapper': {
           maxWidth: 1000,
         },
@@ -59,32 +47,9 @@ export default function Index({ linkedId }) {
       }
     >
       {isLoading && <CircularProgress />}
+      {error && <Alert severity="error">Failed to get visitor data: {error.message}</Alert>}
       {visitorData.data && visits.data && (
-        <Stack
-          direction={{ xs: 'column', sm: 'row' }}
-          alignItems={['flex-start', 'center']}
-          justifyContent="space-between"
-          spacing={3}
-        >
-          <Stack direction="column" spacing={3}>
-            <MetadataItem
-              name="Your visitor ID"
-              value={visitorData.data.visitorId}
-              textVariant="h5"
-              textColor="primary"
-            />
-            <MetadataItem
-              textColor="textPrimary"
-              name="Your visit summary"
-              value={`You visited ${visits.data.visits.length} times`}
-            />
-          </Stack>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3}>
-            <MetadataItem name="Incognito" value={`${visits.data.incognitoSessionsCount} sessions`} />
-            <MetadataItem name="IP Address" value={`${visits.data.ipAddresses} IPs`} />
-            <MetadataItem name="Geolocation" value={`${visits.data.locations} locations`} />
-          </Stack>
-        </Stack>
+        <IdentificationCard variant="extended" visitorData={visitorData.data} visits={visits.data} />
       )}
     </UseCaseWrapper>
   );
