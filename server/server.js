@@ -1,4 +1,6 @@
 import { Sequelize } from 'sequelize';
+import {areVisitorIdAndRequestIdValid} from './checks';
+import {SERVER_API_KEY} from './const';
 
 // Provision the database.
 // In the Stackblitz environment, this db is stored locally in your browser.
@@ -19,18 +21,12 @@ export const messageSeverity = Object.freeze({
   Error: 'error',
 });
 
-// Validates format of visitorId and requestId.
-export function areVisitorIdAndRequestIdValid(visitorId, requestId) {
-  const isVisitorIdFormatValid = /^[a-zA-Z0-9]{20}$/.test(visitorId);
-  const isRequestIdFormatValid = /^\d{13}\.[a-zA-Z0-9]{6}$/.test(requestId);
-  return isRequestIdFormatValid && isVisitorIdFormatValid;
-}
+
 
 export function ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId) {
   if (!areVisitorIdAndRequestIdValid(visitorId, requestId)) {
     reportSuspiciousActivity(req);
     getForbiddenResponse(res, 'Forged visitorId or requestId detected. Try harder next time.', messageSeverity.Error);
-
     return false;
   }
 
@@ -41,7 +37,7 @@ export function ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId)
 // Alternatively, on the Node.js environment one can use Server API Node.js library: https://github.com/fingerprintjs/fingerprintjs-pro-server-api-node-sdk
 // const client = new FingerprintJsServerApiClient({
 //   region: Region.Global,
-//   apiKey: 'F6gQ8H8vQLc7mVsVKaFx',
+//   apiKey: SERVER_API_KEY,
 //   authenticationMode: AuthenticationMode.QueryParameter,
 // });
 
@@ -63,8 +59,7 @@ export async function getVisitorData(visitorId, requestId) {
   fingerprintJSProServerApiUrl.searchParams.append(
     'api_key',
     // In a real world use-case, we recommend using Auth-API-Key header instead: https://dev.fingerprint.com/docs/server-api#api-methods.
-    // The API key should be stored in the environment variables/secrets.
-    'F6gQ8H8vQLc7mVsVKaFx'
+    SERVER_API_KEY
   );
   fingerprintJSProServerApiUrl.searchParams.append('request_id', requestId);
 
@@ -94,7 +89,6 @@ export function reportSuspiciousActivity(context) {}
 export function ensurePostRequest(req, res) {
   if (req.method !== 'POST') {
     res.status(405).send({ message: 'Only POST requests allowed' });
-
     return false;
   }
 

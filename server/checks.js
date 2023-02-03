@@ -2,6 +2,14 @@ import { CheckResult, checkResultType } from './checkResult';
 import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, IPv4_REGEX, MIN_CONFIDENCE_SCORE } from './const';
 import { messageSeverity, ourOrigins } from './server';
 
+
+// Validates format of visitorId and requestId.
+export const isVisitorIdFormatValid = (visitorId) => /^[a-zA-Z0-9]{20}$/.test(visitorId);
+export const isRequestIdFormatValid = (requestId) => /^\d{13}\.[a-zA-Z0-9]{6}$/.test(requestId);
+export function areVisitorIdAndRequestIdValid(visitorId, requestId) {
+  return isRequestIdFormatValid(requestId) && isVisitorIdFormatValid(visitorId);
+}
+
 export function checkFreshIdentificationRequest(visitorData) {
   // The Server API must contain information about this specific identification request.
   // If not, the request might have been tampered with and we don't trust this identification attempt.
@@ -41,14 +49,8 @@ export function checkConfidenceScore(visitorData) {
 
 // Checks if the authentication request comes from the same IP address as the identification request.
 export function checkIpAddressIntegrity(visitorData, request) {
-  const userIp = request.headers['x-forwarded-for']?.split(',')[0] ?? '';
-
   if (
-    process.env.NODE_ENV !== 'development' && // This check is disabled on purpose in the Stackblitz and localhost environments.
-    // This is an example of obtaining the client IP address.
-    // In most cases, it's a good idea to look for the right-most external IP address in the list to prevent spoofing.
-    IPv4_REGEX.test(userIp) && // For now our check supports only IPv4 addresses
-    userIp !== visitorData.visits[0].ip
+    !visitIpMatchesRequestIp(visitorData.visits[0], request) 
   ) {
     return new CheckResult(
       'IP mismatch. An attacker might have tried to phish the victim.',
@@ -56,6 +58,27 @@ export function checkIpAddressIntegrity(visitorData, request) {
       checkResultType.IpMismatch
     );
   }
+}
+
+/**
+ * 
+ * @param visitData - import('@fingerprintjs/fingerprintjs-pro-server-api'.Visit does't work yet 
+ * @param {import('http').IncomingMessage} request
+ */
+export function visitIpMatchesRequestIp(visitData, request) {
+  // This check is skipped on purpose in the Stackblitz and localhost environments.
+  if (process.env.NODE_ENV === 'development') {
+    return true;
+  }
+
+  const userIp = /** @type {string} */ (request.headers['x-forwarded-for'])?.split(',')[0] ?? '';
+  
+  // IPv6 addresses are not supported yet, skip the check
+  if (!IPv4_REGEX.test(userIp)) {
+    return true;
+  }
+
+  return userIp === visitData.ip;  
 }
 
 // Checks if the authentication request comes from a known origin and

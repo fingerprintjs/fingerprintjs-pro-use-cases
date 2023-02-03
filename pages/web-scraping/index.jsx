@@ -1,25 +1,31 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import clsx from 'clsx';
 import Link from 'next/link';
+import {useRouter} from 'next/router';
 import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
-import { useVisitorData } from '../../client/use-visitor-data';
+import {useVisitorData} from '../../client/use-visitor-data';
 import { getServerSideProps } from '../paywall';
 
 export const WebScrapingUseCase = () => {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
-  const { data } = useVisitorData();
-  console.log(data);
-  const requestId = data?.requestId;
-  const visitorId = data?.visitorId;
+  const visitorDataQuery = useVisitorData({
+    // Don't invoke query on mount
+    enabled: false,
+  });
+  const router = useRouter();
+
+
   /**
   //  * @type {React.FormEventHandler<HTMLFormElement>}
   //  */
-  // function handleSubmit(event) {
-  //   event.preventDefault();
-  //   console.log('Submit', from, to);
-  // }
+  async function handleSubmit(event) {
+    event.preventDefault();
+    await visitorDataQuery.refetch();
+    const { requestId } = visitorDataQuery.data;
+    router.push(`/web-scraping/results?from=${from}&to=${to}&requestId=${requestId}`);
+  }
 
   return (
     <>
@@ -35,7 +41,7 @@ export const WebScrapingUseCase = () => {
         listItems={[<>In this demo we will do something fun</>]}
       >
         <h1>Search for flights</h1>
-        <form>
+        <form onSubmit={handleSubmit}>
           <FormControl fullWidth>
             <InputLabel id="from">From</InputLabel>
             <Select labelId="from" id="from-select" value={from} label="From" onChange={(e) => setFrom(e.target.value)}>
@@ -53,11 +59,13 @@ export const WebScrapingUseCase = () => {
               <MenuItem value={'London'}>London</MenuItem>
               <MenuItem value={'Tokyo'}>Tokyo</MenuItem>
             </Select>
-            <Link href={`/web-scraping/results?from=${from}&to=${to}&requestId=${requestId}&visitorId=${visitorId}`}>
-              <Button size="large" variant="contained" color="primary" disableElevation fullWidth>
-                Search flights
-              </Button>
-            </Link>
+            {(
+              // <Link href={`/web-scraping/results?from=${from}&to=${to}&requestId=${requestId}`}>
+                <Button type="submit" size="large" variant="contained" color="primary" disableElevation fullWidth>
+                  Search flights
+                </Button>
+              // </Link>
+            )}
           </FormControl>
         </form>
       </UseCaseWrapper>
