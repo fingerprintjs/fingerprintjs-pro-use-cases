@@ -1,11 +1,8 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
-import clsx from 'clsx';
-import Link from 'next/link';
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
-import {useVisitorData} from '../../client/use-visitor-data';
-import { getServerSideProps } from '../paywall';
+import { useVisitorData } from '../../client/use-visitor-data';
 
 export const WebScrapingUseCase = () => {
   const [from, setFrom] = useState('');
@@ -16,15 +13,13 @@ export const WebScrapingUseCase = () => {
   });
   const router = useRouter();
 
-
   /**
-  //  * @type {React.FormEventHandler<HTMLFormElement>}
-  //  */
+  //* @type {React.FormEventHandler<HTMLFormElement>}
+  //*/
   async function handleSubmit(event) {
     event.preventDefault();
-    await visitorDataQuery.refetch();
-    const { requestId } = visitorDataQuery.data;
-    router.push(`/web-scraping/results?from=${from}&to=${to}&requestId=${requestId}`);
+    const { data } = await visitorDataQuery.refetch();
+    router.push(`/web-scraping/results?from=${from}&to=${to}&requestId=${data.requestId}`);
   }
 
   return (
@@ -59,13 +54,11 @@ export const WebScrapingUseCase = () => {
               <MenuItem value={'London'}>London</MenuItem>
               <MenuItem value={'Tokyo'}>Tokyo</MenuItem>
             </Select>
-            {(
-              // <Link href={`/web-scraping/results?from=${from}&to=${to}&requestId=${requestId}`}>
-                <Button type="submit" size="large" variant="contained" color="primary" disableElevation fullWidth>
-                  Search flights
-                </Button>
-              // </Link>
-            )}
+            {
+              <Button type="submit" size="large" variant="contained" color="primary" disableElevation fullWidth>
+                Search flights
+              </Button>
+            }
           </FormControl>
         </form>
       </UseCaseWrapper>
