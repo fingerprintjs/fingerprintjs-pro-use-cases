@@ -40,8 +40,9 @@ export default function Index({ linkedId }) {
       title="Presentation demo"
       listItems={[
         <>
-          Click <Link href={linkedId ? `/presentation-demo/list?${linkedId}` : '/presentation-demo/list'}>here</Link> to
-          see all identified users
+          Click{' '}
+          <Link href={linkedId ? `/presentation-demo/list?linkedId=${linkedId}` : '/presentation-demo/list'}>here</Link>{' '}
+          to see all identified users
         </>,
       ]}
       description={
