@@ -34,10 +34,10 @@ export default function Index({ linkedId }) {
       description="You can view all identified users here"
     >
       {allVisits.isLoading && <CircularProgress />}
-      <Stack direction="row" flexWrap="wrap" spacing={2}>
+      <Stack direction={{ xs: 'column', md: 'row' }} flexWrap="wrap" spacing={2}>
         {Boolean(allVisits.data?.length) &&
           allVisits.data.map((visits) => (
-            <Box minWidth={450} key={visits.visitorId}>
+            <Box minWidth={['auto', 450]} key={visits.visitorId} width={['100%', 'auto']}>
               <IdentificationCard variant="compact" visits={visits} visitorId={visits.visitorId} />
             </Box>
           ))}

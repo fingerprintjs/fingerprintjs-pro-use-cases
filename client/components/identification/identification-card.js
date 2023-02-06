@@ -21,42 +21,50 @@ function KeyValue({ name, value, direction = 'column', textColor = 'textPrimary'
 
 function ExtendedCard({ visitorId, visits }) {
   return (
-    <Stack
-      direction={{ xs: 'column', sm: 'row' }}
-      alignItems={['flex-start', 'center']}
-      justifyContent="space-between"
-      spacing={3}
-    >
-      <Stack direction="column" spacing={3}>
-        <KeyValue name="Your visitor ID" value={visitorId} textVariant="h5" textColor="primary" />
-        <KeyValue
-          textColor="textPrimary"
-          name="Your visit summary"
-          value={`You visited ${visits.visits?.length ?? 0} times`}
-        />
-        <DevicesChip visits={visits.visits} />
+    <Stack direction="column" spacing={2}>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        alignItems={['flex-start', 'center']}
+        justifyContent="space-between"
+        spacing={3}
+      >
+        <Stack direction="column" spacing={2}>
+          <KeyValue name="Your visitor ID" value={visitorId} textVariant="h5" textColor="primary" />
+          <KeyValue
+            textColor="textPrimary"
+            name="Your visit summary"
+            value={`You visited ${visits.visits?.length ?? 0} times`}
+          />
+        </Stack>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <KeyValue name="Incognito" value={`${visits.incognitoSessionsCount} sessions`} />
+          <KeyValue name="IP Address" value={`${visits.ipAddresses} IPs`} />
+          <KeyValue name="Geolocation" value={`${visits.locations} locations`} />
+        </Stack>
       </Stack>
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3}>
-        <KeyValue name="Incognito" value={`${visits.incognitoSessionsCount} sessions`} />
-        <KeyValue name="IP Address" value={`${visits.ipAddresses} IPs`} />
-        <KeyValue name="Geolocation" value={`${visits.locations} locations`} />
-      </Stack>
+      <DevicesChip visits={visits.visits} />
     </Stack>
   );
 }
 
 function CompactCard({ visitorId, visits }) {
   return (
-    <Stack direction="row" sx={{ width: '100%' }} justifyContent="space-between" alignItems="center">
-      <Stack direction="column" spacing={2}>
-        <KeyValue name="Visitor ID" value={visitorId} textVariant="h5" textColor="primary" />
-        <KeyValue textColor="textPrimary" name="Visit summary" value={`Visited ${visits.visits.length} times`} />
-        <DevicesChip visits={visits.visits} />
+    <Stack sx={{ width: '100%' }} direction="column" spacing={2}>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        justifyContent="space-between"
+        alignItems={{ xs: 'flex-start', sm: 'center' }}
+      >
+        <Stack direction="column" spacing={2}>
+          <KeyValue name="Visitor ID" value={visitorId} textVariant="h5" textColor="primary" />
+          <KeyValue textColor="textPrimary" name="Visit summary" value={`Visited ${visits.visits.length} times`} />
+        </Stack>
+        <Stack direction="column" spacing={2}>
+          <KeyValue name="Incognito" value={`${visits.incognitoSessionsCount} sessions`} />
+          <KeyValue name="IP Address" value={`${visits.ipAddresses} IPs`} />
+        </Stack>
       </Stack>
-      <Stack direction="column" spacing={2}>
-        <KeyValue name="Incognito" value={`${visits.incognitoSessionsCount} sessions`} />
-        <KeyValue name="IP Address" value={`${visits.ipAddresses} IPs`} />
-      </Stack>
+      <DevicesChip visits={visits.visits} />
     </Stack>
   );
 }
