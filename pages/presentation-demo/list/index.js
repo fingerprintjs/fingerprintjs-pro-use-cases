@@ -1,6 +1,6 @@
 import { useListVisits } from '../../../client/api/identification/useListVisits';
 import { Box, CircularProgress, Stack } from '@mui/material';
-import { IdentificationCard } from '../../../client/components/presentation-demo/identification-card';
+import { IdentificationCard } from '../../../client/components/identification/identification-card';
 import { UseCaseWrapper } from '../../../client/components/use-case-wrapper';
 import { useVisitsListener } from '../../../client/api/identification/useVisitsListener';
 

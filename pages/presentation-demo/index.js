@@ -2,7 +2,7 @@ import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import { useVisitorData } from '../../client/use-visitor-data';
 import { Alert, CircularProgress } from '@mui/material';
 import { useGetVisits } from '../../client/api/identification/useGetVisits';
-import { IdentificationCard } from '../../client/components/presentation-demo/identification-card';
+import { IdentificationCard } from '../../client/components/identification/identification-card';
 import Link from 'next/link';
 import { useGetVisitsListener } from '../../client/api/identification/useGetVisitsListener';
 

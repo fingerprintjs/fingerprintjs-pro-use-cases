@@ -1,4 +1,5 @@
 import { Card, Stack, Typography } from '@mui/material';
+import { DevicesChip } from './devices-chip';
 
 function KeyValue({ name, value, direction = 'column', textColor = 'textPrimary', textVariant = 'body1' }) {
   return (
@@ -33,6 +34,7 @@ function ExtendedCard({ visitorId, visits }) {
           name="Your visit summary"
           value={`You visited ${visits.visits?.length ?? 0} times`}
         />
+        <DevicesChip visits={visits.visits} />
       </Stack>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3}>
         <KeyValue name="Incognito" value={`${visits.incognitoSessionsCount} sessions`} />
@@ -49,6 +51,7 @@ function CompactCard({ visitorId, visits }) {
       <Stack direction="column" spacing={2}>
         <KeyValue name="Visitor ID" value={visitorId} textVariant="h5" textColor="primary" />
         <KeyValue textColor="textPrimary" name="Visit summary" value={`Visited ${visits.visits.length} times`} />
+        <DevicesChip visits={visits.visits} />
       </Stack>
       <Stack direction="column" spacing={2}>
         <KeyValue name="Incognito" value={`${visits.incognitoSessionsCount} sessions`} />
@@ -62,6 +65,8 @@ export function IdentificationCard({ visitorId, visits, variant = 'extended', ..
   if (!visits) {
     return null;
   }
+
+  console.log(visits);
 
   return (
     <Card
