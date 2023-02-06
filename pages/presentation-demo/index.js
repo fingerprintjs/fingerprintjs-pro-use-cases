@@ -4,6 +4,7 @@ import { Alert, CircularProgress } from '@mui/material';
 import { useGetVisits } from '../../client/api/identification/useGetVisits';
 import { IdentificationCard } from '../../client/components/presentation-demo/identification-card';
 import Link from 'next/link';
+import { useGetVisitsListener } from '../../client/api/identification/useGetVisitsListener';
 
 export function getServerSideProps(ctx) {
   return {
@@ -22,6 +23,8 @@ export default function Index({ linkedId }) {
 
   const isLoading = visitorData.isLoading || visits.isLoading;
   const error = visitorData.error || visits.error;
+
+  useGetVisitsListener({ visitorId: visitorData?.data?.visitorId, linkedId });
 
   return (
     <UseCaseWrapper

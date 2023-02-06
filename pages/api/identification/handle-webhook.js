@@ -1,4 +1,6 @@
 import { initIdentification, Visit } from '../../../server/identification/database';
+import { extractSocketServer } from '../../../server/socket';
+import { decorateWebhookVisits } from '../../../server/identification/decorate-visits';
 
 export default function handler(req, res) {
   handle(req).catch(console.error);
@@ -15,7 +17,11 @@ async function handle(req) {
     return;
   }
 
-  await saveVisit(visit);
+  const result = await saveVisit(visit, req);
+
+  if (result) {
+    emitVisitEvent(result, req);
+  }
 }
 
 function resolveLinkedId(visit) {
@@ -65,5 +71,21 @@ async function saveVisit(visit) {
     visitorId: visit.visitorId,
     visits: JSON.stringify([visit]),
     linkedId,
+  });
+}
+
+function emitVisitEvent(visit, req) {
+  const visits = visit.visits ? JSON.parse(visit.visits) : [];
+
+  const socket = extractSocketServer(req);
+
+  if (!socket) {
+    return;
+  }
+
+  socket.emit('visit', {
+    ...visit.toJSON(),
+    visits: visits,
+    ...decorateWebhookVisits(visits),
   });
 }

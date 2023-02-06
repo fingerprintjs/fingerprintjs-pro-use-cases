@@ -21,5 +21,5 @@ async function listVisits({ linkedId }) {
 }
 
 export function useListVisits({ linkedId }) {
-  return useQuery(LIST_VISITS_QUERY, () => listVisits({ linkedId }));
+  return useQuery([LIST_VISITS_QUERY, linkedId], () => listVisits({ linkedId }));
 }

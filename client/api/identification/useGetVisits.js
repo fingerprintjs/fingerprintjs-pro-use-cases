@@ -25,7 +25,7 @@ async function getVisits({ visitorId, linkedId }) {
 }
 
 export function useGetVisits({ visitorId = null, linkedId }) {
-  return useQuery(GET_VISITS_QUERY, () => getVisits({ visitorId, linkedId }), {
+  return useQuery([GET_VISITS_QUERY, visitorId, linkedId], () => getVisits({ visitorId, linkedId }), {
     enabled: Boolean(visitorId),
   });
 }
