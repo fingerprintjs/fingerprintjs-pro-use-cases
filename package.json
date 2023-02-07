@@ -16,6 +16,7 @@
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@fingerprintjs/fingerprintjs-pro": "^3.6.2",
+    "@fingerprintjs/fingerprintjs-pro-server-api": "^2.0.0",
     "@mui/icons-material": "^5.8.4",
     "@mui/lab": "^5.0.0-alpha.89",
     "@mui/material": "^5.8.7",
@@ -28,6 +29,8 @@
     "react-query": "^3.39.1",
     "react-use": "^17.4.0",
     "sequelize": "^6.19.0",
+    "socket.io": "^4.5.4",
+    "socket.io-client": "^4.5.4",
     "sqlite3": "^5.0.8"
   },
   "devDependencies": {

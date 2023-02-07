@@ -2,6 +2,11 @@ import Paper from '@mui/material/Paper';
 import clsx from 'clsx';
 import Divider from '@mui/material/Divider';
 import Link from 'next/link';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import { ArrowBack } from '@mui/icons-material';
+import { Tooltip } from '@mui/material';
 
 export function UseCaseWrapper({
   title,
@@ -13,13 +18,34 @@ export function UseCaseWrapper({
   hideSrcListItem = false,
   hideDivider = false,
   sx,
+  returnUrl,
 }) {
   return (
     <Paper variant="outlined" className="ExternalLayout_wrapper" square sx={sx}>
       <div className="ExternalLayout_main">
         <div className={clsx('UsecaseWrapper_wrapper', { full: variant === 'full' })}>
           <div className="UsecaseWrapper_description">
-            <h1 className="UsecaseWrapper_title">{title}</h1>
+            <Stack direction="row" alignItems="baseline" spacing={1}>
+              {returnUrl && (
+                <Link href={returnUrl} legacyBehavior passHref>
+                  <Tooltip title="Go back">
+                    <IconButton component="a">
+                      <ArrowBack />
+                    </IconButton>
+                  </Tooltip>
+                </Link>
+              )}
+              <Typography
+                component="h1"
+                variant="h3"
+                className="UsecaseWrapper_title"
+                sx={{
+                  pt: (t) => t.spacing(2),
+                }}
+              >
+                {title}
+              </Typography>
+            </Stack>
             <p className="UsecaseWrapper_helper">{description}</p>
             {!hideDivider && <Divider className="UsecaseWrapper_divider" />}
             <ul className="UsecaseWrapper_notes">
@@ -32,14 +58,10 @@ export function UseCaseWrapper({
               {articleURL && (
                 <li>
                   Learn more about this scenario in the{' '}
-                  <a
-                  href={articleURL}
-                  target="_blank"
-                  rel="noreferrer"
-                  >
+                  <a href={articleURL} target="_blank" rel="noreferrer">
                     {title}
-                  </a>
-                  {' '}article.
+                  </a>{' '}
+                  article.
                 </li>
               )}
               {!hideSrcListItem && (

@@ -2,7 +2,7 @@ import {
   ensureValidRequestIdAndVisitorId,
   getForbiddenResponse,
   getOkResponse,
-  getVisitorData,
+  getVisitorDataWithRequestId,
   messageSeverity,
 } from '../../../server/server';
 import { LoginAttempt } from '../credential-stuffing/authenticate';
@@ -45,7 +45,7 @@ async function tryToReset(req, res, ruleChecks) {
     return;
   }
 
-  const visitorData = await getVisitorData(visitorId, requestId);
+  const visitorData = await getVisitorDataWithRequestId(visitorId, requestId);
 
   for (const ruleCheck of ruleChecks) {
     const result = await ruleCheck(visitorData, req);
