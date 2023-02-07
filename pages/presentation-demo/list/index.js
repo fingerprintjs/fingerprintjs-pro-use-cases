@@ -1,5 +1,5 @@
 import { useListVisits } from '../../../client/api/identification/useListVisits';
-import { Box, CircularProgress, Stack } from '@mui/material';
+import { CircularProgress, Grid } from '@mui/material';
 import { IdentificationCard } from '../../../client/components/identification/identification-card';
 import { UseCaseWrapper } from '../../../client/components/use-case-wrapper';
 import { useVisitsListener } from '../../../client/api/identification/useVisitsListener';
@@ -34,14 +34,14 @@ export default function Index({ linkedId }) {
       description="You can view all identified users here"
     >
       {allVisits.isLoading && <CircularProgress />}
-      <Stack direction={{ xs: 'column', md: 'row' }} flexWrap="wrap" spacing={2}>
+      <Grid container spacing={2}>
         {Boolean(allVisits.data?.length) &&
           allVisits.data.map((visits) => (
-            <Box minWidth={['auto', 450]} key={visits.visitorId} width={['100%', 'auto']}>
+            <Grid item xs={12} md={6} lg={4} key={visits.visitorId}>
               <IdentificationCard variant="compact" visits={visits} visitorId={visits.visitorId} />
-            </Box>
+            </Grid>
           ))}
-      </Stack>
+      </Grid>
     </UseCaseWrapper>
   );
 }
