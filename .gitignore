@@ -40,3 +40,6 @@ jspm_packages
 
 # Local database
 .data
+/test-results/
+/playwright-report/
+/playwright/.cache/

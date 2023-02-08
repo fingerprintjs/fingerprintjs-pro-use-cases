@@ -101,6 +101,7 @@ export default function Index() {
         >
           {pages.map((page) => (
             <Grid
+              className="UseCase"
               key={page.url}
               item
               md={4}
