@@ -1,6 +1,6 @@
 import { useVisitorData } from '../../client/use-visitor-data';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -75,6 +75,7 @@ export default function CouponFraudUseCase() {
             <div className={styles.couponForm}>
               <FormControl fullWidth variant="outlined">
                 <TextField
+                  id="coupon_code"
                   placeholder="Enter a coupon"
                   variant="outlined"
                   defaultValue={couponCode}
