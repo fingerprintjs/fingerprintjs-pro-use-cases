@@ -21,6 +21,8 @@ async function getVisitorData({ extendedResult = true, linkedId }) {
   });
   const fp = await fpPromise;
 
+  console.log({ fp });
+
   return fp.get({
     extendedResult,
     linkedId,

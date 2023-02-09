@@ -1,19 +1,14 @@
-import { getWebsiteUrl } from './url';
-
 /**
  * @param {import('@playwright/test').BrowserContext} context
  * */
 export async function reset(context) {
-  const url = getWebsiteUrl();
-  url.pathname = '/admin';
-
   const page = await context.newPage();
 
-  await page.goto(url.toString());
+  await page.goto('/admin');
 
-  await page.click('button');
+  await page.click('#reset');
 
-  await page.waitForLoadState('networkidle');
+  await page.waitForSelector('text=Reset all data for this visitorId');
 
   await page.close();
 }

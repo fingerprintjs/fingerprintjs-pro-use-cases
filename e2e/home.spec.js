@@ -1,10 +1,9 @@
 // @ts-check
 import { expect, test } from '@playwright/test';
-import { getWebsiteUrl } from './url';
 
 test.describe('Home page', () => {
   test('should list cards with use-cases', async ({ page }) => {
-    await page.goto(getWebsiteUrl().toString());
+    await page.goto('/');
 
     const cards = await page.locator('.UseCase');
 
