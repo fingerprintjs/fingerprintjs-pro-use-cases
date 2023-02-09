@@ -15,5 +15,12 @@ export const personalizationEndpoint = (requestCallback) => async (req, res) => 
 
   const validationResult = await validatePersonalizationRequest(req, res);
 
+  /**
+   * FIXME Caused by getForbiddenResponse
+   * */
+  if (res.headersSent) {
+    return;
+  }
+
   return requestCallback(req, res, validationResult);
 };
