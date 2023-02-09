@@ -8,6 +8,10 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shardIndex: [ 1, 2, 3 ]
+        shardTotal: [ 3 ]
     steps:
     - uses: actions/checkout@v3
 
@@ -24,7 +28,7 @@ jobs:
       run: yarn start & sleep 10
 
     - name: Run Playwright tests
-      run: yarn test:e2e
+      run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
 
     - uses: actions/upload-artifact@v3
       if: always()
