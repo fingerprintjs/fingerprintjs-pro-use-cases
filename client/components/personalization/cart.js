@@ -39,14 +39,18 @@ export function CartItem({ item }) {
           },
         })}
       >
-        <Image
-          src={item.product.image}
-          height="100%"
-          width="100%"
-          alt={item.product.name}
-          objectFit="cover"
-          layout="fixed"
-        />
+        <Box
+          position="relative"
+          height="100px"
+          width="100px"
+          sx={{
+            '& img': {
+              objectFit: 'contain',
+            },
+          }}
+        >
+          <Image src={item.product.image} alt={item.product.name} fill />
+        </Box>
         <Stack direction="column" justifyContent="center" alignItems="center">
           <Typography variant="subtitle2">{item.product.name}</Typography>
           <Typography variant="body1">${price}</Typography>

@@ -4,6 +4,7 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
+import Box from '@mui/material/Box';
 import { useCart } from '../../api/personalization/use-cart';
 import { LoadingButton } from '@mui/lab';
 import { useState } from 'react';
@@ -38,7 +39,18 @@ export function ProductItem({ product: { price, name, image, id } }) {
     >
       <CardMedia
         component={() => (
-          <Image src={image} height="100%" width="100%" alt={name} objectFit="cover" layout="responsive" />
+          <Box
+            position="relative"
+            width="100%"
+            height="100px"
+            sx={{
+              '& img': {
+                objectFit: 'cover',
+              },
+            }}
+          >
+            <Image src={image} alt={name} fill />
+          </Box>
         )}
       />
       <CardContent>
