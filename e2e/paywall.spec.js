@@ -10,7 +10,7 @@ test.describe('Paywall', () => {
   });
 
   test('should show how many free views remain', async ({ page }) => {
-    const articles = await page.locator('.article-link');
+    const articles = await page.locator('.ArticleLink');
 
     await articles.first().click();
     await page.waitForSelector('text="You have 1 remaining free article views."');
@@ -25,7 +25,7 @@ test.describe('Paywall', () => {
   });
 
   test('should show paywall after passing limit', async ({ page }) => {
-    const articles = await page.locator('.article-link');
+    const articles = await page.locator('.ArticleLink');
 
     await articles.first().click();
     await page.waitForSelector('.UsecaseWrapper_alert');

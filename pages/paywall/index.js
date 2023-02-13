@@ -37,7 +37,7 @@ export default function LoanRisk({ articles }) {
               key={article.id}
               variant="outlined"
               component="a"
-              className="article-link"
+              className="ArticleLink"
             >
               <CardContent>
                 <Typography variant="h5" gutterBottom>
