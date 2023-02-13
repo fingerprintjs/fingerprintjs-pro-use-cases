@@ -54,6 +54,7 @@ function SearchHistory({ searchHistory, onSearchHistoryClick }) {
       <Typography variant="caption">Last searches:</Typography>
       {displaySearchHistory.map((searchHistory, index, arr) => (
         <Typography
+          className="SearchHistory_Item"
           maxWidth="80px"
           whiteSpace="nowrap"
           overflow="hidden"
@@ -94,6 +95,7 @@ function SearchHistory({ searchHistory, onSearchHistoryClick }) {
               <List subheader={<ListSubheader>Last searches:</ListSubheader>}>
                 {searchHistory.data.slice(SEARCH_HISTORY_DISPLAY_LIMIT).map((searchHistory) => (
                   <ListItemButton
+                    className="SearchHistory_Item"
                     onClick={() => {
                       onSearchHistoryClick(searchHistory.query);
 
@@ -129,6 +131,7 @@ export function PersonalizationTopSection({ search, onSearch, searchHistory, onS
       <PersonalizationTopSectionItem title="Search">
         <Stack direction="column" spacing={2}>
           <TextField
+            name="search"
             value={search}
             onChange={(event) => {
               onSearch?.(event.target.value);

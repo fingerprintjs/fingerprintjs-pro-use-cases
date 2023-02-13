@@ -70,6 +70,7 @@ export default function Index() {
     ) {
       enqueueSnackbar('Welcome back! We applied your dark mode preference and synced your cart and search terms.', {
         variant: 'info',
+        className: 'WelcomeBack',
       });
 
       setUserWelcomed(true);

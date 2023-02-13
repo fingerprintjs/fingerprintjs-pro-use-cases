@@ -31,6 +31,7 @@ export function ProductItem({ product: { price, name, image, id } }) {
 
   return (
     <Card
+      className="ProductCard"
       variant="outlined"
       style={{
         width: '100%',
@@ -54,15 +55,16 @@ export function ProductItem({ product: { price, name, image, id } }) {
         )}
       />
       <CardContent>
-        <Typography gutterBottom variant="h5">
+        <Typography gutterBottom variant="h5" className="ProductCard_Name">
           {name}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography data-price={price} variant="body2" color="text.secondary" className="ProductCard_Price">
           ${price.toFixed(2)}
         </Typography>
       </CardContent>
       <CardActions>
         <LoadingButton
+          className="ProductCard_AddToCart"
           fullWidth
           startIcon={wasAdded ? <Check /> : undefined}
           loading={addCartItemMutation.isLoading}

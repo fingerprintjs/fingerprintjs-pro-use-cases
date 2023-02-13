@@ -15,6 +15,7 @@ export function CartItem({ item }) {
 
   return (
     <Card
+      className="CartItem"
       sx={(theme) => ({
         padding: theme.spacing(2),
         width: '90%',
@@ -52,8 +53,12 @@ export function CartItem({ item }) {
           <Image src={item.product.image} alt={item.product.name} fill />
         </Box>
         <Stack direction="column" justifyContent="center" alignItems="center">
-          <Typography variant="subtitle2">{item.product.name}</Typography>
-          <Typography variant="body1">${price}</Typography>
+          <Typography variant="subtitle2" className="CartItem_Name">
+            {item.product.name}
+          </Typography>
+          <Typography variant="body1" className="CartItem_Price">
+            ${price}
+          </Typography>
         </Stack>
         <Stack
           alignItems="center"
@@ -67,6 +72,7 @@ export function CartItem({ item }) {
           })}
         >
           <IconButton
+            className="CartItem_Remove"
             size="small"
             disabled={removeCartItemMutation.isLoading}
             onClick={() => removeCartItemMutation.mutate({ itemId: item.id })}
@@ -74,8 +80,11 @@ export function CartItem({ item }) {
             <Remove />
           </IconButton>
 
-          <Typography variant="caption">{item.count}</Typography>
+          <Typography variant="caption" className="CartItem_Count">
+            {item.count}
+          </Typography>
           <IconButton
+            className="CartItem_Add"
             disabled={addCartItemMutation.isLoading}
             size="small"
             onClick={() => addCartItemMutation.mutate({ productId: item.product.id })}
