@@ -45,17 +45,6 @@ export default function Index({ linkedId }) {
           to see all identified users
         </>,
       ]}
-      description={
-        <>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in urna sapien. Sed varius imperdiet risus,
-          quis dapibus nisi gravida ut. Aenean placerat risus quam, dictum interdum ante tempor posuere. Curabitur
-          mauris nisl, vulputate eget viverra quis, hendrerit nec dolor. Suspendisse quis metus faucibus, facilisis
-          ligula ut, porta nulla. Nullam id vehicula eros. Proin in eleifend odio. Donec blandit sapien a nunc efficitur
-          blandit. Mauris nec nulla commodo, iaculis tortor eget, mollis ligula. Phasellus luctus vitae diam et
-          vestibulum. Quisque nec fringilla erat. Nullam eu auctor diam. Aenean ultrices commodo tincidunt. Donec
-          ultrices elit a elit faucibus, at sodales ipsum bibendum.
-        </>
-      }
     >
       {isLoading && <CircularProgress />}
       {error && <Alert severity="error">Failed to get visitor data: {error.message}</Alert>}

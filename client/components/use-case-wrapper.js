@@ -46,7 +46,7 @@ export function UseCaseWrapper({
                 {title}
               </Typography>
             </Stack>
-            <p className="UsecaseWrapper_helper">{description}</p>
+            {description && <p className="UsecaseWrapper_helper">{description}</p>}
             {!hideDivider && <Divider className="UsecaseWrapper_divider" />}
             <ul className="UsecaseWrapper_notes">
               {listItems?.map((item, index) => (
