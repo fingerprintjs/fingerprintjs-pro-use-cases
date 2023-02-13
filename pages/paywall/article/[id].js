@@ -49,6 +49,7 @@ export default function Article() {
         </Link>
       </Tooltip>
       <Typography
+        className="article-content"
         sx={{
           marginTop: (theme) => theme.spacing(6),
         }}
