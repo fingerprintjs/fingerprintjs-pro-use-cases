@@ -17,7 +17,7 @@ test.describe('Credential stuffing', () => {
     );
   });
 
-  test.only('should lock user after 5 invalid login attempts', async ({ page }) => {
+  test('should lock user after 5 invalid login attempts', async ({ page }) => {
     const submitForm = async () => {
       await page.click('[type="submit"]');
       await page.waitForSelector('text=Log in');
