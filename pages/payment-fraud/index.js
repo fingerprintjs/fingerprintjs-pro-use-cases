@@ -107,6 +107,7 @@ export default function Index() {
             Card Number
           </Typography>
           <TextField
+            name="cardNumber"
             placeholder="Card Number"
             defaultValue={cardNumber}
             variant="outlined"
@@ -146,12 +147,12 @@ export default function Index() {
         </Grid>
         <Grid container justifyContent="flex-start">
           <FormControlLabel
-            control={<Checkbox color="primary" />}
+            control={<Checkbox name="applyChargeback" color="primary" />}
             label="Ask for chargeback after purchase"
             onChange={(e) => setApplyChargeback(e.target.checked)}
           />
           <FormControlLabel
-            control={<Checkbox color="primary" />}
+            control={<Checkbox name="usingStolenCard" color="primary" />}
             label="Flag this visitor using stolen card after purchase"
             onChange={(e) => setUsingStolenCard(e.target.checked)}
           />
