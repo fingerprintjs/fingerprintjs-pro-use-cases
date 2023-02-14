@@ -2,11 +2,11 @@ import { Sequelize } from 'sequelize';
 import {
   ensurePostRequest,
   ensureValidRequestIdAndVisitorId,
-  getForbiddenResponse,
-  getOkResponse,
   getVisitorDataWithRequestId,
   messageSeverity,
   reportSuspiciousActivity,
+  sendForbiddenResponse,
+  sendOkResponse,
   sequelize,
 } from '../../../server/server';
 import { CheckResult, checkResultType } from '../../../server/checkResult';
@@ -90,10 +90,10 @@ async function tryToProcessPayment(req, res, ruleChecks) {
       switch (result.type) {
         case checkResultType.Passed:
         case checkResultType.Challenged:
-          return getOkResponse(res, result.message, result.messageSeverity);
+          return sendOkResponse(res, result);
         default:
           reportSuspiciousActivity(req);
-          return getForbiddenResponse(res, result.message, result.messageSeverity);
+          return sendForbiddenResponse(res, result);
       }
     }
   }

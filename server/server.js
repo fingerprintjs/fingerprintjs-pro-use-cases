@@ -1,5 +1,6 @@
 import { Sequelize } from 'sequelize';
 import { fingerprintJsApiClient } from './fingerprint-api';
+import { CheckResult } from './checkResult';
 
 // Provision the database.
 // In the Stackblitz environment, this db is stored locally in your browser.
@@ -30,7 +31,10 @@ export function areVisitorIdAndRequestIdValid(visitorId, requestId) {
 export function ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId) {
   if (!areVisitorIdAndRequestIdValid(visitorId, requestId)) {
     reportSuspiciousActivity(req);
-    getForbiddenResponse(res, 'Forged visitorId or requestId detected. Try harder next time.', messageSeverity.Error);
+    sendForbiddenResponse(
+      res,
+      new CheckResult('Forged visitorId or requestId detected. Try harder next time.', messageSeverity.Error)
+    );
 
     return false;
   }
@@ -65,21 +69,36 @@ export async function getVisitorDataWithRequestId(visitorId, requestId) {
   });
 }
 
-export function getOkResponse(res, message, messageSeverity) {
-  return res.status(200).json({ message, severity: messageSeverity });
-}
-
-export function getForbiddenResponse(res, message, messageSeverity) {
+/**
+ * @param {import("next").NextApiResponse} res
+ * @param {import("./CheckResult").CheckResult} result
+ * */
+export function sendOkResponse(res, result) {
   if (res.headersSent) {
-    console.warn('Attempted to send a forbidden response after headers were sent.', {
-      message,
-      severity: messageSeverity,
+    console.warn('Attempted to send a OK response after headers were sent.', {
+      result,
     });
 
     return;
   }
 
-  return res.status(403).json({ message, severity: messageSeverity });
+  return res.status(200).json(result.toJsonResponse());
+}
+
+/**
+ * @param {import("next").NextApiResponse} res
+ * @param {import("./CheckResult").CheckResult} result
+ * */
+export function sendForbiddenResponse(res, result) {
+  if (res.headersSent) {
+    console.warn('Attempted to send a forbidden response after headers were sent.', {
+      result,
+    });
+
+    return;
+  }
+
+  return res.status(403).json(result.toJsonResponse());
 }
 
 // Report suspicious user activity according to internal processes here.

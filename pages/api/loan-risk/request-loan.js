@@ -92,8 +92,7 @@ export default loanRiskEndpoint(
     }
 
     return res.status(200).json({
-      ...result,
-      severity: result.messageSeverity,
+      ...result.toJsonResponse(),
       calculations,
     });
   },

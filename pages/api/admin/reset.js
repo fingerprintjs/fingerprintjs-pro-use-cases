@@ -1,9 +1,9 @@
 import {
   ensureValidRequestIdAndVisitorId,
-  getForbiddenResponse,
-  getOkResponse,
   getVisitorDataWithRequestId,
   messageSeverity,
+  sendForbiddenResponse,
+  sendOkResponse,
 } from '../../../server/server';
 import { LoginAttempt } from '../credential-stuffing/authenticate';
 import { PaymentAttempt } from '../payment-fraud/place-order';
@@ -53,9 +53,9 @@ async function tryToReset(req, res, ruleChecks) {
     if (result) {
       switch (result.type) {
         case checkResultType.Passed:
-          return getOkResponse(res, result.message, result.messageSeverity);
+          return sendOkResponse(res, result);
         default:
-          return getForbiddenResponse(res, result.message, result.messageSeverity);
+          return sendForbiddenResponse(res, result);
       }
     }
   }

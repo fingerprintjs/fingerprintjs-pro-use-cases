@@ -4,6 +4,14 @@ export class CheckResult {
     this.messageSeverity = messageSeverity;
     this.type = type;
   }
+
+  toJsonResponse() {
+    return {
+      message: this.message,
+      severity: this.messageSeverity,
+      type: this.type,
+    };
+  }
 }
 
 export const checkResultType = Object.freeze({
@@ -28,4 +36,9 @@ export const checkResultType = Object.freeze({
 
   // Paywall specific checks.
   ArticleViewLimitExceeded: 'ArticleViewLimitExceeded',
+
+  // Coupon fraud specific checks
+  CouponDoesNotExist: 'CouponDoesNotExist',
+  CouponAlreadyClaimed: 'CouponAlreadyClaimed',
+  AnotherCouponClaimedRecently: 'AnotherCouponClaimedRecently',
 });
