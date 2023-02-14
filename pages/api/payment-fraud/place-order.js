@@ -5,8 +5,6 @@ import {
   getVisitorDataWithRequestId,
   messageSeverity,
   reportSuspiciousActivity,
-  sendForbiddenResponse,
-  sendOkResponse,
   sequelize,
 } from '../../../server/server';
 import { CheckResult, checkResultType } from '../../../server/checkResult';
@@ -16,6 +14,7 @@ import {
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
 } from '../../../server/checks';
+import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
 
 // Defines db model for payment attempt.
 export const PaymentAttempt = sequelize.define('payment-attempt', {

@@ -3,7 +3,6 @@ import {
   ensureValidRequestIdAndVisitorId,
   getVisitorDataWithRequestId,
   reportSuspiciousActivity,
-  sendForbiddenResponse,
 } from '../server';
 import { initLoanRisk } from './database';
 import { checkResultType } from '../checkResult';
@@ -13,6 +12,7 @@ import {
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
 } from '../checks';
+import { sendForbiddenResponse } from '../response';
 
 // Server API validations.
 const loanChecks = [

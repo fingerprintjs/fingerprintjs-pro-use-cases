@@ -1,8 +1,9 @@
-import { messageSeverity, sendOkResponse } from '../../../server/server';
+import { messageSeverity } from '../../../server/server';
 import { Op } from 'sequelize';
 import { couponEndpoint } from '../../../server/coupon-fraud/coupon-endpoint';
 import { CouponClaim, CouponCode } from '../../../server/coupon-fraud/database';
 import { CheckResult, checkResultType } from '../../../server/checkResult';
+import { sendOkResponse } from '../../../server/response';
 
 async function checkVisitorClaimedRecently(visitorId) {
   const oneHourBefore = new Date();

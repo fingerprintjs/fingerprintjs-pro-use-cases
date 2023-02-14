@@ -1,4 +1,4 @@
-import { ensureValidRequestIdAndVisitorId, getVisitorDataWithRequestId, sendForbiddenResponse } from '../server';
+import { ensureValidRequestIdAndVisitorId, getVisitorDataWithRequestId } from '../server';
 import { checkResultType } from '../checkResult';
 import {
   checkConfidenceScore,
@@ -6,6 +6,7 @@ import {
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
 } from '../checks';
+import { sendForbiddenResponse } from '../response';
 
 export async function validateCouponRequest(req, res, additionalChecks = []) {
   const result = {

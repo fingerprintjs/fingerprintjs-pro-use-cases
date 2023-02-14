@@ -1,10 +1,4 @@
-import {
-  ensureValidRequestIdAndVisitorId,
-  getVisitorDataWithRequestId,
-  messageSeverity,
-  sendForbiddenResponse,
-  sendOkResponse,
-} from '../../../server/server';
+import { ensureValidRequestIdAndVisitorId, getVisitorDataWithRequestId, messageSeverity } from '../../../server/server';
 import { LoginAttempt } from '../credential-stuffing/authenticate';
 import { PaymentAttempt } from '../payment-fraud/place-order';
 import { UserCartItem, UserPreferences, UserSearchHistory } from '../../../server/personalization/database';
@@ -18,6 +12,7 @@ import {
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
 } from '../../../server/checks';
+import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
 
 export default async function handler(req, res) {
   // This API route accepts only POST requests.

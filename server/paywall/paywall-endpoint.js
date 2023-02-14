@@ -3,7 +3,6 @@ import {
   ensureValidRequestIdAndVisitorId,
   getVisitorDataWithRequestId,
   reportSuspiciousActivity,
-  sendForbiddenResponse,
 } from '../server';
 import { initPaywall } from './database';
 import { checkCountOfViewedArticles } from './article-views';
@@ -14,6 +13,7 @@ import {
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
 } from '../checks';
+import { sendForbiddenResponse } from '../response';
 
 // Base checks for every endpoint related to paywall
 const paywallChecks = [
