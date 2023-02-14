@@ -83,7 +83,7 @@ async function checkIfClaimedAnotherCouponRecently({ visitorId }, req, couponCod
 
   if (visitorClaimedAnotherCouponRecently) {
     return new CheckResult(
-      'The visitor claimed another coupon recently',
+      'The visitor claimed another coupon recently.',
       messageSeverity.Error,
       checkResultType.AnotherCouponClaimedRecently
     );
