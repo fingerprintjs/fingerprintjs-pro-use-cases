@@ -40,11 +40,9 @@ export async function validateCouponRequest(req, res, additionalChecks = []) {
       switch (checkResult.type) {
         case checkResultType.Passed:
           continue;
-        case checkResultType.Challenged:
-          return sendForbiddenResponse(res, checkResult);
 
         default:
-          return result;
+          return sendForbiddenResponse(res, checkResult);
       }
     }
   }
