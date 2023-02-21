@@ -6,9 +6,15 @@
  * */
 
 import { FingerprintJsServerApiClient, Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
-import { isRequestIdFormatValid, visitIpMatchesRequestIp } from '../../../server/checks';
+import { isRequestIdFormatValid, originIsAllowed, visitIpMatchesRequestIp } from '../../../server/checks';
 import { SERVER_API_KEY } from '../../../server/const';
-import { ensureGetRequest, getErrorResponse, getForbiddenResponse, getOkResponse, messageSeverity } from '../../../server/server';
+import {
+  ensureGetRequest,
+  getErrorResponse,
+  getForbiddenResponse,
+  getOkResponse,
+  messageSeverity,
+} from '../../../server/server';
 
 /**
  * @param {import('next').NextApiRequest} req
@@ -20,47 +26,62 @@ export default async function handler(req, res) {
     return;
   }
 
-  console.log(req.query);
-
   const { from, to, requestId } = /** @type {ResultsQuery} */ (req.query);
 
+  // Validate request ID format
   if (!isRequestIdFormatValid(requestId)) {
     getForbiddenResponse(res, 'Invalid request ID', messageSeverity.Error);
+    return;
   }
 
   try {
+    // Retrieve analysis event from the Server API using the request ID
     const client = new FingerprintJsServerApiClient({ region: Region.Global, apiKey: SERVER_API_KEY });
-    /** @type {import('@fingerprintjs/fingerprintjs-pro-server-api').EventResponse} */
     const eventResponse = await client.getEvent(requestId);
-    const botData = eventResponse.products.botd.data;
-    const visitData = eventResponse.products.identification.data;
 
+    if (!eventResponse) {
+      getForbiddenResponse(res, 'Request ID not found, potential spoofing attack.', messageSeverity.Error);
+      return;
+    }
+
+    const botData = eventResponse.products.botd?.data; // undefined if bot is not detected
+    const visitData = eventResponse.products.identification?.data; // undefined if bot is detected
+
+    // Check for bot presence and type
+    if (botData.bot?.result === 'bad') {
+      getForbiddenResponse(res, 'Malicious bot detected, access denied.', messageSeverity.Error);
+      return;
+    }
+
+    if (botData.bot?.result === 'good') {
+      getOkResponse(res, 'A good bot detected, access allowed.', messageSeverity.Success, {
+        flights: ['LAX', 'SFO', 'JF'],
+      });
+      return;
+    }
+
+    // Bot not detected, we can use the identification visitData
     if (!visitIpMatchesRequestIp(visitData, req)) {
-      getForbiddenResponse(
-        res,
-        "IP of the fingerprinted visit doesn't match the IP of the request",
-        messageSeverity.Error
-      );
+      getForbiddenResponse(res, 'Visit IP does not match request IP.', messageSeverity.Error);
+      return;
+    }
+
+    if (!originIsAllowed(visitData, req)) {
+      getForbiddenResponse(res, 'Visit origin does not match request origin or is not allowed.', messageSeverity.Error);
+      return;
     }
 
     if (Date.now() - visitData.timestamp > 3000) {
-      console.log(Date.now());
-      console.log(visitData.timestamp);
-      console.log(Date.now() - visitData.timestamp);
-      console.log('Request is too old, potential replay attack');
-      getForbiddenResponse(res, 'Old request, potential replay attack', messageSeverity.Error);
+      getForbiddenResponse(res, 'Old request, potential replay attack.', messageSeverity.Error);
+      return;
     }
 
-    if (botData.bot.result === 'bad') {
-      getForbiddenResponse(res, 'Malicious bot detected', messageSeverity.Error);
-    }
-    if (botData.bot.result === 'good' || botData.bot.result === 'notDetected') {
-      getOkResponse(res, 'A good bot or human visitor', messageSeverity.Success, { flights: ['LAX', 'SFO', 'JF'] });
-    }
+    // All checks passed, allow access
+    getOkResponse(res, 'No bot detected, all seems fine, access allowed.', messageSeverity.Success, {
+      flights: ['LAX', 'SFO', 'JF'],
+    });
   } catch (error) {
     console.error(error);
-    getErrorResponse(res, `Server error: ${error.message}`)
+    getErrorResponse(res, `Server error: ${error.message}`);
   }
-
-  res.status(200).json({ name: 'John Doe' });
 }

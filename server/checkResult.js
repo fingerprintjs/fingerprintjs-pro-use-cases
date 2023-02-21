@@ -8,7 +8,7 @@ export class CheckResult {
 
 export const checkResultType = Object.freeze({
   LowConfidenceScore: 'LowConfidenceScore',
-  RequestIdMissmatch: 'RequestIdMissmatch',
+  RequestIdMismatch: 'RequestIdMismatch',
   OldTimestamp: 'OldTimestamp',
   TooManyLoginAttempts: 'TooManyLoginAttempts',
   ForeignOrigin: 'ForeignOrigin',
