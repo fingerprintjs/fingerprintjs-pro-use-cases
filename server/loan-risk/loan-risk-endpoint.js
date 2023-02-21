@@ -2,7 +2,7 @@ import {
   ensurePostRequest,
   ensureValidRequestIdAndVisitorId,
   getForbiddenResponse,
-  getVisitorData,
+  getVisitorDataWithRequestId,
   reportSuspiciousActivity,
 } from '../server';
 import { initLoanRisk } from './database';
@@ -42,7 +42,7 @@ export const loanRiskEndpoint =
     // Information from the client side might have been tampered.
     // It's best practice to validate provided information with the Server API.
     // It is recommended to use the requestId and visitorId pair.
-    const visitorData = await getVisitorData(visitorId, requestId);
+    const visitorData = await getVisitorDataWithRequestId(visitorId, requestId);
 
     for (const ruleCheck of [...loanChecks, ...optionalChecks]) {
       const result = await ruleCheck(visitorData, req);

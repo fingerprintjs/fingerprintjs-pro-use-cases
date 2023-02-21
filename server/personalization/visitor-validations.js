@@ -1,4 +1,4 @@
-import { ensureValidRequestIdAndVisitorId, getVisitorData } from '../server';
+import { ensureValidRequestIdAndVisitorId, getVisitorDataWithRequestId } from '../server';
 import { checkResultType } from '../checkResult';
 import { checkConfidenceScore, checkIpAddressIntegrity, checkOriginsIntegrity } from '../checks';
 
@@ -32,7 +32,7 @@ export async function validatePersonalizationRequest(req, res) {
     checkOriginsIntegrity,
   ];
 
-  const visitorData = await getVisitorData(visitorId, requestId);
+  const visitorData = await getVisitorDataWithRequestId(visitorId, requestId);
 
   result.visitorId = visitorData.visitorId;
 

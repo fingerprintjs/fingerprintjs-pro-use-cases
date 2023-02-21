@@ -5,6 +5,7 @@ import Head from 'next/head';
 import { Header } from '../client/components/header';
 import { SnackbarProvider } from 'notistack';
 import { SnackbarAction } from '../client/components/snackbar-action';
+import { SocketProvider } from '../client/api/socket-provider';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,13 +28,15 @@ function App({ Component, pageProps }) {
             vertical: 'bottom',
           }}
         >
-          <Head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-            <title>Fingerprint Pro Use Cases</title>
-          </Head>
-          <Header addonRight={Component.headerAddonRight?.()} />
-          <Component {...pageProps} />
+          <SocketProvider>
+            <Head>
+              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+              <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+              <title>Fingerprint Pro Use Cases</title>
+            </Head>
+            <Header addonRight={Component.headerAddonRight?.()} />
+            <Component {...pageProps} />
+          </SocketProvider>
         </SnackbarProvider>
       </ThemeProvider>
     </QueryClientProvider>

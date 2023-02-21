@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
 import {areVisitorIdAndRequestIdValid} from './checks';
-import {SERVER_API_KEY} from './const';
+import { fingerprintJsApiClient } from './fingerprint-api';
 
 // Provision the database.
 // In the Stackblitz environment, this db is stored locally in your browser.
@@ -47,31 +47,17 @@ export function ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId)
 //   serverApiFilter
 // );
 // return visitorData;
-export async function getVisitorData(visitorId, requestId) {
+export async function getVisitorDataWithRequestId(visitorId, requestId) {
   // Do not request Server API if provided data is obviously forged,
-  // return an error instead.
+  // throw an error instead.
   if (!visitorId || !requestId) {
-    return { error: 'visitorId or requestId not provided.' };
+    throw new Error('visitorId or requestId not provided.');
   }
 
-  const fingerprintJSProServerApiUrl = new URL(`https://api.fpjs.io/visitors/${visitorId}`);
-
-  fingerprintJSProServerApiUrl.searchParams.append(
-    'api_key',
-    // In a real world use-case, we recommend using Auth-API-Key header instead: https://dev.fingerprint.com/docs/server-api#api-methods.
-    SERVER_API_KEY
-  );
-  fingerprintJSProServerApiUrl.searchParams.append('request_id', requestId);
-
-  const visitorServerApiResponse = await fetch(fingerprintJSProServerApiUrl.href);
-
-  // If there's something wrong with provided data, Server API might return non 200 response.
-  // We consider these data unreliable.
-  if (visitorServerApiResponse.status !== 200) {
-    return { error: 'Server API error.' };
-  }
-
-  return await visitorServerApiResponse.json();
+  // Use our Node SDK to obtain visitor history
+  return fingerprintJsApiClient.getVisitorHistory(visitorId, {
+    request_id: requestId,
+  });
 }
 
 export function getOkResponse(res, message, messageSeverity) {
