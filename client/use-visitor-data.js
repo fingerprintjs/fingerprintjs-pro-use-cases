@@ -32,7 +32,7 @@ export const VISITOR_DATA_QUERY = 'VISITOR_DATA_QUERY';
 /**
  * Query for fetching visitorData using our Fingerprint Pro agent.
  * */
-export function useVisitorData({ enabled = true, extendedResult = true, linkedId } = {}) {
+export function useVisitorData({ enabled = true, extendedResult = true, linkedId = undefined } = {}) {
   return useQuery(VISITOR_DATA_QUERY, () => getVisitorData({ extendedResult, linkedId }), {
     enabled,
   });

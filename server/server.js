@@ -21,8 +21,6 @@ export const messageSeverity = Object.freeze({
   Error: 'error',
 });
 
-
-
 export function ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId) {
   if (!areVisitorIdAndRequestIdValid(visitorId, requestId)) {
     reportSuspiciousActivity(req);
@@ -60,21 +58,44 @@ export async function getVisitorDataWithRequestId(visitorId, requestId) {
   });
 }
 
-export function getOkResponse(res, message, messageSeverity) {
-  return res.status(200).json({ message, severity: messageSeverity });
+export function getOkResponse(res, message, messageSeverity, data) {
+  return res.status(200).json({ message, severity: messageSeverity, data });
 }
 
 export function getForbiddenResponse(res, message, messageSeverity) {
   return res.status(403).json({ message, severity: messageSeverity });
 }
 
+export function getErrorResponse(res, message) {
+  return res.status(500).json({ message, severity: messageSeverity.Error });
+}
+
 // Report suspicious user activity according to internal processes here.
 // Possibly this action could also lock the user's account temporarily or ban a specific action.
 export function reportSuspiciousActivity(context) {}
 
+/**
+ * @param {import('next').NextApiRequest} req
+ * @param {import('next').NextApiResponse} res
+ * @returns {boolean}
+ */
 export function ensurePostRequest(req, res) {
   if (req.method !== 'POST') {
     res.status(405).send({ message: 'Only POST requests allowed' });
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * @param {import('next').NextApiRequest} req
+ * @param {import('next').NextApiResponse} res
+ * @returns {boolean}
+ */
+export function ensureGetRequest(req, res) {
+  if (req.method !== 'GET') {
+    res.status(405).send({ message: 'Only GET requests allowed' });
     return false;
   }
 
