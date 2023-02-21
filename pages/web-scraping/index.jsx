@@ -19,7 +19,12 @@ export const WebScrapingUseCase = () => {
   async function handleSubmit(event) {
     event.preventDefault();
     const { data } = await visitorDataQuery.refetch();
-    router.push(`/web-scraping/results?from=${from}&to=${to}&requestId=${data.requestId}`);
+    try {
+      const results = await (await fetch(`/api/web-scraping/flights?from=${from}&to=${to}&requestId=${data.requestId}`)).json();
+      console.log(results);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
