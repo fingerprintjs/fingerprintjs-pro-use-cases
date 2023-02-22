@@ -25,7 +25,13 @@ jobs:
       run: yarn build
 
     - name: Start website
-      run: yarn start & sleep 10
+      run: yarn start
+
+    - name: Wait for website
+      run: |
+          while ! curl -s http://localhost:3000 > /dev/null; do
+          sleep 1
+          done
 
     - name: Run Playwright tests
       run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
