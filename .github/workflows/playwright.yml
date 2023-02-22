@@ -25,7 +25,7 @@ jobs:
       run: yarn build
 
     - name: Start website
-      run: yarn start
+      run: yarn start &
 
     - name: Wait for website
       timeout-minutes: 1
