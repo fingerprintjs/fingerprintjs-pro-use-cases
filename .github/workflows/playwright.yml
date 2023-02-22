@@ -28,8 +28,10 @@ jobs:
       run: yarn start
 
     - name: Wait for website
+      timeout-minutes: 1
       run: |
           while ! curl -s http://localhost:3000 > /dev/null; do
+          echo "Waiting for website..."
           sleep 1
           done
 
