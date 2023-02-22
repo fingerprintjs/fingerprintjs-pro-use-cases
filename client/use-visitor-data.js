@@ -24,6 +24,7 @@ async function getVisitorData({ extendedResult = true, linkedId }) {
   return fp.get({
     extendedResult,
     linkedId,
+    products: ['identification'],
   });
 }
 

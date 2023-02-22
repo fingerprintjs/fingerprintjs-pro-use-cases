@@ -4,6 +4,7 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
+import Box from '@mui/material/Box';
 import { useCart } from '../../api/personalization/use-cart';
 import { LoadingButton } from '@mui/lab';
 import { useState } from 'react';
@@ -30,6 +31,7 @@ export function ProductItem({ product: { price, name, image, id } }) {
 
   return (
     <Card
+      className="ProductCard"
       variant="outlined"
       style={{
         width: '100%',
@@ -38,19 +40,31 @@ export function ProductItem({ product: { price, name, image, id } }) {
     >
       <CardMedia
         component={() => (
-          <Image src={image} height="100%" width="100%" alt={name} objectFit="cover" layout="responsive" />
+          <Box
+            position="relative"
+            width="100%"
+            height="100px"
+            sx={{
+              '& img': {
+                objectFit: 'cover',
+              },
+            }}
+          >
+            <Image src={image} alt={name} fill />
+          </Box>
         )}
       />
       <CardContent>
-        <Typography gutterBottom variant="h5">
+        <Typography gutterBottom variant="h5" className="ProductCard_Name">
           {name}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography data-price={price} variant="body2" color="text.secondary" className="ProductCard_Price">
           ${price.toFixed(2)}
         </Typography>
       </CardContent>
       <CardActions>
         <LoadingButton
+          className="ProductCard_AddToCart"
           fullWidth
           startIcon={wasAdded ? <Check /> : undefined}
           loading={addCartItemMutation.isLoading}

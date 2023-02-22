@@ -17,7 +17,7 @@ import { useRequestLoan } from '../../client/api/loan-risk/use-request-loan';
 import Alert from '@mui/material/Alert';
 import { calculateMonthInstallment } from '../../shared/loan-risk/calculate-month-installment';
 
-function SliderField({ label, min, max, value, onChange, prefix, suffix }) {
+function SliderField({ label, min, max, value, onChange, prefix, suffix, name }) {
   return (
     <Stack direction="column">
       <FormLabel>{label}</FormLabel>
@@ -32,6 +32,7 @@ function SliderField({ label, min, max, value, onChange, prefix, suffix }) {
           valueLabelDisplay="auto"
         />
         <TextField
+          name={name}
           type="number"
           value={value}
           onChange={(event) => {
@@ -100,18 +101,21 @@ export default function LoanRisk() {
       <form onSubmit={handleSubmit}>
         <Stack direction="column" spacing={6}>
           <TextField
+            name="firstName"
             label="First name"
             value={firstName}
             onChange={(event) => setFirstName(event.target.value)}
             required
           />
           <TextField
+            name="lastName"
             label="Last name"
             value={lastName}
             onChange={(event) => setLastName(event.target.value)}
             required
           />
           <SliderField
+            name="loanValue"
             prefix="$"
             min={loanValueValidation.min}
             max={loanValueValidation.max}
@@ -120,6 +124,7 @@ export default function LoanRisk() {
             onChange={setLoanValue}
           />
           <SliderField
+            name="monthlyIncome"
             prefix="$"
             min={monthlyIncomeValidation.min}
             max={monthlyIncomeValidation.max}
@@ -128,6 +133,7 @@ export default function LoanRisk() {
             onChange={setMonthlyIncome}
           />
           <SliderField
+            name="loanDuration"
             suffix="Months"
             min={loanDurationValidation.min}
             max={loanDurationValidation.max}
@@ -135,8 +141,8 @@ export default function LoanRisk() {
             value={loanDuration}
             onChange={setLoanDuration}
           />
-          <Typography>
-            Your month installment is: <strong>${monthInstallment.toFixed(2)}</strong>
+          <Typography id="month_installment">
+            Your month installment is: <strong id="month_installment_value">${monthInstallment.toFixed(2)}</strong>
           </Typography>
           <Button type="submit" variant="contained" size="large" disabled={isLoading}>
             {isLoading ? 'Hold on, doing magic...' : 'Request loan'}

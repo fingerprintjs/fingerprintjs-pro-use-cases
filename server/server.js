@@ -70,6 +70,15 @@ export function getOkResponse(res, message, messageSeverity) {
 }
 
 export function getForbiddenResponse(res, message, messageSeverity) {
+  if (res.headersSent) {
+    console.warn('Attempted to send a forbidden response after headers were sent.', {
+      message,
+      severity: messageSeverity,
+    });
+
+    return;
+  }
+
   return res.status(403).json({ message, severity: messageSeverity });
 }
 

@@ -1,28 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
-import { getFingerprintJS } from '../../client/client';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { useVisitorData } from '../../client/use-visitor-data';
 
 export default function Index() {
   const [statusMessage, setStatusMessage] = useState();
   const [severity, setSeverity] = useState();
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   const [httpResponseStatus, setHttpResponseStatus] = useState();
-  const [fp, setFp] = useState();
 
-  useEffect(() => {
-    async function getFingerprint() {
-      await getFingerprintJS(setFp);
-    }
-    getFingerprint();
-  }, []);
+  const visitorData = useVisitorData({
+    enabled: false,
+  });
 
   async function handleSubmit(e) {
     e.preventDefault();
     setIsWaitingForResponse(true);
 
-    const fpResult = await fp.get();
+    const { data: fpResult } = await visitorData.refetch();
     const visitorId = fpResult.visitorId;
     const requestId = fpResult.requestId;
 
@@ -57,6 +53,7 @@ export default function Index() {
     >
       <form onSubmit={handleSubmit} className="Form_container">
         <Button
+          id="reset"
           disabled={isWaitingForResponse}
           size="large"
           type="submit"
