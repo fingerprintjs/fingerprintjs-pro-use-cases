@@ -2,27 +2,38 @@ import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Typograph
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import FlightCard from '../../client/components/web-scraping/FlightCard';
 import { useVisitorData } from '../../client/use-visitor-data';
 
 export const WebScrapingUseCase = () => {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
-  const visitorDataQuery = useVisitorData({
-    // Don't invoke query on mount
-    enabled: false,
-  });
-  const router = useRouter();
+  const [message, setMessage] = useState('');
+  /**
+   * @type {[import('../../client/components/web-scraping/FlightCard').Flight[], React.Dispatch<import('../../client/components/web-scraping/FlightCard').Flight[]>]}
+   */
+  const [flights, setFlights] = useState([]);
+  const [loading, setLoading] = useState(false);
+  // Don't invoke query on mount
+  const visitorDataQuery = useVisitorData({ enabled: false });
 
   /**
   //* @type {React.FormEventHandler<HTMLFormElement>}
   //*/
   async function handleSubmit(event) {
     event.preventDefault();
+    setLoading(true);
     const { data } = await visitorDataQuery.refetch();
     try {
-      const results = await (await fetch(`/api/web-scraping/flights?from=${from}&to=${to}&requestId=${data.requestId}`)).json();
-      console.log(results);
+      const results = await (
+        await fetch(`/api/web-scraping/flights?from=${from}&to=${to}&requestId=${data.requestId}`)
+      ).json();
+      setLoading(false);
+      setMessage(results.message);
+      setFlights(results.data.flights);
     } catch (error) {
+      setLoading(false);
+      setMessage(error.toString());
       console.log(error);
     }
   }
@@ -32,15 +43,15 @@ export const WebScrapingUseCase = () => {
       <UseCaseWrapper
         title="Web Scraping Prevention"
         description={`
-            Web scraping is the process of extracting data from websites.
-            It is a powerful tool for data scientists and researchers, 
-            but it can also be used for malicious purposes. 
-            In this use case, we will show how to prevent web scraping with Fingerprint Pro
+          Web scraping is the process of extracting data from websites.
+          It is a powerful tool for data scientists and researchers, 
+          but it can also be used for malicious purposes. 
+          In this use case, we will show how to prevent web scraping with Fingerprint Pro
         `}
         articleURL="https://fingerprintjs.com/blog/web-scraping-prevention/"
         listItems={[<>In this demo we will do something fun</>]}
       >
-        <h1>Search for flights</h1>
+        <h1>Search for today&apos;s flights</h1>
         <form onSubmit={handleSubmit}>
           <FormControl fullWidth>
             <InputLabel id="from">From</InputLabel>
@@ -64,8 +75,18 @@ export const WebScrapingUseCase = () => {
                 Search flights
               </Button>
             }
+            {loading && <Typography>Loading...</Typography>}
+            {message}
           </FormControl>
         </form>
+        {flights?.length > 0 && (
+          <div>
+            <h2>Results</h2>
+            {flights.map((flight) => (
+              <FlightCard key={flight.flightNumber} flight={flight} />
+            ))}
+          </div>
+        )}
       </UseCaseWrapper>
     </>
   );

@@ -78,10 +78,61 @@ export default async function handler(req, res) {
 
     // All checks passed, allow access
     getOkResponse(res, 'No bot detected, all seems fine, access allowed.', messageSeverity.Success, {
-      flights: ['LAX', 'SFO', 'JF'],
+      flights: getFlightResults(from, to),
     });
   } catch (error) {
     console.error(error);
     getErrorResponse(res, `Server error: ${error.message}`);
   }
+}
+
+/** @typedef Flight 
+ * @property {string} from
+ * @property {string} to
+ * @property {number} departureTime
+ * @property {number} arrivalTime
+ * @property {number} price
+ * @property {string} airline
+ * @property {string} flightNumber
+*/
+
+
+const DAY_MS = 1000 * 60 * 60 * 24;
+const FIVE_MINUTES_MS = 1000 * 60 * 5;
+
+// Add random time to now between 2 and 24 hours in 5 minute increments
+const getRandomTime = () => {
+  const now = Date.now();
+  const randomTime = now + Math.round(Math.random() * DAY_MS);
+  return Math.round(randomTime / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
+};
+
+/**
+ * Randomly generates flight results for given from/to airports
+ * @param {string} from
+ * @param {string} to
+ * @returns {Flight[]}
+ */
+const getFlightResults = (from, to) => {
+  const results = [];
+  const airlines = ['United', 'Delta', 'American', 'Southwest', 'Alaska', 'JetBlue'];
+  for (const airline of airlines.slice(0, 2 + Math.floor(Math.random() * 4))) {
+    const now = Date.now();
+    const departureTime = Math.round((now + Math.random() * DAY_MS) / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
+    const arrivalTime = Math.round((departureTime + Math.random() * DAY_MS) / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
+    const price = Math.floor(Math.random() * 1000);
+    const flightNumber = `${airline.slice(0,2).toUpperCase()}${Math.floor(Math.random() * 1000)}`;
+
+    results.push({
+      from,
+      to,
+      departureTime,
+      arrivalTime,
+      price,
+      airline,
+      flightNumber,
+    });
+  }
+
+  return results;
 }
