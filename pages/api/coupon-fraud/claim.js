@@ -1,7 +1,9 @@
-import { getForbiddenResponse, getOkResponse } from '../../../server/server';
+import { messageSeverity } from '../../../server/server';
 import { Op } from 'sequelize';
 import { couponEndpoint } from '../../../server/coupon-fraud/coupon-endpoint';
 import { CouponClaim, CouponCode } from '../../../server/coupon-fraud/database';
+import { CheckResult, checkResultType } from '../../../server/checkResult';
+import { sendOkResponse } from '../../../server/response';
 
 async function checkVisitorClaimedRecently(visitorId) {
   const oneHourBefore = new Date();
@@ -50,28 +52,51 @@ export async function claimCoupon(visitorId, couponCode) {
   return claim;
 }
 
-export default couponEndpoint(async (req, res, { visitorId, couponCode }) => {
+async function checkIfCouponExists(visitorData, req, couponCode) {
   const coupon = await checkCoupon(couponCode);
 
   // Check if the coupon exists.
   if (!coupon) {
-    return getForbiddenResponse(res, 'Provided coupon code does not exist.', 'error');
+    return new CheckResult(
+      'Provided coupon code does not exist.',
+      messageSeverity.Error,
+      checkResultType.CouponDoesNotExist
+    );
   }
+}
 
+async function checkIfCouponWasClaimed({ visitorId }, req, couponCode) {
   const wasCouponClaimedByVisitor = await getVisitorClaim(visitorId, couponCode);
 
   // Check if the visitor claimed this coupon before.
   if (wasCouponClaimedByVisitor) {
-    return getForbiddenResponse(res, 'The visitor used this coupon before.', 'error');
+    return new CheckResult(
+      'The visitor used this coupon before.',
+      messageSeverity.Error,
+      checkResultType.CouponAlreadyClaimed
+    );
   }
+}
 
+async function checkIfClaimedAnotherCouponRecently({ visitorId }, req, couponCode) {
   const visitorClaimedAnotherCouponRecently = await checkVisitorClaimedRecently(visitorId);
 
   if (visitorClaimedAnotherCouponRecently) {
-    return getForbiddenResponse(res, 'The visitor claimed another coupon recently.\n', 'error');
+    return new CheckResult(
+      'The visitor claimed another coupon recently.',
+      messageSeverity.Error,
+      checkResultType.AnotherCouponClaimedRecently
+    );
   }
+}
 
-  await claimCoupon(visitorId, couponCode);
+export default couponEndpoint(
+  async (req, res, { visitorId, couponCode }) => {
+    await claimCoupon(visitorId, couponCode);
 
-  return getOkResponse(res, `Coupon claimed you get a 119 USD discount!`, 'success');
-});
+    const result = new CheckResult('Coupon claimed you get a 119 USD discount!', messageSeverity.Success);
+
+    return sendOkResponse(res, result);
+  },
+  [checkIfCouponExists, checkIfCouponWasClaimed, checkIfClaimedAnotherCouponRecently]
+);

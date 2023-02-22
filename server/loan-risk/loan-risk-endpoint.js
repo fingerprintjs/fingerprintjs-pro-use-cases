@@ -1,7 +1,6 @@
 import {
   ensurePostRequest,
   ensureValidRequestIdAndVisitorId,
-  getForbiddenResponse,
   getVisitorDataWithRequestId,
   reportSuspiciousActivity,
 } from '../server';
@@ -13,6 +12,7 @@ import {
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
 } from '../checks';
+import { sendForbiddenResponse } from '../response';
 
 // Server API validations.
 const loanChecks = [
@@ -54,7 +54,7 @@ export const loanRiskEndpoint =
             continue;
           default:
             reportSuspiciousActivity(req);
-            return getForbiddenResponse(res, result.message, result.messageSeverity);
+            return sendForbiddenResponse(res, result);
         }
       }
     }

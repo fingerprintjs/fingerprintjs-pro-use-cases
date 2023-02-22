@@ -1,5 +1,7 @@
 import { Sequelize } from 'sequelize';
 import { fingerprintJsApiClient } from './fingerprint-api';
+import { CheckResult } from './checkResult';
+import { sendForbiddenResponse } from './response';
 
 // Provision the database.
 // In the Stackblitz environment, this db is stored locally in your browser.
@@ -30,7 +32,10 @@ export function areVisitorIdAndRequestIdValid(visitorId, requestId) {
 export function ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId) {
   if (!areVisitorIdAndRequestIdValid(visitorId, requestId)) {
     reportSuspiciousActivity(req);
-    getForbiddenResponse(res, 'Forged visitorId or requestId detected. Try harder next time.', messageSeverity.Error);
+    sendForbiddenResponse(
+      res,
+      new CheckResult('Forged visitorId or requestId detected. Try harder next time.', messageSeverity.Error)
+    );
 
     return false;
   }
@@ -63,23 +68,6 @@ export async function getVisitorDataWithRequestId(visitorId, requestId) {
   return fingerprintJsApiClient.getVisitorHistory(visitorId, {
     request_id: requestId,
   });
-}
-
-export function getOkResponse(res, message, messageSeverity) {
-  return res.status(200).json({ message, severity: messageSeverity });
-}
-
-export function getForbiddenResponse(res, message, messageSeverity) {
-  if (res.headersSent) {
-    console.warn('Attempted to send a forbidden response after headers were sent.', {
-      message,
-      severity: messageSeverity,
-    });
-
-    return;
-  }
-
-  return res.status(403).json({ message, severity: messageSeverity });
 }
 
 // Report suspicious user activity according to internal processes here.

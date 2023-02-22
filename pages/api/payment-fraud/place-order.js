@@ -2,8 +2,6 @@ import { Sequelize } from 'sequelize';
 import {
   ensurePostRequest,
   ensureValidRequestIdAndVisitorId,
-  getForbiddenResponse,
-  getOkResponse,
   getVisitorDataWithRequestId,
   messageSeverity,
   reportSuspiciousActivity,
@@ -16,6 +14,7 @@ import {
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
 } from '../../../server/checks';
+import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
 
 // Defines db model for payment attempt.
 export const PaymentAttempt = sequelize.define('payment-attempt', {
@@ -90,10 +89,10 @@ async function tryToProcessPayment(req, res, ruleChecks) {
       switch (result.type) {
         case checkResultType.Passed:
         case checkResultType.Challenged:
-          return getOkResponse(res, result.message, result.messageSeverity);
+          return sendOkResponse(res, result);
         default:
           reportSuspiciousActivity(req);
-          return getForbiddenResponse(res, result.message, result.messageSeverity);
+          return sendForbiddenResponse(res, result);
       }
     }
   }
