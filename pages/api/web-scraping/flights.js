@@ -8,6 +8,7 @@ import {
   getOkResponse,
   messageSeverity,
 } from '../../../server/server';
+import {AIRPORTS} from '../../web-scraping';
 
 /**
  * @typedef {Object} ResultsQuery
@@ -98,11 +99,11 @@ const HOUR_MS = 1000 * 60 * 60;
 
 /**
  * Randomly generates flight results for given from/to airports
- * @param {string} from
- * @param {string} to
+ * @param {string} fromCode
+ * @param {string} toCode
  * @returns {Flight[]}
  */
-const getFlightResults = (from, to) => {
+const getFlightResults = (fromCode, toCode) => {
   const results = [];
   const airlines = ['United', 'Delta', 'American', 'Southwest', 'Alaska', 'JetBlue'];
   for (const airline of airlines.slice(0, 2 + Math.floor(Math.random() * 4))) {
@@ -113,8 +114,10 @@ const getFlightResults = (from, to) => {
     const flightNumber = `${airline.slice(0,2).toUpperCase()}${Math.floor(Math.random() * 1000)}`;
 
     results.push({
-      from,
-      to,
+      fromCode,
+      toCode,
+      fromCity: AIRPORTS.find((airport) => airport.code === fromCode).city,
+      toCity: AIRPORTS.find((airport) => airport.code === toCode).city,
       departureTime,
       arrivalTime,
       price,

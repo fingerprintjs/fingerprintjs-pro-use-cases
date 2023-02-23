@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import FlightCard from '../../client/components/web-scraping/FlightCard';
 import { useVisitorData } from '../../client/use-visitor-data';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import styles from '../../styles/web-scraping.module.css';
 
-const AIRPORTS = [
+export const AIRPORTS = [
   { city: 'San Francisco', code: 'SFO' },
   { city: 'New York', code: 'JFK' },
   { city: 'London', code: 'LHR' },
@@ -102,9 +104,9 @@ export const WebScrapingUseCase = () => {
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={1}>
+            <Grid item xs={12} sm={1} display="flex" justifyContent={"center"} alignItems="center">
               <Box alignItems={'center'} display="flex" justifyContent={'center'} fontSize={28}>
-                <div>➡️</div>
+                <ArrowForwardIcon className={styles.formArrow}  />
               </Box>
             </Grid>
             <Grid item xs={12} sm={5.5}>

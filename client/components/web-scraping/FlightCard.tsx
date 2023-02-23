@@ -1,13 +1,23 @@
-import { Margin } from '@mui/icons-material';
 import { Button, Card, CardActions, CardContent, CardHeader, Typography } from '@mui/material';
 import FlightIcon from '@mui/icons-material/Flight';
 import CircleIcon from '@mui/icons-material/Circle';
 import { FunctionComponent } from 'react';
 import styles from '../../../styles/web-scraping.module.css';
 
+const HOUR_MS = 3600000;
+const MINUTE_MS = 60000;
+// convert time in milliseconds to hours and minutes
+const formatTime = (time: number) => {
+  const hours = Math.floor(time / HOUR_MS);
+  const minutes = (time % HOUR_MS) / MINUTE_MS;
+  return `${hours}h ${minutes > 0 ? `${minutes}m` : ''}`;
+};
+
 export type Flight = {
-  from: string;
-  to: string;
+  fromCity: string;
+  toCity: string;
+  fromCode: string;
+  toCode: string;
   departureTime: number;
   arrivalTime: number;
   price: number;
@@ -30,10 +40,13 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
     <Card style={{ marginTop: '20px' }} variant={'outlined'}>
       <CardContent>
         <div className={styles.container}>
-          <div className={styles.place}>
-            <Typography>{departure.toLocaleDateString('en-US', dateOptions)}</Typography>
-            <Typography>{departure.toLocaleTimeString('en-US', timeOptions)}</Typography>
-            <Typography>{flight.from}</Typography>
+          <div className={styles.origin}>
+            <Typography fontSize={'small'} className={styles.date}>
+              {departure.toLocaleDateString('en-US', dateOptions)}
+            </Typography>
+            <Typography className={styles.time}>{departure.toLocaleTimeString('en-US', timeOptions)}</Typography>
+            <Typography className={styles.city}>{flight.fromCity}</Typography>
+            <Typography className={styles.airportCode} fontSize="small">{`(${flight.fromCode})`}</Typography>
           </div>
           <div className={styles.middle}>
             <Typography fontSize={'small'} className={styles.duration}>
@@ -56,28 +69,21 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
               {flight.airline}
             </Typography>
           </div>
-          <div className={styles.place}>
-            <Typography>{arrival.toLocaleDateString('en-US', dateOptions)}</Typography>
-            <Typography>{arrival.toLocaleTimeString('en-US', timeOptions)}</Typography>
-            <Typography>{flight.to}</Typography>
+          <div className={styles.destination}>
+            <Typography fontSize="small" className={styles.date}>
+              {arrival.toLocaleDateString('en-US', dateOptions)}
+            </Typography>
+            <Typography className={styles.time}>{arrival.toLocaleTimeString('en-US', timeOptions)}</Typography>
+            <Typography className={styles.city}>{flight.toCity}</Typography>
+            <Typography className={styles.airportCode} fontSize="small">{`(${flight.toCode})`}</Typography>
           </div>
         </div>
       </CardContent>
       <CardActions className={styles.actions}>
-        <Typography>${flight.price}</Typography>
-        <Button variant="outlined">Book flight</Button>
+        <Button variant="outlined">Book for ${flight.price}</Button>
       </CardActions>
     </Card>
   );
-};
-
-const HOUR_MS = 3600000;
-const MINUTE_MS = 60000;
-// convert time in milliseconds to hours and minutes
-const formatTime = (time: number) => {
-  const hours = Math.floor(time / HOUR_MS);
-  const minutes = (time % HOUR_MS) / MINUTE_MS;
-  return `${hours}h ${minutes > 0 ? `${minutes}m` : ''}`;
 };
 
 export default FlightCard;
