@@ -79,7 +79,12 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
           </div>
         </div>
       </CardContent>
-      <CardActions className={styles.actions}>
+      <CardActions
+        sx={(theme) => ({
+          backgroundColor: theme.palette.mode === 'dark' ? '#171717' : '#fafafa',
+        })}
+        className={styles.actions}
+      >
         <Button variant="outlined">Book for ${flight.price}</Button>
       </CardActions>
     </Card>

@@ -34,6 +34,7 @@ html {
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding: 32px;
 }
 
 .ExternalLayout_main {
@@ -70,7 +71,6 @@ html {
 
 
 .UsecaseWrapper_notes {
-    padding-left: 16px;
     font-size: 14px;
     font-weight: 400;
     margin-top: 1rem;
