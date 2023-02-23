@@ -1,5 +1,7 @@
 import { Margin } from '@mui/icons-material';
 import { Button, Card, CardActions, CardContent, CardHeader, Typography } from '@mui/material';
+import FlightIcon from '@mui/icons-material/Flight';
+import CircleIcon from '@mui/icons-material/Circle';
 import { FunctionComponent } from 'react';
 import styles from '../../../styles/web-scraping.module.css';
 
@@ -33,9 +35,26 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
             <Typography>{departure.toLocaleTimeString('en-US', timeOptions)}</Typography>
             <Typography>{flight.from}</Typography>
           </div>
-          <div className={styles.transition}>
-            <Typography>{formatTime(duration)}</Typography>
-            <Typography>{flight.airline}</Typography>
+          <div className={styles.middle}>
+            <Typography fontSize={'small'} className={styles.duration}>
+              {formatTime(duration)}
+            </Typography>
+            <div className={styles.transition}>
+              <div className={styles.circleContainer}>
+                <CircleIcon className={styles.circle} />
+              </div>
+              <div className={styles.line}></div>
+              <div className={styles.arrow}>
+                <FlightIcon fontSize="small" />
+              </div>
+              <div className={styles.line}></div>
+              <div className={styles.circleContainer}>
+                <CircleIcon className={styles.circle} />
+              </div>
+            </div>
+            <Typography fontSize={'small'} className={styles.airline}>
+              {flight.airline}
+            </Typography>
           </div>
           <div className={styles.place}>
             <Typography>{arrival.toLocaleDateString('en-US', dateOptions)}</Typography>

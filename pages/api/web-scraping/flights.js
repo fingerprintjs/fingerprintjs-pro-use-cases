@@ -90,6 +90,7 @@ export default async function handler(req, res) {
 
 const DAY_MS = 1000 * 60 * 60 * 24;
 const FIVE_MINUTES_MS = 1000 * 60 * 5;
+const HOUR_MS = 1000 * 60 * 60;
 
 /**
  * @typedef {import('../../../client/components/web-scraping/FlightCard').Flight} Flight
@@ -107,7 +108,7 @@ const getFlightResults = (from, to) => {
   for (const airline of airlines.slice(0, 2 + Math.floor(Math.random() * 4))) {
     const now = Date.now();
     const departureTime = Math.round((now + Math.random() * DAY_MS) / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
-    const arrivalTime = Math.round((departureTime + Math.random() * DAY_MS) / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
+    const arrivalTime = Math.round((departureTime + (3 * HOUR_MS) + Math.random() * (DAY_MS / 2)) / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
     const price = Math.floor(Math.random() * 1000);
     const flightNumber = `${airline.slice(0,2).toUpperCase()}${Math.floor(Math.random() * 1000)}`;
 

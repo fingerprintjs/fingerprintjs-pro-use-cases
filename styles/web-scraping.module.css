@@ -1,7 +1,7 @@
 /* Make a 3 column grid  */
 .container {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 2fr 3fr 2fr;
   grid-gap: 1rem;
   padding: 1rem;
 }
@@ -13,11 +13,58 @@
     flex-direction: column;
 }
 
-.transition {
+.middle {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+}
+
+.duration {
+    border-radius: 10px;
+    padding: 0px 8px;
+    color: var(--primary);
+    background-color: #FFF3E0;
+    border: 1px solid #ffe0b2;
+}
+
+.airline {
+    border-radius: 10px;
+    padding: 0px 8px;
+    color: var(--text-secondary);
+    background-color: var(--header-background);
+    border: 1px solid #eeeeee;
+    opacity: 80%;
+}
+
+.transition {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+ 
+.line {
+    background-color: lightgray;
+    height: 2px;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.arrow {
+    rotate: 90deg;
+    color: gray;
+    padding: 5px;
+    translate: -2px;
+}
+
+.circleContainer {
+    display: flex;
+}
+
+.circle {
+    height: 8px;
+    width: 8px;
+    color: gray;
 }
 
 .actions {

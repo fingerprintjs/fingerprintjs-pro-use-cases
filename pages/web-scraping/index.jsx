@@ -83,7 +83,7 @@ export const WebScrapingUseCase = () => {
         articleURL="https://fingerprintjs.com/blog/web-scraping-prevention/"
         listItems={[<>In this demo we will do something fun</>]}
       >
-        <Typography variant="h2" fontSize={28} marginBottom={3}>
+        <Typography variant="h3" fontSize={14} marginBottom={3} fontWeight={400} textTransform={"uppercase"} color="gray">
           Search for today&apos;s flights
         </Typography>
         <form onSubmit={handleSubmit}>
@@ -144,7 +144,7 @@ export const WebScrapingUseCase = () => {
         </form>
         {flights?.length > 0 && !loading && (
           <div>
-            <Typography variant="h3" fontSize={14} marginTop={3} fontWeight={400} textTransform={"uppercase"} >
+            <Typography variant="h3" fontSize={14} marginTop={3} fontWeight={400} textTransform={"uppercase"} color="gray" >
               Found {flights.length} flights
             </Typography>
             {flights.map((flight) => (
