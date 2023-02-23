@@ -1,19 +1,57 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
+import {
+  Button,
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import FlightCard from '../../client/components/web-scraping/FlightCard';
 import { useVisitorData } from '../../client/use-visitor-data';
 
+const AIRPORTS = [
+  { city: 'San Francisco', code: 'SFO' },
+  { city: 'New York', code: 'JFK' },
+  { city: 'London', code: 'LHR' },
+  { city: 'Tokyo', code: 'HND' },
+  { city: 'Paris', code: 'CDG' },
+  { city: 'Hong Kong', code: 'HKG' },
+  { city: 'Singapore', code: 'SIN' },
+  { city: 'Dubai', code: 'DXB' },
+  { city: 'Shanghai', code: 'PVG' },
+  { city: 'Seoul', code: 'ICN' },
+  { city: 'Bangkok', code: 'BKK' },
+  { city: 'Amsterdam', code: 'AMS' },
+  { city: 'Beijing', code: 'PEK' },
+  { city: 'Frankfurt', code: 'FRA' },
+  { city: 'Cape Town', code: 'CPT' },
+  { city: 'Sydney', code: 'SYD' },
+  { city: 'Melbourne', code: 'MEL' },
+  { city: 'Toronto', code: 'YYZ' },
+  { city: 'Vancouver', code: 'YVR' },
+  { city: 'Montreal', code: 'YUL' },
+  { city: 'Brussels', code: 'BRU' },
+  { city: 'Copenhagen', code: 'CPH' },
+  { city: 'Oslo', code: 'OSL' },
+  { city: 'Stockholm', code: 'ARN' },
+  { city: 'Helsinki', code: 'HEL' },
+  { city: 'Rome', code: 'FCO' },
+];
+
 export const WebScrapingUseCase = () => {
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
-  const [message, setMessage] = useState('');
-  /**
-   * @type {[import('../../client/components/web-scraping/FlightCard').Flight[], React.Dispatch<import('../../client/components/web-scraping/FlightCard').Flight[]>]}
-   */
+  const [from, setFrom] = useState(AIRPORTS[0].code);
+  const [to, setTo] = useState(AIRPORTS[1].code);
+
+  /** @typedef {import('../../client/components/web-scraping/FlightCard').Flight} Flight */
+  /** @type {[Flight[], React.Dispatch<Flight[]>]} */
   const [flights, setFlights] = useState([]);
+  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+
   // Don't invoke query on mount
   const visitorDataQuery = useVisitorData({ enabled: false });
 
@@ -56,30 +94,28 @@ export const WebScrapingUseCase = () => {
           <FormControl fullWidth>
             <InputLabel id="from">From</InputLabel>
             <Select labelId="from" id="from-select" value={from} label="From" onChange={(e) => setFrom(e.target.value)}>
-              <MenuItem value={'San Francisco'}>San Francisco</MenuItem>
-              <MenuItem value={'New York'}>New York</MenuItem>
-              <MenuItem value={'London'}>London</MenuItem>
-              <MenuItem value={'Tokyo'}>Tokyo</MenuItem>
+              {AIRPORTS.filter((airport) => airport.code !== to).map((airport) => (
+                <MenuItem key={airport.code} value={airport.code}>{`${airport.city} (${airport.code})`}</MenuItem>
+              ))}
             </Select>
           </FormControl>
           <FormControl fullWidth>
             <InputLabel id="to">To</InputLabel>
             <Select labelId="to" id="to-select" value={to} label="To" onChange={(e) => setTo(e.target.value)}>
-              <MenuItem value={'San Francisco'}>San Francisco</MenuItem>
-              <MenuItem value={'New York'}>New York</MenuItem>
-              <MenuItem value={'London'}>London</MenuItem>
-              <MenuItem value={'Tokyo'}>Tokyo</MenuItem>
+              {AIRPORTS.filter((airport) => airport.code !== from).map((airport) => (
+                <MenuItem key={airport.code} value={airport.code}>{`${airport.city} (${airport.code})`}</MenuItem>
+              ))}
             </Select>
             {
               <Button type="submit" size="large" variant="contained" color="primary" disableElevation fullWidth>
                 Search flights
               </Button>
             }
-            {loading && <Typography>Loading...</Typography>}
-            {message}
+            {loading && <CircularProgress />}
+            {!loading && message}
           </FormControl>
         </form>
-        {flights?.length > 0 && (
+        {flights?.length > 0 && !loading && (
           <div>
             <h2>Results</h2>
             {flights.map((flight) => (

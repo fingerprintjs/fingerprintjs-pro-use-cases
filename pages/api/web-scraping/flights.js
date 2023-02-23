@@ -1,10 +1,3 @@
-/**
- * @typedef {Object} ResultsQuery
- * @property {string} from
- * @property {string} to
- * @property {string} requestId
- * */
-
 import { FingerprintJsServerApiClient, Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { isRequestIdFormatValid, originIsAllowed, visitIpMatchesRequestIp } from '../../../server/checks';
 import { SERVER_API_KEY } from '../../../server/const';
@@ -15,6 +8,13 @@ import {
   getOkResponse,
   messageSeverity,
 } from '../../../server/server';
+
+/**
+ * @typedef {Object} ResultsQuery
+ * @property {string} from
+ * @property {string} to
+ * @property {string} requestId
+ * */
 
 /**
  * @param {import('next').NextApiRequest} req
@@ -86,26 +86,14 @@ export default async function handler(req, res) {
   }
 }
 
-/** @typedef Flight 
- * @property {string} from
- * @property {string} to
- * @property {number} departureTime
- * @property {number} arrivalTime
- * @property {number} price
- * @property {string} airline
- * @property {string} flightNumber
-*/
 
 
 const DAY_MS = 1000 * 60 * 60 * 24;
 const FIVE_MINUTES_MS = 1000 * 60 * 5;
 
-// Add random time to now between 2 and 24 hours in 5 minute increments
-const getRandomTime = () => {
-  const now = Date.now();
-  const randomTime = now + Math.round(Math.random() * DAY_MS);
-  return Math.round(randomTime / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
-};
+/**
+ * @typedef {import('../../../client/components/web-scraping/FlightCard').Flight} Flight
+ */
 
 /**
  * Randomly generates flight results for given from/to airports

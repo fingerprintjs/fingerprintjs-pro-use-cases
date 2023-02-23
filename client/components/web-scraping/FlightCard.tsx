@@ -1,6 +1,7 @@
 import { Margin } from '@mui/icons-material';
-import { Card, CardContent, CardHeader, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Typography } from '@mui/material';
 import { FunctionComponent } from 'react';
+import styles from '../../../styles/web-scraping.module.css';
 
 export type Flight = {
   from: string;
@@ -21,41 +22,43 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
   const arrival = new Date(flight.arrivalTime);
   const duration = arrival.getTime() - departure.getTime();
   const timeOptions: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
+  const dateOptions: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
 
   return (
     <Card style={{ margin: '20px' }} variant={'outlined'}>
-      <CardHeader>
-        <Typography>
-          {flight.airline} {flight.flightNumber}
-        </Typography>
-      </CardHeader>
       <CardContent>
-        <Typography>
-          {flight.from} - {flight.to}
-        </Typography>
-        <Typography>
-          <p>{flight.flightNumber}</p>
-          <p>{flight.airline}</p>
-          <p>${flight.price}</p>
-          <span>🛫 {departure.toLocaleTimeString('en-US', timeOptions)}</span>-
-          <span> 🛬 {arrival.toLocaleTimeString('en-US', timeOptions)}</span>
-          <br />
-          <span>{departure.toLocaleDateString('en-US', {})}</span>-<span>{arrival.toLocaleDateString('en-US')}</span>
-          <p>Duration: {formatTime(duration)}</p>
-        </Typography>
+        <div className={styles.container}>
+          <div className={styles.place}>
+            <Typography>{departure.toLocaleDateString('en-US', dateOptions)}</Typography>
+            <Typography>{departure.toLocaleTimeString('en-US', timeOptions)}</Typography>
+            <Typography>{flight.from}</Typography>
+          </div>
+          <div className={styles.transition}>
+            <Typography>{formatTime(duration)}</Typography>
+            <Typography>{flight.airline}</Typography>
+          </div>
+          <div className={styles.place}>
+            <Typography>{arrival.toLocaleDateString('en-US', dateOptions)}</Typography>
+            <Typography>{arrival.toLocaleTimeString('en-US', timeOptions)}</Typography>
+            <Typography>{flight.to}</Typography>
+          </div>
+        </div>
       </CardContent>
+      <CardActions className={styles.actions}>
+        <Typography>${flight.price}</Typography>
+        <Button variant="outlined">Book flight</Button>
+      </CardActions>
     </Card>
   );
 };
 
-const DAY_MS = 86400000;
 const HOUR_MS = 3600000;
 const MINUTE_MS = 60000;
 // convert time in milliseconds to hours and minutes
 const formatTime = (time: number) => {
   const hours = Math.floor(time / HOUR_MS);
   const minutes = (time % HOUR_MS) / MINUTE_MS;
-  return `${hours}h ${minutes}m`;
+  return `${hours}h ${minutes > 0 ? `${minutes}m` : ''}`;
 };
 
 export default FlightCard;
