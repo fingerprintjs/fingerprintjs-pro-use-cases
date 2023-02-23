@@ -25,7 +25,7 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
   const dateOptions: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
 
   return (
-    <Card style={{ margin: '20px' }} variant={'outlined'}>
+    <Card style={{ marginTop: '20px' }} variant={'outlined'}>
       <CardContent>
         <div className={styles.container}>
           <div className={styles.place}>

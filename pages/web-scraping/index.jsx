@@ -1,13 +1,4 @@
-import {
-  Button,
-  CircularProgress,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Autocomplete, Box, Button, CircularProgress, FormControl, Grid, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import FlightCard from '../../client/components/web-scraping/FlightCard';
@@ -61,13 +52,16 @@ export const WebScrapingUseCase = () => {
   async function handleSubmit(event) {
     event.preventDefault();
     setLoading(true);
+    setMessage('');
     const { data } = await visitorDataQuery.refetch();
     try {
       const results = await (
         await fetch(`/api/web-scraping/flights?from=${from}&to=${to}&requestId=${data.requestId}`)
       ).json();
       setLoading(false);
-      setMessage(results.message);
+      if (results.severity !== 'success') {
+        setMessage(results.message);
+      }
       setFlights(results.data.flights);
     } catch (error) {
       setLoading(false);
@@ -89,35 +83,70 @@ export const WebScrapingUseCase = () => {
         articleURL="https://fingerprintjs.com/blog/web-scraping-prevention/"
         listItems={[<>In this demo we will do something fun</>]}
       >
-        <h1>Search for today&apos;s flights</h1>
+        <Typography variant="h2" fontSize={28} marginBottom={3}>
+          Search for today&apos;s flights
+        </Typography>
         <form onSubmit={handleSubmit}>
-          <FormControl fullWidth>
-            <InputLabel id="from">From</InputLabel>
-            <Select labelId="from" id="from-select" value={from} label="From" onChange={(e) => setFrom(e.target.value)}>
-              {AIRPORTS.filter((airport) => airport.code !== to).map((airport) => (
-                <MenuItem key={airport.code} value={airport.code}>{`${airport.city} (${airport.code})`}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel id="to">To</InputLabel>
-            <Select labelId="to" id="to-select" value={to} label="To" onChange={(e) => setTo(e.target.value)}>
-              {AIRPORTS.filter((airport) => airport.code !== from).map((airport) => (
-                <MenuItem key={airport.code} value={airport.code}>{`${airport.city} (${airport.code})`}</MenuItem>
-              ))}
-            </Select>
-            {
-              <Button type="submit" size="large" variant="contained" color="primary" disableElevation fullWidth>
-                Search flights
-              </Button>
-            }
-            {loading && <CircularProgress />}
-            {!loading && message}
-          </FormControl>
+          <Grid container spacing={1} marginBottom={3}>
+            <Grid item xs={12} sm={5.5}>
+              <FormControl fullWidth>
+                <Autocomplete
+                  id="from"
+                  size="small"
+                  autoHighlight
+                  options={AIRPORTS.filter((airport) => airport.code !== to)}
+                  getOptionLabel={(option) => `${option.city} (${option.code})`}
+                  value={AIRPORTS.find((airport) => airport.code === from)}
+                  onChange={(e, value) => setFrom(value?.code)}
+                  renderInput={(params) => <TextField {...params} label="From" />}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={1}>
+              <Box alignItems={'center'} display="flex" justifyContent={'center'} fontSize={28}>
+                <div>➡️</div>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={5.5}>
+              <FormControl fullWidth>
+                <Autocomplete
+                  id="to"
+                  size="small"
+                  autoHighlight
+                  options={AIRPORTS.filter((airport) => airport.code !== from)}
+                  getOptionLabel={(option) => `${option.city} (${option.code})`}
+                  value={AIRPORTS.find((airport) => airport.code === to)}
+                  onChange={(e, value) => setTo(value?.code)}
+                  renderInput={(params) => <TextField {...params} label="To" />}
+                />
+              </FormControl>
+            </Grid>
+          </Grid>
+          {
+            <Button
+              type="submit"
+              size="large"
+              variant="contained"
+              color="primary"
+              disableElevation
+              fullWidth
+              disabled={!to || !from || loading}
+            >
+              Search flights
+            </Button>
+          }
+          {loading && (
+            <Box display={"flex"} justifyContent={"center"} margin={3}>
+              <CircularProgress />
+            </Box>
+          )}
+          {!loading && message}
         </form>
         {flights?.length > 0 && !loading && (
           <div>
-            <h2>Results</h2>
+            <Typography variant="h3" fontSize={14} marginTop={3} fontWeight={400} textTransform={"uppercase"} >
+              Found {flights.length} flights
+            </Typography>
             {flights.map((flight) => (
               <FlightCard key={flight.flightNumber} flight={flight} />
             ))}
