@@ -1,4 +1,14 @@
-import { Autocomplete, Box, Button, CircularProgress, FormControl, Grid, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Autocomplete,
+  Box,
+  Button,
+  CircularProgress,
+  FormControl,
+  Grid,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import FlightCard from '../../client/components/web-scraping/FlightCard';
@@ -43,6 +53,10 @@ export const WebScrapingUseCase = () => {
   /** @type {[Flight[], React.Dispatch<Flight[]>]} */
   const [flights, setFlights] = useState([]);
   const [message, setMessage] = useState('');
+
+  /** @typedef {import('../../server/server').Severity} Severity */
+  /** @type {[Severity | undefined, React.Dispatch<Severity>]} */
+  const [messageSeverity, setMessageSeverity] = useState();
   const [loading, setLoading] = useState(false);
 
   // Don't invoke query on mount
@@ -57,14 +71,17 @@ export const WebScrapingUseCase = () => {
     setMessage('');
     const { data } = await visitorDataQuery.refetch();
     try {
-      const results = await (
-        await fetch(`/api/web-scraping/flights?from=${from}&to=${to}&requestId=${data.requestId}`)
+      /** @type {import('../../server/checkResult').CheckResult} */
+      const result = await (
+        // await fetch(`/api/web-scraping/flights?from=${from}&to=${to}&requestId=${data.requestId}`)
+        await fetch(`/api/web-scraping/flights?from=${from}&to=${to}&requestId=1673351180232.2XP5gE`)
       ).json();
       setLoading(false);
-      if (results.severity !== 'success') {
-        setMessage(results.message);
+      if (result.severity !== 'success') {
+        setMessage(result.message);
+        setMessageSeverity(result.severity);
       }
-      setFlights(results.data);
+      setFlights(result.data);
     } catch (error) {
       setLoading(false);
       setMessage(error.toString());
@@ -85,7 +102,14 @@ export const WebScrapingUseCase = () => {
         articleURL="https://fingerprintjs.com/blog/web-scraping-prevention/"
         listItems={[<>In this demo we will do something fun</>]}
       >
-        <Typography variant="h3" fontSize={14} marginBottom={3} fontWeight={400} textTransform={"uppercase"} color="gray">
+        <Typography
+          variant="h3"
+          fontSize={14}
+          marginBottom={3}
+          fontWeight={400}
+          textTransform={'uppercase'}
+          color="gray"
+        >
           Search for today&apos;s flights
         </Typography>
         <form onSubmit={handleSubmit}>
@@ -104,9 +128,9 @@ export const WebScrapingUseCase = () => {
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={1} display="flex" justifyContent={"center"} alignItems="center">
+            <Grid item xs={12} sm={1} display="flex" justifyContent={'center'} alignItems="center">
               <Box alignItems={'center'} display="flex" justifyContent={'center'} fontSize={28}>
-                <ArrowForwardIcon className={styles.formArrow}  />
+                <ArrowForwardIcon className={styles.formArrow} />
               </Box>
             </Grid>
             <Grid item xs={12} sm={5.5}>
@@ -138,15 +162,26 @@ export const WebScrapingUseCase = () => {
             </Button>
           }
           {loading && (
-            <Box display={"flex"} justifyContent={"center"} margin={3}>
+            <Box display={'flex'} justifyContent={'center'} margin={3}>
               <CircularProgress />
             </Box>
           )}
-          {!loading && message}
+          {!loading && message && (
+            <Alert severity={messageSeverity} className="UsecaseWrapper_alert">
+              {message}
+            </Alert>
+          )}
         </form>
         {flights?.length > 0 && !loading && (
           <div>
-            <Typography variant="h3" fontSize={14} marginTop={3} fontWeight={400} textTransform={"uppercase"} color="gray" >
+            <Typography
+              variant="h3"
+              fontSize={14}
+              marginTop={3}
+              fontWeight={400}
+              textTransform={'uppercase'}
+              color="gray"
+            >
               Found {flights.length} flights
             </Typography>
             {flights.map((flight) => (
