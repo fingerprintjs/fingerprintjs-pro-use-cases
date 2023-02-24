@@ -35,7 +35,7 @@ const navLinks = [
     url: '/personalization',
   },
   {
-    name: 'Scraping prevention',
+    name: 'Scraping',
     url: '/web-scraping',
   },
 ];
