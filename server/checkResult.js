@@ -1,15 +1,15 @@
 export class CheckResult {
   /**
    * @param {string} message
-   * @param {string} messageSeverity
+   * @param {import('./server').Severity} severity
    * @param {string} type
    * @param {Object | undefined} data
    * */
-  constructor(message, messageSeverity, type, data = undefined) {
+  constructor(message, severity, type, data = undefined) {
     /** @type {string} */
     this.message = message;
-    /** @type {string} */
-    this.messageSeverity = messageSeverity;
+    /** @type {import('./server').Severity} */
+    this.severity = severity;
     /** @type {string} */
     this.type = type;
     /** @type {Object | undefined} */
@@ -19,7 +19,7 @@ export class CheckResult {
   toJsonResponse() {
     return {
       message: this.message,
-      severity: this.messageSeverity,
+      severity: this.severity,
       type: this.type,
       data: this.data,
     };
