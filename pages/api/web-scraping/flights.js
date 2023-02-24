@@ -1,14 +1,10 @@
 import { FingerprintJsServerApiClient, Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { CheckResult, checkResultType } from '../../../server/checkResult';
 import { isRequestIdFormatValid, originIsAllowed, visitIpMatchesRequestIp } from '../../../server/checks';
-import { SERVER_API_KEY } from '../../../server/const';
-import {
-  ensureGetRequest,
-  getErrorResponse,
-  getForbiddenResponse,
-  getOkResponse,
-  messageSeverity,
-} from '../../../server/server';
-import {AIRPORTS} from '../../web-scraping';
+import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, DAY_MS, FIVE_MINUTES_MS, HOUR_MS, SERVER_API_KEY } from '../../../server/const';
+import { sendErrorResponse, sendForbiddenResponse, sendOkResponse } from '../../../server/response';
+import { ensureGetRequest, messageSeverity } from '../../../server/server';
+import { AIRPORTS } from '../../web-scraping';
 
 /**
  * @typedef {Object} ResultsQuery
@@ -21,7 +17,7 @@ import {AIRPORTS} from '../../web-scraping';
  * @param {import('next').NextApiRequest} req
  * @param {import('next').NextApiResponse} res
  */
-export default async function handler(req, res) {
+export default async function getFlights(req, res) {
   // This API route accepts only GET requests.
   if (!ensureGetRequest(req, res)) {
     return;
@@ -31,7 +27,10 @@ export default async function handler(req, res) {
 
   // Validate request ID format
   if (!isRequestIdFormatValid(requestId)) {
-    getForbiddenResponse(res, 'Invalid request ID', messageSeverity.Error);
+    sendForbiddenResponse(
+      res,
+      new CheckResult('Invalid request ID', messageSeverity.Error, checkResultType.RequestIdMismatch)
+    );
     return;
   }
 
@@ -40,8 +39,16 @@ export default async function handler(req, res) {
     const client = new FingerprintJsServerApiClient({ region: Region.Global, apiKey: SERVER_API_KEY });
     const eventResponse = await client.getEvent(requestId);
 
+    // Check if the requestId exists
     if (!eventResponse) {
-      getForbiddenResponse(res, 'Request ID not found, potential spoofing attack.', messageSeverity.Error);
+      sendForbiddenResponse(
+        res,
+        new CheckResult(
+          'Request ID not found, potential spoofing attack.',
+          messageSeverity.Error,
+          checkResultType.RequestIdMismatch
+        )
+      );
       return;
     }
 
@@ -49,69 +56,89 @@ export default async function handler(req, res) {
     const visitData = eventResponse.products.identification?.data; // undefined if bot is detected
 
     // Check for bot presence and type
-    if (botData.bot?.result === 'bad') {
-      getForbiddenResponse(res, 'Malicious bot detected, access denied.', messageSeverity.Error);
+    if (botData?.bot?.result === 'bad') {
+      sendForbiddenResponse(
+        res,
+        new CheckResult(
+          'Malicious bot detected, access denied.',
+          messageSeverity.Error,
+          checkResultType.MaliciousBotDetected
+        )
+      );
       return;
     }
 
-    if (botData.bot?.result === 'good') {
-      getOkResponse(res, 'A good bot detected, access allowed.', messageSeverity.Success, {
-        flights: ['LAX', 'SFO', 'JF'],
-      });
+    if (botData?.bot?.result === 'good') {
+      sendOkResponse(
+        res,
+        new CheckResult('A good bot detected, access allowed.', messageSeverity.Success, checkResultType.GoodBotDetected, getFlightResults(from, to))
+      );
       return;
     }
 
     // Bot not detected, we can use the identification visitData
     if (!visitIpMatchesRequestIp(visitData, req)) {
-      getForbiddenResponse(res, 'Visit IP does not match request IP.', messageSeverity.Error);
+      sendForbiddenResponse(
+        res,
+        new CheckResult('Visit IP does not match request IP.', messageSeverity.Error, checkResultType.IpMismatch)
+      );
       return;
     }
 
+    // Check if the visit origin matches the request origin
     if (!originIsAllowed(visitData, req)) {
-      getForbiddenResponse(res, 'Visit origin does not match request origin or is not allowed.', messageSeverity.Error);
+      sendForbiddenResponse(
+        res,
+        new CheckResult(
+          'Visit origin does not match request origin or is not allowed.',
+          messageSeverity.Error,
+          checkResultType.ForeignOrigin
+        )
+      );
       return;
     }
 
-    if (Date.now() - visitData.timestamp > 3000) {
-      getForbiddenResponse(res, 'Old request, potential replay attack.', messageSeverity.Error);
+    // Check if the visit timestamp is not old
+    if (Date.now() - visitData.timestamp > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
+      sendForbiddenResponse(res, new CheckResult('Old visit, potential replay attack.', messageSeverity.Error, checkResultType.OldTimestamp));
       return;
     }
 
     // All checks passed, allow access
-    getOkResponse(res, 'No bot detected, all seems fine, access allowed.', messageSeverity.Success, {
-      flights: getFlightResults(from, to),
-    });
+    sendOkResponse(
+      res,
+      new CheckResult('No bot detected, access allowed.', messageSeverity.Success, messageSeverity.Success, getFlightResults(from, to))
+    );
   } catch (error) {
+    // Handle server errors
     console.error(error);
-    getErrorResponse(res, `Server error: ${error.message}`);
+    sendErrorResponse(res, new CheckResult(`Server error: ${error.message}`, messageSeverity.Error, checkResultType.ServerError));
   }
 }
 
 
-
-const DAY_MS = 1000 * 60 * 60 * 24;
-const FIVE_MINUTES_MS = 1000 * 60 * 5;
-const HOUR_MS = 1000 * 60 * 60;
 
 /**
  * @typedef {import('../../../client/components/web-scraping/FlightCard').Flight} Flight
  */
 
 /**
- * Randomly generates flight results for given from/to airports
+ * Randomly generates flight results for given from/to airports 
+ * to simulate the expensive computation you are trying to protect from web scraping.
  * @param {string} fromCode
  * @param {string} toCode
  * @returns {Flight[]}
  */
-const getFlightResults = (fromCode, toCode) => {
+function getFlightResults(fromCode, toCode) {
   const results = [];
   const airlines = ['United', 'Delta', 'American', 'Southwest', 'Alaska', 'JetBlue'];
   for (const airline of airlines.slice(0, 2 + Math.floor(Math.random() * 4))) {
     const now = Date.now();
     const departureTime = Math.round((now + Math.random() * DAY_MS) / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
-    const arrivalTime = Math.round((departureTime + (3 * HOUR_MS) + Math.random() * (DAY_MS / 2)) / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
+    const arrivalTime =
+      Math.round((departureTime + 3 * HOUR_MS + Math.random() * (DAY_MS / 2)) / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
     const price = Math.floor(Math.random() * 1000);
-    const flightNumber = `${airline.slice(0,2).toUpperCase()}${Math.floor(Math.random() * 1000)}`;
+    const flightNumber = `${airline.slice(0, 2).toUpperCase()}${Math.floor(Math.random() * 1000)}`;
 
     results.push({
       fromCode,
@@ -127,4 +154,4 @@ const getFlightResults = (fromCode, toCode) => {
   }
 
   return results;
-}
+};

@@ -64,7 +64,7 @@ export const WebScrapingUseCase = () => {
       if (results.severity !== 'success') {
         setMessage(results.message);
       }
-      setFlights(results.data.flights);
+      setFlights(results.data);
     } catch (error) {
       setLoading(false);
       setMessage(error.toString());

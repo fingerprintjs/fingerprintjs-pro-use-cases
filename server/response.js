@@ -29,3 +29,20 @@ export function sendForbiddenResponse(res, result) {
 
   return res.status(403).json(result.toJsonResponse());
 }
+
+
+/**
+ * @param {import("next").NextApiResponse} res
+ * @param {import("./checkResult").CheckResult} result
+ * */
+export function sendErrorResponse(res, result) {
+  if (res.headersSent) {
+    console.warn('Attempted to send an error response after headers were sent.', {
+      result,
+    });
+
+    return;
+  }
+
+  return res.status(500).json(result.toJsonResponse());
+}

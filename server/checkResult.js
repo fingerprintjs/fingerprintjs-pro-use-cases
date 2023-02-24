@@ -1,8 +1,19 @@
 export class CheckResult {
-  constructor(message, messageSeverity, type) {
+  /**
+   * @param {string} message
+   * @param {string} messageSeverity
+   * @param {string} type
+   * @param {Object | undefined} data
+   * */
+  constructor(message, messageSeverity, type, data = undefined) {
+    /** @type {string} */
     this.message = message;
+    /** @type {string} */
     this.messageSeverity = messageSeverity;
+    /** @type {string} */
     this.type = type;
+    /** @type {Object | undefined} */
+    this.data = data;
   }
 
   toJsonResponse() {
@@ -10,6 +21,7 @@ export class CheckResult {
       message: this.message,
       severity: this.messageSeverity,
       type: this.type,
+      data: this.data,
     };
   }
 }
@@ -23,6 +35,9 @@ export const checkResultType = Object.freeze({
   Challenged: 'Challenged',
   IpMismatch: 'IpMismatch',
   Passed: 'Passed',
+  MaliciousBotDetected: 'MaliciousBotDetected',
+  GoodBotDetected: 'GoodBotDetected',
+  ServerError: 'ServerError',
   // Login specific checks.
   IncorrectCredentials: 'IncorrectCredentials',
   // Payment specific checks.

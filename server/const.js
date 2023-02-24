@@ -6,3 +6,8 @@ export const MIN_CONFIDENCE_SCORE = 0.85;
 // Warning: In the real world The API key should be secretly stored in the environment variables/secrets.
 // We are keeping it here just to make it easy to run the demo. 
 export const SERVER_API_KEY = 'F6gQ8H8vQLc7mVsVKaFx';
+
+// Milliseconds helpers
+export const DAY_MS = 1000 * 60 * 60 * 24;
+export const FIVE_MINUTES_MS = 1000 * 60 * 5;
+export const HOUR_MS = 1000 * 60 * 60;

@@ -12,11 +12,11 @@
 }
 
 .origin {
-  align-items: start;
+  align-items: flex-start;
 }
 
 .destination {
-  align-items: end;
+  align-items: flex-end;
 }
 
 .date {
@@ -99,7 +99,7 @@
 .actions {
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
   padding: 16px;
 }
 

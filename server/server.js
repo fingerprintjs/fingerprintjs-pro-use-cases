@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
 import {areVisitorIdAndRequestIdValid} from './checks';
 import { fingerprintJsApiClient } from './fingerprint-api';
-import { CheckResult } from './checkResult';
+import { CheckResult, checkResultType } from './checkResult';
 import { sendForbiddenResponse } from './response';
 
 // Provision the database.
@@ -28,7 +28,7 @@ export function ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId)
     reportSuspiciousActivity(req);
     sendForbiddenResponse(
       res,
-      new CheckResult('Forged visitorId or requestId detected. Try harder next time.', messageSeverity.Error)
+      new CheckResult('Forged visitorId or requestId detected. Try harder next time.', messageSeverity.Error, checkResultType.RequestIdMismatch)
     );
 
     return false;
@@ -62,18 +62,6 @@ export async function getVisitorDataWithRequestId(visitorId, requestId) {
   return fingerprintJsApiClient.getVisitorHistory(visitorId, {
     request_id: requestId,
   });
-}
-
-export function getOkResponse(res, message, messageSeverity, data) {
-  return res.status(200).json({ message, severity: messageSeverity, data });
-}
-
-export function getForbiddenResponse(res, message, messageSeverity) {
-  return res.status(403).json({ message, severity: messageSeverity });
-}
-
-export function getErrorResponse(res, message) {
-  return res.status(500).json({ message, severity: messageSeverity.Error });
 }
 
 // Report suspicious user activity according to internal processes here.
