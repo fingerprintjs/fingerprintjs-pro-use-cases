@@ -1,6 +1,8 @@
 import { Sequelize } from 'sequelize';
 import {areVisitorIdAndRequestIdValid} from './checks';
 import { fingerprintJsApiClient } from './fingerprint-api';
+import { CheckResult } from './checkResult';
+import { sendForbiddenResponse } from './response';
 
 // Provision the database.
 // In the Stackblitz environment, this db is stored locally in your browser.
@@ -24,7 +26,11 @@ export const messageSeverity = Object.freeze({
 export function ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId) {
   if (!areVisitorIdAndRequestIdValid(visitorId, requestId)) {
     reportSuspiciousActivity(req);
-    getForbiddenResponse(res, 'Forged visitorId or requestId detected. Try harder next time.', messageSeverity.Error);
+    sendForbiddenResponse(
+      res,
+      new CheckResult('Forged visitorId or requestId detected. Try harder next time.', messageSeverity.Error)
+    );
+
     return false;
   }
 

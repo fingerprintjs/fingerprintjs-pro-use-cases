@@ -1,9 +1,7 @@
-import { Sequelize } from 'sequelize';
+import { DataTypes, Op } from 'sequelize';
 import {
   ensurePostRequest,
   ensureValidRequestIdAndVisitorId,
-  getForbiddenResponse,
-  getOkResponse,
   getVisitorDataWithRequestId,
   messageSeverity,
   reportSuspiciousActivity,
@@ -16,6 +14,7 @@ import {
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
 } from '../../../server/checks';
+import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
 
 // Mocked user with leaked credentials associated with visitorIds.
 const mockedUser = {
@@ -27,16 +26,16 @@ const mockedUser = {
 // Defines db model for login attempt.
 export const LoginAttempt = sequelize.define('login-attempt', {
   visitorId: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
   },
   userName: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
   },
   loginAttemptResult: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
   },
   timestamp: {
-    type: Sequelize.DATE,
+    type: DataTypes.DATE,
   },
 });
 
@@ -93,10 +92,10 @@ async function tryToLogin(req, res, ruleChecks) {
       switch (result.type) {
         case checkResultType.Passed:
         case checkResultType.Challenged:
-          return getOkResponse(res, result.message, result.messageSeverity);
+          return sendOkResponse(res, result);
         default:
           reportSuspiciousActivity(req);
-          return getForbiddenResponse(res, result.message, result.messageSeverity);
+          return sendForbiddenResponse(res, result);
       }
     }
   }
@@ -108,12 +107,12 @@ async function checkUnsuccessfulIdentifications(visitorData) {
     where: {
       visitorId: visitorData.visitorId,
       timestamp: {
-        [Sequelize.Op.gt]: new Date().getTime() - 24 * 60 * 1000,
+        [Op.gt]: new Date().getTime() - 24 * 60 * 1000,
       },
       loginAttemptResult: {
-        [Sequelize.Op.not]: checkResultType.Passed,
-        [Sequelize.Op.not]: checkResultType.TooManyLoginAttempts,
-        [Sequelize.Op.not]: checkResultType.Challenged,
+        [Op.not]: checkResultType.Passed,
+        [Op.not]: checkResultType.TooManyLoginAttempts,
+        [Op.not]: checkResultType.Challenged,
       },
     },
   });

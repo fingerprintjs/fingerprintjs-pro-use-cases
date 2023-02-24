@@ -1,4 +1,4 @@
-import { ensureValidRequestIdAndVisitorId, getForbiddenResponse, getVisitorDataWithRequestId } from '../server';
+import { ensureValidRequestIdAndVisitorId, getVisitorDataWithRequestId } from '../server';
 import { checkResultType } from '../checkResult';
 import {
   checkConfidenceScore,
@@ -6,8 +6,9 @@ import {
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
 } from '../checks';
+import { sendForbiddenResponse } from '../response';
 
-export async function validateCouponRequest(req, res) {
+export async function validateCouponRequest(req, res, additionalChecks = []) {
   const result = {
     visitorId: null,
     couponCode: null,
@@ -24,6 +25,7 @@ export async function validateCouponRequest(req, res) {
     checkConfidenceScore,
     checkIpAddressIntegrity,
     checkOriginsIntegrity,
+    ...additionalChecks,
   ];
 
   const visitorData = await getVisitorDataWithRequestId(visitorId, requestId);
@@ -32,18 +34,15 @@ export async function validateCouponRequest(req, res) {
   result.couponCode = couponCode;
 
   for (const check of checks) {
-    const checkResult = await check(visitorData, req);
+    const checkResult = await check(visitorData, req, couponCode);
 
     if (checkResult) {
       switch (checkResult.type) {
         case checkResultType.Passed:
           continue;
-        case checkResultType.Challenged:
-          getForbiddenResponse(res, checkResult.message, 'error');
-          break;
 
         default:
-          return result;
+          return sendForbiddenResponse(res, checkResult);
       }
     }
   }

@@ -111,6 +111,7 @@ export default function Index() {
           {tiles.map((tile) => (
             <Grid
               key={tile.url}
+              className="UseCase"
               item
               md={4}
               xs={12}

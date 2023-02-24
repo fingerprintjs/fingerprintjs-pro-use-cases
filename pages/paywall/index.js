@@ -32,7 +32,13 @@ export default function LoanRisk({ articles }) {
       {articles.data && (
         <Stack spacing={6}>
           {articles.data.map((article) => (
-            <Card href={`/paywall/article/${article.id}`} key={article.id} variant="outlined" component="a">
+            <Card
+              href={`/paywall/article/${article.id}`}
+              key={article.id}
+              variant="outlined"
+              component="a"
+              className="ArticleLink"
+            >
               <CardContent>
                 <Typography variant="h5" gutterBottom>
                   {article.title}

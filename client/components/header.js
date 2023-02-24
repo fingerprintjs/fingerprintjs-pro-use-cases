@@ -82,6 +82,8 @@ export function Header({ addonRight }) {
 
           <Stack direction="row" alignItems="center">
             <IconButton
+              className="DarkMode_toggle"
+              data-checked={hasDarkMode.toString()}
               disableRipple
               onClick={() => {
                 update({

@@ -125,6 +125,7 @@ export default function Index() {
             Username
           </Typography>
           <TextField
+            name="username"
             placeholder="Username"
             variant="outlined"
             defaultValue={userName}
@@ -137,6 +138,7 @@ export default function Index() {
             Password
           </Typography>
           <OutlinedInput
+            name="password"
             placeholder="Password"
             type={showPassword ? 'text' : 'password'}
             defaultValue={password}
