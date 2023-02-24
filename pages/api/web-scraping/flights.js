@@ -1,7 +1,13 @@
 import { FingerprintJsServerApiClient, Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { CheckResult, checkResultType } from '../../../server/checkResult';
 import { isRequestIdFormatValid, originIsAllowed, visitIpMatchesRequestIp } from '../../../server/checks';
-import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, DAY_MS, FIVE_MINUTES_MS, HOUR_MS, SERVER_API_KEY } from '../../../server/const';
+import {
+  ALLOWED_REQUEST_TIMESTAMP_DIFF_MS,
+  DAY_MS,
+  FIVE_MINUTES_MS,
+  HOUR_MS,
+  SERVER_API_KEY,
+} from '../../../server/const';
 import { sendErrorResponse, sendForbiddenResponse, sendOkResponse } from '../../../server/response';
 import { ensureGetRequest, messageSeverity } from '../../../server/server';
 import { AIRPORTS } from '../../web-scraping';
@@ -29,7 +35,7 @@ export default async function getFlights(req, res) {
   if (!isRequestIdFormatValid(requestId)) {
     sendForbiddenResponse(
       res,
-      new CheckResult('Invalid request ID', messageSeverity.Error, checkResultType.RequestIdMismatch)
+      new CheckResult('Invalid request ID.', messageSeverity.Error, checkResultType.RequestIdMismatch)
     );
     return;
   }
@@ -37,21 +43,8 @@ export default async function getFlights(req, res) {
   try {
     // Retrieve analysis event from the Server API using the request ID
     const client = new FingerprintJsServerApiClient({ region: Region.Global, apiKey: SERVER_API_KEY });
+    // If the requestId does not exist, the SDK will throw an error which will be caught below
     const eventResponse = await client.getEvent(requestId);
-
-    // Check if the requestId exists
-    if (!eventResponse) {
-      sendForbiddenResponse(
-        res,
-        new CheckResult(
-          'Request ID not found, potential spoofing attack.',
-          messageSeverity.Error,
-          checkResultType.RequestIdMismatch
-        )
-      );
-      return;
-    }
-
     const botData = eventResponse.products.botd?.data; // undefined if bot is not detected
     const visitData = eventResponse.products.identification?.data; // undefined if bot is detected
 
@@ -71,12 +64,18 @@ export default async function getFlights(req, res) {
     if (botData?.bot?.result === 'good') {
       sendOkResponse(
         res,
-        new CheckResult('A good bot detected, access allowed.', messageSeverity.Success, checkResultType.GoodBotDetected, getFlightResults(from, to))
+        new CheckResult(
+          'A good bot detected, access allowed.',
+          messageSeverity.Success,
+          checkResultType.GoodBotDetected,
+          getFlightResults(from, to)
+        )
       );
       return;
     }
 
-    // Bot not detected, we can use the identification visitData
+    // Bot not detected, verify the visit data
+    // Check if the visit IP matches the request IP
     if (!visitIpMatchesRequestIp(visitData, req)) {
       sendForbiddenResponse(
         res,
@@ -100,30 +99,51 @@ export default async function getFlights(req, res) {
 
     // Check if the visit timestamp is not old
     if (Date.now() - visitData.timestamp > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
-      sendForbiddenResponse(res, new CheckResult('Old visit, potential replay attack.', messageSeverity.Error, checkResultType.OldTimestamp));
+      sendForbiddenResponse(
+        res,
+        new CheckResult('Old visit, potential replay attack.', messageSeverity.Error, checkResultType.OldTimestamp)
+      );
       return;
     }
 
     // All checks passed, allow access
     sendOkResponse(
       res,
-      new CheckResult('No bot detected, access allowed.', messageSeverity.Success, messageSeverity.Success, getFlightResults(from, to))
+      new CheckResult(
+        'No bot detected, access allowed.',
+        messageSeverity.Success,
+        messageSeverity.Success,
+        getFlightResults(from, to)
+      )
     );
   } catch (error) {
-    // Handle server errors
-    console.error(error);
-    sendErrorResponse(res, new CheckResult(`Server error: ${error.message}`, messageSeverity.Error, checkResultType.ServerError));
+    console.log(error);
+    // Throw a specific error if the request ID is not found
+    if (error.status === 404) {
+      sendForbiddenResponse(
+        res,
+        new CheckResult(
+          'Request ID not found, potential spoofing attack.',
+          messageSeverity.Error,
+          checkResultType.RequestIdMismatch
+        )
+      );
+    } else {
+      // Handle other errors
+      sendErrorResponse(
+        res,
+        new CheckResult(`Server error: ${error}`, messageSeverity.Error, checkResultType.ServerError)
+      );
+    }
   }
 }
-
-
 
 /**
  * @typedef {import('../../../client/components/web-scraping/FlightCard').Flight} Flight
  */
 
 /**
- * Randomly generates flight results for given from/to airports 
+ * Randomly generates flight results for given airports
  * to simulate the expensive computation you are trying to protect from web scraping.
  * @param {string} fromCode
  * @param {string} toCode
@@ -154,4 +174,4 @@ function getFlightResults(fromCode, toCode) {
   }
 
   return results;
-};
+}
