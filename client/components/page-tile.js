@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import { ArrowForward } from '@mui/icons-material';
 
 /** 
- * @typedef {Object} TileProps
+ * @typedef {Object} PageTileProps
  * @property {string} title
  * @property {string} url
  * @property {React.ReactNode} icon
@@ -15,10 +15,10 @@ import { ArrowForward } from '@mui/icons-material';
  */
 
 /**
- * @param {TileProps} props 
+ * @param {PageTileProps} props 
  * @returns {JSX.Element}
  */
-export function Tile({ url, title, icon, description }) {
+export function PageTile({ url, title, icon, description }) {
   const [elevation, setElevation] = useState(1);
 
   return (

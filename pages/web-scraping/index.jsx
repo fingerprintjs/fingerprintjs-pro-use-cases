@@ -14,7 +14,7 @@ import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import FlightCard from '../../client/components/web-scraping/FlightCard';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import styles from '../../styles/web-scraping.module.css';
-import {useVisitorData} from '../../client/use-visitor-data';
+import { useVisitorData } from '../../client/use-visitor-data';
 
 export const AIRPORTS = [
   { city: 'San Francisco', code: 'SFO' },
@@ -103,14 +103,7 @@ export const WebScrapingUseCase = () => {
         // articleURL="https://fingerprintjs.com/blog/web-scraping-prevention/"
         listItems={[<>In this demo we will do something fun</>]}
       >
-        <Typography
-          variant="h3"
-          fontSize={14}
-          marginBottom={3}
-          fontWeight={400}
-          textTransform={'uppercase'}
-          color="gray"
-        >
+        <Typography variant="h3" className={styles.subHeadline}>
           Search for today&apos;s flights
         </Typography>
         <form onSubmit={handleSubmit}>
@@ -175,14 +168,7 @@ export const WebScrapingUseCase = () => {
         </form>
         {flights?.length > 0 && !loading && (
           <div>
-            <Typography
-              variant="h3"
-              fontSize={14}
-              marginTop={3}
-              fontWeight={400}
-              textTransform={'uppercase'}
-              color="gray"
-            >
+            <Typography variant="h3" className={styles.subHeadline}>
               Found {flights.length} flights
             </Typography>
             {flights.map((flight) => (

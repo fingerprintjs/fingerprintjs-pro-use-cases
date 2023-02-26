@@ -110,9 +110,15 @@
 }
 
 /* Form */
-
 @media only screen and (max-width: 600px) {
   .formArrow {
     rotate: 90deg;
   }
+}
+
+.subHeadline {
+  font-size: 14px;
+  margin: 24px 0px;
+  text-transform: uppercase;
+  color: gray;
 }

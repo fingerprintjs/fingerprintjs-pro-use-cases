@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import Paper from '@mui/material/Paper';
 import { AirplaneTicket, Block, CreditScore, Money, People, PrecisionManufacturing, Settings } from '@mui/icons-material';
-import { Tile } from '../client/components/page-tile';
+import { PageTile } from '../client/components/page-tile';
 import Grid from '@mui/material/Grid';
 import { Logo } from '../client/components/logo';
 
 /** 
- * @type {Array<import('../client/components/page-tile').TileProps>}
+ * @type {Array<import('../client/components/page-tile').PageTileProps>}
  * */
-const tiles = [
+const pageTiles = [
   {
     title: 'Coupon Fraud',
     url: '/coupon-fraud',
@@ -108,9 +108,9 @@ export default function Index() {
             marginBottom: (theme) => theme.spacing(3),
           }}
         >
-          {tiles.map((tile) => (
+          {pageTiles.map((pageTile) => (
             <Grid
-              key={tile.url}
+              key={pageTile.url}
               className="UseCase"
               item
               md={4}
@@ -122,7 +122,7 @@ export default function Index() {
                 },
               }}
             >
-              <Tile {...tile} />
+              <PageTile {...pageTile} />
             </Grid>
           ))}
         </Grid>

@@ -48,7 +48,7 @@ export function useVisitorData({
   extendedResult = true,
   linkedId = undefined,
   products = undefined,
-}) {
+} = {}) {
   return useQuery(VISITOR_DATA_QUERY, () => getVisitorData({ extendedResult, linkedId, products }), {
     enabled,
   });
