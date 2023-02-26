@@ -58,6 +58,8 @@ export default async function getFlights(req, res) {
           checkResultType.MaliciousBotDetected
         )
       );
+      // Optionally, here you could also save the bot's IP address to a blocklist in your database
+      // and block all requests from this IP address in the future at a web server/firewall level.
       return;
     }
 
@@ -112,7 +114,7 @@ export default async function getFlights(req, res) {
       new CheckResult(
         'No bot detected, access allowed.',
         messageSeverity.Success,
-        messageSeverity.Success,
+        checkResultType.Passed,
         getFlightResults(from, to)
       )
     );
