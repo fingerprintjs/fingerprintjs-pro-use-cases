@@ -12,9 +12,9 @@ import {
 import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import FlightCard from '../../client/components/web-scraping/FlightCard';
-import { useVisitorData } from '../../client/use-visitor-data';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import styles from '../../styles/web-scraping.module.css';
+import {useVisitorData} from '../../client/use-visitor-data';
 
 export const AIRPORTS = [
   { city: 'San Francisco', code: 'SFO' },
@@ -59,8 +59,8 @@ export const WebScrapingUseCase = () => {
   const [messageSeverity, setMessageSeverity] = useState();
   const [loading, setLoading] = useState(false);
 
-  // Don't invoke query on mount
-  const visitorDataQuery = useVisitorData({ enabled: false });
+  // Don't invoke query on mount, use bot detection
+  const visitorDataQuery = useVisitorData({ enabled: false, products: ['botd', 'identification'] });
 
   /**
   //* @type {React.FormEventHandler<HTMLFormElement>}
@@ -73,17 +73,17 @@ export const WebScrapingUseCase = () => {
     try {
       /** @type {import('../../server/checkResult').CheckResult} */
       const result = await (
-        // await fetch(`/api/web-scraping/flights?from=${from}&to=${to}&requestId=${data.requestId}`)
-        await fetch(`/api/web-scraping/flights?from=${from}&to=${to}&requestId=1673351180232.2XP5gE`)
+        await fetch(`/api/web-scraping/flights?from=${from}&to=${to}&requestId=${data.requestId}`)
       ).json();
       setLoading(false);
+      setFlights(result.data);
       if (result.severity !== 'success') {
         setMessage(result.message);
         setMessageSeverity(result.severity);
       }
-      setFlights(result.data);
     } catch (error) {
       setLoading(false);
+      setMessageSeverity('error');
       setMessage(error.toString());
       console.log(error);
     }
@@ -99,7 +99,8 @@ export const WebScrapingUseCase = () => {
           but it can also be used for malicious purposes. 
           In this use case, we will show how to prevent web scraping with Fingerprint Pro
         `}
-        articleURL="https://fingerprintjs.com/blog/web-scraping-prevention/"
+        // Todo: Add a link to the blog post when it's published
+        // articleURL="https://fingerprintjs.com/blog/web-scraping-prevention/"
         listItems={[<>In this demo we will do something fun</>]}
       >
         <Typography

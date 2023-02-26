@@ -9,7 +9,8 @@ import { resolveFrontendRegion } from '../shared/region';
 // const fpPromise = import('https://fpcdn.io/v3/rzpSduhT63F6jaS35HFo').then(
 //   (FingerprintJS) => FingerprintJS.load()
 // );
-async function getVisitorData({ extendedResult = true, linkedId }) {
+
+async function getVisitorData({ extendedResult = true, linkedId, products }) {
   const fpPromise = FingerprintJS.load({
     apiKey: process.env.NEXT_PUBLIC_API_KEY ?? 'rzpSduhT63F6jaS35HFo',
     scriptUrlPattern: [
@@ -24,17 +25,31 @@ async function getVisitorData({ extendedResult = true, linkedId }) {
   return fp.get({
     extendedResult,
     linkedId,
-    products: ['identification'],
+    products,
   });
 }
 
 export const VISITOR_DATA_QUERY = 'VISITOR_DATA_QUERY';
 
 /**
+ * @typedef UseVisitorDataOptions
+ * @property {boolean} [enabled=true]
+ * @property {boolean} [extendedResult=true]
+ * @property {string} [linkedId]
+ * @property {import('@fingerprintjs/fingerprintjs-pro').Product[]} [products=['identification']]
+ */
+
+/**
  * Query for fetching visitorData using our Fingerprint Pro agent.
+ * @param {UseVisitorDataOptions} options
  * */
-export function useVisitorData({ enabled = true, extendedResult = true, linkedId = undefined } = {}) {
-  return useQuery(VISITOR_DATA_QUERY, () => getVisitorData({ extendedResult, linkedId }), {
+export function useVisitorData({
+  enabled = true,
+  extendedResult = true,
+  linkedId = undefined,
+  products = undefined,
+}) {
+  return useQuery(VISITOR_DATA_QUERY, () => getVisitorData({ extendedResult, linkedId, products }), {
     enabled,
   });
 }

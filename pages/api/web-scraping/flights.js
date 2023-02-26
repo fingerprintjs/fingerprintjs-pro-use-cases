@@ -53,7 +53,7 @@ export default async function getFlights(req, res) {
       sendForbiddenResponse(
         res,
         new CheckResult(
-          'Malicious bot detected, access denied.',
+          '🤖 Malicious bot detected, access denied.',
           messageSeverity.Error,
           checkResultType.MaliciousBotDetected
         )

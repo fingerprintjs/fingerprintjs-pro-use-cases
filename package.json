@@ -37,9 +37,9 @@
     "sqlite3": "^5.0.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.30.0",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.27",
-    "@playwright/test": "^1.30.0",
     "@vitejs/plugin-react": "^3.0.1",
     "cypress": "^12.5.1",
     "eslint": "^8.17.0",
