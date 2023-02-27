@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize';
-import {areVisitorIdAndRequestIdValid} from './checks';
+import { areVisitorIdAndRequestIdValid } from './checks';
 import { fingerprintJsApiClient } from './fingerprint-api';
 import { CheckResult, checkResultType } from './checkResult';
 import { sendForbiddenResponse } from './response';
@@ -30,7 +30,11 @@ export function ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId)
     reportSuspiciousActivity(req);
     sendForbiddenResponse(
       res,
-      new CheckResult('Forged visitorId or requestId detected. Try harder next time.', messageSeverity.Error, checkResultType.RequestIdMismatch)
+      new CheckResult(
+        'Forged visitorId or requestId detected. Try harder next time.',
+        messageSeverity.Error,
+        checkResultType.RequestIdMismatch
+      )
     );
 
     return false;
