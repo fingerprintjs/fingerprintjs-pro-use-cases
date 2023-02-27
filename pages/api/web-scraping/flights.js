@@ -45,11 +45,27 @@ export default async function getFlights(req, res) {
     const client = new FingerprintJsServerApiClient({ region: Region.Global, apiKey: SERVER_API_KEY });
     // If the requestId does not exist, the SDK will throw an error which will be caught below
     const eventResponse = await client.getEvent(requestId);
-    const botData = eventResponse.products.botd?.data; // undefined if bot is not detected
-    const visitData = eventResponse.products.identification?.data; // undefined if bot is detected
+    console.log(eventResponse);
+    const botData = eventResponse.products?.botd?.data;
+    if (!botData) {
+      throw new Error('Bot detection data is missing.');
+    }
+
+    if (botData.bot?.result === 'good' || !botData) {
+      sendOkResponse(
+        res,
+        new CheckResult(
+          'Access allowed, good bot detected or bot detection is turned off.',
+          messageSeverity.Success,
+          checkResultType.GoodBotDetected,
+          getFlightResults(from, to)
+        )
+      );
+      return;
+    }
 
     // Check for bot presence and type
-    if (botData?.bot?.result === 'bad') {
+    if (botData.bot?.result === 'bad') {
       sendForbiddenResponse(
         res,
         new CheckResult(
@@ -63,22 +79,9 @@ export default async function getFlights(req, res) {
       return;
     }
 
-    if (botData?.bot?.result === 'good') {
-      sendOkResponse(
-        res,
-        new CheckResult(
-          'A good bot detected, access allowed.',
-          messageSeverity.Success,
-          checkResultType.GoodBotDetected,
-          getFlightResults(from, to)
-        )
-      );
-      return;
-    }
-
     // Bot not detected, verify the visit data
     // Check if the visit IP matches the request IP
-    if (!visitIpMatchesRequestIp(visitData, req)) {
+    if (!visitIpMatchesRequestIp(botData.ip, req)) {
       sendForbiddenResponse(
         res,
         new CheckResult('Visit IP does not match request IP.', messageSeverity.Error, checkResultType.IpMismatch)
@@ -87,7 +90,7 @@ export default async function getFlights(req, res) {
     }
 
     // Check if the visit origin matches the request origin
-    if (!originIsAllowed(visitData, req)) {
+    if (!originIsAllowed(botData.url, req)) {
       sendForbiddenResponse(
         res,
         new CheckResult(
@@ -100,7 +103,7 @@ export default async function getFlights(req, res) {
     }
 
     // Check if the visit timestamp is not old
-    if (Date.now() - visitData.timestamp > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
+    if (Date.now() - Number(new Date(botData.time)) > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
       sendForbiddenResponse(
         res,
         new CheckResult('Old visit, potential replay attack.', messageSeverity.Error, checkResultType.OldTimestamp)
@@ -165,8 +168,8 @@ function getFlightResults(fromCode, toCode) {
     results.push({
       fromCode,
       toCode,
-      fromCity: AIRPORTS.find((airport) => airport.code === fromCode).city,
-      toCity: AIRPORTS.find((airport) => airport.code === toCode).city,
+      fromCity: AIRPORTS.find((airport) => airport.code === fromCode)?.city ?? 'City not found',
+      toCity: AIRPORTS.find((airport) => airport.code === toCode)?.city ?? 'City not found',
       departureTime,
       arrivalTime,
       price,

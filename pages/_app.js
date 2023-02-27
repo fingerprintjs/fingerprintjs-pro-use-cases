@@ -6,6 +6,9 @@ import { Header } from '../client/components/header';
 import { SnackbarProvider } from 'notistack';
 import { SnackbarAction } from '../client/components/snackbar-action';
 import { SocketProvider } from '../client/api/socket-provider';
+import React from 'react';
+import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
+import { FP_LOAD_OPTIONS } from '../client/use-visitor-data';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,13 +32,15 @@ function App({ Component, pageProps }) {
           }}
         >
           <SocketProvider>
-            <Head>
-              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-              <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-              <title>Fingerprint Pro Use Cases</title>
-            </Head>
-            <Header addonRight={Component.headerAddonRight?.()} />
-            <Component {...pageProps} />
+            <FpjsProvider loadOptions={FP_LOAD_OPTIONS}>
+              <Head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+                <title>Fingerprint Pro Use Cases</title>
+              </Head>
+              <Header addonRight={Component.headerAddonRight?.()} />
+              <Component {...pageProps} />
+            </FpjsProvider>
           </SocketProvider>
         </SnackbarProvider>
       </ThemeProvider>

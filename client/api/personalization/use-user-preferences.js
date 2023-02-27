@@ -13,7 +13,7 @@ function updateUserPreferences(fpData, hasDarkMode) {
 }
 
 export function useUserPreferences() {
-  const { data: fpData } = useVisitorData();
+  const { data: fpData } = useVisitorData({});
 
   const queryClient = useQueryClient();
 

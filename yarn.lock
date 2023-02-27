@@ -486,6 +486,14 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
+"@fingerprintjs/fingerprintjs-pro-react@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@fingerprintjs/fingerprintjs-pro-react/-/fingerprintjs-pro-react-2.3.0.tgz#942bdb6aac0f52dc7c8ada38b63d8a267794db69"
+  integrity sha512-f9T9OiRxUqgK0Mehfq5+2xTmeqzWn4N6F6+5MjHQzKR6PZ2QalU2RUYIlZ/psDESqB2Vb2t2PvCzTZ7/3EjXEQ==
+  dependencies:
+    "@fingerprintjs/fingerprintjs-pro-spa" "^0.7.0"
+    fast-deep-equal "3.1.3"
+
 "@fingerprintjs/fingerprintjs-pro-server-api@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@fingerprintjs/fingerprintjs-pro-server-api/-/fingerprintjs-pro-server-api-2.0.0.tgz#4cf42b4e6f31a572ee7560c4f68b8f6a8eb63263"
@@ -493,7 +501,15 @@
   dependencies:
     node-fetch "^2.6.1"
 
-"@fingerprintjs/fingerprintjs-pro@^3.6.2":
+"@fingerprintjs/fingerprintjs-pro-spa@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@fingerprintjs/fingerprintjs-pro-spa/-/fingerprintjs-pro-spa-0.7.0.tgz#6b38724f7201455548633ac4f34d41707649c11c"
+  integrity sha512-o2Q5RESJashpoXrnZ7QG49AS/76Ae7VbtdKQ2K2OzrJx+4isvHJJJ+ULoFE73cG3HaIbZTaWFoWFP7NjtT4KbQ==
+  dependencies:
+    "@fingerprintjs/fingerprintjs-pro" "^3.8.1"
+    tslib "^2.2.0"
+
+"@fingerprintjs/fingerprintjs-pro@^3.6.2", "@fingerprintjs/fingerprintjs-pro@^3.8.1":
   version "3.8.2"
   resolved "https://registry.yarnpkg.com/@fingerprintjs/fingerprintjs-pro/-/fingerprintjs-pro-3.8.2.tgz#91a642c7a8555157acdf7e30ed085e754d8879b2"
   integrity sha512-cccPaHhzt2AnXbUEdpMW4/19eous5/WJhNlawq5BJKmmGSHJzjjb0kkNXgC0QlFll1YsoqLAxmGLOYRVVfmTBA==
@@ -2520,7 +2536,7 @@ extsprintf@^1.2.0:
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.1.tgz#8d172c064867f235c0c84a596806d279bf4bcc07"
   integrity sha512-Wrk35e8ydCKDj/ArClo1VrPVmN8zph5V4AtHwIuHhvMXsKf73UT3BOD+azBIW+3wOJ4FhEH7zyaJCFvChjYvMA==
 
-fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
+fast-deep-equal@3.1.3, fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
   integrity sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
@@ -5208,7 +5224,7 @@ tslib@^1.8.1:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2.1.0, tslib@^2.4.0, tslib@^2.4.1, tslib@^2.5.0:
+tslib@^2.1.0, tslib@^2.2.0, tslib@^2.4.0, tslib@^2.4.1, tslib@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.5.0.tgz#42bfed86f5787aeb41d031866c8f402429e0fddf"
   integrity sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==

@@ -48,7 +48,7 @@ export function checkConfidenceScore(visitorData) {
 
 // Checks if the authentication request comes from the same IP address as the identification request.
 export function checkIpAddressIntegrity(visitorData, request) {
-  if (!visitIpMatchesRequestIp(visitorData.visits[0], request)) {
+  if (!visitIpMatchesRequestIp(visitorData.visits[0].ip, request)) {
     return new CheckResult(
       'IP mismatch. An attacker might have tried to phish the victim.',
       messageSeverity.Error,
@@ -59,33 +59,31 @@ export function checkIpAddressIntegrity(visitorData, request) {
 
 /**
  *
- * @param visitData - import('@fingerprintjs/fingerprintjs-pro-server-api'.Visit does't work yet
+ * @param {string} visitIp
  * @param {import('http').IncomingMessage} request
  * @returns {boolean}
  */
-export function visitIpMatchesRequestIp(visitData, request) {
+export function visitIpMatchesRequestIp(visitIp = '', request) {
   // This check is skipped on purpose in the Stackblitz and localhost environments.
   if (process.env.NODE_ENV === 'development') {
     return true;
   }
 
-  const userIp = /** @type {string} */ (request.headers['x-forwarded-for'])?.split(',')[0] ?? '';
+  const requestIp = /** @type {string} */ (request.headers['x-forwarded-for'])?.split(',')[0] ?? '';
 
   // IPv6 addresses are not supported yet, skip the check
-  if (!IPv4_REGEX.test(userIp)) {
+  if (!IPv4_REGEX.test(requestIp)) {
     return true;
   }
 
-  return userIp === visitData.ip;
+  return requestIp === visitIp;
 }
 
 // Checks if the authentication request comes from a known origin and
 // if the authentication request's origin corresponds to the origin/URL provided by the Fingerprint Pro Server API.
 // Additionally, one should set Request Filtering settings in the dashboard: https://dev.fingerprint.com/docs/request-filtering
 export function checkOriginsIntegrity(visitorData, request) {
-  if (
-    !originIsAllowed(visitorData.visits[0], request)
-  ) {
+  if (!originIsAllowed(visitorData.visits[0].url, request)) {
     return new CheckResult(
       'Origin mismatch. An attacker might have tried to phish the victim.',
       messageSeverity.Error,
@@ -96,17 +94,17 @@ export function checkOriginsIntegrity(visitorData, request) {
 
 /**
  *
- * @param visitData - import('@fingerprintjs/fingerprintjs-pro-server-api'.Visit does't work yet
+ * @param {string} url
  * @param {import('http').IncomingMessage} request
  * @returns {boolean}
  */
-export function originIsAllowed(visitData, request) {
+export function originIsAllowed(url = '', request) {
   // This check is skipped on purpose in the Stackblitz and localhost environments.
   if (process.env.NODE_ENV === 'development') {
     return true;
   }
 
-  const visitDataOrigin = new URL(visitData.url).origin;
+  const visitDataOrigin = new URL(url).origin;
   return (
     visitDataOrigin === request.headers['origin'] &&
     ourOrigins.includes(visitDataOrigin) &&

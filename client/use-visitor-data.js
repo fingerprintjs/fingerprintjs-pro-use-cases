@@ -1,5 +1,6 @@
 import FingerprintJS from '@fingerprintjs/fingerprintjs-pro';
 import { useQuery } from 'react-query';
+import { PUBLIC_API_KEY } from '../server/const';
 import { resolveFrontendRegion } from '../shared/region';
 
 // This example demonstrates using the NPM package for the Fingerprint Pro agent.
@@ -10,16 +11,19 @@ import { resolveFrontendRegion } from '../shared/region';
 //   (FingerprintJS) => FingerprintJS.load()
 // );
 
-async function getVisitorData({ extendedResult = true, linkedId, products = ['identification'] }) {
-  const fpPromise = FingerprintJS.load({
-    apiKey: process.env.NEXT_PUBLIC_API_KEY ?? 'rzpSduhT63F6jaS35HFo',
-    scriptUrlPattern: [
-      'https://fpcf.fingerprinthub.com/DBqbMN7zXxwl4Ei8/J5XlHIBN67YHskdR?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
-      FingerprintJS.defaultScriptUrlPattern,
-    ],
-    endpoint: `https://fpcf.fingerprinthub.com/DBqbMN7zXxwl4Ei8/S7lqsWfAyw2lq4Za?region=${resolveFrontendRegion()}`,
-    region: resolveFrontendRegion(),
-  });
+/** @type {import('@fingerprintjs/fingerprintjs-pro').LoadOptions} */
+export const FP_LOAD_OPTIONS = {
+  apiKey: PUBLIC_API_KEY,
+  scriptUrlPattern: [
+    'https://fpcf.fingerprinthub.com/DBqbMN7zXxwl4Ei8/J5XlHIBN67YHskdR?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+    FingerprintJS.defaultScriptUrlPattern,
+  ],
+  endpoint: `https://fpcf.fingerprinthub.com/DBqbMN7zXxwl4Ei8/S7lqsWfAyw2lq4Za?region=${resolveFrontendRegion()}`,
+  region: resolveFrontendRegion(),
+};
+
+async function getVisitorData({ extendedResult = true, linkedId, products }) {
+  const fpPromise = FingerprintJS.load(FP_LOAD_OPTIONS);
   const fp = await fpPromise;
 
   return fp.get({
@@ -43,12 +47,7 @@ export const VISITOR_DATA_QUERY = 'VISITOR_DATA_QUERY';
  * Query for fetching visitorData using our Fingerprint Pro agent.
  * @param {UseVisitorDataOptions} options
  * */
-export function useVisitorData({
-  enabled = true,
-  extendedResult = true,
-  linkedId = undefined,
-  products = undefined,
-} = {}) {
+export function useVisitorData({ enabled = true, extendedResult = true, linkedId = undefined, products = undefined }) {
   return useQuery(VISITOR_DATA_QUERY, () => getVisitorData({ extendedResult, linkedId, products }), {
     enabled,
   });
