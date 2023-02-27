@@ -1,11 +1,20 @@
 import Link from 'next/link';
 import Paper from '@mui/material/Paper';
-import { AirplaneTicket, Block, CreditScore, Money, People, PrecisionManufacturing, Settings } from '@mui/icons-material';
+import {
+  AirplaneTicket,
+  Block,
+  CreditScore,
+  Money,
+  People,
+  PrecisionManufacturing,
+  Settings,
+} from '@mui/icons-material';
 import { PageTile } from '../client/components/page-tile';
 import Grid from '@mui/material/Grid';
 import { Logo } from '../client/components/logo';
+import React from 'react';
 
-/** 
+/**
  * @type {Array<import('../client/components/page-tile').PageTileProps>}
  * */
 const pageTiles = [
@@ -59,10 +68,10 @@ As a result, you will protect your users and your business against various payme
   },
   {
     title: 'Web scraping prevention',
-    description: "Protect your content from web scraping by detecting malicious bots and blocking them.",
+    description: 'Protect your content from web scraping by reliably detecting bots and browser automation tools.',
     url: '/web-scraping',
     icon: <PrecisionManufacturing />,
-  }
+  },
 ];
 
 export default function Index() {

@@ -7,10 +7,12 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ArrowBack } from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
+import React from 'react';
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 /**
  * @typedef {Object} UseCaseWrapperProps
- * @property {string} title 
+ * @property {string} title
  * @property {React.ReactNode} description
  * @property {string} [articleURL]
  * @property {Array<React.ReactNode>} [listItems]
@@ -18,7 +20,7 @@ import { Tooltip } from '@mui/material';
  * @property {string} [variant] - Variant of the InfoCard
  * @property {boolean} [hideSrcListItem=false] - Flag to hide the source list item
  * @property {boolean} [hideDivider=false] - Flag to hide the divider
- * @property {Object} [sx] 
+ * @property {Object} [sx]
  * @property {string} [returnUrl]
  */
 
@@ -64,14 +66,14 @@ export function UseCaseWrapper({
                 {title}
               </Typography>
             </Stack>
-            {description && <p className="UsecaseWrapper_helper">{description}</p>}
+            {description && <div className="UsecaseWrapper_helper">{description}</div>}
             {!hideDivider && <Divider className="UsecaseWrapper_divider" />}
             <ul className="UsecaseWrapper_notes">
               {listItems?.map((item, index) => (
                 <li key={index}>{item}</li>
               ))}
               <li>
-                You can reset this scenario on the <Link href="/admin">admin page</Link>.
+                You can reset this scenario on the <Link href="/admin">Admin page</Link>.
               </li>
               {articleURL && (
                 <li>
@@ -84,14 +86,15 @@ export function UseCaseWrapper({
               )}
               {!hideSrcListItem && (
                 <li>
-                  Need src?{' '}
+                  See the source code for this and other use cases{' '}
                   <a
                     href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Sure!
+                    on Github <GitHubIcon fontSize="small" className="" />
                   </a>
+                  .
                 </li>
               )}
             </ul>

@@ -13,6 +13,15 @@ const formatTime = (time: number) => {
   return `${hours}h ${minutes > 0 ? `${minutes}m` : ''}`;
 };
 
+const TEST_CLASS = {
+  card: {
+    root: 'card',
+    destination: {
+      root: 'destination',
+    },
+  },
+};
+
 export type Flight = {
   fromCity: string;
   toCity: string;
@@ -37,7 +46,7 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
   const dateOptions: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
 
   return (
-    <Card style={{ marginTop: '20px' }} variant={'outlined'}>
+    <Card style={{ marginTop: '20px' }} variant={'outlined'} data-test={TEST_CLASS.card.root}>
       <CardContent>
         <div className={styles.container}>
           <div className={styles.origin}>

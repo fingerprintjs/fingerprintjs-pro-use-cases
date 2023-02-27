@@ -3,6 +3,7 @@ import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import { useVisitorData } from '../../client/use-visitor-data';
+import React from 'react';
 
 export default function Index() {
   const [statusMessage, setStatusMessage] = useState();
@@ -48,8 +49,12 @@ export default function Index() {
     <UseCaseWrapper
       hideSrcListItem
       title="Administration"
-      description=" On this page, you can remove all info obtained from this browser. This will reenable some scenarios for
-              you if you were locked out from the specific action."
+      description={
+        <p>
+          On this page, you can remove all info obtained from this browser. This will reenable some scenarios for you if
+          you were locked out of a specific action.
+        </p>
+      }
     >
       <form onSubmit={handleSubmit} className="Form_container">
         <Button

@@ -5,6 +5,7 @@ import Stack from '@mui/material/Stack';
 import { SITE_URL } from '../../shared/const';
 import { ARTICLE_VIEW_LIMIT } from '../../shared/paywall/constants';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import React from 'react';
 
 export async function getServerSideProps() {
   const articles = await fetch(`${SITE_URL}/api/paywall/get-articles`).then((res) => res.json());
@@ -20,7 +21,7 @@ export default function LoanRisk({ articles }) {
   return (
     <UseCaseWrapper
       title="Paywall"
-      description="This page demonstrates paywall implementation using Fingerprint Pro."
+      description={<p>This page demonstrates paywall implementation using Fingerprint Pro.</p>}
       listItems={[
         <>
           We keep track of how many articles you have viewed per day. You can view {ARTICLE_VIEW_LIMIT} articles daily.

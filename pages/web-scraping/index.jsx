@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import FlightCard from '../../client/components/web-scraping/FlightCard';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -50,8 +50,8 @@ export const WebScrapingUseCase = () => {
   const [to, setTo] = useState(AIRPORTS[1].code);
 
   /** @typedef {import('../../client/components/web-scraping/FlightCard').Flight} Flight */
-  /** @type {[Flight[], React.Dispatch<Flight[]>]} */
-  const [flights, setFlights] = useState([]);
+  /** @type {[Flight[] | undefined, React.Dispatch<Flight[] | undefined>]} */
+  const [flights, setFlights] = useState();
   const [message, setMessage] = useState('');
 
   /** @typedef {import('../../server/server').Severity} Severity */
@@ -73,7 +73,7 @@ export const WebScrapingUseCase = () => {
     try {
       /** @type {import('../../server/checkResult').CheckResult} */
       const result = await (
-        await fetch(`/api/web-scraping/flights?from=${from}&to=${to}&requestId=${data.requestId}`)
+        await fetch(`/api/web-scraping/flights?from=${from}&to=${to}&requestId=${data?.requestId}`)
       ).json();
       setLoading(false);
       setFlights(result.data);
@@ -93,15 +93,40 @@ export const WebScrapingUseCase = () => {
     <>
       <UseCaseWrapper
         title="Web Scraping Prevention"
-        description={`
-          Web scraping is the process of extracting data from websites.
-          It is a powerful tool for data scientists and researchers, 
-          but it can also be used for malicious purposes. 
-          In this use case, we will show how to prevent web scraping with Fingerprint Pro
-        `}
+        description={
+          <div>
+            <p>
+              Web scraping is the process of extracting data from websites using automated scripts or bots. If your
+              website shows data that is expensive to collect or compute (e.g., flight connections and prices), a bad
+              actor or competitor could steal it and use it for their own purposes.
+            </p>
+            <p>
+              Protecting the data with CAPCHAs hurts user experience and server-side bot detection based on IP address
+              reputation is not reliable. Fingerprint Pro provides client-side bot detection that can recognize even
+              sophisticated bots and browser automation tools.
+            </p>
+          </div>
+        }
         // Todo: Add a link to the blog post when it's published
         // articleURL="https://fingerprintjs.com/blog/web-scraping-prevention/"
-        listItems={[<>In this demo we will do something fun</>]}
+        listItems={[
+          <>
+            The <code>flights</code> API endpoint on this page is protected by Fingerprint Pro Bot Detection.
+          </>,
+          <>Using a normal browser, you can search for flights and see the results.</>,
+          <>
+            Try scraping the results using Selenium, Puppeteer, Playwright, Cypress, or a{' '}
+            <a href="https://dev.fingerprint.com/docs/bot-detection-vs-botd" target="_blank">
+              similar tool
+            </a>
+            .
+          </>,
+          <>The endpoint will return an error message if the request is coming from a bot.</>,
+          <>
+            Try tampering with the <code>requestId</code> parameter, request headers or changing your IP address, see if
+            that helps 🙂
+          </>,
+        ]}
       >
         <Typography variant="h3" className={styles.subHeadline}>
           Search for today&apos;s flights
@@ -117,7 +142,7 @@ export const WebScrapingUseCase = () => {
                   options={AIRPORTS.filter((airport) => airport.code !== to)}
                   getOptionLabel={(option) => `${option.city} (${option.code})`}
                   value={AIRPORTS.find((airport) => airport.code === from)}
-                  onChange={(e, value) => setFrom(value?.code)}
+                  onChange={(e, value) => setFrom(value?.code ?? '')}
                   renderInput={(params) => <TextField {...params} label="From" />}
                 />
               </FormControl>
@@ -136,7 +161,7 @@ export const WebScrapingUseCase = () => {
                   options={AIRPORTS.filter((airport) => airport.code !== from)}
                   getOptionLabel={(option) => `${option.city} (${option.code})`}
                   value={AIRPORTS.find((airport) => airport.code === to)}
-                  onChange={(e, value) => setTo(value?.code)}
+                  onChange={(e, value) => setTo(value?.code ?? '')}
                   renderInput={(params) => <TextField {...params} label="To" />}
                 />
               </FormControl>
@@ -166,7 +191,7 @@ export const WebScrapingUseCase = () => {
             </Alert>
           )}
         </form>
-        {flights?.length > 0 && !loading && (
+        {flights && flights.length > 0 && !loading && (
           <div>
             <Typography variant="h3" className={styles.subHeadline}>
               Found {flights.length} flights

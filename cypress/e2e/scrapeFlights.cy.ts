@@ -3,6 +3,7 @@ describe('template spec', () => {
     cy.visit('http://localhost:3000/web-scraping');
     // Get button containing text "Scrape Flights"
     cy.get('button:contains("Search flights")').click();
+    // Get the table containing the scraped flights
   });
 });
 
