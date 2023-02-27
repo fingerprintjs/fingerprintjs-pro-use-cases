@@ -10,7 +10,7 @@ import { resolveFrontendRegion } from '../shared/region';
 //   (FingerprintJS) => FingerprintJS.load()
 // );
 
-async function getVisitorData({ extendedResult = true, linkedId, products }) {
+async function getVisitorData({ extendedResult = true, linkedId, products = ['identification'] }) {
   const fpPromise = FingerprintJS.load({
     apiKey: process.env.NEXT_PUBLIC_API_KEY ?? 'rzpSduhT63F6jaS35HFo',
     scriptUrlPattern: [
