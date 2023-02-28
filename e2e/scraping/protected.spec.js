@@ -8,7 +8,7 @@ test.describe('Scraping flights', () => {
     await page.click('button:has-text("Search flights")');
     await page.waitForLoadState('networkidle');
     await expect(page.locator('.message')).toContainText('Malicious bot detected');
-    // if in debug mode, pause script execution
+    // If in debug mode, do not close browser right away so user can examine the page
     if (isDebugMode()) {
       await page.pause();
     }

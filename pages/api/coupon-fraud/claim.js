@@ -78,7 +78,7 @@ async function checkIfCouponWasClaimed({ visitorId }, req, couponCode) {
   }
 }
 
-async function checkIfClaimedAnotherCouponRecently({ visitorId }, req, couponCode) {
+async function checkIfClaimedAnotherCouponRecently({ visitorId }) {
   const visitorClaimedAnotherCouponRecently = await checkVisitorClaimedRecently(visitorId);
 
   if (visitorClaimedAnotherCouponRecently) {

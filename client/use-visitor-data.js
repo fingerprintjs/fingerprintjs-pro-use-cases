@@ -42,7 +42,6 @@ export const VISITOR_DATA_QUERY = 'VISITOR_DATA_QUERY';
  * @property {boolean} [enabled=true]
  * @property {boolean} [extendedResult=true]
  * @property {string} [linkedId]
- * @property {import('@fingerprintjs/fingerprintjs-pro').Product[]} [products=['identification']]
  */
 
 /**

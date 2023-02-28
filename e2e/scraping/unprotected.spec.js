@@ -46,6 +46,7 @@ test.describe('Scraping flights', () => {
     writeFileSync('./e2e/output/flightData.json', JSON.stringify(flightData, null, 2));
     console.log("Scraped flight data saved to 'e2e/output/flightData.json'");
 
+    // If in debug mode, do not close browser right away so user can examine the page
     if (isDebugMode()) {
       await page.pause();
     }

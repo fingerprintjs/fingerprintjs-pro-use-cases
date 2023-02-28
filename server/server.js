@@ -73,7 +73,9 @@ export async function getVisitorDataWithRequestId(visitorId, requestId) {
 
 // Report suspicious user activity according to internal processes here.
 // Possibly this action could also lock the user's account temporarily or ban a specific action.
-export function reportSuspiciousActivity(context) {}
+export function reportSuspiciousActivity(_context) {
+  return _context;
+}
 
 /**
  * @param {import('next').NextApiRequest} req
