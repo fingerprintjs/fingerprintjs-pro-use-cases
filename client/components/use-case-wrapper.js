@@ -25,8 +25,8 @@ import GitHubIcon from '@mui/icons-material/GitHub';
  */
 
 /**
- * @param {UseCaseWrapperProps} props - Props for the component
- * @returns {JSX.Element} React component
+ * @param {UseCaseWrapperProps} props
+ * @returns {JSX.Element}
  */
 export function UseCaseWrapper({
   title,

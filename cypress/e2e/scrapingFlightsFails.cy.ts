@@ -1,9 +1,8 @@
-describe('template spec', () => {
+describe('You cannot scrape flight data using cypress if Bot detection is enabled', () => {
   it('passes', () => {
     cy.visit('http://localhost:3000/web-scraping');
-    // Get button containing text "Scrape Flights"
     cy.get('button:contains("Search flights")').click();
-    // Get the table containing the scraped flights
+    cy.contains('Malicious bot detected');
   });
 });
 

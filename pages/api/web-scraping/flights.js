@@ -45,13 +45,22 @@ export default async function getFlights(req, res) {
     const client = new FingerprintJsServerApiClient({ region: Region.Global, apiKey: SERVER_API_KEY });
     // If the requestId does not exist, the SDK will throw an error which will be caught below
     const eventResponse = await client.getEvent(requestId);
-    console.log(eventResponse);
     const botData = eventResponse.products?.botd?.data;
+
     if (!botData) {
-      throw new Error('Bot detection data is missing.');
+      sendOkResponse(
+        res,
+        new CheckResult(
+          'Bot protection is disabled, access allowed.',
+          messageSeverity.Success,
+          checkResultType.Passed,
+          getFlightResults(from, to)
+        )
+      );
+      return;
     }
 
-    if (botData.bot?.result === 'good' || !botData) {
+    if (botData.bot?.result === 'good') {
       sendOkResponse(
         res,
         new CheckResult(

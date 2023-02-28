@@ -15,6 +15,7 @@ import FlightCard from '../../client/components/web-scraping/FlightCard';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import styles from '../../styles/web-scraping.module.css';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import Link from 'next/link';
 
 export const AIRPORTS = [
   { city: 'San Francisco', code: 'SFO' },
@@ -45,7 +46,16 @@ export const AIRPORTS = [
   { city: 'Rome', code: 'FCO' },
 ];
 
-export const WebScrapingUseCase = () => {
+/**
+ * @typedef WebScrapingUseCaseProps
+ * @property {Object} query
+ */
+
+/**
+ * @param {WebScrapingUseCaseProps} props - Props for the component
+ * @returns {JSX.Element} React component
+ */
+export const WebScrapingUseCase = ({ query }) => {
   const [from, setFrom] = useState(AIRPORTS[0].code);
   const [to, setTo] = useState(AIRPORTS[1].code);
 
@@ -60,20 +70,24 @@ export const WebScrapingUseCase = () => {
   const [loading, setLoading] = useState(false);
 
   // Don't get visitor data on mount or use cached result (requestId must be fresh)
-  const { getData } = useVisitorData({ products: ['botd'], ignoreCache: true }, { immediate: false });
+  const { getData } = useVisitorData(
+    { products: query.backdoor ? ['identification'] : ['botd'], ignoreCache: true },
+    { immediate: false }
+  );
 
   /**
-  //* @type {React.FormEventHandler<HTMLFormElement>}
-  //*/
+  /* @type {React.FormEventHandler<HTMLFormElement>}
+  /*/
   async function handleSubmit(event) {
     event.preventDefault();
     setLoading(true);
     setMessage('');
-    const { requestId } = await getData();
+    const visitorData = await getData();
+    console.log(visitorData);
     try {
       /** @type {import('../../server/checkResult').CheckResult} */
       const result = await (
-        await fetch(`/api/web-scraping/flights?from=${from}&to=${to}&requestId=${requestId}`)
+        await fetch(`/api/web-scraping/flights?from=${from}&to=${to}&requestId=${visitorData.requestId}`)
       ).json();
       setLoading(false);
       setFlights(result.data);
@@ -125,6 +139,13 @@ export const WebScrapingUseCase = () => {
           <>
             Try tampering with the <code>requestId</code> parameter, request headers or changing your IP address, see if
             that helps 🙂
+          </>,
+          <>
+            To see how the page would behave without Bot detection, reload it with{' '}
+            <Link href={'/web-scraping?backdoor=1'}>
+              <code>?backdoor=1</code>
+            </Link>{' '}
+            in the URL.
           </>,
         ]}
       >
@@ -204,6 +225,15 @@ export const WebScrapingUseCase = () => {
       </UseCaseWrapper>
     </>
   );
+};
+
+// Make URL query available to the page on first render
+// to implement a backdoor for testing and demo purposes
+/** @type {import('next').GetServerSideProps} */
+export const getServerSideProps = async (context) => {
+  return {
+    props: { query: context.query },
+  };
 };
 
 export default WebScrapingUseCase;
