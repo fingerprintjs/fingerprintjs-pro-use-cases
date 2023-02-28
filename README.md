@@ -68,7 +68,7 @@ Provide a tailored experience to your visitors without forcing them to create an
 [🙋‍♀️ Personalization Live Demo](https://fingerprinthub.com/personalization)  
 [📖 Personalization Article](https://fingerprint.com/use-cases/personalization/)
 
-### 🦾 Content Scraping
+### Content Scraping
 
 Protect the content on your website from theft by reliably detecting even sophisticated bots and browser automation tools.
 
