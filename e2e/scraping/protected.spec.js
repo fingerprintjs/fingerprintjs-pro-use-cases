@@ -1,17 +1,15 @@
 // @ts-check
 import { expect, test } from '@playwright/test';
+import { isDebugMode } from '../utils';
 
-const isDebugMode = Boolean(process.env.PWDEBUG);
-
-test.describe('Web scraping flights', () => {
-  test('Web scraping should fail (Bot detection enabled by default)', async ({ page }) => {
+test.describe('Scraping flights', () => {
+  test('is not possible with Bot detection on', async ({ page }) => {
     await page.goto('/web-scraping');
     await page.click('button:has-text("Search flights")');
     await page.waitForLoadState('networkidle');
     await expect(page.locator('.message')).toContainText('Malicious bot detected');
-    console.log(process.env);
     // if in debug mode, pause script execution
-    if (isDebugMode) {
+    if (isDebugMode()) {
       await page.pause();
     }
   });

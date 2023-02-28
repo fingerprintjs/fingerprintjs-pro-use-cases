@@ -80,7 +80,7 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
               {arrival.toLocaleDateString('en-US', dateOptions)}
             </Typography>
             <Typography className={styles.time} data-test={FLIGHT_TAG.time}>
-              {arrival.toLocaleTimeString('en-US', timeOptions)}{' '}
+              {arrival.toLocaleTimeString('en-US', timeOptions)}
             </Typography>
             <Typography className={styles.city}>{flight.toCity}</Typography>
             <Typography
@@ -98,7 +98,7 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
         className={styles.actions}
       >
         <Button variant="outlined">
-          Book for <span data-test={FLIGHT_TAG.price}>${flight.price}</span>
+          Book for&nbsp;<span data-test={FLIGHT_TAG.price}>${flight.price}</span>
         </Button>
       </CardActions>
     </Card>

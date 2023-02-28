@@ -143,7 +143,7 @@ export const WebScrapingUseCase = ({ query }) => {
           <>
             To see how the page would behave without Bot detection, reload it with{' '}
             <Link href={'/web-scraping?backdoor=1'}>
-              <code>?backdoor=1</code>
+              <code className="nowrap">?backdoor=1</code>
             </Link>{' '}
             in the URL.
           </>,
