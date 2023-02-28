@@ -13,7 +13,6 @@ import {
 import { PageTile } from '../client/components/page-tile';
 import Grid from '@mui/material/Grid';
 import { Logo } from '../client/components/logo';
-import React from 'react';
 
 /**
  * @type {Array<import('../client/components/page-tile').PageTileProps>}

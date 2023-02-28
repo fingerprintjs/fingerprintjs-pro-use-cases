@@ -10,7 +10,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import FlightCard from '../../client/components/web-scraping/FlightCard';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';

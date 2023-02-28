@@ -8,7 +8,6 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ArrowBack } from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
-import React from 'react';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
 /**

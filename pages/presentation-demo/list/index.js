@@ -4,7 +4,6 @@ import { CircularProgress, Grid } from '@mui/material';
 import { IdentificationCard } from '../../../client/components/identification/identification-card';
 import { UseCaseWrapper } from '../../../client/components/use-case-wrapper';
 import { useVisitsListener } from '../../../client/api/identification/useVisitsListener';
-import React from 'react';
 
 export function getServerSideProps(ctx) {
   return {

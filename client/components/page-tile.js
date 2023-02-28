@@ -6,7 +6,6 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { ArrowForward } from '@mui/icons-material';
-import React from 'react';
 
 /**
  * @typedef {Object} PageTileProps

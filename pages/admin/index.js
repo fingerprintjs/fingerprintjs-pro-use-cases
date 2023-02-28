@@ -4,7 +4,6 @@ import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import { useVisitorData } from '../../client/use-visitor-data';
-import React from 'react';
 
 export default function Index() {
   const [statusMessage, setStatusMessage] = useState();

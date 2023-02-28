@@ -7,7 +7,6 @@ import { Header } from '../client/components/header';
 import { SnackbarProvider } from 'notistack';
 import { SnackbarAction } from '../client/components/snackbar-action';
 import { SocketProvider } from '../client/api/socket-provider';
-import React from 'react';
 import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import { FP_LOAD_OPTIONS } from '../client/use-visitor-data';
 
