@@ -28,51 +28,51 @@ You can learn more about these use cases on our [website](https://fingerprint.co
 
 Alternatively, you can use [Stackblitz](https://stackblitz.com/edit/nextjs-dmv5c7) to run the project in your Chromium-based browser.
 
-### 🎟 Coupon & Promo Abuse
+### Coupon & Promo Abuse
 
 Prevent visitors from using a promo code multiple times. Protect yourself from customers abusing your promotional campaigns and increase sales.
 
-[🍿 Coupon Fraud Live Demo](https://fingerprinthub.com/coupon-fraud)  
-[📋 Coupon & Promo Abuse Article](https://fingerprint.com/use-cases/coupon-promo-abuse/)
+[🎟 Coupon Fraud Live Demo](https://fingerprinthub.com/coupon-fraud)  
+[📖 Coupon & Promo Abuse Article](https://fingerprint.com/use-cases/coupon-promo-abuse/)
 
-### 🔐 Credential Stuffing
+### Credential Stuffing
 
 Protect your login page from repeated attempts to log in with stolen credentials and other account takeover threats. Without compromising the user experience of legitimate users.
 
-[🍿 Credential Stuffing Live Demo](https://fingerprinthub.com/credential-stuffing)  
-[📋 Credential Stuffing Article](https://fingerprint.com/use-cases/credential-stuffing/)
+[🔐 Credential Stuffing Live Demo](https://fingerprinthub.com/credential-stuffing)  
+[📖 Credential Stuffing Article](https://fingerprint.com/use-cases/credential-stuffing/)
 
-### 🧾 Loan Risk
+### Loan Risk
 
 Detect fraudulent loan application submitted by previously rejected applicants. Even when they are not logged in or use a VPN/Incognito mode.
 
-[🍿 Loan Risk Live Demo](https://fingerprinthub.com/loan-risk)
+[🧾 Loan Risk Live Demo](https://fingerprinthub.com/loan-risk)
 
-### 💵 Payment Fraud
+### Payment Fraud
 
 Protect your checkout from the use of stolen credit cards, chargebacks, and other payment fraud threats.
 
-[🍿 Payment Fraud Live Demo](https://fingerprinthub.com/payment-fraud)  
-[📋 Payment Fraud Article](https://fingerprint.com/use-cases/payment-fraud/)
+[💵 Payment Fraud Live Demo](https://fingerprinthub.com/payment-fraud)  
+[📖 Payment Fraud Article](https://fingerprint.com/use-cases/payment-fraud/)
 
-### 🗞 Paywall
+### Paywall
 
 Protect your content and build a paywall that actually works. Prevent visitors from resetting their free content quota by clearing cookies, going incognito or using a VPN.
 
-[🍿 Paywall Live Demo](https://fingerprinthub.com/paywall)
+[🗞 Paywall Live Demo](https://fingerprinthub.com/paywall)
 
-### 🙋‍♀️ Personalization
+### Personalization
 
 Provide a tailored experience to your visitors without forcing them to create an account. Remember search history, user preferences or abandoned shopping cart items months after their last visit.
 
-[🍿 Personalization Live Demo](https://fingerprinthub.com/personalization)  
-[📋 Personalization Article](https://fingerprint.com/use-cases/personalization/)
+[🙋‍♀️ Personalization Live Demo](https://fingerprinthub.com/personalization)  
+[📖 Personalization Article](https://fingerprint.com/use-cases/personalization/)
 
 ### 🦾 Content Scraping
 
 Protect the content on your website from theft by reliably detecting even sophisticated bots and browser automation tools.
 
-[🍿 Content Scraping Live Demo](https://fingerprinthub.com/web-scraping)
+[🦾 Content Scraping Live Demo](https://fingerprinthub.com/web-scraping)
 
 ## Documentation and Support
 
