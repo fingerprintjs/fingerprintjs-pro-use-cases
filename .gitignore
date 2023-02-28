@@ -48,5 +48,3 @@ tsconfig.tsbuildinfo
 /playwright-report/
 /playwright/.cache/
 
-# Output of e2e tests/demos
-/e2e/output/
