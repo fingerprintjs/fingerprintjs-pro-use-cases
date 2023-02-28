@@ -1,3 +1,4 @@
+// @ts-check
 import { Sequelize } from 'sequelize';
 import { areVisitorIdAndRequestIdValid } from './checks';
 import { fingerprintJsApiClient } from './fingerprint-api';

@@ -1,3 +1,4 @@
+// @ts-check
 import { useState } from 'react';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
@@ -9,6 +10,7 @@ export default function Index() {
   const [statusMessage, setStatusMessage] = useState();
   const [severity, setSeverity] = useState();
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
+  /** @type {[number | undefined, import('react').Dispatch<number | undefined> ]} */
   const [httpResponseStatus, setHttpResponseStatus] = useState();
 
   const visitorData = useVisitorData({
@@ -20,8 +22,8 @@ export default function Index() {
     setIsWaitingForResponse(true);
 
     const { data: fpResult } = await visitorData.refetch();
-    const visitorId = fpResult.visitorId;
-    const requestId = fpResult.requestId;
+    const visitorId = fpResult?.visitorId;
+    const requestId = fpResult?.requestId;
 
     const orderData = {
       visitorId,

@@ -1,3 +1,4 @@
+// @ts-check
 import FingerprintJS from '@fingerprintjs/fingerprintjs-pro';
 import { useQuery } from 'react-query';
 import { PUBLIC_API_KEY } from '../server/const';
@@ -19,17 +20,18 @@ export const FP_LOAD_OPTIONS = {
     FingerprintJS.defaultScriptUrlPattern,
   ],
   endpoint: `https://fpcf.fingerprinthub.com/DBqbMN7zXxwl4Ei8/S7lqsWfAyw2lq4Za?region=${resolveFrontendRegion()}`,
+  // @ts-ignore
   region: resolveFrontendRegion(),
 };
 
-async function getVisitorData({ extendedResult = true, linkedId, products }) {
+async function getVisitorData({ extendedResult = true, linkedId }) {
   const fpPromise = FingerprintJS.load(FP_LOAD_OPTIONS);
   const fp = await fpPromise;
 
   return fp.get({
     extendedResult,
     linkedId,
-    products,
+    products: ['identification'],
   });
 }
 
@@ -47,8 +49,8 @@ export const VISITOR_DATA_QUERY = 'VISITOR_DATA_QUERY';
  * Query for fetching visitorData using our Fingerprint Pro agent.
  * @param {UseVisitorDataOptions} options
  * */
-export function useVisitorData({ enabled = true, extendedResult = true, linkedId = undefined, products = undefined }) {
-  return useQuery(VISITOR_DATA_QUERY, () => getVisitorData({ extendedResult, linkedId, products }), {
+export function useVisitorData({ enabled = true, extendedResult = true, linkedId } = {}) {
+  return useQuery(VISITOR_DATA_QUERY, () => getVisitorData({ extendedResult, linkedId }), {
     enabled,
   });
 }

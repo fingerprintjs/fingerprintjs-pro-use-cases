@@ -1,10 +1,11 @@
+// @ts-check
 import { FingerprintJsServerApiClient, Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { CheckResult, checkResultType } from '../../../server/checkResult';
 import { isRequestIdFormatValid, originIsAllowed, visitIpMatchesRequestIp } from '../../../server/checks';
 import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, SERVER_API_KEY } from '../../../server/const';
 import { sendErrorResponse, sendForbiddenResponse, sendOkResponse } from '../../../server/response';
 import { ensureGetRequest, messageSeverity } from '../../../server/server';
-import { HOUR_MS } from '../../../shared/const';
+import { DAY_MS, FIVE_MINUTES_MS, HOUR_MS } from '../../../shared/const';
 import { AIRPORTS } from '../../web-scraping';
 
 /**

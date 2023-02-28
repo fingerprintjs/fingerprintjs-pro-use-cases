@@ -1,3 +1,4 @@
+// @ts-check
 import { useState } from 'react';
 import Link from 'next/link';
 import Paper from '@mui/material/Paper';
@@ -5,8 +6,9 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { ArrowForward } from '@mui/icons-material';
+import React from 'react';
 
-/** 
+/**
  * @typedef {Object} PageTileProps
  * @property {string} title
  * @property {string} url
@@ -15,7 +17,7 @@ import { ArrowForward } from '@mui/icons-material';
  */
 
 /**
- * @param {PageTileProps} props 
+ * @param {PageTileProps} props
  * @returns {JSX.Element}
  */
 export function PageTile({ url, title, icon, description }) {

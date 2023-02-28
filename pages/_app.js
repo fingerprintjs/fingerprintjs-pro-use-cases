@@ -1,3 +1,4 @@
+// @ts-check
 import '../styles/globals.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider } from '../client/theme-provider';

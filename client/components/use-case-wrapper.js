@@ -1,3 +1,4 @@
+// @ts-check
 import Paper from '@mui/material/Paper';
 import clsx from 'clsx';
 import Divider from '@mui/material/Divider';

@@ -1,3 +1,4 @@
+// @ts-check
 export class CheckResult {
   /**
    * @param {string} message

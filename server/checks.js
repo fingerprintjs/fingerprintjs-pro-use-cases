@@ -1,3 +1,4 @@
+// @ts-check
 import { CheckResult, checkResultType } from './checkResult';
 import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, IPv4_REGEX, MIN_CONFIDENCE_SCORE } from './const';
 import { messageSeverity, ourOrigins } from './server';

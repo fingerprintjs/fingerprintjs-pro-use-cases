@@ -1,3 +1,4 @@
+// @ts-check
 import Link from 'next/link';
 import Paper from '@mui/material/Paper';
 import {

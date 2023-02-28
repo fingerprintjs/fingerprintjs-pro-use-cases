@@ -1,3 +1,4 @@
+// @ts-check
 import { useListVisits } from '../../../client/api/identification/useListVisits';
 import { CircularProgress, Grid } from '@mui/material';
 import { IdentificationCard } from '../../../client/components/identification/identification-card';
