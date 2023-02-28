@@ -207,7 +207,7 @@ export const WebScrapingUseCase = ({ query }) => {
             </Box>
           )}
           {!loading && message && (
-            <Alert severity={messageSeverity} className="UsecaseWrapper_alert">
+            <Alert severity={messageSeverity} className="UsecaseWrapper_alert message">
               {message}
             </Alert>
           )}
