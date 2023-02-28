@@ -1,15 +1,10 @@
 import { FingerprintJsServerApiClient, Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { CheckResult, checkResultType } from '../../../server/checkResult';
 import { isRequestIdFormatValid, originIsAllowed, visitIpMatchesRequestIp } from '../../../server/checks';
-import {
-  ALLOWED_REQUEST_TIMESTAMP_DIFF_MS,
-  DAY_MS,
-  FIVE_MINUTES_MS,
-  HOUR_MS,
-  SERVER_API_KEY,
-} from '../../../server/const';
+import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, SERVER_API_KEY } from '../../../server/const';
 import { sendErrorResponse, sendForbiddenResponse, sendOkResponse } from '../../../server/response';
 import { ensureGetRequest, messageSeverity } from '../../../server/server';
+import { HOUR_MS } from '../../../shared/const';
 import { AIRPORTS } from '../../web-scraping';
 
 /**
@@ -51,7 +46,7 @@ export default async function getFlights(req, res) {
       sendOkResponse(
         res,
         new CheckResult(
-          'Bot protection is disabled, access allowed.',
+          'Bot detection is disabled, access allowed.',
           messageSeverity.Success,
           checkResultType.Passed,
           getFlightResults(from, to)
@@ -64,7 +59,7 @@ export default async function getFlights(req, res) {
       sendOkResponse(
         res,
         new CheckResult(
-          'Access allowed, good bot detected or bot detection is turned off.',
+          'Access allowed, good bot detected.',
           messageSeverity.Success,
           checkResultType.GoodBotDetected,
           getFlightResults(from, to)
@@ -124,7 +119,7 @@ export default async function getFlights(req, res) {
     sendOkResponse(
       res,
       new CheckResult(
-        'No bot detected, access allowed.',
+        'No bot nor spoofing detected, access allowed.',
         messageSeverity.Success,
         checkResultType.Passed,
         getFlightResults(from, to)
@@ -157,8 +152,8 @@ export default async function getFlights(req, res) {
  */
 
 /**
- * Randomly generates flight results for given airports
- * to simulate the expensive computation you are trying to protect from web scraping.
+ * Randomly generates flight results for given airport codes
+ * to simulate the expensive query you are trying to protect from web scraping.
  * @param {string} fromCode
  * @param {string} toCode
  * @returns {Flight[]}

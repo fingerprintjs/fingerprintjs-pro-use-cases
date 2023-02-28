@@ -3,8 +3,8 @@ import FlightIcon from '@mui/icons-material/Flight';
 import CircleIcon from '@mui/icons-material/Circle';
 import { FunctionComponent } from 'react';
 import styles from '../../../styles/web-scraping.module.css';
-import { HOUR_MS, MINUTE_MS } from '../../../server/const';
 import { FLIGHT_TAG } from './flightTags';
+import { HOUR_MS, MINUTE_MS } from '../../../shared/const';
 
 // convert time in milliseconds to hours and minutes
 const formatTime = (time: number) => {

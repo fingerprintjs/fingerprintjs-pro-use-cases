@@ -92,7 +92,7 @@ export function UseCaseWrapper({
                     target="_blank"
                     rel="noreferrer"
                   >
-                    on Github <GitHubIcon fontSize="small" className="" />
+                    on Github <GitHubIcon fontSize="small" />
                   </a>
                   .
                 </li>

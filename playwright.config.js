@@ -1,7 +1,4 @@
 // @ts-check
-/**
- *  This project uses Playwright for end-to-end tests a Cypress for bot detection demonstrations
- **/
 
 const { defineConfig, devices } = require('@playwright/test');
 

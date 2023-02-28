@@ -49,5 +49,4 @@ tsconfig.tsbuildinfo
 /playwright/.cache/
 
 # Output of e2e tests/demos
-/cypress/output/
 /e2e/output/
