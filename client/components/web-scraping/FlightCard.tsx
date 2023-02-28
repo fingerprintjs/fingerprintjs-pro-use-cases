@@ -3,23 +3,14 @@ import FlightIcon from '@mui/icons-material/Flight';
 import CircleIcon from '@mui/icons-material/Circle';
 import { FunctionComponent } from 'react';
 import styles from '../../../styles/web-scraping.module.css';
+import { HOUR_MS, MINUTE_MS } from '../../../server/const';
+import { FLIGHT_TAG } from './flightTags';
 
-const HOUR_MS = 3600000;
-const MINUTE_MS = 60000;
 // convert time in milliseconds to hours and minutes
 const formatTime = (time: number) => {
   const hours = Math.floor(time / HOUR_MS);
   const minutes = (time % HOUR_MS) / MINUTE_MS;
   return `${hours}h ${minutes > 0 ? `${minutes}m` : ''}`;
-};
-
-const TEST_CLASS = {
-  card: {
-    root: 'card',
-    destination: {
-      root: 'destination',
-    },
-  },
 };
 
 export type Flight = {
@@ -46,16 +37,22 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
   const dateOptions: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
 
   return (
-    <Card style={{ marginTop: '20px' }} variant={'outlined'} data-test={TEST_CLASS.card.root}>
+    <Card style={{ marginTop: '20px' }} variant={'outlined'} data-test={FLIGHT_TAG.card}>
       <CardContent>
         <div className={styles.container}>
-          <div className={styles.origin}>
+          <div className={styles.origin} data-test={FLIGHT_TAG.origin}>
             <Typography fontSize={'small'} className={styles.date}>
               {departure.toLocaleDateString('en-US', dateOptions)}
             </Typography>
-            <Typography className={styles.time}>{departure.toLocaleTimeString('en-US', timeOptions)}</Typography>
+            <Typography className={styles.time} data-test={FLIGHT_TAG.time}>
+              {departure.toLocaleTimeString('en-US', timeOptions)}
+            </Typography>
             <Typography className={styles.city}>{flight.fromCity}</Typography>
-            <Typography className={styles.airportCode} fontSize="small">{`(${flight.fromCode})`}</Typography>
+            <Typography
+              className={styles.airportCode}
+              fontSize="small"
+              data-test={FLIGHT_TAG.airportCode}
+            >{`(${flight.fromCode})`}</Typography>
           </div>
           <div className={styles.middle}>
             <Typography fontSize={'small'} className={styles.duration}>
@@ -74,17 +71,23 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
                 <CircleIcon className={styles.circle} />
               </div>
             </div>
-            <Typography fontSize={'small'} className={styles.airline}>
+            <Typography fontSize={'small'} className={styles.airline} data-test={FLIGHT_TAG.airline}>
               {flight.airline}
             </Typography>
           </div>
-          <div className={styles.destination}>
+          <div className={styles.destination} data-test={FLIGHT_TAG.destination}>
             <Typography fontSize="small" className={styles.date}>
               {arrival.toLocaleDateString('en-US', dateOptions)}
             </Typography>
-            <Typography className={styles.time}>{arrival.toLocaleTimeString('en-US', timeOptions)}</Typography>
+            <Typography className={styles.time} data-test={FLIGHT_TAG.time}>
+              {arrival.toLocaleTimeString('en-US', timeOptions)}{' '}
+            </Typography>
             <Typography className={styles.city}>{flight.toCity}</Typography>
-            <Typography className={styles.airportCode} fontSize="small">{`(${flight.toCode})`}</Typography>
+            <Typography
+              className={styles.airportCode}
+              data-test={FLIGHT_TAG.airportCode}
+              fontSize="small"
+            >{`(${flight.toCode})`}</Typography>
           </div>
         </div>
       </CardContent>
@@ -94,7 +97,9 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
         })}
         className={styles.actions}
       >
-        <Button variant="outlined">Book for ${flight.price}</Button>
+        <Button variant="outlined">
+          Book for <span data-test={FLIGHT_TAG.price}>${flight.price}</span>
+        </Button>
       </CardActions>
     </Card>
   );

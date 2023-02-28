@@ -9,6 +9,7 @@ export const SERVER_API_KEY = 'F6gQ8H8vQLc7mVsVKaFx';
 export const PUBLIC_API_KEY = process.env.NEXT_PUBLIC_API_KEY ?? 'rzpSduhT63F6jaS35HFo';
 
 // Milliseconds helpers
-export const DAY_MS = 1000 * 60 * 60 * 24;
+export const MINUTE_MS = 60 * 1000;
 export const FIVE_MINUTES_MS = 1000 * 60 * 5;
 export const HOUR_MS = 1000 * 60 * 60;
+export const DAY_MS = 1000 * 60 * 60 * 24;
