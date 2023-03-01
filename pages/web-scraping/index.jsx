@@ -57,8 +57,8 @@ export const AIRPORTS = [
  * @returns {JSX.Element} React component
  */
 export const WebScrapingUseCase = ({ from, to, backdoor }) => {
-  const [fromCode, setFromCode] = useQueryState('from', from ?? AIRPORTS[0].code);
-  const [toCode, setToCode] = useQueryState('to', to ?? AIRPORTS[1].code);
+  const [fromCode, setFromCode] = useQueryState('from', from?.toUpperCase() ?? AIRPORTS[0].code);
+  const [toCode, setToCode] = useQueryState('to', to?.toUpperCase() ?? AIRPORTS[1].code);
 
   /** @typedef {import('../../client/components/web-scraping/FlightCard').Flight} Flight */
   /** @type {[Flight[] | undefined, React.Dispatch<Flight[] | undefined>]} */
