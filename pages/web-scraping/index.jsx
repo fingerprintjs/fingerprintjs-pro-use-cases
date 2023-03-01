@@ -97,7 +97,17 @@ export const WebScrapingUseCase = ({ query }) => {
     try {
       /** @type {import('../../server/checkResult').CheckResult} */
       const result = await (
-        await fetch(`/api/web-scraping/flights?from=${from}&to=${to}&requestId=${visitorData.requestId}`)
+        await fetch(`/api/web-scraping/flights`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from,
+            to,
+            requestId: visitorData.requestId,
+          }),
+        })
       ).json();
       setLoading(false);
       setFlights(result.data);

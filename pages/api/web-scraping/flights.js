@@ -4,7 +4,7 @@ import { CheckResult, checkResultType } from '../../../server/checkResult';
 import { isRequestIdFormatValid, originIsAllowed, visitIpMatchesRequestIp } from '../../../server/checks';
 import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, SERVER_API_KEY } from '../../../server/const';
 import { sendErrorResponse, sendForbiddenResponse, sendOkResponse } from '../../../server/response';
-import { ensureGetRequest, messageSeverity } from '../../../server/server';
+import { ensurePostRequest, messageSeverity } from '../../../server/server';
 import { DAY_MS, FIVE_MINUTES_MS, HOUR_MS } from '../../../shared/const';
 import { AIRPORTS } from '../../web-scraping';
 
@@ -20,12 +20,12 @@ import { AIRPORTS } from '../../web-scraping';
  * @param {import('next').NextApiResponse} res
  */
 export default async function getFlights(req, res) {
-  // This API route accepts only GET requests.
-  if (!ensureGetRequest(req, res)) {
+  // This API route accepts only POST requests.
+  if (!ensurePostRequest(req, res)) {
     return;
   }
 
-  const { from, to, requestId } = /** @type {ResultsQuery} */ (req.query);
+  const { from, to, requestId } = /** @type {ResultsQuery} */ (req.body);
 
   // Validate request ID format
   if (!isRequestIdFormatValid(requestId)) {
