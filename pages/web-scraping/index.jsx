@@ -10,13 +10,18 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import FlightCard from '../../client/components/web-scraping/FlightCard';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import styles from '../../styles/web-scraping.module.css';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import Link from 'next/link';
+import { useQueryState } from 'use-location-state/next';
+
+// Make URL query object available as props to the page on first render
+// to read `from`, `to` params and a `backdoor` param for testing and demo purposes
+export { getServerSideProps } from 'use-location-state/next';
 
 export const AIRPORTS = [
   { city: 'San Francisco', code: 'SFO' },
@@ -48,17 +53,12 @@ export const AIRPORTS = [
 ];
 
 /**
- * @typedef WebScrapingUseCaseProps
- * @property {Object} query
- */
-
-/**
- * @param {WebScrapingUseCaseProps} props - Props for the component
+ * @param {Object} query - getServerSideProps converts query params to an object and passes it to the page as props
  * @returns {JSX.Element} React component
  */
-export const WebScrapingUseCase = ({ query }) => {
-  const [from, setFrom] = useState(AIRPORTS[0].code);
-  const [to, setTo] = useState(AIRPORTS[1].code);
+export const WebScrapingUseCase = ({ from, to, backdoor }) => {
+  const [fromCode, setFromCode] = useQueryState('from', from ?? AIRPORTS[0].code);
+  const [toCode, setToCode] = useQueryState('to', to ?? AIRPORTS[1].code);
 
   /** @typedef {import('../../client/components/web-scraping/FlightCard').Flight} Flight */
   /** @type {[Flight[] | undefined, React.Dispatch<Flight[] | undefined>]} */
@@ -70,6 +70,14 @@ export const WebScrapingUseCase = ({ query }) => {
   const [messageSeverity, setMessageSeverity] = useState();
   const [loading, setLoading] = useState(false);
 
+  // Search for flights when the page loads
+  useEffect(() => {
+    if (fromCode && toCode) {
+      searchFlights();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   /**
    * Use the Fingerprint Pro React SDK hook to get visitor data (https://github.com/fingerprintjs/fingerprintjs-pro-react)
    * For Vue, Angular, Svelte, and other frameworks, see https://dev.fingerprint.com/docs/frontend-libraries
@@ -77,7 +85,7 @@ export const WebScrapingUseCase = ({ query }) => {
    */
   const { getData } = useVisitorData(
     {
-      products: query.backdoor ? ['identification'] : ['botd'],
+      products: backdoor ? ['identification'] : ['botd'],
       // Don't use a cached fingerprint, it must be fresh to avoid replay attacks
       ignoreCache: true,
     },
@@ -85,11 +93,7 @@ export const WebScrapingUseCase = ({ query }) => {
     { immediate: false }
   );
 
-  /**
-  /* @type {React.FormEventHandler<HTMLFormElement>}
-  /*/
-  async function handleSubmit(event) {
-    event.preventDefault();
+  async function searchFlights() {
     setLoading(true);
     setMessage('');
     const visitorData = await getData();
@@ -103,8 +107,8 @@ export const WebScrapingUseCase = ({ query }) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            from,
-            to,
+            from: fromCode,
+            to: toCode,
             requestId: visitorData.requestId,
           }),
         })
@@ -172,7 +176,12 @@ export const WebScrapingUseCase = ({ query }) => {
         <Typography variant="h3" className={styles.subHeadline}>
           Search for today&apos;s flights
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            searchFlights();
+          }}
+        >
           <Grid container spacing={1} marginBottom={3}>
             <Grid item xs={12} sm={5.5}>
               <FormControl fullWidth>
@@ -180,10 +189,10 @@ export const WebScrapingUseCase = ({ query }) => {
                   id="from"
                   size="small"
                   autoHighlight
-                  options={AIRPORTS.filter((airport) => airport.code !== to)}
+                  options={AIRPORTS.filter((airport) => airport.code !== toCode)}
                   getOptionLabel={(option) => `${option.city} (${option.code})`}
-                  value={AIRPORTS.find((airport) => airport.code === from)}
-                  onChange={(e, value) => setFrom(value?.code ?? '')}
+                  value={AIRPORTS.find((airport) => airport.code === fromCode) ?? null}
+                  onChange={(_e, value) => setFromCode(value?.code ?? '')}
                   renderInput={(params) => <TextField {...params} label="From" />}
                 />
               </FormControl>
@@ -199,10 +208,10 @@ export const WebScrapingUseCase = ({ query }) => {
                   id="to"
                   size="small"
                   autoHighlight
-                  options={AIRPORTS.filter((airport) => airport.code !== from)}
+                  options={AIRPORTS.filter((airport) => airport.code !== fromCode)}
                   getOptionLabel={(option) => `${option.city} (${option.code})`}
-                  value={AIRPORTS.find((airport) => airport.code === to)}
-                  onChange={(e, value) => setTo(value?.code ?? '')}
+                  value={AIRPORTS.find((airport) => airport.code === toCode) ?? null}
+                  onChange={(e, value) => setToCode(value?.code ?? '')}
                   renderInput={(params) => <TextField {...params} label="To" />}
                 />
               </FormControl>
@@ -216,7 +225,7 @@ export const WebScrapingUseCase = ({ query }) => {
               color="primary"
               disableElevation
               fullWidth
-              disabled={!to || !from || loading}
+              disabled={!toCode || !fromCode || loading}
             >
               Search flights
             </Button>
@@ -245,15 +254,6 @@ export const WebScrapingUseCase = ({ query }) => {
       </UseCaseWrapper>
     </>
   );
-};
-
-// Make URL query available to the page on first render
-// to implement a backdoor for testing and demo purposes
-/** @type {import('next').GetServerSideProps} */
-export const getServerSideProps = async (context) => {
-  return {
-    props: { query: context.query },
-  };
 };
 
 export default WebScrapingUseCase;
