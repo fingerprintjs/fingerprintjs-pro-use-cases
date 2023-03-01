@@ -21,7 +21,7 @@ export const ourOrigins = [
   'https://localhost:3000',
   'http://localhost:3000',
   // todo: remove this before merging
-  'https://web-scraping.fingerprinthub.com/',
+  'https://web-scraping.fingerprinthub.com',
 ];
 
 /** @typedef {'success'|'warning'|'error'} Severity */
