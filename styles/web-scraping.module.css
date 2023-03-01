@@ -5,7 +5,8 @@
   grid-gap: 0.5rem;
 }
 
-.origin, .destination {
+.origin,
+.destination {
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -28,7 +29,6 @@
   font-weight: 600;
   white-space: nowrap;
 }
-
 
 .airportCode {
   color: gray;
@@ -93,6 +93,7 @@
 .circle {
   height: 8px;
   width: 8px;
+  font-size: 8px;
   color: gray;
 }
 
