@@ -51,9 +51,15 @@ export const AIRPORTS = [
   { city: 'Helsinki', code: 'HEL' },
   { city: 'Rome', code: 'FCO' },
 ];
+/**
+ * @typedef WebScrapingQuery
+ * @property {string} [from]
+ * @property {string} [to]
+ * @property {boolean} [backdoor]
+ */
 
 /**
- * @param {Object} query - getServerSideProps converts query params to an object and passes it to the page as props
+ * @param {WebScrapingQuery} query - getServerSideProps converts query params to an object and passes it to the page as props
  * @returns {JSX.Element} React component
  */
 export const WebScrapingUseCase = ({ from, to, backdoor }) => {
