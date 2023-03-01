@@ -60,7 +60,7 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
             </Typography>
             <div className={styles.transition}>
               <div className={styles.circleContainer}>
-                <CircleIcon className={styles.circle} />
+                <div className={styles.circle} />
               </div>
               <div className={styles.line}></div>
               <div className={styles.arrow}>
@@ -68,7 +68,7 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
               </div>
               <div className={styles.line}></div>
               <div className={styles.circleContainer}>
-                <CircleIcon className={styles.circle} />
+                <div className={styles.circle} />
               </div>
             </div>
             <Typography fontSize={'small'} className={styles.airline} data-test={FLIGHT_TAG.airline}>

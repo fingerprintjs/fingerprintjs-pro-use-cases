@@ -82,7 +82,7 @@
 .arrow {
   rotate: 90deg;
   color: gray;
-  padding: 5px;
+  padding: 4px;
   translate: -2px;
 }
 
@@ -91,10 +91,12 @@
 }
 
 .circle {
+  border-radius: 50%;
   height: 8px;
   width: 8px;
+  margin: 4px;
   font-size: 8px;
-  color: gray;
+  background-color: gray;
 }
 
 .actions {
