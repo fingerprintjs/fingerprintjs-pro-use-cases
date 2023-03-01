@@ -16,7 +16,13 @@ export const sequelize = new Sequelize('database', '', '', {
 
 // Demo origins.
 // It is recommended to use production origins instead.
-export const ourOrigins = ['https://fingerprinthub.com', 'https://localhost:3000', 'http://localhost:3000'];
+export const ourOrigins = [
+  'https://fingerprinthub.com',
+  'https://localhost:3000',
+  'http://localhost:3000',
+  // todo: remove this before merging
+  'https://web-scraping.fingerprinthub.com/',
+];
 
 /** @typedef {'success'|'warning'|'error'} Severity */
 
