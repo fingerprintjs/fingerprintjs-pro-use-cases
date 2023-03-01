@@ -70,9 +70,18 @@ export const WebScrapingUseCase = ({ query }) => {
   const [messageSeverity, setMessageSeverity] = useState();
   const [loading, setLoading] = useState(false);
 
-  // Don't get visitor data on mount or use cached result (requestId must be fresh)
+  /**
+   * Use the Fingerprint Pro React SDK hook to get visitor data (https://github.com/fingerprintjs/fingerprintjs-pro-react)
+   * For Vue, Angular, Svelte, and other frameworks, see https://dev.fingerprint.com/docs/frontend-libraries
+   * See '/client/use-visitor-data.js' for an example implementation of similar functionality without the SDK
+   */
   const { getData } = useVisitorData(
-    { products: query.backdoor ? ['identification'] : ['botd'], ignoreCache: true },
+    {
+      products: query.backdoor ? ['identification'] : ['botd'],
+      // Don't use a cached fingerprint, it must be fresh to avoid replay attacks
+      ignoreCache: true,
+    },
+    // Don't fingerprint the visitor on mount, but when they click "Search flights", the fingerprint must be fresh
     { immediate: false }
   );
 
