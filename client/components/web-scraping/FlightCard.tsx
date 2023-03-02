@@ -92,7 +92,8 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
       </CardContent>
       <CardActions
         sx={(theme) => ({
-          backgroundColor: theme.palette.mode === 'dark' ? '#171717' : '#fafafa',
+          // @ts-ignore
+          backgroundColor: theme.palette.accentBackground,
         })}
         className={styles.actions}
       >

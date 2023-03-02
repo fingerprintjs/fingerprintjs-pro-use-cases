@@ -18,6 +18,7 @@ export function ThemeProvider({ children }) {
         secondary: {
           main: secondary,
         },
+        accentBackground: hasDarkMode ? '#171717' : '#fafafa',
         mode: hasDarkMode ? 'dark' : 'light',
       },
       components: {
