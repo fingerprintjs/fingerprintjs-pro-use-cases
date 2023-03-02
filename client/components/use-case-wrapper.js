@@ -20,6 +20,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
  * @property {string} [variant] - Variant of the InfoCard
  * @property {boolean} [hideSrcListItem=false] - Flag to hide the source list item
  * @property {boolean} [hideDivider=false] - Flag to hide the divider
+ * @property {boolean} [showAdminLink=true] - Flag to show the admin link
  * @property {Object} [sx]
  * @property {string} [returnUrl]
  */
@@ -37,6 +38,7 @@ export function UseCaseWrapper({
   variant,
   hideSrcListItem = false,
   hideDivider = false,
+  showAdminLink = true,
   sx,
   returnUrl,
 }) {
@@ -72,9 +74,11 @@ export function UseCaseWrapper({
               {listItems?.map((item, index) => (
                 <li key={index}>{item}</li>
               ))}
-              <li>
-                You can reset this scenario on the <Link href="/admin">Admin page</Link>.
-              </li>
+              {showAdminLink && (
+                <li>
+                  You can reset this scenario on the <Link href="/admin">Admin page</Link>.
+                </li>
+              )}
               {articleURL && (
                 <li>
                   Learn more about this scenario in the{' '}

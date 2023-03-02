@@ -136,6 +136,7 @@ export const WebScrapingUseCase = ({ from, to, disableBotDetection }) => {
     <>
       <UseCaseWrapper
         title="Web Scraping Prevention"
+        showAdminLink={false}
         description={
           <div>
             <p>
@@ -154,7 +155,12 @@ export const WebScrapingUseCase = ({ from, to, disableBotDetection }) => {
         // articleURL="https://fingerprintjs.com/blog/web-scraping-prevention/"
         listItems={[
           <>
-            The <code>flights</code> API endpoint on this page is protected by Fingerprint Pro Bot Detection.
+            The <code>flights</code> API endpoint on this page is protected by{' '}
+            <a href="https://dev.fingerprint.com/docs/bot-detection-quick-start-guide" target={'_blank'}>
+              {' '}
+              Fingerprint Pro Bot Detection
+            </a>
+            .
           </>,
           <>Using a normal browser, you can search for flights and see the results.</>,
           <>
