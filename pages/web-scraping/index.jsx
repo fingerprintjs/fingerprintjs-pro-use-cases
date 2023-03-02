@@ -176,7 +176,7 @@ export const WebScrapingUseCase = ({ from, to, disableBotDetection }) => {
             that helps 🙂
           </>,
           <>
-            To see how the page would behave without Bot Betection, reload it with{' '}
+            To see how the page would behave without Bot Detection, reload it with{' '}
             <Link href={'/web-scraping?disableBotDetection=1'}>
               <code className="nowrap">?disableBotDetection=1</code>
             </Link>{' '}
