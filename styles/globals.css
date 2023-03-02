@@ -135,8 +135,3 @@ code {
   color: #d63384;
   word-wrap: break-word;
 }
-
-/* Utility classses */
-.nowrap {
-  white-space: nowrap;
-}
