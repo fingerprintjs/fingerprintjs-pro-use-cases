@@ -179,9 +179,9 @@ export const WebScrapingUseCase = ({ from, to, backdoor }) => {
           </>,
         ]}
       >
-        <Typography variant="h3" className={styles.subHeadline}>
-          Search for today&apos;s flights
-        </Typography>
+        <Box marginBottom={(theme) => theme.spacing(2)}>
+          <Typography variant="overline">Search for today&apos;s flights</Typography>
+        </Box>
         <form
           onSubmit={(event) => {
             event.preventDefault();
@@ -249,9 +249,9 @@ export const WebScrapingUseCase = ({ from, to, backdoor }) => {
         </form>
         {flights && flights.length > 0 && !loading && (
           <div>
-            <Typography variant="h3" className={styles.subHeadline}>
-              Found {flights.length} flights
-            </Typography>
+            <Box marginTop={(theme) => theme.spacing(2)}>
+              <Typography variant="overline">Found {flights.length} flights</Typography>
+            </Box>
             {flights.map((flight) => (
               <FlightCard key={flight.flightNumber} flight={flight} />
             ))}

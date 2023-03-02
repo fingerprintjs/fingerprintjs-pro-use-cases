@@ -36,7 +36,7 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
   const dateOptions: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
 
   return (
-    <Card sx={(theme) => ({ marginTop: theme.spacing(3) })} variant={'outlined'} data-test={FLIGHT_TAG.card}>
+    <Card sx={(theme) => ({ marginTop: theme.spacing(2) })} variant={'outlined'} data-test={FLIGHT_TAG.card}>
       <CardContent>
         <div className={styles.container}>
           <div className={styles.origin} data-test={FLIGHT_TAG.origin}>
