@@ -70,7 +70,13 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
                 <div className={styles.circle} />
               </div>
             </div>
-            <Typography fontSize={'small'} className={styles.airline} data-test={FLIGHT_TAG.airline}>
+            <Typography
+              fontSize={'small'}
+              className={styles.airline}
+              // @ts-ignore
+              sx={(theme) => ({ backgroundColor: theme.palette.headerLight })}
+              data-test={FLIGHT_TAG.airline}
+            >
               {flight.airline}
             </Typography>
           </div>
