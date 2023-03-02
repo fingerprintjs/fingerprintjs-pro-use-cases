@@ -1,8 +1,7 @@
 // @ts-check
 import FingerprintJS from '@fingerprintjs/fingerprintjs-pro';
 import { useQuery } from 'react-query';
-import { PUBLIC_API_KEY } from '../server/const';
-import { resolveFrontendRegion } from '../shared/region';
+import { ENDPOINT, FRONTEND_REGION, PUBLIC_API_KEY, SCRIPT_URL_PATTERN } from '../server/const';
 
 // This example demonstrates using the NPM package for the Fingerprint Pro agent.
 // In the real world react-powered apps we recommend using our Fingerprint Pro React/NextJS library instead: https://github.com/fingerprintjs/fingerprintjs-pro-react
@@ -15,13 +14,10 @@ import { resolveFrontendRegion } from '../shared/region';
 /** @type {import('@fingerprintjs/fingerprintjs-pro').LoadOptions} */
 export const FP_LOAD_OPTIONS = {
   apiKey: PUBLIC_API_KEY,
-  scriptUrlPattern: [
-    'https://fpcf.fingerprinthub.com/DBqbMN7zXxwl4Ei8/J5XlHIBN67YHskdR?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
-    FingerprintJS.defaultScriptUrlPattern,
-  ],
-  endpoint: `https://fpcf.fingerprinthub.com/DBqbMN7zXxwl4Ei8/S7lqsWfAyw2lq4Za?region=${resolveFrontendRegion()}`,
+  scriptUrlPattern: [SCRIPT_URL_PATTERN, FingerprintJS.defaultScriptUrlPattern],
+  endpoint: ENDPOINT,
   // @ts-ignore
-  region: resolveFrontendRegion(),
+  region: FRONTEND_REGION,
 };
 
 async function getVisitorData({ extendedResult = true, linkedId }) {
