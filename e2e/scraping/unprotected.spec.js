@@ -15,7 +15,7 @@ const scrapeText = async (parent, selector) => {
 
 test.describe('Scraping flights', () => {
   test('is possible with Bot detection off', async ({ page }) => {
-    await page.goto('/web-scraping?backdoor=1');
+    await page.goto('/web-scraping?disableBotDetection=1');
     await page.click('button:has-text("Search flights")');
     await page.waitForLoadState('networkidle');
     const flightCards = await page.$$(`[data-test="${FLIGHT_TAG.card}"]`);

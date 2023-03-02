@@ -20,7 +20,7 @@ import Link from 'next/link';
 import { useQueryState } from 'use-location-state/next';
 
 // Make URL query object available as props to the page on first render
-// to read `from`, `to` params and a `backdoor` param for testing and demo purposes
+// to read `from`, `to` params and a `disableBotDetection` param for testing and demo purposes
 export { getServerSideProps } from 'use-location-state/next';
 
 export const AIRPORTS = [
@@ -55,14 +55,14 @@ export const AIRPORTS = [
  * @typedef WebScrapingQuery
  * @property {string} [from]
  * @property {string} [to]
- * @property {boolean} [backdoor]
+ * @property {boolean} [disableBotDetection]
  */
 
 /**
  * @param {WebScrapingQuery} query - getServerSideProps converts query params to an object and passes it to the page as props
  * @returns {JSX.Element} React component
  */
-export const WebScrapingUseCase = ({ from, to, backdoor }) => {
+export const WebScrapingUseCase = ({ from, to, disableBotDetection }) => {
   const [fromCode, setFromCode] = useQueryState('from', from?.toUpperCase() ?? AIRPORTS[0].code);
   const [toCode, setToCode] = useQueryState('to', to?.toUpperCase() ?? AIRPORTS[1].code);
 
@@ -91,7 +91,7 @@ export const WebScrapingUseCase = ({ from, to, backdoor }) => {
    */
   const { getData } = useVisitorData(
     {
-      products: backdoor ? ['identification'] : ['botd'],
+      products: disableBotDetection ? ['identification'] : ['botd'],
       // Don't use a cached fingerprint, it must be fresh to avoid replay attacks
       ignoreCache: true,
     },
@@ -170,9 +170,9 @@ export const WebScrapingUseCase = ({ from, to, backdoor }) => {
             that helps 🙂
           </>,
           <>
-            To see how the page would behave without Bot detection, reload it with{' '}
-            <Link href={'/web-scraping?backdoor=1'}>
-              <code className="nowrap">?backdoor=1</code>
+            To see how the page would behave without Bot Betection, reload it with{' '}
+            <Link href={'/web-scraping?disableBotDetection=1'}>
+              <code className="nowrap">?disableBotDetection=1</code>
             </Link>{' '}
             in the URL.
           </>,
