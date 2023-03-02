@@ -103,7 +103,6 @@ export const WebScrapingUseCase = ({ from, to, backdoor }) => {
     setLoading(true);
     setMessage('');
     const visitorData = await getData();
-    console.log(visitorData);
     try {
       /** @type {import('../../server/checkResult').CheckResult} */
       const result = await (
