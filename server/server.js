@@ -20,6 +20,7 @@ export const ourOrigins = [
   'https://fingerprinthub.com',
   'https://localhost:3000',
   'http://localhost:3000',
+  'https://staging.fingerprinthub.com',
   // todo: remove this before merging
   'https://web-scraping.fingerprinthub.com',
 ];
