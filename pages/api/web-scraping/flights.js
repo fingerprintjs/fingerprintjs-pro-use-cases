@@ -73,6 +73,7 @@ export default async function getFlights(req, res) {
     return;
   }
 
+  // Check for bot presence and type
   if (botData.bot?.result === 'good') {
     sendOkResponse(
       res,
@@ -86,7 +87,6 @@ export default async function getFlights(req, res) {
     return;
   }
 
-  // Check for bot presence and type
   if (botData.bot?.result === 'bad') {
     sendForbiddenResponse(
       res,
@@ -113,7 +113,7 @@ export default async function getFlights(req, res) {
     return;
   }
 
-  // Assuming bot si notDetected, verify the visit data
+  // We know bot is 'notDetected', verify the visit data
   // Check if the visit IP matches the request IP
   if (!visitIpMatchesRequestIp(botData.ip, req)) {
     sendForbiddenResponse(
