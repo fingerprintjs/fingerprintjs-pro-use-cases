@@ -89,7 +89,7 @@ export const WebScrapingUseCase = ({ from, to, disableBotDetection }) => {
    * For Vue, Angular, Svelte, and other frameworks, see https://dev.fingerprint.com/docs/frontend-libraries
    * See '/client/use-visitor-data.js' for an example implementation of similar functionality without the SDK
    */
-  const { getData } = useVisitorData(
+  const { getData: getVisitorData } = useVisitorData(
     {
       products: disableBotDetection ? ['identification'] : ['botd'],
       // Don't use a cached fingerprint, it must be fresh to avoid replay attacks
@@ -102,22 +102,24 @@ export const WebScrapingUseCase = ({ from, to, disableBotDetection }) => {
   async function searchFlights() {
     setLoading(true);
     setMessage('');
-    const visitorData = await getData();
+    const { requestId } = await getVisitorData();
     try {
+      const response = await fetch(`/api/web-scraping/flights`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: fromCode,
+          to: toCode,
+          requestId,
+        }),
+      });
+      if (response.status === 500) {
+        throw new Error(response.statusText);
+      }
       /** @type {import('../../server/checkResult').CheckResult} */
-      const result = await (
-        await fetch(`/api/web-scraping/flights`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            from: fromCode,
-            to: toCode,
-            requestId: visitorData.requestId,
-          }),
-        })
-      ).json();
+      const result = await response.json();
       setLoading(false);
       setFlights(result.data);
       if (result.severity !== 'success') {

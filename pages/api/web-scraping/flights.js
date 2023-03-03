@@ -36,108 +36,12 @@ export default async function getFlights(req, res) {
     return;
   }
 
+  // Retrieve analysis event from the Server API using the request ID
+  let botData;
   try {
-    // Retrieve analysis event from the Server API using the request ID
     const client = new FingerprintJsServerApiClient({ region: Region.Global, apiKey: SERVER_API_KEY });
-    // If the requestId does not exist, the SDK will throw an error which will be caught below
     const eventResponse = await client.getEvent(requestId);
-    const botData = eventResponse.products?.botd?.data;
-
-    if (!botData) {
-      sendOkResponse(
-        res,
-        new CheckResult(
-          'Bot detection is disabled, access allowed.',
-          messageSeverity.Success,
-          checkResultType.Passed,
-          getFlightResults(from, to)
-        )
-      );
-      return;
-    }
-
-    if (botData.bot?.result === 'good') {
-      sendOkResponse(
-        res,
-        new CheckResult(
-          'Access allowed, good bot detected.',
-          messageSeverity.Success,
-          checkResultType.GoodBotDetected,
-          getFlightResults(from, to)
-        )
-      );
-      return;
-    }
-
-    // Check for bot presence and type
-    if (botData.bot?.result === 'bad') {
-      sendForbiddenResponse(
-        res,
-        new CheckResult(
-          '🤖 Malicious bot detected, access denied.',
-          messageSeverity.Error,
-          checkResultType.MaliciousBotDetected
-        )
-      );
-      // Optionally, here you could also save the bot's IP address to a blocklist in your database
-      // and block all requests from this IP address in the future at a web server/firewall level.
-      return;
-    }
-
-    if (botData.bot?.result !== 'notDetected') {
-      sendErrorResponse(
-        res,
-        new CheckResult(
-          'Server error, unexpected bot detection value.',
-          messageSeverity.Error,
-          checkResultType.ServerError
-        )
-      );
-      return;
-    }
-
-    // Assuming bot si notDetected, verify the visit data
-    // Check if the visit IP matches the request IP
-    if (!visitIpMatchesRequestIp(botData.ip, req)) {
-      sendForbiddenResponse(
-        res,
-        new CheckResult('Visit IP does not match request IP.', messageSeverity.Error, checkResultType.IpMismatch)
-      );
-      return;
-    }
-
-    // Check if the visit origin matches the request origin
-    if (!originIsAllowed(botData.url, req)) {
-      sendForbiddenResponse(
-        res,
-        new CheckResult(
-          'Visit origin does not match request origin or is not allowed.',
-          messageSeverity.Error,
-          checkResultType.ForeignOrigin
-        )
-      );
-      return;
-    }
-
-    // Check if the visit timestamp is not old
-    if (Date.now() - Number(new Date(botData.time)) > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
-      sendForbiddenResponse(
-        res,
-        new CheckResult('Old visit, potential replay attack.', messageSeverity.Error, checkResultType.OldTimestamp)
-      );
-      return;
-    }
-
-    // All checks passed, allow access
-    sendOkResponse(
-      res,
-      new CheckResult(
-        'No bot nor spoofing detected, access allowed.',
-        messageSeverity.Success,
-        checkResultType.Passed,
-        getFlightResults(from, to)
-      )
-    );
+    botData = eventResponse.products?.botd?.data;
   } catch (error) {
     console.log(error);
     // Throw a specific error if the request ID is not found
@@ -152,12 +56,105 @@ export default async function getFlights(req, res) {
       );
     } else {
       // Handle other errors
-      sendErrorResponse(
-        res,
-        new CheckResult(`Server error: ${error}`, messageSeverity.Error, checkResultType.ServerError)
-      );
+      sendErrorResponse(res, new CheckResult(error, messageSeverity.Error, checkResultType.ServerError));
     }
   }
+
+  if (!botData) {
+    sendOkResponse(
+      res,
+      new CheckResult(
+        'Bot detection is disabled, access allowed.',
+        messageSeverity.Success,
+        checkResultType.Passed,
+        getFlightResults(from, to)
+      )
+    );
+    return;
+  }
+
+  if (botData.bot?.result === 'good') {
+    sendOkResponse(
+      res,
+      new CheckResult(
+        'Access allowed, good bot detected.',
+        messageSeverity.Success,
+        checkResultType.GoodBotDetected,
+        getFlightResults(from, to)
+      )
+    );
+    return;
+  }
+
+  // Check for bot presence and type
+  if (botData.bot?.result === 'bad') {
+    sendForbiddenResponse(
+      res,
+      new CheckResult(
+        '🤖 Malicious bot detected, access denied.',
+        messageSeverity.Error,
+        checkResultType.MaliciousBotDetected
+      )
+    );
+    // Optionally, here you could also save the bot's IP address to a blocklist in your database
+    // and block all requests from this IP address in the future at a web server/firewall level.
+    return;
+  }
+
+  if (botData.bot?.result !== 'notDetected') {
+    sendErrorResponse(
+      res,
+      new CheckResult(
+        'Server error, unexpected bot detection value.',
+        messageSeverity.Error,
+        checkResultType.ServerError
+      )
+    );
+    return;
+  }
+
+  // Assuming bot si notDetected, verify the visit data
+  // Check if the visit IP matches the request IP
+  if (!visitIpMatchesRequestIp(botData.ip, req)) {
+    sendForbiddenResponse(
+      res,
+      new CheckResult('Visit IP does not match request IP.', messageSeverity.Error, checkResultType.IpMismatch)
+    );
+    return;
+  }
+
+  // Check if the visit origin matches the request origin
+  if (!originIsAllowed(botData.url, req)) {
+    sendForbiddenResponse(
+      res,
+      new CheckResult(
+        'Visit origin does not match request origin or is not allowed.',
+        messageSeverity.Error,
+        checkResultType.ForeignOrigin
+      )
+    );
+    return;
+  }
+
+  // Check if the visit timestamp is not old
+  if (Date.now() - Number(new Date(botData.time)) > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
+    sendForbiddenResponse(
+      res,
+      new CheckResult('Old visit, potential replay attack.', messageSeverity.Error, checkResultType.OldTimestamp)
+    );
+    return;
+  }
+
+  // All checks passed, allow access
+  sendOkResponse(
+    res,
+    new CheckResult(
+      'No bot nor spoofing detected, access allowed.',
+      messageSeverity.Success,
+      checkResultType.Passed,
+      getFlightResults(from, to)
+    )
+  );
 }
 
 /**

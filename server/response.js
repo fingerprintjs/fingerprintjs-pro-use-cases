@@ -44,5 +44,6 @@ export function sendErrorResponse(res, result) {
     return;
   }
 
+  res.statusMessage = result.message;
   return res.status(500).json(result.toJsonResponse());
 }
