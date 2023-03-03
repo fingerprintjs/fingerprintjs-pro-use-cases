@@ -84,7 +84,19 @@ export default async function getFlights(req, res) {
       return;
     }
 
-    // Bot not detected, verify the visit data
+    if (botData.bot?.result !== 'notDetected') {
+      sendErrorResponse(
+        res,
+        new CheckResult(
+          'Server error, unexpected bot detection value.',
+          messageSeverity.Error,
+          checkResultType.ServerError
+        )
+      );
+      return;
+    }
+
+    // Assuming bot si notDetected, verify the visit data
     // Check if the visit IP matches the request IP
     if (!visitIpMatchesRequestIp(botData.ip, req)) {
       sendForbiddenResponse(
