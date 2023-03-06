@@ -2,3 +2,4 @@
 # https://stackoverflow.com/questions/115983/how-do-i-add-an-empty-directory-to-a-git-repository
 *
 !.gitignore
+!.gitkeep
