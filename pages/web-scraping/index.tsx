@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useEffect } from 'react';
+import { FunctionComponent, useEffect } from 'react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import FlightCard, { Flight } from '../../client/components/web-scraping/FlightCard';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -25,6 +25,8 @@ import { CheckResultObject } from '../../server/checkResult';
 // Make URL query object available as props to the page on first render
 // to read `from`, `to` params and a `disableBotDetection` param for testing and demo purposes
 export { getServerSideProps } from 'use-location-state/next';
+
+type FlightQueryResult = CheckResultObject<Flight[]>;
 
 export const AIRPORTS = [
   { city: 'San Francisco', code: 'SFO' },
@@ -66,7 +68,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
   const [toCode, setToCode] = useQueryState('to', to?.toUpperCase() ?? AIRPORTS[1].code);
 
   /**
-   * Use the Fingerprint Pro React SDK hook to get visitor data (https://github.com/fingerprintjs/fingerprintjs-pro-react)
+   * We use the Fingerprint Pro React SDK hook to get visitor data (https://github.com/fingerprintjs/fingerprintjs-pro-react)
    * For Vue, Angular, Svelte, and other frameworks, see https://dev.fingerprint.com/docs/frontend-libraries
    * See '/client/use-visitor-data.js' for an example implementation of similar functionality without the SDK
    */
@@ -80,23 +82,30 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
     { immediate: false }
   );
 
-  const getFlightsQuery = useQuery<CheckResultObject<Flight[]>>(
+  /**
+   * We use React Query to easily keep track of the state of the flights request (https://react-query-v3.tanstack.com/)
+   * But you can achieve the same result with plain old `fetch` and `useState`
+   */
+  const getFlightsQuery = useQuery<FlightQueryResult, Error>(
     ['getFlights'],
     async () => {
       const { requestId } = await getVisitorData();
-      return await (
-        await fetch(`/api/web-scraping/flights`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            from: fromCode,
-            to: toCode,
-            requestId,
-          } as FlightQuery),
-        })
-      ).json();
+      const response = await fetch(`/api/web-scraping/flights`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: fromCode,
+          to: toCode,
+          requestId,
+        } as FlightQuery),
+      });
+      if (response.status < 500) {
+        return await response.json();
+      } else {
+        throw new Error('Failed to fetch flights: ' + response.statusText);
+      }
     },
     {
       enabled: false,
@@ -231,32 +240,41 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
   );
 };
 
-const Results = ({ data, isFetching }: UseQueryResult<CheckResultObject<Flight[]>>) => {
+const Results: FunctionComponent<UseQueryResult<FlightQueryResult, Error>> = ({ data, isFetching, error }) => {
   const { data: flights, message, severity } = data ?? {};
 
+  if (isFetching) {
+    return (
+      <Box display={'flex'} justifyContent={'center'} margin={3}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Alert severity="error" className="UsecaseWrapper_alert message">
+        {error.message}
+      </Alert>
+    );
+  }
+  if (message && severity !== 'success') {
+    return (
+      <Alert severity={severity} className="UsecaseWrapper_alert message">
+        {message}
+      </Alert>
+    );
+  }
+  if (!(flights?.length > 0)) return null;
   return (
-    <>
-      {isFetching && (
-        <Box display={'flex'} justifyContent={'center'} margin={3}>
-          <CircularProgress />
-        </Box>
-      )}
-      {!isFetching && message && severity !== 'success' && (
-        <Alert severity={severity} className="UsecaseWrapper_alert message">
-          {message}
-        </Alert>
-      )}
-      {!isFetching && flights && flights.length > 0 && (
-        <div>
-          <Box marginTop={(theme) => theme.spacing(2)}>
-            <Typography variant="overline">Found {flights.length} flights</Typography>
-          </Box>
-          {flights.map((flight) => (
-            <FlightCard key={flight.flightNumber} flight={flight} />
-          ))}
-        </div>
-      )}
-    </>
+    <div>
+      <Box marginTop={(theme) => theme.spacing(2)}>
+        <Typography variant="overline">Found {flights.length} flights</Typography>
+      </Box>
+      {flights.map((flight) => (
+        <FlightCard key={flight.flightNumber} flight={flight} />
+      ))}
+    </div>
   );
 };
 

@@ -23,10 +23,6 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
 
   const { from, to, requestId } = req.body as FlightQuery;
 
-  // if (from) {
-  //   throw new Error('Not implemented');
-  // }
-
   // Validate request ID format
   if (!isRequestIdFormatValid(requestId)) {
     sendForbiddenResponse(
