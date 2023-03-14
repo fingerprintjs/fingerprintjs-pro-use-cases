@@ -10,7 +10,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import FlightCard from '../../client/components/web-scraping/FlightCard';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -18,6 +18,7 @@ import styles from '../../styles/web-scraping.module.css';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import Link from 'next/link';
 import { useQueryState } from 'use-location-state/next';
+import { useQuery } from 'react-query';
 
 // Make URL query object available as props to the page on first render
 // to read `from`, `to` params and a `disableBotDetection` param for testing and demo purposes
@@ -66,24 +67,6 @@ export const WebScrapingUseCase = ({ from, to, disableBotDetection }) => {
   const [fromCode, setFromCode] = useQueryState('from', from?.toUpperCase() ?? AIRPORTS[0].code);
   const [toCode, setToCode] = useQueryState('to', to?.toUpperCase() ?? AIRPORTS[1].code);
 
-  /** @typedef {import('../../client/components/web-scraping/FlightCard').Flight} Flight */
-  /** @type {[Flight[] | undefined, React.Dispatch<Flight[] | undefined>]} */
-  const [flights, setFlights] = useState();
-  const [message, setMessage] = useState('');
-
-  /** @typedef {import('../../server/server').Severity} Severity */
-  /** @type {[Severity | undefined, React.Dispatch<Severity>]} */
-  const [messageSeverity, setMessageSeverity] = useState();
-  const [loading, setLoading] = useState(false);
-
-  // Search for flights when the page loads
-  useEffect(() => {
-    if (fromCode && toCode) {
-      searchFlights();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   /**
    * Use the Fingerprint Pro React SDK hook to get visitor data (https://github.com/fingerprintjs/fingerprintjs-pro-react)
    * For Vue, Angular, Svelte, and other frameworks, see https://dev.fingerprint.com/docs/frontend-libraries
@@ -99,40 +82,40 @@ export const WebScrapingUseCase = ({ from, to, disableBotDetection }) => {
     { immediate: false }
   );
 
-  async function searchFlights() {
-    setLoading(true);
-    setMessage('');
-    const { requestId } = await getVisitorData();
-    try {
-      const response = await fetch(`/api/web-scraping/flights`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: fromCode,
-          to: toCode,
-          requestId,
-        }),
-      });
-      if (response.status === 500) {
-        throw new Error(response.statusText);
-      }
-      /** @type {import('../../server/checkResult').CheckResult} */
-      const result = await response.json();
-      setLoading(false);
-      setFlights(result.data);
-      if (result.severity !== 'success') {
-        setMessage(result.message);
-        setMessageSeverity(result.severity);
-      }
-    } catch (error) {
-      setLoading(false);
-      setMessageSeverity('error');
-      setMessage(error.toString());
-      console.log(error);
+  const getFlightsQuery = useQuery(
+    ['getFlights'],
+    async () => {
+      const { requestId } = await getVisitorData();
+      return await (
+        await fetch(`/api/web-scraping/flights`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: fromCode,
+            to: toCode,
+            requestId,
+          }),
+        })
+      ).json();
+    },
+    {
+      enabled: false,
     }
-  }
+  );
+
+  // Search for flights when the page loads
+  useEffect(() => {
+    if (fromCode && toCode) {
+      getFlightsQuery.refetch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const { isFetching, data } = getFlightsQuery;
+  const flights = data?.data;
+  console.log(isFetching);
 
   return (
     <>
@@ -194,7 +177,7 @@ export const WebScrapingUseCase = ({ from, to, disableBotDetection }) => {
         <form
           onSubmit={(event) => {
             event.preventDefault();
-            searchFlights();
+            getFlightsQuery.refetch();
           }}
         >
           <Grid container spacing={1} marginBottom={3}>
@@ -240,23 +223,23 @@ export const WebScrapingUseCase = ({ from, to, disableBotDetection }) => {
               color="primary"
               disableElevation
               fullWidth
-              disabled={!toCode || !fromCode || loading}
+              disabled={!toCode || !fromCode || isFetching}
             >
               Search flights
             </Button>
           }
-          {loading && (
+          {isFetching && (
             <Box display={'flex'} justifyContent={'center'} margin={3}>
               <CircularProgress />
             </Box>
           )}
-          {!loading && message && (
-            <Alert severity={messageSeverity} className="UsecaseWrapper_alert message">
-              {message}
+          {!isFetching && data?.message && data.severity !== 'success' && (
+            <Alert severity={data.severity} className="UsecaseWrapper_alert message">
+              {data.message}
             </Alert>
           )}
         </form>
-        {flights && flights.length > 0 && !loading && (
+        {!isFetching && flights && flights.length > 0 && (
           <div>
             <Box marginTop={(theme) => theme.spacing(2)}>
               <Typography variant="overline">Found {flights.length} flights</Typography>
