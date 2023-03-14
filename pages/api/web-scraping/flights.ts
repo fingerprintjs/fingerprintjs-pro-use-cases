@@ -1,4 +1,4 @@
-import { FingerprintJsServerApiClient, Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { EventResponse, FingerprintJsServerApiClient, Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Flight } from '../../../client/components/web-scraping/FlightCard';
 import { CheckResult, CheckResultObject, checkResultType } from '../../../server/checkResult';
@@ -23,6 +23,10 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
 
   const { from, to, requestId } = req.body as FlightQuery;
 
+  // if (from) {
+  //   throw new Error('Not implemented');
+  // }
+
   // Validate request ID format
   if (!isRequestIdFormatValid(requestId)) {
     sendForbiddenResponse(
@@ -33,7 +37,7 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
   }
 
   // Retrieve analysis event from the Server API using the request ID
-  let botData;
+  let botData: EventResponse['products']['botd']['data'] | undefined;
   try {
     const client = new FingerprintJsServerApiClient({ region: Region.Global, apiKey: SERVER_API_KEY });
     const eventResponse = await client.getEvent(requestId);

@@ -17,7 +17,7 @@ import styles from '../../styles/web-scraping.module.css';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import Link from 'next/link';
 import { useQueryState } from 'use-location-state/next';
-import { useQuery } from 'react-query';
+import { useQuery, UseQueryResult } from 'react-query';
 import { NextPage } from 'next';
 import { FlightQuery } from '../api/web-scraping/flights';
 import { CheckResultObject } from '../../server/checkResult';
@@ -93,13 +93,14 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
           body: JSON.stringify({
             from: fromCode,
             to: toCode,
-            requestId: '1678812936685.5qxeU3',
+            requestId,
           } as FlightQuery),
         })
       ).json();
     },
     {
       enabled: false,
+      retry: false,
     }
   );
 
@@ -111,8 +112,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { isFetching, data } = getFlightsQuery;
-  const { data: flights, message, severity } = data ?? {};
+  const { isFetching } = getFlightsQuery;
 
   return (
     <>
@@ -224,28 +224,38 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
               Search flights
             </Button>
           }
-          {isFetching && (
-            <Box display={'flex'} justifyContent={'center'} margin={3}>
-              <CircularProgress />
-            </Box>
-          )}
-          {!isFetching && message && severity !== 'success' && (
-            <Alert severity={severity} className="UsecaseWrapper_alert message">
-              {message}
-            </Alert>
-          )}
         </form>
-        {!isFetching && flights && flights.length > 0 && (
-          <div>
-            <Box marginTop={(theme) => theme.spacing(2)}>
-              <Typography variant="overline">Found {flights.length} flights</Typography>
-            </Box>
-            {flights.map((flight) => (
-              <FlightCard key={flight.flightNumber} flight={flight} />
-            ))}
-          </div>
-        )}
+        <Results {...getFlightsQuery} />
       </UseCaseWrapper>
+    </>
+  );
+};
+
+const Results = ({ data, isFetching }: UseQueryResult<CheckResultObject<Flight[]>>) => {
+  const { data: flights, message, severity } = data ?? {};
+
+  return (
+    <>
+      {isFetching && (
+        <Box display={'flex'} justifyContent={'center'} margin={3}>
+          <CircularProgress />
+        </Box>
+      )}
+      {!isFetching && message && severity !== 'success' && (
+        <Alert severity={severity} className="UsecaseWrapper_alert message">
+          {message}
+        </Alert>
+      )}
+      {!isFetching && flights && flights.length > 0 && (
+        <div>
+          <Box marginTop={(theme) => theme.spacing(2)}>
+            <Typography variant="overline">Found {flights.length} flights</Typography>
+          </Box>
+          {flights.map((flight) => (
+            <FlightCard key={flight.flightNumber} flight={flight} />
+          ))}
+        </div>
+      )}
     </>
   );
 };
