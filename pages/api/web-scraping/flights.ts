@@ -1,6 +1,7 @@
-// @ts-check
 import { FingerprintJsServerApiClient, Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
-import { CheckResult, checkResultType } from '../../../server/checkResult';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { Flight } from '../../../client/components/web-scraping/FlightCard';
+import { CheckResult, CheckResultObject, checkResultType } from '../../../server/checkResult';
 import { isRequestIdFormatValid, originIsAllowed, visitIpMatchesRequestIp } from '../../../server/checks';
 import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, SERVER_API_KEY } from '../../../server/const';
 import { sendErrorResponse, sendForbiddenResponse, sendOkResponse } from '../../../server/response';
@@ -8,24 +9,19 @@ import { ensurePostRequest, messageSeverity } from '../../../server/server';
 import { DAY_MS, FIVE_MINUTES_MS, HOUR_MS } from '../../../shared/const';
 import { AIRPORTS } from '../../web-scraping';
 
-/**
- * @typedef {Object} ResultsQuery
- * @property {string} from
- * @property {string} to
- * @property {string} requestId
- * */
+export type FlightQuery = {
+  from: string;
+  to: string;
+  requestId: string;
+};
 
-/**
- * @param {import('next').NextApiRequest} req
- * @param {import('next').NextApiResponse} res
- */
-export default async function getFlights(req, res) {
+export default async function getFlights(req: NextApiRequest, res: NextApiResponse<CheckResultObject<Flight[]>>) {
   // This API route accepts only POST requests.
   if (!ensurePostRequest(req, res)) {
     return;
   }
 
-  const { from, to, requestId } = /** @type {ResultsQuery} */ (req.body);
+  const { from, to, requestId } = req.body as FlightQuery;
 
   // Validate request ID format
   if (!isRequestIdFormatValid(requestId)) {
@@ -158,17 +154,10 @@ export default async function getFlights(req, res) {
 }
 
 /**
- * @typedef {import('../../../client/components/web-scraping/FlightCard').Flight} Flight
- */
-
-/**
  * Randomly generates flight results for given airport codes
  * to simulate the expensive query you are trying to protect from web scraping.
- * @param {string} fromCode
- * @param {string} toCode
- * @returns {Flight[]}
  */
-function getFlightResults(fromCode, toCode) {
+function getFlightResults(fromCode: string, toCode: string): Flight[] {
   const results = [];
   const airlines = ['United', 'Delta', 'American', 'Southwest', 'Alaska', 'JetBlue'];
   for (const airline of airlines.slice(0, 2 + Math.floor(Math.random() * 4))) {

@@ -1,4 +1,3 @@
-// @ts-check
 import {
   Alert,
   Autocomplete,
@@ -12,13 +11,16 @@ import {
 } from '@mui/material';
 import { useEffect } from 'react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
-import FlightCard from '../../client/components/web-scraping/FlightCard';
+import FlightCard, { Flight } from '../../client/components/web-scraping/FlightCard';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import styles from '../../styles/web-scraping.module.css';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import Link from 'next/link';
 import { useQueryState } from 'use-location-state/next';
 import { useQuery } from 'react-query';
+import { NextPage } from 'next';
+import { FlightQuery } from '../api/web-scraping/flights';
+import { CheckResultObject } from '../../server/checkResult';
 
 // Make URL query object available as props to the page on first render
 // to read `from`, `to` params and a `disableBotDetection` param for testing and demo purposes
@@ -52,18 +54,14 @@ export const AIRPORTS = [
   { city: 'Helsinki', code: 'HEL' },
   { city: 'Rome', code: 'FCO' },
 ];
-/**
- * @typedef WebScrapingQuery
- * @property {string} [from]
- * @property {string} [to]
- * @property {boolean} [disableBotDetection]
- */
 
-/**
- * @param {WebScrapingQuery} query - getServerSideProps converts query params to an object and passes it to the page as props
- * @returns {JSX.Element} React component
- */
-export const WebScrapingUseCase = ({ from, to, disableBotDetection }) => {
+type QueryAsProps = {
+  from?: string;
+  to?: string;
+  disableBotDetection?: boolean;
+};
+
+export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBotDetection }) => {
   const [fromCode, setFromCode] = useQueryState('from', from?.toUpperCase() ?? AIRPORTS[0].code);
   const [toCode, setToCode] = useQueryState('to', to?.toUpperCase() ?? AIRPORTS[1].code);
 
@@ -82,7 +80,7 @@ export const WebScrapingUseCase = ({ from, to, disableBotDetection }) => {
     { immediate: false }
   );
 
-  const getFlightsQuery = useQuery(
+  const getFlightsQuery = useQuery<CheckResultObject<Flight[]>>(
     ['getFlights'],
     async () => {
       const { requestId } = await getVisitorData();
@@ -95,8 +93,8 @@ export const WebScrapingUseCase = ({ from, to, disableBotDetection }) => {
           body: JSON.stringify({
             from: fromCode,
             to: toCode,
-            requestId,
-          }),
+            requestId: '1678812936685.5qxeU3',
+          } as FlightQuery),
         })
       ).json();
     },
@@ -114,8 +112,7 @@ export const WebScrapingUseCase = ({ from, to, disableBotDetection }) => {
   }, []);
 
   const { isFetching, data } = getFlightsQuery;
-  const flights = data?.data;
-  console.log(isFetching);
+  const { data: flights, message, severity } = data ?? {};
 
   return (
     <>
@@ -137,7 +134,6 @@ export const WebScrapingUseCase = ({ from, to, disableBotDetection }) => {
           </div>
         }
         // Todo: Add a link to the blog post when it's published
-        // articleURL="https://fingerprintjs.com/blog/web-scraping-prevention/"
         listItems={[
           <>
             The <code>flights</code> API endpoint on this page is protected by{' '}
@@ -233,9 +229,9 @@ export const WebScrapingUseCase = ({ from, to, disableBotDetection }) => {
               <CircularProgress />
             </Box>
           )}
-          {!isFetching && data?.message && data.severity !== 'success' && (
-            <Alert severity={data.severity} className="UsecaseWrapper_alert message">
-              {data.message}
+          {!isFetching && message && severity !== 'success' && (
+            <Alert severity={severity} className="UsecaseWrapper_alert message">
+              {message}
             </Alert>
           )}
         </form>

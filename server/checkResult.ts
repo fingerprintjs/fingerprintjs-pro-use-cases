@@ -1,23 +1,26 @@
-// @ts-check
+type Severity = import('./server').Severity;
+
+export type CheckResultObject<Data = any> = {
+  message: string;
+  severity: Severity;
+  type: string;
+  data?: Data;
+};
+
 export class CheckResult {
-  /**
-   * @param {string} message
-   * @param {import('./server').Severity} severity
-   * @param {string} type
-   * @param {Object | undefined} data
-   * */
-  constructor(message, severity, type, data = undefined) {
-    /** @type {string} */
+  message: string;
+  severity: Severity;
+  type: string;
+  data: any;
+
+  constructor(message: string, severity: Severity, type: string, data = undefined) {
     this.message = message;
-    /** @type {import('./server').Severity} */
     this.severity = severity;
-    /** @type {string} */
     this.type = type;
-    /** @type {Object | undefined} */
     this.data = data;
   }
 
-  toJsonResponse() {
+  toJsonResponse(): CheckResultObject {
     return {
       message: this.message,
       severity: this.severity,
