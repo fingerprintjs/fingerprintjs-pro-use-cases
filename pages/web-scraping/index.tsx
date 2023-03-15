@@ -9,7 +9,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { FunctionComponent } from 'react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import FlightCard, { Flight } from '../../client/components/web-scraping/FlightCard';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -232,7 +231,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
   );
 };
 
-const Results: FunctionComponent<UseQueryResult<FlightQueryResult, Error>> = ({ data, isFetching, error }) => {
+const Results = ({ data, isFetching, error }: UseQueryResult<FlightQueryResult, Error>) => {
   const { data: flights, message, severity } = data ?? {};
 
   if (isFetching) {
