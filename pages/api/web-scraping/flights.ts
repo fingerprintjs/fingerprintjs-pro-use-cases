@@ -158,6 +158,9 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
  * to simulate the expensive query you are trying to protect from web scraping.
  */
 function getFlightResults(fromCode: string, toCode: string): Flight[] {
+  if (!AIRPORTS.find((airport) => airport.code === fromCode) || !AIRPORTS.find((airport) => airport.code === toCode)) {
+    return [];
+  }
   const results = [];
   const airlines = ['United', 'Delta', 'American', 'Southwest', 'Alaska', 'JetBlue'];
   for (const airline of airlines.slice(0, 2 + Math.floor(Math.random() * 4))) {

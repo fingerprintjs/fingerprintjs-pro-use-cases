@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { FunctionComponent, useEffect } from 'react';
+import { FunctionComponent } from 'react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import FlightCard, { Flight } from '../../client/components/web-scraping/FlightCard';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -108,18 +108,10 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
       }
     },
     {
-      enabled: false,
+      refetchOnMount: 'always',
       retry: false,
     }
   );
-
-  // Search for flights when the page loads
-  useEffect(() => {
-    if (fromCode && toCode) {
-      getFlightsQuery.refetch();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const { isFetching } = getFlightsQuery;
 
@@ -265,7 +257,7 @@ const Results: FunctionComponent<UseQueryResult<FlightQueryResult, Error>> = ({ 
       </Alert>
     );
   }
-  if (!(flights?.length > 0)) return null;
+  if (!flights) return null;
   return (
     <div>
       <Box marginTop={(theme) => theme.spacing(2)}>
