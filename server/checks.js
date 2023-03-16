@@ -1,6 +1,14 @@
+// @ts-check
 import { CheckResult, checkResultType } from './checkResult';
 import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, IPv4_REGEX, MIN_CONFIDENCE_SCORE } from './const';
 import { messageSeverity, ourOrigins } from './server';
+
+// Validates format of visitorId and requestId.
+export const isVisitorIdFormatValid = (visitorId) => /^[a-zA-Z0-9]{20}$/.test(visitorId);
+export const isRequestIdFormatValid = (requestId) => /^\d{13}\.[a-zA-Z0-9]{6}$/.test(requestId);
+export function areVisitorIdAndRequestIdValid(visitorId, requestId) {
+  return isRequestIdFormatValid(requestId) && isVisitorIdFormatValid(visitorId);
+}
 
 export function checkFreshIdentificationRequest(visitorData) {
   // The Server API must contain information about this specific identification request.
@@ -9,7 +17,7 @@ export function checkFreshIdentificationRequest(visitorData) {
     return new CheckResult(
       'Hmmm, sneaky trying to forge information from the client-side, no luck this time, no sensitive action was performed.',
       messageSeverity.Error,
-      checkResultType.RequestIdMissmatch
+      checkResultType.RequestIdMismatch
     );
   }
 
@@ -41,15 +49,7 @@ export function checkConfidenceScore(visitorData) {
 
 // Checks if the authentication request comes from the same IP address as the identification request.
 export function checkIpAddressIntegrity(visitorData, request) {
-  const userIp = request.headers['x-forwarded-for']?.split(',')[0] ?? '';
-
-  if (
-    process.env.NODE_ENV !== 'development' && // This check is disabled on purpose in the Stackblitz and localhost environments.
-    // This is an example of obtaining the client IP address.
-    // In most cases, it's a good idea to look for the right-most external IP address in the list to prevent spoofing.
-    IPv4_REGEX.test(userIp) && // For now our check supports only IPv4 addresses
-    userIp !== visitorData.visits[0].ip
-  ) {
+  if (!visitIpMatchesRequestIp(visitorData.visits[0].ip, request)) {
     return new CheckResult(
       'IP mismatch. An attacker might have tried to phish the victim.',
       messageSeverity.Error,
@@ -58,21 +58,57 @@ export function checkIpAddressIntegrity(visitorData, request) {
   }
 }
 
+/**
+ *
+ * @param {string} visitIp
+ * @param {import('http').IncomingMessage} request
+ * @returns {boolean}
+ */
+export function visitIpMatchesRequestIp(visitIp = '', request) {
+  // This check is skipped on purpose in the Stackblitz and localhost environments.
+  if (process.env.NODE_ENV === 'development') {
+    return true;
+  }
+
+  const requestIp = /** @type {string} */ (request.headers['x-forwarded-for'])?.split(',')[0] ?? '';
+
+  // IPv6 addresses are not supported yet, skip the check
+  if (!IPv4_REGEX.test(requestIp)) {
+    return true;
+  }
+
+  return requestIp === visitIp;
+}
+
 // Checks if the authentication request comes from a known origin and
 // if the authentication request's origin corresponds to the origin/URL provided by the Fingerprint Pro Server API.
 // Additionally, one should set Request Filtering settings in the dashboard: https://dev.fingerprint.com/docs/request-filtering
 export function checkOriginsIntegrity(visitorData, request) {
-  const visitorDataOrigin = new URL(visitorData.visits[0].url).origin;
-  if (
-    process.env.NODE_ENV !== 'development' && // This check is disabled on purpose in the Stackblitz and localhost environments.
-    (visitorDataOrigin !== request.headers['origin'] ||
-      !ourOrigins.includes(visitorDataOrigin) ||
-      !ourOrigins.includes(request.headers['origin']))
-  ) {
+  if (!originIsAllowed(visitorData.visits[0].url, request)) {
     return new CheckResult(
       'Origin mismatch. An attacker might have tried to phish the victim.',
       messageSeverity.Error,
       checkResultType.ForeignOrigin
     );
   }
+}
+
+/**
+ *
+ * @param {string} url
+ * @param {import('http').IncomingMessage} request
+ * @returns {boolean}
+ */
+export function originIsAllowed(url = '', request) {
+  // This check is skipped on purpose in the Stackblitz and localhost environments.
+  if (process.env.NODE_ENV === 'development') {
+    return true;
+  }
+
+  const visitDataOrigin = new URL(url).origin;
+  return (
+    visitDataOrigin === request.headers['origin'] &&
+    ourOrigins.includes(visitDataOrigin) &&
+    ourOrigins.includes(request.headers['origin'])
+  );
 }

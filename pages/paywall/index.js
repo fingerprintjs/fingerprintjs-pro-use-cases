@@ -1,3 +1,4 @@
+// @ts-check
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -20,7 +21,7 @@ export default function LoanRisk({ articles }) {
   return (
     <UseCaseWrapper
       title="Paywall"
-      description="This page demonstrates paywall implementation using Fingerprint Pro."
+      description={<p>This page demonstrates paywall implementation using Fingerprint Pro.</p>}
       listItems={[
         <>
           We keep track of how many articles you have viewed per day. You can view {ARTICLE_VIEW_LIMIT} articles daily.

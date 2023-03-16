@@ -1,3 +1,4 @@
+// @ts-check
 import { useState } from 'react';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
@@ -8,6 +9,7 @@ export default function Index() {
   const [statusMessage, setStatusMessage] = useState();
   const [severity, setSeverity] = useState();
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
+  /** @type {[number | undefined, import('react').Dispatch<number | undefined> ]} */
   const [httpResponseStatus, setHttpResponseStatus] = useState();
 
   const visitorData = useVisitorData({
@@ -19,8 +21,8 @@ export default function Index() {
     setIsWaitingForResponse(true);
 
     const { data: fpResult } = await visitorData.refetch();
-    const visitorId = fpResult.visitorId;
-    const requestId = fpResult.requestId;
+    const visitorId = fpResult?.visitorId;
+    const requestId = fpResult?.requestId;
 
     const orderData = {
       visitorId,
@@ -48,8 +50,12 @@ export default function Index() {
     <UseCaseWrapper
       hideSrcListItem
       title="Administration"
-      description=" On this page, you can remove all info obtained from this browser. This will reenable some scenarios for
-              you if you were locked out from the specific action."
+      description={
+        <p>
+          On this page, you can remove all info obtained from this browser. This will reenable some scenarios for you if
+          you were locked out of a specific action.
+        </p>
+      }
     >
       <form onSubmit={handleSubmit} className="Form_container">
         <Button

@@ -1,11 +1,23 @@
+// @ts-check
 import Link from 'next/link';
 import Paper from '@mui/material/Paper';
-import { AirplaneTicket, Block, CreditScore, Money, People, Settings } from '@mui/icons-material';
+import {
+  AirplaneTicket,
+  Block,
+  CreditScore,
+  Money,
+  People,
+  PrecisionManufacturing,
+  Settings,
+} from '@mui/icons-material';
 import { PageTile } from '../client/components/page-tile';
 import Grid from '@mui/material/Grid';
 import { Logo } from '../client/components/logo';
 
-const pages = [
+/**
+ * @type {Array<import('../client/components/page-tile').PageTileProps>}
+ * */
+const pageTiles = [
   {
     title: 'Coupon Fraud',
     url: '/coupon-fraud',
@@ -54,6 +66,12 @@ As a result, you will protect your users and your business against various payme
     
     Demonstration of personalized content such as search history, customized user interface, or even a shopping cart.`,
   },
+  {
+    title: 'Web scraping prevention',
+    description: 'Protect your content from web scraping by reliably detecting bots and browser automation tools.',
+    url: '/web-scraping',
+    icon: <PrecisionManufacturing />,
+  },
 ];
 
 export default function Index() {
@@ -99,10 +117,10 @@ export default function Index() {
             marginBottom: (theme) => theme.spacing(3),
           }}
         >
-          {pages.map((page) => (
+          {pageTiles.map((pageTile) => (
             <Grid
+              key={pageTile.url}
               className="UseCase"
-              key={page.url}
               item
               md={4}
               xs={12}
@@ -113,7 +131,7 @@ export default function Index() {
                 },
               }}
             >
-              <PageTile page={page} />
+              <PageTile {...pageTile} />
             </Grid>
           ))}
         </Grid>

@@ -1,6 +1,8 @@
+// @ts-check
 import { Sequelize } from 'sequelize';
+import { areVisitorIdAndRequestIdValid } from './checks';
 import { fingerprintJsApiClient } from './fingerprint-api';
-import { CheckResult } from './checkResult';
+import { CheckResult, checkResultType } from './checkResult';
 import { sendForbiddenResponse } from './response';
 
 // Provision the database.
@@ -14,7 +16,14 @@ export const sequelize = new Sequelize('database', '', '', {
 
 // Demo origins.
 // It is recommended to use production origins instead.
-export const ourOrigins = ['https://fingerprinthub.com', 'https://localhost:3000', 'http://localhost:3000'];
+export const ourOrigins = [
+  'https://fingerprinthub.com',
+  'https://localhost:3000',
+  'http://localhost:3000',
+  'https://staging.fingerprinthub.com',
+];
+
+/** @typedef {'success'|'warning'|'error'} Severity */
 
 export const messageSeverity = Object.freeze({
   Success: 'success',
@@ -22,19 +31,16 @@ export const messageSeverity = Object.freeze({
   Error: 'error',
 });
 
-// Validates format of visitorId and requestId.
-export function areVisitorIdAndRequestIdValid(visitorId, requestId) {
-  const isVisitorIdFormatValid = /^[a-zA-Z0-9]{20}$/.test(visitorId);
-  const isRequestIdFormatValid = /^\d{13}\.[a-zA-Z0-9]{6}$/.test(requestId);
-  return isRequestIdFormatValid && isVisitorIdFormatValid;
-}
-
 export function ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId) {
   if (!areVisitorIdAndRequestIdValid(visitorId, requestId)) {
     reportSuspiciousActivity(req);
     sendForbiddenResponse(
       res,
-      new CheckResult('Forged visitorId or requestId detected. Try harder next time.', messageSeverity.Error)
+      new CheckResult(
+        'Forged visitorId or requestId detected. Try harder next time.',
+        messageSeverity.Error,
+        checkResultType.RequestIdMismatch
+      )
     );
 
     return false;
@@ -47,7 +53,7 @@ export function ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId)
 // Alternatively, on the Node.js environment one can use Server API Node.js library: https://github.com/fingerprintjs/fingerprintjs-pro-server-api-node-sdk
 // const client = new FingerprintJsServerApiClient({
 //   region: Region.Global,
-//   apiKey: 'F6gQ8H8vQLc7mVsVKaFx',
+//   apiKey: SERVER_API_KEY,
 //   authenticationMode: AuthenticationMode.QueryParameter,
 // });
 
@@ -72,12 +78,32 @@ export async function getVisitorDataWithRequestId(visitorId, requestId) {
 
 // Report suspicious user activity according to internal processes here.
 // Possibly this action could also lock the user's account temporarily or ban a specific action.
-export function reportSuspiciousActivity(context) {}
+export function reportSuspiciousActivity(_context) {
+  return _context;
+}
 
+/**
+ * @param {import('next').NextApiRequest} req
+ * @param {import('next').NextApiResponse} res
+ * @returns {boolean}
+ */
 export function ensurePostRequest(req, res) {
   if (req.method !== 'POST') {
     res.status(405).send({ message: 'Only POST requests allowed' });
+    return false;
+  }
 
+  return true;
+}
+
+/**
+ * @param {import('next').NextApiRequest} req
+ * @param {import('next').NextApiResponse} res
+ * @returns {boolean}
+ */
+export function ensureGetRequest(req, res) {
+  if (req.method !== 'GET') {
+    res.status(405).send({ message: 'Only GET requests allowed' });
     return false;
   }
 

@@ -1,28 +1,47 @@
+type Severity = import('./server').Severity;
+
+export type CheckResultObject<Data = any> = {
+  message: string;
+  severity: Severity;
+  type: string;
+  data?: Data;
+};
+
 export class CheckResult {
-  constructor(message, messageSeverity, type) {
+  message: string;
+  severity: Severity;
+  type: string;
+  data?: any;
+
+  constructor(message: string, severity: Severity, type: string, data = undefined) {
     this.message = message;
-    this.messageSeverity = messageSeverity;
+    this.severity = severity;
     this.type = type;
+    this.data = data;
   }
 
-  toJsonResponse() {
+  toJsonResponse(): CheckResultObject {
     return {
       message: this.message,
-      severity: this.messageSeverity,
+      severity: this.severity,
       type: this.type,
+      data: this.data,
     };
   }
 }
 
 export const checkResultType = Object.freeze({
   LowConfidenceScore: 'LowConfidenceScore',
-  RequestIdMissmatch: 'RequestIdMissmatch',
+  RequestIdMismatch: 'RequestIdMismatch',
   OldTimestamp: 'OldTimestamp',
   TooManyLoginAttempts: 'TooManyLoginAttempts',
   ForeignOrigin: 'ForeignOrigin',
   Challenged: 'Challenged',
   IpMismatch: 'IpMismatch',
   Passed: 'Passed',
+  MaliciousBotDetected: 'MaliciousBotDetected',
+  GoodBotDetected: 'GoodBotDetected',
+  ServerError: 'ServerError',
   // Login specific checks.
   IncorrectCredentials: 'IncorrectCredentials',
   // Payment specific checks.

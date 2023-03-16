@@ -16,6 +16,7 @@ import { useVisitorData } from '../../client/use-visitor-data';
 import { useRequestLoan } from '../../client/api/loan-risk/use-request-loan';
 import Alert from '@mui/material/Alert';
 import { calculateMonthInstallment } from '../../shared/loan-risk/calculate-month-installment';
+import React from 'react';
 
 function SliderField({ label, min, max, value, onChange, prefix, suffix, name }) {
   return (
@@ -91,7 +92,12 @@ export default function LoanRisk() {
   return (
     <UseCaseWrapper
       title="Loan Risk problem"
-      description="This page demonstrates a loan request form protected against fraud. Thanks to Fingerprint Pro you can compare previous loan requests sent by a given user without authentications and between normal and  incognito mode."
+      description={
+        <p>
+          This page demonstrates a loan request form protected against fraud. Thanks to Fingerprint Pro you can compare
+          previous loan requests sent by a given user without authentications and between normal and incognito mode.
+        </p>
+      }
       listItems={[
         `We perform simple calculations to check if you can get a loan.`,
         `Try to change your monthly income, first name, or last name after the first submission. If we find your previous records associated with your visitorId that contains different values, you will receive a warning and we won't perform any calculations.`,

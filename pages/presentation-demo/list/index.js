@@ -1,3 +1,4 @@
+// @ts-check
 import { useListVisits } from '../../../client/api/identification/useListVisits';
 import { CircularProgress, Grid } from '@mui/material';
 import { IdentificationCard } from '../../../client/components/identification/identification-card';
@@ -31,7 +32,7 @@ export default function Index({ linkedId }) {
       }}
       hideSrcListItem
       title="Identified users"
-      description="You can view all identified users here"
+      description={<p>You can view all identified users here.</p>}
     >
       {allVisits.isLoading && <CircularProgress />}
       <Grid container spacing={2}>

@@ -1,3 +1,4 @@
+// @ts-check
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useVisitorData } from '../../use-visitor-data';
 import { apiRequest } from '../api';
@@ -21,6 +22,7 @@ export function useUserPreferences() {
     enabled: Boolean(fpData),
   });
   const updateUserPreferencesMutation = useMutation(
+    // @ts-ignore
     (variables) => updateUserPreferences(fpData, variables.hasDarkMode),
     {
       onSuccess: async (data) => {

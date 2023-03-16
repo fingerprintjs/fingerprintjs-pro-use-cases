@@ -13,6 +13,7 @@ import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import { useVisitorData } from '../../client/use-visitor-data';
+import React from 'react';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -37,9 +38,15 @@ export default function Index() {
   const [authMessage, setAuthMessage] = useState();
   const [severity, setSeverity] = useState();
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
+  /**
+   * @type {[number, React.Dispatch<number>]}
+   */
   const [httpResponseStatus, setHttpResponseStatus] = useState();
   const [showPassword, setShowPassword] = useState(false);
 
+  /**
+   * @type {React.MutableRefObject<HTMLDivElement | null>}
+   */
   const messageRef = useRef();
 
   useEffect(() => {
@@ -90,14 +97,14 @@ export default function Index() {
     <UseCaseWrapper
       title="Credential Stuffing problem"
       description={
-        <>
+        <p>
           This page demonstrates login form protected against{' '}
           <a href="https://fingerprint.com/blog/credential-stuffing-prevention-checklist/">Credential Stuffing</a>{' '}
           attack. Martin reused the same password among different sites and his credentials leaked. Luckily for Martin,
           this service uses FingeprintJS Pro and Martin&apos;s account is still protected even though his credentials
           are known. Try to hack into Martin&apos;s account using his credentials <code>user</code> and{' '}
           <code>password</code>. It will be very hard...
-        </>
+        </p>
       }
       articleURL="https://fingerprint.com/use-cases/credential-stuffing/"
       listItems={[

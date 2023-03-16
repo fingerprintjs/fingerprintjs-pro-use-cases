@@ -12,6 +12,7 @@ import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import { useVisitorData } from '../../client/use-visitor-data';
+import React from 'react';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -85,7 +86,7 @@ export default function Index() {
   return (
     <UseCaseWrapper
       title="Payment Fraud problem"
-      description=" This page demonstrates protected credit card form protected against different fraud."
+      description={<p>This page demonstrates protected credit card form protected against a variety types of fraud.</p>}
       articleURL="https://fingerprint.com/use-cases/payment-fraud/"
       listItems={[
         <>

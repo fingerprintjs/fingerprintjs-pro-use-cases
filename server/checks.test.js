@@ -1,3 +1,4 @@
+// @ts-check
 import { beforeEach, describe, expect, it } from 'vitest';
 import { checkIpAddressIntegrity } from './checks';
 import { CheckResult } from './checkResult';

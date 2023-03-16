@@ -9,6 +9,7 @@ import styles from './coupon-fraud.module.css';
 import Image from 'next/image';
 import { Typography } from '@mui/material';
 import { useRequestCouponClaim } from '../../client/api/coupon-fraud/use-coupon-claim';
+import React from 'react';
 
 export default function CouponFraudUseCase() {
   const visitorDataQuery = useVisitorData({
@@ -45,7 +46,8 @@ export default function CouponFraudUseCase() {
   return (
     <UseCaseWrapper
       title="Coupon Fraud problem"
-      description={<>This page demonstrates how to solve the coupon fraud problem.</>}
+      description={<p>This page demonstrates how to solve the coupon fraud problem.</p>}
+      articleURL={'https://fingerprint.com/use-cases/coupon-promo-abuse/'}
       listItems={[
         <>You can apply a coupon to the specific item only once.</>,
         <>You cannot spam coupon codes, there is a 1-hour threshold.</>,

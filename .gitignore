@@ -40,6 +40,11 @@ jspm_packages
 
 # Local database
 .data
+
+# tsc build info for compiling faster next time
+tsconfig.tsbuildinfo
+
 /test-results/
 /playwright-report/
 /playwright/.cache/
+

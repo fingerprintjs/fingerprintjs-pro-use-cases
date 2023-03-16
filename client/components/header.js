@@ -34,6 +34,10 @@ const navLinks = [
     name: 'Personalization',
     url: '/personalization',
   },
+  {
+    name: 'Scraping',
+    url: '/web-scraping',
+  },
 ];
 
 export function Header({ addonRight }) {

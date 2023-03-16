@@ -1,0 +1,5 @@
+# This file is here to include the empty `output` directory in the git repository, ready to be used by e2e tests.
+# https://stackoverflow.com/questions/115983/how-do-i-add-an-empty-directory-to-a-git-repository
+*
+!.gitignore
+!.gitkeep

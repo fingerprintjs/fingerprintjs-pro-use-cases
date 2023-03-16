@@ -24,6 +24,7 @@ import { usePersonalizationNotification } from '../../client/hooks/personalizati
 import { useSnackbar } from 'notistack';
 import { useUserPreferences } from '../../client/api/personalization/use-user-preferences';
 import { useCart } from '../../client/api/personalization/use-cart';
+import React from 'react';
 
 export default function Index() {
   const { enqueueSnackbar } = useSnackbar();
@@ -106,7 +107,12 @@ export default function Index() {
             there!
           </>,
         ]}
-        description="This page demonstrates user personalization that is achieved by Fingerprint Pro. Users don't need to login in to get a tailored experience."
+        description={
+          <p>
+            This page demonstrates user personalization that is achieved by Fingerprint Pro. Users do not need to log in
+            to get a tailored experience.
+          </p>
+        }
         articleURL="https://fingerprint.com/use-cases/personalization/"
       >
         <PersonalizationTopSection
