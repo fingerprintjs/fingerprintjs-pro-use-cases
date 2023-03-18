@@ -1,7 +1,6 @@
 // @ts-check
-import { test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { writeFileSync } from 'fs';
-import { expect } from 'vitest';
 import { FLIGHT_TAG } from '../../client/components/web-scraping/flightTags';
 
 /**

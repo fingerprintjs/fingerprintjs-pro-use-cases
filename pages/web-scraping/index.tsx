@@ -17,13 +17,22 @@ import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import Link from 'next/link';
 import { useQueryState } from 'use-location-state/next';
 import { useQuery, UseQueryResult } from 'react-query';
-import { NextPage } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 import { FlightQuery } from '../api/web-scraping/flights';
 import { CheckResultObject } from '../../server/checkResult';
 
 // Make URL query object available as props to the page on first render
 // to read `from`, `to` params and a `disableBotDetection` param for testing and demo purposes
-export { getServerSideProps } from 'use-location-state/next';
+export const getServerSideProps: GetServerSideProps<QueryAsProps> = async ({ query }) => {
+  const { from, to, disableBotDetection } = query;
+  return {
+    props: {
+      from: (from as string) ?? null,
+      to: (to as string) ?? null,
+      disableBotDetection: disableBotDetection === '1' || disableBotDetection === 'true',
+    },
+  };
+};
 
 type FlightQueryResult = CheckResultObject<Flight[]>;
 
@@ -57,9 +66,9 @@ export const AIRPORTS = [
 ];
 
 type QueryAsProps = {
-  from?: string;
-  to?: string;
-  disableBotDetection?: boolean;
+  from: string | null;
+  to: string | null;
+  disableBotDetection: boolean;
 };
 
 export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBotDetection }) => {
