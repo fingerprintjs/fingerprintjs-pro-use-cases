@@ -1,6 +1,7 @@
 // @ts-check
 import { test } from '@playwright/test';
 import { writeFileSync } from 'fs';
+import { expect } from 'vitest';
 import { FLIGHT_TAG } from '../../client/components/web-scraping/flightTags';
 
 /**
@@ -15,9 +16,10 @@ const scrapeText = async (parent, selector) => {
 test.describe('Scraping flights', () => {
   test('is possible with Bot detection off', async ({ page }) => {
     await page.goto('/web-scraping?disableBotDetection=1');
-    await page.click('button:has-text("Search flights")');
     await page.waitForLoadState('networkidle');
     const flightCards = await page.$$(`[data-test="${FLIGHT_TAG.card}"]`);
+    expect(flightCards.length > 0).toBe(true);
+
     const flightData = [];
     for (const flightCard of flightCards) {
       flightData.push({
@@ -42,6 +44,7 @@ test.describe('Scraping flights', () => {
       });
     }
 
+    expect(flightData.length > 0).toBe(true);
     writeFileSync('./e2e/output/flightData.json', JSON.stringify(flightData, null, 2));
     console.log("Scraped flight data saved to 'e2e/output/flightData.json'");
   });
