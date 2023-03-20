@@ -83,7 +83,7 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
     return;
   }
 
-  if (botData.bot?.result !== 'notDetected' && botData.bot.result !== 'good') {
+  if (!['notDetected', 'good'].includes(botData.bot?.result)) {
     sendErrorResponse(
       res,
       new CheckResult(
