@@ -5,6 +5,7 @@ import {
   AirplaneTicket,
   Block,
   CreditScore,
+  IntegrationInstructionsOutlined,
   Money,
   People,
   PrecisionManufacturing,
@@ -65,6 +66,14 @@ As a result, you will protect your users and your business against various payme
     description: `Provide your users with a tailored experience without cookies. 
     
     Demonstration of personalized content such as search history, customized user interface, or even a shopping cart.`,
+  },
+  {
+    title: 'Segment',
+    url: '/segment-b2b',
+    icon: <IntegrationInstructionsOutlined />,
+    description: `Segment Test Use Case Scenario
+    
+    To better understand user’s activity on the site to personalize sales meetings`,
   },
   {
     title: 'Web scraping prevention',

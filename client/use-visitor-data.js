@@ -20,7 +20,7 @@ export const FP_LOAD_OPTIONS = {
   region: FRONTEND_REGION,
 };
 
-async function getVisitorData({ extendedResult = true, linkedId }) {
+async function getVisitorData({ extendedResult = true, linkedId, tag = {} }) {
   const fpPromise = FingerprintJS.load(FP_LOAD_OPTIONS);
   const fp = await fpPromise;
 
@@ -28,6 +28,7 @@ async function getVisitorData({ extendedResult = true, linkedId }) {
     extendedResult,
     linkedId,
     products: ['identification'],
+    tag,
   });
 }
 
@@ -38,14 +39,15 @@ export const VISITOR_DATA_QUERY = 'VISITOR_DATA_QUERY';
  * @property {boolean} [enabled=true]
  * @property {boolean} [extendedResult=true]
  * @property {string} [linkedId]
+ * @property {object} [tag]
  */
 
 /**
  * Query for fetching visitorData using our Fingerprint Pro agent.
  * @param {UseVisitorDataOptions} options
  * */
-export function useVisitorData({ enabled = true, extendedResult = true, linkedId } = {}) {
-  return useQuery(VISITOR_DATA_QUERY, () => getVisitorData({ extendedResult, linkedId }), {
+export function useVisitorData({ enabled = true, extendedResult = true, linkedId, tag = {} } = {}) {
+  return useQuery(VISITOR_DATA_QUERY, () => getVisitorData({ extendedResult, linkedId, tag }), {
     enabled,
   });
 }

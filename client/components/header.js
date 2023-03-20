@@ -35,6 +35,10 @@ const navLinks = [
     url: '/personalization',
   },
   {
+    name: 'Segment',
+    url: '/segment-b2b',
+  },
+  {
     name: 'Scraping',
     url: '/web-scraping',
   },
