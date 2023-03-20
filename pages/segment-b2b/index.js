@@ -27,6 +27,7 @@ export default function Index() {
     firstName: 'John',
     lastName: 'Doe',
     email: 'johndoe@example.tld',
+    groupId: 'group123',
   };
   const [email, setEmail] = useState('');
   const [industry, setIndustry] = useState('');
@@ -77,6 +78,7 @@ export default function Index() {
             },
           },
           group: {
+            groupId: authenticatedUser.groupId,
             traits: {
               industry,
               email,
