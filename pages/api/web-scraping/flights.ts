@@ -69,20 +69,6 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
     return;
   }
 
-  // Check for bot presence and type
-  if (botData.bot?.result === 'good') {
-    sendOkResponse(
-      res,
-      new CheckResult(
-        'Access allowed, good bot detected.',
-        messageSeverity.Success,
-        checkResultType.GoodBotDetected,
-        getFlightResults(from, to)
-      )
-    );
-    return;
-  }
-
   if (botData.bot?.result === 'bad') {
     sendForbiddenResponse(
       res,
@@ -97,7 +83,7 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
     return;
   }
 
-  if (botData.bot?.result !== 'notDetected') {
+  if (!['notDetected', 'good'].includes(botData.bot?.result)) {
     sendErrorResponse(
       res,
       new CheckResult(
@@ -109,7 +95,8 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
     return;
   }
 
-  // We know bot is 'notDetected', verify the visit data
+  // We know bot is 'notDetected' or 'good', but
+  // we must verify the authenticity of the botDetection result
   // Check if the visit IP matches the request IP
   if (!visitIpMatchesRequestIp(botData.ip, req)) {
     sendForbiddenResponse(
@@ -145,7 +132,7 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
   sendOkResponse(
     res,
     new CheckResult(
-      'No bot nor spoofing detected, access allowed.',
+      'No malicious bot nor spoofing detected, access allowed.',
       messageSeverity.Success,
       checkResultType.Passed,
       getFlightResults(from, to)
