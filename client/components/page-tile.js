@@ -2,10 +2,10 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { ArrowForward } from '@mui/icons-material';
+import styles from '../../styles/pageTile.module.css';
 
 /**
  * @typedef {Object} PageTileProps
@@ -19,6 +19,16 @@ import { ArrowForward } from '@mui/icons-material';
  * @param {PageTileProps} props
  * @returns {JSX.Element}
  */
+
+// convert to typescript
+
+// type PageTileProps = {
+//   title: string;
+//   url: string;
+//   icon: React.ReactNode;
+//   description: string;
+// };
+
 export function PageTile({ url, title, icon, description }) {
   const [elevation, setElevation] = useState(1);
 
@@ -37,16 +47,11 @@ export function PageTile({ url, title, icon, description }) {
           paddingX: theme.spacing(3),
           paddingTop: theme.spacing(3),
           paddingBottom: {
-            xs: 0,
+            xs: theme.spacing(2),
             md: theme.spacing(3),
           },
-          display: 'block',
-          position: 'relative',
-          height: '100%',
-
-          [theme.breakpoints.down('md')]: {
-            textAlign: 'center',
-          },
+          display: 'flex',
+          flexDirection: 'column',
 
           '& .Usecase_PageTitle, & .Usecase_Icon': {
             transition: theme.transitions.create('color'),
@@ -72,60 +77,36 @@ export function PageTile({ url, title, icon, description }) {
           },
         })}
       >
-        <Stack
-          spacing={{
-            xs: 6,
-            md: 0,
-          }}
-          direction="column"
-          sx={(theme) => ({
-            height: '100%',
-            justifyContent: 'space-between',
-
-            [theme.breakpoints.down('md')]: {
-              paddingBottom: theme.spacing(3),
-            },
-          })}
-        >
-          <Stack
-            direction={{
-              xs: 'column',
-              md: 'row',
-            }}
-            alignItems={{
-              xs: 'center',
-              md: 'flex-start',
-            }}
-            spacing={3}
-          >
-            <span className="Usecase_Icon">{icon}</span>
-            <Stack direction="column" spacing={3}>
-              <Typography
-                className="Usecase_PageTitle"
-                variant="h6"
-                sx={{
-                  fontWeight: 'bold',
-                }}
-              >
-                {title}
-              </Typography>
-              <Typography whiteSpace="pre-line">{description}</Typography>
-            </Stack>
-          </Stack>
-          <Button
-            className="Usecase_LearnMore"
+        <div className={styles.tileHeader}>
+          <div className="Usecase_Icon">{icon}</div>
+          <Typography
+            className="Usecase_PageTitle"
+            variant="h6"
             sx={{
-              visibility: 'hidden',
-              opacity: 0,
-              transition: (theme) => theme.transitions.create('opacity'),
-              alignSelf: 'flex-end',
+              fontWeight: 'bold',
+              marginLeft: (theme) => theme.spacing(1),
             }}
-            endIcon={<ArrowForward />}
-            color="primary"
           >
-            View use case
-          </Button>
-        </Stack>
+            {title}
+          </Typography>
+        </div>
+        <Typography whiteSpace="pre-line" sx={{ marginBottom: (theme) => theme.spacing(1) }}>
+          {description}
+        </Typography>
+        <Button
+          className="Usecase_LearnMore"
+          sx={{
+            visibility: 'hidden',
+            opacity: 0,
+            transition: (theme) => theme.transitions.create('opacity'),
+            alignSelf: 'flex-end',
+            marginTop: 'auto',
+          }}
+          endIcon={<ArrowForward />}
+          color="primary"
+        >
+          View use case
+        </Button>
       </Paper>
     </Link>
   );
