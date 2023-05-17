@@ -7,7 +7,8 @@ import { useUserPreferences } from '../api/personalization/use-user-preferences'
 import Link from 'next/link';
 import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
-import { Logo } from './logo';
+import { Logo } from './Logo';
+import styles from '../../styles/header.module.css';
 
 const navLinks = [
   {
@@ -55,8 +56,8 @@ export function Header({ addonRight }) {
       <Toolbar>
         <Stack direction="row" justifyContent="space-between" width="100%">
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Link href="/">
-              <Logo width={300} />
+            <Link href="/" className={styles.homeLink}>
+              <Logo width={170} height={30} />
             </Link>
             {navLinks.map((link) => (
               <Link href={link.url} key={link.name} passHref legacyBehavior>
@@ -67,7 +68,6 @@ export function Header({ addonRight }) {
                       router.pathname === link.url
                         ? theme.palette.primary.main
                         : theme.palette.getContrastText(theme.palette.header),
-
                     [theme.breakpoints.down('md')]: {
                       display: 'none',
                     },
