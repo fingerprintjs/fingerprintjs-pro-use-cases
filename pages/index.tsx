@@ -85,12 +85,12 @@ export default function Index() {
         <div className={styles.hero}>
           <div className={styles.headline}>
             <Typography variant="h1" sx={{ fontSize: '3rem', fontWeight: 500 }}>
-              Fingerprint Pro Use Cases Hub
+              Fingerprint Pro Use Cases
             </Typography>
           </div>
           <div className={styles.intro}>
             <p>
-              This project demonstrates various use cases for{' '}
+              This website demonstrates various use cases for{' '}
               <a href="https://fingerprint.com" target="_blank">
                 {' '}
                 Fingerprint Pro

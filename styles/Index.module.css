@@ -1,7 +1,8 @@
 .hero {
-    max-width: 700px;
+    max-width: 600px;
     padding: 1rem;
     margin: 2rem auto;
+    margin-bottom: 0;
     margin-top: 2rem;
 }
 
@@ -10,5 +11,6 @@
     max-width: 1200px;
     margin: 0 auto;
     gap: 2rem;
+    padding: 2rem;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
