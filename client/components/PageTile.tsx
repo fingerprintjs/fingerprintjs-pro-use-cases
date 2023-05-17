@@ -1,5 +1,4 @@
-// @ts-check
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import Link from 'next/link';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -7,29 +6,14 @@ import Button from '@mui/material/Button';
 import { ArrowForward } from '@mui/icons-material';
 import styles from '../../styles/pageTile.module.css';
 
-/**
- * @typedef {Object} PageTileProps
- * @property {string} title
- * @property {string} url
- * @property {React.ReactNode} icon
- * @property {string} description
- */
+export type PageTileProps = {
+  title: string;
+  url: string;
+  icon: ReactNode;
+  description: string;
+};
 
-/**
- * @param {PageTileProps} props
- * @returns {JSX.Element}
- */
-
-// convert to typescript
-
-// type PageTileProps = {
-//   title: string;
-//   url: string;
-//   icon: React.ReactNode;
-//   description: string;
-// };
-
-export function PageTile({ url, title, icon, description }) {
+export function PageTile({ url, title, icon, description }: PageTileProps) {
   const [elevation, setElevation] = useState(1);
 
   return (

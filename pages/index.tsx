@@ -9,7 +9,7 @@ import {
   PrecisionManufacturing,
   Settings,
 } from '@mui/icons-material';
-import { PageTile, PageTileProps } from '../client/components/page-tile';
+import { PageTile, PageTileProps } from '../client/components/PageTile';
 import { Divider, Typography } from '@mui/material';
 import styles from '../styles/Index.module.css';
 
