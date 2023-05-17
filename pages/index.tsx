@@ -10,10 +10,8 @@ import {
   Settings,
 } from '@mui/icons-material';
 import { PageTile, PageTileProps } from '../client/components/page-tile';
-import Grid from '@mui/material/Grid';
 import { Divider, Typography } from '@mui/material';
 import styles from '../styles/Index.module.css';
-
 
 const pageTiles: PageTileProps[] = [
   {
@@ -86,7 +84,7 @@ export default function Index() {
       <div>
         <div className={styles.hero}>
           <div className={styles.headline}>
-            <Typography variant="h1" sx={{fontSize: "3rem", fontWeight: 500}}>
+            <Typography variant="h1" sx={{ fontSize: '3rem', fontWeight: 500 }}>
               Fingerprint Pro Use Cases Hub
             </Typography>
           </div>
@@ -97,54 +95,24 @@ export default function Index() {
                 {' '}
                 Fingerprint Pro
               </a>{' '}
-              — a device identity platform with 99.5% accuracy. 
-              </p>
-              <Divider />
-              <p>
-              Each use case demo covers frontend and backend sample
-              implementation with a persistent data layer. The open-source repository is available on{' '}
+              — a device identity platform with 99.5% accuracy.
+            </p>
+            <Divider />
+            <p>
+              Each use case demo covers frontend and backend sample implementation with a persistent data layer. The
+              open-source repository is available on{' '}
               <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases">GitHub</a>.
             </p>
             <p>
-              Go to the <Link href="/admin">admin page</Link> to reset all scenarios for your browser.
+              Go to the <Link href="/admin">Admin page</Link> to reset all scenarios for your browser.
             </p>
           </div>
         </div>
-        <Grid
-          container
-          direction={{
-            xs: 'column',
-            md: 'row',
-          }}
-          spacing={3}
-          rowSpacing={{
-            xs: 4,
-            lg: 9,
-          }}
-          sx={{
-            marginTop: (theme) => theme.spacing(3),
-            paddingX: (theme) => theme.spacing(6),
-            marginBottom: (theme) => theme.spacing(3),
-          }}
-        >
+        <div className={styles.useCaseGrid}>
           {pageTiles.map((pageTile) => (
-            <Grid
-              key={pageTile.url}
-              className="UseCase"
-              item
-              md={4}
-              xs={12}
-              sx={{
-                maxHeight: {
-                  xs: 'auto',
-                  lg: 350,
-                },
-              }}
-            >
-              <PageTile {...pageTile} />
-            </Grid>
+            <PageTile key={pageTile.url} {...pageTile} />
           ))}
-        </Grid>
+        </div>
       </div>
     </Paper>
   );
