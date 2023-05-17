@@ -11,7 +11,9 @@ import {
 } from '@mui/icons-material';
 import { PageTile, PageTileProps } from '../client/components/page-tile';
 import Grid from '@mui/material/Grid';
-import { Typography } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
+import styles from '../styles/Index.module.css';
+
 
 const pageTiles: PageTileProps[] = [
   {
@@ -82,24 +84,32 @@ export default function Index() {
       }}
     >
       <div>
-        <div>
-          <div >
-            <Typography variant="h1">
-              Fingerprint Pro <br />
-              Use Cases Hub
+        <div className={styles.hero}>
+          <div className={styles.headline}>
+            <Typography variant="h1" sx={{fontSize: "3rem", fontWeight: 500}}>
+              Fingerprint Pro Use Cases Hub
             </Typography>
           </div>
-          <p>
-            This project demonstrates various use cases for Fingerprint Pro. Each scenario covers frontend and backend
-            sample implementation with a persistent data layer. The open-source repository is available at{' '}
-            <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases">GitHub</a>.
-          </p>
-          <p>
-            On the <Link href="/admin">admin</Link> page, you can remove all info obtained from this browser. This will
-            reenable some scenarios for you if you were locked out from the specific action.
-          </p>
+          <div className={styles.intro}>
+            <p>
+              This project demonstrates various use cases for{' '}
+              <a href="https://fingerprint.com" target="_blank">
+                {' '}
+                Fingerprint Pro
+              </a>{' '}
+              — a device identity platform with 99.5% accuracy. 
+              </p>
+              <Divider />
+              <p>
+              Each use case demo covers frontend and backend sample
+              implementation with a persistent data layer. The open-source repository is available on{' '}
+              <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases">GitHub</a>.
+            </p>
+            <p>
+              Go to the <Link href="/admin">admin page</Link> to reset all scenarios for your browser.
+            </p>
+          </div>
         </div>
-
         <Grid
           container
           direction={{
