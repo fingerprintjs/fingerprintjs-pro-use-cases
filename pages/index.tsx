@@ -119,7 +119,8 @@ export default function Index() {
           sx={{
             display: 'grid',
             gridTemplateColumns: {
-              '300': 'repeat(auto-fit, minmax(200px, 1fr))',
+              // makes card responsive on sub 300px screens
+              '300': 'repeat(auto-fit, minmax(160px, 1fr))',
               sm: 'repeat(auto-fit, minmax(300px, 1fr))',
             },
             maxWidth: '1200px',
