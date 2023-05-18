@@ -10,7 +10,7 @@ import {
   Settings,
 } from '@mui/icons-material';
 import { PageTile, PageTileProps } from '../client/components/PageTile';
-import { Divider, Typography } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 import styles from '../styles/Index.module.css';
 
 const pageTiles: PageTileProps[] = [
@@ -82,13 +82,20 @@ export default function Index() {
       }}
     >
       <div>
-        <div className={styles.hero}>
+        <Box
+          sx={{
+            maxWidth: '600px',
+            margin: '0 auto',
+            padding: (theme) => theme.spacing(2),
+            marginTop: (theme) => theme.spacing(4),
+          }}
+        >
           <div className={styles.headline}>
             <Typography variant="h1" sx={{ fontSize: '3rem', fontWeight: 500 }}>
               Fingerprint Pro Use Cases
             </Typography>
           </div>
-          <div className={styles.intro}>
+          <div>
             <p>
               This website demonstrates various use cases for{' '}
               <a href="https://fingerprint.com" target="_blank">
@@ -107,7 +114,7 @@ export default function Index() {
               Go to the <Link href="/admin">Admin page</Link> to reset all scenarios for your browser.
             </p>
           </div>
-        </div>
+        </Box>
         <div className={styles.useCaseGrid}>
           {pageTiles.map((pageTile) => (
             <PageTile key={pageTile.url} {...pageTile} />
