@@ -11,7 +11,6 @@ import {
 } from '@mui/icons-material';
 import { PageTile, PageTileProps } from '../client/components/PageTile';
 import { Box, Divider, Typography } from '@mui/material';
-import styles from '../styles/Index.module.css';
 
 const pageTiles: PageTileProps[] = [
   {
@@ -90,7 +89,7 @@ export default function Index() {
             marginTop: (theme) => theme.spacing(4),
           }}
         >
-          <div className={styles.headline}>
+          <div>
             <Typography variant="h1" sx={{ fontSize: '3rem', fontWeight: 500 }}>
               Fingerprint Pro Use Cases
             </Typography>
@@ -115,11 +114,29 @@ export default function Index() {
             </p>
           </div>
         </Box>
-        <div className={styles.useCaseGrid}>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              '300': 'repeat(auto-fit, minmax(200px, 1fr))',
+              sm: 'repeat(auto-fit, minmax(300px, 1fr))',
+            },
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: (theme) => ({
+              xs: theme.spacing(1),
+              sm: theme.spacing(4),
+            }),
+            gap: (theme) => ({
+              xs: theme.spacing(2),
+              sm: theme.spacing(4),
+            }),
+          }}
+        >
           {pageTiles.map((pageTile) => (
             <PageTile key={pageTile.url} {...pageTile} />
           ))}
-        </div>
+        </Box>
       </div>
     </Paper>
   );
