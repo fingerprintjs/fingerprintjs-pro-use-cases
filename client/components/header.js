@@ -68,9 +68,10 @@ export function Header({ addonRight }) {
                       router.pathname === link.url
                         ? theme.palette.primary.main
                         : theme.palette.getContrastText(theme.palette.header),
-                    [theme.breakpoints.down('md')]: {
+                    [theme.breakpoints.down(1150)]: {
                       display: 'none',
                     },
+                    whiteSpace: 'nowrap',
                   })}
                   component="a"
                 >
