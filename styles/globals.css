@@ -5,6 +5,12 @@
   --text-secondary: #757575;
 }
 
+/* CSS Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Base */
 body,
 html {
   margin: 0;
@@ -13,96 +19,20 @@ html {
   overflow-x: hidden;
 }
 
-.ExternalLayout_wrapper {
-  width: 100%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
+a {
+  color: var(--primary);
+  text-decoration: none;
 }
 
-.UsecaseWrapper_divider {
-  max-width: 600px;
-  width: 100%;
-}
-
-.UsecaseWrapper_description {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 32px;
-}
-
-.ExternalLayout_main {
-  width: 100%;
-  padding: 8px 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.UsecaseWrapper_wrapper {
-  padding: 0 16px;
-  max-width: 600px;
-  flex: 1 1;
-}
-
-.UsecaseWrapper_wrapper.full {
-  max-width: initial;
-}
-
-.UsecaseWrapper_title {
-  width: 100%;
-  font-weight: 500;
-  font-size: 32px;
-}
-
-.UsecaseWrapper_helper {
-  margin-bottom: 1rem;
-  text-align: left;
-  opacity: 0.72;
-  font-size: 16px;
-}
-
-.UsecaseWrapper_notes {
-  font-size: 14px;
-  font-weight: 400;
-  margin-top: 1rem;
-  margin-bottom: 0.75rem;
-  text-align: left;
-}
-
-.UsecaseWrapper_notes li {
-  margin-bottom: 12px;
-}
-
-.UsecaseWrapper_alert {
-  margin-top: 36px;
+code {
+  font-size: 1rem;
+  color: #d63384;
+  word-wrap: break-word;
 }
 
 .UsecaseWrapper_alert {
   margin-top: 2.5rem;
   margin-bottom: 2.5rem;
-}
-
-.ActionWrapper_container.full {
-  box-shadow: none !important;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.ActionWrapper_container {
-  padding: 42px 36px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 8px 10px rgb(0 0 0 / 5%), 0 16px 24px rgb(0 0 0 / 8%), 0 6px 30px rgb(0 0 0 / 5%) !important;
 }
 
 .Form_container {
@@ -123,15 +53,4 @@ html {
   font-size: 14px !important;
 }
 
-/* Base */
 
-a {
-  color: var(--primary);
-  text-decoration: none;
-}
-
-code {
-  font-size: 1rem;
-  color: #d63384;
-  word-wrap: break-word;
-}
