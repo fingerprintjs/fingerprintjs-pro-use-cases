@@ -33,9 +33,9 @@ export function ProductItem({ product: { price, name, image, id } }) {
     <Card
       className="ProductCard"
       variant="outlined"
-      style={{
-        width: '100%',
-        position: 'relative',
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       <CardMedia
