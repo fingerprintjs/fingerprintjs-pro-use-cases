@@ -65,9 +65,10 @@ export function PageTile({ url, title, icon, description }: PageTileProps) {
           <div className="Usecase_Icon">{icon}</div>
           <Typography
             className="Usecase_PageTitle"
-            variant="h6"
+            variant="h2"
             sx={{
               fontWeight: 'bold',
+              fontSize: '1.25rem',
               marginLeft: (theme) => theme.spacing(1),
             }}
           >

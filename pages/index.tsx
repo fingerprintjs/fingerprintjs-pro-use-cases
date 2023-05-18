@@ -115,6 +115,7 @@ export default function Index() {
           </div>
         </Box>
         <Box
+          component="main"
           sx={{
             display: 'grid',
             gridTemplateColumns: {
