@@ -5,6 +5,12 @@
   grid-gap: 0.5rem;
 }
 
+@media only screen and (max-width: 400px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+}
+
 .origin,
 .destination {
   display: flex;
