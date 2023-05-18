@@ -19,6 +19,7 @@ export function ThemeProvider({ children }) {
         secondary: {
           main: secondary,
         },
+        gray: hasDarkMode ? '#bdbdbd' : '#757575',
         headerLight,
         accentBackground: hasDarkMode ? '#171717' : '#fafafa',
         mode: hasDarkMode ? 'dark' : 'light',
@@ -30,6 +31,12 @@ export function ThemeProvider({ children }) {
           },
         },
       },
+      typography: {
+        h1: {
+          fontSize: '2rem',
+          fontWeight: 500,
+        }
+      }
     });
   }, [hasDarkMode]);
 
