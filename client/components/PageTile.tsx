@@ -4,7 +4,7 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { ArrowForward } from '@mui/icons-material';
-import styles from '../../styles/pageTile.module.css';
+import {Stack} from '@mui/material';
 
 export type PageTileProps = {
   title: string;
@@ -61,7 +61,7 @@ export function PageTile({ url, title, icon, description }: PageTileProps) {
           },
         })}
       >
-        <div className={styles.tileHeader}>
+        <Stack direction={"row"} alignItems={"center"} marginBottom={2}>
           <div className="Usecase_Icon">{icon}</div>
           <Typography
             className="Usecase_PageTitle"
@@ -73,7 +73,7 @@ export function PageTile({ url, title, icon, description }: PageTileProps) {
           >
             {title}
           </Typography>
-        </div>
+        </Stack>
         <Typography whiteSpace="pre-line" sx={{ marginBottom: (theme) => theme.spacing(1) }}>
           {description}
         </Typography>
