@@ -13,6 +13,10 @@ export type PageTileProps = {
   description: string;
 };
 
+export const TILE_TAG = {
+  useCaseTitle: 'UseCaseTitle',
+} as const;
+
 export function PageTile({ url, title, icon, description }: PageTileProps) {
   const [elevation, setElevation] = useState(1);
 
@@ -71,6 +75,7 @@ export function PageTile({ url, title, icon, description }: PageTileProps) {
               fontSize: '1.25rem',
               marginLeft: (theme) => theme.spacing(1),
             }}
+            data-test={TILE_TAG.useCaseTitle}
           >
             {title}
           </Typography>
