@@ -9,7 +9,6 @@ import { SnackbarAction } from '../client/components/snackbar-action';
 import { SocketProvider } from '../client/api/socket-provider';
 import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import { FP_LOAD_OPTIONS } from '../client/use-visitor-data';
-import { Box, Stack } from '@mui/material';
 
 const queryClient = new QueryClient({
   defaultOptions: {
