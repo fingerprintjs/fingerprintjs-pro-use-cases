@@ -47,7 +47,6 @@ export default function CouponFraudUseCase() {
       title="Coupon Fraud problem"
       description={<p>This page demonstrates how to solve the coupon fraud problem.</p>}
       articleURL={'https://fingerprint.com/use-cases/coupon-promo-abuse/'}
-      returnUrl='/'
       listItems={[
         <>You can apply a coupon to the specific item only once.</>,
         <>You cannot spam coupon codes, there is a 1-hour threshold.</>,

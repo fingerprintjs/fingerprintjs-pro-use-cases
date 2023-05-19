@@ -20,7 +20,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
  * @property {boolean} [hideSrcListItem=false] - Flag to hide the source list item
  * @property {boolean} [hideDivider=false] - Flag to hide the divider
  * @property {boolean} [showAdminLink=true] - Flag to show the admin link
- * @property {Object} [sx]
+ * @property {Object} [contentSx] - Additional styles or style overrides for the main content <Paper> container
  * @property {string} [returnUrl]
  */
 
@@ -38,9 +38,10 @@ export function UseCaseWrapper({
   hideDivider = false,
   showAdminLink = true,
   returnUrl,
+  contentSx,
 }) {
   return (
-    <Paper variant="outlined" square sx={{ minHeight: '95vh', pb: (t) => t.spacing(2) }}>
+    <Paper variant="outlined" square sx={{ minHeight: '95vh', pb: (t) => t.spacing(2)}}>
       <Box
         sx={{
           padding: (theme) => theme.spacing(4),
@@ -113,11 +114,13 @@ export function UseCaseWrapper({
         </ul>
       </Box>
       <Paper
-        variant="elevation"
+        // variant=""
         sx={{
           padding: (theme) => theme.spacing(4),
           maxWidth: '600px',
           margin: '0 auto ',
+          boxShadow: 'none',
+          ...contentSx
         }}
       >
         {children}
