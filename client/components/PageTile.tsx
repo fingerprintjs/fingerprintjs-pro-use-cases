@@ -14,7 +14,7 @@ export type PageTileProps = {
 };
 
 export const TILE_TAG = {
-  useCaseTitle: 'UseCaseTitle',
+  useCaseTitle: 'useCaseTitle',
 } as const;
 
 export function PageTile({ url, title, icon, description }: PageTileProps) {
