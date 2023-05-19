@@ -16,7 +16,6 @@ import GitHubIcon from '@mui/icons-material/GitHub';
  * @property {string} [articleURL]
  * @property {Array<React.ReactNode>} [listItems]
  * @property {React.ReactNode} children
- * @property {string} [variant] - Variant of the InfoCard
  * @property {boolean} [hideSrcListItem=false] - Flag to hide the source list item
  * @property {boolean} [hideDivider=false] - Flag to hide the divider
  * @property {boolean} [showAdminLink=true] - Flag to show the admin link
@@ -114,7 +113,6 @@ export function UseCaseWrapper({
         </ul>
       </Box>
       <Paper
-        // variant=""
         sx={{
           padding: (theme) => theme.spacing(4),
           maxWidth: '600px',

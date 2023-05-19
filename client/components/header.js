@@ -8,7 +8,6 @@ import Link from 'next/link';
 import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
 import { Logo } from './Logo';
-import styles from '../../styles/header.module.css';
 
 const navLinks = [
   {
@@ -56,7 +55,7 @@ export function Header({ addonRight }) {
       <Toolbar>
         <Stack direction="row" justifyContent="space-between" width="100%">
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Link href="/" className={styles.homeLink}>
+            <Link href="/" style={{ display: 'flex', marginRight: "1.5rem" }}>
               <Logo width={170} height={30} />
             </Link>
             {navLinks.map((link) => (
