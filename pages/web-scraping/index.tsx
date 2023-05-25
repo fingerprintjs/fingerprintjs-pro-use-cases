@@ -107,6 +107,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
           from: fromCode,
           to: toCode,
           requestId,
+          disableBotDetection
         } as FlightQuery),
       });
       if (response.status < 500) {
