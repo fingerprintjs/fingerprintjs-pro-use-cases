@@ -40,7 +40,7 @@ export function UseCaseWrapper({
   contentSx,
 }) {
   return (
-    <Paper variant="outlined" square sx={{ minHeight: '95vh', pb: (t) => t.spacing(2)}}>
+    <Paper square sx={{  pb: (t) => t.spacing(2)}}>
       <Box
         sx={{
           padding: (theme) => theme.spacing(4),

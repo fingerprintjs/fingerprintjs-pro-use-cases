@@ -11,6 +11,10 @@ import { Logo } from './Logo';
 
 const navLinks = [
   {
+    name: 'Playground',
+    url: '/playground',
+  },
+  {
     name: 'Coupon Fraud',
     url: '/coupon-fraud',
   },
