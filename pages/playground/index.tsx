@@ -1,10 +1,24 @@
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
-import { Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  CircularProgress,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import { useQuery } from 'react-query';
 import { IdentificationEvent } from '../api/event/[requestId]';
 import { FunctionComponent } from 'react';
-import {CodeSnippet} from '../../client/components/CodeSnippet';
+import { CodeSnippet } from '../../client/components/CodeSnippet';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const BotDetectionResult: FunctionComponent<{ event: IdentificationEvent }> = ({ event }) => {
   switch (event.products.botd.data.bot.result) {
@@ -30,7 +44,11 @@ function Playground() {
 
   const requestId = agentResponse?.requestId;
 
-  const { data: identificationEvent, isLoading: isLoadingServerResponse, error: serverError  } = useQuery<IdentificationEvent | undefined>(
+  const {
+    data: identificationEvent,
+    isLoading: isLoadingServerResponse,
+    error: serverError,
+  } = useQuery<IdentificationEvent | undefined>(
     requestId,
     () => fetch(`/api/event/${agentResponse.requestId}`).then((res) => res.json()),
 
@@ -137,11 +155,33 @@ function Playground() {
       </TableContainer>
       <button onClick={() => getAgentData({ ignoreCache: true })}>Analyze browser again</button>
       <p>VisitorId: {isLoadingAgentResponse ? 'Loading...' : agentResponse?.visitorId}</p>
-      <p>Full visitor data:</p>
-      <Stack spacing={2}>
-        <CodeSnippet language="json">{JSON.stringify(agentResponse, null, 2)}</CodeSnippet>
-        <CodeSnippet language="json">{JSON.stringify(identificationEvent, null, 2)}</CodeSnippet>
-      </Stack>
+
+      <Accordion defaultExpanded>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="agent-response-content"
+          id="agent-response-header"
+        >
+          <Typography width={'100%'}>JavaScript Agent Response</Typography>
+          {isLoadingAgentResponse && (
+            <CircularProgress size={'1.2rem'} thickness={5} sx={{ mr: (t) => t.spacing(2) }} />
+          )}
+        </AccordionSummary>
+        <AccordionDetails>
+          <CodeSnippet language="json">{JSON.stringify(agentResponse, null, 2)}</CodeSnippet>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion defaultExpanded>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="server-event-content" id="server-event-header">
+          <Typography width={'100%'}>Server API Response</Typography>
+          {isLoadingServerResponse && (
+            <CircularProgress size={'1.2rem'} thickness={5} sx={{ mr: (t) => t.spacing(2) }} />
+          )}
+        </AccordionSummary>
+        <AccordionDetails>
+          <CodeSnippet language="json">{JSON.stringify(identificationEvent, null, 2)}</CodeSnippet>
+        </AccordionDetails>
+      </Accordion>
     </div>
   );
 }

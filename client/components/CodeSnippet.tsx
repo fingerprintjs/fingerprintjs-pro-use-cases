@@ -2,7 +2,6 @@ import { PropsWithChildren } from 'react';
 import { PrismAsyncLight } from 'react-syntax-highlighter';
 import highlightTheme from 'react-syntax-highlighter/dist/cjs/styles/prism/coy';
 
-
 export interface CodeSnippetProps {
   language: string;
   children: string;
@@ -27,12 +26,7 @@ const PRISM_CODE_TAG_PROPS = { style: { color: '#c92c2c', font: 'inherit' as con
 /**
  * Provides a syntax-highlighted code block
  */
-export function CodeSnippet({
-  language,
-  showLineNumbers,
-  className,
-  children,
-}: PropsWithChildren<CodeSnippetProps>) {
+export function CodeSnippet({ language, showLineNumbers, className, children }: PropsWithChildren<CodeSnippetProps>) {
   return (
     <PrismAsyncLight
       showLineNumbers={showLineNumbers}
