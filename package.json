@@ -31,6 +31,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-query": "^3.39.1",
+    "react-syntax-highlighter": "^15.5.0",
     "react-use": "^17.4.0",
     "sequelize": "^6.19.0",
     "socket.io": "^4.5.4",

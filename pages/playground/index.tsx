@@ -4,6 +4,7 @@ import { Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, T
 import { useQuery } from 'react-query';
 import { IdentificationEvent } from '../api/event/[requestId]';
 import { FunctionComponent } from 'react';
+import {CodeSnippet} from '../../client/components/CodeSnippet';
 
 const BotDetectionResult: FunctionComponent<{ event: IdentificationEvent }> = ({ event }) => {
   switch (event.products.botd.data.bot.result) {
@@ -137,9 +138,9 @@ function Playground() {
       <button onClick={() => getAgentData({ ignoreCache: true })}>Analyze browser again</button>
       <p>VisitorId: {isLoadingAgentResponse ? 'Loading...' : agentResponse?.visitorId}</p>
       <p>Full visitor data:</p>
-      <Stack direction={'row'} spacing={2}>
-        <pre>{agentError ? agentError.message : JSON.stringify(agentResponse, null, 2)}</pre>
-        <pre>{JSON.stringify(identificationEvent, null, 2)}</pre>
+      <Stack spacing={2}>
+        <CodeSnippet language="json">{JSON.stringify(agentResponse, null, 2)}</CodeSnippet>
+        <CodeSnippet language="json">{JSON.stringify(identificationEvent, null, 2)}</CodeSnippet>
       </Stack>
     </div>
   );
