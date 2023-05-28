@@ -35,7 +35,17 @@ export function ThemeProvider({ children }) {
         h1: {
           fontSize: '2rem',
           fontWeight: 500,
-        }
+        },
+        h2: {
+          fontSize: '1.5rem',
+          fontWeight: 500,
+        },
+        h3: {
+          fontSize: '1.25rem',
+          fontWeight: 500,
+          marginBottom: '1rem',
+          marginTop: '1.25rem',
+        },
       }
     });
   }, [hasDarkMode]);
