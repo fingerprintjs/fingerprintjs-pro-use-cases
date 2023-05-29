@@ -35,8 +35,8 @@ export function ThemeProvider({ children }) {
         h1: {
           fontSize: '2rem',
           fontWeight: 500,
-        }
-      }
+        },
+      },
     });
   }, [hasDarkMode]);
 

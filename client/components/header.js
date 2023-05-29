@@ -55,7 +55,7 @@ export function Header({ addonRight }) {
       <Toolbar>
         <Stack direction="row" justifyContent="space-between" width="100%">
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Link href="/" style={{ display: 'flex', marginRight: "1.5rem" }}>
+            <Link href="/" style={{ display: 'flex', marginRight: '1.5rem' }}>
               <Logo width={170} height={30} />
             </Link>
             {navLinks.map((link) => (

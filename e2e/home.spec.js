@@ -1,6 +1,6 @@
 // @ts-check
 import { expect, test } from '@playwright/test';
-import {TILE_TAG} from '../client/components/PageTile';
+import { TILE_TAG } from '../client/components/PageTile';
 
 test.describe('Home page', () => {
   test('should list cards with use-cases', async ({ page }) => {
