@@ -9,7 +9,7 @@ import { SnackbarAction } from '../client/components/snackbar-action';
 import { SocketProvider } from '../client/api/socket-provider';
 import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import { FP_LOAD_OPTIONS } from '../client/use-visitor-data';
-import {Box, Stack} from '@mui/material';
+import { Paper, Stack } from '@mui/material';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,13 +19,13 @@ const queryClient = new QueryClient({
   },
 });
 
-function Layout ({ children }) {
+function Layout({ children }) {
   return (
-    <Stack height={"100%"} >
+    <Stack sx={{ height: '100%' }}>
       <Header />
-      <Box height={"100%"}>{children}</Box>
+      <Paper variant='outlined' sx={{ flexGrow: 1, borderRadius: 0, paddingBottom: t => t.spacing(4) }}>{children}</Paper>
     </Stack>
-  )
+  );
 }
 
 function App({ Component, pageProps }) {

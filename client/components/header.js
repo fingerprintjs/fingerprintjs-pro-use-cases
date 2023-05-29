@@ -52,7 +52,6 @@ export function Header() {
     <AppBar
       position="static"
       height={300}
-      elevation={0}
       sx={{
         backgroundColor: (theme) => theme.palette.header,
         borderBottom: (theme) => `1px solid ${theme.palette.divider}`,

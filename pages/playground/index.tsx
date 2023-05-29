@@ -75,7 +75,7 @@ function Playground() {
     [requestId],
     () => fetch(`/api/event/${agentResponse.requestId}`).then((res) => res.json()),
 
-    { enabled: Boolean(agentResponse), onSuccess: (data) => (setCachedEvent(data)) }
+    { enabled: Boolean(agentResponse), onSuccess: (data) => setCachedEvent(data) }
   );
 
   if (agentError) {
@@ -88,7 +88,6 @@ function Playground() {
 
   console.log({ agentResponse, identificationEvent, isLoadingServerResponse });
 
-  
   if (!chachedEvent) {
     return (
       <Stack alignItems={'center'} gap={5}>
@@ -201,6 +200,7 @@ export default function PlaygroundPage() {
       description={<p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>}
       showAdminLink={false}
       hideSrcListItem={true}
+      contentSx={{ boxShadow: 'none' }}
     >
       <Playground />
     </UseCaseWrapper>

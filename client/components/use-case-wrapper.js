@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ArrowBack } from '@mui/icons-material';
-import { Box, Tooltip } from '@mui/material';
+import { Box, Paper, Tooltip } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
 /**
@@ -18,7 +18,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
  * @property {boolean} [hideSrcListItem=false] - Flag to hide the source list item
  * @property {boolean} [hideDivider=false] - Flag to hide the divider
  * @property {boolean} [showAdminLink=true] - Flag to show the admin link
- * @property {Object} [contentSx] - Additional styles or style overrides for the main content container
+ * @property {Object} [contentSx] - Additional styles or style overrides for the main content Paper container
  * @property {string} [returnUrl]
  */
 
@@ -111,17 +111,16 @@ export function UseCaseWrapper({
           )}
         </ul>
       </Box>
-      <Box
+      <Paper
         sx={{
           padding: (theme) => theme.spacing(4),
           maxWidth: '600px',
           margin: '0 auto ',
-          boxShadow: 'none',
-          ...contentSx
+          ...contentSx,
         }}
       >
         {children}
-      </Box>
+      </Paper>
     </>
   );
 }
