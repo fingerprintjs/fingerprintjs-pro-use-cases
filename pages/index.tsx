@@ -7,11 +7,20 @@ import {
   People,
   PrecisionManufacturing,
   Settings,
+  Fingerprint
 } from '@mui/icons-material';
 import { PageTile, PageTileProps } from '../client/components/PageTile';
 import { Box, Divider, Typography } from '@mui/material';
 
 const pageTiles: PageTileProps[] = [
+  {
+    title: 'Smart signals playground',
+    description: `Analyze your own browser with Fingerprint Pro. 
+    
+    Test and examine all the available signals including Geolocation, Bot Detection, Incognito Mode Detection, VPN Detection, Tor Network Detection, Browser Tempering Detection, IP Blocklist, and more.`,
+    url: '/playground',
+    icon: <Fingerprint />,
+  },
   {
     title: 'Coupon Fraud',
     url: '/coupon-fraud',
