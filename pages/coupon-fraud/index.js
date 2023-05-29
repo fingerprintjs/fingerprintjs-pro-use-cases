@@ -64,8 +64,8 @@ export default function CouponFraudUseCase() {
         </Typography>
 
         <Typography>Do you have a coupon? Apply to get a discount!</Typography>
-        <Stack direction={"row"}>
-          <FormControl fullWidth variant="outlined" sx={{minWidth: "70%"}}>
+        <Stack direction="row">
+          <FormControl fullWidth variant="outlined" sx={{ minWidth: '70%' }}>
             <TextField
               id="coupon_code"
               placeholder="Enter a coupon"

@@ -71,10 +71,10 @@ export function visitIpMatchesRequestIp(visitIp = '', request) {
   }
 
   /**
-   * Parsing the user IP from `x-forwarded-for` can be unreliable as any proxy between your server 
+   * Parsing the user IP from `x-forwarded-for` can be unreliable as any proxy between your server
    * and the visitor can overwrite or spoof the header. In most cases, using the right-most external
-   * IP is more appropriate than the left-most one as is demonstrated here. 
-   * You might need to adjust or skip this check depending on your use case and server configuration. 
+   * IP is more appropriate than the left-most one as is demonstrated here.
+   * You might need to adjust or skip this check depending on your use case and server configuration.
    * You can learn more at:
    * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
    * https://adam-p.ca/blog/2022/03/x-forwarded-for/.

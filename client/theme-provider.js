@@ -46,7 +46,7 @@ export function ThemeProvider({ children }) {
           marginBottom: '1rem',
           marginTop: '1.25rem',
         },
-      }
+      },
     });
   }, [hasDarkMode]);
 
