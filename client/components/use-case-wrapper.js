@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ArrowBack } from '@mui/icons-material';
-import { Box, Tooltip } from '@mui/material';
+import { Box, List, ListItem, Tooltip } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
 /**
@@ -22,6 +22,19 @@ import GitHubIcon from '@mui/icons-material/GitHub';
  * @property {Object} [contentSx] - Additional styles or style overrides for the main content <Paper> container
  * @property {string} [returnUrl]
  */
+
+const MyListItem = ({ children, ...props }) => (
+  <ListItem
+    sx={{
+      listStyleType: 'disc',
+      display: 'list-item',
+      padding: (theme) => theme.spacing(1, 0, 0, 0),
+    }}
+    {...props}
+  >
+    {children}
+  </ListItem>
+);
 
 /**
  * @param {UseCaseWrapperProps} props
@@ -83,34 +96,35 @@ export function UseCaseWrapper({
           </Box>
         )}
         {!hideDivider && <Divider sx={{ width: '100%' }} />}
-        <ul style={{ lineHeight: '1.5rem', fontSize: '0.85rem' }}>
+
+        <List sx={{ lineHeight: '1rem', fontSize: '0.85rem', paddingLeft: '40px' }}>
           {listItems?.map((item, index) => (
-            <li key={index}>{item}</li>
+            <MyListItem key={index}>{item}</MyListItem>
           ))}
           {showAdminLink && (
-            <li>
+            <MyListItem>
               You can reset this scenario on the <Link href="/admin">Admin page</Link>.
-            </li>
+            </MyListItem>
           )}
           {articleURL && (
-            <li>
+            <MyListItem>
               Learn more about this scenario in the{' '}
               <a href={articleURL} target="_blank" rel="noreferrer">
                 {title}
               </a>{' '}
               article.
-            </li>
+            </MyListItem>
           )}
           {!hideSrcListItem && (
-            <li>
+            <MyListItem>
               See the source code for this and other use cases{' '}
               <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases" target="_blank" rel="noreferrer">
                 on Github <GitHubIcon fontSize="small" />
               </a>
               .
-            </li>
+            </MyListItem>
           )}
-        </ul>
+        </List>
       </Box>
       <Paper
         sx={{
