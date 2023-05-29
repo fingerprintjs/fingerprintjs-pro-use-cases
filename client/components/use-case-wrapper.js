@@ -40,7 +40,7 @@ export function UseCaseWrapper({
   contentSx,
 }) {
   return (
-    <Paper variant="outlined" square sx={{ minHeight: '95vh', pb: (t) => t.spacing(2)}}>
+    <Paper variant="outlined" square sx={{ minHeight: '95vh', pb: (t) => t.spacing(2) }}>
       <Box
         sx={{
           padding: (theme) => theme.spacing(4),
@@ -51,7 +51,7 @@ export function UseCaseWrapper({
           alignItems: 'center',
         }}
       >
-        <Stack direction="row" alignItems="baseline" spacing={1} justifyContent={'center'}>
+        <Stack direction="row" alignItems="baseline" spacing={1} justifyContent="center">
           {returnUrl && (
             <Link href={returnUrl} legacyBehavior passHref>
               <Tooltip title="Go back">
@@ -118,7 +118,7 @@ export function UseCaseWrapper({
           maxWidth: '600px',
           margin: '0 auto ',
           boxShadow: 'none',
-          ...contentSx
+          ...contentSx,
         }}
       >
         {children}
