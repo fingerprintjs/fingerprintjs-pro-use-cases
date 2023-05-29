@@ -10,6 +10,11 @@
   box-sizing: border-box;
 }
 
+/* Make Next pages full height */
+div#__next {
+  height: 100%;
+}
+
 /* Base */
 body,
 html {

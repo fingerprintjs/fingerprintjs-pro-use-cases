@@ -1,5 +1,4 @@
 // @ts-check
-import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import Link from 'next/link';
 import IconButton from '@mui/material/IconButton';
@@ -19,7 +18,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
  * @property {boolean} [hideSrcListItem=false] - Flag to hide the source list item
  * @property {boolean} [hideDivider=false] - Flag to hide the divider
  * @property {boolean} [showAdminLink=true] - Flag to show the admin link
- * @property {Object} [contentSx] - Additional styles or style overrides for the main content <Paper> container
+ * @property {Object} [contentSx] - Additional styles or style overrides for the main content container
  * @property {string} [returnUrl]
  */
 
@@ -40,7 +39,7 @@ export function UseCaseWrapper({
   contentSx,
 }) {
   return (
-    <Paper square sx={{  pb: (t) => t.spacing(2)}}>
+    <>
       <Box
         sx={{
           padding: (theme) => theme.spacing(4),
@@ -112,7 +111,7 @@ export function UseCaseWrapper({
           )}
         </ul>
       </Box>
-      <Paper
+      <Box
         sx={{
           padding: (theme) => theme.spacing(4),
           maxWidth: '600px',
@@ -122,7 +121,7 @@ export function UseCaseWrapper({
         }}
       >
         {children}
-      </Paper>
-    </Paper>
+      </Box>
+    </>
   );
 }

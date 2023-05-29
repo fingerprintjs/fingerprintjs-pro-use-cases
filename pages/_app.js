@@ -9,6 +9,7 @@ import { SnackbarAction } from '../client/components/snackbar-action';
 import { SocketProvider } from '../client/api/socket-provider';
 import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import { FP_LOAD_OPTIONS } from '../client/use-visitor-data';
+import {Box, Stack} from '@mui/material';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,6 +18,15 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+function Layout ({ children }) {
+  return (
+    <Stack height={"100%"} >
+      <Header />
+      <Box height={"100%"}>{children}</Box>
+    </Stack>
+  )
+}
 
 function App({ Component, pageProps }) {
   return (
@@ -38,8 +48,9 @@ function App({ Component, pageProps }) {
                 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
                 <title>Fingerprint Pro Use Cases</title>
               </Head>
-              <Header addonRight={Component.headerAddonRight?.()} />
-              <Component {...pageProps} />
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
             </FpjsProvider>
           </SocketProvider>
         </SnackbarProvider>

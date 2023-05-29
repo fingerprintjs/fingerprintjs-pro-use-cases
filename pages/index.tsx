@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Paper from '@mui/material/Paper';
 import {
   AirplaneTicket,
   Block,
@@ -71,9 +70,7 @@ As a result, you will protect your users and your business against various payme
 
 export default function Index() {
   return (
-    <Paper
-      square
-      variant="outlined"
+    <Box
       sx={{
         overflow: 'auto',
         overflowX: 'hidden',
@@ -140,6 +137,6 @@ export default function Index() {
           ))}
         </Box>
       </div>
-    </Paper>
+    </Box>
   );
 }
