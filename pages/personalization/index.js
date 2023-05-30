@@ -13,7 +13,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Grid,
   Typography,
   useMediaQuery,
   useTheme,
@@ -141,35 +140,22 @@ export default function Index() {
             />
           </Box>
         ) : (
-          <Grid
-            justifyContent="center"
-            alignItems="center"
-            container
-            columnSpacing={isSmallerScreen ? 0 : 2}
+          <Box
             sx={(theme) => ({
+              display: 'grid',
+              gridTemplateColumns: isSmallerScreen ? '1fr' : 'repeat(3, 1fr)',
+              gridGap: theme.spacing(2),
               padding: 0,
               width: '100%',
               marginTop: theme.spacing(6),
             })}
           >
             {productsQuery.data?.data?.products?.length ? (
-              productsQuery.data.data.products.map((product) => (
-                <Grid
-                  item
-                  xs={12}
-                  md={4}
-                  key={product.id}
-                  sx={{
-                    marginBottom: (theme) => theme.spacing(4),
-                  }}
-                >
-                  <ProductItem product={product} />
-                </Grid>
-              ))
+              productsQuery.data.data.products.map((product) => <ProductItem key={product.id} product={product} />)
             ) : (
               <Typography variant="h5">No coffees found :(</Typography>
             )}
-          </Grid>
+          </Box>
         )}
       </UseCaseWrapper>
     </>

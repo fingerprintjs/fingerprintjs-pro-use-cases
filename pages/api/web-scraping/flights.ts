@@ -13,6 +13,7 @@ export type FlightQuery = {
   from: string;
   to: string;
   requestId: string;
+  disableBotDetection: boolean;
 };
 
 export default async function getFlights(req: NextApiRequest, res: NextApiResponse<CheckResultObject<Flight[]>>) {
@@ -21,7 +22,7 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
     return;
   }
 
-  const { from, to, requestId } = req.body as FlightQuery;
+  const { from, to, requestId, disableBotDetection } = req.body as FlightQuery;
 
   // Validate request ID format
   if (!isRequestIdFormatValid(requestId)) {
@@ -56,7 +57,7 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
     }
   }
 
-  if (!botData) {
+  if (!botData || disableBotDetection) {
     sendOkResponse(
       res,
       new CheckResult(

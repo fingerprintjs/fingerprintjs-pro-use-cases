@@ -1,13 +1,12 @@
 // @ts-check
 import Paper from '@mui/material/Paper';
-import clsx from 'clsx';
 import Divider from '@mui/material/Divider';
 import Link from 'next/link';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ArrowBack } from '@mui/icons-material';
-import { Tooltip } from '@mui/material';
+import { Box, List, ListItem, Tooltip } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
 /**
@@ -17,13 +16,25 @@ import GitHubIcon from '@mui/icons-material/GitHub';
  * @property {string} [articleURL]
  * @property {Array<React.ReactNode>} [listItems]
  * @property {React.ReactNode} children
- * @property {string} [variant] - Variant of the InfoCard
  * @property {boolean} [hideSrcListItem=false] - Flag to hide the source list item
  * @property {boolean} [hideDivider=false] - Flag to hide the divider
  * @property {boolean} [showAdminLink=true] - Flag to show the admin link
- * @property {Object} [sx]
+ * @property {Object} [contentSx] - Additional styles or style overrides for the main content <Paper> container
  * @property {string} [returnUrl]
  */
+
+const MyListItem = ({ children, ...props }) => (
+  <ListItem
+    sx={{
+      listStyleType: 'disc',
+      display: 'list-item',
+      padding: (theme) => theme.spacing(1, 0, 0, 0),
+    }}
+    {...props}
+  >
+    {children}
+  </ListItem>
+);
 
 /**
  * @param {UseCaseWrapperProps} props
@@ -35,85 +46,97 @@ export function UseCaseWrapper({
   articleURL,
   listItems,
   children,
-  variant,
   hideSrcListItem = false,
   hideDivider = false,
   showAdminLink = true,
-  sx,
   returnUrl,
+  contentSx,
 }) {
   return (
-    <Paper variant="outlined" className="ExternalLayout_wrapper" square sx={sx}>
-      <div className="ExternalLayout_main">
-        <div className={clsx('UsecaseWrapper_wrapper', { full: variant === 'full' })}>
-          <div className="UsecaseWrapper_description">
-            <Stack direction="row" alignItems="baseline" spacing={1}>
-              {returnUrl && (
-                <Link href={returnUrl} legacyBehavior passHref>
-                  <Tooltip title="Go back">
-                    <IconButton component="a">
-                      <ArrowBack />
-                    </IconButton>
-                  </Tooltip>
-                </Link>
-              )}
-              <Typography
-                component="h1"
-                variant="h3"
-                className="UsecaseWrapper_title"
-                sx={{
-                  pt: (t) => t.spacing(2),
-                }}
-              >
-                {title}
-              </Typography>
-            </Stack>
-            {description && <div className="UsecaseWrapper_helper">{description}</div>}
-            {!hideDivider && <Divider className="UsecaseWrapper_divider" />}
-            <ul className="UsecaseWrapper_notes">
-              {listItems?.map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
-              {showAdminLink && (
-                <li>
-                  You can reset this scenario on the <Link href="/admin">Admin page</Link>.
-                </li>
-              )}
-              {articleURL && (
-                <li>
-                  Learn more about this scenario in the{' '}
-                  <a href={articleURL} target="_blank" rel="noreferrer">
-                    {title}
-                  </a>{' '}
-                  article.
-                </li>
-              )}
-              {!hideSrcListItem && (
-                <li>
-                  See the source code for this and other use cases{' '}
-                  <a
-                    href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    on Github <GitHubIcon fontSize="small" />
-                  </a>
-                  .
-                </li>
-              )}
-            </ul>
-          </div>
-          <Paper
-            className="UsecaseWrapper_content"
-            variant="elevation"
+    <Paper variant="outlined" square sx={{ minHeight: '95vh', pb: (t) => t.spacing(2) }}>
+      <Box
+        sx={{
+          padding: (theme) => theme.spacing(4),
+          maxWidth: '600px',
+          margin: '0 auto',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Stack direction="row" alignItems="baseline" spacing={1} justifyContent="center">
+          {returnUrl && (
+            <Link href={returnUrl} legacyBehavior passHref>
+              <Tooltip title="Go back">
+                <IconButton component="a">
+                  <ArrowBack />
+                </IconButton>
+              </Tooltip>
+            </Link>
+          )}
+          <Typography
+            variant="h1"
             sx={{
-              padding: (theme) => theme.spacing(4),
+              textAlign: 'center',
+              pt: (t) => t.spacing(2),
             }}
           >
-            {children}
-          </Paper>
-        </div>
-      </div>
+            {title}
+          </Typography>
+        </Stack>
+        {description && (
+          <Box
+            sx={{
+              marginBottom: (t) => t.spacing(2),
+              // @ts-ignore
+              color: (t) => t.palette.gray,
+            }}
+          >
+            {description}
+          </Box>
+        )}
+        {!hideDivider && <Divider sx={{ width: '100%' }} />}
+
+        <List sx={{ lineHeight: '1rem', fontSize: '0.85rem', paddingLeft: '40px' }}>
+          {listItems?.map((item, index) => (
+            <MyListItem key={index}>{item}</MyListItem>
+          ))}
+          {showAdminLink && (
+            <MyListItem>
+              You can reset this scenario on the <Link href="/admin">Admin page</Link>.
+            </MyListItem>
+          )}
+          {articleURL && (
+            <MyListItem>
+              Learn more about this scenario in the{' '}
+              <a href={articleURL} target="_blank" rel="noreferrer">
+                {title}
+              </a>{' '}
+              article.
+            </MyListItem>
+          )}
+          {!hideSrcListItem && (
+            <MyListItem>
+              See the source code for this and other use cases{' '}
+              <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases" target="_blank" rel="noreferrer">
+                on Github <GitHubIcon fontSize="small" />
+              </a>
+              .
+            </MyListItem>
+          )}
+        </List>
+      </Box>
+      <Paper
+        sx={{
+          padding: (theme) => theme.spacing(4),
+          maxWidth: '600px',
+          margin: '0 auto ',
+          boxShadow: 'none',
+          ...contentSx,
+        }}
+      >
+        {children}
+      </Paper>
     </Paper>
   );
 }

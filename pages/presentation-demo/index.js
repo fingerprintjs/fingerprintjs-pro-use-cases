@@ -28,14 +28,9 @@ export default function Index({ linkedId }) {
 
   return (
     <UseCaseWrapper
-      sx={{
-        '& .UsecaseWrapper_content': {
-          boxShadow: 'none',
-          padding: 0,
-        },
-        '& .UsecaseWrapper_wrapper': {
-          maxWidth: 1000,
-        },
+      contentSx={{
+        maxWidth: 1000,
+        boxShadow: 'none',
       }}
       title="Presentation demo"
       listItems={[

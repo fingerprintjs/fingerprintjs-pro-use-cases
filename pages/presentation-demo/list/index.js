@@ -21,14 +21,8 @@ export default function Index({ linkedId }) {
   return (
     <UseCaseWrapper
       returnUrl={linkedId ? `/presentation-demo?linkedId=${linkedId}` : '/presentation-demo'}
-      sx={{
-        '& .UsecaseWrapper_content': {
-          boxShadow: 'none',
-          padding: 0,
-        },
-        '& .UsecaseWrapper_wrapper': {
-          maxWidth: 'initial',
-        },
+      contentSx={{
+        boxShadow: 'none',
       }}
       hideSrcListItem
       title="Identified users"

@@ -1,4 +1,3 @@
-// @ts-check
 import Link from 'next/link';
 import Paper from '@mui/material/Paper';
 import {
@@ -10,14 +9,10 @@ import {
   PrecisionManufacturing,
   Settings,
 } from '@mui/icons-material';
-import { PageTile } from '../client/components/page-tile';
-import Grid from '@mui/material/Grid';
-import { Logo } from '../client/components/logo';
+import { PageTile, PageTileProps } from '../client/components/PageTile';
+import { Box, Divider, Typography } from '@mui/material';
 
-/**
- * @type {Array<import('../client/components/page-tile').PageTileProps>}
- * */
-const pageTiles = [
+const pageTiles: PageTileProps[] = [
   {
     title: 'Coupon Fraud',
     url: '/coupon-fraud',
@@ -85,56 +80,65 @@ export default function Index() {
         paddingBottom: (theme) => theme.spacing(6),
       }}
     >
-      <div className="ExternalLayout_wrapper">
-        <div className="ExternalLayout_main">
-          <div className="UsecaseWrapper_wrapper">
-            <Logo width={500} />
-            <p className="UsecaseWrapper_helper">
-              This project demonstrates various use cases for Fingerprint Pro. Each scenario covers frontend and backend
-              sample implementation with a persistent data layer. The open-source repository is available at{' '}
+      <div>
+        <Box
+          sx={{
+            maxWidth: '600px',
+            margin: '0 auto',
+            padding: (theme) => theme.spacing(2),
+            marginTop: (theme) => theme.spacing(4),
+          }}
+        >
+          <div>
+            <Typography variant="h1" sx={{ fontSize: '3rem', fontWeight: 500 }}>
+              Fingerprint Pro Use Cases
+            </Typography>
+          </div>
+          <div>
+            <p>
+              This website demonstrates various use cases for{' '}
+              <a href="https://fingerprint.com" target="_blank">
+                {' '}
+                Fingerprint Pro
+              </a>{' '}
+              — a device identity platform with 99.5% accuracy.
+            </p>
+            <Divider />
+            <p>
+              Each use case demo covers frontend and backend sample implementation with a persistent data layer. The
+              open-source repository is available on{' '}
               <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases">GitHub</a>.
             </p>
-            <p className="UsecaseWrapper_helper">
-              On the <Link href="/admin">admin</Link> page, you can remove all info obtained from this browser. This
-              will reenable some scenarios for you if you were locked out from the specific action.
+            <p>
+              Go to the <Link href="/admin">Admin page</Link> to reset all scenarios for your browser.
             </p>
           </div>
-        </div>
-        <Grid
-          container
-          direction={{
-            xs: 'column',
-            md: 'row',
-          }}
-          spacing={3}
-          rowSpacing={{
-            xs: 4,
-            lg: 9,
-          }}
+        </Box>
+        <Box
+          component="main"
           sx={{
-            marginTop: (theme) => theme.spacing(3),
-            paddingX: (theme) => theme.spacing(6),
-            marginBottom: (theme) => theme.spacing(3),
+            display: 'grid',
+            gridTemplateColumns: {
+              // makes card responsive on sub 300px screens
+              '300': 'repeat(auto-fit, minmax(160px, 1fr))',
+              sm: 'repeat(auto-fit, minmax(300px, 1fr))',
+            },
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: (theme) => ({
+              xs: theme.spacing(1),
+              sm: theme.spacing(4),
+            }),
+            gap: (theme) => ({
+              xs: theme.spacing(2),
+              sm: theme.spacing(4),
+            }),
           }}
         >
           {pageTiles.map((pageTile) => (
-            <Grid
-              key={pageTile.url}
-              className="UseCase"
-              item
-              md={4}
-              xs={12}
-              sx={{
-                maxHeight: {
-                  xs: 'auto',
-                  lg: 350,
-                },
-              }}
-            >
-              <PageTile {...pageTile} />
-            </Grid>
+            <PageTile key={pageTile.url} {...pageTile} />
           ))}
-        </Grid>
+        </Box>
       </div>
     </Paper>
   );
