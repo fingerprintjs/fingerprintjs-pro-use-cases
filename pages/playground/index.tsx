@@ -7,6 +7,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  IconButton,
   Paper,
   Stack,
   Table,
@@ -14,13 +15,15 @@ import {
   TableCell,
   TableContainer,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { useQuery } from 'react-query';
 import { IdentificationEvent } from '../api/event/[requestId]';
-import { FunctionComponent, ReactNode, useState } from 'react';
+import { FunctionComponent, PropsWithChildren, ReactNode, useState } from 'react';
 import { CodeSnippet } from '../../client/components/CodeSnippet';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 const BotDetectionResult: FunctionComponent<{ event: IdentificationEvent | undefined }> = ({ event }) => {
   switch (event?.products.botd.data.bot.result) {
@@ -51,6 +54,16 @@ const MyTable: FunctionComponent<{ data: ReactNode[][] }> = ({ data }) => {
         </TableBody>
       </Table>
     </TableContainer>
+  );
+};
+
+const Info: FunctionComponent<PropsWithChildren> = ({ children }) => {
+  return (
+    <Tooltip title={children} enterTouchDelay={400}>
+      <IconButton size="small" sx={{ padding: '2px' }}>
+        <InfoOutlinedIcon fontSize="small" />
+      </IconButton>
+    </Tooltip>
   );
 };
 
@@ -100,7 +113,16 @@ function Playground() {
   }
 
   const baseSignals = [
-    ['Visitor ID', agentResponse?.visitorId],
+    [
+      <>
+        Visitor ID
+        <Info>
+          A unique and stable identifier of your browser. Remains the same even if you use a VPN or open the page in
+          Incognito mode.
+        </Info>
+      </>,
+      agentResponse?.visitorId,
+    ],
     ['Browser', `${agentResponse?.browserName} ${agentResponse?.browserVersion}`],
     ['Operating System', `${agentResponse?.os} ${agentResponse?.osVersion}`],
   ];
@@ -108,16 +130,74 @@ function Playground() {
   const usedIdentificationEvent = identificationEvent ?? chachedEvent;
 
   const SmartSignals = [
-    ['Geolocation', `${agentResponse?.ipLocation?.city.name}, ${agentResponse?.ipLocation?.country.name}`],
+    [
+      <>
+        Geolocation<Info>Your geographic location based on your IP address.</Info>{' '}
+      </>,
+      `${agentResponse?.ipLocation?.city.name}, ${agentResponse?.ipLocation?.country.name}`,
+    ],
     ['Incognito Mode', agentResponse?.incognito ? 'Yes' : 'Not detected'],
-    ['Bot', <BotDetectionResult key="botDetectionResult" event={usedIdentificationEvent} />],
-    ['IP Blocklist', usedIdentificationEvent?.products.ipBlocklist.data.result === true ? 'Yes' : 'Not detected'],
-    ['VPN ', usedIdentificationEvent?.products.vpn.data.result === true ? 'Yes' : 'Not detected'],
-    ['Proxy ', usedIdentificationEvent?.products.proxy.data.result === true ? 'Yes' : 'Not detected'],
-    ['Tor ', usedIdentificationEvent?.products.tor.data.result === true ? 'Yes' : 'Not detected'],
-    ['Browser Tampering ', usedIdentificationEvent?.products.tampering.data.result === true ? 'Yes' : 'Not detected'],
-    ['Android Emulator', 'Not applicable to browsers'],
-    ['Android Tampering', 'Not applicable to browsers'],
+    [
+      <>
+        Bot
+        <Info>
+          Fingerprint detects if the browser is driven by a human, a browser automation tool like Selenium or headless
+          Chrome (bad bot) or search engine crawler (good bot).
+        </Info>
+      </>,
+      <BotDetectionResult key="botDetectionResult" event={usedIdentificationEvent} />,
+    ],
+    [
+      <>
+        IP Blocklist
+        <Info>IP address was part of a known email (SMTP) spam attack or network (SSH/HTTP) attack. </Info>
+      </>,
+      usedIdentificationEvent?.products.ipBlocklist.data.result === true ? 'Yes' : 'Not detected',
+    ],
+    [
+      <>
+        VPN
+        <Info>
+          The visitor is using a VPN (browser timezone does not match or IP address is owned by a public VPN service
+          provider).
+        </Info>
+      </>,
+      usedIdentificationEvent?.products.vpn.data.result === true ? 'Yes' : 'Not detected',
+    ],
+    [
+      <>
+        Proxy<Info>The request IP address is used by a public proxy provider.</Info>
+      </>,
+      usedIdentificationEvent?.products.proxy.data.result === true ? 'Yes' : 'Not detected',
+    ],
+    [
+      <>
+        Tor Network<Info>The request IP address is a known Tor network exit node.</Info>
+      </>,
+      usedIdentificationEvent?.products.tor.data.result === true ? 'Yes' : 'Not detected',
+    ],
+    [
+      <>
+        Browser Tampering
+        <Info>
+          Flag indicating whether browser tampering was detected according to our internal thresholds. For example, if
+          the reported user agent is not consistent with other browser attributes.
+        </Info>
+      </>,
+      usedIdentificationEvent?.products.tampering.data.result === true ? 'Yes' : 'Not detected',
+    ],
+    [
+      <>
+        Android Emulator<Info>Android specific emulator detection.</Info>
+      </>,
+      'Not applicable to browsers',
+    ],
+    [
+      <>
+        Android Tampering<Info>Android specific root management apps detection, for example, Magisk.</Info>
+      </>,
+      'Not applicable to browsers',
+    ],
   ];
 
   const RefreshButton = () => {
