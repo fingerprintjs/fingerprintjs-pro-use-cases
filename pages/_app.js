@@ -23,7 +23,12 @@ function Layout({ children }) {
   return (
     <Stack sx={{ height: '100%' }}>
       <Header />
-      <Paper variant='outlined' sx={{ flexGrow: 1, borderRadius: 0, border: 'none', paddingBottom: t => t.spacing(4) }}>{children}</Paper>
+      <Paper
+        variant="outlined"
+        sx={{ flexGrow: 1, borderRadius: 0, border: 'none', paddingBottom: (t) => t.spacing(4) }}
+      >
+        {children}
+      </Paper>
     </Stack>
   );
 }

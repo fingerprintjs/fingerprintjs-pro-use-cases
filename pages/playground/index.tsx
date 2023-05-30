@@ -27,14 +27,21 @@ import { FunctionComponent, PropsWithChildren, ReactNode, useState } from 'react
 import { CodeSnippet } from '../../client/components/CodeSnippet';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { red } from '@mui/material/colors';
+import { lightGreen } from '@mui/material/colors';
+import { blueGrey } from '@mui/material/colors';
+
+const RED = red[100];
+const GREEN = lightGreen[100];
+const GRAY = blueGrey[100];
 
 const BotDetectionResult: FunctionComponent<{ event: IdentificationEvent | undefined }> = ({ event }) => {
   switch (event?.products?.botd?.data?.bot?.result) {
     case 'good':
-      return <>You are a good bot</>;
+      return <>You are a good bot 🤖</>;
     case 'bad':
       // @ts-ignore
-      return <>You are a bad bot (type: {event?.products.botd.data.bot.type})</>;
+      return <>You are a bad bot 🤖 (type: {event?.products.botd.data.bot.type})</>;
     case 'notDetected':
       return <>You are not a bot</>;
     default:
@@ -149,9 +156,9 @@ function Playground() {
       { content: 'Incognito Mode' },
       {
         content: agentResponse?.incognito ? 'You are incognito 🕶' : 'Not detected',
-        cellStyle: (theme) => ({
-          backgroundColor: agentResponse?.incognito ? theme.palette.redLight : theme.palette.greenLight,
-        }),
+        cellStyle: {
+          backgroundColor: agentResponse?.incognito ? RED : GREEN,
+        },
       },
     ],
     [
@@ -164,7 +171,12 @@ function Playground() {
           </Info>,
         ],
       },
-      { content: <BotDetectionResult key="botDetectionResult" event={usedIdentificationEvent} /> },
+      {
+        content: <BotDetectionResult key="botDetectionResult" event={usedIdentificationEvent} />,
+        cellStyle: {
+          backgroundColor: usedIdentificationEvent?.products?.botd?.data?.bot?.result === 'bad' ? RED : GREEN,
+        },
+      },
     ],
     [
       {
@@ -175,7 +187,15 @@ function Playground() {
           </Info>,
         ],
       },
-      { content: usedIdentificationEvent?.products?.ipBlocklist?.data?.result === true ? 'Yes' : 'Not detected' },
+      {
+        content:
+          usedIdentificationEvent?.products?.ipBlocklist?.data?.result === true
+            ? 'Your IP is on a blocklist 🚫'
+            : 'Not detected',
+        cellStyle: {
+          backgroundColor: usedIdentificationEvent?.products?.ipBlocklist?.data?.result === true ? RED : GREEN,
+        },
+      },
     ],
     [
       {
@@ -187,19 +207,31 @@ function Playground() {
           </Info>,
         ],
       },
-      { content: usedIdentificationEvent?.products?.vpn?.data?.result === true ? 'Yes' : 'Not detected' },
+      {
+        content:
+          usedIdentificationEvent?.products?.vpn?.data?.result === true ? 'You are using a VPN 🌐' : 'Not detected',
+        cellStyle: { backgroundColor: usedIdentificationEvent?.products?.vpn?.data?.result === true ? RED : GREEN },
+      },
     ],
     [
       {
         content: ['Proxy', <Info key="info">The request IP address is used by a public proxy provider.</Info>],
       },
-      { content: usedIdentificationEvent?.products?.proxy?.data?.result === true ? 'Yes' : 'Not detected' },
+      {
+        content:
+          usedIdentificationEvent?.products?.proxy?.data?.result === true ? 'You are using a proxy 🔄' : 'Not detected',
+        cellStyle: { backgroundColor: usedIdentificationEvent?.products?.proxy?.data?.result === true ? RED : GREEN },
+      },
     ],
     [
       {
         content: ['Tor Network', <Info key="info">The request IP address is a known Tor network exit node.</Info>],
       },
-      { content: usedIdentificationEvent?.products?.tor?.data?.result === true ? 'Yes' : 'Not detected' },
+      {
+        content:
+          usedIdentificationEvent?.products?.tor?.data?.result === true ? 'You are using Tor 🧅' : 'Not detected',
+        cellStyle: { backgroundColor: usedIdentificationEvent?.products?.tor?.data?.result === true ? RED : GREEN },
+      },
     ],
     [
       {
@@ -211,13 +243,18 @@ function Playground() {
           </Info>,
         ],
       },
-      { content: usedIdentificationEvent?.products?.tampering?.data?.result === true ? 'Yes' : 'Not detected' },
+      {
+        content: usedIdentificationEvent?.products?.tampering?.data?.result === true ? 'Yes 🖥️🔧' : 'Not detected',
+        cellStyle: {
+          backgroundColor: usedIdentificationEvent?.products?.tampering?.data?.result === true ? RED : GREEN,
+        },
+      },
     ],
     [
       {
         content: ['Android Emulator', <Info key="info">Android specific emulator detection.</Info>],
       },
-      { content: 'Not applicable to browsers' },
+      { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },
     ],
     [
       {
@@ -226,7 +263,7 @@ function Playground() {
           <Info key="info">Android specific root management apps detection, for example, Magisk.</Info>,
         ],
       },
-      { content: 'Not applicable to browsers' },
+      { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },
     ],
   ];
 
