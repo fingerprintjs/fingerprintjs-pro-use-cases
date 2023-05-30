@@ -4,6 +4,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Alert,
   Box,
   Button,
   CircularProgress,
@@ -26,7 +27,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 const BotDetectionResult: FunctionComponent<{ event: IdentificationEvent | undefined }> = ({ event }) => {
-  switch (event?.products.botd.data.bot.result) {
+  switch (event?.products?.botd?.data?.bot?.result) {
     case 'good':
       return <>You are a good bot</>;
     case 'bad':
@@ -86,20 +87,23 @@ function Playground() {
     error: serverError,
   } = useQuery<IdentificationEvent | undefined>(
     [requestId],
-    () => fetch(`/api/event/${agentResponse.requestId}`).then((res) => res.json()),
-
-    { enabled: Boolean(agentResponse), onSuccess: (data) => setCachedEvent(data) }
+    () =>
+      fetch(`/api/event/${agentResponse?.requestId}`).then((res) => {
+        if (res.status !== 200) {
+          throw new Error(`${res.statusText}`);
+        }
+        return res.json();
+      }),
+    { enabled: Boolean(agentResponse), retry: false, onSuccess: (data) => setCachedEvent(data) }
   );
 
   if (agentError) {
-    return <p>Error: {agentError.message}</p>;
+    return <Alert severity={'error'}>JavaScript Agent Error: {agentError.message}.</Alert>;
   }
 
   if (serverError) {
-    return <p>Error: {serverError.toString()}</p>;
+    return <Alert severity={'error'}>Server API Request {serverError.toString()}.</Alert>;
   }
-
-  console.log({ agentResponse, identificationEvent, isLoadingServerResponse });
 
   if (!chachedEvent) {
     return (
@@ -134,7 +138,7 @@ function Playground() {
       <>
         Geolocation<Info>Your geographic location based on your IP address.</Info>{' '}
       </>,
-      `${agentResponse?.ipLocation?.city.name}, ${agentResponse?.ipLocation?.country.name}`,
+      `${agentResponse?.ipLocation?.city?.name}, ${agentResponse?.ipLocation?.country?.name}`,
     ],
     ['Incognito Mode', agentResponse?.incognito ? 'Yes' : 'Not detected'],
     [
@@ -152,7 +156,7 @@ function Playground() {
         IP Blocklist
         <Info>IP address was part of a known email (SMTP) spam attack or network (SSH/HTTP) attack. </Info>
       </>,
-      usedIdentificationEvent?.products.ipBlocklist.data.result === true ? 'Yes' : 'Not detected',
+      usedIdentificationEvent?.products?.ipBlocklist?.data?.result === true ? 'Yes' : 'Not detected',
     ],
     [
       <>
@@ -162,19 +166,19 @@ function Playground() {
           provider).
         </Info>
       </>,
-      usedIdentificationEvent?.products.vpn.data.result === true ? 'Yes' : 'Not detected',
+      usedIdentificationEvent?.products?.vpn?.data?.result === true ? 'Yes' : 'Not detected',
     ],
     [
       <>
         Proxy<Info>The request IP address is used by a public proxy provider.</Info>
       </>,
-      usedIdentificationEvent?.products.proxy.data.result === true ? 'Yes' : 'Not detected',
+      usedIdentificationEvent?.products?.proxy?.data?.result === true ? 'Yes' : 'Not detected',
     ],
     [
       <>
         Tor Network<Info>The request IP address is a known Tor network exit node.</Info>
       </>,
-      usedIdentificationEvent?.products.tor.data.result === true ? 'Yes' : 'Not detected',
+      usedIdentificationEvent?.products?.tor?.data?.result === true ? 'Yes' : 'Not detected',
     ],
     [
       <>
@@ -184,7 +188,7 @@ function Playground() {
           the reported user agent is not consistent with other browser attributes.
         </Info>
       </>,
-      usedIdentificationEvent?.products.tampering.data.result === true ? 'Yes' : 'Not detected',
+      usedIdentificationEvent?.products?.tampering?.data?.result === true ? 'Yes' : 'Not detected',
     ],
     [
       <>
@@ -224,7 +228,6 @@ function Playground() {
 
   return (
     <div>
-      {agentError && <p>Error: {agentError.message}</p>}
       <Typography variant="h2" textAlign={'center'}>
         Welcome, your visitor ID is{' '}
         <Box sx={{ display: 'inline', color: (t) => t.palette.primary.main, fontWeight: 'bold' }}>
