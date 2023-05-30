@@ -7,7 +7,7 @@ import {
   People,
   PrecisionManufacturing,
   Settings,
-  Fingerprint
+  Fingerprint,
 } from '@mui/icons-material';
 import { PageTile, PageTileProps } from '../client/components/PageTile';
 import { Box, Divider, Typography } from '@mui/material';

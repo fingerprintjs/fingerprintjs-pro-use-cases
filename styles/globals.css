@@ -6,7 +6,9 @@
 }
 
 /* CSS Reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -57,5 +59,3 @@ code {
   margin-bottom: 4px !important;
   font-size: 14px !important;
 }
-
-
