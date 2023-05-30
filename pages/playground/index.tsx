@@ -18,6 +18,8 @@ import {
   TableRow,
   Tooltip,
   Typography,
+  SxProps,
+  Theme,
 } from '@mui/material';
 import { useQuery } from 'react-query';
 import { IdentificationEvent } from '../api/event/[requestId]';
@@ -40,7 +42,12 @@ const BotDetectionResult: FunctionComponent<{ event: IdentificationEvent | undef
   }
 };
 
-const MyTable: FunctionComponent<{ data: ReactNode[][] }> = ({ data }) => {
+type CellData = {
+  content: ReactNode | ReactNode[];
+  cellStyle?: SxProps<Theme>;
+};
+
+const MyTable: FunctionComponent<{ data: CellData[][] }> = ({ data }) => {
   return (
     <TableContainer component={Paper} sx={{ mb: (t) => t.spacing(3) }}>
       <Table size="small">
@@ -48,7 +55,9 @@ const MyTable: FunctionComponent<{ data: ReactNode[][] }> = ({ data }) => {
           {data.map((row, i) => (
             <TableRow key={i}>
               {row.map((cell, j) => (
-                <TableCell key={j}>{cell}</TableCell>
+                <TableCell key={j} sx={cell.cellStyle}>
+                  {cell.content}
+                </TableCell>
               ))}
             </TableRow>
           ))}
@@ -79,7 +88,7 @@ function Playground() {
   const requestId = agentResponse?.requestId;
 
   /** Temporary fix to store previous because ReactQuery sets data to undefined before the fresh data is available when I make a new query and it makes everything flash */
-  const [chachedEvent, setCachedEvent] = useState<IdentificationEvent | undefined>(undefined);
+  const [cachedEvent, setCachedEvent] = useState<IdentificationEvent | undefined>(undefined);
 
   const {
     data: identificationEvent,
@@ -105,7 +114,7 @@ function Playground() {
     return <Alert severity={'error'}>Server API Request {serverError.toString()}.</Alert>;
   }
 
-  if (!chachedEvent) {
+  if (!cachedEvent) {
     return (
       <Stack alignItems={'center'} gap={5}>
         <CircularProgress />
@@ -116,91 +125,108 @@ function Playground() {
     );
   }
 
-  const baseSignals = [
+  const usedIdentificationEvent = identificationEvent ?? cachedEvent;
+
+  const baseSignals: CellData[][] = [
     [
-      <>
-        Visitor ID
-        <Info>
-          A unique and stable identifier of your browser. Remains the same even if you use a VPN or open the page in
-          Incognito mode.
-        </Info>
-      </>,
-      agentResponse?.visitorId,
+      {
+        content: ['Visitor ID', <Info key="info">A unique and stable identifier of your browser.</Info>],
+      },
+      { content: agentResponse?.visitorId },
     ],
-    ['Browser', `${agentResponse?.browserName} ${agentResponse?.browserVersion}`],
-    ['Operating System', `${agentResponse?.os} ${agentResponse?.osVersion}`],
+    [{ content: 'Browser' }, { content: `${agentResponse?.browserName} ${agentResponse?.browserVersion}` }],
+    [{ content: 'Operating System' }, { content: `${agentResponse?.os} ${agentResponse?.osVersion}` }],
   ];
 
-  const usedIdentificationEvent = identificationEvent ?? chachedEvent;
-
-  const SmartSignals = [
+  const smartSignals: CellData[][] = [
     [
-      <>
-        Geolocation<Info>Your geographic location based on your IP address.</Info>{' '}
-      </>,
-      `${agentResponse?.ipLocation?.city?.name}, ${agentResponse?.ipLocation?.country?.name}`,
-    ],
-    ['Incognito Mode', agentResponse?.incognito ? 'Yes' : 'Not detected'],
-    [
-      <>
-        Bot
-        <Info>
-          Fingerprint detects if the browser is driven by a human, a browser automation tool like Selenium or headless
-          Chrome (bad bot) or search engine crawler (good bot).
-        </Info>
-      </>,
-      <BotDetectionResult key="botDetectionResult" event={usedIdentificationEvent} />,
+      {
+        content: ['Geolocation', <Info key="info">Your geographic location based on your IP address.</Info>],
+      },
+      { content: `${agentResponse?.ipLocation?.city?.name}, ${agentResponse?.ipLocation?.country?.name}` },
     ],
     [
-      <>
-        IP Blocklist
-        <Info>IP address was part of a known email (SMTP) spam attack or network (SSH/HTTP) attack. </Info>
-      </>,
-      usedIdentificationEvent?.products?.ipBlocklist?.data?.result === true ? 'Yes' : 'Not detected',
+      { content: 'Incognito Mode' },
+      {
+        content: agentResponse?.incognito ? 'You are incognito 🕶' : 'Not detected',
+        cellStyle: (theme) => ({
+          backgroundColor: agentResponse?.incognito ? theme.palette.redLight : theme.palette.greenLight,
+        }),
+      },
     ],
     [
-      <>
-        VPN
-        <Info>
-          The visitor is using a VPN (browser timezone does not match or IP address is owned by a public VPN service
-          provider).
-        </Info>
-      </>,
-      usedIdentificationEvent?.products?.vpn?.data?.result === true ? 'Yes' : 'Not detected',
+      {
+        content: [
+          'Bot',
+          <Info key="info">
+            Fingerprint detects if the browser is driven by a human, a browser automation tool like Selenium or headless
+            Chrome (bad bot) or search engine crawler (good bot).
+          </Info>,
+        ],
+      },
+      { content: <BotDetectionResult key="botDetectionResult" event={usedIdentificationEvent} /> },
     ],
     [
-      <>
-        Proxy<Info>The request IP address is used by a public proxy provider.</Info>
-      </>,
-      usedIdentificationEvent?.products?.proxy?.data?.result === true ? 'Yes' : 'Not detected',
+      {
+        content: [
+          'IP Blocklist',
+          <Info key="info">
+            IP address was part of a known email (SMTP) spam attack or network (SSH/HTTP) attack.{' '}
+          </Info>,
+        ],
+      },
+      { content: usedIdentificationEvent?.products?.ipBlocklist?.data?.result === true ? 'Yes' : 'Not detected' },
     ],
     [
-      <>
-        Tor Network<Info>The request IP address is a known Tor network exit node.</Info>
-      </>,
-      usedIdentificationEvent?.products?.tor?.data?.result === true ? 'Yes' : 'Not detected',
+      {
+        content: [
+          'VPN',
+          <Info key="info">
+            The visitor is using a VPN (browser timezone does not match or IP address is owned by a public VPN service
+            provider).
+          </Info>,
+        ],
+      },
+      { content: usedIdentificationEvent?.products?.vpn?.data?.result === true ? 'Yes' : 'Not detected' },
     ],
     [
-      <>
-        Browser Tampering
-        <Info>
-          Flag indicating whether browser tampering was detected according to our internal thresholds. For example, if
-          the reported user agent is not consistent with other browser attributes.
-        </Info>
-      </>,
-      usedIdentificationEvent?.products?.tampering?.data?.result === true ? 'Yes' : 'Not detected',
+      {
+        content: ['Proxy', <Info key="info">The request IP address is used by a public proxy provider.</Info>],
+      },
+      { content: usedIdentificationEvent?.products?.proxy?.data?.result === true ? 'Yes' : 'Not detected' },
     ],
     [
-      <>
-        Android Emulator<Info>Android specific emulator detection.</Info>
-      </>,
-      'Not applicable to browsers',
+      {
+        content: ['Tor Network', <Info key="info">The request IP address is a known Tor network exit node.</Info>],
+      },
+      { content: usedIdentificationEvent?.products?.tor?.data?.result === true ? 'Yes' : 'Not detected' },
     ],
     [
-      <>
-        Android Tampering<Info>Android specific root management apps detection, for example, Magisk.</Info>
-      </>,
-      'Not applicable to browsers',
+      {
+        content: [
+          'Browser Tampering',
+          <Info key="info">
+            Flag indicating whether browser tampering was detected according to our internal thresholds. For example, if
+            the reported user agent is not consistent with other browser attributes.
+          </Info>,
+        ],
+      },
+      { content: usedIdentificationEvent?.products?.tampering?.data?.result === true ? 'Yes' : 'Not detected' },
+    ],
+    [
+      {
+        content: ['Android Emulator', <Info key="info">Android specific emulator detection.</Info>],
+      },
+      { content: 'Not applicable to browsers' },
+    ],
+    [
+      {
+        content: [
+          'Android Tampering',
+          <Info key="info">Android specific root management apps detection, for example, Magisk.</Info>,
+        ],
+      },
+      { content: 'Not applicable to browsers' },
     ],
   ];
 
@@ -240,7 +266,7 @@ function Playground() {
       <Typography variant="h3">Base signals (Pro plan)</Typography>
       <MyTable data={baseSignals} />
       <Typography variant="h3">Smart signals (Pro Plus plan)</Typography>
-      <MyTable data={SmartSignals} />
+      <MyTable data={smartSignals} />
 
       <RefreshButton />
 

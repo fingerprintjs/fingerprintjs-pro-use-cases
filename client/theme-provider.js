@@ -23,6 +23,8 @@ export function ThemeProvider({ children }) {
         headerLight,
         accentBackground: hasDarkMode ? '#171717' : '#fafafa',
         mode: hasDarkMode ? 'dark' : 'light',
+        redLight: '#ef9a9a',
+        greenLight: '#a5d6a7',
       },
       components: {
         MuiTextField: {
