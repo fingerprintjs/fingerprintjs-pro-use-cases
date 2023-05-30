@@ -2,7 +2,6 @@ import { FingerprintJsServerApiClient, Region } from '@fingerprintjs/fingerprint
 import { NextApiRequest, NextApiResponse } from 'next';
 import { SERVER_API_KEY } from '../../../server/const';
 
-
 export type IdentificationEvent = Awaited<Promise<ReturnType<typeof FingerprintJsServerApiClient.prototype.getEvent>>>;
 
 export default async function getFingerprintEvent(req: NextApiRequest, res: NextApiResponse) {
@@ -11,12 +10,13 @@ export default async function getFingerprintEvent(req: NextApiRequest, res: Next
     const client = new FingerprintJsServerApiClient({
       region: Region.Global,
       apiKey: SERVER_API_KEY,
+      fetch: fetch.bind(this),
     });
 
     const eventResponse = await client.getEvent(requestId);
     res.status(200).json(eventResponse);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(404).json({
       message: 'requestId not found',
     });
