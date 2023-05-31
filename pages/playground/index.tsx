@@ -323,41 +323,66 @@ function Playground() {
       </Typography>
       <RefreshButton />
 
-      <Typography variant="h3">Base signals (Pro plan)</Typography>
-      <MyTable data={baseSignals} />
-      <Typography variant="h3">Smart signals (Pro Plus plan)</Typography>
-      <MyTable data={smartSignals} />
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            md: 'repeat(2, minmax(0, 350px))',
+          },
+          justifyContent: 'center',
+          gap: 3,
+        }}
+      >
+        <Box>
+          <Typography variant="h3">Base signals (Pro plan)</Typography>
+          <MyTable data={baseSignals} />
+        </Box>
+        <Box>
+          <Typography variant="h3">Smart signals (Pro Plus plan)</Typography>
+          <MyTable data={smartSignals} />
+        </Box>
+      </Box>
 
       <RefreshButton />
 
-      <Typography variant="h3">Full logs</Typography>
-
-      <Accordion defaultExpanded elevation={3}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="agent-response-content"
-          id="agent-response-header"
-        >
-          <Typography width={'100%'}>JavaScript Agent Response</Typography>
-          {isLoadingAgentResponse && (
-            <CircularProgress size={'1.2rem'} thickness={5} sx={{ mr: (t) => t.spacing(2) }} />
-          )}
-        </AccordionSummary>
-        <AccordionDetails>
-          <CodeSnippet language="json">{JSON.stringify(agentResponse, null, 2)}</CodeSnippet>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion defaultExpanded elevation={3}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="server-event-content" id="server-event-header">
-          <Typography width={'100%'}>Server API Response</Typography>
-          {isLoadingServerResponse && (
-            <CircularProgress size={'1.2rem'} thickness={5} sx={{ mr: (t) => t.spacing(2) }} />
-          )}
-        </AccordionSummary>
-        <AccordionDetails>
-          <CodeSnippet language="json">{JSON.stringify(usedIdentificationEvent, null, 2)}</CodeSnippet>
-        </AccordionDetails>
-      </Accordion>
+      <Box
+        sx={{ display: 'grid', gridTemplateColumns: { xs: 'minmax(0,1fr)', lg: 'repeat(2, minmax(0, 1fr))' }, gap: 3 }}
+      >
+        <Box>
+          <Accordion defaultExpanded elevation={3}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="agent-response-content"
+              id="agent-response-header"
+            >
+              <Typography width={'100%'}>JavaScript Agent Response</Typography>
+              {isLoadingAgentResponse && (
+                <CircularProgress size={'1.2rem'} thickness={5} sx={{ mr: (t) => t.spacing(2) }} />
+              )}
+            </AccordionSummary>
+            <AccordionDetails>
+              <CodeSnippet language="json">{JSON.stringify(agentResponse, null, 2)}</CodeSnippet>
+            </AccordionDetails>
+          </Accordion>
+        </Box>
+        <Box>
+          <Accordion defaultExpanded elevation={3}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="server-event-content"
+              id="server-event-header"
+            >
+              <Typography width={'100%'}>Server API Response</Typography>
+              {isLoadingServerResponse && (
+                <CircularProgress size={'1.2rem'} thickness={5} sx={{ mr: (t) => t.spacing(2) }} />
+              )}
+            </AccordionSummary>
+            <AccordionDetails>
+              <CodeSnippet language="json">{JSON.stringify(usedIdentificationEvent, null, 2)}</CodeSnippet>
+            </AccordionDetails>
+          </Accordion>
+        </Box>
+      </Box>
     </div>
   );
 }
@@ -369,7 +394,7 @@ export default function PlaygroundPage() {
       description={<p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>}
       showAdminLink={false}
       hideSrcListItem={true}
-      contentSx={{ boxShadow: 'none' }}
+      contentSx={{ boxShadow: 'none', maxWidth: '1200px' }}
     >
       <Playground />
     </UseCaseWrapper>
