@@ -327,7 +327,7 @@ function Playground() {
         sx={{
           display: 'grid',
           gridTemplateColumns: {
-            md: 'repeat(2, minmax(0, 350px))',
+            md: 'repeat(2, minmax(0, 400px))',
           },
           justifyContent: 'center',
           gap: 3,
