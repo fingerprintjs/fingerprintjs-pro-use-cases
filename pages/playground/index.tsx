@@ -57,7 +57,7 @@ type CellData = {
 
 const MyTable: FunctionComponent<{ data: CellData[][] }> = ({ data }) => {
   return (
-    <TableContainer component={Paper} sx={{ mb: (t) => t.spacing(3) }}>
+    <TableContainer component={Paper} sx={{ mb: (t) => t.spacing(3) }} elevation={3}>
       <Table size="small">
         <TableBody>
           {data.map((row, i) => (
@@ -332,7 +332,7 @@ function Playground() {
 
       <Typography variant="h3">Full logs</Typography>
 
-      <Accordion defaultExpanded>
+      <Accordion defaultExpanded elevation={3}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="agent-response-content"
@@ -347,7 +347,7 @@ function Playground() {
           <CodeSnippet language="json">{JSON.stringify(agentResponse, null, 2)}</CodeSnippet>
         </AccordionDetails>
       </Accordion>
-      <Accordion defaultExpanded>
+      <Accordion defaultExpanded elevation={3}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="server-event-content" id="server-event-header">
           <Typography width={'100%'}>Server API Response</Typography>
           {isLoadingServerResponse && (
