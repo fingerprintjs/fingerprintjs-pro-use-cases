@@ -27,17 +27,14 @@ import { FunctionComponent, PropsWithChildren, ReactNode, useState } from 'react
 import { CodeSnippet } from '../../client/components/CodeSnippet';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { red } from '@mui/material/colors';
+import { green, red } from '@mui/material/colors';
 import { lightGreen } from '@mui/material/colors';
 import { blueGrey } from '@mui/material/colors';
 import dynamic from 'next/dynamic';
+import { useUserPreferences } from '../../client/api/personalization/use-user-preferences';
 
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('../../client/components/playground/Map'), { ssr: false });
-
-const RED = red[100];
-const GREEN = lightGreen[50];
-const GRAY = blueGrey[50];
 
 const BotDetectionResult: FunctionComponent<{ event: IdentificationEvent | undefined }> = ({ event }) => {
   switch (event?.products?.botd?.data?.bot?.result) {
@@ -116,6 +113,12 @@ function Playground() {
       }),
     { enabled: Boolean(agentResponse), retry: false, onSuccess: (data) => setCachedEvent(data) }
   );
+
+  const { hasDarkMode } = useUserPreferences();
+
+  const RED = hasDarkMode ? red[900] : red[100];
+  const GREEN = hasDarkMode ? green[900] : lightGreen[50];
+  const GRAY = hasDarkMode ? blueGrey[900] : blueGrey[50];
 
   if (agentError) {
     return <Alert severity={'error'}>JavaScript Agent Error: {agentError.message}.</Alert>;

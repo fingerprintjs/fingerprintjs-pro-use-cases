@@ -4,6 +4,7 @@ import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import React from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { useUserPreferences } from '../../api/personalization/use-user-preferences';
 
 // This is a workaround for the marker icon not showing up out of the box
 let DefaultIcon = L.icon({
@@ -20,6 +21,7 @@ type MapProps = {
 };
 
 const Map: FunctionComponent<MapProps> = (props) => {
+  const { hasDarkMode } = useUserPreferences();
   return (
     <MapContainer
       center={props.position}
@@ -33,9 +35,9 @@ const Map: FunctionComponent<MapProps> = (props) => {
     >
       <TileLayer
         // default maps: url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
+        url={`https://tiles.stadiamaps.com/tiles/alidade_smooth${hasDarkMode ? '_dark' : ''}/{z}/{x}/{y}{r}.png`}
       />
-      <Marker position={props.position} icon={DefaultIcon} />
+      <Marker position={props.position} icon={DefaultIcon} interactive={false} />
     </MapContainer>
   );
 };
