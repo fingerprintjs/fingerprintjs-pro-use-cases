@@ -30,10 +30,14 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { red } from '@mui/material/colors';
 import { lightGreen } from '@mui/material/colors';
 import { blueGrey } from '@mui/material/colors';
+import dynamic from 'next/dynamic';
+
+// Map cannot be server-side rendered
+const Map = dynamic(() => import('../../client/components/playground/Map'), { ssr: false });
 
 const RED = red[100];
-const GREEN = lightGreen[100];
-const GRAY = blueGrey[100];
+const GREEN = lightGreen[50];
+const GRAY = blueGrey[50];
 
 const BotDetectionResult: FunctionComponent<{ event: IdentificationEvent | undefined }> = ({ event }) => {
   switch (event?.products?.botd?.data?.bot?.result) {
@@ -43,7 +47,7 @@ const BotDetectionResult: FunctionComponent<{ event: IdentificationEvent | undef
       // @ts-ignore
       return <>You are a bad bot 🤖 (type: {event?.products.botd.data.bot.type})</>;
     case 'notDetected':
-      return <>You are not a bot</>;
+      return <>Not detected</>;
     default:
       return <>Unknown</>;
   }
@@ -134,6 +138,8 @@ function Playground() {
 
   const usedIdentificationEvent = identificationEvent ?? cachedEvent;
 
+  const { latitude, longitude } = agentResponse?.ipLocation ?? {};
+
   const baseSignals: CellData[][] = [
     [
       {
@@ -150,7 +156,21 @@ function Playground() {
       {
         content: ['Geolocation', <Info key="info">Your geographic location based on your IP address.</Info>],
       },
-      { content: `${agentResponse?.ipLocation?.city?.name}, ${agentResponse?.ipLocation?.country?.name}` },
+      {
+        content: (
+          <>
+            <div>
+              {agentResponse?.ipLocation?.city?.name}, {agentResponse?.ipLocation?.country?.name}
+            </div>
+            {latitude && longitude && (
+              <div>
+                <Map key={[latitude, longitude].toString()} position={[latitude, longitude]} height="80px" />
+              </div>
+            )}
+          </>
+        ),
+        cellStyle: { paddingLeft: 0, paddingRight: 0, paddingBottom: 0 },
+      },
     ],
     [
       { content: 'Incognito Mode' },
