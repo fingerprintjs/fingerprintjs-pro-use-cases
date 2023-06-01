@@ -38,8 +38,9 @@ function Playground() {
   } = useVisitorData({ extendedResult: true, ignoreCache: true }, { immediate: true });
 
   const requestId = agentResponse?.requestId;
+  const { hasDarkMode } = useUserPreferences();
 
-  /** Temporary fix to store previous because ReactQuery sets data to undefined before the fresh data is available when I make a new query and it makes everything flash */
+  /** Temporary fix to store previous event because ReactQuery sets data to undefined before the fresh data is available when I make a new query and it makes everything flash */
   const [cachedEvent, setCachedEvent] = useState<EventResponse | undefined>(undefined);
 
   const {
@@ -57,8 +58,6 @@ function Playground() {
       }),
     { enabled: Boolean(agentResponse), retry: false, onSuccess: (data) => setCachedEvent(data) }
   );
-
-  const { hasDarkMode } = useUserPreferences();
 
   if (agentError) {
     return <Alert severity={'error'}>JavaScript Agent Error: {agentError.message}.</Alert>;
