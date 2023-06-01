@@ -25,6 +25,7 @@ import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import BotDetectionResult from '../../client/components/playground/BotDetectionResult';
 import Info from '../../client/components/playground/InfoIcon';
 import RefreshButton from '../../client/components/playground/RefreshButton';
+import { timeAgoLabel } from '../../client/components/playground/timeUtils';
 
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('../../client/components/playground/Map'), { ssr: false });
@@ -94,6 +95,33 @@ function Playground() {
     ],
     [{ content: 'Browser' }, { content: `${agentResponse?.browserName} ${agentResponse?.browserVersion}` }],
     [{ content: 'Operating System' }, { content: `${agentResponse?.os} ${agentResponse?.osVersion}` }],
+    [{ content: 'IP Address' }, { content: agentResponse?.ip }],
+    [
+      {
+        content: [
+          'Last seen',
+          <Info key="info">The last time the Fingerprint has encountered that visitor ID (globally).</Info>,
+        ],
+      },
+      {
+        content: agentResponse?.lastSeenAt.global ? timeAgoLabel(agentResponse?.lastSeenAt.global) : 'Unknown',
+      },
+    ],
+    [
+      {
+        content: [
+          'Confidence Score',
+          <Info key="info">
+            A value between 0 and 1 representing how confident we are about this identification, depending on the
+            available signals.
+          </Info>,
+        ],
+      },
+      {
+        content: Math.trunc(agentResponse?.confidence.score * 100) / 100,
+        cellStyle: { backgroundColor: agentResponse?.confidence.score > 0.7 ? GREEN : RED },
+      },
+    ],
   ];
 
   const smartSignals: TableCellData[][] = [
