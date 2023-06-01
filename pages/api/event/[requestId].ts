@@ -2,8 +2,6 @@ import { FingerprintJsServerApiClient, Region, isEventError } from '@fingerprint
 import { NextApiRequest, NextApiResponse } from 'next';
 import { SERVER_API_KEY } from '../../../server/const';
 
-export type IdentificationEvent = Awaited<Promise<ReturnType<typeof FingerprintJsServerApiClient.prototype.getEvent>>>;
-
 export default async function getFingerprintEvent(req: NextApiRequest, res: NextApiResponse) {
   const { requestId } = req.query as { requestId: string };
   const client = new FingerprintJsServerApiClient({

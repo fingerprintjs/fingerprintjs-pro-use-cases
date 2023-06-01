@@ -8,80 +8,48 @@ import {
   Box,
   Button,
   CircularProgress,
-  IconButton,
-  Paper,
   Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Tooltip,
   Typography,
-  SxProps,
-  Theme,
 } from '@mui/material';
 import { useQuery } from 'react-query';
-import { IdentificationEvent } from '../api/event/[requestId]';
-import { FunctionComponent, PropsWithChildren, ReactNode, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { CodeSnippet } from '../../client/components/CodeSnippet';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+
 import { green, red } from '@mui/material/colors';
 import { lightGreen } from '@mui/material/colors';
 import { blueGrey } from '@mui/material/colors';
 import dynamic from 'next/dynamic';
 import { useUserPreferences } from '../../client/api/personalization/use-user-preferences';
+import MyTable, { TableCellData } from '../../client/components/playground/MyTable';
+import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import BotDetectionResult from '../../client/components/playground/BotDetectionResult';
+import Info from '../../client/components/playground/InfoIcon';
 
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('../../client/components/playground/Map'), { ssr: false });
 
-const BotDetectionResult: FunctionComponent<{ event: IdentificationEvent | undefined }> = ({ event }) => {
-  switch (event?.products?.botd?.data?.bot?.result) {
-    case 'good':
-      return <>You are a good bot 🤖</>;
-    case 'bad':
-      // @ts-ignore
-      return <>You are a bad bot 🤖 (type: {event?.products.botd.data.bot.type})</>;
-    case 'notDetected':
-      return <>Not detected</>;
-    default:
-      return <>Unknown</>;
-  }
-};
-
-type CellData = {
-  content: ReactNode | ReactNode[];
-  cellStyle?: SxProps<Theme>;
-};
-
-const MyTable: FunctionComponent<{ data: CellData[][] }> = ({ data }) => {
+const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: () => null }> = ({
+  loading,
+  getAgentData,
+}) => {
   return (
-    <TableContainer component={Paper} sx={{ mb: (t) => t.spacing(3) }} elevation={3}>
-      <Table size="small">
-        <TableBody>
-          {data.map((row, i) => (
-            <TableRow key={i}>
-              {row.map((cell, j) => (
-                <TableCell key={j} sx={cell.cellStyle}>
-                  {cell.content}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-};
-
-const Info: FunctionComponent<PropsWithChildren> = ({ children }) => {
-  return (
-    <Tooltip title={children} enterTouchDelay={400}>
-      <IconButton size="small" sx={{ padding: '2px' }}>
-        <InfoOutlinedIcon fontSize="small" />
-      </IconButton>
-    </Tooltip>
+    <Button
+      color="primary"
+      variant="outlined"
+      sx={{ mr: 'auto', ml: 'auto', mt: (t) => t.spacing(4), mb: (t) => t.spacing(8), display: 'flex' }}
+      onClick={() => getAgentData({ ignoreCache: true })}
+      disabled={loading}
+    >
+      {loading ? (
+        <>
+          Loading...
+          <CircularProgress size={'1rem'} thickness={5} sx={{ ml: (t) => t.spacing(2) }} />
+        </>
+      ) : (
+        <>Analyze my browser again</>
+      )}
+    </Button>
   );
 };
 
@@ -96,13 +64,13 @@ function Playground() {
   const requestId = agentResponse?.requestId;
 
   /** Temporary fix to store previous because ReactQuery sets data to undefined before the fresh data is available when I make a new query and it makes everything flash */
-  const [cachedEvent, setCachedEvent] = useState<IdentificationEvent | undefined>(undefined);
+  const [cachedEvent, setCachedEvent] = useState<EventResponse | undefined>(undefined);
 
   const {
     data: identificationEvent,
     isLoading: isLoadingServerResponse,
     error: serverError,
-  } = useQuery<IdentificationEvent | undefined>(
+  } = useQuery<EventResponse | undefined>(
     [requestId],
     () =>
       fetch(`/api/event/${agentResponse?.requestId}`).then((res) => {
@@ -143,7 +111,7 @@ function Playground() {
 
   const { latitude, longitude } = agentResponse?.ipLocation ?? {};
 
-  const baseSignals: CellData[][] = [
+  const baseSignals: TableCellData[][] = [
     [
       {
         content: ['Visitor ID', <Info key="info">A unique and stable identifier of your browser.</Info>],
@@ -154,7 +122,7 @@ function Playground() {
     [{ content: 'Operating System' }, { content: `${agentResponse?.os} ${agentResponse?.osVersion}` }],
   ];
 
-  const smartSignals: CellData[][] = [
+  const smartSignals: TableCellData[][] = [
     [
       {
         content: ['Geolocation', <Info key="info">Your geographic location based on your IP address.</Info>],
@@ -289,28 +257,6 @@ function Playground() {
       { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },
     ],
   ];
-
-  const RefreshButton = () => {
-    const loading = isLoadingAgentResponse || isLoadingServerResponse;
-    return (
-      <Button
-        color="primary"
-        variant="outlined"
-        sx={{ mr: 'auto', ml: 'auto', mt: (t) => t.spacing(4), mb: (t) => t.spacing(8), display: 'flex' }}
-        onClick={() => getAgentData({ ignoreCache: true })}
-        disabled={loading}
-      >
-        {loading ? (
-          <>
-            Loading...
-            <CircularProgress size={'1rem'} thickness={5} sx={{ ml: (t) => t.spacing(2) }} />
-          </>
-        ) : (
-          <>Analyze my browser again</>
-        )}
-      </Button>
-    );
-  };
 
   return (
     <div>
