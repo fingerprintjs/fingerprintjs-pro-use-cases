@@ -6,8 +6,7 @@ const BotDetectionResult: FunctionComponent<{ event: EventResponse | undefined }
     case 'good':
       return <>You are a good bot 🤖</>;
     case 'bad':
-      // @ts-ignore
-      return <>You are a bad bot 🤖 (type: {event?.products.botd.data.bot.type})</>;
+      return <>You are a bad bot 🤖 (type: {event?.products?.botd?.data?.bot?.type})</>;
     case 'notDetected':
       return <>Not detected</>;
     default:

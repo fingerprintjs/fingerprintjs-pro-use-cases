@@ -6,13 +6,12 @@ import {
   AccordionSummary,
   Alert,
   Box,
-  Button,
   CircularProgress,
   Stack,
   Typography,
 } from '@mui/material';
 import { useQuery } from 'react-query';
-import { FunctionComponent, useState } from 'react';
+import { useState } from 'react';
 import { CodeSnippet } from '../../client/components/CodeSnippet';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -25,33 +24,10 @@ import MyTable, { TableCellData } from '../../client/components/playground/MyTab
 import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import BotDetectionResult from '../../client/components/playground/BotDetectionResult';
 import Info from '../../client/components/playground/InfoIcon';
+import RefreshButton from '../../client/components/playground/RefreshButton';
 
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('../../client/components/playground/Map'), { ssr: false });
-
-const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: () => null }> = ({
-  loading,
-  getAgentData,
-}) => {
-  return (
-    <Button
-      color="primary"
-      variant="outlined"
-      sx={{ mr: 'auto', ml: 'auto', mt: (t) => t.spacing(4), mb: (t) => t.spacing(8), display: 'flex' }}
-      onClick={() => getAgentData({ ignoreCache: true })}
-      disabled={loading}
-    >
-      {loading ? (
-        <>
-          Loading...
-          <CircularProgress size={'1rem'} thickness={5} sx={{ ml: (t) => t.spacing(2) }} />
-        </>
-      ) : (
-        <>Analyze my browser again</>
-      )}
-    </Button>
-  );
-};
 
 function Playground() {
   const {
@@ -84,10 +60,6 @@ function Playground() {
 
   const { hasDarkMode } = useUserPreferences();
 
-  const RED = hasDarkMode ? red[900] : red[100];
-  const GREEN = hasDarkMode ? green[900] : lightGreen[50];
-  const GRAY = hasDarkMode ? blueGrey[900] : blueGrey[50];
-
   if (agentError) {
     return <Alert severity={'error'}>JavaScript Agent Error: {agentError.message}.</Alert>;
   }
@@ -108,8 +80,11 @@ function Playground() {
   }
 
   const usedIdentificationEvent = identificationEvent ?? cachedEvent;
-
   const { latitude, longitude } = agentResponse?.ipLocation ?? {};
+
+  const RED = hasDarkMode ? red[900] : red[100];
+  const GREEN = hasDarkMode ? green[900] : lightGreen[50];
+  const GRAY = hasDarkMode ? blueGrey[900] : blueGrey[50];
 
   const baseSignals: TableCellData[][] = [
     [
@@ -267,7 +242,8 @@ function Playground() {
         </Box>
         .
       </Typography>
-      <RefreshButton />
+
+      <RefreshButton loading={isLoadingAgentResponse || isLoadingServerResponse} getAgentData={getAgentData} />
 
       <Box
         sx={{
@@ -289,7 +265,7 @@ function Playground() {
         </Box>
       </Box>
 
-      <RefreshButton />
+      <RefreshButton loading={isLoadingAgentResponse || isLoadingServerResponse} getAgentData={getAgentData} />
 
       <Box
         sx={{ display: 'grid', gridTemplateColumns: { xs: 'minmax(0,1fr)', lg: 'repeat(2, minmax(0, 1fr))' }, gap: 3 }}
