@@ -9,27 +9,21 @@ export const timeAgoLabel = (dateString: string): string => {
   const date = new Date(dateString);
   const now = new Date();
   const diffMS = now.getTime() - date.getTime();
-  // if difference is less than 5 seconds
   if (diffMS < FIVE_SECONDS) {
     return 'Just now';
   }
-  // if difference is less than 1 minute
   if (diffMS < ONE_MINUTE) {
     return `Less than a minute ago`;
   }
-  // if difference is less than 1 hour
   if (diffMS < ONE_HOUR) {
     return `${Math.floor(diffMS / 60000)} minutes ago`;
   }
-  // if difference is less than 1 day
   if (diffMS < ONE_DAY) {
     return `${Math.floor(diffMS / 3600000)} hours ago`;
   }
-  // if difference is less than 1 month
   if (diffMS < ONE_MONTH) {
     return `${Math.floor(diffMS / 86400000)} days ago`;
   }
-  // if difference is less than 3 months
   if (diffMS < THREE_MONTHS) {
     return `More than a month ago`;
   }
