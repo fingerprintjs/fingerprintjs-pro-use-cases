@@ -26,6 +26,8 @@ import BotDetectionResult from '../../client/components/playground/BotDetectionR
 import Info from '../../client/components/playground/InfoIcon';
 import RefreshButton from '../../client/components/playground/RefreshButton';
 import { timeAgoLabel } from '../../client/components/playground/timeUtils';
+import IpBlocklistResult from '../../client/components/playground/IpBlocklistResult';
+import VpnDetectionResult from '../../client/components/playground/VpnDetectionResult';
 
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('../../client/components/playground/Map'), { ssr: false });
@@ -181,10 +183,7 @@ function Playground() {
         ],
       },
       {
-        content:
-          usedIdentificationEvent?.products?.ipBlocklist?.data?.result === true
-            ? 'Your IP is on a blocklist 🚫'
-            : 'Not detected',
+        content: <IpBlocklistResult event={usedIdentificationEvent} />,
         cellStyle: {
           backgroundColor: usedIdentificationEvent?.products?.ipBlocklist?.data?.result === true ? RED : GREEN,
         },
@@ -201,8 +200,7 @@ function Playground() {
         ],
       },
       {
-        content:
-          usedIdentificationEvent?.products?.vpn?.data?.result === true ? 'You are using a VPN 🌐' : 'Not detected',
+        content: <VpnDetectionResult event={usedIdentificationEvent} />,
         cellStyle: { backgroundColor: usedIdentificationEvent?.products?.vpn?.data?.result === true ? RED : GREEN },
       },
     ],
