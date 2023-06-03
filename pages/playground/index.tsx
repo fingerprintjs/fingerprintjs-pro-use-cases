@@ -28,6 +28,7 @@ import RefreshButton from '../../client/components/playground/RefreshButton';
 import { timeAgoLabel } from '../../client/components/playground/timeUtils';
 import IpBlocklistResult from '../../client/components/playground/IpBlocklistResult';
 import VpnDetectionResult from '../../client/components/playground/VpnDetectionResult';
+import { FormatIpAddress } from '../../client/components/playground/ipFormatUtils';
 
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('../../client/components/playground/Map'), { ssr: false });
@@ -97,7 +98,7 @@ function Playground() {
     ],
     [{ content: 'Browser' }, { content: `${agentResponse?.browserName} ${agentResponse?.browserVersion}` }],
     [{ content: 'Operating System' }, { content: `${agentResponse?.os} ${agentResponse?.osVersion}` }],
-    [{ content: 'IP Address' }, { content: agentResponse?.ip }],
+    [{ content: 'IP Address' }, { content: <FormatIpAddress ipAddress={agentResponse?.ip} /> }],
     [
       {
         content: [
@@ -121,7 +122,7 @@ function Playground() {
       },
       {
         content: Math.trunc(agentResponse?.confidence.score * 100) / 100,
-        cellStyle: { backgroundColor: agentResponse?.confidence.score > 0.7 ? GREEN : RED },
+        cellStyle: { backgroundColor: agentResponse?.confidence.score >= 0.7 ? GREEN : RED },
       },
     ],
   ];

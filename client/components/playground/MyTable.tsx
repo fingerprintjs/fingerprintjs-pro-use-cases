@@ -15,7 +15,7 @@ const MyTable: FunctionComponent<{ data: TableCellData[][] }> = ({ data }) => {
           {data.map((row, i) => (
             <TableRow key={i}>
               {row.map((cell, j) => (
-                <TableCell key={j} sx={cell.cellStyle}>
+                <TableCell key={j} sx={{ ...cell.cellStyle }}>
                   {cell.content}
                 </TableCell>
               ))}
