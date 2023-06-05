@@ -1,4 +1,3 @@
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import {
   Accordion,
@@ -10,8 +9,6 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { useQuery } from 'react-query';
-import { useState } from 'react';
 import { CodeSnippet } from '../../client/components/CodeSnippet';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -21,7 +18,6 @@ import { blueGrey } from '@mui/material/colors';
 import dynamic from 'next/dynamic';
 import { useUserPreferences } from '../../client/api/personalization/use-user-preferences';
 import MyTable, { TableCellData } from '../../client/components/playground/MyTable';
-import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import BotDetectionResult from '../../client/components/playground/BotDetectionResult';
 import Info from '../../client/components/playground/InfoIcon';
 import RefreshButton from '../../client/components/playground/RefreshButton';
@@ -29,39 +25,24 @@ import { timeAgoLabel } from '../../client/components/playground/timeUtils';
 import IpBlocklistResult from '../../client/components/playground/IpBlocklistResult';
 import VpnDetectionResult from '../../client/components/playground/VpnDetectionResult';
 import { FormatIpAddress } from '../../client/components/playground/ipFormatUtils';
+import { usePlaygroundSignals } from '../../client/components/playground/usePlaygroundSignals';
 
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('../../client/components/playground/Map'), { ssr: false });
 
 function Playground() {
   const {
-    data: agentResponse,
-    isLoading: isLoadingAgentResponse,
-    getData: getAgentData,
-    error: agentError,
-  } = useVisitorData({ extendedResult: true, ignoreCache: true }, { immediate: true });
+    agentResponse,
+    isLoadingAgentResponse,
+    getAgentData,
+    agentError,
+    cachedEvent,
+    identificationEvent,
+    isLoadingServerResponse,
+    serverError,
+  } = usePlaygroundSignals();
 
-  const requestId = agentResponse?.requestId;
   const { hasDarkMode } = useUserPreferences();
-
-  /** Temporary fix to store previous event because ReactQuery sets data to undefined before the fresh data is available when I make a new query and it makes everything flash */
-  const [cachedEvent, setCachedEvent] = useState<EventResponse | undefined>(undefined);
-
-  const {
-    data: identificationEvent,
-    isLoading: isLoadingServerResponse,
-    error: serverError,
-  } = useQuery<EventResponse | undefined>(
-    [requestId],
-    () =>
-      fetch(`/api/event/${agentResponse?.requestId}`).then((res) => {
-        if (res.status !== 200) {
-          throw new Error(`${res.statusText}`);
-        }
-        return res.json();
-      }),
-    { enabled: Boolean(agentResponse), retry: false, onSuccess: (data) => setCachedEvent(data) }
-  );
 
   if (agentError) {
     return <Alert severity={'error'}>JavaScript Agent Error: {agentError.message}.</Alert>;
