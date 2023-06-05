@@ -195,8 +195,8 @@ function Playground() {
         content: [
           'VPN',
           <Info key="info">
-            The visitor is using a VPN (browser timezone does not match or IP address is owned by a public VPN service
-            provider).
+            The visitor is using a VPN (browser timezone does not match IP address timezone or IP address is owned by a
+            public VPN service provider).
           </Info>,
         ],
       },
