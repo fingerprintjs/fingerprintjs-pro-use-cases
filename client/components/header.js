@@ -11,6 +11,10 @@ import { Logo } from './Logo';
 
 const navLinks = [
   {
+    name: 'Playground',
+    url: '/playground',
+  },
+  {
     name: 'Coupon Fraud',
     url: '/coupon-fraud',
   },
@@ -40,7 +44,7 @@ const navLinks = [
   },
 ];
 
-export function Header({ addonRight }) {
+export function Header() {
   const { update, hasDarkMode } = useUserPreferences();
   const router = useRouter();
 
@@ -50,6 +54,7 @@ export function Header({ addonRight }) {
       height={300}
       sx={{
         backgroundColor: (theme) => theme.palette.header,
+        borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
       }}
     >
       <Toolbar>
@@ -93,7 +98,6 @@ export function Header({ addonRight }) {
             >
               {hasDarkMode ? <DarkMode color="primary" /> : <LightMode color="primary" />}
             </IconButton>
-            {addonRight}
           </Stack>
         </Stack>
       </Toolbar>

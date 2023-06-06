@@ -6,8 +6,15 @@
 }
 
 /* CSS Reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+}
+
+/* Make Next pages full height */
+div#__next {
+  height: 100%;
 }
 
 /* Base */
@@ -25,7 +32,6 @@ a {
 }
 
 code {
-  font-size: 1rem;
   color: #d63384;
   word-wrap: break-word;
 }
@@ -52,5 +58,3 @@ code {
   margin-bottom: 4px !important;
   font-size: 14px !important;
 }
-
-

@@ -1,12 +1,11 @@
 // @ts-check
-import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import Link from 'next/link';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ArrowBack } from '@mui/icons-material';
-import { Box, List, ListItem, Tooltip } from '@mui/material';
+import { Box, Paper, Tooltip, List, ListItem } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
 /**
@@ -53,7 +52,7 @@ export function UseCaseWrapper({
   contentSx,
 }) {
   return (
-    <Paper variant="outlined" square sx={{ minHeight: '95vh', pb: (t) => t.spacing(2) }}>
+    <>
       <Box
         sx={{
           padding: (theme) => theme.spacing(4),
@@ -131,12 +130,11 @@ export function UseCaseWrapper({
           padding: (theme) => theme.spacing(4),
           maxWidth: '600px',
           margin: '0 auto ',
-          boxShadow: 'none',
           ...contentSx,
         }}
       >
         {children}
       </Paper>
-    </Paper>
+    </>
   );
 }

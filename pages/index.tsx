@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Paper from '@mui/material/Paper';
 import {
   AirplaneTicket,
   Block,
@@ -8,11 +7,20 @@ import {
   People,
   PrecisionManufacturing,
   Settings,
+  Fingerprint,
 } from '@mui/icons-material';
 import { PageTile, PageTileProps } from '../client/components/PageTile';
 import { Box, Divider, Typography } from '@mui/material';
 
 const pageTiles: PageTileProps[] = [
+  {
+    title: 'Smart signals playground',
+    description: `Analyze your own browser with Fingerprint Pro. 
+    
+    Test and examine all the available signals including Geolocation, Bot Detection, Incognito Mode Detection, VPN Detection, Tor Network Detection, Browser Tempering Detection, IP Blocklist, and more.`,
+    url: '/playground',
+    icon: <Fingerprint />,
+  },
   {
     title: 'Coupon Fraud',
     url: '/coupon-fraud',
@@ -71,9 +79,7 @@ As a result, you will protect your users and your business against various payme
 
 export default function Index() {
   return (
-    <Paper
-      square
-      variant="outlined"
+    <Box
       sx={{
         overflow: 'auto',
         overflowX: 'hidden',
@@ -140,6 +146,6 @@ export default function Index() {
           ))}
         </Box>
       </div>
-    </Paper>
+    </Box>
   );
 }
