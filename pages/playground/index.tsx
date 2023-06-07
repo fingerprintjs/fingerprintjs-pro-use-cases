@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import {
   Accordion,
@@ -26,6 +27,7 @@ import IpBlocklistResult from '../../client/components/playground/IpBlocklistRes
 import VpnDetectionResult from '../../client/components/playground/VpnDetectionResult';
 import { FormatIpAddress } from '../../client/components/playground/ipFormatUtils';
 import { usePlaygroundSignals } from '../../client/components/playground/usePlaygroundSignals';
+import { getLocationName } from '../../shared/utils/getLocationName';
 
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('../../client/components/playground/Map'), { ssr: false });
@@ -43,6 +45,10 @@ function Playground() {
   } = usePlaygroundSignals();
 
   const { hasDarkMode } = useUserPreferences();
+
+  const locationName = useMemo<string>(() => {
+    return getLocationName(agentResponse?.ipLocation);
+  }, [agentResponse]);
 
   if (agentError) {
     return <Alert severity={'error'}>JavaScript Agent Error: {agentError.message}.</Alert>;
@@ -116,9 +122,7 @@ function Playground() {
       {
         content: (
           <>
-            <div>
-              {agentResponse?.ipLocation?.city?.name}, {agentResponse?.ipLocation?.country?.name}
-            </div>
+            <div>{locationName}</div>
             {latitude && longitude && (
               <div>
                 <Map key={[latitude, longitude].toString()} position={[latitude, longitude]} height="80px" />
