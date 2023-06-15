@@ -35,9 +35,17 @@ test.describe('Playground page page', () => {
     await page.waitForSelector('text="Server API Response"');
   });
 
-  // test('Page renders signals tables', async ({ page }) => {
+  test('Page renders signal tables', async ({ page }) => {
+    await page.waitForSelector('text="Visitor ID"');
+    await page.waitForSelector('text="Last seen"');
+    await page.waitForSelector('text="Confidence Score"');
 
-  // });
+    await page.waitForSelector('text="Geolocation"');
+    await page.waitForSelector('text="VPN"');
+
+    await page.waitForSelector('text="IP Blocklist"');
+    await page.waitForSelector('text="Android Emulator"');
+  });
 
   test('Page renders agent response', async ({ page }) => {
     const agentResponse = await getAgentResponse(page);
