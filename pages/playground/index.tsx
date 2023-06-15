@@ -28,6 +28,7 @@ import VpnDetectionResult from '../../client/components/playground/VpnDetectionR
 import { FormatIpAddress } from '../../client/components/playground/ipFormatUtils';
 import { usePlaygroundSignals } from '../../client/components/playground/usePlaygroundSignals';
 import { getLocationName } from '../../shared/utils/getLocationName';
+import { PLAYGROUND_TAG } from '../../client/components/playground/playgroundTags';
 
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('../../client/components/playground/Map'), { ssr: false });
@@ -302,7 +303,9 @@ function Playground() {
               )}
             </AccordionSummary>
             <AccordionDetails>
-              <CodeSnippet language="json">{JSON.stringify(agentResponse, null, 2)}</CodeSnippet>
+              <CodeSnippet language="json" dataTestId={PLAYGROUND_TAG.agentResponseJSON}>
+                {JSON.stringify(agentResponse, null, 2)}
+              </CodeSnippet>
             </AccordionDetails>
           </Accordion>
         </Box>
@@ -319,7 +322,9 @@ function Playground() {
               )}
             </AccordionSummary>
             <AccordionDetails>
-              <CodeSnippet language="json">{JSON.stringify(usedIdentificationEvent, null, 2)}</CodeSnippet>
+              <CodeSnippet language="json" dataTestId={PLAYGROUND_TAG.serverResponseJSON}>
+                {JSON.stringify(usedIdentificationEvent, null, 2)}
+              </CodeSnippet>
             </AccordionDetails>
           </Accordion>
         </Box>
