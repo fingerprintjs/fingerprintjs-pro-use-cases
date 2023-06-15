@@ -114,7 +114,7 @@ function Playground() {
     ],
   ];
 
-  const smartSignals: TableCellData[][] = [
+  const smartSignalsProPlus: TableCellData[][] = [
     [
       {
         content: ['Geolocation', <Info key="info">Your geographic location based on your IP address.</Info>],
@@ -156,22 +156,6 @@ function Playground() {
         content: <BotDetectionResult key="botDetectionResult" event={usedIdentificationEvent} />,
         cellStyle: {
           backgroundColor: usedIdentificationEvent?.products?.botd?.data?.bot?.result === 'bad' ? RED : GREEN,
-        },
-      },
-    ],
-    [
-      {
-        content: [
-          'IP Blocklist',
-          <Info key="info">
-            IP address was part of a known email (SMTP) spam attack or network (SSH/HTTP) attack.{' '}
-          </Info>,
-        ],
-      },
-      {
-        content: <IpBlocklistResult event={usedIdentificationEvent} />,
-        cellStyle: {
-          backgroundColor: usedIdentificationEvent?.products?.ipBlocklist?.data?.result === true ? RED : GREEN,
         },
       },
     ],
@@ -227,6 +211,25 @@ function Playground() {
         },
       },
     ],
+  ];
+
+  const smartSignalsEnterprise: TableCellData[][] = [
+    [
+      {
+        content: [
+          'IP Blocklist',
+          <Info key="info">
+            IP address was part of a known email (SMTP) spam attack or network (SSH/HTTP) attack.{' '}
+          </Info>,
+        ],
+      },
+      {
+        content: <IpBlocklistResult event={usedIdentificationEvent} />,
+        cellStyle: {
+          backgroundColor: usedIdentificationEvent?.products?.ipBlocklist?.data?.result === true ? RED : GREEN,
+        },
+      },
+    ],
     [
       {
         content: ['Android Emulator', <Info key="info">Android specific emulator detection.</Info>],
@@ -260,7 +263,8 @@ function Playground() {
         sx={{
           display: 'grid',
           gridTemplateColumns: {
-            md: 'repeat(2, minmax(0, 400px))',
+            sm: 'minmax(0, 500px)',
+            lg: 'repeat(3, minmax(0, 400px))',
           },
           justifyContent: 'center',
           gap: 3,
@@ -272,7 +276,11 @@ function Playground() {
         </Box>
         <Box>
           <Typography variant="h3">Smart signals (Pro Plus plan)</Typography>
-          <MyTable data={smartSignals} />
+          <MyTable data={smartSignalsProPlus} />
+        </Box>
+        <Box>
+          <Typography variant="h3">Smart signals (Enterprise plan)</Typography>
+          <MyTable data={smartSignalsEnterprise} />
         </Box>
       </Box>
 
@@ -327,7 +335,7 @@ export default function PlaygroundPage() {
       description={<p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>}
       showAdminLink={false}
       hideSrcListItem={true}
-      contentSx={{ boxShadow: 'none', maxWidth: '1200px' }}
+      contentSx={{ boxShadow: 'none', maxWidth: '1248px' }}
     >
       <Playground />
     </UseCaseWrapper>
