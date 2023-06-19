@@ -10,6 +10,7 @@ export interface CodeSnippetProps {
   showCopyButton?: boolean;
   showLineNumbers?: boolean;
   className?: string;
+  dataTestId?: string;
 }
 
 const PRISM_LINE_NUMBER_STYLE = { minWidth: 28 };
@@ -17,7 +18,13 @@ const PRISM_LINE_NUMBER_STYLE = { minWidth: 28 };
 /**
  * Provides a syntax-highlighted code block
  */
-export function CodeSnippet({ language, showLineNumbers, className, children }: PropsWithChildren<CodeSnippetProps>) {
+export function CodeSnippet({
+  language,
+  showLineNumbers,
+  className,
+  children,
+  dataTestId,
+}: PropsWithChildren<CodeSnippetProps>) {
   const { hasDarkMode } = useUserPreferences();
 
   const PRISM_CUSTOM_STYLE = {
@@ -42,6 +49,7 @@ export function CodeSnippet({ language, showLineNumbers, className, children }: 
       customStyle={PRISM_CUSTOM_STYLE}
       codeTagProps={PRISM_CODE_TAG_PROPS}
       className={className}
+      data-test={dataTestId}
     >
       {children}
     </PrismAsyncLight>
