@@ -58,7 +58,8 @@ const FullMenu = () => {
               color:
                 router.pathname === link.url
                   ? theme.palette.primary.main
-                  : theme.palette.getContrastText(theme.palette.header),
+                  : // @ts-ignore
+                    theme.palette.getContrastText(theme.palette.header),
               whiteSpace: 'nowrap',
             })}
             component="a"
@@ -110,7 +111,8 @@ const CollapsedMenu = () => {
                   color: (theme) =>
                     router.pathname === link.url
                       ? theme.palette.primary.main
-                      : theme.palette.getContrastText(theme.palette.header),
+                      : // @ts-ignore
+                        theme.palette.getContrastText(theme.palette.header),
                 }}
               >
                 {link.name}
@@ -132,6 +134,7 @@ export function Header() {
     <AppBar
       position="static"
       sx={{
+        // @ts-ignore
         backgroundColor: (theme) => theme.palette.header,
         borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
       }}
