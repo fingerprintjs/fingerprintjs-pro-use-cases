@@ -102,6 +102,7 @@ const CollapsedMenu = () => {
         MenuListProps={{
           'aria-labelledby': 'basic-button',
         }}
+        disableScrollLock={true}
       >
         {navLinks.map((link) => (
           <MenuItem onClick={handleClose} key={link.name} sx={{ a: { color: (t) => t.palette.text.primary } }}>
