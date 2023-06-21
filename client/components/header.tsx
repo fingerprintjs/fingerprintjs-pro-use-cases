@@ -105,8 +105,8 @@ const CollapsedMenu = () => {
         disableScrollLock={true}
       >
         {navLinks.map((link) => (
-          <MenuItem onClick={handleClose} key={link.name} sx={{ a: { color: (t) => t.palette.text.primary } }}>
-            <Link href={link.url}>
+          <Link href={link.url} key={link.name}>
+            <MenuItem onClick={handleClose} sx={{ a: { color: (t) => t.palette.text.primary } }}>
               <Typography
                 sx={{
                   color: (theme) =>
@@ -118,8 +118,8 @@ const CollapsedMenu = () => {
               >
                 {link.name}
               </Typography>
-            </Link>
-          </MenuItem>
+            </MenuItem>
+          </Link>
         ))}
       </Menu>
     </div>
