@@ -1,11 +1,11 @@
-// @ts-check
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useVisitorData } from '../../use-visitor-data';
 import { apiRequest } from '../api';
+import { GetResult } from '@fingerprintjs/fingerprintjs-pro';
 
 const GET_USER_PREFERENCES_QUERY = 'GET_USER_PREFERENCES_QUERY';
 
-function getUserPreferences(fpData) {
+function getUserPreferences(fpData: GetResult) {
   return apiRequest('/api/personalization/get-user-preferences', fpData);
 }
 
@@ -21,8 +21,7 @@ export function useUserPreferences() {
   const userPreferencesQuery = useQuery(GET_USER_PREFERENCES_QUERY, () => getUserPreferences(fpData), {
     enabled: Boolean(fpData),
   });
-  const updateUserPreferencesMutation = useMutation(
-    // @ts-ignore
+  const updateUserPreferencesMutation = useMutation<unknown, unknown, { hasDarkMode: boolean }>(
     (variables) => updateUserPreferences(fpData, variables.hasDarkMode),
     {
       onSuccess: async (data) => {

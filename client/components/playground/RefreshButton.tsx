@@ -1,5 +1,6 @@
 import { Button, CircularProgress } from '@mui/material';
 import { FunctionComponent } from 'react';
+import { PLAYGROUND_TAG } from './playgroundTags';
 
 const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: Function }> = ({ loading, getAgentData }) => {
   return (
@@ -9,6 +10,7 @@ const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: Functio
       sx={{ mr: 'auto', ml: 'auto', mt: (t) => t.spacing(4), mb: (t) => t.spacing(8), display: 'flex' }}
       onClick={() => getAgentData()}
       disabled={loading}
+      data-test={PLAYGROUND_TAG.refreshButton}
     >
       {loading ? (
         <>

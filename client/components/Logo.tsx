@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useTheme } from '@mui/material';
 import { ComponentProps } from 'react';
 
-export function Logo(props: ComponentProps<typeof Image>) {
+export function Logo(props: Partial<ComponentProps<typeof Image>>) {
   const theme = useTheme();
 
   return (

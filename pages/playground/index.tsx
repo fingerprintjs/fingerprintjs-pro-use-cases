@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import {
   Accordion,
@@ -26,6 +27,8 @@ import IpBlocklistResult from '../../client/components/playground/IpBlocklistRes
 import VpnDetectionResult from '../../client/components/playground/VpnDetectionResult';
 import { FormatIpAddress } from '../../client/components/playground/ipFormatUtils';
 import { usePlaygroundSignals } from '../../client/components/playground/usePlaygroundSignals';
+import { getLocationName } from '../../shared/utils/getLocationName';
+import { PLAYGROUND_TAG } from '../../client/components/playground/playgroundTags';
 
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('../../client/components/playground/Map'), { ssr: false });
@@ -43,6 +46,10 @@ function Playground() {
   } = usePlaygroundSignals();
 
   const { hasDarkMode } = useUserPreferences();
+
+  const locationName = useMemo<string>(() => {
+    return getLocationName(agentResponse?.ipLocation);
+  }, [agentResponse]);
 
   if (agentError) {
     return <Alert severity={'error'}>JavaScript Agent Error: {agentError.message}.</Alert>;
@@ -108,7 +115,7 @@ function Playground() {
     ],
   ];
 
-  const smartSignals: TableCellData[][] = [
+  const smartSignalsProPlus: TableCellData[][] = [
     [
       {
         content: ['Geolocation', <Info key="info">Your geographic location based on your IP address.</Info>],
@@ -116,9 +123,7 @@ function Playground() {
       {
         content: (
           <>
-            <div>
-              {agentResponse?.ipLocation?.city?.name}, {agentResponse?.ipLocation?.country?.name}
-            </div>
+            <div>{locationName}</div>
             {latitude && longitude && (
               <div>
                 <Map key={[latitude, longitude].toString()} position={[latitude, longitude]} height="80px" />
@@ -152,22 +157,6 @@ function Playground() {
         content: <BotDetectionResult key="botDetectionResult" event={usedIdentificationEvent} />,
         cellStyle: {
           backgroundColor: usedIdentificationEvent?.products?.botd?.data?.bot?.result === 'bad' ? RED : GREEN,
-        },
-      },
-    ],
-    [
-      {
-        content: [
-          'IP Blocklist',
-          <Info key="info">
-            IP address was part of a known email (SMTP) spam attack or network (SSH/HTTP) attack.{' '}
-          </Info>,
-        ],
-      },
-      {
-        content: <IpBlocklistResult event={usedIdentificationEvent} />,
-        cellStyle: {
-          backgroundColor: usedIdentificationEvent?.products?.ipBlocklist?.data?.result === true ? RED : GREEN,
         },
       },
     ],
@@ -223,6 +212,25 @@ function Playground() {
         },
       },
     ],
+  ];
+
+  const smartSignalsEnterprise: TableCellData[][] = [
+    [
+      {
+        content: [
+          'IP Blocklist',
+          <Info key="info">
+            IP address was part of a known email (SMTP) spam attack or network (SSH/HTTP) attack.{' '}
+          </Info>,
+        ],
+      },
+      {
+        content: <IpBlocklistResult event={usedIdentificationEvent} />,
+        cellStyle: {
+          backgroundColor: usedIdentificationEvent?.products?.ipBlocklist?.data?.result === true ? RED : GREEN,
+        },
+      },
+    ],
     [
       {
         content: ['Android Emulator', <Info key="info">Android specific emulator detection.</Info>],
@@ -256,7 +264,8 @@ function Playground() {
         sx={{
           display: 'grid',
           gridTemplateColumns: {
-            md: 'repeat(2, minmax(0, 400px))',
+            sm: 'minmax(0, 500px)',
+            lg: 'repeat(3, minmax(0, 400px))',
           },
           justifyContent: 'center',
           gap: 3,
@@ -268,7 +277,11 @@ function Playground() {
         </Box>
         <Box>
           <Typography variant="h3">Smart signals (Pro Plus plan)</Typography>
-          <MyTable data={smartSignals} />
+          <MyTable data={smartSignalsProPlus} />
+        </Box>
+        <Box>
+          <Typography variant="h3">Smart signals (Enterprise plan)</Typography>
+          <MyTable data={smartSignalsEnterprise} />
         </Box>
       </Box>
 
@@ -290,7 +303,9 @@ function Playground() {
               )}
             </AccordionSummary>
             <AccordionDetails>
-              <CodeSnippet language="json">{JSON.stringify(agentResponse, null, 2)}</CodeSnippet>
+              <CodeSnippet language="json" dataTestId={PLAYGROUND_TAG.agentResponseJSON}>
+                {JSON.stringify(agentResponse, null, 2)}
+              </CodeSnippet>
             </AccordionDetails>
           </Accordion>
         </Box>
@@ -307,7 +322,9 @@ function Playground() {
               )}
             </AccordionSummary>
             <AccordionDetails>
-              <CodeSnippet language="json">{JSON.stringify(usedIdentificationEvent, null, 2)}</CodeSnippet>
+              <CodeSnippet language="json" dataTestId={PLAYGROUND_TAG.serverResponseJSON}>
+                {JSON.stringify(usedIdentificationEvent, null, 2)}
+              </CodeSnippet>
             </AccordionDetails>
           </Accordion>
         </Box>
@@ -323,7 +340,7 @@ export default function PlaygroundPage() {
       description={<p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>}
       showAdminLink={false}
       hideSrcListItem={true}
-      contentSx={{ boxShadow: 'none', maxWidth: '1200px' }}
+      contentSx={{ boxShadow: 'none', maxWidth: '1248px' }}
     >
       <Playground />
     </UseCaseWrapper>
