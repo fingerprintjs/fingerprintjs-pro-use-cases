@@ -1,4 +1,3 @@
-// @ts-check
 import '../styles/globals.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider } from '../client/theme-provider';
@@ -53,6 +52,8 @@ function App({ Component, pageProps }) {
                 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
                 <title>Fingerprint Pro Use Cases</title>
               </Head>
+              {/* Internal placeholder for deployment purposes, unrelated to any examples, please ignore */}
+              <div id="deployment-placeholder" />
               <Layout>
                 <Component {...pageProps} />
               </Layout>
