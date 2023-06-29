@@ -7,9 +7,18 @@ type UserPreferences = {
   hasDarkMode: boolean;
 };
 
+type UserPreferencesResponse = {
+  data: UserPreferences & {
+    createdAt: string;
+    id: number;
+    timestamp: string | null;
+    updatedAt: string;
+    visitorId: string;
+  };
+};
 const GET_USER_PREFERENCES_QUERY = 'GET_USER_PREFERENCES_QUERY';
 
-function getUserPreferences(fpData: GetResult): Promise<UserPreferences> {
+function getUserPreferences(fpData: GetResult): Promise<UserPreferencesResponse> {
   return apiRequest('/api/personalization/get-user-preferences', fpData);
 }
 
@@ -28,13 +37,13 @@ export function useUserPreferences() {
   const updateUserPreferencesMutation = useMutation<unknown, unknown, UserPreferences>(
     (preferences) => updateUserPreferences(fingerprintResult, preferences),
     {
-      onMutate: (data) => {
-        queryClient.setQueryData(GET_USER_PREFERENCES_QUERY, data);
+      onMutate: (preferences) => {
+        queryClient.setQueryData(GET_USER_PREFERENCES_QUERY, { data: preferences });
       },
     }
   );
 
-  const hasDarkMode = Boolean(userPreferencesQuery?.data?.hasDarkMode);
+  const hasDarkMode = Boolean(userPreferencesQuery?.data?.data?.hasDarkMode);
 
   return {
     hasDarkMode,
