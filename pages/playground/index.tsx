@@ -177,26 +177,6 @@ function Playground() {
     ],
     [
       {
-        content: ['Proxy', <Info key="info">The request IP address is used by a public proxy provider.</Info>],
-      },
-      {
-        content:
-          usedIdentificationEvent?.products?.proxy?.data?.result === true ? 'You are using a proxy 🔄' : 'Not detected',
-        cellStyle: { backgroundColor: usedIdentificationEvent?.products?.proxy?.data?.result === true ? RED : GREEN },
-      },
-    ],
-    [
-      {
-        content: ['Tor Network', <Info key="info">The request IP address is a known Tor network exit node.</Info>],
-      },
-      {
-        content:
-          usedIdentificationEvent?.products?.tor?.data?.result === true ? 'You are using Tor 🧅' : 'Not detected',
-        cellStyle: { backgroundColor: usedIdentificationEvent?.products?.tor?.data?.result === true ? RED : GREEN },
-      },
-    ],
-    [
-      {
         content: [
           'Browser Tampering',
           <Info key="info">
@@ -229,6 +209,26 @@ function Playground() {
         cellStyle: {
           backgroundColor: usedIdentificationEvent?.products?.ipBlocklist?.data?.result === true ? RED : GREEN,
         },
+      },
+    ],
+    [
+      {
+        content: ['Proxy', <Info key="info">The request IP address is used by a public proxy provider.</Info>],
+      },
+      {
+        content:
+          usedIdentificationEvent?.products?.proxy?.data?.result === true ? 'You are using a proxy 🔄' : 'Not detected',
+        cellStyle: { backgroundColor: usedIdentificationEvent?.products?.proxy?.data?.result === true ? RED : GREEN },
+      },
+    ],
+    [
+      {
+        content: ['Tor Network', <Info key="info">The request IP address is a known Tor network exit node.</Info>],
+      },
+      {
+        content:
+          usedIdentificationEvent?.products?.tor?.data?.result === true ? 'You are using Tor 🧅' : 'Not detected',
+        cellStyle: { backgroundColor: usedIdentificationEvent?.products?.tor?.data?.result === true ? RED : GREEN },
       },
     ],
     [
