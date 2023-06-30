@@ -20,8 +20,18 @@ export const Product = sequelize.define('product', {
   },
 });
 
+interface UserPreferencesModel
+  extends Sequelize.Model<
+    Sequelize.InferAttributes<UserPreferencesModel>,
+    Sequelize.InferCreationAttributes<UserPreferencesModel>
+  > {
+  visitorId: string;
+  hasDarkMode: boolean;
+  timestamp: Date;
+}
+
 // Defines db model for user preferences.
-export const UserPreferences = sequelize.define('user_data', {
+export const UserPreferences = sequelize.define<UserPreferencesModel>('user_data', {
   visitorId: {
     type: Sequelize.STRING,
   },
