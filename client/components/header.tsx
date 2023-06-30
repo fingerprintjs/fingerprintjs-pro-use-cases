@@ -127,7 +127,7 @@ const CollapsedMenu = () => {
 };
 
 export function Header() {
-  const { update, hasDarkMode } = useUserPreferences();
+  const { updateUserPreferences, hasDarkMode } = useUserPreferences();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down(1248));
 
@@ -158,7 +158,7 @@ export function Header() {
               data-checked={hasDarkMode.toString()}
               disableRipple
               onClick={() => {
-                update({
+                updateUserPreferences({
                   hasDarkMode: !hasDarkMode,
                 });
               }}

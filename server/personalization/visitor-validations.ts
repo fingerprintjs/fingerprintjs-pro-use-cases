@@ -2,13 +2,18 @@ import { ensureValidRequestIdAndVisitorId, getVisitorDataWithRequestId } from '.
 import { checkResultType } from '../checkResult';
 import { checkConfidenceScore, checkIpAddressIntegrity, checkOriginsIntegrity } from '../checks';
 
+export type PersonalizationValidationResult = {
+  visitorId: string | null;
+  usePersonalizedData: boolean;
+};
+
 /**
  * Custom logic for validation personalization request.
  *
  * Since for personalization we don't need to throw errors if security check didn't pass, we just return flag that indicates if personalized content should be used or not.
  * */
-export async function validatePersonalizationRequest(req, res) {
-  const result = {
+export async function validatePersonalizationRequest(req, res): Promise<PersonalizationValidationResult> {
+  const result: PersonalizationValidationResult = {
     usePersonalizedData: false,
     visitorId: null,
   };
