@@ -51,7 +51,7 @@ export function useUserPreferences() {
     [queryClient]
   );
 
-  // On component mount, set the global state of the user preferences to the value stored in localStorage
+  // On component mount, set the query state of the user preferences to the value stored in localStorage
   // (to prevent a long flash of light mode while waiting for userPreferencesQuery)
   useEffect(() => {
     updateUserPreferencesOnClient({ hasDarkMode: localStorage.getItem('hasDarkMode') === 'true' });
