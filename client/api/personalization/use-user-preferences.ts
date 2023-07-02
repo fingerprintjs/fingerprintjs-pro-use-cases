@@ -15,7 +15,7 @@ type UserPreferencesResponse = {
 const GET_USER_PREFERENCES_QUERY = 'GET_USER_PREFERENCES_QUERY';
 
 function getUserPreferencesFromServer(fpData: GetResult, abortSignal: AbortSignal): Promise<UserPreferencesResponse> {
-  return apiRequest('/api/personalization/get-user-preferences', fpData, {}, abortSignal);
+  return apiRequest('/api/personalization/get-user-preferences', fpData, undefined, abortSignal);
 }
 
 function updateUserPreferencesOnServer(fpData: GetResult, preferences: UserPreferences) {
