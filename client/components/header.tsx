@@ -126,10 +126,15 @@ const CollapsedMenu = () => {
   );
 };
 
-export function Header() {
+export default function Header() {
   const { update, hasDarkMode } = useUserPreferences();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down(1248));
+
+  // const { query } = useRouter();
+  // if (query.embed !== undefined) {
+  //   return null;
+  // }
 
   return (
     <AppBar

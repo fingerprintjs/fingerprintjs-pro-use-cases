@@ -2,13 +2,15 @@ import '../styles/globals.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider } from '../client/theme-provider';
 import Head from 'next/head';
-import { Header } from '../client/components/header';
 import { SnackbarProvider } from 'notistack';
 import { SnackbarAction } from '../client/components/snackbar-action';
 import { SocketProvider } from '../client/api/socket-provider';
 import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import { FP_LOAD_OPTIONS } from '../client/use-visitor-data';
 import { Paper, Stack } from '@mui/material';
+import { AppProps } from 'next/app';
+import Header from '../client/components/header';
+import { FunctionComponent, PropsWithChildren } from 'react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,10 +20,11 @@ const queryClient = new QueryClient({
   },
 });
 
-function Layout({ children }) {
+const Layout: FunctionComponent<PropsWithChildren<{ embed: boolean }>> = ({ children, embed }) => {
+  console.log('embed', embed);
   return (
     <Stack sx={{ height: '100%' }}>
-      <Header />
+      {embed ? null : <Header />}
       <Paper
         variant="outlined"
         sx={{ flexGrow: 1, borderRadius: 0, border: 'none', paddingBottom: (t) => t.spacing(4) }}
@@ -30,9 +33,9 @@ function Layout({ children }) {
       </Paper>
     </Stack>
   );
-}
+};
 
-function App({ Component, pageProps }) {
+function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
@@ -54,7 +57,7 @@ function App({ Component, pageProps }) {
               </Head>
               {/* Internal placeholder for deployment purposes, unrelated to any examples, please ignore */}
               <div id="deployment-placeholder" />
-              <Layout>
+              <Layout embed={pageProps.embed}>
                 <Component {...pageProps} />
               </Layout>
             </FpjsProvider>
