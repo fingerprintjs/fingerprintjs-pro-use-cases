@@ -50,8 +50,7 @@ function SliderField({ label, min, max, value, onChange, prefix, suffix, name })
     </Stack>
   );
 }
-
-export default function LoanRisk() {
+function LoanRisk() {
   const visitorDataQuery = useVisitorData({
     // Don't invoke query on mount
     enabled: false,
@@ -163,3 +162,5 @@ export default function LoanRisk() {
     </UseCaseWrapper>
   );
 }
+
+export default LoanRisk;
