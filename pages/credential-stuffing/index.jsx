@@ -181,3 +181,8 @@ export default function Index() {
     </UseCaseWrapper>
   );
 }
+
+// Explicitly make the page statically generated (it's implicitly server-side-rendered because of getInitialProps in _app.tsx)
+export function getStaticProps() {
+  return { props: {} };
+}
