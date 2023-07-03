@@ -58,8 +58,8 @@ function CustomApp({ Component, pageProps, embed }: AppProps & AppOwnProps) {
               </Head>
               {/* Internal placeholder for deployment purposes, unrelated to any examples, please ignore */}
               <div id="deployment-placeholder" />
-              {/* <Layout embed={pageProps.embed}> */}
-              <Layout embed={embed}>
+              <Layout embed={pageProps.embed}>
+              {/* <Layout embed={embed}> */}
                 <Component {...pageProps} />
               </Layout>
             </FpjsProvider>
