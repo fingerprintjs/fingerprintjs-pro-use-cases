@@ -74,7 +74,6 @@ function CustomApp({ Component, pageProps, embed }: AppProps & AppOwnProps) {
 CustomApp.getInitialProps = async (context: AppContext) => {
   const ctx = await App.getInitialProps(context);
   const embed = context.router.query.embed !== undefined;
-  console.log(context);
 
   return { ...ctx, embed };
 };
