@@ -37,6 +37,7 @@ const Layout: FunctionComponent<PropsWithChildren<{ embed: boolean }>> = ({ chil
 type AppOwnProps = { embed?: boolean };
 
 function CustomApp({ Component, pageProps, embed }: AppProps & AppOwnProps) {
+  console.log(embed);
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
@@ -59,7 +60,7 @@ function CustomApp({ Component, pageProps, embed }: AppProps & AppOwnProps) {
               {/* Internal placeholder for deployment purposes, unrelated to any examples, please ignore */}
               <div id="deployment-placeholder" />
               <Layout embed={pageProps.embed}>
-              {/* <Layout embed={embed}> */}
+                {/* <Layout embed={embed}> */}
                 <Component {...pageProps} />
               </Layout>
             </FpjsProvider>
