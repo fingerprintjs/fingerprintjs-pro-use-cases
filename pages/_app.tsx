@@ -8,7 +8,7 @@ import { SocketProvider } from '../client/api/socket-provider';
 import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import { FP_LOAD_OPTIONS } from '../client/use-visitor-data';
 import { Paper, Stack } from '@mui/material';
-import { AppProps } from 'next/app';
+import App, { AppContext, AppProps } from 'next/app';
 import Header from '../client/components/header';
 import { FunctionComponent, PropsWithChildren } from 'react';
 
@@ -21,7 +21,6 @@ const queryClient = new QueryClient({
 });
 
 const Layout: FunctionComponent<PropsWithChildren<{ embed: boolean }>> = ({ children, embed }) => {
-  console.log('embed', embed);
   return (
     <Stack sx={{ height: '100%' }}>
       {embed ? null : <Header />}
@@ -35,7 +34,9 @@ const Layout: FunctionComponent<PropsWithChildren<{ embed: boolean }>> = ({ chil
   );
 };
 
-function App({ Component, pageProps }: AppProps) {
+type AppOwnProps = { embed?: boolean };
+
+function CustomApp({ Component, pageProps, embed }: AppProps & AppOwnProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
@@ -57,7 +58,8 @@ function App({ Component, pageProps }: AppProps) {
               </Head>
               {/* Internal placeholder for deployment purposes, unrelated to any examples, please ignore */}
               <div id="deployment-placeholder" />
-              <Layout embed={pageProps.embed}>
+              {/* <Layout embed={pageProps.embed}> */}
+              <Layout embed={embed}>
                 <Component {...pageProps} />
               </Layout>
             </FpjsProvider>
@@ -68,4 +70,12 @@ function App({ Component, pageProps }: AppProps) {
   );
 }
 
-export default App;
+CustomApp.getInitialProps = async (context: AppContext) => {
+  const ctx = await App.getInitialProps(context);
+  const embed = context.router.query.embed !== undefined;
+  console.log(context);
+
+  return { ...ctx, embed };
+};
+
+export default CustomApp;
