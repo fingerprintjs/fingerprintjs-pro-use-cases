@@ -34,7 +34,7 @@ const Layout: FunctionComponent<PropsWithChildren<{ embed: boolean }>> = ({ chil
   );
 };
 
-type AppOwnProps = { embed?: boolean };
+export type AppOwnProps = { embed?: boolean };
 
 function CustomApp({ Component, pageProps }: AppProps & AppOwnProps) {
   return (
