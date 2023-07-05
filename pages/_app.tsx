@@ -8,7 +8,7 @@ import { SocketProvider } from '../client/api/socket-provider';
 import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import { FP_LOAD_OPTIONS } from '../client/use-visitor-data';
 import { Paper, Stack } from '@mui/material';
-import App, { AppContext, AppProps } from 'next/app';
+import { AppProps } from 'next/app';
 import Header from '../client/components/header';
 import { FunctionComponent, PropsWithChildren } from 'react';
 
@@ -36,8 +36,7 @@ const Layout: FunctionComponent<PropsWithChildren<{ embed: boolean }>> = ({ chil
 
 type AppOwnProps = { embed?: boolean };
 
-function CustomApp({ Component, pageProps, embed }: AppProps & AppOwnProps) {
-  console.log(embed);
+function CustomApp({ Component, pageProps }: AppProps & AppOwnProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
@@ -60,7 +59,6 @@ function CustomApp({ Component, pageProps, embed }: AppProps & AppOwnProps) {
               {/* Internal placeholder for deployment purposes, unrelated to any examples, please ignore */}
               <div id="deployment-placeholder" />
               <Layout embed={pageProps.embed}>
-                {/* <Layout embed={embed}> */}
                 <Component {...pageProps} />
               </Layout>
             </FpjsProvider>
@@ -70,12 +68,5 @@ function CustomApp({ Component, pageProps, embed }: AppProps & AppOwnProps) {
     </QueryClientProvider>
   );
 }
-
-CustomApp.getInitialProps = async (context: AppContext) => {
-  const ctx = await App.getInitialProps(context);
-  const embed = context.router.query.embed !== undefined;
-
-  return { ...ctx, embed };
-};
 
 export default CustomApp;

@@ -99,12 +99,3 @@ export default function CouponFraudUseCase() {
     </UseCaseWrapper>
   );
 }
-
-export const getServerSideProps = async ({ query }) => {
-  const { embed } = query;
-  return {
-    props: {
-      embed: embed !== undefined,
-    },
-  };
-};

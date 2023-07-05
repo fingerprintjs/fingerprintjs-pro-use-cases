@@ -131,11 +131,6 @@ export default function Header() {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down(1248));
 
-  // const { query } = useRouter();
-  // if (query.embed !== undefined) {
-  //   return null;
-  // }
-
   return (
     <AppBar
       position="static"
