@@ -2,7 +2,7 @@ import { GetResult, ExtendedGetResult } from '@fingerprintjs/fingerprintjs-pro';
 import { apiRequest } from '../api';
 import { useMutation } from 'react-query';
 
-function requestLoan({ fpData, body }) {
+function requestLoan({ fpData, body }: LoanRequest) {
   return apiRequest('/api/loan-risk/request-loan', fpData, body);
 }
 

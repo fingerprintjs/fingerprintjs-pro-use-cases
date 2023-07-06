@@ -34,9 +34,9 @@ const Layout: FunctionComponent<PropsWithChildren<{ embed: boolean }>> = ({ chil
   );
 };
 
-export type AppOwnProps = { embed?: boolean };
+export type CustomPageProps = { embed?: boolean };
 
-function CustomApp({ Component, pageProps }: AppProps & AppOwnProps) {
+function CustomApp({ Component, pageProps }: AppProps<CustomPageProps>) {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>

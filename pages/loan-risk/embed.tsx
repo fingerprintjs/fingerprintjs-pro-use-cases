@@ -1,10 +1,10 @@
 import { GetStaticProps } from 'next';
 import LoanRisk from './index';
-import { AppOwnProps } from '../_app';
+import { CustomPageProps } from '../_app';
 
 export default LoanRisk;
 
-export const getStaticProps: GetStaticProps<AppOwnProps> = async () => {
+export const getStaticProps: GetStaticProps<CustomPageProps> = async () => {
   return {
     props: {
       embed: true,

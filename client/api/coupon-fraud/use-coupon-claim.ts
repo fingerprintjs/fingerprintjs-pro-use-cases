@@ -2,7 +2,7 @@ import { ExtendedGetResult, GetResult } from '@fingerprintjs/fingerprintjs-pro';
 import { apiRequest } from '../api';
 import { useMutation } from 'react-query';
 
-function claimCoupon({ fpData, body }) {
+function claimCoupon({ fpData, body }: CouponClaim) {
   return apiRequest('/api/coupon-fraud/claim', fpData, body);
 }
 
