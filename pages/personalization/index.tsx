@@ -24,11 +24,12 @@ import { useSnackbar } from 'notistack';
 import { useUserPreferences } from '../../client/api/personalization/use-user-preferences';
 import { useCart } from '../../client/api/personalization/use-cart';
 import React from 'react';
+import { ExtendedGetResult } from '@fingerprintjs/fingerprintjs-pro';
 
 export default function Index() {
   const { enqueueSnackbar } = useSnackbar();
 
-  const { isLoading: isFpDataLoading, data } = useVisitorData();
+  const { isLoading: isFpDataLoading, data } = useVisitorData({ extendedResult: true });
 
   const theme = useTheme();
   const isSmallerScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -63,7 +64,7 @@ export default function Index() {
 
   useEffect(() => {
     if (
-      data?.incognito &&
+      (data as ExtendedGetResult)?.incognito &&
       data.visitorFound &&
       !userWelcomed &&
       (searchHistoryQuery.data.data?.length || hasDarkMode || cartQuery.data?.data?.length)
