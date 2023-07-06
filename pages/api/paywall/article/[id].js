@@ -1,4 +1,4 @@
-import { articles } from '../../../../server/paywall/articles';
+import { ARTICLES } from '../../../../server/paywall/articles';
 import { paywallEndpoint } from '../../../../server/paywall/paywall-endpoint';
 import { countViewedArticles, saveArticleView } from '../../../../server/paywall/article-views';
 import { ARTICLE_VIEW_LIMIT } from '../../../../shared/paywall/constants';
@@ -10,7 +10,7 @@ import { ARTICLE_VIEW_LIMIT } from '../../../../shared/paywall/constants';
 export default paywallEndpoint(async (req, res, visitorData) => {
   const { id } = req.query;
 
-  const article = articles.find((article) => article.id === id);
+  const article = ARTICLES.find((article) => article.id === id);
 
   if (!article) {
     return res.status(404).json({

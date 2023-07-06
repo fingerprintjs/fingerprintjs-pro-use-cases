@@ -11,7 +11,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 /**
  * @typedef {Object} UseCaseWrapperProps
  * @property {string} title
- * @property {React.ReactNode} description
+ * @property {React.ReactNode} [description=undefined]
  * @property {string} [articleURL]
  * @property {Array<React.ReactNode>} [listItems]
  * @property {React.ReactNode} children

@@ -1,4 +1,3 @@
-// @ts-check
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -6,18 +5,24 @@ import Stack from '@mui/material/Stack';
 import { SITE_URL } from '../../shared/const';
 import { ARTICLE_VIEW_LIMIT } from '../../shared/paywall/constants';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { ArticleData } from '../../server/paywall/articles';
+import { CustomPageProps } from '../_app';
 
 export async function getServerSideProps() {
-  const articles = await fetch(`${SITE_URL}/api/paywall/get-articles`).then((res) => res.json());
+  const articlesResponse = await fetch(`${SITE_URL}/api/paywall/get-articles`).then((res) => res.json());
 
   return {
     props: {
-      articles,
+      articles: articlesResponse.data,
     },
   };
 }
 
-export default function LoanRisk({ articles }) {
+type PaywallProps = CustomPageProps & {
+  articles: ArticleData[];
+};
+
+export default function Paywall({ articles, embed }: PaywallProps) {
   return (
     <UseCaseWrapper
       title="Paywall"
@@ -30,11 +35,11 @@ export default function LoanRisk({ articles }) {
         <>You can try switching to the incognito mode or clearing cookies.</>,
       ]}
     >
-      {articles.data && (
+      {articles && (
         <Stack spacing={6}>
-          {articles.data.map((article) => (
+          {articles.map((article) => (
             <Card
-              href={`/paywall/article/${article.id}`}
+              href={`/paywall/article/${article.id}${embed ? '/embed' : ''}`}
               key={article.id}
               variant="outlined"
               component="a"

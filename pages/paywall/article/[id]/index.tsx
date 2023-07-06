@@ -1,17 +1,18 @@
 import { useRouter } from 'next/router';
-import { Skeleton } from '@mui/material';
+import { Skeleton, SkeletonTypeMap } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
-import { useGetArticle } from '../../../client/api/personalization/use-get-article';
-import { UseCaseWrapper } from '../../../client/components/use-case-wrapper';
+import { useGetArticle } from '../../../../client/api/personalization/use-get-article';
+import { UseCaseWrapper } from '../../../../client/components/use-case-wrapper';
+import { CustomPageProps } from '../../../_app';
 
-function ArticleSkeleton({ animation = true }) {
+function ArticleSkeleton({ animation = false }: { animation?: SkeletonTypeMap['props']['animation'] }) {
   const skeletons = Array.from({ length: 4 }).map((_, index) => <Skeleton key={index} animation={animation} />);
 
   return <>{skeletons}</>;
 }
 
-export default function Article() {
+export default function Article({ embed }: CustomPageProps) {
   const router = useRouter();
 
   const articleQuery = useGetArticle(router.query.id);
@@ -20,7 +21,12 @@ export default function Article() {
   const data = queryData?.data;
 
   return (
-    <UseCaseWrapper title={data?.article.title} hideSrcListItem hideDivider returnUrl="/paywall">
+    <UseCaseWrapper
+      title={data?.article.title}
+      hideSrcListItem
+      hideDivider
+      returnUrl={`/paywall${embed ? '/embed' : ''}`}
+    >
       <Typography
         className="ArticleContent"
         sx={{
