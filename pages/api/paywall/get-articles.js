@@ -1,4 +1,4 @@
-import { articles } from '../../../server/paywall/articles';
+import { ARTICLES } from '../../../server/paywall/articles';
 
 const SHORT_ARTICLE_CONTENT_LENGTH = 100;
 
@@ -6,7 +6,7 @@ const SHORT_ARTICLE_CONTENT_LENGTH = 100;
  * Returns articles with trimmed descriptions from the database.
  */
 export default function getArticles(req, res) {
-  const mappedArticles = articles.map((article) => ({
+  const mappedArticles = ARTICLES.map((article) => ({
     ...article,
     content:
       article.content.length > SHORT_ARTICLE_CONTENT_LENGTH

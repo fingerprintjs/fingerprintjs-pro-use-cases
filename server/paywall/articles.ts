@@ -1,7 +1,15 @@
 /**
  * Mock articles "database". In the real world, these articles could be fetched from anywhere.
  * */
-export const articles = [
+
+export type ArticleData = {
+  id: string;
+  date: string;
+  title: string;
+  content: string;
+};
+
+export const ARTICLES: ArticleData[] = [
   {
     id: '1',
     date: '1 hour ago',

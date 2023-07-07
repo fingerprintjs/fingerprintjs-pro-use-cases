@@ -6,8 +6,8 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 // This is a workaround for the marker icon not showing up out of the box
-let DefaultIcon = L.icon({
-  iconUrl: 'marker-icon.png',
+const DefaultIcon = L.icon({
+  iconUrl: '/marker-icon.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
 });
