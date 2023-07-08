@@ -1,5 +1,5 @@
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
-import { useCallback, useMemo, useState } from 'react';
+import { FunctionComponent, useCallback, useMemo, useState } from 'react';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -18,7 +18,27 @@ import Alert from '@mui/material/Alert';
 import { calculateMonthInstallment } from '../../shared/loan-risk/calculate-month-installment';
 import React from 'react';
 
-function SliderField({ label, min, max, value, onChange, prefix, suffix, name }) {
+type SliderFieldProps = {
+  label: string;
+  min: number;
+  max: number;
+  value: number;
+  onChange: (value: number) => void;
+  prefix?: string;
+  suffix?: string;
+  name?: string;
+};
+
+const SliderField: FunctionComponent<SliderFieldProps> = ({
+  label,
+  min,
+  max,
+  value,
+  onChange,
+  prefix,
+  suffix,
+  name,
+}) => {
   return (
     <Stack direction="column">
       <FormLabel>{label}</FormLabel>
@@ -29,7 +49,7 @@ function SliderField({ label, min, max, value, onChange, prefix, suffix, name })
           max={max}
           valueLabelFormat={(value) => `${prefix ? `${prefix} ` : ''} ${value} ${suffix ?? ''}`}
           value={value}
-          onChange={(event, value) => onChange(value)}
+          onChange={(_event, value: number) => onChange(value)}
           valueLabelDisplay="auto"
         />
         <TextField
@@ -38,7 +58,6 @@ function SliderField({ label, min, max, value, onChange, prefix, suffix, name })
           value={value}
           onChange={(event) => {
             const number = parseInt(event.target.value);
-
             return onChange(number);
           }}
           InputProps={{
@@ -49,8 +68,7 @@ function SliderField({ label, min, max, value, onChange, prefix, suffix, name })
       </Stack>
     </Stack>
   );
-}
-
+};
 export default function LoanRisk() {
   const visitorDataQuery = useVisitorData({
     // Don't invoke query on mount

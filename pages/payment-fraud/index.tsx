@@ -13,8 +13,9 @@ import Button from '@mui/material/Button';
 import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
 import { useVisitorData } from '../../client/use-visitor-data';
 import React from 'react';
+import { Theme } from '@mui/material/styles/createTheme';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles<Theme>((theme) => ({
   margin: {
     'margin-top': theme.spacing(1),
     'margin-bottom': theme.spacing(1),
@@ -40,9 +41,9 @@ export default function Index() {
   const [usingStolenCard, setUsingStolenCard] = useState(false);
   const [severity, setSeverity] = useState();
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
-  const [httpResponseStatus, setHttpResponseStatus] = useState();
+  const [httpResponseStatus, setHttpResponseStatus] = useState<number | undefined>();
 
-  const messageRef = useRef();
+  const messageRef = useRef<HTMLDivElement>();
 
   useEffect(() => {
     !isWaitingForResponse && messageRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -139,7 +140,6 @@ export default function Index() {
               <OutlinedInput
                 placeholder="CVV"
                 defaultValue={cardCvv}
-                variant="outlined"
                 onChange={(e) => setCardCvv(e.target.value)}
                 required
               />
@@ -150,12 +150,14 @@ export default function Index() {
           <FormControlLabel
             control={<Checkbox name="applyChargeback" color="primary" />}
             label="Ask for chargeback after purchase"
-            onChange={(e) => setApplyChargeback(e.target.checked)}
+            onChange={(_event, checked) => setApplyChargeback(checked)}
           />
           <FormControlLabel
             control={<Checkbox name="usingStolenCard" color="primary" />}
             label="Flag this visitor using stolen card after purchase"
-            onChange={(e) => setUsingStolenCard(e.target.checked)}
+            onChange={(_event, checked) => {
+              setUsingStolenCard(checked);
+            }}
           />
         </Grid>
         <Button
