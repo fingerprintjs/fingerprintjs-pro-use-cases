@@ -126,7 +126,7 @@ const CollapsedMenu = () => {
   );
 };
 
-export function Header() {
+export default function Header() {
   const { updateUserPreferences, hasDarkMode } = useUserPreferences();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down(1248));
