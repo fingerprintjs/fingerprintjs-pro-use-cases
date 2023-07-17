@@ -11,6 +11,7 @@ import { Paper, Stack } from '@mui/material';
 import { AppProps } from 'next/app';
 import Header from '../client/components/header';
 import { FunctionComponent, PropsWithChildren } from 'react';
+import DeploymentUtils from '../client/DeploymentUtils';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,8 +57,7 @@ function CustomApp({ Component, pageProps }: AppProps<CustomPageProps>) {
                 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
                 <title>Fingerprint Pro Use Cases</title>
               </Head>
-              {/* Internal placeholder for deployment purposes, unrelated to any examples, please ignore */}
-              <div id="deployment-placeholder" />
+              <DeploymentUtils />
               <Layout embed={pageProps.embed}>
                 <Component {...pageProps} />
               </Layout>
