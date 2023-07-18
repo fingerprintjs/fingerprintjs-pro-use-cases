@@ -60,7 +60,7 @@ const serverResponseSchema = z.object({
           confidence: z.object({
             score: z.number(),
           }),
-          visitorFound: z.boolean(),
+          visitorFound: z.boolean().optional(),
           firstSeenAt: z.object({
             global: z.string().nullable(),
             subscription: z.string().nullable(),
