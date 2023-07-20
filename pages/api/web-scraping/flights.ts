@@ -1,9 +1,9 @@
-import { EventResponse, FingerprintJsServerApiClient, Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { EventResponse, FingerprintJsServerApiClient } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Flight } from '../../../client/components/web-scraping/FlightCard';
 import { CheckResult, CheckResultObject, checkResultType } from '../../../server/checkResult';
 import { isRequestIdFormatValid, originIsAllowed, visitIpMatchesRequestIp } from '../../../server/checks';
-import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, SERVER_API_KEY } from '../../../server/const';
+import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, BACKEND_REGION, SERVER_API_KEY } from '../../../server/const';
 import { sendErrorResponse, sendForbiddenResponse, sendOkResponse } from '../../../server/response';
 import { ensurePostRequest, messageSeverity } from '../../../server/server';
 import { DAY_MS, FIVE_MINUTES_MS, HOUR_MS } from '../../../shared/const';
@@ -36,7 +36,7 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
   // Retrieve analysis event from the Server API using the request ID
   let botData: EventResponse['products']['botd']['data'] | undefined;
   try {
-    const client = new FingerprintJsServerApiClient({ region: Region.Global, apiKey: SERVER_API_KEY });
+    const client = new FingerprintJsServerApiClient({ region: BACKEND_REGION, apiKey: SERVER_API_KEY });
     const eventResponse = await client.getEvent(requestId);
     botData = eventResponse.products?.botd?.data;
   } catch (error) {
