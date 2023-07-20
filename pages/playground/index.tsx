@@ -180,8 +180,8 @@ function Playground() {
         content: [
           'Browser Tampering',
           <Info key="info">
-            Flag indicating whether browser tampering was detected according to our internal thresholds. For example, if
-            the reported user agent is not consistent with other browser attributes.
+            Browser tampering was detected according to our internal thresholds. For example, if the reported user agent
+            is not consistent with other browser attributes.
           </Info>,
         ],
       },
@@ -189,6 +189,41 @@ function Playground() {
         content: usedIdentificationEvent?.products?.tampering?.data?.result === true ? 'Yes 🖥️🔧' : 'Not detected',
         cellStyle: {
           backgroundColor: usedIdentificationEvent?.products?.tampering?.data?.result === true ? RED : GREEN,
+        },
+      },
+    ],
+    [
+      {
+        content: [
+          'Virtual machine',
+          <Info key="info">The browser is running inside a virtual machine (e.g. VMWare).</Info>,
+        ],
+      },
+      {
+        // @ts-expect-error
+        content: usedIdentificationEvent?.products?.virtualMachine?.data?.result === true ? 'Yes ☁️💻' : 'Not detected',
+        cellStyle: {
+          // @ts-expect-error
+          backgroundColor: usedIdentificationEvent?.products?.virtualMachine?.data?.result === true ? RED : GREEN,
+        },
+      },
+    ],
+    [
+      {
+        content: [
+          'Privacy settings',
+          <Info key="info">
+            The visitor is using a privacy aware browser (e.g., Tor) or a browser in which fingerprinting is blocked.
+          </Info>,
+        ],
+      },
+      {
+        content:
+          // @ts-expect-error
+          usedIdentificationEvent?.products?.privacySettings?.data?.result === true ? 'Yes 🙈💻' : 'Not detected',
+        cellStyle: {
+          // @ts-expect-error
+          backgroundColor: usedIdentificationEvent?.products?.privacySettings?.data?.result === true ? RED : GREEN,
         },
       },
     ],
