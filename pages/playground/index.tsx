@@ -196,7 +196,7 @@ function Playground() {
       {
         content: [
           'Virtual machine',
-          <Info key="info">The browser is running inside a virtual machine (e.g. VMWare).</Info>,
+          <Info key="info">The browser is running inside a virtual machine (e.g., VMWare).</Info>,
         ],
       },
       {
@@ -277,6 +277,42 @@ function Playground() {
         content: [
           'Android Tampering',
           <Info key="info">Android specific root management apps detection, for example, Magisk.</Info>,
+        ],
+      },
+      { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },
+    ],
+    [
+      {
+        content: [
+          'Android Cloned Application',
+          <Info key="info">Android-specific detection of a fully cloned application present on the device.</Info>,
+        ],
+      },
+      { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },
+    ],
+    [
+      {
+        content: [
+          'Android Factory Reset',
+          <Info key="info">Timestamp of a recent factory reset on an Android device.</Info>,
+        ],
+      },
+      { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },
+    ],
+    [
+      {
+        content: ['iOS Jailbreak', <Info key="info">Jailbreak detected on an iOS device.</Info>],
+      },
+      { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },
+    ],
+    [
+      {
+        content: [
+          'iOS Frida installation',
+          <Info key="info">
+            Frida installation detected on an iOS device. Frida is a code-orchestration tool allowing to inject
+            arbitrary code into the operating system.
+          </Info>,
         ],
       },
       { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },
