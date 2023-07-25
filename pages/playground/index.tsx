@@ -180,8 +180,8 @@ function Playground() {
         content: [
           'Browser Tampering',
           <Info key="info">
-            Flag indicating whether browser tampering was detected according to our internal thresholds. For example, if
-            the reported user agent is not consistent with other browser attributes.
+            Browser tampering was detected according to our internal thresholds. For example, if the reported user agent
+            is not consistent with other browser attributes.
           </Info>,
         ],
       },
@@ -189,6 +189,41 @@ function Playground() {
         content: usedIdentificationEvent?.products?.tampering?.data?.result === true ? 'Yes 🖥️🔧' : 'Not detected',
         cellStyle: {
           backgroundColor: usedIdentificationEvent?.products?.tampering?.data?.result === true ? RED : GREEN,
+        },
+      },
+    ],
+    [
+      {
+        content: [
+          'Virtual machine',
+          <Info key="info">The browser is running inside a virtual machine (e.g., VMWare).</Info>,
+        ],
+      },
+      {
+        // @ts-expect-error
+        content: usedIdentificationEvent?.products?.virtualMachine?.data?.result === true ? 'Yes ☁️💻' : 'Not detected',
+        cellStyle: {
+          // @ts-expect-error
+          backgroundColor: usedIdentificationEvent?.products?.virtualMachine?.data?.result === true ? RED : GREEN,
+        },
+      },
+    ],
+    [
+      {
+        content: [
+          'Privacy settings',
+          <Info key="info">
+            The visitor is using a privacy aware browser (e.g., Tor) or a browser in which fingerprinting is blocked.
+          </Info>,
+        ],
+      },
+      {
+        content:
+          // @ts-expect-error
+          usedIdentificationEvent?.products?.privacySettings?.data?.result === true ? 'Yes 🙈💻' : 'Not detected',
+        cellStyle: {
+          // @ts-expect-error
+          backgroundColor: usedIdentificationEvent?.products?.privacySettings?.data?.result === true ? RED : GREEN,
         },
       },
     ],
@@ -242,6 +277,42 @@ function Playground() {
         content: [
           'Android Tampering',
           <Info key="info">Android specific root management apps detection, for example, Magisk.</Info>,
+        ],
+      },
+      { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },
+    ],
+    [
+      {
+        content: [
+          'Android Cloned Application',
+          <Info key="info">Android-specific detection of a fully cloned application present on the device.</Info>,
+        ],
+      },
+      { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },
+    ],
+    [
+      {
+        content: [
+          'Android Factory Reset',
+          <Info key="info">Timestamp of a recent factory reset on an Android device.</Info>,
+        ],
+      },
+      { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },
+    ],
+    [
+      {
+        content: ['iOS Jailbreak', <Info key="info">Jailbreak detected on an iOS device.</Info>],
+      },
+      { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },
+    ],
+    [
+      {
+        content: [
+          'iOS Frida installation',
+          <Info key="info">
+            Frida installation detected on an iOS device. Frida is a code-orchestration tool allowing to inject
+            arbitrary code into the operating system.
+          </Info>,
         ],
       },
       { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },

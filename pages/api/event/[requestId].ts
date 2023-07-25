@@ -1,11 +1,11 @@
-import { FingerprintJsServerApiClient, Region, isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { FingerprintJsServerApiClient, isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { SERVER_API_KEY } from '../../../server/const';
+import { BACKEND_REGION, SERVER_API_KEY } from '../../../server/const';
 
 export default async function getFingerprintEvent(req: NextApiRequest, res: NextApiResponse) {
   const { requestId } = req.query as { requestId: string };
   const client = new FingerprintJsServerApiClient({
-    region: Region.Global,
+    region: BACKEND_REGION,
     apiKey: SERVER_API_KEY,
   });
   try {
