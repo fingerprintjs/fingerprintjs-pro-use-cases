@@ -48,3 +48,4 @@ tsconfig.tsbuildinfo
 /playwright-report/
 /playwright/.cache/
 
+.env
