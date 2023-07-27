@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import { Logo } from './Logo';
 import React from 'react';
 import { Button, Menu, MenuItem, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { Button as MyButton } from './common/Button/Button';
+import MyButton from './common/Button';
 
 const navLinks = [
   {

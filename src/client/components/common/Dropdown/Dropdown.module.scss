@@ -1,0 +1,421 @@
+.container {
+  @include media('<=desktopHeader') {
+    padding-top: rem(32px);
+  }
+  @include media('>desktopHeader') {
+    position: absolute;
+    background: linear-gradient(0deg, #f7f7fa, #f7f7fa), #ffffff;
+    filter: drop-shadow(0px 4px 15px rgba(114, 114, 115, 0.15));
+    border-radius: rem(8px);
+
+    left: rem(-48px);
+    top: rem(36.5px);
+  }
+
+  .dropdown {
+    background-color: c('white');
+    display: grid;
+    grid-template-areas:
+      'dropdown-a  dropdown-b'
+      'bottom  dropdown-b';
+    border-radius: rem(8px);
+
+    @include media('<=desktopHeader') {
+      grid-template-columns: 1fr;
+
+      grid-template-areas:
+        'dropdown-a'
+        'bottom'
+        'dropdown-b';
+    }
+    > * {
+      @include media('<=desktopHeader') {
+        padding-left: rem(20px);
+        padding-right: rem(20px);
+      }
+    }
+    &.dropdownBottom {
+      grid-template-areas:
+        'dropdown-a  dropdown-b'
+        'dropdown-a  bottom-b';
+
+      @include media('<=desktopHeader') {
+        grid-template-areas:
+          'dropdown-a'
+          'dropdown-b'
+          'bottom-b';
+      }
+
+      .rightSection {
+        border-bottom-right-radius: 0;
+
+        @include media('<=desktopHeader') {
+          padding: rem(24px) rem(20px) 0;
+        }
+      }
+    }
+  }
+}
+
+.bottomRowRight {
+  grid-area: bottom-b;
+  background: #fbfbfb;
+
+  border-bottom-right-radius: rem(8px);
+  @include transition(background);
+
+  @include media('>desktopHeader') {
+    border-top: 1px solid #e8e8e8;
+    border-left: 1px solid #e8e8e8;
+    &:hover {
+      background: #ffffff;
+    }
+  }
+  .bottomLink {
+    padding: rem(16px);
+    display: flex;
+    column-gap: rem(6px);
+    @include inter($size: 14px, $weight: 500, $lh: 100%);
+
+    .arrow {
+      fill: #141415;
+      width: 9.16px;
+      height: 9.16px;
+      align-self: center;
+      margin-top: rem(2px);
+    }
+
+    @include media('<=desktopHeader') {
+      padding: rem(24px) 0 rem(40px);
+    }
+  }
+}
+
+.columns {
+  grid-area: dropdown-a;
+  padding: rem(32px);
+
+  display: flex;
+  column-gap: rem(32px);
+
+  @include media('<=desktopHeader') {
+    flex-direction: column;
+    padding: 0 0 rem(24px);
+
+    row-gap: rem(40px);
+  }
+  &.onlyLeft {
+    @include media('>desktopHeader') {
+      padding: rem(32px) rem(24px) rem(24px);
+    }
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    width: rem(288px);
+
+    @include media('<=desktopHeader') {
+      width: auto;
+
+      row-gap: rem(16px);
+
+      .columnLink {
+        display: inline-block;
+        padding: 0 0 rem(24px) 0;
+      }
+      li {
+        padding: 0;
+      }
+      .columnLink:last-of-type {
+        padding: 0;
+      }
+    }
+    .rows {
+      display: flex;
+      flex-direction: column;
+      @include media('<=desktopHeader') {
+        row-gap: rem(24px);
+      }
+    }
+  }
+}
+
+.rightSection {
+  grid-area: dropdown-b;
+  border-top-right-radius: rem(8px);
+  border-bottom-right-radius: rem(8px);
+}
+.bottomRow {
+  grid-area: bottom;
+}
+
+.label,
+.rightSectionLabel {
+  @include inter($size: 14px, $weight: 600, $lh: 140%, $color: #a1a1a1);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  margin-bottom: rem(16px);
+}
+
+.label {
+  padding-left: rem(16px);
+  @include media('<=desktopHeader') {
+    margin-bottom: 0;
+    padding-left: 0;
+    line-height: rem(16px);
+    letter-spacing: 0.04em;
+  }
+}
+
+.rightSectionLabel {
+  padding-left: rem(12px);
+
+  @include media('<=desktopHeader') {
+    padding-left: 0;
+  }
+}
+
+.linkTitle {
+  max-width: rem(230px);
+  @include inter($size: 16px, $weight: 500, $lh: 22px);
+  padding-bottom: rem(4px);
+
+  @include media('<=desktopHeader') {
+    max-width: unset;
+
+    padding-bottom: rem(6px);
+  }
+}
+
+.linkDescription {
+  @include inter($size: 14px, $weight: 400, $lh: 160%);
+  letter-spacing: 0.01em;
+}
+
+.background,
+.row,
+.rightSectionRow {
+  list-style: none;
+
+  border-radius: rem(6px);
+
+  @include transition(background);
+  @include transition-duration(0.25s);
+  @include transition-timing-function(ease-out);
+}
+.row {
+  padding: rem(16px);
+  @include media('>desktopHeader') {
+    padding: rem(16px) rem(16px) rem(8px);
+  }
+}
+.background {
+  @include media('>desktopHeader') {
+    padding: rem(16px);
+
+    &:hover {
+      background: #fafafa;
+    }
+  }
+}
+
+.link {
+  @include inter($size: 16px, $weight: 500, $lh: 22px);
+
+  @include media('<=desktopHeader') {
+    font-size: rem(16px);
+  }
+}
+
+.rightSection {
+  background: linear-gradient(0deg, #fafafa, #fafafa), #ffffff;
+
+  border-left: 1px solid #f2f2f7;
+  padding: 0 rem(36px) 0 (28px);
+
+  @include media('<=desktopHeader') {
+    padding: rem(32px) 0 rem(40px) 0;
+  }
+
+  .rightColumns {
+    display: flex;
+    flex-direction: column;
+    padding: rem(6px) 0 rem(32px);
+    @include media('<=desktopHeader') {
+      padding: 0;
+      row-gap: rem(16px);
+    }
+    .link {
+      width: rem(280px);
+    }
+    @include media('<=desktopHeader') {
+      .columnLink {
+        display: inline-block;
+        padding: 0 0 rem(24px) 0;
+      }
+      li {
+        padding: 0;
+      }
+      .columnLink:last-of-type {
+        padding: 0;
+      }
+    }
+    .rightSectionRow {
+      padding: rem(16px) rem(12px);
+      @include media('>desktopHeader') {
+        &:hover {
+          background: #ffffff;
+        }
+      }
+
+      @include media('<=desktopHeader') {
+        max-width: none;
+        padding: 0;
+      }
+    }
+  }
+}
+
+.columns,
+.rightSection {
+  @include media('>desktopHeader') {
+    padding-top: rem(32px);
+  }
+}
+
+.bottomRow {
+  border-top: 1px solid #e8e8e8;
+  padding: rem(2px) rem(32px);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  @include media('<=desktopHeader') {
+    border-top: none;
+    padding: 0 0 rem(24px) 0;
+  }
+
+  .bottomLink {
+    display: flex;
+    column-gap: rem(6.25px);
+    width: 100%;
+    margin-left: rem(16px);
+    padding: rem(16px) 0;
+    @include inter($size: 14px, $weight: 500, $lh: 100%);
+
+    .arrow {
+      fill: #141415;
+      width: 9.16px;
+      height: 9.16px;
+      align-self: center;
+      margin-top: rem(2px);
+    }
+
+    @include media('<=desktopHeader') {
+      margin: 0;
+      padding-bottom: 0;
+      letter-spacing: -0.01em;
+    }
+  }
+}
+.useCasesLink {
+  display: flex;
+  align-items: center;
+  column-gap: rem(4px);
+  width: 100%;
+  @include inter($size: 12px, $weight: 500, $lh: 100%, $color: v('dark-gray'));
+  padding-bottom: rem(16px);
+  padding-left: rem(16px);
+
+  .arrowBottomLink {
+    @include transition(opacity);
+    fill: v('dark-gray');
+    opacity: 0;
+    align-self: center;
+    width: 8.5px;
+    height: 8.5px;
+    margin-top: rem(1px);
+
+    @include media('<=desktopHeader') {
+      display: none;
+    }
+  }
+
+  &:hover {
+    .arrowBottomLink {
+      opacity: 1;
+    }
+  }
+
+  @include media('<=desktopHeader') {
+    letter-spacing: -0.01em;
+
+    padding: rem(8px) 0 0 0;
+  }
+}
+.darkDropdown {
+  @include media('>desktopHeader') {
+    background: unset;
+    filter: drop-shadow(0px 4px 15px rgba(161, 161, 161, 0.05)) drop-shadow(0px 0px 1px rgba(232, 232, 232, 0.1));
+  }
+  .dropdown {
+    background-color: v('dark-black');
+
+    .rightSection {
+      background: v('dark');
+      border-left: 1px solid rgba(208, 208, 208, 0.1);
+
+      .rightSectionLabel {
+        color: v('light-grey');
+      }
+
+      .rightColumns {
+        .rightSectionRow {
+          @include media('>desktopHeader') {
+            &:hover {
+              background: #141415;
+            }
+          }
+        }
+      }
+    }
+    .bottomRowRight {
+      background: v('dark');
+      border-left: 1px solid rgba(208, 208, 208, 0.1);
+
+      border-top: 1px solid rgba(208, 208, 208, 0.1);
+
+      &:hover {
+        background: #141415;
+      }
+    }
+  }
+  .bottomRow {
+    border-top: 1px solid rgba(208, 208, 208, 0.1);
+  }
+  .label,
+  .linkDescription {
+    color: v('light-grey');
+  }
+  .useCasesLink {
+    color: v('warm-white');
+
+    .arrowBottomLink {
+      fill: v('warm-white');
+    }
+  }
+  .bottomLink {
+    .arrow {
+      fill: v('warm-white');
+    }
+  }
+  .background {
+    @include media('>desktopHeader') {
+      &:hover {
+        background: #202021;
+      }
+    }
+  }
+}

@@ -27,6 +27,7 @@
     "@mui/styles": "^5.13.2",
     "classnames": "^2.3.2",
     "clsx": "^1.2.1",
+    "framer-motion": "^10.13.2",
     "include-media": "^2.0.0",
     "leaflet": "^1.9.4",
     "next": "^13.1.6",

@@ -19,7 +19,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   buttonId?: string;
 }
 
-export const Button = memo(function Button({
+const Button = memo(function Button({
   variant = 'primary',
   outlined = false,
   size = 'large',
@@ -84,3 +84,5 @@ export const Button = memo(function Button({
     </button>
   );
 });
+
+export default Button;

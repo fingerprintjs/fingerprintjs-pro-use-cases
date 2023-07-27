@@ -31,6 +31,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: v('dark-black');
   min-height: 100vh;
+  background-color: black;
 
   &.isMobileMenuOpen {
     //prevent scrolling on iOS when mobile menu is open

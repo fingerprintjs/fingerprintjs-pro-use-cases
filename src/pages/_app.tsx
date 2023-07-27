@@ -10,6 +10,7 @@ import { FP_LOAD_OPTIONS } from '../client/use-visitor-data';
 import { Paper, Stack } from '@mui/material';
 import { AppProps } from 'next/app';
 import Header from '../client/components/header';
+import NewHeader from '../client/components/common/NewHeader';
 import { FunctionComponent, PropsWithChildren } from 'react';
 import DeploymentUtils from '../client/DeploymentUtils';
 
@@ -24,7 +25,7 @@ const queryClient = new QueryClient({
 const Layout: FunctionComponent<PropsWithChildren<{ embed: boolean }>> = ({ children, embed }) => {
   return (
     <Stack sx={{ height: '100%' }}>
-      {embed ? null : <Header />}
+      {embed ? null : <NewHeader />}
       <Paper
         variant="outlined"
         sx={{ flexGrow: 1, borderRadius: 0, border: 'none', paddingBottom: (t) => t.spacing(4) }}
