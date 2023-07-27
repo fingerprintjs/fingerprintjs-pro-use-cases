@@ -49,3 +49,5 @@ tsconfig.tsbuildinfo
 /playwright/.cache/
 
 .env
+
+.vscode

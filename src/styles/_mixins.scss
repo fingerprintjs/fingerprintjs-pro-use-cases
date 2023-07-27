@@ -1,0 +1,481 @@
+@use 'sass:math';
+
+
+@import '~include-media/dist/_include-media';
+
+// Grid multiplier
+@function grid($multiply) {
+  @return calc(var(--grid-base) * #{$multiply});
+}
+
+// Get CSS Var
+@function v($name, $fallback: null) {
+  @if ($fallback) {
+    @return var(--#{$name}, #{$fallback});
+  } @else {
+    @return var(--#{$name});
+  }
+}
+
+// Get SCSS Color Var
+@function c($name, $theme: null) {
+  @if $theme {
+    @if map-has-key($theme, $name) {
+      @return map-get($theme, $name);
+    }
+  } @else {
+    @if map-has-key($colors, $name) {
+      @return map-get($colors, $name);
+    } @else if map-has-key($brand-colors, $name) {
+      @return map-get($brand-colors, $name);
+    }
+  }
+
+  @return null;
+}
+
+/*========================================
+=            Transition mixin            =
+=========================================*/
+@mixin transition($p, $d: var(--t-normal), $e: ease) {
+  @include transition-duration($d);
+  @include transition-property($p);
+  @include transition-timing-function($e);
+}
+
+@mixin transition-duration($d...) {
+  transition-duration: $d;
+}
+@mixin transition-property($p...) {
+  transition-property: $p;
+}
+@mixin transition-timing-function($e...) {
+  transition-timing-function: $e;
+}
+
+/*=====  End of Transition mixin  ======*/
+
+/*=============================================
+=            Force 3D Acceleration            =
+=============================================*/
+
+@mixin accelerate($name) {
+  backface-visibility: hidden;
+  perspective: 1000px;
+  transform: translateZ(0);
+  will-change: $name;
+}
+
+/*=====  End of Force 3D Acceleration  ======*/
+
+/*======================================
+=            Truncate Lines            =
+=======================================*/
+
+@mixin max-lines($lines, $lh: var(--lineHeight)) {
+  max-height: calc(#{$lh} * #{$lines});
+  overflow: hidden;
+}
+
+/*=====  End of Truncate Lines  ======*/
+
+/*=============================================
+=            Truncate Single Line            =
+=============================================*/
+
+@mixin truncate($width: 100px) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: $width;
+}
+
+/*=====  End of Truncate Single Line  ======*/
+
+/*========================================
+=            Fluid Typography            =
+========================================*/
+
+@function strip-unit($value) {
+  @return math.div($value, $value * 0 + 1);
+}
+
+@mixin fluid-type($min-vw, $max-vw, $min-font-size, $max-font-size) {
+  $u1: unit($min-vw);
+  $u2: unit($max-vw);
+  $u3: unit($min-font-size);
+  $u4: unit($max-font-size);
+
+  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+    & {
+      font-size: $min-font-size;
+      @media screen and (min-width: $min-vw) {
+        font-size: calc(
+          #{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} *
+            ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)})
+        );
+      }
+
+      @media screen and (min-width: $max-vw) {
+        font-size: $max-font-size;
+      }
+    }
+  }
+}
+
+/*=====  End of Fluid Typography  ======*/
+
+/*==================================
+=            Font-Style            =
+===================================*/
+
+@mixin style($fsz: inherit, $lh: inherit, $fw: inherit, $fs: normal) {
+  font-size: $fsz;
+  font-style: $fs;
+  font-weight: $fw;
+  line-height: $lh;
+}
+
+/*=====  End of Font-Style  ======*/
+
+/*=============================================
+=            Aspect Ratio Box            =
+=============================================*/
+
+@mixin ar($w: 16, $h: 9, $hasChild: false) {
+  position: relative;
+
+  &:before {
+    display: block;
+    content: '';
+    width: 100%;
+    padding-top: math.div($h, $w) * 100%;
+  }
+
+  @if ($hasChild) {
+    > * {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+/*=====  End of Aspect Ratio Box  ======*/
+
+/*======================================
+=            SCROLLABLE BOX            =
+=======================================*/
+
+@mixin scrollbox($height: 500px, $scollbarSize: 20px, $padding...) {
+  height: $height;
+  overflow: hidden;
+
+  > * {
+    box-sizing: content-box;
+    height: $height - $scollbarSize;
+    width: 100%;
+    overflow-y: scroll;
+    padding: #{$padding};
+    // padding-right: $scollbarSize;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari and Opera */
+    }
+  }
+}
+
+@mixin noScrollbar() {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/*=====  End of SCROLLABLE BOX  ======*/
+
+/*======================================
+=            GAP FOR FLEXBOX           =
+=======================================*/
+
+@mixin gap($gap: 8px) {
+  --gap: #{$gap};
+  gap: var(--gap);
+
+  @supports not (gap: 1px) {
+    flex-wrap: wrap;
+    margin: calc(-1 * var(--gap)) 0 0 calc(-1 * var(--gap));
+    width: calc(100% + var(--gap));
+
+    > * {
+      margin: var(--gap) 0 0 var(--gap);
+    }
+  }
+}
+
+/*=====  End of GAP FOR FLEXBOX  ======*/
+
+@mixin overrideContentStyle($fontSize: 2rem, $headerSize: 2rem, $marginBottom: 2rem) {
+  p,
+  ul,
+  ol,
+  img,
+  blockquote {
+    margin-bottom: $marginBottom;
+  }
+
+  p {
+    font-size: $fontSize;
+  }
+
+  ul,
+  ol {
+    li {
+      font-size: $fontSize;
+    }
+  }
+
+  @for $index from 1 through 6 {
+    h#{$index} {
+      font-size: $headerSize;
+    }
+  }
+}
+
+@mixin jb-mono($size: false, $color: false, $weight: false, $lh: false) {
+  font-family: v(jb-mono);
+
+  @if $size {
+    font-size: rem($size);
+  }
+  @if $color {
+    color: $color;
+  }
+  @if $weight {
+    font-weight: $weight;
+  }
+  @if $lh {
+    line-height: $lh;
+  }
+}
+
+@mixin inter($size: false, $color: false, $weight: false, $lh: false) {
+  font-family: v(ff-inter);
+
+  @if $size {
+    font-size: rem($size);
+  }
+  @if $color {
+    color: $color;
+  }
+  @if $weight {
+    font-weight: $weight;
+  }
+  @if $lh {
+    line-height: $lh;
+  }
+}
+
+@mixin inter-h1($size: 64px, $mobileSize: 34px, $weight: 600, $lh: 130%, $lhMobile: 130%, $color: false) {
+  font-family: v(ff-inter);
+  font-size: rem($size);
+  font-weight: $weight;
+  line-height: $lh;
+  @if $color {
+    color: $color;
+  }
+  @include media('<=phoneLandscape') {
+    font-size: rem($mobileSize);
+    line-height: $lhMobile;
+  }
+}
+
+@mixin inter-h2($size: 48px, $mobileSize: 24px, $weight: 600, $lh: 130%, $lhMobile: 130%, $color: false) {
+  font-family: v(ff-inter);
+  font-size: rem($size);
+  font-weight: $weight;
+  line-height: $lh;
+  @if $color {
+    color: $color;
+  }
+  @include media('<=phoneLandscape') {
+    font-size: rem($mobileSize);
+    line-height: $lhMobile;
+  }
+}
+
+@mixin inter-h3($size: 28px, $mobileSize: 24px, $weight: 600, $lh: 130%, $lhMobile: 130%, $color: false) {
+  font-family: v(ff-inter);
+  font-size: rem($size);
+  font-weight: $weight;
+  line-height: $lh;
+  @if $color {
+    color: $color;
+  }
+  @include media('<=phoneLandscape') {
+    font-size: rem($mobileSize);
+    line-height: $lhMobile;
+  }
+}
+@mixin inter-body($size: 20px, $mobileSize: 16px, $weight: 400, $lh: 160%, $lhMobile: 160%, $color: v('dark-gray')) {
+  font-family: v(ff-inter);
+  font-size: rem($size);
+  font-weight: $weight;
+  line-height: $lh;
+  @if $color {
+    color: $color;
+  }
+  @include media('<=phoneLandscape') {
+    font-size: rem($mobileSize);
+    line-height: $lhMobile;
+    letter-spacing: 0.01em;
+  }
+}
+
+@mixin fade-in($waitTime, $translate: false) {
+  animation: wait #{$waitTime}, fade-in 0.7s #{$waitTime};
+
+  @keyframes wait {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      @if $translate {
+        transform: translateY($translate);
+      }
+    }
+    100% {
+      opacity: 1;
+      @if $translate {
+        transform: translateY(0px);
+      }
+    }
+  }
+}
+
+@mixin aura($name, $duration, $scaleY, $scaleX, $opacity, $waitTime) {
+  animation: #{$name} #{$duration} ease-out #{$waitTime} 1;
+
+  @keyframes #{$name} {
+    0% {
+      transform: scale($scaleX, $scaleY);
+      opacity: 0;
+    }
+    50% {
+      opacity: $opacity;
+    }
+    to {
+      transform: scale($scaleX, $scaleY);
+      opacity: 0;
+    }
+  }
+}
+
+@mixin fontface($path, $family, $type: '', $weight, $style: normal) {
+  @font-face {
+    font-family: $family;
+    src: local(''), url('#{$path}#{$type}.woff2') format('woff2'), url('#{$path}#{$type}.woff') format('woff');
+    font-weight: $weight;
+    font-style: $style;
+    font-display: swap;
+  }
+}
+
+@mixin fontfaceWoff2($path, $family, $type: '', $weight, $style: normal) {
+  @font-face {
+    font-family: $family;
+    src: local(''), url('#{$path}#{$type}.woff2') format('woff2');
+    font-weight: $weight;
+    font-style: $style;
+    font-display: swap;
+  }
+}
+
+// Due to the sticky header bar, when an element is scrolled
+// it is necessary to add this property so that it is not hidden under the bar
+@mixin scrollSection() {
+  @include media('>desktop') {
+    scroll-margin-top: var(--header-height);
+  }
+}
+
+@mixin moveUp($duration: 0.8s) {
+  animation: moveUp #{$duration} ease;
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+  animation-delay: 0.6s;
+  @keyframes moveUp {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+  }
+}
+
+/*======================================
+=               LABELS                 =
+=======================================*/
+
+@mixin labelOrange() {
+  display: flex;
+
+  background: linear-gradient(
+    94.48deg,
+    rgba(245, 97, 75, 0.2) 0%,
+    rgba(245, 97, 75, 0.2) 0.01%,
+    rgba(250, 117, 69, 0.2) 100%
+  );
+  border-radius: rem(4px);
+  text-transform: uppercase;
+  padding: rem(4px) rem(8px);
+
+  .label {
+    @include jb-mono($size: 14px, $weight: 700, $lh: 16px);
+    letter-spacing: 0.04em;
+    background: linear-gradient(94.48deg, #f5614b 0%, #f5614b 0.01%, rgba(250, 117, 69, 0.99) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+
+    @include media('<=phoneLandscape') {
+      font-size: rem(12px);
+    }
+  }
+}
+
+@mixin gradientText() {
+  background: linear-gradient(94.48deg, #f5614b 0%, #f5614b 0.01%, #fa7545 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+/*======================================
+=               BOX                    =
+=======================================*/
+
+@mixin boxWithShadow($radius: 6px) {
+  box-shadow: 0px 3px 2px rgba(20, 20, 21, 0.02), 0px 0px 1px rgba(114, 114, 115, 0.15),
+    0px 7px 6px rgba(20, 20, 21, 0.04), 0px 12px 10px rgba(20, 20, 21, 0.03), 0px 22px 18px rgba(20, 20, 21, 0.03),
+    0px 42px 33px rgba(20, 20, 21, 0.02), 0px 100px 80px rgba(20, 20, 21, 0.02);
+
+  border-radius: rem($radius);
+}

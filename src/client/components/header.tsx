@@ -5,11 +5,11 @@ import IconButton from '@mui/material/IconButton';
 import { DarkMode, LightMode, Menu as MenuIcon, Settings } from '@mui/icons-material';
 import { useUserPreferences } from '../api/personalization/use-user-preferences';
 import Link from 'next/link';
-import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
 import { Logo } from './Logo';
 import React from 'react';
-import { Menu, MenuItem, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Button, Menu, MenuItem, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Button as MyButton } from './common/Button/Button';
 
 const navLinks = [
   {
@@ -153,6 +153,7 @@ export default function Header() {
             <IconButton disableRipple LinkComponent={Link} href="/admin">
               <Settings />
             </IconButton>
+            <MyButton>Test</MyButton>
             <IconButton
               className="DarkMode_toggle"
               data-checked={hasDarkMode.toString()}
