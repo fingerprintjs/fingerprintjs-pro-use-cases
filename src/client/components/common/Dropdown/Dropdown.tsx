@@ -1,10 +1,11 @@
 import React from 'react';
 
-// import ArrowSVG from './ArrowSVG.svg';
+import ArrowSVG from './ArrowSVG.svg';
 import classNames from 'classnames';
 import styles from './Dropdown.module.scss';
 import Link from 'next/link';
 import { isLocalLink } from '../../helpers';
+import Image from 'next/image';
 
 export interface DropdownProps {
   leftColumns?: ColumnProps[];
@@ -40,12 +41,12 @@ export default function Dropdown({
             {isLocalLink(bottomLinkUrl) ? (
               <Link href={bottomLinkUrl} className={styles.bottomLink}>
                 <span>{bottomLinkText}</span>
-                {/* <ArrowSVG className={styles.arrow} /> */}
+                <Image src={ArrowSVG} className={styles.arrow} alt="" />
               </Link>
             ) : (
               <a href={bottomLinkUrl} className={styles.bottomLink} target="_blank" rel="noreferrer">
                 <span>{bottomLinkText}</span>
-                {/* <ArrowSVG className={styles.arrow} /> */}
+                <Image src={ArrowSVG} className={styles.arrow} alt="" />
               </a>
             )}
           </div>
@@ -80,12 +81,12 @@ export default function Dropdown({
             {isLocalLink(bottomLinkUrlRight) ? (
               <Link href={bottomLinkUrlRight} className={styles.bottomLink}>
                 <span>{bottomLinkTextRight}</span>
-                {/* <ArrowSVG className={styles.arrow} /> */}
+                <Image src={ArrowSVG} className={styles.arrow} alt="" />
               </Link>
             ) : (
               <a href={bottomLinkUrlRight} className={styles.bottomLink} target="_blank" rel="noreferrer">
                 <span>{bottomLinkTextRight}</span>
-                {/* <ArrowSVG className={styles.arrow} /> */}
+                <Image src={ArrowSVG} className={styles.arrow} alt="" />
               </a>
             )}
           </div>
@@ -118,7 +119,7 @@ function Column({ title, list, cardBackground }: ColumnProps) {
                   {useCasesLink && (
                     <Link href={useCasesLink} className={styles.useCasesLink}>
                       <span>See Use Case</span>
-                      {/* <ArrowSVG className={styles.arrowBottomLink} /> */}
+                      <Image src={ArrowSVG} className={styles.arrowBottomLink} alt="" />
                     </Link>
                   )}
                 </div>
@@ -131,7 +132,7 @@ function Column({ title, list, cardBackground }: ColumnProps) {
                   {useCasesLink && (
                     <Link href={useCasesLink} className={styles.useCasesLink}>
                       <span>See Use Case</span>
-                      {/* <ArrowSVG className={styles.arrowBottomLink} /> */}
+                      <Image src={ArrowSVG} className={styles.arrowBottomLink} alt="" />
                     </Link>
                   )}
                 </a>

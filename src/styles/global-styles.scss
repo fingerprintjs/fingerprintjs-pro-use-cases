@@ -9,12 +9,8 @@
   }
 }
 
-::selection {
-  // background-color: v('brand');
-}
 
 html {
-  font-size: 8px;
   height: 100%;
 }
 /* Avoid Chrome to see Safari hack */
@@ -31,7 +27,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: v('dark-black');
   min-height: 100vh;
-  background-color: black;
 
   &.isMobileMenuOpen {
     //prevent scrolling on iOS when mobile menu is open
@@ -54,10 +49,10 @@ body {
   overflow: hidden;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
+// a {
+//   text-decoration: none;
+//   color: inherit;
+// }
 
 ul,
 ol {
@@ -142,10 +137,10 @@ img {
   vertical-align: middle;
 }
 
-img {
-  width: 100%;
-  height: auto;
-}
+// img {
+//   width: 100%;
+//   height: auto;
+// }
 
 // In Safari and iOS the img element is placed above the wrapper hiding the curved borders
 .gatsby-image-wrapper {
