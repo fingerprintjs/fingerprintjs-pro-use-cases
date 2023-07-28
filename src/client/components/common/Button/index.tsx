@@ -33,6 +33,7 @@ const Button = memo(function Button({
   openNewTab,
   disabled,
   buttonId,
+  title,
 }: ButtonProps) {
   const classes = classNames(
     styles.button,
@@ -61,6 +62,7 @@ const Button = memo(function Button({
         onClick={onClick}
         aria-label={label}
         download={download}
+        title={title}
         {...newTabProps}
       >
         <span>{children}</span>
@@ -73,13 +75,14 @@ const Button = memo(function Button({
         onClick={onClick}
         aria-label={label}
         download={download}
+        title={title}
         {...newTabProps}
       >
         <span>{children}</span>
       </a>
     )
   ) : (
-    <button id={buttonId} type={type} className={classes} onClick={onClick} aria-label={label}>
+    <button id={buttonId} type={type} className={classes} onClick={onClick} aria-label={label} title={'dewfwef'}>
       <span>{children}</span>
     </button>
   );

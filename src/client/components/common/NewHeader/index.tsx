@@ -15,6 +15,7 @@ import Dropdown from '../Dropdown/Dropdown';
 import styles from './Header.module.scss';
 import Link from 'next/link';
 import { useLocation } from 'react-use';
+import Button from '../Button';
 
 interface HeaderProps {
   notificationBar?: {
@@ -94,15 +95,35 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                 </DropdownMenu>
               </div>
               <div className={styles.navRight}>
-                <a
-                  className={classNames(styles.desktopOnly, styles.loginLink)}
-                  target="_blank"
-                  rel="noreferrer"
-                  href={URL.dashboardLoginUrl}
+                <button
+                  className={classNames(styles.desktopOnly, styles.resetButton)}
+                  onClick={() => window.alert('Reset scenarios')}
+                  title="Click Reset to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action."
+                >
+                  Reset
+                </button>
+                <Button
+                  href={'https://dashboard.fingerprint.com/login'}
+                  size="medium"
+                  variant={darkMode ? 'dark' : 'primary'}
+                  outlined
+                  openNewTab
+                  className={styles.button}
+                  buttonId="log-in-top-nav"
                 >
                   Login
-                </a>
+                </Button>
 
+                <Button
+                  variant="primary"
+                  size="medium"
+                  className={styles.signupButton}
+                  href={URL.signupUrl}
+                  openNewTab
+                  buttonId="sign-up-top-nav"
+                >
+                  Sign up
+                </Button>
                 <button
                   aria-label="Mobile Menu"
                   className={classNames(styles.mobileToggler, { [styles.isOpen]: isMobileMenuOpen })}

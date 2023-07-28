@@ -21,6 +21,10 @@
     }
   }
 
+  .resetButton {
+    cursor: pointer;
+  }
+
   .root {
     padding-top: rem(18px);
     padding-bottom: rem(18px);
@@ -182,7 +186,7 @@
     }
   }
 
-  .loginLink {
+  .resetButton {
     @include inter($size: 14px, $weight: 600, $lh: 150%, $color: v('orange-gradient'));
     padding-right: rem(12px);
     @include transition((color));
@@ -190,6 +194,8 @@
     &:hover {
       color: adjust-color(c('orange-gradient'), $saturation: -19%, $lightness: -6%);
     }
+
+    cursor: pointer;
   }
 }
 
