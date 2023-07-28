@@ -13,35 +13,35 @@ import MyButton from './common/Button';
 
 const navLinks = [
   {
-    name: 'Playground',
+    title: 'Playground',
     url: '/playground',
   },
   {
-    name: 'Coupon Fraud',
+    title: 'Coupon Fraud',
     url: '/coupon-fraud',
   },
   {
-    name: 'Credential Stuffing',
+    title: 'Credential Stuffing',
     url: '/credential-stuffing',
   },
   {
-    name: 'Loan Risk',
+    title: 'Loan Risk',
     url: '/loan-risk',
   },
   {
-    name: 'Payment Fraud',
+    title: 'Payment Fraud',
     url: '/payment-fraud',
   },
   {
-    name: 'Paywall',
+    title: 'Paywall',
     url: '/paywall',
   },
   {
-    name: 'Personalization',
+    title: 'Personalization',
     url: '/personalization',
   },
   {
-    name: 'Scraping',
+    title: 'Scraping',
     url: '/web-scraping',
   },
 ];

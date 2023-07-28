@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Prism from 'prismjs';
 import MobileNavbar from '../MobileNavbar';
-import Button from '../Button';
 import Container from '../Container';
 import HeaderBar from '../HeaderBar/HeaderBar';
 import classNames from 'classnames';
-import { URL, PATH, solutionsDropdown, industryDropdown, platformDropdown, resourcesDropdown } from '../content';
+import { URL, USE_CASES } from '../content';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import Image from 'next/image';
 import LogoSvg from './fpjs.svg';
@@ -71,36 +70,28 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                     <Image src={LogoSvg} className={styles.logo} alt="Fingerprint logo" />
                   )}
                 </Link>
-                <DropdownMenu darkMode={darkMode} name="Platform" className={styles.desktopOnly}>
-                  <Dropdown
-                    darkMode={darkMode}
-                    leftColumns={[{ title: 'Platform', list: platformDropdown.capabilities, cardBackground: true }]}
-                    rightColumn={{ title: 'Capabilities', list: platformDropdown.integrations }}
-                    bottomLinkTextRight="Bot detection"
-                    bottomLinkUrlRight={PATH.botD}
-                  />
-                </DropdownMenu>
-                <DropdownMenu darkMode={darkMode} name="Solutions" className={styles.desktopOnly}>
+                <DropdownMenu darkMode={darkMode} name="Use cases" className={styles.desktopOnly}>
                   <Dropdown
                     darkMode={darkMode}
                     leftColumns={[
-                      { title: 'Protect', list: solutionsDropdown.protect },
-                      { title: 'Grow', list: solutionsDropdown.grow },
+                      {
+                        // title: 'Protect',
+                        list: USE_CASES.slice(0, 3),
+                        cardBackground: true,
+                      },
+                      {
+                        list: USE_CASES.slice(3),
+                        cardBackground: true,
+                      },
                     ]}
-                    rightColumn={{ title: 'By Industry', list: industryDropdown }}
-                    bottomLinkText="All Use Cases"
-                    bottomLinkUrl={PATH.useCases}
                   />
                 </DropdownMenu>
-                <DropdownMenu darkMode={darkMode} name="Resources" className={styles.desktopOnly}>
-                  <Dropdown darkMode={darkMode} leftColumns={[{ list: resourcesDropdown, cardBackground: true }]} />
+                <DropdownMenu darkMode={darkMode} name="Platform" className={styles.desktopOnly}>
+                  <Dropdown
+                    darkMode={darkMode}
+                    leftColumns={[{ list: [{ title: 'Playground', url: '/playground' }], cardBackground: true }]}
+                  />
                 </DropdownMenu>
-                <Link className={classNames(styles.link, styles.desktopOnly)} href={PATH.pricingUrl}>
-                  Pricing
-                </Link>
-                <Link className={classNames(styles.link, styles.desktopOnly)} href={PATH.demoUrl}>
-                  Demo
-                </Link>
               </div>
               <div className={styles.navRight}>
                 <a

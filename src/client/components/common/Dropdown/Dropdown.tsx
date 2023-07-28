@@ -113,7 +113,7 @@ function Column({ title, list, cardBackground }: ColumnProps) {
                   <Link href={url}>
                     <li className={classNames(styles.row, { [styles.background]: cardBackground })}>
                       <h3 className={styles.linkTitle}>{title}</h3>
-                      <p className={styles.linkDescription}>{description}</p>
+                      {description && <p className={styles.linkDescription}>{description}</p>}
                     </li>
                   </Link>
                   {useCasesLink && (
@@ -127,7 +127,7 @@ function Column({ title, list, cardBackground }: ColumnProps) {
                 <a href={url} className={styles.columnLink} target="_blank" rel="noreferrer">
                   <li className={classNames(styles.row, { [styles.background]: cardBackground })}>
                     <h3 className={styles.linkTitle}>{title}</h3>
-                    <p className={styles.linkDescription}>{description}</p>
+                    {description && <p className={styles.linkDescription}>{description}</p>}
                   </li>
                   {useCasesLink && (
                     <Link href={useCasesLink} className={styles.useCasesLink}>

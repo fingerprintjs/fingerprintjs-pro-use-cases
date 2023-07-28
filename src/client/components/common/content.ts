@@ -1,3 +1,34 @@
+export const USE_CASES = [
+  {
+    title: 'Coupon Fraud',
+    url: '/coupon-fraud',
+  },
+  {
+    title: 'Credential Stuffing',
+    url: '/credential-stuffing',
+  },
+  {
+    title: 'Loan Risk',
+    url: '/loan-risk',
+  },
+  {
+    title: 'Payment Fraud',
+    url: '/payment-fraud',
+  },
+  {
+    title: 'Paywall',
+    url: '/paywall',
+  },
+  {
+    title: 'Personalization',
+    url: '/personalization',
+  },
+  {
+    title: 'Web scraping prevention',
+    url: '/web-scraping',
+  },
+];
+
 export const PATH = {
   home: '/',
   demoUrl: '/demo/',
