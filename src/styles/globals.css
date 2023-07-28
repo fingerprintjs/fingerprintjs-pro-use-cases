@@ -5,18 +5,6 @@
   --text-secondary: #757575;
 }
 
-/* CSS Reset */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-/* Make Next pages full height */
-div#__next {
-  height: 100%;
-}
-
 /* Base */
 body,
 html {
@@ -24,11 +12,6 @@ html {
   height: 100%;
   /* font-family: 'Roboto', sans-serif, -apple-system, Arial; */
   overflow-x: hidden;
-}
-
-a {
-  color: var(--primary);
-  text-decoration: none;
 }
 
 code {
