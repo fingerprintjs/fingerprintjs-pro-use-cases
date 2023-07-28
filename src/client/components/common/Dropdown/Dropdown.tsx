@@ -24,7 +24,8 @@ export default function Dropdown({
   bottomLinkTextRight,
   bottomLinkUrlRight,
   darkMode,
-}: DropdownProps) {
+  closeDropdown,
+}: DropdownProps & { closeDropdown: () => void }) {
   const onlyLeftColumn = leftColumns && !rightColumn;
   return (
     <div className={classNames(styles.container, { [styles.darkDropdown]: darkMode })}>
@@ -32,19 +33,31 @@ export default function Dropdown({
         {leftColumns && (
           <div className={classNames(styles.columns, { [styles.onlyLeft]: onlyLeftColumn })}>
             {leftColumns.map(({ title, list, cardBackground }, index) => (
-              <Column key={title ?? index} title={title} list={list} cardBackground={cardBackground} />
+              <Column
+                key={title ?? index}
+                title={title}
+                list={list}
+                cardBackground={cardBackground}
+                closeDropdown={closeDropdown}
+              />
             ))}
           </div>
         )}
         {bottomLinkText && bottomLinkUrl && (
           <div className={styles.bottomRow}>
             {isLocalLink(bottomLinkUrl) ? (
-              <Link href={bottomLinkUrl} className={styles.bottomLink}>
+              <Link href={bottomLinkUrl} className={styles.bottomLink} onClick={closeDropdown}>
                 <span>{bottomLinkText}</span>
                 <Image src={ArrowSVG} className={styles.arrow} alt="" />
               </Link>
             ) : (
-              <a href={bottomLinkUrl} className={styles.bottomLink} target="_blank" rel="noreferrer">
+              <a
+                href={bottomLinkUrl}
+                className={styles.bottomLink}
+                target="_blank"
+                rel="noreferrer"
+                onClick={closeDropdown}
+              >
                 <span>{bottomLinkText}</span>
                 <Image src={ArrowSVG} className={styles.arrow} alt="" />
               </a>
@@ -58,14 +71,21 @@ export default function Dropdown({
             <div className={styles.rightColumns}>
               {rightColumn.list.map(({ title, url, description }, index) =>
                 isLocalLink(url) ? (
-                  <Link key={`${index}-${url}`} href={url} className={styles.link}>
+                  <Link key={`${index}-${url}`} href={url} className={styles.link} onClick={closeDropdown}>
                     <li className={styles.rightSectionRow}>
                       <h3 className={styles.linkTitle}>{title}</h3>
                       {description && <p className={styles.linkDescription}>{description}</p>}
                     </li>
                   </Link>
                 ) : (
-                  <a key={`${index}-${url}`} href={url} className={styles.link} target="_blank" rel="noreferrer">
+                  <a
+                    key={`${index}-${url}`}
+                    href={url}
+                    className={styles.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={closeDropdown}
+                  >
                     <li className={styles.rightSectionRow}>
                       <h3 className={styles.linkTitle}>{title}</h3>
                       {description && <p className={styles.linkDescription}>{description}</p>}
@@ -79,12 +99,18 @@ export default function Dropdown({
         {bottomLinkTextRight && bottomLinkUrlRight && (
           <div className={styles.bottomRowRight}>
             {isLocalLink(bottomLinkUrlRight) ? (
-              <Link href={bottomLinkUrlRight} className={styles.bottomLink}>
+              <Link href={bottomLinkUrlRight} className={styles.bottomLink} onClick={closeDropdown}>
                 <span>{bottomLinkTextRight}</span>
                 <Image src={ArrowSVG} className={styles.arrow} alt="" />
               </Link>
             ) : (
-              <a href={bottomLinkUrlRight} className={styles.bottomLink} target="_blank" rel="noreferrer">
+              <a
+                href={bottomLinkUrlRight}
+                className={styles.bottomLink}
+                target="_blank"
+                rel="noreferrer"
+                onClick={closeDropdown}
+              >
                 <span>{bottomLinkTextRight}</span>
                 <Image src={ArrowSVG} className={styles.arrow} alt="" />
               </a>
@@ -100,41 +126,35 @@ interface ColumnProps {
   cardBackground?: boolean;
   list: Array<{ title: string | React.ReactNode; url: string; description?: string; useCasesLink?: string }>;
 }
-function Column({ title, list, cardBackground }: ColumnProps) {
+function Column({ title, list, cardBackground, closeDropdown }: ColumnProps & { closeDropdown: () => void }) {
   return (
     <>
       <div className={styles.column}>
         {title && <p className={styles.label}>{title}</p>}
         <div className={styles.rows}>
-          {list.map(({ title, url, description, useCasesLink }, index) => (
+          {list.map(({ title, url, description }, index) => (
             <div key={`${url}-${index}`}>
               {isLocalLink(url) ? (
                 <div className={styles.columnLink}>
-                  <Link href={url}>
+                  <Link href={url} onClick={() => closeDropdown()}>
                     <li className={classNames(styles.row, { [styles.background]: cardBackground })}>
                       <h3 className={styles.linkTitle}>{title}</h3>
                       {description && <p className={styles.linkDescription}>{description}</p>}
                     </li>
                   </Link>
-                  {useCasesLink && (
-                    <Link href={useCasesLink} className={styles.useCasesLink}>
-                      <span>See Use Case</span>
-                      <Image src={ArrowSVG} className={styles.arrowBottomLink} alt="" />
-                    </Link>
-                  )}
                 </div>
               ) : (
-                <a href={url} className={styles.columnLink} target="_blank" rel="noreferrer">
+                <a
+                  href={url}
+                  className={styles.columnLink}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => closeDropdown()}
+                >
                   <li className={classNames(styles.row, { [styles.background]: cardBackground })}>
                     <h3 className={styles.linkTitle}>{title}</h3>
                     {description && <p className={styles.linkDescription}>{description}</p>}
                   </li>
-                  {useCasesLink && (
-                    <Link href={useCasesLink} className={styles.useCasesLink}>
-                      <span>See Use Case</span>
-                      <Image src={ArrowSVG} className={styles.arrowBottomLink} alt="" />
-                    </Link>
-                  )}
                 </a>
               )}
             </div>

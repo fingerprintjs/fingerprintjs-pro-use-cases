@@ -10,7 +10,6 @@ import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import { FP_LOAD_OPTIONS } from '../client/use-visitor-data';
 import { Paper, Stack } from '@mui/material';
 import { AppProps } from 'next/app';
-import Header from '../client/components/header';
 import NewHeader from '../client/components/common/NewHeader';
 import { FunctionComponent, PropsWithChildren } from 'react';
 import DeploymentUtils from '../client/DeploymentUtils';

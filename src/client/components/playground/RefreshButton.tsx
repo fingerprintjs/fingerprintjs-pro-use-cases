@@ -2,7 +2,10 @@ import { Button, CircularProgress } from '@mui/material';
 import { FunctionComponent } from 'react';
 import { PLAYGROUND_TAG } from './playgroundTags';
 
-const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: Function }> = ({ loading, getAgentData }) => {
+const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: () => void }> = ({
+  loading,
+  getAgentData,
+}) => {
   return (
     <Button
       color="primary"

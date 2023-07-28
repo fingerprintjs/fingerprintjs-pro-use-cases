@@ -29,8 +29,6 @@ interface HeaderProps {
 export default function Header({ notificationBar, darkMode }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const { pathname } = useLocation();
-
   useEffect(() => {
     const mobileBodyClass = 'isMobileMenuOpen';
     if (isMobileMenuOpen) {
@@ -71,12 +69,14 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                     <Image src={LogoSvg} className={styles.logo} alt="Fingerprint logo" />
                   )}
                 </Link>
-                <DropdownMenu darkMode={darkMode} name="Use cases" className={styles.desktopOnly}>
-                  <Dropdown
-                    darkMode={darkMode}
-                    leftColumns={[
+                <DropdownMenu
+                  darkMode={darkMode}
+                  name="Use cases"
+                  className={styles.desktopOnly}
+                  dropdownProps={{
+                    darkMode,
+                    leftColumns: [
                       {
-                        // title: 'Protect',
                         list: USE_CASES.slice(0, 3),
                         cardBackground: true,
                       },
@@ -84,15 +84,19 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                         list: USE_CASES.slice(3),
                         cardBackground: true,
                       },
-                    ]}
-                  />
-                </DropdownMenu>
-                <DropdownMenu darkMode={darkMode} name="Platform" className={styles.desktopOnly}>
-                  <Dropdown
-                    darkMode={darkMode}
-                    leftColumns={[{ list: [{ title: 'Playground', url: '/playground' }], cardBackground: true }]}
-                  />
-                </DropdownMenu>
+                    ],
+                  }}
+                />
+
+                <DropdownMenu
+                  darkMode={darkMode}
+                  name="Platform"
+                  className={styles.desktopOnly}
+                  dropdownProps={{
+                    darkMode,
+                    leftColumns: [{ list: [{ title: 'Playground', url: '/playground' }], cardBackground: true }],
+                  }}
+                />
               </div>
               <div className={styles.navRight}>
                 <button
