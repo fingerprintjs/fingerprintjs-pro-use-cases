@@ -7,9 +7,9 @@ import HeaderBar from '../HeaderBar/HeaderBar';
 import classNames from 'classnames';
 import { URL, PATH, solutionsDropdown, industryDropdown, platformDropdown, resourcesDropdown } from '../content';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
-// import LogoSvg from './fpjs.svg';
-// import LogoDarkSvg from './fpjsDark.svg';
-// import StarSVG from './StarSVG.svg';
+import Image from 'next/image';
+import LogoSvg from './fpjs.svg';
+import LogoDarkSvg from './fpjsDark.svg';
 
 import Dropdown from '../Dropdown/Dropdown';
 
@@ -65,7 +65,11 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
             <nav className={styles.navMain}>
               <div className={styles.navLeft}>
                 <Link href="/" className={styles.link} title="Logo">
-                  {/* {darkMode ? <LogoDarkSvg className={styles.logo} /> : <LogoSvg className={styles.logo} />} */}
+                  {darkMode ? (
+                    <Image src={LogoDarkSvg} className={styles.logo} alt="Fingerprint logo" />
+                  ) : (
+                    <Image src={LogoSvg} className={styles.logo} alt="Fingerprint logo" />
+                  )}
                 </Link>
                 <DropdownMenu darkMode={darkMode} name="Platform" className={styles.desktopOnly}>
                   <Dropdown

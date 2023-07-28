@@ -5,6 +5,11 @@
     z-index: v('z-header');
   }
 
+
+  a {
+    color: inherit;
+  }
+
   .nav {
     @include media('>desktopHeader') {
       background: c('white');
