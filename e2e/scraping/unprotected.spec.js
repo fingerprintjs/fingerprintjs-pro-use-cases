@@ -1,7 +1,7 @@
 // @ts-check
 import { expect, test } from '@playwright/test';
 import { writeFileSync } from 'fs';
-import { FLIGHT_TAG } from '../../client/components/web-scraping/flightTags';
+import { FLIGHT_TAG } from '../../src/client/components/web-scraping/flightTags';
 
 /**
  * @param {import('playwright-core').ElementHandle} parent
