@@ -23,8 +23,8 @@
   }
 
   .root {
-    padding-top: rem(18px);
-    padding-bottom: rem(18px);
+    padding-top: rem(20px);
+    padding-bottom: rem(20px);
 
     @include media('<=desktopHeader') {
       padding: rem(20px) rem(20px);
