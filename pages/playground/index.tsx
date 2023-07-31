@@ -200,10 +200,8 @@ function Playground() {
         ],
       },
       {
-        // @ts-expect-error
         content: usedIdentificationEvent?.products?.virtualMachine?.data?.result === true ? 'Yes ☁️💻' : 'Not detected',
         cellStyle: {
-          // @ts-expect-error
           backgroundColor: usedIdentificationEvent?.products?.virtualMachine?.data?.result === true ? RED : GREEN,
         },
       },
@@ -219,10 +217,8 @@ function Playground() {
       },
       {
         content:
-          // @ts-expect-error
           usedIdentificationEvent?.products?.privacySettings?.data?.result === true ? 'Yes 🙈💻' : 'Not detected',
         cellStyle: {
-          // @ts-expect-error
           backgroundColor: usedIdentificationEvent?.products?.privacySettings?.data?.result === true ? RED : GREEN,
         },
       },

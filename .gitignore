@@ -51,3 +51,4 @@ tsconfig.tsbuildinfo
 # environment variables
 .env
 
+.vscode
