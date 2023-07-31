@@ -10,11 +10,8 @@ import Image from 'next/image';
 import LogoSvg from './fpjs.svg';
 import LogoDarkSvg from './fpjsDark.svg';
 
-import Dropdown from '../Dropdown/Dropdown';
-
 import styles from './Header.module.scss';
 import Link from 'next/link';
-import { useLocation } from 'react-use';
 import Button from '../Button';
 
 interface HeaderProps {

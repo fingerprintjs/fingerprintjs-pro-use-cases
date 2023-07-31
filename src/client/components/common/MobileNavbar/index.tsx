@@ -2,10 +2,8 @@ import React from 'react';
 import Button from '../Button';
 import classNames from 'classnames';
 import styles from './MobileNavbar.module.scss';
-import { URL, PATH, solutionsDropdown, industryDropdown, platformDropdown, resourcesDropdown } from '../content';
+import { URL, PATH, USE_CASES } from '../content';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
-import Dropdown from '../Dropdown/Dropdown';
-import Link from 'next/link';
 
 interface MobileNavbarProps {
   darkMode?: boolean;
@@ -24,37 +22,40 @@ export default function MobileNavbar({ darkMode }: MobileNavbarProps) {
         </div>
         <div className={classNames(styles.links, styles.main)}>
           <div className={styles.container}>
-            <DropdownMenu name="Platform" darkMode={darkMode}>
-              <Dropdown
-                leftColumns={[{ title: 'Platform', list: platformDropdown.capabilities, cardBackground: true }]}
-                rightColumn={{ title: 'Capabilities', list: platformDropdown.integrations }}
-                darkMode={darkMode}
-                bottomLinkTextRight="Bot detection"
-                bottomLinkUrlRight={PATH.botD}
-              />
-            </DropdownMenu>
-            <DropdownMenu name="Solutions" darkMode={darkMode}>
-              <Dropdown
-                leftColumns={[
-                  { title: 'Protect', list: solutionsDropdown.protect },
-                  { title: 'Grow', list: solutionsDropdown.grow },
-                ]}
-                rightColumn={{ title: 'By Industry', list: industryDropdown }}
-                bottomLinkText="All Use Cases"
-                bottomLinkUrl={PATH.useCases}
-                darkMode={darkMode}
-              />
-            </DropdownMenu>
+            <DropdownMenu
+              name="Platform"
+              darkMode={darkMode}
+              dropdownProps={{
+                darkMode,
+                leftColumns: [
+                  {
+                    list: USE_CASES.slice(0, 3),
+                    cardBackground: true,
+                  },
+                  {
+                    list: USE_CASES.slice(3),
+                    cardBackground: true,
+                  },
+                ],
+              }}
+            />
 
-            <DropdownMenu name="Resources" darkMode={darkMode}>
-              <Dropdown leftColumns={[{ list: resourcesDropdown, cardBackground: true }]} darkMode={darkMode} />
-            </DropdownMenu>
-            <Link href={PATH.pricingUrl} className={styles.link}>
+            <DropdownMenu
+              darkMode={darkMode}
+              name="Platform"
+              className={styles.desktopOnly}
+              dropdownProps={{
+                darkMode,
+                leftColumns: [{ list: [{ title: 'Playground', url: '/playground' }], cardBackground: true }],
+              }}
+            />
+
+            {/* <Link href={PATH.pricingUrl} className={styles.link}>
               Pricing
             </Link>
             <Link href={PATH.demoUrl} className={styles.link}>
               Demo
-            </Link>
+            </Link> */}
 
             <a href={URL.dashboardLoginUrl} className={styles.link} target="_blank" rel="noreferrer">
               Login
