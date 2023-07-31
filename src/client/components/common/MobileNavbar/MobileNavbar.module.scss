@@ -28,13 +28,14 @@
       flex: none;
       padding: 0 rem(20px) rem(16px) rem(20px);
 
-      > * {
+      >* {
         flex: 1;
 
-        + * {
+        +* {
           margin-left: 1rem;
         }
       }
+
       @include media('>tablet') {
         display: none;
       }
@@ -83,6 +84,15 @@
     }
   }
 
+  .resetButton {
+    span {
+      display: flex;
+      gap: rem(8px);
+      align-items: center;
+      font-weight: 400;
+    }
+  }
+
   .contact {
     display: flex;
     justify-content: space-between;
@@ -92,7 +102,7 @@
 
     padding: 0 rem(20px) rem(24px) rem(20px);
 
-    > span {
+    >span {
       height: 28px;
       display: block;
       margin-bottom: 3rem;
@@ -107,7 +117,7 @@
         align-items: center;
         margin-top: 1rem;
 
-        > * + * {
+        >*+* {
           margin-left: 1rem;
         }
 
@@ -140,12 +150,15 @@
     background: v('dark-black');
     color: v('warm-white');
   }
+
   .signupButton {
     background-color: v('orange-dark');
+
     &:hover {
       background-color: adjust-color(c('orange-dark'), $saturation: -19%, $lightness: -6%);
     }
   }
+
   .links {
     @include inter($size: 16px, $weight: v('normal'), $lh: 24px);
     letter-spacing: 0.001em;
@@ -156,6 +169,7 @@
       }
     }
   }
+
   .contact {
     .social {
       color: #a1a1a1;

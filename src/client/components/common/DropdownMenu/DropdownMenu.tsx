@@ -13,8 +13,9 @@ export interface DropdownMenuProps {
   className?: string;
   darkMode?: boolean;
   dropdownProps: DropdownProps;
+  onLinkClick?: () => void;
 }
-export default function DropdownMenu({ name, children, className, darkMode, dropdownProps }: DropdownMenuProps) {
+export default function DropdownMenu({ name, className, darkMode, dropdownProps, onLinkClick }: DropdownMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   useOnClickOutside(ref, () => setIsOpen(false));
@@ -43,7 +44,13 @@ export default function DropdownMenu({ name, children, className, darkMode, drop
             animate={{ opacity: 1, translateY: 0 }}
             exit={{ opacity: 0, translateY: -15, transition: { duration: 0.15 } }}
           >
-            <Dropdown {...dropdownProps} closeDropdown={() => setIsOpen(false)} />
+            <Dropdown
+              {...dropdownProps}
+              closeDropdown={() => {
+                setIsOpen(false);
+                onLinkClick?.();
+              }}
+            />
           </motion.div>
         )}
       </AnimatePresence>

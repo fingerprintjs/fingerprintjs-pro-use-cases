@@ -2,28 +2,50 @@ import React from 'react';
 import Button from '../Button';
 import classNames from 'classnames';
 import styles from './MobileNavbar.module.scss';
-import { URL, PATH, USE_CASES } from '../content';
+import { URL, USE_CASES } from '../content';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
+import Image from 'next/image';
+import Restart from '../Header/Restart.svg';
 
 interface MobileNavbarProps {
   darkMode?: boolean;
+  closeMobileMenu: () => void;
 }
-export default function MobileNavbar({ darkMode }: MobileNavbarProps) {
+export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbarProps) {
   return (
     <nav className={classNames(styles.nav, { [styles.darkNavHeader]: darkMode })}>
       <div className={styles.container}>
         <div className={classNames(styles.links, styles.top)}>
-          <Button href={PATH.contactSales} variant={darkMode ? 'dark' : 'primary'} outlined size="medium">
-            Contact Sales
+          <Button
+            className={classNames(styles.resetButton)}
+            onClick={() => window.alert('Reset scenarios')}
+            variant="primary"
+            outlined
+            size={'medium'}
+            title="Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action."
+          >
+            Restart
+            <Image src={Restart} alt="Restart button" />
           </Button>
-          <Button variant="primary" size="medium" href={URL.signupUrl} className={styles.signupButton}>
-            Get Started
+        </div>
+        <div className={classNames(styles.links, styles.top)}>
+          <Button
+            href={URL.dashboardLoginUrl}
+            variant={darkMode ? 'dark' : 'primary'}
+            outlined
+            size="medium"
+            openNewTab
+          >
+            Log in
+          </Button>
+          <Button variant="primary" size="medium" href={URL.signupUrl} className={styles.signupButton} openNewTab>
+            Sign up
           </Button>
         </div>
         <div className={classNames(styles.links, styles.main)}>
           <div className={styles.container}>
             <DropdownMenu
-              name="Platform"
+              name="Use cases"
               darkMode={darkMode}
               dropdownProps={{
                 darkMode,
@@ -38,6 +60,7 @@ export default function MobileNavbar({ darkMode }: MobileNavbarProps) {
                   },
                 ],
               }}
+              onLinkClick={closeMobileMenu}
             />
 
             <DropdownMenu
@@ -48,21 +71,8 @@ export default function MobileNavbar({ darkMode }: MobileNavbarProps) {
                 darkMode,
                 leftColumns: [{ list: [{ title: 'Playground', url: '/playground' }], cardBackground: true }],
               }}
+              onLinkClick={closeMobileMenu}
             />
-
-            {/* <Link href={PATH.pricingUrl} className={styles.link}>
-              Pricing
-            </Link>
-            <Link href={PATH.demoUrl} className={styles.link}>
-              Demo
-            </Link> */}
-
-            <a href={URL.dashboardLoginUrl} className={styles.link} target="_blank" rel="noreferrer">
-              Login
-            </a>
-            <a href={URL.signupUrl} className={styles.link} target="_blank" rel="noreferrer">
-              Sign Up
-            </a>
           </div>
         </div>
       </div>

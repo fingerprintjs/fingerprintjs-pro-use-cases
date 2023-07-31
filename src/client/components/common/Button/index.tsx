@@ -82,7 +82,7 @@ const Button = memo(function Button({
       </a>
     )
   ) : (
-    <button id={buttonId} type={type} className={classes} onClick={onClick} aria-label={label} title={'dewfwef'}>
+    <button id={buttonId} type={type} className={classes} onClick={onClick} aria-label={label} title={title}>
       <span>{children}</span>
     </button>
   );

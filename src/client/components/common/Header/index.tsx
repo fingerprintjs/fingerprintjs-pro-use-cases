@@ -141,7 +141,7 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
               </div>
             </nav>
           </Container>
-          {isMobileMenuOpen && <MobileNavbar darkMode={darkMode} />}
+          {isMobileMenuOpen && <MobileNavbar darkMode={darkMode} closeMobileMenu={() => setIsMobileMenuOpen(false)} />}
         </div>
       </header>
     </>
