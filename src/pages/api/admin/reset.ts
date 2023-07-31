@@ -1,4 +1,9 @@
-import { ensureValidRequestIdAndVisitorId, getVisitorDataWithRequestId, messageSeverity } from '../../../server/server';
+import {
+  Severity,
+  ensureValidRequestIdAndVisitorId,
+  getVisitorDataWithRequestId,
+  messageSeverity,
+} from '../../../server/server';
 import { LoginAttempt } from '../credential-stuffing/authenticate';
 import { PaymentAttempt } from '../payment-fraud/place-order';
 import { UserCartItem, UserPreferences, UserSearchHistory } from '../../../server/personalization/database';
@@ -13,8 +18,20 @@ import {
   checkOriginsIntegrity,
 } from '../../../server/checks';
 import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(req, res) {
+export type ResetResponse = {
+  message: string;
+  severity?: Severity;
+  type?: string;
+};
+
+export type ResetRequest = {
+  visitorId: string;
+  requestId: string;
+};
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ResetResponse>) {
   // This API route accepts only POST requests.
   if (req.method !== 'POST') {
     res.status(405).send({ message: 'Only POST requests allowed' });
@@ -33,8 +50,7 @@ export default async function handler(req, res) {
 
 async function tryToReset(req, res, ruleChecks) {
   // Get requestId and visitorId from the client.
-  const visitorId = req.body.visitorId;
-  const requestId = req.body.requestId;
+  const { visitorId, requestId } = req.body as ResetRequest;
 
   if (!ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId)) {
     return;

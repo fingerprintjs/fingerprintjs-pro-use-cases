@@ -14,6 +14,7 @@ import Restart from './Restart.svg';
 import styles from './Header.module.scss';
 import Link from 'next/link';
 import Button from '../Button';
+import { useReset } from '../../../hooks/useReset';
 
 interface HeaderProps {
   notificationBar?: {
@@ -43,6 +44,8 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
   const handleToggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+
+  const { mutate } = useReset({ onSuccess: () => alert('Reset successful!'), onError: () => alert('Reset failed!') });
 
   return (
     <>
@@ -99,7 +102,7 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
               <div className={styles.navRight}>
                 <button
                   className={classNames(styles.desktopOnly, styles.resetButton)}
-                  onClick={() => window.alert('Reset scenarios')}
+                  onClick={() => mutate()}
                   title="Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action."
                 >
                   Restart

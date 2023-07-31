@@ -1,4 +1,4 @@
-type Severity = import('./server').Severity;
+export type Severity = import('./server').Severity;
 
 export type CheckResultObject<Data = any> = {
   message: string;

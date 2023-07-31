@@ -6,19 +6,22 @@ import { URL, USE_CASES } from '../content';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import Image from 'next/image';
 import Restart from '../Header/Restart.svg';
+import { useReset } from '../../../hooks/useReset';
 
 interface MobileNavbarProps {
   darkMode?: boolean;
   closeMobileMenu: () => void;
 }
 export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbarProps) {
+  const { mutate } = useReset({ onSuccess: () => alert('Reset successful!'), onError: () => alert('Reset failed!') });
+
   return (
     <nav className={classNames(styles.nav, { [styles.darkNavHeader]: darkMode })}>
       <div className={styles.container}>
         <div className={classNames(styles.links, styles.top)}>
           <Button
             className={classNames(styles.resetButton)}
-            onClick={() => window.alert('Reset scenarios')}
+            onClick={() => mutate()}
             variant="primary"
             outlined
             size={'medium'}
