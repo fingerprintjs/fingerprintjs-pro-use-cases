@@ -9,6 +9,7 @@ import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import Image from 'next/image';
 import LogoSvg from './fpjs.svg';
 import LogoDarkSvg from './fpjsDark.svg';
+import Restart from './Restart.svg';
 
 import styles from './Header.module.scss';
 import Link from 'next/link';
@@ -99,9 +100,10 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                 <button
                   className={classNames(styles.desktopOnly, styles.resetButton)}
                   onClick={() => window.alert('Reset scenarios')}
-                  title="Click Reset to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action."
+                  title="Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action."
                 >
-                  Reset
+                  Restart
+                  <Image src={Restart} alt="Restart button" />
                 </button>
                 <Button
                   href={'https://dashboard.fingerprint.com/login'}

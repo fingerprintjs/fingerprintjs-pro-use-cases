@@ -14,15 +14,12 @@
     @include media('>desktopHeader') {
       background: c('white');
     }
+
     @include media('<=desktopHeader') {
       position: relative;
       display: flex;
       flex-direction: column;
     }
-  }
-
-  .resetButton {
-    cursor: pointer;
   }
 
   .root {
@@ -49,7 +46,8 @@
 
   .navSecondary {
     justify-content: flex-end;
-    > * + * {
+
+    >*+* {
       margin-left: 4rem;
     }
   }
@@ -80,6 +78,7 @@
       height: auto;
       width: rem(172px);
     }
+
     @include media('<=phone') {
       width: rem(137px);
     }
@@ -106,6 +105,7 @@
     @include media('>desktopHeader') {
       display: none;
     }
+
     span {
       display: block;
       position: absolute;
@@ -121,25 +121,31 @@
       &:nth-child(1) {
         top: 0px;
       }
+
       &:nth-child(2),
       &:nth-child(3) {
         top: 6px;
       }
+
       &:nth-child(4) {
         top: 12px;
       }
     }
+
     &.isOpen {
       span {
+
         &:nth-child(1),
         &:nth-child(4) {
           top: 6px;
           width: 0%;
           left: 50%;
         }
+
         &:nth-child(2) {
           transform: rotate(45deg);
         }
+
         &:nth-child(3) {
           transform: rotate(-45deg);
         }
@@ -175,6 +181,7 @@
 
   .headerDark {
     background: v('dark-black');
+
     .darkRoot {
       padding-top: rem(32px);
       padding-bottom: rem(37px);
@@ -188,14 +195,25 @@
 
   .resetButton {
     @include inter($size: 14px, $weight: 600, $lh: 150%, $color: v('orange-gradient'));
-    padding-right: rem(12px);
+    padding-right: rem(16px);
     @include transition((color));
+
+
+    cursor: pointer;
+    display: flex;
+    align-items: baseline;
+    gap: rem(8px);
+    font-weight: 400;
+
 
     &:hover {
       color: adjust-color(c('orange-gradient'), $saturation: -19%, $lightness: -6%);
     }
 
-    cursor: pointer;
+    @include media('<=tablet') {
+      display: none;
+    }
+
   }
 }
 
@@ -206,18 +224,23 @@
   .nav {
     background: v('dark-black');
   }
+
   .loginLink {
     color: v('orange-dark');
+
     &:hover {
       color: adjust-color(c('orange-dark'), $saturation: -19%, $lightness: -6%);
     }
   }
+
   .signupButton {
     background-color: v('orange-dark');
+
     &:hover {
       background-color: adjust-color(c('orange-dark'), $saturation: -19%, $lightness: -6%);
     }
   }
+
   .mobileToggler {
     span {
       background: v('white');
@@ -233,6 +256,7 @@
   @include media('<=phoneLandscape') {
     column-gap: rem(10px);
   }
+
   .githubStars {
     display: flex;
     column-gap: rem(2px);
@@ -249,6 +273,7 @@
       padding: rem(3px) rem(4px);
       font-size: rem(12px);
     }
+
     .star {
       width: rem(14px);
       height: rem(14px);
