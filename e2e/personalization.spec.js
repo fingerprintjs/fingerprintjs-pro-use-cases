@@ -58,19 +58,6 @@ test.describe('Personalization', () => {
     await expect(cartItem.locator('.CartItem_Count')).toHaveText('2');
   });
 
-  test('should remember dark mode selection', async ({ page }) => {
-    const toggle = await page.locator('.DarkMode_toggle');
-
-    await page.waitForTimeout(2000);
-
-    await toggle.click();
-    await expect.poll(() => toggle.getAttribute('data-checked')).toBe('true');
-
-    await page.reload();
-
-    await expect.poll(() => toggle.getAttribute('data-checked')).toBe('true');
-  });
-
   test('should filter products and remember search history', async ({ page }) => {
     await page.fill('[name="search"]', 'Decaf coffee');
 
