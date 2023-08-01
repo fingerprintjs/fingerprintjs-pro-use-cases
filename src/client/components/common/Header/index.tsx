@@ -15,6 +15,7 @@ import styles from './Header.module.scss';
 import Link from 'next/link';
 import Button from '../Button';
 import { useReset } from '../../../hooks/useReset/useReset';
+import { Tooltip } from '@mui/material';
 
 interface HeaderProps {
   notificationBar?: {
@@ -44,7 +45,6 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
   const handleToggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
-
   const { mutate } = useReset({});
 
   return (
@@ -100,14 +100,17 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                 />
               </div>
               <div className={styles.navRight}>
-                <button
-                  className={classNames(styles.desktopOnly, styles.resetButton)}
-                  onClick={() => mutate()}
-                  title="Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action."
+                <Tooltip
+                  title={
+                    'Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action.'
+                  }
+                  enterTouchDelay={400}
                 >
-                  Restart
-                  <Image src={Restart} alt="Restart button" />
-                </button>
+                  <button className={classNames(styles.desktopOnly, styles.resetButton)} onClick={() => mutate()}>
+                    Restart
+                    <Image src={Restart} alt="Restart button" />
+                  </button>
+                </Tooltip>
                 <Button
                   href={'https://dashboard.fingerprint.com/login'}
                   size="medium"
