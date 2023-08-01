@@ -2,6 +2,7 @@
   @include media('<=desktopHeader') {
     padding-top: rem(32px);
   }
+
   @include media('>desktopHeader') {
     position: absolute;
     background: linear-gradient(0deg, #f7f7fa, #f7f7fa), #ffffff;
@@ -28,12 +29,14 @@
         'bottom'
         'dropdown-b';
     }
-    > * {
+
+    >* {
       @include media('<=desktopHeader') {
         padding-left: rem(20px);
         padding-right: rem(20px);
       }
     }
+
     &.dropdownBottom {
       grid-template-areas:
         'dropdown-a  dropdown-b'
@@ -67,10 +70,12 @@
   @include media('>desktopHeader') {
     border-top: 1px solid #e8e8e8;
     border-left: 1px solid #e8e8e8;
+
     &:hover {
       background: #ffffff;
     }
   }
+
   .bottomLink {
     padding: rem(16px);
     display: flex;
@@ -104,6 +109,7 @@
 
     row-gap: rem(40px);
   }
+
   &.onlyLeft {
     @include media('>desktopHeader') {
       padding: rem(32px) rem(24px) rem(24px);
@@ -115,6 +121,12 @@
     flex-direction: column;
     width: rem(288px);
 
+    .columnLink {
+      :hover {
+        color: v('orange-gradient');
+      }
+    }
+
     @include media('<=desktopHeader') {
       width: auto;
 
@@ -124,16 +136,20 @@
         display: inline-block;
         padding: 0 0 rem(24px) 0;
       }
+
       li {
         padding: 0;
       }
+
       .columnLink:last-of-type {
         padding: 0;
       }
     }
+
     .rows {
       display: flex;
       flex-direction: column;
+
       @include media('<=desktopHeader') {
         row-gap: rem(24px);
       }
@@ -146,6 +162,7 @@
   border-top-right-radius: rem(8px);
   border-bottom-right-radius: rem(8px);
 }
+
 .bottomRow {
   grid-area: bottom;
 }
@@ -161,6 +178,7 @@
 
 .label {
   padding-left: rem(16px);
+
   @include media('<=desktopHeader') {
     margin-bottom: 0;
     padding-left: 0;
@@ -184,9 +202,10 @@
 
   @include media('<=desktopHeader') {
     max-width: unset;
-
     padding-bottom: rem(6px);
   }
+
+
 }
 
 .linkDescription {
@@ -205,18 +224,21 @@
   @include transition-duration(0.25s);
   @include transition-timing-function(ease-out);
 }
+
 .row {
   padding: rem(16px);
+
   @include media('>desktopHeader') {
     padding: rem(16px) rem(16px) rem(8px);
   }
 }
+
 .background {
   @include media('>desktopHeader') {
     padding: rem(16px);
 
     &:hover {
-      background: #fafafa;
+      background: v('soft-orange-background');
     }
   }
 }
@@ -243,27 +265,34 @@
     display: flex;
     flex-direction: column;
     padding: rem(6px) 0 rem(32px);
+
     @include media('<=desktopHeader') {
       padding: 0;
       row-gap: rem(16px);
     }
+
     .link {
       width: rem(280px);
     }
+
     @include media('<=desktopHeader') {
       .columnLink {
         display: inline-block;
         padding: 0 0 rem(24px) 0;
       }
+
       li {
         padding: 0;
       }
+
       .columnLink:last-of-type {
         padding: 0;
       }
     }
+
     .rightSectionRow {
       padding: rem(16px) rem(12px);
+
       @include media('>desktopHeader') {
         &:hover {
           background: #ffffff;
@@ -320,6 +349,7 @@
     }
   }
 }
+
 .useCasesLink {
   display: flex;
   align-items: center;
@@ -355,11 +385,13 @@
     padding: rem(8px) 0 0 0;
   }
 }
+
 .darkDropdown {
   @include media('>desktopHeader') {
     background: unset;
     filter: drop-shadow(0px 4px 15px rgba(161, 161, 161, 0.05)) drop-shadow(0px 0px 1px rgba(232, 232, 232, 0.1));
   }
+
   .dropdown {
     background-color: v('dark-black');
 
@@ -381,6 +413,7 @@
         }
       }
     }
+
     .bottomRowRight {
       background: v('dark');
       border-left: 1px solid rgba(208, 208, 208, 0.1);
@@ -392,13 +425,16 @@
       }
     }
   }
+
   .bottomRow {
     border-top: 1px solid rgba(208, 208, 208, 0.1);
   }
+
   .label,
   .linkDescription {
     color: v('light-grey');
   }
+
   .useCasesLink {
     color: v('warm-white');
 
@@ -406,11 +442,13 @@
       fill: v('warm-white');
     }
   }
+
   .bottomLink {
     .arrow {
       fill: v('warm-white');
     }
   }
+
   .background {
     @include media('>desktopHeader') {
       &:hover {
