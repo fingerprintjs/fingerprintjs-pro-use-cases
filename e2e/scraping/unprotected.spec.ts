@@ -1,13 +1,8 @@
-// @ts-check
-import { expect, test } from '@playwright/test';
+import { ElementHandle, expect, test } from '@playwright/test';
 import { writeFileSync } from 'fs';
 import { FLIGHT_TAG } from '../../src/client/components/web-scraping/flightTags';
 
-/**
- * @param {import('playwright-core').ElementHandle} parent
- * @param {string} selector
- */
-const scrapeText = async (parent, selector) => {
+const scrapeText = async (parent: ElementHandle, selector: string) => {
   const element = await parent.$(selector);
   return element ? await element.textContent() : null;
 };
@@ -16,7 +11,10 @@ test.describe('Scraping flights', () => {
   test('is possible with Bot detection off', async ({ page }) => {
     await page.goto('/web-scraping?disableBotDetection=1');
     await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(3000);
+
     const flightCards = await page.$$(`[data-test="${FLIGHT_TAG.card}"]`);
+    console.log('Found flight cards: ', flightCards.length);
     expect(flightCards.length > 0).toBe(true);
 
     const flightData = [];
