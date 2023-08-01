@@ -14,7 +14,7 @@ import Restart from './Restart.svg';
 import styles from './Header.module.scss';
 import Link from 'next/link';
 import Button from '../Button';
-import { useReset } from '../../../hooks/useReset';
+import { useReset } from '../../../hooks/useReset/useReset';
 
 interface HeaderProps {
   notificationBar?: {
@@ -45,7 +45,7 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const { mutate } = useReset({ onSuccess: () => alert('Reset successful!'), onError: () => alert('Reset failed!') });
+  const { mutate } = useReset({});
 
   return (
     <>
