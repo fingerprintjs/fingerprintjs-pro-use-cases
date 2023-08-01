@@ -5,8 +5,6 @@ export const ALLOWED_REQUEST_TIMESTAMP_DIFF_MS = 3000;
 // Confidence score thresholds might be different for different scenarios
 export const MIN_CONFIDENCE_SCORE = process.env.MIN_CONFIDENCE_SCORE ? Number(process.env.MIN_CONFIDENCE_SCORE) : 0.85;
 
-console.log('MIN_CONFIDENCE_SCORE', MIN_CONFIDENCE_SCORE);
-
 const BackendRegionMap = {
   eu: Region.EU,
   ap: Region.AP,
