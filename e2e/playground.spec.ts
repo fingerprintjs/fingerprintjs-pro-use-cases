@@ -15,6 +15,7 @@ const getServerResponse = async (page) => {
 const clickRefreshButton = async (page) => {
   await page.click(`[data-test="${PLAYGROUND_TAG.refreshButton}"]`);
   await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(3000);
 };
 
 test.describe('Playground page page', () => {
