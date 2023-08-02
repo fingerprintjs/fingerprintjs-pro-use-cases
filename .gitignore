@@ -48,6 +48,8 @@ tsconfig.tsbuildinfo
 /playwright-report/
 /playwright/.cache/
 
+# environment variables
 .env
 
+# VS code workspace settings
 .vscode
