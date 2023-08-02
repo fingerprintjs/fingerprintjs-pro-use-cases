@@ -27,7 +27,7 @@ export const USE_CASES = [
     title: 'Web scraping prevention',
     url: '/web-scraping',
   },
-];
+] as const;
 
 export const URL = {
   githubRepoUrl: 'https://github.com/fingerprintjs/fingerprintjs/',
