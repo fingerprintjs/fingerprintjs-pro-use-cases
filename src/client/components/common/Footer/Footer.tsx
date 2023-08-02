@@ -8,6 +8,8 @@ import styles from './Footer.module.scss';
 import { URL } from '../content';
 import classNames from 'classnames';
 import Image from 'next/image';
+import LogoSvg from '../Header/fpjs.svg';
+import LogoDarkSvg from '../Header/fpjsDark.svg';
 
 interface FooterProps {
   darkVariant?: boolean;
@@ -17,10 +19,17 @@ export default function Footer({ darkVariant }: FooterProps) {
     <footer className={classNames(styles.footer, { [styles.dark]: darkVariant })}>
       <Container size="large" className={styles.contactContainer}>
         <section className={styles.copySection}>
-          <span className={styles.copyright}>&copy; 2023 FingerprintJS, Inc</span>
+          <a href={URL.mainSite} className={styles.link} title="Logo">
+            {darkVariant ? (
+              <Image src={LogoDarkSvg} className={styles.logo} alt="Fingerprint logo" />
+            ) : (
+              <Image src={LogoSvg} className={styles.logo} alt="Fingerprint logo" />
+            )}
+          </a>
           <address className={styles.address}>1440 W. Taylor St #735, Chicago, IL 60607, USA</address>
         </section>
         <section className={styles.socialSection}>
+          <div className={styles.copyright}>© FingerprintJS 2022, Inc</div>
           <ul className={styles.links}>
             <li className={styles.link}>
               <a href={URL.githubRepoUrl} target="_blank" rel="noreferrer" aria-label="GitHub link">

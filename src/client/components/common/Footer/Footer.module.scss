@@ -1,189 +1,21 @@
 .footer {
   background-color: v('white');
   color: v('dark-gray');
-  padding: rem(64px) 0 0 0;
-  border-top: rem(1px) solid #e8e8e8;
 
-  @include media('<=desktop') {
-    padding-top: rem(40px);
-  }
-  @include media('<=tabletWide') {
-    padding-top: rem(48px);
-  }
-  .navContainer,
-  .contactContainer {
-    @include media('<=desktop') {
-      padding-right: rem(70px);
-      padding-left: rem(70px);
-    }
-    @include media('<=tabletWide') {
-      padding-right: rem(20px);
-      padding-left: rem(20px);
-    }
-  }
-  .navContainer {
-    .nav {
-      display: flex;
-      justify-content: space-between;
-      column-gap: rem(126px);
-      padding-bottom: rem(64px);
-      border-bottom: rem(1px) solid #e8e8e8;
-
-      @include media('<=desktopHeader') {
-        column-gap: rem(48px);
-      }
-
-      @include media('<=desktop') {
-        padding-bottom: 0;
-        flex-direction: column;
-        row-gap: rem(48px);
-      }
-
-      .links {
-        display: flex;
-        justify-content: space-between;
-        flex: 1;
-        column-gap: rem(20px);
-
-        @include media('<=desktop') {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          row-gap: rem(32px);
-          padding-bottom: rem(40px);
-        }
-
-        @include media('<=tabletWide') {
-          padding-bottom: rem(48px);
-        }
-      }
-
-      .logo {
-        max-width: rem(297px);
-        padding-right: rem(20px);
-
-        @include media('<=desktop') {
-          padding-right: 0;
-          display: grid;
-          max-width: unset;
-          grid-template-columns: repeat(2, 1fr);
-          column-gap: rem(20px);
-        }
-
-        @include media('<=tabletWide') {
-          display: flex;
-          flex-direction: column;
-          row-gap: rem(40px);
-          align-items: flex-start;
-        }
-
-        .fpjsLogo {
-          object-fit: contain;
-
-          height: auto;
-          width: rem(176px);
-          margin-bottom: rem(32px);
-          @include media('<=desktop') {
-            margin-bottom: 0;
-            width: rem(200px);
-          }
-        }
-
-        .newsLetter {
-          text-align: left;
-          width: 100%;
-          .title {
-            @include inter($size: 16px, $weight: 600, $lh: 150%, $color: v('dark-gray'));
-            padding-bottom: rem(4px);
-          }
-
-          .description {
-            @include inter($size: 14px, $weight: 400, $lh: 150%, $color: v('dark-gray'));
-            padding-bottom: rem(24px);
-          }
-        }
-      }
-
-      .contact,
-      .menu {
-        font-size: rem(14px);
-
-        .title {
-          @include inter($size: 12px, $weight: 400, $lh: 100%, $color: #89898a);
-          letter-spacing: 0.0225rem;
-          text-transform: uppercase;
-          margin-bottom: rem(8px);
-
-          @include media('<=desktop') {
-            margin-bottom: rem(4px);
-          }
-        }
-
-        .link,
-        .address {
-          @include inter($size: 14px, $weight: 400, $lh: 150%, $color: v('dark-gray'));
-        }
-        .labelWrapper {
-          @include labelOrange;
-
-          display: flex;
-          align-items: center;
-
-          margin-left: rem(8px);
-          padding: rem(2px) rem(6px);
-          @include media('<=tabletWide') {
-            padding: rem(4px) rem(6px);
-          }
-          .label {
-            font-size: rem(10px);
-            white-space: nowrap;
-
-            @include media('<=tabletWide') {
-              font-size: rem(11px);
-              font-weight: 500;
-              letter-spacing: 0.01em;
-              line-height: 100%;
-            }
-          }
-        }
-      }
-
-      .menu {
-        display: flex;
-        flex-direction: column;
-        row-gap: rem(8px);
-        .link {
-          display: flex;
-          @include transition((opacity));
-
-          &:hover {
-            opacity: v('extra-faded');
-          }
-        }
-      }
-    }
-  }
   .contactContainer {
     display: flex;
     justify-content: space-between;
     padding-top: rem(24px);
     padding-bottom: rem(24px);
 
-    @include media('<=desktop') {
-      padding-top: rem(32px);
-      padding-bottom: rem(40px);
-    }
-
-    @include media('<=tabletWide') {
-      padding-top: rem(24px);
-      padding-bottom: rem(32px);
+    @include media('<=phoneLandscape') {
       flex-direction: column;
-      row-gap: rem(24px);
     }
 
     .copySection {
       display: flex;
       align-items: center;
-      column-gap: rem(16px);
+      column-gap: rem(43px);
 
       @include media('<=desktop') {
         flex-direction: column;
@@ -191,34 +23,30 @@
         align-items: flex-start;
       }
 
-      @include media('<=tabletWide') {
-        row-gap: rem(4px);
-      }
 
-      .copyright {
-        @include inter($size: 14px, $weight: 500, $lh: 160%, $color: v('dark-gray'));
-        letter-spacing: 0.00875rem;
+      @include media('<=phoneLandscape') {
+        gap: rem(24px);
       }
 
       .address {
         font-style: normal;
         @include inter($size: 14px, $weight: 400, $lh: 140%, $color: v('dark-gray'));
-      }
-      .copyright,
-      .address {
-        @include media('<=desktop') {
-          font-size: rem(12px);
-          font-weight: 400;
-          line-height: 160%;
-          letter-spacing: 0.12px;
-        }
-        @include media('<=tabletWide') {
-          font-size: rem(11px);
-          line-height: 160%;
-          letter-spacing: 0.11px;
-        }
+
+        // @include media('<=desktop') {
+        //   font-size: rem(12px);
+        //   font-weight: 400;
+        //   line-height: 160%;
+        //   letter-spacing: 0.12px;
+        // }
+
+        // @include media('<=tabletWide') {
+        //   font-size: rem(11px);
+        //   line-height: 160%;
+        //   letter-spacing: 0.11px;
+        // }
       }
     }
+
     .socialSection {
       display: flex;
       column-gap: rem(32px);
@@ -228,28 +56,27 @@
       @include inter($size: 14px, $weight: 400, $lh: 150%, $color: v('dark-gray'));
 
       @include media('<=desktop') {
-        font-size: rem(12px);
-        font-weight: 400;
-        line-height: 160%;
         letter-spacing: 0.12px;
+        flex-direction: column-reverse;
+        row-gap: rem(6px);
+        align-items: flex-end;
       }
 
-      @include media('<=tabletWide') {
-        font-size: rem(11px);
-        line-height: 160%;
-        letter-spacing: 0.11px;
-      }
-      .termsLinks {
-        display: flex;
-        column-gap: rem(32px);
 
-        @include media('<=desktop') {
-          column-gap: rem(8px);
-        }
-        @include media('<=tabletWide') {
-          column-gap: rem(12px);
-        }
+
+      @include media('<=phoneLandscape') {
+        flex-direction: column;
+        align-self: flex-start;
+        align-items: flex-start;
+        gap: rem(24px);
       }
+
+
+      .copyright {
+        // @include inter($size: 14px, $weight: 500, $lh: 160%, $color: v('dark-gray'));
+        // letter-spacing: 0.00875rem;
+      }
+
       .links {
         display: flex;
         align-items: center;
@@ -259,9 +86,7 @@
         @include media('<=desktop') {
           column-gap: rem(16px);
         }
-        @include media('<=tabletWide') {
-          margin-bottom: 0;
-        }
+
         .link {
           svg {
             height: rem(20px);
@@ -279,26 +104,10 @@
           @include transition((opacity));
         }
       }
-      @include media('<=desktop') {
-        flex-direction: column-reverse;
-        row-gap: rem(6px);
-        align-items: flex-end;
-      }
-      @include media('<=tabletWide') {
-        width: 100%;
-        flex-direction: row;
-        align-self: flex-start;
-        justify-content: space-between;
-      }
     }
   }
 }
 
 .dark {
   background: v('dark-gray');
-
-  .hiring {
-    color: v('orange-gradient');
-    background: linear-gradient(94.48deg, rgba(240, 80, 80, 0.1) 0%, rgba(250, 117, 69, 0.1) 100%);
-  }
 }
