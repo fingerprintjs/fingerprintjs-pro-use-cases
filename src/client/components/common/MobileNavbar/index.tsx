@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '../Button';
 import classNames from 'classnames';
 import styles from './MobileNavbar.module.scss';
-import { URL, USE_CASES } from '../content';
+import { PLATFORM_MENU_ITEMS, URL, USE_CASES } from '../content';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import Image from 'next/image';
 import Restart from '../Header/Restart.svg';
@@ -72,7 +72,7 @@ export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbar
               className={styles.desktopOnly}
               dropdownProps={{
                 darkMode,
-                leftColumns: [{ list: [{ title: 'Playground', url: '/playground' }], cardBackground: true }],
+                leftColumns: [{ list: PLATFORM_MENU_ITEMS, cardBackground: true }],
               }}
               onLinkClick={closeMobileMenu}
             />
