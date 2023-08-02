@@ -4,7 +4,7 @@ import ArrowSVG from './ArrowSVG.svg';
 import classNames from 'classnames';
 import styles from './Dropdown.module.scss';
 import Link from 'next/link';
-import { isLocalLink } from '../../helpers';
+import { isLocalLink } from '../../../../shared/utils/link';
 import Image from 'next/image';
 
 export interface DropdownProps {
