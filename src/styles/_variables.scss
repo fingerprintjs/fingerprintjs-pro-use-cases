@@ -1,0 +1,40 @@
+$colors: (
+  'black': hsla(0, 0%, 0%, 1),
+  'white': hsla(0, 0%, 100%, 1),
+  'off-white': hsl(240, 24%, 96%),
+  'transparent': hsla(0, 0%, 100%, 0),
+  'error': hsl(358, 93%, 66%),
+  'warning': hsl(42, 100%, 52%),
+  'success': hsl(131, 70%, 46%),
+  'gray': #5b5b5b,
+  'dark-gray': #434344,
+  //DarkMode/Black
+  'dark-black': #141415,
+  'dark': #202021,
+  //#FAFAFA
+  'warm-white': hsl(0, 0%, 98%),
+  'light-grey': #d0d0d0,
+  'orange': hsl(8, 89%, 63%),
+  //#FF5D22 Orange/Main Light Mode
+  'orange-gradient': hsl(16, 100%, 57%),
+  // Orange/Main Dark Mode
+  'orange-dark': #fa7545,
+  'error-text': #90143a,
+  'error-background': #ffe4e4,
+  'soft-orange-background': #fffbfa,
+);
+
+$brand-colors: (
+  'brand-fire': hsl(16, 96%, 48%),
+);
+
+$grid-base: 8px;
+
+$breakpoints: (
+  phone: 420px,
+  phoneLandscape: 640px,
+  tablet: 768px,
+  tabletWide: 860px,
+  desktop: 1024px,
+  desktopHeader: 860px,
+);

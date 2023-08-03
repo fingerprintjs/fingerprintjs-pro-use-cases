@@ -1,0 +1,76 @@
+$fontDir: '../fonts/';
+
+@include fontface('#{$fontDir}JetBrainsMono', 'JetBrains Mono', '-Regular', 400);
+@include fontface('#{$fontDir}JetBrainsMono', 'JetBrains Mono', '-Medium', 500);
+@include fontface('#{$fontDir}JetBrainsMono', 'JetBrains Mono', '-Bold', 700);
+@include fontface('#{$fontDir}JetBrainsMono', 'JetBrains Mono', '-ExtraBold', 800);
+
+@include fontface('#{$fontDir}inter', 'Inter', '-v12-latin-200', 200);
+@include fontface('#{$fontDir}inter', 'Inter', '-v12-latin-regular', 400);
+@include fontface('#{$fontDir}inter', 'Inter', '-v12-latin-500', 500);
+@include fontface('#{$fontDir}inter', 'Inter', '-v12-latin-600', 600);
+@include fontface('#{$fontDir}inter', 'Inter', '-v12-latin-700', 700);
+
+strong {
+  font-weight: 700 !important;
+}
+
+@for $i from 1 to 6 {
+  h#{$i},
+  .h#{$i} {
+    font-family: v('jb-mono');
+    font-weight: v(bold);
+    margin: 0;
+  }
+}
+
+h1 {
+  font-size: 4.5rem;
+  line-height: 1.17;
+}
+
+h2 {
+  font-size: 3rem;
+  line-height: 1.333;
+}
+
+h3 {
+  font-size: 2.5rem;
+  line-height: 1.4;
+}
+
+h4 {
+  font-size: 1.125rem;
+  line-height: 1.333;
+}
+
+// p {
+//   font-size: 2rem;
+//   line-height: 1.5;
+//   margin: 0;
+// }
+
+h5 {
+  font-size: 0.875rem;
+  line-height: 1.1428;
+}
+
+h6 {
+  font-size: 0.75rem;
+  line-height: 1.17;
+}
+
+small {
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+// code,
+// pre {
+//   font-family: var(--jb-mono);
+//   font-size: 2rem;
+//   font-weight: 500;
+
+//   @include media('<=tablet') {
+//     font-size: rem(14px);
+//   }
+// }

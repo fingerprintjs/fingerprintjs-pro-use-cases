@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
-import { PLAYGROUND_TAG } from '../client/components/playground/playgroundTags';
-import { isAgentResponse, isServerResponse } from '../client/components/playground/zodUtils';
+import { PLAYGROUND_TAG } from '../src/client/components/playground/playgroundTags';
+import { isAgentResponse, isServerResponse } from '../src/client/components/playground/zodUtils';
 
 const getAgentResponse = async (page) => {
   const agentResponse = await page.textContent(`[data-test="${PLAYGROUND_TAG.agentResponseJSON}"]`);
@@ -15,6 +15,7 @@ const getServerResponse = async (page) => {
 const clickRefreshButton = async (page) => {
   await page.click(`[data-test="${PLAYGROUND_TAG.refreshButton}"]`);
   await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(3000);
 };
 
 test.describe('Playground page page', () => {
