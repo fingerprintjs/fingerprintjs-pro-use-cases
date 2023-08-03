@@ -17,8 +17,8 @@ interface FooterProps {
 export default function Footer({ darkVariant }: FooterProps) {
   return (
     <footer className={classNames(styles.footer, { [styles.dark]: darkVariant })}>
-      <Container size="large" className={styles.contactContainer}>
-        <section className={styles.copySection}>
+      <Container size="large" className={styles.footerContainer}>
+        <section className={styles.logoSection}>
           <a href={URL.mainSite} className={styles.link} title="Logo">
             {darkVariant ? (
               <Image src={LogoDarkSvg} className={styles.logo} alt="Fingerprint logo" />
@@ -30,7 +30,7 @@ export default function Footer({ darkVariant }: FooterProps) {
         </section>
         <section className={styles.socialSection}>
           <div className={styles.copyright}>© FingerprintJS 2022, Inc</div>
-          <ul className={styles.links}>
+          <ul className={styles.socials}>
             <li className={styles.link}>
               <a href={URL.githubRepoUrl} target="_blank" rel="noreferrer" aria-label="GitHub link">
                 <Image src={GithubSVG} alt="Github logo" />
