@@ -13,8 +13,8 @@ import { AppProps } from 'next/app';
 import NewHeader from '../client/components/common/Header';
 import { FunctionComponent, PropsWithChildren } from 'react';
 import DeploymentUtils from '../client/DeploymentUtils';
-import Footer from '../client/components/common/Footer/Footer';
 import styles from '../styles/layout.module.scss';
+import Footer from '../client/components/common/Footer/Footer';
 
 const queryClient = new QueryClient({
   defaultOptions: {
