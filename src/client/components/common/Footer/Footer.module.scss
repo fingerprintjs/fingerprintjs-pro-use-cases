@@ -31,19 +31,6 @@
       .address {
         font-style: normal;
         @include inter($size: 14px, $weight: 400, $lh: 140%, $color: v('dark-gray'));
-
-        // @include media('<=desktop') {
-        //   font-size: rem(12px);
-        //   font-weight: 400;
-        //   line-height: 160%;
-        //   letter-spacing: 0.12px;
-        // }
-
-        // @include media('<=tabletWide') {
-        //   font-size: rem(11px);
-        //   line-height: 160%;
-        //   letter-spacing: 0.11px;
-        // }
       }
     }
 
@@ -73,8 +60,10 @@
 
 
       .copyright {
-        // @include inter($size: 14px, $weight: 500, $lh: 160%, $color: v('dark-gray'));
-        // letter-spacing: 0.00875rem;
+        @include inter($size: 14px, $weight: 400, $lh: 160%, $color: v('dark-gray'));
+        letter-spacing: rem(0.14px);
+        font-variant-numeric: lining-nums proportional-nums;
+        font-feature-settings: 'liga' off;
       }
 
       .links {
