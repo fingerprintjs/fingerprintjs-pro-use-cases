@@ -45,7 +45,8 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
   const handleToggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
-  const { mutate } = useReset({});
+
+  const { mutate, shouldDisplayResetButton } = useReset({});
 
   return (
     <>
@@ -100,17 +101,19 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                 />
               </div>
               <div className={styles.navRight}>
-                <Tooltip
-                  title={
-                    'Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action.'
-                  }
-                  enterTouchDelay={400}
-                >
-                  <button className={classNames(styles.desktopOnly, styles.resetButton)} onClick={() => mutate()}>
-                    Restart
-                    <Image src={Restart} alt="Restart button" />
-                  </button>
-                </Tooltip>
+                {shouldDisplayResetButton && (
+                  <Tooltip
+                    title={
+                      'Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action.'
+                    }
+                    enterTouchDelay={400}
+                  >
+                    <button className={classNames(styles.desktopOnly, styles.resetButton)} onClick={() => mutate()}>
+                      Restart
+                      <Image src={Restart} alt="Restart button" />
+                    </button>
+                  </Tooltip>
+                )}
                 <Button
                   href={'https://dashboard.fingerprint.com/login'}
                   size="medium"
