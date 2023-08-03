@@ -49,15 +49,12 @@
         align-items: flex-end;
       }
 
-
-
       @include media('<=phoneLandscape') {
         flex-direction: column;
         align-self: flex-start;
         align-items: flex-start;
         gap: rem(24px);
       }
-
 
       .copyright {
         @include inter($size: 14px, $weight: 400, $lh: 160%, $color: v('dark-gray'));
