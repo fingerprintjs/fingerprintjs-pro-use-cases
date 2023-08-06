@@ -1,5 +1,5 @@
 import { useVisitorData } from '../../client/use-visitor-data';
-import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { useCallback, useEffect, useState } from 'react';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';

@@ -1,26 +1,28 @@
-// @ts-check
 import Divider from '@mui/material/Divider';
 import Link from 'next/link';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { ArrowBack } from '@mui/icons-material';
+import { ArrowBack, StyleSharp } from '@mui/icons-material';
 import { Box, Paper, Tooltip, List, ListItem } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import { FunctionComponent } from 'react';
+import Container from '../Container';
+import styles from './UseCaseWrapper.module.scss';
+import Button from '../Button';
 
-/**
- * @typedef {Object} UseCaseWrapperProps
- * @property {string} title
- * @property {React.ReactNode} [description=undefined]
- * @property {string} [articleURL]
- * @property {Array<React.ReactNode>} [listItems]
- * @property {React.ReactNode} children
- * @property {boolean} [hideSrcListItem=false] - Flag to hide the source list item
- * @property {boolean} [hideDivider=false] - Flag to hide the divider
- * @property {boolean} [showAdminLink=true] - Flag to show the admin link
- * @property {Object} [contentSx] - Additional styles or style overrides for the main content <Paper> container
- * @property {string} [returnUrl]
- */
+type UseCaseWrapperProps = {
+  title: string;
+  description?: React.ReactNode;
+  articleURL?: string;
+  listItems?: React.ReactNode[];
+  children: React.ReactNode;
+  hideSrcListItem?: boolean;
+  hideDivider?: boolean;
+  showAdminLink?: boolean;
+  returnUrl?: string;
+  contentSx?: React.CSSProperties;
+};
 
 const MyListItem = ({ children, ...props }) => (
   <ListItem
@@ -35,11 +37,7 @@ const MyListItem = ({ children, ...props }) => (
   </ListItem>
 );
 
-/**
- * @param {UseCaseWrapperProps} props
- * @returns {JSX.Element}
- */
-export function UseCaseWrapper({
+export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   title,
   description,
   articleURL,
@@ -50,10 +48,38 @@ export function UseCaseWrapper({
   showAdminLink = true,
   returnUrl,
   contentSx,
-}) {
+}) => {
   return (
     <>
-      <Box
+      <Container size="large">
+        <h1 className={styles.title}>{title}</h1>
+        <div className={styles.description}>{description}</div>
+        <div className={styles.howToUse}>
+          <div>
+            <h2>How to use this demo</h2>
+            <ol>
+              {listItems.map((item, index) => (
+                <li key={index}>
+                  <div>{item}</div>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div>
+            <Button
+              href={'https://dashboard.fingerprint.com/login'}
+              size="large"
+              outlined
+              openNewTab
+              className={styles.resourcesButton}
+              buttonId="log-in-top-nav"
+            >
+              See related resources
+            </Button>
+          </div>
+        </div>
+      </Container>
+      {/* <Box
         sx={{
           padding: (theme) => theme.spacing(4),
           maxWidth: '600px',
@@ -134,7 +160,7 @@ export function UseCaseWrapper({
         }}
       >
         {children}
-      </Paper>
+      </Paper> */}
     </>
   );
-}
+};

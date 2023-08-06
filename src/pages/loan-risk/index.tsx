@@ -1,4 +1,4 @@
-import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { FunctionComponent, useCallback, useMemo, useState } from 'react';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';

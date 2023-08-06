@@ -3,7 +3,7 @@ import { ProductItem } from '../../client/components/personalization/product-ite
 import { PersonalizationTopSection } from '../../client/components/personalization/personalization-top-section';
 import { useDebounce, useSessionStorage } from 'react-use';
 import { useSearchHistory } from '../../client/api/personalization/use-search-history';
-import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import {
   Box,
   Button,

@@ -10,7 +10,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
-import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { useVisitorData } from '../../client/use-visitor-data';
 import React from 'react';
 import { Theme } from '@mui/material/styles/createTheme';

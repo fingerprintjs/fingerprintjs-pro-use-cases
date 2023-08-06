@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import {
   Accordion,
   AccordionDetails,

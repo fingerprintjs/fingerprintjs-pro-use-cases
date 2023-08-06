@@ -1,0 +1,82 @@
+h1.title {
+    font-family: "Inter";
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
+    margin-bottom: rem(24px);
+}
+
+.description {
+    max-width: 725px;
+}
+
+.howToUse {
+    background-color: v('soft-orange-background');
+    display: flex;
+    padding: rem(32px);
+    margin-top: rem(64px);
+    align-items: flex-start;
+    gap: rem(16px);
+    align-self: stretch;
+    border-radius: 6px;
+    box-shadow: 0px 2px 4px 0px rgba(208, 208, 208, 0.15);
+    // Generated using https://kovart.github.io/dashed-border-generator/ to customize  spaces between dashes
+    // border: 1px dashed v('orange-gradient') doesn't allow that
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='6' ry='6' stroke='%23F5614BFF' stroke-width='2' stroke-dasharray='1%2c 6' stroke-dashoffset='10' stroke-linecap='square'/%3e%3c/svg%3e");
+
+    h2 {
+        color: v('dark-black');
+        font-family: Inter;
+        font-size: rem(20px);
+        font-style: normal;
+        font-weight: 500;
+        line-height: 140%;
+        margin-bottom: rem(20px);
+
+    }
+
+    ol {
+        list-style-type: none;
+        counter-reset: my-counter;
+    }
+
+    ol li:before {
+        content: counter(my-counter);
+        color: v('orange-gradient');
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid v('gray-box-stroke');
+        border-radius: 50%;
+        text-align: center;
+        background-color: white;
+
+        font-family: Inter;
+        font-size: rem(12px);
+        font-style: normal;
+        font-weight: 500;
+        line-height: 155%;
+
+        width: rem(26px);
+        height: rem(26px);
+        margin-right: rem(12px);
+
+
+    }
+
+    ol li {
+        counter-increment: my-counter;
+        line-height: 160%;
+        margin-bottom: rem(10px);
+        display: flex;
+        // text-indent: 30px;
+    }
+
+    .resourcesButton {
+        background-color: white;
+        font-weight: 400;
+    }
+
+
+}

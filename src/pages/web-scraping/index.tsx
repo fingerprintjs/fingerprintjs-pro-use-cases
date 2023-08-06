@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import FlightCard, { Flight } from '../../client/components/web-scraping/FlightCard';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import styles from '../../styles/web-scraping.module.css';

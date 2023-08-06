@@ -3,7 +3,7 @@ import { Skeleton, SkeletonTypeMap } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import { useGetArticle } from '../../../../client/api/personalization/use-get-article';
-import { UseCaseWrapper } from '../../../../client/components/use-case-wrapper';
+import { UseCaseWrapper } from '../../../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { CustomPageProps } from '../../../_app';
 
 function ArticleSkeleton({ animation = false }: { animation?: SkeletonTypeMap['props']['animation'] }) {
