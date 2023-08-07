@@ -93,9 +93,41 @@ h1.title {
 
 }
 
+.contentWrapper {
+    position: relative;
+    padding: 0px rem(20px);
+
+    .backgroundRectangle {
+        background-color: v('gray-background');
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        width: 100%;
+        height: rem(64px);
+    }
+
+    .content {
+        border: 1px solid v('gray-box-stroke');
+        border-radius: rem(8px);
+        position: relative;
+        margin: rem(96px) auto 0 auto;
+        z-index: 1;
+        background: white;
+        max-width: 1248px;
+        @include boxWithShadow;
+    }
+}
+
+.learnMorePlaceholder {
+    background-color: v('gray-background');
+    height: rem(96px);
+
+}
+
+
 .learnMore {
     background-color: v('gray-background');
-    padding-top: rem(40px);
+    padding-top: rem(148px);
     padding-bottom: rem(200px);
     display: flex;
     flex-direction: column;

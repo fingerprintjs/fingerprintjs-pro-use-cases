@@ -102,19 +102,25 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
             </div>
           </div>
         )}
-
-        <Paper
-          sx={{
-            padding: (theme) => theme.spacing(4),
-            maxWidth: '600px',
-            margin: '64px auto ',
-            ...contentSx,
-          }}
-        >
-          {children}
-        </Paper>
       </Container>
-      {moreResources?.length > 0 && (
+      <div className={styles.contentWrapper}>
+        <div className={styles.backgroundRectangle} />
+        <Container size="large" className={styles.content}>
+          <Paper
+            elevation={0}
+            sx={{
+              padding: (theme) => theme.spacing(4),
+              maxWidth: '600px',
+              margin: '64px auto ',
+              ...contentSx,
+            }}
+          >
+            {children}
+          </Paper>
+        </Container>
+      </div>
+
+      {moreResources?.length > 0 ? (
         <Container size="large" className={styles.learnMore}>
           <h3 className={styles.learnMoreTitle} ref={learnMoreRef}>
             Learn More
@@ -128,6 +134,8 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
             ))}
           </div>
         </Container>
+      ) : (
+        <div className={styles.learnMorePlaceholder}></div>
       )}
     </>
   );
