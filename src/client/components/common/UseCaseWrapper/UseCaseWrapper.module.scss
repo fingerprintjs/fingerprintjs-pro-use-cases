@@ -14,17 +14,23 @@ h1.title {
 .howToUse {
     background-color: v('soft-orange-background');
     display: flex;
-    padding: rem(32px);
-    margin-top: rem(64px);
     align-items: flex-start;
-    gap: rem(16px);
     justify-content: space-between;
     align-self: stretch;
+    gap: rem(16px);
+    padding: rem(32px);
+    margin-top: rem(64px);
+    margin-bottom: rem(64px);
     border-radius: 6px;
     box-shadow: 0px 2px 4px 0px rgba(208, 208, 208, 0.15);
-    // Generated using https://kovart.github.io/dashed-border-generator/ to customize  spaces between dashes
+    // Generated using https://kovart.github.io/dashed-border-generator/ to customize spaces between dashes according to the design
     // border: 1px dashed v('orange-gradient') doesn't allow that
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='6' ry='6' stroke='%23F5614BFF' stroke-width='2' stroke-dasharray='1%2c 6' stroke-dashoffset='10' stroke-linecap='square'/%3e%3c/svg%3e");
+
+
+    @include media('<=tabletWide') {
+        flex-direction: column;
+    }
 
     h2 {
         color: v('dark-black');

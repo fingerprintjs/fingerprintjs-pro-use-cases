@@ -49,6 +49,7 @@ export default function Index() {
   return (
     <UseCaseWrapper
       hideSrcListItem
+      showAdminLink={false}
       title="Administration"
       description={
         <p>

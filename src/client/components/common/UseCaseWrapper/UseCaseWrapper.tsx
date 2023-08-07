@@ -56,31 +56,78 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
       <Container size="large">
         <h1 className={styles.title}>{title}</h1>
         <div className={styles.description}>{description}</div>
-        <div className={styles.howToUse}>
-          <div>
-            <h2>How to use this demo</h2>
-            <ol>
-              {listItems.map((item, index) => (
-                <li key={index}>
-                  <div>{item}</div>
-                </li>
-              ))}
-            </ol>
+        {listItems?.length > 0 && (
+          <div className={styles.howToUse}>
+            <div>
+              <h2>How to use this demo</h2>
+              <ol>
+                {listItems?.map((item, index) => (
+                  <li key={index}>
+                    {/* The wrapper div here is necessary for styles to work. */}
+                    <div>{item}</div>
+                  </li>
+                ))}
+                {showAdminLink && (
+                  <li>
+                    <div>
+                      You can reset this scenario using the <b>Restart</b> button on the top right.
+                    </div>
+                  </li>
+                )}
+                {articleURL && (
+                  <li>
+                    <div>
+                      Learn more about this scenario in the{' '}
+                      <a href={articleURL} target="_blank" rel="noreferrer">
+                        {title}
+                      </a>{' '}
+                      article.
+                    </div>
+                  </li>
+                )}
+                {!hideSrcListItem && (
+                  <li>
+                    <div>
+                      See the source code for this and other use cases{' '}
+                      <a
+                        href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        on GitHub
+                      </a>
+                      .
+                    </div>
+                  </li>
+                )}
+              </ol>
+            </div>
+            <div>
+              <Button
+                href={'https://dashboard.fingerprint.com/login'}
+                size="large"
+                outlined
+                openNewTab
+                className={styles.resourcesButton}
+                buttonId="log-in-top-nav"
+              >
+                <Image src={Lightbulb} alt="Lightbulb" />
+                See related resources
+              </Button>
+            </div>
           </div>
-          <div>
-            <Button
-              href={'https://dashboard.fingerprint.com/login'}
-              size="large"
-              outlined
-              openNewTab
-              className={styles.resourcesButton}
-              buttonId="log-in-top-nav"
-            >
-              <Image src={Lightbulb} alt="Lightbulb" />
-              See related resources
-            </Button>
-          </div>
-        </div>
+        )}
+
+        <Paper
+          sx={{
+            padding: (theme) => theme.spacing(4),
+            maxWidth: '600px',
+            margin: '64px auto ',
+            ...contentSx,
+          }}
+        >
+          {children}
+        </Paper>
       </Container>
       {/* <Box
         sx={{
