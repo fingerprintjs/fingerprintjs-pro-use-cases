@@ -1,33 +1,122 @@
+type UseCase = {
+  title: string;
+  url: string;
+  moreResources?: readonly {
+    type: 'Use case tutorial' | 'Case study' | 'Industry' | 'Article';
+    title: string;
+    url: string;
+  }[];
+};
+
 export const USE_CASES = [
   {
     title: 'Coupon Fraud',
     url: '/coupon-fraud',
+    moreResources: [
+      {
+        type: 'Use case tutorial',
+        title: 'Coupon Promo Abuse',
+        url: 'https://fingerprint.com/use-cases/coupon-promo-abuse/',
+      },
+      {
+        type: 'Case study',
+        title: 'Promo Abuse',
+        url: 'https://fingerprint.com/case-studies/promo-abuse/',
+      },
+      {
+        type: 'Industry',
+        title: 'E-commerce Fraud Prevention',
+        url: 'https://fingerprint.com/ecommerce/',
+      },
+    ],
   },
   {
     title: 'Credential Stuffing',
     url: '/credential-stuffing',
+    moreResources: [
+      {
+        type: 'Use case tutorial',
+        title: 'Credential Stuffing',
+        url: 'https://fingerprint.com/use-cases/credential-stuffing/',
+      },
+    ],
   },
   {
     title: 'Loan Risk',
     url: '/loan-risk',
+    moreResources: [
+      // {
+      //   type: 'Use case tutorial',
+      //   title: 'Loan Risk',
+      //   url: 'https://fingerprint.com/use-cases/loan-risk/',
+      // }
+      {
+        url: 'https://fingerprint.com/blog/what-is-loan-fraud/',
+        type: 'Article',
+        title: 'What is Loan Fraud?',
+      },
+    ],
   },
   {
     title: 'Payment Fraud',
     url: '/payment-fraud',
+    moreResources: [
+      {
+        type: 'Use case tutorial',
+        title: 'Payment Fraud',
+        url: 'https://fingerprint.com/use-cases/payment-fraud/',
+      },
+      {
+        url: 'https://fingerprint.com/blog/omnichannel-fraud/',
+        type: 'Article',
+        title: 'Omnichannel Fraud',
+      },
+    ],
   },
   {
     title: 'Paywall',
     url: '/paywall',
+    moreResources: [
+      // {
+      //   type: 'Use case tutorial',
+      //   title: 'Paywall',
+      //   url: 'https://fingerprint.com/use-cases/paywall/',
+      // }
+      {
+        url: 'https://fingerprint.com/blog/incognito-mode-detection/',
+        type: 'Article',
+        title: 'Incognito Mode Detection',
+      },
+    ],
   },
   {
     title: 'Personalization',
     url: '/personalization',
+    moreResources: [
+      {
+        url: 'https://fingerprint.com/use-cases/personalization/',
+        type: 'Use case tutorial',
+        title: 'Personalization',
+      },
+    ],
   },
   {
     title: 'Web scraping prevention',
     url: '/web-scraping',
+    moreResources: [
+      {
+        url: 'https://fingerprint.com/use-cases/web-scraping-prevention/',
+        type: 'Use case tutorial',
+        title: 'Web Scraping Prevention',
+      },
+      {
+        url: 'https://fingerprint.com/blog/betting-bots/',
+        type: 'Article',
+        title: 'Betting Bots',
+      },
+    ],
   },
-] as const;
+] as const satisfies readonly UseCase[];
 
 export const PLATFORM_MENU_ITEMS = [{ title: 'Playground', url: '/playground' }];
 
