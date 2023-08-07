@@ -8,7 +8,7 @@ h1.title {
 }
 
 .description {
-    max-width: 725px;
+    max-width: rem(725px);
 }
 
 .howToUse {
@@ -70,16 +70,14 @@ h1.title {
         height: rem(26px);
         min-height: rem(26px);
         margin-right: rem(12px);
-
-
     }
 
     ol li {
         counter-increment: my-counter;
         line-height: 160%;
         margin-bottom: rem(10px);
+        // The marker and li text are two columns
         display: flex;
-        // text-indent: 30px;
     }
 
     .resourcesButton {
