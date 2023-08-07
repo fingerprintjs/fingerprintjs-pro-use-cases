@@ -26,10 +26,7 @@ const Layout: FunctionComponent<PropsWithChildren<{ embed: boolean }>> = ({ chil
   return (
     <Stack sx={{ height: '100%' }}>
       {embed ? null : <NewHeader />}
-      <Paper
-        variant="outlined"
-        sx={{ flexGrow: 1, borderRadius: 0, border: 'none', paddingBottom: (t) => t.spacing(4) }}
-      >
+      <Paper variant="outlined" sx={{ flexGrow: 1, borderRadius: 0, border: 'none' }}>
         {children}
       </Paper>
     </Stack>
