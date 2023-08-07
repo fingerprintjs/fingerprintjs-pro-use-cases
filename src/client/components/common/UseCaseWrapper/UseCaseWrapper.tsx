@@ -10,6 +10,8 @@ import { FunctionComponent } from 'react';
 import Container from '../Container';
 import styles from './UseCaseWrapper.module.scss';
 import Button from '../Button';
+import Lightbulb from './lightbulb.svg';
+import Image from 'next/image';
 
 type UseCaseWrapperProps = {
   title: string;
@@ -74,6 +76,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
               className={styles.resourcesButton}
               buttonId="log-in-top-nav"
             >
+              <Image src={Lightbulb} alt="Lightbulb" />
               See related resources
             </Button>
           </div>

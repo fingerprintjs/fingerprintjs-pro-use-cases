@@ -18,6 +18,7 @@ h1.title {
     margin-top: rem(64px);
     align-items: flex-start;
     gap: rem(16px);
+    justify-content: space-between;
     align-self: stretch;
     border-radius: 6px;
     box-shadow: 0px 2px 4px 0px rgba(208, 208, 208, 0.15);
@@ -59,7 +60,9 @@ h1.title {
         line-height: 155%;
 
         width: rem(26px);
+        min-width: rem(26px);
         height: rem(26px);
+        min-height: rem(26px);
         margin-right: rem(12px);
 
 
@@ -76,6 +79,11 @@ h1.title {
     .resourcesButton {
         background-color: white;
         font-weight: 400;
+
+        span {
+            display: flex;
+            gap: rem(12px);
+        }
     }
 
 
