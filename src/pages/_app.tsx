@@ -8,11 +8,13 @@ import { SnackbarAction } from '../client/components/snackbar-action';
 import { SocketProvider } from '../client/api/socket-provider';
 import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import { FP_LOAD_OPTIONS } from '../client/use-visitor-data';
-import { Paper, Stack } from '@mui/material';
+import { Paper } from '@mui/material';
 import { AppProps } from 'next/app';
 import NewHeader from '../client/components/common/Header';
 import { FunctionComponent, PropsWithChildren } from 'react';
 import DeploymentUtils from '../client/DeploymentUtils';
+import styles from '../styles/layout.module.scss';
+import Footer from '../client/components/common/Footer/Footer';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,7 +26,7 @@ const queryClient = new QueryClient({
 
 const Layout: FunctionComponent<PropsWithChildren<{ embed: boolean }>> = ({ children, embed }) => {
   return (
-    <Stack sx={{ height: '100%' }}>
+    <div className={styles.layout}>
       {embed ? null : <NewHeader />}
       <Paper
         variant="outlined"
@@ -32,7 +34,8 @@ const Layout: FunctionComponent<PropsWithChildren<{ embed: boolean }>> = ({ chil
       >
         {children}
       </Paper>
-    </Stack>
+      {embed ? null : <Footer />}
+    </div>
   );
 };
 

@@ -1,0 +1,99 @@
+.footer {
+  background-color: v('white');
+  color: v('dark-gray');
+
+  .footerContainer {
+    display: flex;
+    justify-content: space-between;
+    padding-top: rem(24px);
+    padding-bottom: rem(24px);
+
+    @include media('<=phoneLandscape') {
+      flex-direction: column;
+    }
+
+    .logoSection {
+      display: flex;
+      align-items: center;
+      column-gap: rem(43px);
+
+      @include media('<=desktop') {
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+
+
+      @include media('<=phoneLandscape') {
+        gap: rem(24px);
+      }
+
+      .address {
+        font-style: normal;
+        @include inter($size: 14px, $weight: 400, $lh: 140%, $color: v('dark-gray'));
+      }
+    }
+
+    .socialSection {
+      display: flex;
+      column-gap: rem(32px);
+      align-items: center;
+      align-self: flex-end;
+
+      @include inter($size: 14px, $weight: 400, $lh: 150%, $color: v('dark-gray'));
+
+      @include media('<=desktop') {
+        letter-spacing: 0.12px;
+        flex-direction: column-reverse;
+        row-gap: rem(6px);
+        align-items: flex-end;
+      }
+
+      @include media('<=phoneLandscape') {
+        flex-direction: column;
+        align-self: flex-start;
+        align-items: flex-start;
+        gap: rem(24px);
+      }
+
+      .copyright {
+        @include inter($size: 14px, $weight: 400, $lh: 160%, $color: v('dark-gray'));
+        letter-spacing: rem(0.14px);
+        font-variant-numeric: lining-nums proportional-nums;
+        font-feature-settings: 'liga' off;
+      }
+
+      .socials {
+        display: flex;
+        align-items: center;
+        column-gap: rem(24px);
+        margin-bottom: rem(3px);
+
+        @include media('<=desktop') {
+          column-gap: rem(16px);
+        }
+
+        .link {
+          svg {
+            height: rem(20px);
+          }
+
+          &:hover {
+            svg {
+              opacity: v('extra-faded');
+            }
+          }
+        }
+
+        svg {
+          fill: v('white');
+          @include transition((opacity));
+        }
+      }
+    }
+  }
+}
+
+.dark {
+  background: v('dark-gray');
+}

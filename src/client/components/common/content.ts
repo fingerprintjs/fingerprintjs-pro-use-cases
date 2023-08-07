@@ -32,6 +32,7 @@ export const USE_CASES = [
 export const PLATFORM_MENU_ITEMS = [{ title: 'Playground', url: '/playground' }];
 
 export const URL = {
+  mainSite: 'https://fingerprint.com',
   githubRepoUrl: 'https://github.com/fingerprintjs/fingerprintjs/',
   githubApiUrl: 'https://api.github.com/repos/fingerprintjs',
   githubCommunityRepoUrl: 'https://github.com/fingerprintjs/home',
