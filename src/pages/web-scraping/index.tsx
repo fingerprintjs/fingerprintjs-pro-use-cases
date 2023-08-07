@@ -20,6 +20,7 @@ import { useQuery, UseQueryResult } from 'react-query';
 import { GetServerSideProps, NextPage } from 'next';
 import { FlightQuery } from '../api/web-scraping/flights';
 import { CheckResultObject } from '../../server/checkResult';
+import { USE_CASES } from '../../client/components/common/content';
 
 // Make URL query object available as props to the page on first render
 // to read `from`, `to` params and a `disableBotDetection` param for testing and demo purposes
@@ -87,7 +88,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
       ignoreCache: true,
     },
     // Don't fingerprint the visitor on mount, but when they click "Search flights", the fingerprint must be fresh
-    { immediate: false }
+    { immediate: false },
   );
 
   /**
@@ -119,7 +120,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
     {
       refetchOnMount: 'always',
       retry: false,
-    }
+    },
   );
 
   const { isFetching } = getFlightsQuery;
@@ -176,6 +177,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
             in the URL.
           </>,
         ]}
+        moreResources={USE_CASES.webScraping.moreResources}
       >
         <Box marginBottom={(theme) => theme.spacing(2)}>
           <Typography variant="overline">Search for today&apos;s flights</Typography>

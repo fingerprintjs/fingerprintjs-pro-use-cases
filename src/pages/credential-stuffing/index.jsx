@@ -14,6 +14,7 @@ import Button from '@mui/material/Button';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { useVisitorData } from '../../client/use-visitor-data';
 import React from 'react';
+import { USE_CASES } from '../../client/components/common/content';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -119,6 +120,7 @@ export default function Index() {
           Good luck :)
         </>,
       ]}
+      moreResources={USE_CASES.credentialStuffing.moreResources}
     >
       <form onSubmit={handleSubmit} className="Form_container">
         <FormControl fullWidth className={clsx(useStyles().margin)} variant="outlined">

@@ -77,11 +77,11 @@ export const USE_CASES = {
     title: 'Paywall',
     url: '/paywall',
     moreResources: [
-      {
-        type: 'Use case tutorial',
-        title: 'Paywall',
-        url: 'https://fingerprint.com/use-cases/paywall/',
-      },
+      // {
+      //   type: 'Use case tutorial',
+      //   title: 'Paywall',
+      //   url: 'https://fingerprint.com/use-cases/paywall/',
+      // },
     ],
   },
   personalization: {

@@ -7,6 +7,7 @@ import { ARTICLE_VIEW_LIMIT } from '../../shared/paywall/constants';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { ArticleData } from '../../server/paywall/articles';
 import { CustomPageProps } from '../_app';
+import { USE_CASES } from '../../client/components/common/content';
 
 export async function getServerSideProps() {
   const articlesResponse = await fetch(`${SITE_URL}/api/paywall/get-articles`).then((res) => res.json());
@@ -34,6 +35,7 @@ export default function Paywall({ articles, embed }: PaywallProps) {
         <>If you exceed your daily free limit of views, we return an error instead of an article.</>,
         <>You can try switching to the incognito mode or clearing cookies.</>,
       ]}
+      moreResources={USE_CASES.paywall.moreResources}
     >
       {articles && (
         <Stack spacing={6}>

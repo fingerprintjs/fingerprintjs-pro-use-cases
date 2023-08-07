@@ -17,6 +17,7 @@ import { useRequestLoan } from '../../client/api/loan-risk/use-request-loan';
 import Alert from '@mui/material/Alert';
 import { calculateMonthInstallment } from '../../shared/loan-risk/calculate-month-installment';
 import React from 'react';
+import { USE_CASES } from '../../client/components/common/content';
 
 type SliderFieldProps = {
   label: string;
@@ -88,7 +89,7 @@ export default function LoanRisk() {
         loanValue,
         loanDuration,
       }),
-    [loanDuration, loanValue]
+    [loanDuration, loanValue],
   );
 
   const handleSubmit = useCallback(
@@ -102,7 +103,7 @@ export default function LoanRisk() {
         body: { loanValue, monthlyIncome, loanDuration, firstName, lastName },
       });
     },
-    [firstName, lastName, loanDuration, loanRequestMutation, loanValue, monthlyIncome, visitorDataQuery]
+    [firstName, lastName, loanDuration, loanRequestMutation, loanValue, monthlyIncome, visitorDataQuery],
   );
 
   const isLoading = visitorDataQuery.isLoading || loanRequestMutation.isLoading;
@@ -121,6 +122,7 @@ export default function LoanRisk() {
         `Try to change your monthly income, first name, or last name after the first submission. If we find your previous records associated with your visitorId that contains different values, you will receive a warning and we won't perform any calculations.`,
         `You can also try switching to the incognito mode or clearing cookies.`,
       ]}
+      moreResources={USE_CASES.loanRisk.moreResources}
     >
       <form onSubmit={handleSubmit}>
         <Stack direction="column" spacing={6}>

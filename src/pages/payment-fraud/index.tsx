@@ -14,6 +14,7 @@ import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/Us
 import { useVisitorData } from '../../client/use-visitor-data';
 import React from 'react';
 import { Theme } from '@mui/material/styles/createTheme';
+import { USE_CASES } from '../../client/components/common/content';
 
 const useStyles = makeStyles<Theme>((theme) => ({
   margin: {
@@ -102,6 +103,7 @@ export default function Index() {
         <>Simulate a visitor using a stolen card. Can you place another order from the same browser?</>,
         <>You can also try switching to the incognito mode or clearing cookies.</>,
       ]}
+      moreResources={USE_CASES.paymentFraud.moreResources}
     >
       <form onSubmit={handleSubmit} className="Form_container">
         <FormControl fullWidth className={clsx(useStyles().margin)} variant="outlined">

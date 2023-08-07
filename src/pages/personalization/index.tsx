@@ -25,6 +25,7 @@ import { useUserPreferences } from '../../client/api/personalization/use-user-pr
 import { useCart } from '../../client/api/personalization/use-cart';
 import React from 'react';
 import { ExtendedGetResult } from '@fingerprintjs/fingerprintjs-pro';
+import { USE_CASES } from '../../client/components/common/content';
 
 export default function Index() {
   const { enqueueSnackbar } = useSnackbar();
@@ -59,7 +60,7 @@ export default function Index() {
       setSearchQuery(search);
     },
     750,
-    [search, setSearchQuery]
+    [search, setSearchQuery],
   );
 
   useEffect(() => {
@@ -114,6 +115,7 @@ export default function Index() {
           </p>
         }
         articleURL="https://fingerprint.com/use-cases/personalization/"
+        moreResources={USE_CASES.personalization.moreResources}
       >
         <PersonalizationTopSection
           search={search}
