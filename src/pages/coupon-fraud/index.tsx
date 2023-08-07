@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { Stack, Typography } from '@mui/material';
 import { useRequestCouponClaim } from '../../client/api/coupon-fraud/use-coupon-claim';
 import React from 'react';
+import { USE_CASES } from '../../client/components/common/content';
 
 export default function CouponFraudUseCase() {
   const visitorDataQuery = useVisitorData({
@@ -31,7 +32,7 @@ export default function CouponFraudUseCase() {
         body: { couponCode },
       });
     },
-    [couponClaimMutation, couponCode, visitorDataQuery]
+    [couponClaimMutation, couponCode, visitorDataQuery],
   );
 
   useEffect(() => {
@@ -55,6 +56,7 @@ export default function CouponFraudUseCase() {
           Sample coupon codes are <code>Promo3000</code> and <code>BlackFriday</code>.
         </>,
       ]}
+      moreResources={USE_CASES.couponFraud.moreResources}
     >
       <form onSubmit={handleSubmit}>
         <Typography fontSize={20}>iPhone 14 Pro Max 256 GB - Deep Purple</Typography>

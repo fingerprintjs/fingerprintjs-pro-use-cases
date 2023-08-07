@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '../Button';
 import classNames from 'classnames';
 import styles from './MobileNavbar.module.scss';
-import { PLATFORM_MENU_ITEMS, URL, USE_CASES } from '../content';
+import { PLATFORM_MENU_ITEMS, URL, USE_CASES_ARRAY } from '../content';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import Image from 'next/image';
 import Restart from '../Header/Restart.svg';
@@ -54,11 +54,11 @@ export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbar
                 darkMode,
                 leftColumns: [
                   {
-                    list: USE_CASES.slice(0, 3),
+                    list: USE_CASES_ARRAY.slice(0, 3),
                     cardBackground: true,
                   },
                   {
-                    list: USE_CASES.slice(3),
+                    list: USE_CASES_ARRAY.slice(3),
                     cardBackground: true,
                   },
                 ],

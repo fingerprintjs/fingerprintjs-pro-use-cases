@@ -4,7 +4,7 @@ import MobileNavbar from '../MobileNavbar';
 import Container from '../Container';
 import HeaderBar from '../HeaderBar/HeaderBar';
 import classNames from 'classnames';
-import { PLATFORM_MENU_ITEMS, URL, USE_CASES } from '../content';
+import { PLATFORM_MENU_ITEMS, URL, USE_CASES_ARRAY } from '../content';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import Image from 'next/image';
 import LogoSvg from './fpjs.svg';
@@ -79,11 +79,11 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                     darkMode,
                     leftColumns: [
                       {
-                        list: USE_CASES.slice(0, 3),
+                        list: USE_CASES_ARRAY.slice(0, 3),
                         cardBackground: true,
                       },
                       {
-                        list: USE_CASES.slice(3),
+                        list: USE_CASES_ARRAY.slice(3),
                         cardBackground: true,
                       },
                     ],

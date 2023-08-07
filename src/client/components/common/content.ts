@@ -1,4 +1,4 @@
-type UseCase = {
+export type UseCase = {
   title: string;
   url: string;
   moreResources?: readonly {
@@ -8,8 +8,8 @@ type UseCase = {
   }[];
 };
 
-export const USE_CASES = [
-  {
+export const USE_CASES = {
+  couponFraud: {
     title: 'Coupon Fraud',
     url: '/coupon-fraud',
     moreResources: [
@@ -30,7 +30,7 @@ export const USE_CASES = [
       },
     ],
   },
-  {
+  credentialStuffing: {
     title: 'Credential Stuffing',
     url: '/credential-stuffing',
     moreResources: [
@@ -41,7 +41,7 @@ export const USE_CASES = [
       },
     ],
   },
-  {
+  loanRisk: {
     title: 'Loan Risk',
     url: '/loan-risk',
     moreResources: [
@@ -57,7 +57,7 @@ export const USE_CASES = [
       },
     ],
   },
-  {
+  paymentFraud: {
     title: 'Payment Fraud',
     url: '/payment-fraud',
     moreResources: [
@@ -73,35 +73,30 @@ export const USE_CASES = [
       },
     ],
   },
-  {
+  paywall: {
     title: 'Paywall',
     url: '/paywall',
     moreResources: [
-      // {
-      //   type: 'Use case tutorial',
-      //   title: 'Paywall',
-      //   url: 'https://fingerprint.com/use-cases/paywall/',
-      // }
       {
-        url: 'https://fingerprint.com/blog/incognito-mode-detection/',
-        type: 'Article',
-        title: 'Incognito Mode Detection',
+        type: 'Use case tutorial',
+        title: 'Paywall',
+        url: 'https://fingerprint.com/use-cases/paywall/',
       },
     ],
   },
-  {
+  personalization: {
     title: 'Personalization',
     url: '/personalization',
     moreResources: [
       {
-        url: 'https://fingerprint.com/use-cases/personalization/',
         type: 'Use case tutorial',
         title: 'Personalization',
+        url: 'https://fingerprint.com/use-cases/personalization/',
       },
     ],
   },
-  {
-    title: 'Web scraping prevention',
+  webScraping: {
+    title: 'Web Scraping Prevention',
     url: '/web-scraping',
     moreResources: [
       {
@@ -116,7 +111,9 @@ export const USE_CASES = [
       },
     ],
   },
-] as const satisfies readonly UseCase[];
+} as const satisfies Record<string, UseCase>;
+
+export const USE_CASES_ARRAY = Object.values(USE_CASES);
 
 export const PLATFORM_MENU_ITEMS = [{ title: 'Playground', url: '/playground' }];
 

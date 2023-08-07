@@ -1,17 +1,11 @@
-import Divider from '@mui/material/Divider';
-import Link from 'next/link';
-import IconButton from '@mui/material/IconButton';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import { ArrowBack, StyleSharp } from '@mui/icons-material';
-import { Box, Paper, Tooltip, List, ListItem } from '@mui/material';
-import GitHubIcon from '@mui/icons-material/GitHub';
 import { FunctionComponent } from 'react';
 import Container from '../Container';
 import styles from './UseCaseWrapper.module.scss';
 import Button from '../Button';
 import Lightbulb from './lightbulb.svg';
 import Image from 'next/image';
+import { Paper } from '@mui/material';
+import { UseCase } from '../content';
 
 type UseCaseWrapperProps = {
   title: string;
@@ -24,20 +18,8 @@ type UseCaseWrapperProps = {
   showAdminLink?: boolean;
   returnUrl?: string;
   contentSx?: React.CSSProperties;
+  moreResources?: UseCase['moreResources'];
 };
-
-const MyListItem = ({ children, ...props }) => (
-  <ListItem
-    sx={{
-      listStyleType: 'disc',
-      display: 'list-item',
-      padding: (theme) => theme.spacing(1, 0, 0, 0),
-    }}
-    {...props}
-  >
-    {children}
-  </ListItem>
-);
 
 export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   title,
@@ -46,10 +28,9 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   listItems,
   children,
   hideSrcListItem = false,
-  hideDivider = false,
   showAdminLink = true,
-  returnUrl,
   contentSx,
+  moreResources,
 }) => {
   return (
     <>
@@ -131,7 +112,14 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
       </Container>
       <Container size="large" className={styles.learnMore}>
         <h3 className={styles.learnMoreTitle}>Learn More</h3>
-        <p>Some content here</p>
+        <div className={styles.cardsContainer}>
+          {moreResources?.map((resource, index) => (
+            <a key={index} href={resource.url} target="_blank" rel="noreferrer" className={styles.card}>
+              <div className={styles.type}>{resource.type}</div>
+              <div className={styles.title}>{resource.title}</div>
+            </a>
+          ))}
+        </div>
       </Container>
     </>
   );
