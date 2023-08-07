@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { ElementRef, FunctionComponent, useRef } from 'react';
 import Container from '../Container';
 import styles from './UseCaseWrapper.module.scss';
 import Button from '../Button';
@@ -32,6 +32,8 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   contentSx,
   moreResources,
 }) => {
+  const learnMoreRef = useRef<ElementRef<'h3'>>();
+
   return (
     <>
       <Container size="large">
@@ -84,17 +86,19 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
               </ol>
             </div>
             <div>
-              <Button
-                href={'https://dashboard.fingerprint.com/login'}
-                size="large"
-                outlined
-                openNewTab
-                className={styles.resourcesButton}
-                buttonId="log-in-top-nav"
-              >
-                <Image src={Lightbulb} alt="Lightbulb" />
-                See related resources
-              </Button>
+              {moreResources?.length > 0 && (
+                <Button
+                  onClick={() => learnMoreRef?.current?.scrollIntoView({ behavior: 'smooth' })}
+                  size="large"
+                  outlined
+                  openNewTab
+                  className={styles.resourcesButton}
+                  buttonId="log-in-top-nav"
+                >
+                  <Image src={Lightbulb} alt="Lightbulb" />
+                  See related resources
+                </Button>
+              )}
             </div>
           </div>
         )}
@@ -110,17 +114,21 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
           {children}
         </Paper>
       </Container>
-      <Container size="large" className={styles.learnMore}>
-        <h3 className={styles.learnMoreTitle}>Learn More</h3>
-        <div className={styles.cardsContainer}>
-          {moreResources?.map((resource, index) => (
-            <a key={index} href={resource.url} target="_blank" rel="noreferrer" className={styles.card}>
-              <div className={styles.type}>{resource.type}</div>
-              <div className={styles.title}>{resource.title}</div>
-            </a>
-          ))}
-        </div>
-      </Container>
+      {moreResources?.length > 0 && (
+        <Container size="large" className={styles.learnMore}>
+          <h3 className={styles.learnMoreTitle} ref={learnMoreRef}>
+            Learn More
+          </h3>
+          <div className={styles.cardsContainer}>
+            {moreResources?.map((resource, index) => (
+              <a key={index} href={resource.url} target="_blank" rel="noreferrer" className={styles.card}>
+                <div className={styles.type}>{resource.type}</div>
+                <div className={styles.title}>{resource.title}</div>
+              </a>
+            ))}
+          </div>
+        </Container>
+      )}
     </>
   );
 };
