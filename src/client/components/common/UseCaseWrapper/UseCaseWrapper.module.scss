@@ -92,3 +92,16 @@ h1.title {
 
 
 }
+
+.learnMore {
+    background-color: v('gray-background');
+    padding-top: rem(40px);
+
+    .learnMoreTitle {
+        color: v(dark-black);
+        font-family: Inter;
+        font-size: rem(28px);
+        font-weight: 600;
+        line-height: 130%;
+    }
+}
