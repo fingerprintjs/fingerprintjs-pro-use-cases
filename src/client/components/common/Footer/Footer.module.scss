@@ -1,6 +1,7 @@
 .footer {
   background-color: v('white');
   color: v('dark-gray');
+  border-top: 1px solid v('gray-box-stroke');
 
   .footerContainer {
     display: flex;
