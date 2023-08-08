@@ -128,7 +128,10 @@ h1.title {
 .learnMore {
     background-color: v('gray-background');
     padding-top: rem(148px);
-    padding-bottom: rem(200px);
+    margin: 0 auto;
+
+    // Horizontal scroll must bleed over on the right
+    padding-right: 0px;
     display: flex;
     flex-direction: column;
     gap: rem(32px);
@@ -144,13 +147,27 @@ h1.title {
     .cardsContainer {
         display: flex;
         gap: rem(20px);
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: rem(200px);
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+
+
+        -webkit-overflow-scrolling: touch;
+
     }
 
     .card {
         font-family: Inter;
         background-color: white;
         color: v('dark-black');
-        display: flex;
+        flex: 0 0 auto;
         padding: rem(24px) rem(16px);
         flex-direction: column;
         align-items: flex-start;
@@ -159,6 +176,10 @@ h1.title {
         border-radius: rem(6px);
         border: 1px solid v('gray-box-stroke');
         min-width: rem(300px);
+
+        &:last-child {
+            margin-right: 20px;
+        }
 
         @include transition((box-shadow, border));
 
