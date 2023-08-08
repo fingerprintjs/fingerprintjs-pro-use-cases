@@ -98,7 +98,7 @@ export default function Index() {
 
   return (
     <UseCaseWrapper
-      title="Credential Stuffing problem"
+      title={CREDENTIAL_STUFFING.title}
       description={CREDENTIAL_STUFFING.intro}
       articleURL={CREDENTIAL_STUFFING.articleUrl}
       listItems={CREDENTIAL_STUFFING.instructions}

@@ -83,6 +83,16 @@ export const USE_CASES = {
   loanRisk: {
     title: 'Loan Risk',
     url: '/loan-risk',
+    intro:
+      'Use this demo to see how Fingerprint allows you to collect high-quality, low-risk loan applications from your anonymous visitors. Prevent fraudsters and rejected applicants from submitting multiple inconsistent applications.',
+    instructions: [
+      <>Pick some values in the form and submit your loan application.</>,
+      <>
+        Change some of the provided information and apply for a loan again. You will be warned about the application
+        inconsistencies and your loan won't be calculated.
+      </>,
+      <>Try bypassing the protection by switching to incognito mode or deleting your cookies.</>,
+    ],
     moreResources: [
       // {
       //   type: 'Use case tutorial',
