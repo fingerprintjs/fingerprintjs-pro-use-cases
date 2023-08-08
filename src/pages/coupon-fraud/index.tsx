@@ -48,7 +48,7 @@ export default function CouponFraudUseCase() {
   return (
     <UseCaseWrapper
       title={COUPON_FRAUD.title}
-      description={COUPON_FRAUD.description}
+      description={COUPON_FRAUD.intro}
       articleURL={COUPON_FRAUD.articleUrl}
       listItems={COUPON_FRAUD.instructions}
       moreResources={COUPON_FRAUD.moreResources}

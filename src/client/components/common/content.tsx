@@ -1,7 +1,7 @@
 export type UseCase = {
   title: string;
   url: string;
-  description?: React.ReactNode;
+  intro?: React.ReactNode;
   articleUrl: string;
   instructions: readonly React.ReactNode[];
   moreResources?: readonly {
@@ -15,7 +15,7 @@ export const USE_CASES = {
   couponFraud: {
     title: 'Coupon Fraud',
     url: '/coupon-fraud',
-    description:
+    intro:
       'Use the demo below to see how Fingerprint can help identify fraudsters who repeatedly use the same coupon under different scenarios to gain unauthorized benefits.',
     articleUrl: 'https://fingerprint.com/use-cases/coupon-promo-abuse/',
     instructions: [
@@ -48,6 +48,30 @@ export const USE_CASES = {
   credentialStuffing: {
     title: 'Credential Stuffing',
     url: '/credential-stuffing',
+    articleUrl: 'https://fingerprint.com/use-cases/credential-stuffing/',
+    instructions: [
+      <>
+        Put in the username <code>user</code> and password <code>password</code>.
+      </>,
+      <>
+        Click <b>Log in</b>. You won't be able to log in despite having the correct credentials.
+      </>,
+      <>Try calling the login endpoint directly or using JavaScript to spoof the request ID and visitor ID.</>,
+      <>Try to login with different passwords. You will be blocked after 5 attempts.</>,
+      <>Try using incognito mode to log into this page.</>,
+    ],
+    intro: (
+      <>
+        <p>
+          Use the this demo below to see how Fingerprint protects your login page from account takeover even if your
+          credentials are stolen.
+        </p>
+        <p>
+          In this demo, the login attempts from an unknown device are challenged even if the attacker knows the correct
+          credentials and repeated attempts to log in from the same browser are blocked.
+        </p>
+      </>
+    ),
     moreResources: [
       {
         type: 'Use case tutorial',
