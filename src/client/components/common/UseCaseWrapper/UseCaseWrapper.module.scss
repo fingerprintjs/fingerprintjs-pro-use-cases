@@ -124,6 +124,11 @@ h1.title {
 
 }
 
+.learnMoreContainer {
+    background-color: v('gray-background');
+    // padding: rem(20px);
+}
+
 
 .learnMore {
     background-color: v('gray-background');
@@ -132,6 +137,10 @@ h1.title {
 
     // Horizontal scroll must bleed over on the right
     padding-right: 0px;
+    padding-left: 0px;
+    max-width: 1248px;
+
+
     display: flex;
     flex-direction: column;
     gap: rem(32px);
@@ -142,6 +151,10 @@ h1.title {
         font-size: rem(28px);
         font-weight: 600;
         line-height: 130%;
+
+        @include media('<=1300px') {
+            margin-left: rem(20px)
+        }
     }
 
     .cardsContainer {
@@ -178,7 +191,13 @@ h1.title {
         min-width: rem(300px);
 
         &:last-child {
-            margin-right: 20px;
+            margin-right: rem(20px);
+        }
+
+        &:first-child {
+            @include media('<=1300px') {
+                margin-left: rem(20px)
+            }
         }
 
         @include transition((box-shadow, border));
