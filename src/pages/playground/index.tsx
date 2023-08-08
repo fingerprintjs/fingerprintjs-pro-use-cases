@@ -405,7 +405,7 @@ export default function PlaygroundPage() {
     <UseCaseWrapper
       title="Fingerprint Pro Playground"
       description={<p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>}
-      showAdminLink={false}
+      mentionResetButton={false}
       hideSrcListItem={true}
       contentSx={{ boxShadow: 'none', maxWidth: '1248px' }}
     >

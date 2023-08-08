@@ -109,6 +109,25 @@ export const USE_CASES = {
   paymentFraud: {
     title: 'Payment Fraud',
     url: '/payment-fraud',
+    articleUrl: 'https://fingerprint.com/use-cases/payment-fraud/',
+    intro:
+      'Use the demo to see how Fingerprint can protect your transactions from card cracking attempts, stolen credit cards, and reduce chargebacks.',
+    instructions: [
+      <>Change the pre-filled card details to simulate testing stolen credit cards.</>,
+      <>Try placing an order multiple times. You will be stopped after 3 attempts.</>,
+      <>
+        Click the <b>Restart</b> button to reset the demo.
+      </>,
+      <>Use the correct pre-filled card details but select "Ask for chargeback" and place your order.</>,
+      <>Try placing an order again. You won't be able to do it with your chargeback history.</>,
+      <>
+        Click the <b>Restart</b> button to reset the demo.
+      </>,
+      <>
+        Select "Flag this as stolen credit card after purchase" to simulate using a stolen card and place your order.
+      </>,
+      <>Try placing an order again. You won't be able to with your history of stealing credit cards.</>,
+    ],
     moreResources: [
       {
         type: 'Use case tutorial',

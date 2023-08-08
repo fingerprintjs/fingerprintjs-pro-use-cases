@@ -15,7 +15,7 @@ type UseCaseWrapperProps = {
   children: React.ReactNode;
   hideSrcListItem?: boolean;
   hideDivider?: boolean;
-  showAdminLink?: boolean;
+  mentionResetButton?: boolean;
   returnUrl?: string;
   contentSx?: React.CSSProperties;
   moreResources?: UseCase['moreResources'];
@@ -28,7 +28,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   listItems,
   children,
   hideSrcListItem = false,
-  showAdminLink = true,
+  mentionResetButton = true,
   contentSx,
   moreResources,
 }) => {
@@ -50,7 +50,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
                     <div>{item}</div>
                   </li>
                 ))}
-                {showAdminLink && (
+                {mentionResetButton && (
                   <li>
                     <div>
                       You can reset this scenario using the <b>Restart</b> button on the top right.

@@ -129,7 +129,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
     <>
       <UseCaseWrapper
         title="Web Scraping Prevention"
-        showAdminLink={false}
+        mentionResetButton={false}
         description={
           <div>
             <p>
