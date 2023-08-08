@@ -124,26 +124,14 @@ h1.title {
 
 }
 
-.learnMoreContainer {
-    background-color: v('gray-background');
-    // padding: rem(20px);
-}
-
 
 .learnMore {
     background-color: v('gray-background');
     padding-top: rem(148px);
-    margin: 0 auto;
-
-    // Horizontal scroll must bleed over on the right
-    padding-right: 0px;
-    padding-left: 0px;
-    max-width: 1248px;
-
-
     display: flex;
     flex-direction: column;
     gap: rem(32px);
+    padding-bottom: rem(200px);
 
     .learnMoreTitle {
         color: v(dark-black);
@@ -151,28 +139,13 @@ h1.title {
         font-size: rem(28px);
         font-weight: 600;
         line-height: 130%;
-
-        @include media('<=1300px') {
-            margin-left: rem(20px)
-        }
     }
 
     .cardsContainer {
-        display: flex;
+        display: grid;
         gap: rem(20px);
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        padding-bottom: rem(200px);
-
-        &::-webkit-scrollbar {
-            display: none;
-        }
-
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-
-
-        -webkit-overflow-scrolling: touch;
+        flex-wrap: wrap;
+        grid-template-columns: repeat(auto-fit, 300px);
 
     }
 
@@ -190,15 +163,6 @@ h1.title {
         border: 1px solid v('gray-box-stroke');
         min-width: rem(300px);
 
-        &:last-child {
-            margin-right: rem(20px);
-        }
-
-        &:first-child {
-            @include media('<=1300px') {
-                margin-left: rem(20px)
-            }
-        }
 
         @include transition((box-shadow, border));
 
@@ -219,6 +183,9 @@ h1.title {
             font-size: rem(20px);
             font-weight: 600;
             line-height: 140%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
 }

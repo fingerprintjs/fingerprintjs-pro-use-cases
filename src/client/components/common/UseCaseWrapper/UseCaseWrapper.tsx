@@ -121,21 +121,19 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
       </div>
 
       {moreResources?.length > 0 ? (
-        <div className={styles.learnMoreContainer}>
-          <Container size="large" className={styles.learnMore}>
-            <h3 className={styles.learnMoreTitle} ref={learnMoreRef}>
-              Learn More
-            </h3>
-            <div className={styles.cardsContainer}>
-              {moreResources?.map((resource, index) => (
-                <a key={index} href={resource.url} target="_blank" rel="noreferrer" className={styles.card}>
-                  <div className={styles.type}>{resource.type}</div>
-                  <div className={styles.title}>{resource.title}</div>
-                </a>
-              ))}
-            </div>
-          </Container>
-        </div>
+        <Container size="large" className={styles.learnMore}>
+          <h3 className={styles.learnMoreTitle} ref={learnMoreRef}>
+            Learn More
+          </h3>
+          <div className={styles.cardsContainer}>
+            {moreResources?.map((resource, index) => (
+              <a key={index} href={resource.url} target="_blank" rel="noreferrer" className={styles.card}>
+                <div className={styles.type}>{resource.type}</div>
+                <div className={styles.title}>{resource.title}</div>
+              </a>
+            ))}
+          </div>
+        </Container>
       ) : (
         <div className={styles.learnMorePlaceholder}></div>
       )}

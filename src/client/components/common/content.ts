@@ -25,7 +25,7 @@ export const USE_CASES = {
       },
       {
         type: 'Industry',
-        title: 'E-commerce Fraud Prevention',
+        title: 'E-commerce',
         url: 'https://fingerprint.com/ecommerce/',
       },
     ],
