@@ -1,6 +1,9 @@
 export type UseCase = {
   title: string;
   url: string;
+  description?: React.ReactNode;
+  articleUrl: string;
+  instructions: readonly React.ReactNode[];
   moreResources?: readonly {
     type: 'Use case tutorial' | 'Case study' | 'Industry' | 'Article';
     title: string;
@@ -12,6 +15,18 @@ export const USE_CASES = {
   couponFraud: {
     title: 'Coupon Fraud',
     url: '/coupon-fraud',
+    description:
+      'Use the demo below to see how Fingerprint can help identify fraudsters who repeatedly use the same coupon under different scenarios to gain unauthorized benefits.',
+    articleUrl: 'https://fingerprint.com/use-cases/coupon-promo-abuse/',
+    instructions: [
+      <>
+        Use the sample coupon code <code>Promo3000</code> and click Apply.
+      </>,
+      <>Try using the same coupon code again.</>,
+      <>
+        Now try to use another sample code <code>BlackFriday</code> for the same item.
+      </>,
+    ],
     moreResources: [
       {
         type: 'Use case tutorial',

@@ -11,6 +11,8 @@ import { useRequestCouponClaim } from '../../client/api/coupon-fraud/use-coupon-
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
 
+const COUPON_FRAUD = USE_CASES.couponFraud;
+
 export default function CouponFraudUseCase() {
   const visitorDataQuery = useVisitorData({
     // Don't fetch visitorData on mount
@@ -45,18 +47,11 @@ export default function CouponFraudUseCase() {
 
   return (
     <UseCaseWrapper
-      title="Coupon Fraud problem"
-      description={<p>This page demonstrates how to solve the coupon fraud problem.</p>}
-      articleURL={'https://fingerprint.com/use-cases/coupon-promo-abuse/'}
-      listItems={[
-        <>You can apply a coupon to the specific item only once.</>,
-        <>You cannot spam coupon codes, there is a 1-hour threshold.</>,
-        <>You cannot apply the same coupon in incognito mode.</>,
-        <>
-          Sample coupon codes are <code>Promo3000</code> and <code>BlackFriday</code>.
-        </>,
-      ]}
-      moreResources={USE_CASES.couponFraud.moreResources}
+      title={COUPON_FRAUD.title}
+      description={COUPON_FRAUD.description}
+      articleURL={COUPON_FRAUD.articleUrl}
+      listItems={COUPON_FRAUD.instructions}
+      moreResources={COUPON_FRAUD.moreResources}
     >
       <form onSubmit={handleSubmit}>
         <Typography fontSize={20}>iPhone 14 Pro Max 256 GB - Deep Purple</Typography>

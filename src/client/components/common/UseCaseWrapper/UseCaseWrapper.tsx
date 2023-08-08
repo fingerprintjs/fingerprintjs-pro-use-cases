@@ -11,7 +11,7 @@ type UseCaseWrapperProps = {
   title: string;
   description?: React.ReactNode;
   articleURL?: string;
-  listItems?: React.ReactNode[];
+  listItems?: readonly React.ReactNode[];
   children: React.ReactNode;
   hideSrcListItem?: boolean;
   hideDivider?: boolean;
