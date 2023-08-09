@@ -90,7 +90,7 @@ export default function Index() {
   return (
     <UseCaseWrapper
       title={PAYMENT_FRAUD.title}
-      description={PAYMENT_FRAUD.intro}
+      description={PAYMENT_FRAUD.description}
       articleURL={PAYMENT_FRAUD.articleUrl}
       listItems={PAYMENT_FRAUD.instructions}
       moreResources={USE_CASES.paymentFraud.moreResources}
