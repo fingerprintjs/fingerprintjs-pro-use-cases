@@ -99,7 +99,7 @@ export default function Index() {
   return (
     <UseCaseWrapper
       title={CREDENTIAL_STUFFING.title}
-      description={CREDENTIAL_STUFFING.intro}
+      description={CREDENTIAL_STUFFING.description}
       articleURL={CREDENTIAL_STUFFING.articleUrl}
       listItems={CREDENTIAL_STUFFING.instructions}
       moreResources={CREDENTIAL_STUFFING.moreResources}

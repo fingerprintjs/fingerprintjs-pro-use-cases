@@ -29,7 +29,7 @@ export default function Paywall({ articles, embed }: PaywallProps) {
   return (
     <UseCaseWrapper
       title={PAYWALL.title}
-      description={PAYWALL.intro}
+      description={PAYWALL.description}
       listItems={PAYWALL.instructions}
       moreResources={PAYWALL.moreResources}
     >

@@ -131,7 +131,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
     <>
       <UseCaseWrapper
         title={WEB_SCRAPING.title}
-        description={WEB_SCRAPING.intro}
+        description={WEB_SCRAPING.description}
         listItems={WEB_SCRAPING.instructions}
         moreResources={USE_CASES.webScraping.moreResources}
         articleURL={WEB_SCRAPING.articleUrl}

@@ -3,7 +3,7 @@ import Link from 'next/link';
 export type UseCase = {
   title: string;
   url: string;
-  intro?: React.ReactNode;
+  description?: React.ReactNode;
   articleUrl?: string;
   instructions: readonly React.ReactNode[];
   moreResources?: readonly {
@@ -17,7 +17,7 @@ export const USE_CASES = {
   couponFraud: {
     title: 'Coupon Fraud',
     url: '/coupon-fraud',
-    intro:
+    description:
       'Use the demo below to see how Fingerprint can help identify fraudsters who repeatedly use the same coupon under different scenarios to gain unauthorized benefits.',
     articleUrl: 'https://fingerprint.com/use-cases/coupon-promo-abuse/',
     instructions: [
@@ -62,7 +62,7 @@ export const USE_CASES = {
       <>Try to login with different passwords. You will be blocked after 5 attempts.</>,
       <>Try using incognito mode to log into this page.</>,
     ],
-    intro: (
+    description: (
       <>
         <p>
           Use the this demo below to see how Fingerprint protects your login page from account takeover even if your
@@ -85,7 +85,7 @@ export const USE_CASES = {
   loanRisk: {
     title: 'Loan Risk',
     url: '/loan-risk',
-    intro:
+    description:
       'Use this demo to see how Fingerprint allows you to collect high-quality, low-risk loan applications from your anonymous visitors. Prevent fraudsters and rejected applicants from submitting multiple inconsistent applications.',
     instructions: [
       <>Pick some values in the form and submit your loan application.</>,
@@ -112,7 +112,7 @@ export const USE_CASES = {
     title: 'Payment Fraud',
     url: '/payment-fraud',
     articleUrl: 'https://fingerprint.com/use-cases/payment-fraud/',
-    intro:
+    description:
       'Use the demo to see how Fingerprint can protect your transactions from card cracking attempts, stolen credit cards, and reduce chargebacks.',
     instructions: [
       <>Change the pre-filled card details to simulate testing stolen credit cards.</>,
@@ -146,7 +146,7 @@ export const USE_CASES = {
   paywall: {
     title: 'Paywall',
     url: '/paywall',
-    intro:
+    description:
       'Use the demo below to see how Fingerprint protects your content from users trying to circumvent your paywall. ',
     instructions: [
       <>Browse the articles below and open a few of them.</>,
@@ -165,7 +165,7 @@ export const USE_CASES = {
     title: 'Personalization',
     url: '/personalization',
     articleUrl: 'https://fingerprint.com/use-cases/personalization/',
-    intro: (
+    description: (
       <>
         <p>
           Use the demo below to see how user personalization is achieved with Fingerprint. Your visitors can get a
@@ -198,7 +198,7 @@ export const USE_CASES = {
     title: 'Web Scraping Prevention',
     url: '/web-scraping',
     articleUrl: 'https://fingerprint.com/use-cases/web-scraping-prevention/',
-    intro: (
+    description: (
       <>
         <p>
           If your website has data that is expensive to collect or compute (e.g., flight prices), a fraudster could
@@ -253,6 +253,7 @@ export const USE_CASES = {
 } as const satisfies Record<string, UseCase>;
 
 export const USE_CASES_ARRAY = Object.values(USE_CASES);
+export const USE_CASES_NAVIGATION = USE_CASES_ARRAY.map((useCase) => ({ title: useCase.title, url: useCase.url }));
 
 export const PLATFORM_MENU_ITEMS = [{ title: 'Playground', url: '/playground' }];
 

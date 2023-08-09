@@ -113,7 +113,7 @@ export default function LoanRisk() {
   return (
     <UseCaseWrapper
       title={LOAN_RISK.title}
-      description={LOAN_RISK.intro}
+      description={LOAN_RISK.description}
       listItems={LOAN_RISK.instructions}
       moreResources={USE_CASES.loanRisk.moreResources}
     >
