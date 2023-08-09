@@ -1,8 +1,10 @@
+import Link from 'next/link';
+
 export type UseCase = {
   title: string;
   url: string;
   intro?: React.ReactNode;
-  articleUrl: string;
+  articleUrl?: string;
   instructions: readonly React.ReactNode[];
   moreResources?: readonly {
     type: 'Use case tutorial' | 'Case study' | 'Industry' | 'Article';
@@ -195,6 +197,46 @@ export const USE_CASES = {
   webScraping: {
     title: 'Web Scraping Prevention',
     url: '/web-scraping',
+    articleUrl: 'https://fingerprint.com/use-cases/web-scraping-prevention/',
+    intro: (
+      <>
+        <p>
+          If your website has data that is expensive to collect or compute (e.g., flight prices), a fraudster could
+          steal it. Unfortunately, protecting the data with CAPTCHA hurts user experience and server-side bot detection
+          based on IP address reputation is not reliable.
+        </p>
+        <p>
+          Use the demo below to see how Fingerprint’s bot detection identifies and blocks malicious bots, and prevents
+          unauthorized data extraction. Here, the flights API endpoint on this page is protected by the Fingerprint{' '}
+          <a href="https://dev.fingerprint.com/docs/bot-detection-quick-start-guide" target={'_blank'}>
+            {' '}
+            Bot Detection Smart Signal
+          </a>
+          .
+        </p>
+      </>
+    ),
+    instructions: [
+      <>Use a normal browser and search for flights.</>,
+      <>
+        Now, try scrape the results using an automation tool like Selenium, Puppeteer, Playwright, Cypress, or similar.
+      </>,
+      <>
+        You will only see an error message if the request is coming from a bot. Try it using our{' '}
+        <a href="https://botd-demo.fpjs.sh/" target="_blank">
+          online bot playground
+        </a>
+        .
+      </>,
+      <>Try tampering with the request ID parameter, request headers, or IP address. The result will be the same.</>,
+      <>
+        To see how the page would behave without Bot Detection, reload it with{' '}
+        <Link href={'/web-scraping?disableBotDetection=1'}>
+          <code>?disableBotDetection=1</code>
+        </Link>{' '}
+        in the URL.
+      </>,
+    ],
     moreResources: [
       {
         url: 'https://fingerprint.com/use-cases/web-scraping-prevention/',

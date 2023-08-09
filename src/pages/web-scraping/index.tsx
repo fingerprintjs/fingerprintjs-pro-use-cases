@@ -22,6 +22,8 @@ import { FlightQuery } from '../api/web-scraping/flights';
 import { CheckResultObject } from '../../server/checkResult';
 import { USE_CASES } from '../../client/components/common/content';
 
+const WEB_SCRAPING = USE_CASES.webScraping;
+
 // Make URL query object available as props to the page on first render
 // to read `from`, `to` params and a `disableBotDetection` param for testing and demo purposes
 export const getServerSideProps: GetServerSideProps<QueryAsProps> = async ({ query }) => {
@@ -128,56 +130,12 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
   return (
     <>
       <UseCaseWrapper
-        title="Web Scraping Prevention"
+        title={WEB_SCRAPING.title}
         mentionResetButton={false}
-        description={
-          <div>
-            <p>
-              Web scraping is the process of extracting data from websites using automated scripts or bots. If your
-              website shows data that is expensive to collect or compute (e.g., flight connections and prices), a bad
-              actor or competitor could steal it and use it for their own purposes.
-            </p>
-            <p>
-              Protecting the data with CAPCHAs hurts user experience and server-side bot detection based on IP address
-              reputation is not reliable. Fingerprint Pro provides client-side bot detection that can recognize even
-              sophisticated bots and browser automation tools.
-            </p>
-          </div>
-        }
-        // Todo: Add a link to the blog post when it's published
-        listItems={[
-          <>
-            The <code>flights</code> API endpoint on this page is protected by{' '}
-            <a href="https://dev.fingerprint.com/docs/bot-detection-quick-start-guide" target={'_blank'}>
-              {' '}
-              Fingerprint Pro Bot Detection
-            </a>
-            .
-          </>,
-          <>Using a normal browser, you can search for flights and see the results.</>,
-          <>
-            Try scraping the results using Selenium, Puppeteer, Playwright, Cypress, or a{' '}
-            <a href="https://dev.fingerprint.com/docs/bot-detection-vs-botd" target="_blank">
-              similar tool
-            </a>
-            .
-          </>,
-          <>The endpoint will return an error message if the request is coming from a bot.</>,
-          <>
-            Try tampering with the <code>requestId</code> parameter, request headers or changing your IP address, see if
-            that helps 🙂
-          </>,
-          <>
-            To see how the page would behave without Bot Detection, reload it with{' '}
-            <Link href={'/web-scraping?disableBotDetection=1'}>
-              <Typography component={'code'} whiteSpace={'nowrap'}>
-                ?disableBotDetection=1
-              </Typography>
-            </Link>{' '}
-            in the URL.
-          </>,
-        ]}
+        description={WEB_SCRAPING.intro}
+        listItems={WEB_SCRAPING.instructions}
         moreResources={USE_CASES.webScraping.moreResources}
+        articleURL={WEB_SCRAPING.articleUrl}
       >
         <Box marginBottom={(theme) => theme.spacing(2)}>
           <Typography variant="overline">Search for today&apos;s flights</Typography>

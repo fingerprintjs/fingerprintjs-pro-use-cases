@@ -79,6 +79,10 @@ h1.title {
         margin-bottom: rem(10px);
         // The marker and li text are two columns
         display: flex;
+
+        code {
+            white-space: nowrap;
+        }
     }
 
     .resourcesButton {
