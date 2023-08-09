@@ -144,6 +144,13 @@ export const USE_CASES = {
   paywall: {
     title: 'Paywall',
     url: '/paywall',
+    intro:
+      'Use the demo below to see how Fingerprint protects your content from users trying to circumvent your paywall. ',
+    instructions: [
+      <>Browse the articles below and open a few of them.</>,
+      <>You will hit a paywall when opening your third article.</>,
+      <>Try switching to incognito mode or clearing cookies to go around the paywall and read more articles.</>,
+    ],
     moreResources: [
       // {
       //   type: 'Use case tutorial',

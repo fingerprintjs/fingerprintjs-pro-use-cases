@@ -9,6 +9,8 @@ import { ArticleData } from '../../server/paywall/articles';
 import { CustomPageProps } from '../_app';
 import { USE_CASES } from '../../client/components/common/content';
 
+const PAYWALL = USE_CASES.paywall;
+
 export async function getServerSideProps() {
   const articlesResponse = await fetch(`${SITE_URL}/api/paywall/get-articles`).then((res) => res.json());
 
@@ -26,16 +28,10 @@ type PaywallProps = CustomPageProps & {
 export default function Paywall({ articles, embed }: PaywallProps) {
   return (
     <UseCaseWrapper
-      title="Paywall"
-      description={<p>This page demonstrates paywall implementation using Fingerprint Pro.</p>}
-      listItems={[
-        <>
-          We keep track of how many articles you have viewed per day. You can view {ARTICLE_VIEW_LIMIT} articles daily.
-        </>,
-        <>If you exceed your daily free limit of views, we return an error instead of an article.</>,
-        <>You can try switching to the incognito mode or clearing cookies.</>,
-      ]}
-      moreResources={USE_CASES.paywall.moreResources}
+      title={PAYWALL.title}
+      description={PAYWALL.intro}
+      listItems={PAYWALL.instructions}
+      moreResources={PAYWALL.moreResources}
     >
       {articles && (
         <Stack spacing={6}>
