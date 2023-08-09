@@ -131,11 +131,11 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
     <>
       <UseCaseWrapper
         title={WEB_SCRAPING.title}
-        mentionResetButton={false}
         description={WEB_SCRAPING.intro}
         listItems={WEB_SCRAPING.instructions}
         moreResources={USE_CASES.webScraping.moreResources}
         articleURL={WEB_SCRAPING.articleUrl}
+        mentionResetButton={false}
       >
         <Box marginBottom={(theme) => theme.spacing(2)}>
           <Typography variant="overline">Search for today&apos;s flights</Typography>

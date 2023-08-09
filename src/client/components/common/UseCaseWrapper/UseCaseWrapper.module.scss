@@ -1,11 +1,11 @@
 h1.title {
     font-family: "Inter";
-    font-size: 48px;
+    font-size: rem(48px);
     font-style: normal;
     font-weight: 600;
     line-height: 130%;
     margin-bottom: rem(24px);
-    margin-top: 96px;
+    margin-top: rem(96px);
 }
 
 .description {
@@ -28,7 +28,6 @@ h1.title {
     // border: 1px dashed v('orange-gradient') doesn't allow that
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='6' ry='6' stroke='%23F5614BFF' stroke-width='2' stroke-dasharray='1%2c 6' stroke-dashoffset='10' stroke-linecap='square'/%3e%3c/svg%3e");
 
-
     @include media('<=tabletWide') {
         flex-direction: column;
     }
@@ -41,7 +40,6 @@ h1.title {
         font-weight: 500;
         line-height: 140%;
         margin-bottom: rem(20px);
-
     }
 
     ol {
@@ -94,8 +92,6 @@ h1.title {
             gap: rem(12px);
         }
     }
-
-
 }
 
 .contentWrapper {
@@ -127,7 +123,6 @@ h1.title {
 .learnMorePlaceholder {
     background-color: v('gray-background');
     height: rem(96px);
-
 }
 
 
@@ -168,8 +163,6 @@ h1.title {
         border-radius: rem(6px);
         border: 1px solid v('gray-box-stroke');
         min-width: rem(300px);
-
-
         @include transition((box-shadow, border));
 
         &:hover {
