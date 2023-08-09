@@ -162,6 +162,28 @@ export const USE_CASES = {
   personalization: {
     title: 'Personalization',
     url: '/personalization',
+    articleUrl: 'https://fingerprint.com/use-cases/personalization/',
+    intro: (
+      <>
+        <p>
+          Use the demo below to see how user personalization is achieved with Fingerprint. Your visitors can get a
+          tailored experience without having to create an account.
+        </p>
+        <p>
+          Please note that using Fingerprint for personalization might require visitor consent according to your local
+          regulations, similar to cookies. This demo only uses incognito mode to demonstrate cookie-less
+          personalization. We don't advise you to implement personalization features in incognito mode.
+        </p>
+      </>
+    ),
+    instructions: [
+      <>Search for new products.</>,
+      <>Add some items to your cart.</>,
+      <>
+        Now, open this page in incognito mode to simulate coming back to it with expired cookies. Your shopping cart and
+        search history will be preserved.
+      </>,
+    ],
     moreResources: [
       {
         type: 'Use case tutorial',

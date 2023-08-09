@@ -27,6 +27,8 @@ import React from 'react';
 import { ExtendedGetResult } from '@fingerprintjs/fingerprintjs-pro';
 import { USE_CASES } from '../../client/components/common/content';
 
+const PERSONALIZATION = USE_CASES.personalization;
+
 export default function Index() {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -98,24 +100,11 @@ export default function Index() {
         </DialogActions>
       </Dialog>
       <UseCaseWrapper
-        title="Personalization"
-        listItems={[
-          <>Try to search for products, we keep a history of your last searches.</>,
-          <>We remember your dark mode preference.</>,
-          <>Add some items to your very own cart.</>,
-          <>
-            Try to open this page in incognito mode. Your preferences, search history, and cart content will still be
-            there!
-          </>,
-        ]}
-        description={
-          <p>
-            This page demonstrates user personalization that is achieved by Fingerprint Pro. Users do not need to log in
-            to get a tailored experience.
-          </p>
-        }
-        articleURL="https://fingerprint.com/use-cases/personalization/"
-        moreResources={USE_CASES.personalization.moreResources}
+        title={PERSONALIZATION.title}
+        listItems={PERSONALIZATION.instructions}
+        description={PERSONALIZATION.intro}
+        articleURL={PERSONALIZATION.articleUrl}
+        moreResources={PERSONALIZATION.moreResources}
       >
         <PersonalizationTopSection
           search={search}
