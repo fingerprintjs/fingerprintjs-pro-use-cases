@@ -109,9 +109,13 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
           <Paper
             elevation={0}
             sx={{
-              padding: (theme) => theme.spacing(4),
+              padding: {
+                xs: '0px',
+                sm: '8px',
+                md: '32px',
+              },
               maxWidth: '600px',
-              margin: '64px auto ',
+              margin: '0px auto',
               ...contentSx,
             }}
           >

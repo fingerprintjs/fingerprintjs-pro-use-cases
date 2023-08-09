@@ -115,6 +115,7 @@ h1.title {
         z-index: 1;
         background: white;
         max-width: 1248px;
+        padding: rem(0px);
         @include boxWithShadow;
     }
 }
