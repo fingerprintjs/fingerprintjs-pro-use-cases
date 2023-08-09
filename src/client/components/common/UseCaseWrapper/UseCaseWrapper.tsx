@@ -110,9 +110,9 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
             elevation={0}
             sx={{
               padding: {
-                xs: '0px',
-                sm: '8px',
-                md: '32px',
+                xs: '32px 12px',
+                sm: '48px 24px',
+                md: '64px 32px',
               },
               maxWidth: '600px',
               margin: '0px auto',

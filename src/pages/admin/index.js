@@ -57,6 +57,9 @@ export default function Index() {
           you were locked out of a specific action.
         </p>
       }
+      contentSx={{
+        minHeight: '40vh',
+      }}
     >
       <form onSubmit={handleSubmit} className="Form_container">
         <Button
