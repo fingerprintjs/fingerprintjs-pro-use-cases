@@ -102,7 +102,7 @@ export default function Index() {
       <UseCaseWrapper
         title={PERSONALIZATION.title}
         listItems={PERSONALIZATION.instructions}
-        description={PERSONALIZATION.intro}
+        description={PERSONALIZATION.description}
         articleURL={PERSONALIZATION.articleUrl}
         moreResources={PERSONALIZATION.moreResources}
       >
