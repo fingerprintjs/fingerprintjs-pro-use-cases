@@ -12,7 +12,9 @@
 @function v($name, $fallback: null) {
   @if ($fallback) {
     @return var(--#{$name}, #{$fallback});
-  } @else {
+  }
+
+  @else {
     @return var(--#{$name});
   }
 }
@@ -23,10 +25,14 @@
     @if map-has-key($theme, $name) {
       @return map-get($theme, $name);
     }
-  } @else {
+  }
+
+  @else {
     @if map-has-key($colors, $name) {
       @return map-get($colors, $name);
-    } @else if map-has-key($brand-colors, $name) {
+    }
+
+    @else if map-has-key($brand-colors, $name) {
       @return map-get($brand-colors, $name);
     }
   }
@@ -46,9 +52,11 @@
 @mixin transition-duration($d...) {
   transition-duration: $d;
 }
+
 @mixin transition-property($p...) {
   transition-property: $p;
 }
+
 @mixin transition-timing-function($e...) {
   transition-timing-function: $e;
 }
@@ -106,14 +114,12 @@
   $u3: unit($min-font-size);
   $u4: unit($max-font-size);
 
-  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+  @if $u1 ==$u2 and $u1 ==$u3 and $u1 ==$u4 {
     & {
       font-size: $min-font-size;
+
       @media screen and (min-width: $min-vw) {
-        font-size: calc(
-          #{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} *
-            ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)})
-        );
+        font-size: calc(#{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
       }
 
       @media screen and (min-width: $max-vw) {
@@ -153,7 +159,7 @@
   }
 
   @if ($hasChild) {
-    > * {
+    >* {
       position: absolute;
       top: 0;
       left: 0;
@@ -173,18 +179,21 @@
   height: $height;
   overflow: hidden;
 
-  > * {
+  >* {
     box-sizing: content-box;
     height: $height - $scollbarSize;
     width: 100%;
     overflow-y: scroll;
     padding: #{$padding};
     // padding-right: $scollbarSize;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 
     &::-webkit-scrollbar {
-      display: none; /* Chrome, Safari and Opera */
+      display: none;
+      /* Chrome, Safari and Opera */
     }
   }
 }
@@ -193,6 +202,7 @@
   &::-webkit-scrollbar {
     display: none;
   }
+
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -212,7 +222,7 @@
     margin: calc(-1 * var(--gap)) 0 0 calc(-1 * var(--gap));
     width: calc(100% + var(--gap));
 
-    > * {
+    >* {
       margin: var(--gap) 0 0 var(--gap);
     }
   }
@@ -221,6 +231,7 @@
 /*=====  End of GAP FOR FLEXBOX  ======*/
 
 @mixin overrideContentStyle($fontSize: 2rem, $headerSize: 2rem, $marginBottom: 2rem) {
+
   p,
   ul,
   ol,
@@ -253,12 +264,15 @@
   @if $size {
     font-size: rem($size);
   }
+
   @if $color {
     color: $color;
   }
+
   @if $weight {
     font-weight: $weight;
   }
+
   @if $lh {
     line-height: $lh;
   }
@@ -270,12 +284,15 @@
   @if $size {
     font-size: rem($size);
   }
+
   @if $color {
     color: $color;
   }
+
   @if $weight {
     font-weight: $weight;
   }
+
   @if $lh {
     line-height: $lh;
   }
@@ -286,9 +303,11 @@
   font-size: rem($size);
   font-weight: $weight;
   line-height: $lh;
+
   @if $color {
     color: $color;
   }
+
   @include media('<=phoneLandscape') {
     font-size: rem($mobileSize);
     line-height: $lhMobile;
@@ -300,9 +319,11 @@
   font-size: rem($size);
   font-weight: $weight;
   line-height: $lh;
+
   @if $color {
     color: $color;
   }
+
   @include media('<=phoneLandscape') {
     font-size: rem($mobileSize);
     line-height: $lhMobile;
@@ -314,22 +335,27 @@
   font-size: rem($size);
   font-weight: $weight;
   line-height: $lh;
+
   @if $color {
     color: $color;
   }
+
   @include media('<=phoneLandscape') {
     font-size: rem($mobileSize);
     line-height: $lhMobile;
   }
 }
+
 @mixin inter-body($size: 20px, $mobileSize: 16px, $weight: 400, $lh: 160%, $lhMobile: 160%, $color: v('dark-gray')) {
   font-family: v(ff-inter);
   font-size: rem($size);
   font-weight: $weight;
   line-height: $lh;
+
   @if $color {
     color: $color;
   }
+
   @include media('<=phoneLandscape') {
     font-size: rem($mobileSize);
     line-height: $lhMobile;
@@ -338,12 +364,14 @@
 }
 
 @mixin fade-in($waitTime, $translate: false) {
-  animation: wait #{$waitTime}, fade-in 0.7s #{$waitTime};
+  animation: wait #{$waitTime},
+  fade-in 0.7s #{$waitTime};
 
   @keyframes wait {
     0% {
       opacity: 0;
     }
+
     100% {
       opacity: 0;
     }
@@ -352,12 +380,15 @@
   @keyframes fade-in {
     0% {
       opacity: 0;
+
       @if $translate {
         transform: translateY($translate);
       }
     }
+
     100% {
       opacity: 1;
+
       @if $translate {
         transform: translateY(0px);
       }
@@ -373,9 +404,11 @@
       transform: scale($scaleX, $scaleY);
       opacity: 0;
     }
+
     50% {
       opacity: $opacity;
     }
+
     to {
       transform: scale($scaleX, $scaleY);
       opacity: 0;
@@ -386,7 +419,9 @@
 @mixin fontface($path, $family, $type: '', $weight, $style: normal) {
   @font-face {
     font-family: $family;
-    src: local(''), url('#{$path}#{$type}.woff2') format('woff2'), url('#{$path}#{$type}.woff') format('woff');
+    src: local(''),
+    url('#{$path}#{$type}.woff2') format('woff2'),
+    url('#{$path}#{$type}.woff') format('woff');
     font-weight: $weight;
     font-style: $style;
     font-display: swap;
@@ -396,7 +431,8 @@
 @mixin fontfaceWoff2($path, $family, $type: '', $weight, $style: normal) {
   @font-face {
     font-family: $family;
-    src: local(''), url('#{$path}#{$type}.woff2') format('woff2');
+    src: local(''),
+    url('#{$path}#{$type}.woff2') format('woff2');
     font-weight: $weight;
     font-style: $style;
     font-display: swap;
@@ -416,11 +452,13 @@
   animation-iteration-count: 1;
   animation-fill-mode: both;
   animation-delay: 0.6s;
+
   @keyframes moveUp {
     0% {
       opacity: 0;
       transform: translateY(30px);
     }
+
     100% {
       opacity: 1;
       transform: translateY(0px);
@@ -435,12 +473,10 @@
 @mixin labelOrange() {
   display: flex;
 
-  background: linear-gradient(
-    94.48deg,
-    rgba(245, 97, 75, 0.2) 0%,
-    rgba(245, 97, 75, 0.2) 0.01%,
-    rgba(250, 117, 69, 0.2) 100%
-  );
+  background: linear-gradient(94.48deg,
+      rgba(245, 97, 75, 0.2) 0%,
+      rgba(245, 97, 75, 0.2) 0.01%,
+      rgba(250, 117, 69, 0.2) 100%);
   border-radius: rem(4px);
   text-transform: uppercase;
   padding: rem(4px) rem(8px);
@@ -478,4 +514,8 @@
     0px 42px 33px rgba(20, 20, 21, 0.02), 0px 100px 80px rgba(20, 20, 21, 0.02);
 
   border-radius: rem($radius);
+}
+
+@mixin shadowMedium() {
+  box-shadow: 0px 0px 1px 0px rgba(232, 232, 232, 0.35), 0px 4px 15px 0px rgba(161, 161, 161, 0.15);
 }

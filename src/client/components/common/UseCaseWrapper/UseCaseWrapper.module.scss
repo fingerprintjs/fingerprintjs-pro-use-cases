@@ -116,7 +116,7 @@ h1.title {
         background: white;
         max-width: 1248px;
         padding: rem(0px);
-        @include boxWithShadow(12px);
+        @include shadowMedium();
     }
 }
 
