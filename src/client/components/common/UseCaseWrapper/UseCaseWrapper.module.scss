@@ -22,11 +22,11 @@ h1.title {
     padding: rem(32px);
     margin-top: rem(64px);
     margin-bottom: rem(64px);
-    border-radius: 6px;
+    border-radius: rem(12px);
     box-shadow: 0px 2px 4px 0px rgba(208, 208, 208, 0.15);
     // Generated using https://kovart.github.io/dashed-border-generator/ to customize spaces between dashes according to the design
     // border: 1px dashed v('orange-gradient') doesn't allow that
-    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='6' ry='6' stroke='%23F5614BFF' stroke-width='2' stroke-dasharray='1%2c 6' stroke-dashoffset='10' stroke-linecap='square'/%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='12' ry='12' stroke='%23F5614BFF' stroke-width='2' stroke-dasharray='1%2c 6' stroke-dashoffset='12' stroke-linecap='square'/%3e%3c/svg%3e");
 
     @include media('<=tabletWide') {
         flex-direction: column;
@@ -109,14 +109,14 @@ h1.title {
 
     .content {
         border: 1px solid v('gray-box-stroke');
-        border-radius: rem(8px);
+        border-radius: rem(12px);
         position: relative;
         margin: rem(96px) auto 0 auto;
         z-index: 1;
         background: white;
         max-width: 1248px;
         padding: rem(0px);
-        @include boxWithShadow;
+        @include boxWithShadow(12px);
     }
 }
 
