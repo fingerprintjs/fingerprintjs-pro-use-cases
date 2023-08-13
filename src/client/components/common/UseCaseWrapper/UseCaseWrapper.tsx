@@ -128,7 +128,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
       {moreResources?.length > 0 ? (
         <Container size="large" className={styles.learnMore}>
           <h3 className={styles.learnMoreTitle} ref={learnMoreRef}>
-            Learn More
+            Learn more
           </h3>
           <div className={styles.cardsContainer}>
             {moreResources?.map((resource, index) => (
