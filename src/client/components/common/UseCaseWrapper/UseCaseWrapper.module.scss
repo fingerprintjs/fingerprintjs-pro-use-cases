@@ -151,11 +151,10 @@ h1.title {
     }
 
     .card {
-        font-family: Inter;
         background-color: white;
         color: v('dark-black');
-        flex: 0 0 auto;
         padding: rem(24px) rem(16px);
+        display: flex;
         flex-direction: column;
         align-items: flex-start;
         gap: rem(8px);
