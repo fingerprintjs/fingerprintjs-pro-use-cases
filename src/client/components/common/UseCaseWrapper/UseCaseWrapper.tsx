@@ -116,6 +116,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
               },
               maxWidth: '600px',
               margin: '0px auto',
+              borderRadius: '12px',
               ...contentSx,
             }}
           >

@@ -407,7 +407,7 @@ export default function PlaygroundPage() {
       description={<p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>}
       mentionResetButton={false}
       hideSrcListItem={true}
-      contentSx={{ boxShadow: 'none', maxWidth: '1248px' }}
+      contentSx={{ boxShadow: 'none', maxWidth: '1248px', minHeight: '40vh' }}
     >
       <Playground />
     </UseCaseWrapper>
