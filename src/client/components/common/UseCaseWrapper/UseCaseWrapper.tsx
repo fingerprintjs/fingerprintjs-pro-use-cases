@@ -82,7 +82,6 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
                   outlined
                   openNewTab
                   className={styles.resourcesButton}
-                  buttonId="log-in-top-nav"
                 >
                   <Image src={Lightbulb} alt="Lightbulb" />
                   See related resources
