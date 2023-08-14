@@ -35,6 +35,8 @@
   column-gap: rem(20px);
   row-gap: rem(40px);
   padding: 0 rem(96px) rem(168px) rem(96px);
+  margin: 0 auto;
+  max-width: 1440px; // 1248px + 96 * 2 (padding)
 
   @include media('<=phoneLandscape') {
     padding: 0 rem(20px) rem(80px) rem(20px);
@@ -54,6 +56,7 @@
   align-items: flex-start;
   border-radius: 8px;
   border: 1px solid v('gray-box-stroke');
+  overflow: hidden;
 
   @include shadowMedium();
 }
