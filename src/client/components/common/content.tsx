@@ -6,6 +6,7 @@ export type UseCase = {
   description?: React.ReactNode;
   articleUrl?: string;
   instructions: readonly React.ReactNode[];
+  doNotMentionResetButton?: boolean;
   moreResources?: readonly {
     type: 'Use case tutorial' | 'Case study' | 'Industry' | 'Article';
     title: string;
@@ -114,6 +115,7 @@ export const USE_CASES = {
     articleUrl: 'https://fingerprint.com/use-cases/payment-fraud/',
     description:
       'Use the demo to see how Fingerprint can protect your transactions from card cracking attempts, stolen credit cards, and reduce chargebacks.',
+    doNotMentionResetButton: true,
     instructions: [
       <>Change the pre-filled card details to simulate testing stolen credit cards.</>,
       <>Try placing an order multiple times. You will be stopped after 3 attempts.</>,
@@ -198,6 +200,7 @@ export const USE_CASES = {
     title: 'Web Scraping Prevention',
     url: '/web-scraping',
     articleUrl: 'https://fingerprint.com/use-cases/web-scraping-prevention/',
+    doNotMentionResetButton: true,
     description: (
       <>
         <p>

@@ -9,30 +9,27 @@ import { UseCase } from '../content';
 import ExternalLinkIcon from './externalLinkArrow.svg';
 
 type UseCaseWrapperProps = {
-  title: string;
-  description?: React.ReactNode;
-  articleURL?: string;
-  listItems?: readonly React.ReactNode[];
+  useCase: Partial<UseCase>;
   children: React.ReactNode;
-  hideSrcListItem?: boolean;
-  hideDivider?: boolean;
-  mentionResetButton?: boolean;
+  hideGithubLink?: boolean;
   returnUrl?: string;
   contentSx?: React.CSSProperties;
-  moreResources?: UseCase['moreResources'];
 };
 
 export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
-  title,
-  description,
-  articleURL,
-  listItems,
   children,
-  hideSrcListItem = false,
-  mentionResetButton = true,
+  hideGithubLink: hideSrcListItem = false,
   contentSx,
-  moreResources,
+  useCase,
 }) => {
+  const {
+    title,
+    description,
+    articleUrl,
+    instructions,
+    moreResources,
+    doNotMentionResetButton: hideResetButton,
+  } = useCase ?? {};
   const learnMoreRef = useRef<ElementRef<'h3'>>();
 
   return (
@@ -47,25 +44,25 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
               <Image src={ExternalLinkIcon} alt="" />
             </a>
           )}
-          {articleURL && (
-            <a href={articleURL} target="_blank" rel="noreferrer">
+          {articleUrl && (
+            <a href={articleUrl} target="_blank" rel="noreferrer">
               See technical tutorial
               <Image src={ExternalLinkIcon} alt="" />
             </a>
           )}
         </div>
-        {listItems?.length > 0 && (
+        {instructions?.length > 0 && (
           <div className={styles.howToUse}>
             <div>
               <h2>How to use this demo</h2>
               <ol>
-                {listItems?.map((item, index) => (
+                {instructions?.map((item, index) => (
                   <li key={index}>
                     {/* The wrapper div here is necessary for styles to work. */}
                     <div>{item}</div>
                   </li>
                 ))}
-                {mentionResetButton && (
+                {!hideResetButton && (
                   <li>
                     <div>
                       You can reset this scenario using the <b>Restart</b> button on the top right.
@@ -104,6 +101,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
               maxWidth: '600px',
               margin: '0px auto',
               borderRadius: '12px',
+              minHeight: '60vh',
               ...contentSx,
             }}
           >

@@ -19,8 +19,6 @@ import { calculateMonthInstallment } from '../../shared/loan-risk/calculate-mont
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
 
-const LOAN_RISK = USE_CASES.loanRisk;
-
 type SliderFieldProps = {
   label: string;
   min: number;
@@ -111,12 +109,7 @@ export default function LoanRisk() {
   const isLoading = visitorDataQuery.isLoading || loanRequestMutation.isLoading;
 
   return (
-    <UseCaseWrapper
-      title={LOAN_RISK.title}
-      description={LOAN_RISK.description}
-      listItems={LOAN_RISK.instructions}
-      moreResources={USE_CASES.loanRisk.moreResources}
-    >
+    <UseCaseWrapper useCase={USE_CASES.loanRisk}>
       <form onSubmit={handleSubmit}>
         <Stack direction="column" spacing={6}>
           <TextField

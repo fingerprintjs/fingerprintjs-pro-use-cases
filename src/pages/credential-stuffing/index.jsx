@@ -16,8 +16,6 @@ import { useVisitorData } from '../../client/use-visitor-data';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
 
-const CREDENTIAL_STUFFING = USE_CASES.credentialStuffing;
-
 const useStyles = makeStyles((theme) => ({
   margin: {
     'margin-top': theme.spacing(1),
@@ -97,13 +95,7 @@ export default function Index() {
   };
 
   return (
-    <UseCaseWrapper
-      title={CREDENTIAL_STUFFING.title}
-      description={CREDENTIAL_STUFFING.description}
-      articleURL={CREDENTIAL_STUFFING.articleUrl}
-      listItems={CREDENTIAL_STUFFING.instructions}
-      moreResources={CREDENTIAL_STUFFING.moreResources}
-    >
+    <UseCaseWrapper useCase={USE_CASES.credentialStuffing}>
       <form onSubmit={handleSubmit} className="Form_container">
         <FormControl fullWidth className={clsx(useStyles().margin)} variant="outlined">
           <Typography variant="caption" className="UserInput_label">

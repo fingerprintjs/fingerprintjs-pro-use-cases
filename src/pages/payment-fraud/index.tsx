@@ -88,14 +88,7 @@ export default function Index() {
   }
 
   return (
-    <UseCaseWrapper
-      title={PAYMENT_FRAUD.title}
-      description={PAYMENT_FRAUD.description}
-      articleURL={PAYMENT_FRAUD.articleUrl}
-      listItems={PAYMENT_FRAUD.instructions}
-      moreResources={USE_CASES.paymentFraud.moreResources}
-      mentionResetButton={false}
-    >
+    <UseCaseWrapper useCase={USE_CASES.paymentFraud}>
       <form onSubmit={handleSubmit} className="Form_container">
         <FormControl fullWidth className={clsx(useStyles().margin)} variant="outlined">
           <Typography variant="caption" className="UserInput_label">

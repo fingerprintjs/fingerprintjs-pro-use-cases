@@ -99,13 +99,7 @@ export default function Index() {
           <Button onClick={() => setDidAcknowledge(true)}>Okay, I understand</Button>
         </DialogActions>
       </Dialog>
-      <UseCaseWrapper
-        title={PERSONALIZATION.title}
-        listItems={PERSONALIZATION.instructions}
-        description={PERSONALIZATION.description}
-        articleURL={PERSONALIZATION.articleUrl}
-        moreResources={PERSONALIZATION.moreResources}
-      >
+      <UseCaseWrapper useCase={USE_CASES.personalization}>
         <PersonalizationTopSection
           search={search}
           onSearch={setSearch}
