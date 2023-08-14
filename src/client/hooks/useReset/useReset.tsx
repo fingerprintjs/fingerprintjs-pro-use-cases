@@ -3,6 +3,7 @@ import { useMutation } from 'react-query';
 import { ResetRequest, ResetResponse } from '../../../pages/api/admin/reset';
 import { useSnackbar } from 'notistack';
 import styles from './userReset.module.scss';
+import { useRouter } from 'next/router';
 
 type UseResetParams = {
   onError?: () => void;
@@ -12,6 +13,7 @@ type UseResetParams = {
 export const useReset = ({ onError, onSuccess }: UseResetParams) => {
   const { getData } = useVisitorData({ ignoreCache: true });
   const { enqueueSnackbar } = useSnackbar();
+  const { asPath } = useRouter();
 
   const resetMutation = useMutation<ResetResponse>(
     'resetMutation',
@@ -49,11 +51,11 @@ export const useReset = ({ onError, onSuccess }: UseResetParams) => {
               anchorOrigin: { vertical: 'bottom', horizontal: 'right' },
               autoHideDuration: 15000,
               className: styles.snackbar,
-            }
+            },
           );
         }),
-    }
+    },
   );
 
-  return resetMutation;
+  return { ...resetMutation, shouldDisplayResetButton: asPath !== '/' && asPath !== '/playground' };
 };

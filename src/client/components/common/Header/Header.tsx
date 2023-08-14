@@ -4,7 +4,7 @@ import MobileNavbar from '../MobileNavbar';
 import Container from '../Container';
 import HeaderBar from '../HeaderBar/HeaderBar';
 import classNames from 'classnames';
-import { PLATFORM_MENU_ITEMS, URL, USE_CASES } from '../content';
+import { PLATFORM_MENU_ITEMS, URL, USE_CASES_ARRAY, USE_CASES_NAVIGATION } from '../content';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import Image from 'next/image';
 import LogoSvg from './fpjs.svg';
@@ -45,7 +45,8 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
   const handleToggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
-  const { mutate } = useReset({});
+
+  const { mutate, shouldDisplayResetButton } = useReset({});
 
   return (
     <>
@@ -78,11 +79,11 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                     darkMode,
                     leftColumns: [
                       {
-                        list: USE_CASES.slice(0, 3),
+                        list: USE_CASES_NAVIGATION.slice(0, 3),
                         cardBackground: true,
                       },
                       {
-                        list: USE_CASES.slice(3),
+                        list: USE_CASES_NAVIGATION.slice(3),
                         cardBackground: true,
                       },
                     ],
@@ -100,17 +101,19 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                 />
               </div>
               <div className={styles.navRight}>
-                <Tooltip
-                  title={
-                    'Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action.'
-                  }
-                  enterTouchDelay={400}
-                >
-                  <button className={classNames(styles.desktopOnly, styles.resetButton)} onClick={() => mutate()}>
-                    Restart
-                    <Image src={Restart} alt="Restart button" />
-                  </button>
-                </Tooltip>
+                {shouldDisplayResetButton && (
+                  <Tooltip
+                    title={
+                      'Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action.'
+                    }
+                    enterTouchDelay={400}
+                  >
+                    <button className={classNames(styles.desktopOnly, styles.resetButton)} onClick={() => mutate()}>
+                      Restart
+                      <Image src={Restart} alt="Restart button" />
+                    </button>
+                  </Tooltip>
+                )}
                 <Button
                   href={'https://dashboard.fingerprint.com/login'}
                   size="medium"

@@ -40,7 +40,6 @@ body {
   min-height: 100vh;
 
   &.isMobileMenuOpen {
-
     //prevent scrolling on iOS when mobile menu is open
     @include media('<=desktopHeader') {
       overflow: clip;
@@ -48,6 +47,15 @@ body {
       max-width: 100%;
     }
   }
+}
+
+code {
+  color: v('orange-gradient');
+  word-wrap: break-word;
+  font-family: JetBrains Mono;
+  font-style: normal;
+  font-weight: 300;
+  letter-spacing: -0.32px;
 }
 
 .truncate {

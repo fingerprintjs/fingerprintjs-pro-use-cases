@@ -17,7 +17,7 @@ export function checkFreshIdentificationRequest(visitorData) {
     return new CheckResult(
       'Hmmm, sneaky trying to forge information from the client-side, no luck this time, no sensitive action was performed.',
       messageSeverity.Error,
-      checkResultType.RequestIdMismatch
+      checkResultType.RequestIdMismatch,
     );
   }
 
@@ -29,7 +29,7 @@ export function checkFreshIdentificationRequest(visitorData) {
     return new CheckResult(
       'Old requestId detected. Action ignored and logged.',
       messageSeverity.Error,
-      checkResultType.OldTimestamp
+      checkResultType.OldTimestamp,
     );
   }
 }
@@ -42,7 +42,7 @@ export function checkConfidenceScore(visitorData) {
     return new CheckResult(
       "Low confidence score, we'd rather verify you with the second factor,",
       messageSeverity.Error,
-      checkResultType.LowConfidenceScore
+      checkResultType.LowConfidenceScore,
     );
   }
 }
@@ -53,7 +53,7 @@ export function checkIpAddressIntegrity(visitorData, request) {
     return new CheckResult(
       'IP mismatch. An attacker might have tried to phish the victim.',
       messageSeverity.Error,
-      checkResultType.IpMismatch
+      checkResultType.IpMismatch,
     );
   }
 }
@@ -97,7 +97,7 @@ export function checkOriginsIntegrity(visitorData, request) {
     return new CheckResult(
       'Origin mismatch. An attacker might have tried to phish the victim.',
       messageSeverity.Error,
-      checkResultType.ForeignOrigin
+      checkResultType.ForeignOrigin,
     );
   }
 }

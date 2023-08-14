@@ -28,7 +28,7 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
   if (!isRequestIdFormatValid(requestId)) {
     sendForbiddenResponse(
       res,
-      new CheckResult('Invalid request ID.', messageSeverity.Error, checkResultType.RequestIdMismatch)
+      new CheckResult('Invalid request ID.', messageSeverity.Error, checkResultType.RequestIdMismatch),
     );
     return;
   }
@@ -48,8 +48,8 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
         new CheckResult(
           'Request ID not found, potential spoofing attack.',
           messageSeverity.Error,
-          checkResultType.RequestIdMismatch
-        )
+          checkResultType.RequestIdMismatch,
+        ),
       );
     } else {
       // Handle other errors
@@ -64,8 +64,8 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
         'Bot detection is disabled, access allowed.',
         messageSeverity.Success,
         checkResultType.Passed,
-        getFlightResults(from, to)
-      )
+        getFlightResults(from, to),
+      ),
     );
     return;
   }
@@ -76,8 +76,8 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
       new CheckResult(
         '🤖 Malicious bot detected, access denied.',
         messageSeverity.Error,
-        checkResultType.MaliciousBotDetected
-      )
+        checkResultType.MaliciousBotDetected,
+      ),
     );
     // Optionally, here you could also save the bot's IP address to a blocklist in your database
     // and block all requests from this IP address in the future at a web server/firewall level.
@@ -90,8 +90,8 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
       new CheckResult(
         'Server error, unexpected bot detection value.',
         messageSeverity.Error,
-        checkResultType.ServerError
-      )
+        checkResultType.ServerError,
+      ),
     );
     return;
   }
@@ -102,7 +102,7 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
   if (!visitIpMatchesRequestIp(botData.ip, req)) {
     sendForbiddenResponse(
       res,
-      new CheckResult('Visit IP does not match request IP.', messageSeverity.Error, checkResultType.IpMismatch)
+      new CheckResult('Visit IP does not match request IP.', messageSeverity.Error, checkResultType.IpMismatch),
     );
     return;
   }
@@ -114,8 +114,8 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
       new CheckResult(
         'Visit origin does not match request origin or is not allowed.',
         messageSeverity.Error,
-        checkResultType.ForeignOrigin
-      )
+        checkResultType.ForeignOrigin,
+      ),
     );
     return;
   }
@@ -124,7 +124,7 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
   if (Date.now() - Number(new Date(botData.time)) > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
     sendForbiddenResponse(
       res,
-      new CheckResult('Old visit, potential replay attack.', messageSeverity.Error, checkResultType.OldTimestamp)
+      new CheckResult('Old visit, potential replay attack.', messageSeverity.Error, checkResultType.OldTimestamp),
     );
     return;
   }
@@ -136,8 +136,8 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
       'No malicious bot nor spoofing detected, access allowed.',
       messageSeverity.Success,
       checkResultType.Passed,
-      getFlightResults(from, to)
-    )
+      getFlightResults(from, to),
+    ),
   );
 }
 

@@ -33,10 +33,10 @@
       flex: none;
       padding: 0 rem(20px) rem(16px) rem(20px);
 
-      >* {
+      > * {
         flex: 1;
 
-        +* {
+        + * {
           margin-left: 1rem;
         }
       }
@@ -94,7 +94,7 @@
       display: flex;
       gap: rem(8px);
       align-items: center;
-      font-weight: 400;
+      font-weight: 500;
     }
   }
 
@@ -107,7 +107,7 @@
 
     padding: 0 rem(20px) rem(24px) rem(20px);
 
-    >span {
+    > span {
       height: 28px;
       display: block;
       margin-bottom: 3rem;
@@ -122,7 +122,7 @@
         align-items: center;
         margin-top: 1rem;
 
-        >*+* {
+        > * + * {
           margin-left: 1rem;
         }
 

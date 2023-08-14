@@ -10,10 +10,13 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
-import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { useVisitorData } from '../../client/use-visitor-data';
 import React from 'react';
 import { Theme } from '@mui/material/styles/createTheme';
+import { USE_CASES } from '../../client/components/common/content';
+
+const PAYMENT_FRAUD = USE_CASES.paymentFraud;
 
 const useStyles = makeStyles<Theme>((theme) => ({
   margin: {
@@ -86,22 +89,12 @@ export default function Index() {
 
   return (
     <UseCaseWrapper
-      title="Payment Fraud problem"
-      description={<p>This page demonstrates protected credit card form protected against a variety types of fraud.</p>}
-      articleURL="https://fingerprint.com/use-cases/payment-fraud/"
-      listItems={[
-        <>
-          Only prefilled card details are correct. When you change them, the system will check if you tried to perform
-          Card Cracking. After 3 unsuccessful attempts is this visitor flagged as suspicious and cannot place orders
-          anymore.
-        </>,
-        <>
-          If you have a positive chargeback history, can you place your order? Try to place a regular order after two
-          chargebacks.
-        </>,
-        <>Simulate a visitor using a stolen card. Can you place another order from the same browser?</>,
-        <>You can also try switching to the incognito mode or clearing cookies.</>,
-      ]}
+      title={PAYMENT_FRAUD.title}
+      description={PAYMENT_FRAUD.description}
+      articleURL={PAYMENT_FRAUD.articleUrl}
+      listItems={PAYMENT_FRAUD.instructions}
+      moreResources={USE_CASES.paymentFraud.moreResources}
+      mentionResetButton={false}
     >
       <form onSubmit={handleSubmit} className="Form_container">
         <FormControl fullWidth className={clsx(useStyles().margin)} variant="outlined">

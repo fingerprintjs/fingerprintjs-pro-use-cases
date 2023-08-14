@@ -15,7 +15,7 @@ export function useGetVisitsListener({ visitorId, linkedId = null }) {
         queryClient.setQueryData(queryKey, payload);
       }
     },
-    [linkedId, queryClient, visitorId]
+    [linkedId, queryClient, visitorId],
   );
 
   useSocketEvent('visit', handleVisit);

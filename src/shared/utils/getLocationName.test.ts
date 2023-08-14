@@ -19,7 +19,7 @@ describe('getLocationName test', () => {
       getLocationName({
         city: { name: 'Columbus' },
         country: { code: 'US', name: 'United States' },
-      })
+      }),
     ).toBe('Columbus, United States');
   });
 
@@ -29,7 +29,7 @@ describe('getLocationName test', () => {
         city: { name: 'Columbus' },
         country: { code: 'US', name: 'United States' },
         subdivisions: [{ isoCode: 'OH', name: 'Ohio' }],
-      })
+      }),
     ).toBe('Columbus, Ohio, United States');
   });
 
@@ -43,7 +43,7 @@ describe('getLocationName test', () => {
           { isoCode: 'OH', name: 'Ohio' },
           { isoCode: 'FK', name: 'Fake additional subdivision' },
         ],
-      })
+      }),
     ).toBe('Columbus, Ohio, United States');
   });
 });

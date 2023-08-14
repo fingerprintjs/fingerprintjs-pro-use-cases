@@ -1,4 +1,4 @@
-import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { useVisitorData } from '../../client/use-visitor-data';
 import { Alert, CircularProgress } from '@mui/material';
 import { useGetVisits } from '../../client/api/identification/useGetVisits';

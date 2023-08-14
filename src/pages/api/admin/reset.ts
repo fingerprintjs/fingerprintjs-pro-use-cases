@@ -85,8 +85,8 @@ async function deleteVisitorIdData(visitorData) {
 
   const deletedPersonalizationResult = await Promise.all(
     [UserCartItem, UserPreferences, UserCartItem, UserSearchHistory].map((model) =>
-      tryToDestroy(() => model.destroy(options))
-    )
+      tryToDestroy(() => model.destroy(options)),
+    ),
   );
 
   const deletedPersonalizationCount = deletedPersonalizationResult.reduce((acc, cur) => acc + cur, 0);
@@ -97,7 +97,7 @@ async function deleteVisitorIdData(visitorData) {
   return new CheckResult(
     `Deleted ${loginAttemptsRowsRemoved} rows for Credential Stuffing problem. Deleted ${paymentAttemptsRowsRemoved} rows for Payment Fraud problem. Deleted ${deletedPersonalizationCount} entries related to personalization.  Deleted ${deletedLoanRequests} loan request entries. Deleted ${deletedPaywallData} rows for the Paywall problem. Deleted ${couponsRemoved} rows for the Coupon fraud problem.`,
     messageSeverity.Success,
-    checkResultType.Passed
+    checkResultType.Passed,
   );
 }
 

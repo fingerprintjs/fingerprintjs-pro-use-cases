@@ -4,7 +4,7 @@ export function apiRequest(
   pathname: string,
   fpData: GetResult,
   body: Record<string, any> = {},
-  abortSignal: AbortSignal = null
+  abortSignal: AbortSignal = null,
 ) {
   return fetch(pathname, {
     method: 'POST',

@@ -84,7 +84,7 @@ export async function checkCountOfViewedArticles(visitorData, req) {
     return new CheckResult(
       'You have reached your daily view limit, purchase our membership plan to view unlimited articles.',
       messageSeverity.Error,
-      checkResultType.ArticleViewLimitExceeded
+      checkResultType.ArticleViewLimitExceeded,
     );
   }
 }

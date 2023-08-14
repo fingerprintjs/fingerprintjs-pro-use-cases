@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
-import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { useVisitorData } from '../../client/use-visitor-data';
 
 export default function Index() {
@@ -49,6 +49,7 @@ export default function Index() {
   return (
     <UseCaseWrapper
       hideSrcListItem
+      mentionResetButton={false}
       title="Administration"
       description={
         <p>
@@ -56,6 +57,9 @@ export default function Index() {
           you were locked out of a specific action.
         </p>
       }
+      contentSx={{
+        minHeight: '40vh',
+      }}
     >
       <form onSubmit={handleSubmit} className="Form_container">
         <Button

@@ -14,11 +14,6 @@ html {
   overflow-x: hidden;
 }
 
-code {
-  color: #d63384;
-  word-wrap: break-word;
-}
-
 .UsecaseWrapper_alert {
   margin-top: 2.5rem;
   margin-bottom: 2.5rem;

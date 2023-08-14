@@ -29,7 +29,7 @@ export async function seedProducts() {
         tags: [coffee],
         timestamp: new Date().getTime(),
       });
-    })
+    }),
   );
 
   await sequelize.sync();

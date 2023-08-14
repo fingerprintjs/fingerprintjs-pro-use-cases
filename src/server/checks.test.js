@@ -29,7 +29,7 @@ describe('checks', () => {
           headers: {
             'x-forwarded-for': sampleIps.ipv6[0],
           },
-        }
+        },
       );
       expect(result).toBeFalsy();
     });
@@ -47,7 +47,7 @@ describe('checks', () => {
           headers: {
             'x-forwarded-for': sampleIps.ipv4[0],
           },
-        }
+        },
       );
       expect(result).toBeFalsy();
     });
@@ -65,7 +65,7 @@ describe('checks', () => {
           headers: {
             'x-forwarded-for': sampleIps.ipv4[1],
           },
-        }
+        },
       );
       expect(result).toBeInstanceOf(CheckResult);
     });

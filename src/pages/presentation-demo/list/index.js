@@ -2,7 +2,7 @@
 import { useListVisits } from '../../../client/api/identification/useListVisits';
 import { CircularProgress, Grid } from '@mui/material';
 import { IdentificationCard } from '../../../client/components/identification/identification-card';
-import { UseCaseWrapper } from '../../../client/components/use-case-wrapper';
+import { UseCaseWrapper } from '../../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { useVisitsListener } from '../../../client/api/identification/useVisitsListener';
 
 export function getServerSideProps(ctx) {

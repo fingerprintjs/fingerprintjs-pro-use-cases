@@ -10,7 +10,7 @@ import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import { FP_LOAD_OPTIONS } from '../client/use-visitor-data';
 import { Paper } from '@mui/material';
 import { AppProps } from 'next/app';
-import NewHeader from '../client/components/common/Header';
+import NewHeader from '../client/components/common/Header/Header';
 import { FunctionComponent, PropsWithChildren } from 'react';
 import DeploymentUtils from '../client/DeploymentUtils';
 import Footer from '../client/components/common/Footer/Footer';
@@ -28,10 +28,7 @@ const Layout: FunctionComponent<PropsWithChildren<{ embed: boolean }>> = ({ chil
   return (
     <div className={styles.layout}>
       {embed ? null : <NewHeader />}
-      <Paper
-        variant="outlined"
-        sx={{ flexGrow: 1, borderRadius: 0, border: 'none', paddingBottom: (t) => t.spacing(4) }}
-      >
+      <Paper variant="outlined" sx={{ flexGrow: 1, borderRadius: 0, border: 'none' }}>
         {children}
       </Paper>
       {embed ? null : <Footer />}
