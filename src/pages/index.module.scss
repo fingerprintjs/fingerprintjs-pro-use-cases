@@ -1,10 +1,16 @@
 .hero {
   margin-top: rem(96px);
   margin-bottom: rem(96px);
+  text-align: center;
+
+  @include media('<=phoneLandscape') {
+    margin-top: rem(40px);
+    margin-bottom: rem(64px);
+    text-align: left;
+  }
 
   .title {
     font-family: Inter;
-    text-align: center;
     margin-bottom: rem(16px);
     font-size: 48px;
     font-style: normal;
@@ -16,7 +22,6 @@
     max-width: rem(820px);
     margin: 0 auto;
     color: v('dark-gray');
-    text-align: center;
     font-size: rem(20px);
     font-style: normal;
     font-weight: 400;
@@ -29,14 +34,26 @@
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   column-gap: rem(20px);
   row-gap: rem(40px);
-  padding: 0 rem(96px) rem(196px) rem(96px);
+  padding: 0 rem(96px) rem(168px) rem(96px);
 
   @include media('<=phoneLandscape') {
     padding: 0 rem(20px) rem(80px) rem(20px);
+    row-gap: rem(24px);
   }
 
-  /// ???
   @include media('<=phone') {
-    grid-template-columns: repeat(auto-fit, 1fr);
+    grid-template-columns: auto;
   }
+}
+
+.useCaseCard {
+  display: flex;
+  flex-direction: column;
+  padding: rem(32px);
+  justify-content: space-between;
+  align-items: flex-start;
+  border-radius: 8px;
+  border: 1px solid v('gray-box-stroke');
+
+  @include shadowMedium();
 }

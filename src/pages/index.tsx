@@ -99,7 +99,10 @@ export default function Index() {
       </Container>
       <Container size="large" className={styles.useCaseGrid}>
         {pageTiles.map((pageTile) => (
-          <PageTile key={pageTile.url} {...pageTile} />
+          <div className={styles.useCaseCard}>
+            <h2>{pageTile.title}</h2>
+            <div>{pageTile.description}</div>
+          </div>
         ))}
       </Container>
     </>
