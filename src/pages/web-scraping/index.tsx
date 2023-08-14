@@ -14,7 +14,6 @@ import FlightCard, { Flight } from '../../client/components/web-scraping/FlightC
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import styles from '../../styles/web-scraping.module.css';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import Link from 'next/link';
 import { useQueryState } from 'use-location-state/next';
 import { useQuery, UseQueryResult } from 'react-query';
 import { GetServerSideProps, NextPage } from 'next';
