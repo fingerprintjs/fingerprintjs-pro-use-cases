@@ -12,6 +12,9 @@ import {
 import { PageTile, PageTileProps } from '../client/components/PageTile';
 import { Box, Divider, Typography } from '@mui/material';
 
+import styles from './index.module.scss';
+import Container from '../client/components/common/Container';
+
 const pageTiles: PageTileProps[] = [
   {
     title: 'Smart signals playground',
@@ -79,73 +82,26 @@ As a result, you will protect your users and your business against various payme
 
 export default function Index() {
   return (
-    <Box
-      sx={{
-        overflow: 'auto',
-        overflowX: 'hidden',
-        paddingBottom: (theme) => theme.spacing(6),
-      }}
-    >
-      <div>
-        <Box
-          sx={{
-            maxWidth: '600px',
-            margin: '0 auto',
-            padding: (theme) => theme.spacing(2),
-            marginTop: (theme) => theme.spacing(4),
-          }}
-        >
-          <div>
-            <Typography variant="h1" sx={{ fontSize: '3rem', fontWeight: 500 }}>
-              Fingerprint Pro Use Cases
-            </Typography>
-          </div>
-          <div>
-            <p>
-              This website demonstrates various use cases for{' '}
-              <a href="https://fingerprint.com" target="_blank">
-                {' '}
-                Fingerprint Pro
-              </a>{' '}
-              — a device identity platform with 99.5% accuracy.
-            </p>
-            <Divider />
-            <p>
-              Each use case demo covers frontend and backend sample implementation with a persistent data layer. The
-              open-source repository is available on{' '}
-              <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases">GitHub</a>.
-            </p>
-            <p>
-              Go to the <Link href="/admin">Admin page</Link> to reset all scenarios for your browser.
-            </p>
-          </div>
-        </Box>
-        <Box
-          component="main"
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: {
-              // makes card responsive on sub 300px screens
-              '300': 'repeat(auto-fit, minmax(160px, 1fr))',
-              sm: 'repeat(auto-fit, minmax(300px, 1fr))',
-            },
-            maxWidth: '1200px',
-            margin: '0 auto',
-            padding: (theme) => ({
-              xs: theme.spacing(1),
-              sm: theme.spacing(4),
-            }),
-            gap: (theme) => ({
-              xs: theme.spacing(2),
-              sm: theme.spacing(4),
-            }),
-          }}
-        >
-          {pageTiles.map((pageTile) => (
-            <PageTile key={pageTile.url} {...pageTile} />
-          ))}
-        </Box>
-      </div>
-    </Box>
+    <>
+      <Container size="large" className={styles.hero}>
+        <h1 className={styles.title}>Fingerprint use cases</h1>
+        <div className={styles.intro}>
+          <p>
+            Explore the wide range of major use cases supported by Fingerprint, including a comprehensive demo that
+            showcases both frontend and backend sample implementations with a persistent data layer for each use case. 
+          </p>
+
+          <p>
+            This provides insights and practical guidance on how to effectively implement Fingerprint for the specific
+            use case that is most relevant to your business.
+          </p>
+        </div>
+      </Container>
+      <Container size="large" className={styles.useCaseGrid}>
+        {pageTiles.map((pageTile) => (
+          <PageTile key={pageTile.url} {...pageTile} />
+        ))}
+      </Container>
+    </>
   );
 }
