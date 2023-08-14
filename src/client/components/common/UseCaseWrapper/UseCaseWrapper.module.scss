@@ -16,6 +16,29 @@ h1.title {
 
 .description {
     max-width: rem(640px);
+    margin-bottom: rem(24px);
+}
+
+.externalLinks {
+    display: flex;
+    gap: 24px;
+
+    @include media('<=phoneLandscape') {
+        flex-direction: column;
+    }
+
+    a {
+        display: flex;
+        align-items: baseline;
+        gap: rem(5px);
+        font-family: JetBrains Mono;
+        font-size: rem(16px);
+        font-style: normal;
+        font-weight: 500;
+        line-height: 100%;
+        letter-spacing: -0.16px;
+        white-space: nowrap;
+    }
 }
 
 .howToUse {

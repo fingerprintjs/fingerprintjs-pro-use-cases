@@ -6,6 +6,7 @@ import Lightbulb from './lightbulb.svg';
 import Image from 'next/image';
 import { Paper } from '@mui/material';
 import { UseCase } from '../content';
+import ExternalLinkIcon from './externalLinkArrow.svg';
 
 type UseCaseWrapperProps = {
   title: string;
@@ -39,6 +40,20 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
       <Container size="large">
         <h1 className={styles.title}>{title}</h1>
         <div className={styles.description}>{description}</div>
+        <div className={styles.externalLinks}>
+          {!hideSrcListItem && (
+            <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases" target="_blank" rel="noreferrer">
+              <div>See on GitHub</div>
+              <Image src={ExternalLinkIcon} alt="" />
+            </a>
+          )}
+          {articleURL && (
+            <a href={articleURL} target="_blank" rel="noreferrer">
+              <div>See technical tutorial</div>
+              <Image src={ExternalLinkIcon} alt="" />
+            </a>
+          )}
+        </div>
         {listItems?.length > 0 && (
           <div className={styles.howToUse}>
             <div>
@@ -54,32 +69,6 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
                   <li>
                     <div>
                       You can reset this scenario using the <b>Restart</b> button on the top right.
-                    </div>
-                  </li>
-                )}
-                {articleURL && (
-                  <li>
-                    <div>
-                      Learn more about this scenario in the{' '}
-                      <a href={articleURL} target="_blank" rel="noreferrer">
-                        {title}
-                      </a>{' '}
-                      article.
-                    </div>
-                  </li>
-                )}
-                {!hideSrcListItem && (
-                  <li>
-                    <div>
-                      See the source code for this and other use cases{' '}
-                      <a
-                        href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        on GitHub
-                      </a>
-                      .
                     </div>
                   </li>
                 )}
