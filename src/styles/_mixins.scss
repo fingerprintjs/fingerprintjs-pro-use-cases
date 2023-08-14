@@ -1,6 +1,5 @@
 @use 'sass:math';
 
-
 @import '~include-media/dist/_include-media';
 
 // Grid multiplier
@@ -12,9 +11,7 @@
 @function v($name, $fallback: null) {
   @if ($fallback) {
     @return var(--#{$name}, #{$fallback});
-  }
-
-  @else {
+  } @else {
     @return var(--#{$name});
   }
 }
@@ -25,14 +22,10 @@
     @if map-has-key($theme, $name) {
       @return map-get($theme, $name);
     }
-  }
-
-  @else {
+  } @else {
     @if map-has-key($colors, $name) {
       @return map-get($colors, $name);
-    }
-
-    @else if map-has-key($brand-colors, $name) {
+    } @else if map-has-key($brand-colors, $name) {
       @return map-get($brand-colors, $name);
     }
   }
@@ -119,7 +112,10 @@
       font-size: $min-font-size;
 
       @media screen and (min-width: $min-vw) {
-        font-size: calc(#{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+        font-size: calc(
+          #{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} *
+            ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)})
+        );
       }
 
       @media screen and (min-width: $max-vw) {
@@ -159,7 +155,7 @@
   }
 
   @if ($hasChild) {
-    >* {
+    > * {
       position: absolute;
       top: 0;
       left: 0;
@@ -179,7 +175,7 @@
   height: $height;
   overflow: hidden;
 
-  >* {
+  > * {
     box-sizing: content-box;
     height: $height - $scollbarSize;
     width: 100%;
@@ -222,7 +218,7 @@
     margin: calc(-1 * var(--gap)) 0 0 calc(-1 * var(--gap));
     width: calc(100% + var(--gap));
 
-    >* {
+    > * {
       margin: var(--gap) 0 0 var(--gap);
     }
   }
@@ -231,7 +227,6 @@
 /*=====  End of GAP FOR FLEXBOX  ======*/
 
 @mixin overrideContentStyle($fontSize: 2rem, $headerSize: 2rem, $marginBottom: 2rem) {
-
   p,
   ul,
   ol,
@@ -364,8 +359,9 @@
 }
 
 @mixin fade-in($waitTime, $translate: false) {
-  animation: wait #{$waitTime},
-  fade-in 0.7s #{$waitTime};
+  animation:
+    wait #{$waitTime},
+    fade-in 0.7s #{$waitTime};
 
   @keyframes wait {
     0% {
@@ -419,9 +415,10 @@
 @mixin fontface($path, $family, $type: '', $weight, $style: normal) {
   @font-face {
     font-family: $family;
-    src: local(''),
-    url('#{$path}#{$type}.woff2') format('woff2'),
-    url('#{$path}#{$type}.woff') format('woff');
+    src:
+      local(''),
+      url('#{$path}#{$type}.woff2') format('woff2'),
+      url('#{$path}#{$type}.woff') format('woff');
     font-weight: $weight;
     font-style: $style;
     font-display: swap;
@@ -431,8 +428,9 @@
 @mixin fontfaceWoff2($path, $family, $type: '', $weight, $style: normal) {
   @font-face {
     font-family: $family;
-    src: local(''),
-    url('#{$path}#{$type}.woff2') format('woff2');
+    src:
+      local(''),
+      url('#{$path}#{$type}.woff2') format('woff2');
     font-weight: $weight;
     font-style: $style;
     font-display: swap;
@@ -473,10 +471,12 @@
 @mixin labelOrange() {
   display: flex;
 
-  background: linear-gradient(94.48deg,
-      rgba(245, 97, 75, 0.2) 0%,
-      rgba(245, 97, 75, 0.2) 0.01%,
-      rgba(250, 117, 69, 0.2) 100%);
+  background: linear-gradient(
+    94.48deg,
+    rgba(245, 97, 75, 0.2) 0%,
+    rgba(245, 97, 75, 0.2) 0.01%,
+    rgba(250, 117, 69, 0.2) 100%
+  );
   border-radius: rem(4px);
   text-transform: uppercase;
   padding: rem(4px) rem(8px);
@@ -509,13 +509,20 @@
 =======================================*/
 
 @mixin boxWithShadow($radius: 6px) {
-  box-shadow: 0px 3px 2px rgba(20, 20, 21, 0.02), 0px 0px 1px rgba(114, 114, 115, 0.15),
-    0px 7px 6px rgba(20, 20, 21, 0.04), 0px 12px 10px rgba(20, 20, 21, 0.03), 0px 22px 18px rgba(20, 20, 21, 0.03),
-    0px 42px 33px rgba(20, 20, 21, 0.02), 0px 100px 80px rgba(20, 20, 21, 0.02);
+  box-shadow:
+    0px 3px 2px rgba(20, 20, 21, 0.02),
+    0px 0px 1px rgba(114, 114, 115, 0.15),
+    0px 7px 6px rgba(20, 20, 21, 0.04),
+    0px 12px 10px rgba(20, 20, 21, 0.03),
+    0px 22px 18px rgba(20, 20, 21, 0.03),
+    0px 42px 33px rgba(20, 20, 21, 0.02),
+    0px 100px 80px rgba(20, 20, 21, 0.02);
 
   border-radius: rem($radius);
 }
 
 @mixin shadowMedium() {
-  box-shadow: 0px 0px 1px 0px rgba(232, 232, 232, 0.35), 0px 4px 15px 0px rgba(161, 161, 161, 0.15);
+  box-shadow:
+    0px 0px 1px 0px rgba(232, 232, 232, 0.35),
+    0px 4px 15px 0px rgba(161, 161, 161, 0.15);
 }

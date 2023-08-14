@@ -24,7 +24,6 @@
         align-items: flex-start;
       }
 
-
       @include media('<=phoneLandscape') {
         gap: rem(24px);
       }

@@ -123,7 +123,7 @@ async function checkUnsuccessfulIdentifications(visitorData) {
     return new CheckResult(
       'You had more than 5 attempts during the last 24 hours. This login attempt was not performed.',
       messageSeverity.Error,
-      checkResultType.TooManyLoginAttempts
+      checkResultType.TooManyLoginAttempts,
     );
   }
 }
@@ -139,14 +139,14 @@ async function checkCredentialsAndKnownVisitorIds(visitorData, request) {
       return new CheckResult(
         "Provided credentials are correct but we've never seen you logging in using this device. Confirm your identity with a second factor.",
         messageSeverity.Warning,
-        checkResultType.Challenged
+        checkResultType.Challenged,
       );
     }
   } else {
     return new CheckResult(
       'Incorrect credentials, try again.',
       messageSeverity.Error,
-      checkResultType.IncorrectCredentials
+      checkResultType.IncorrectCredentials,
     );
   }
 }

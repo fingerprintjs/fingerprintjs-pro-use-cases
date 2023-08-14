@@ -16,7 +16,7 @@ export function usePersonalizationNotification() {
         variant: 'success',
       });
     },
-    [closeSnackbar, enqueueSnackbar]
+    [closeSnackbar, enqueueSnackbar],
   );
 
   const showNotification = useCallback(
@@ -42,7 +42,7 @@ export function usePersonalizationNotification() {
         ),
       });
     },
-    [closeSnackbar, copyToClipboard, enqueueSnackbar, showLinkCopiedSnackbar]
+    [closeSnackbar, copyToClipboard, enqueueSnackbar, showLinkCopiedSnackbar],
   );
 
   return {

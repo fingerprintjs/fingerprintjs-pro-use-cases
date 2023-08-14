@@ -33,7 +33,7 @@ export function useCart() {
         await cartQuery.refetch();
       }
     },
-    [cartQuery]
+    [cartQuery],
   );
 
   const addCartItemMutation = useMutation(
@@ -41,14 +41,14 @@ export function useCart() {
     ({ productId }) => addCartItem(productId, visitorData),
     {
       onSuccess: refetchCartOnSuccess,
-    }
+    },
   );
   const removeCartItemMutation = useMutation(
     REMOVE_CART_ITEM_MUTATION,
     ({ itemId }) => removeCartItem(itemId, visitorData),
     {
       onSuccess: refetchCartOnSuccess,
-    }
+    },
   );
 
   return {

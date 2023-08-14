@@ -30,7 +30,7 @@
         'dropdown-b';
     }
 
-    >* {
+    > * {
       @include media('<=desktopHeader') {
         padding-left: rem(20px);
         padding-right: rem(20px);
@@ -204,8 +204,6 @@
     max-width: unset;
     padding-bottom: rem(6px);
   }
-
-
 }
 
 .linkDescription {

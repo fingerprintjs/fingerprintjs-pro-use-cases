@@ -30,7 +30,7 @@ export function useVisitsListener(linkedId) {
         return data;
       });
     },
-    [linkedId, queryClient]
+    [linkedId, queryClient],
   );
 
   useSocketEvent('visit', handleVisit);

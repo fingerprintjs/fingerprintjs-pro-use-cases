@@ -1,245 +1,243 @@
 h1.title {
-    font-family: "Inter";
-    font-size: rem(48px);
-    font-style: normal;
-    font-weight: 600;
-    line-height: 130%;
-    margin-bottom: rem(24px);
-    margin-top: rem(96px);
+  font-family: 'Inter';
+  font-size: rem(48px);
+  font-style: normal;
+  font-weight: 600;
+  line-height: 130%;
+  margin-bottom: rem(24px);
+  margin-top: rem(96px);
 
-    @include media('<=tabletWide') {
-        margin-top: rem(48px);
-    }
-
-
+  @include media('<=tabletWide') {
+    margin-top: rem(48px);
+  }
 }
 
 .description {
-    max-width: rem(640px);
-    margin-bottom: rem(24px);
+  max-width: rem(640px);
+  margin-bottom: rem(24px);
 }
 
 .externalLinks {
-    display: flex;
-    gap: 24px;
+  display: flex;
+  gap: 24px;
 
-    @include media('<=phoneLandscape') {
-        flex-direction: column;
-    }
+  @include media('<=phoneLandscape') {
+    flex-direction: column;
+  }
 
-    a {
-        display: flex;
-        align-items: baseline;
-        gap: rem(5px);
-        font-family: JetBrains Mono;
-        font-size: rem(16px);
-        font-style: normal;
-        font-weight: 500;
-        line-height: 100%;
-        letter-spacing: -0.16px;
-        white-space: nowrap;
+  a {
+    vertical-align: baseline;
+    font-family: JetBrains Mono;
+    font-size: rem(16px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: 100%;
+    letter-spacing: -0.16px;
+
+    img {
+      display: inline;
+      vertical-align: baseline;
+      margin-left: rem(5px);
     }
+  }
 }
 
 .howToUse {
-    background-color: v('soft-orange-background');
+  background-color: v('soft-orange-background');
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  align-self: stretch;
+  gap: rem(16px);
+  padding: rem(32px);
+  margin-top: rem(64px);
+  margin-bottom: rem(64px);
+  border-radius: rem(12px);
+  box-shadow: 0px 2px 4px 0px rgba(208, 208, 208, 0.15);
+  // Generated using https://kovart.github.io/dashed-border-generator/ to customize spaces between dashes according to the design
+  // border: 1px dashed v('orange-gradient') doesn't allow that
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='12' ry='12' stroke='%23F5614BFF' stroke-width='2' stroke-dasharray='1%2c 6' stroke-dashoffset='12' stroke-linecap='square'/%3e%3c/svg%3e");
+  overflow: hidden;
+
+  @include media('<=tabletWide') {
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: rem(48px);
+    margin-bottom: rem(32px);
+    padding: rem(24px) rem(16px);
+  }
+
+  h2 {
+    color: v('dark-black');
+    font-family: Inter;
+    font-size: rem(20px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    margin-bottom: rem(20px);
+  }
+
+  ol {
+    list-style-type: none;
+    counter-reset: my-counter;
+  }
+
+  ol li:before {
+    content: counter(my-counter);
+    color: v('orange-gradient');
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    align-self: stretch;
-    gap: rem(16px);
-    padding: rem(32px);
-    margin-top: rem(64px);
-    margin-bottom: rem(64px);
-    border-radius: rem(12px);
-    box-shadow: 0px 2px 4px 0px rgba(208, 208, 208, 0.15);
-    // Generated using https://kovart.github.io/dashed-border-generator/ to customize spaces between dashes according to the design
-    // border: 1px dashed v('orange-gradient') doesn't allow that
-    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='12' ry='12' stroke='%23F5614BFF' stroke-width='2' stroke-dasharray='1%2c 6' stroke-dashoffset='12' stroke-linecap='square'/%3e%3c/svg%3e");
+    justify-content: center;
+    align-items: center;
+    border: 1px solid v('gray-box-stroke');
+    border-radius: 50%;
+    text-align: center;
+    background-color: white;
+
+    font-family: Inter;
+    font-size: rem(12px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: 155%;
+
+    width: rem(26px);
+    min-width: rem(26px);
+    height: rem(26px);
+    min-height: rem(26px);
+    margin-right: rem(12px);
+  }
+
+  ol li {
+    counter-increment: my-counter;
+    line-height: 160%;
+    margin-bottom: rem(10px);
+    // The marker and li text are two columns
+    display: flex;
+
+    code {
+      white-space: nowrap;
+    }
+
+    a {
+      text-decoration: underline;
+    }
+  }
+
+  .resourcesButton {
+    background-color: white;
+    font-weight: 400;
     overflow: hidden;
 
-    @include media('<=tabletWide') {
-        flex-direction: column;
-        align-items: stretch;
-        margin-top: rem(48px);
-        margin-bottom: rem(32px);
-        padding: rem(24px) rem(16px);
+    span {
+      display: flex;
+      gap: rem(12px);
+      align-items: center;
     }
 
-    h2 {
-        color: v('dark-black');
-        font-family: Inter;
-        font-size: rem(20px);
-        font-style: normal;
-        font-weight: 500;
-        line-height: 140%;
-        margin-bottom: rem(20px);
+    @include media('<=phoneLandscape') {
+      white-space: normal;
+      width: 100%;
     }
-
-    ol {
-        list-style-type: none;
-        counter-reset: my-counter;
-    }
-
-    ol li:before {
-        content: counter(my-counter);
-        color: v('orange-gradient');
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid v('gray-box-stroke');
-        border-radius: 50%;
-        text-align: center;
-        background-color: white;
-
-        font-family: Inter;
-        font-size: rem(12px);
-        font-style: normal;
-        font-weight: 500;
-        line-height: 155%;
-
-        width: rem(26px);
-        min-width: rem(26px);
-        height: rem(26px);
-        min-height: rem(26px);
-        margin-right: rem(12px);
-    }
-
-    ol li {
-        counter-increment: my-counter;
-        line-height: 160%;
-        margin-bottom: rem(10px);
-        // The marker and li text are two columns
-        display: flex;
-
-        code {
-            white-space: nowrap;
-        }
-
-        a {
-            text-decoration: underline;
-        }
-    }
-
-    .resourcesButton {
-        background-color: white;
-        font-weight: 400;
-        overflow: hidden;
-
-        span {
-            display: flex;
-            gap: rem(12px);
-            align-items: center;
-        }
-
-        @include media('<=phoneLandscape') {
-            white-space: normal;
-            width: 100%;
-        }
-
-    }
+  }
 }
 
 .contentWrapper {
+  position: relative;
+  padding: 0px rem(20px);
+
+  .backgroundRectangle {
+    background-color: v('gray-background');
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    width: 100%;
+    height: rem(64px);
+  }
+
+  .content {
+    border: 1px solid v('gray-box-stroke');
+    border-radius: rem(12px);
     position: relative;
-    padding: 0px rem(20px);
+    margin: rem(96px) auto 0 auto;
+    z-index: 1;
+    background: white;
+    max-width: 1248px;
+    padding: rem(0px);
+    overflow: auto;
+    @include shadowMedium();
 
-    .backgroundRectangle {
-        background-color: v('gray-background');
-        position: absolute;
-        bottom: 0px;
-        right: 0px;
-        width: 100%;
-        height: rem(64px);
+    @include media('<=tabletWide') {
+      margin: rem(32px) auto 0 auto;
     }
-
-    .content {
-        border: 1px solid v('gray-box-stroke');
-        border-radius: rem(12px);
-        position: relative;
-        margin: rem(96px) auto 0 auto;
-        z-index: 1;
-        background: white;
-        max-width: 1248px;
-        padding: rem(0px);
-        overflow: auto;
-        @include shadowMedium();
-
-        @include media('<=tabletWide') {
-            margin: rem(32px) auto 0 auto;
-        }
-    }
+  }
 }
 
 .learnMorePlaceholder {
-    background-color: v('gray-background');
-    height: rem(96px);
+  background-color: v('gray-background');
+  height: rem(96px);
 }
 
-
 .learnMore {
-    background-color: v('gray-background');
-    padding-top: rem(148px);
+  background-color: v('gray-background');
+  padding-top: rem(148px);
+  display: flex;
+  flex-direction: column;
+  gap: rem(32px);
+  padding-bottom: rem(200px);
+
+  @include media('<=tabletWide') {
+    padding-top: rem(64px);
+    padding-bottom: rem(80px);
+  }
+
+  .learnMoreTitle {
+    color: v(dark-black);
+    font-family: Inter;
+    font-size: rem(28px);
+    font-weight: 600;
+    line-height: 130%;
+  }
+
+  .cardsContainer {
+    display: grid;
+    gap: rem(20px);
+    flex-wrap: wrap;
+    grid-template-columns: repeat(auto-fit, 300px);
+  }
+
+  .card {
+    background-color: white;
+    color: v('dark-black');
+    padding: rem(24px) rem(16px);
     display: flex;
     flex-direction: column;
-    gap: rem(32px);
-    padding-bottom: rem(200px);
+    align-items: flex-start;
+    gap: rem(8px);
+    align-self: stretch;
+    border-radius: rem(6px);
+    border: 1px solid v('gray-box-stroke');
+    min-width: rem(300px);
+    @include transition((box-shadow, border));
 
-    @include media('<=tabletWide') {
-        padding-top: rem(64px);
-        padding-bottom: rem(80px);
+    &:hover {
+      @include boxWithShadow;
+      border: 1px solid white;
     }
 
-    .learnMoreTitle {
-        color: v(dark-black);
-        font-family: Inter;
-        font-size: rem(28px);
-        font-weight: 600;
-        line-height: 130%;
+    .type {
+      font-size: rem(12px);
+      font-weight: 400;
+      line-height: 100%;
+      letter-spacing: 0.36px;
+      text-transform: uppercase;
     }
 
-    .cardsContainer {
-        display: grid;
-        gap: rem(20px);
-        flex-wrap: wrap;
-        grid-template-columns: repeat(auto-fit, 300px);
-
+    .title {
+      font-size: rem(20px);
+      font-weight: 600;
+      line-height: 140%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
-
-    .card {
-        background-color: white;
-        color: v('dark-black');
-        padding: rem(24px) rem(16px);
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: rem(8px);
-        align-self: stretch;
-        border-radius: rem(6px);
-        border: 1px solid v('gray-box-stroke');
-        min-width: rem(300px);
-        @include transition((box-shadow, border));
-
-        &:hover {
-            @include boxWithShadow;
-            border: 1px solid white;
-        }
-
-        .type {
-            font-size: rem(12px);
-            font-weight: 400;
-            line-height: 100%;
-            letter-spacing: 0.36px;
-            text-transform: uppercase;
-        }
-
-        .title {
-            font-size: rem(20px);
-            font-weight: 600;
-            line-height: 140%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-    }
+  }
 }

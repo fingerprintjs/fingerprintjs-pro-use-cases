@@ -21,7 +21,7 @@ export default function Container({
         styles.container,
         { [styles.small]: size === 'small' },
         { [styles.large]: size === 'large' },
-        className
+        className,
       )}
       style={style}
       id={containerId}

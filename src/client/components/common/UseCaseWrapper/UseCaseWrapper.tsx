@@ -43,13 +43,13 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
         <div className={styles.externalLinks}>
           {!hideSrcListItem && (
             <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases" target="_blank" rel="noreferrer">
-              <div>See on GitHub</div>
+              See on GitHub
               <Image src={ExternalLinkIcon} alt="" />
             </a>
           )}
           {articleURL && (
             <a href={articleURL} target="_blank" rel="noreferrer">
-              <div>See technical tutorial</div>
+              See technical tutorial
               <Image src={ExternalLinkIcon} alt="" />
             </a>
           )}

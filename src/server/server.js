@@ -39,8 +39,8 @@ export function ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId)
       new CheckResult(
         'Forged visitorId or requestId detected. Try harder next time.',
         messageSeverity.Error,
-        checkResultType.RequestIdMismatch
-      )
+        checkResultType.RequestIdMismatch,
+      ),
     );
 
     return false;

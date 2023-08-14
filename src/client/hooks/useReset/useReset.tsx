@@ -51,10 +51,10 @@ export const useReset = ({ onError, onSuccess }: UseResetParams) => {
               anchorOrigin: { vertical: 'bottom', horizontal: 'right' },
               autoHideDuration: 15000,
               className: styles.snackbar,
-            }
+            },
           );
         }),
-    }
+    },
   );
 
   return { ...resetMutation, shouldDisplayResetButton: asPath !== '/' && asPath !== '/playground' };

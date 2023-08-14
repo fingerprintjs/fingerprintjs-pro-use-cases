@@ -15,6 +15,6 @@ type LoanRequest = {
 
 export function useRequestLoan() {
   return useMutation<any, unknown, LoanRequest, unknown>(REQUEST_LOAN_MUTATION, ({ fpData, body }) =>
-    requestLoan({ fpData, body })
+    requestLoan({ fpData, body }),
   );
 }

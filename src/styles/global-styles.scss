@@ -40,7 +40,6 @@ body {
   min-height: 100vh;
 
   &.isMobileMenuOpen {
-
     //prevent scrolling on iOS when mobile menu is open
     @include media('<=desktopHeader') {
       overflow: clip;

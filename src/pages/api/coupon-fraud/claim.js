@@ -60,7 +60,7 @@ async function checkIfCouponExists(visitorData, req, couponCode) {
     return new CheckResult(
       'Provided coupon code does not exist.',
       messageSeverity.Error,
-      checkResultType.CouponDoesNotExist
+      checkResultType.CouponDoesNotExist,
     );
   }
 }
@@ -73,7 +73,7 @@ async function checkIfCouponWasClaimed({ visitorId }, req, couponCode) {
     return new CheckResult(
       'The visitor used this coupon before.',
       messageSeverity.Error,
-      checkResultType.CouponAlreadyClaimed
+      checkResultType.CouponAlreadyClaimed,
     );
   }
 }
@@ -85,7 +85,7 @@ async function checkIfClaimedAnotherCouponRecently({ visitorId }) {
     return new CheckResult(
       'The visitor claimed another coupon recently.',
       messageSeverity.Error,
-      checkResultType.AnotherCouponClaimedRecently
+      checkResultType.AnotherCouponClaimedRecently,
     );
   }
 }
@@ -98,5 +98,5 @@ export default couponEndpoint(
 
     return sendOkResponse(res, result);
   },
-  [checkIfCouponExists, checkIfCouponWasClaimed, checkIfClaimedAnotherCouponRecently]
+  [checkIfCouponExists, checkIfCouponWasClaimed, checkIfClaimedAnotherCouponRecently],
 );
