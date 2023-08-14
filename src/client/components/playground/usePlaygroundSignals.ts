@@ -29,7 +29,7 @@ export function usePlaygroundSignals() {
         }
         return res.json();
       }),
-    { enabled: Boolean(agentResponse), retry: false, onSuccess: (data) => setCachedEvent(data) }
+    { enabled: Boolean(agentResponse), retry: false, onSuccess: (data) => setCachedEvent(data) },
   );
 
   return {

@@ -17,6 +17,6 @@ export const REQUEST_COUPON_CLAIM_MUTATION = 'REQUEST_COUPON_CLAIM_MUTATION';
 
 export function useRequestCouponClaim() {
   return useMutation<any, unknown, CouponClaim, unknown>(REQUEST_COUPON_CLAIM_MUTATION, ({ fpData, body }) =>
-    claimCoupon({ fpData, body })
+    claimCoupon({ fpData, body }),
   );
 }

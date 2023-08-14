@@ -3,7 +3,7 @@ import { ProductItem } from '../../client/components/personalization/product-ite
 import { PersonalizationTopSection } from '../../client/components/personalization/personalization-top-section';
 import { useDebounce, useSessionStorage } from 'react-use';
 import { useSearchHistory } from '../../client/api/personalization/use-search-history';
-import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import {
   Box,
   Button,
@@ -25,6 +25,9 @@ import { useUserPreferences } from '../../client/api/personalization/use-user-pr
 import { useCart } from '../../client/api/personalization/use-cart';
 import React from 'react';
 import { ExtendedGetResult } from '@fingerprintjs/fingerprintjs-pro';
+import { USE_CASES } from '../../client/components/common/content';
+
+const PERSONALIZATION = USE_CASES.personalization;
 
 export default function Index() {
   const { enqueueSnackbar } = useSnackbar();
@@ -59,7 +62,7 @@ export default function Index() {
       setSearchQuery(search);
     },
     750,
-    [search, setSearchQuery]
+    [search, setSearchQuery],
   );
 
   useEffect(() => {
@@ -96,25 +99,7 @@ export default function Index() {
           <Button onClick={() => setDidAcknowledge(true)}>Okay, I understand</Button>
         </DialogActions>
       </Dialog>
-      <UseCaseWrapper
-        title="Personalization"
-        listItems={[
-          <>Try to search for products, we keep a history of your last searches.</>,
-          <>We remember your dark mode preference.</>,
-          <>Add some items to your very own cart.</>,
-          <>
-            Try to open this page in incognito mode. Your preferences, search history, and cart content will still be
-            there!
-          </>,
-        ]}
-        description={
-          <p>
-            This page demonstrates user personalization that is achieved by Fingerprint Pro. Users do not need to log in
-            to get a tailored experience.
-          </p>
-        }
-        articleURL="https://fingerprint.com/use-cases/personalization/"
-      >
+      <UseCaseWrapper useCase={USE_CASES.personalization}>
         <PersonalizationTopSection
           search={search}
           onSearch={setSearch}

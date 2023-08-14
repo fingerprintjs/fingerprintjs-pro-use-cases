@@ -91,7 +91,7 @@ export default function Dropdown({
                       {description && <p className={styles.linkDescription}>{description}</p>}
                     </li>
                   </a>
-                )
+                ),
               )}
             </div>
           </aside>

@@ -9,8 +9,8 @@ export const personalizationEndpoint =
     requestCallback: (
       req: NextApiRequest,
       res: NextApiResponse,
-      validationResult: PersonalizationValidationResult
-    ) => void
+      validationResult: PersonalizationValidationResult,
+    ) => void,
   ) =>
   async (req: NextApiRequest, res: NextApiResponse) => {
     if (!ensurePostRequest(req, res)) {

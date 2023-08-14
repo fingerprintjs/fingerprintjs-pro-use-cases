@@ -39,7 +39,7 @@ async function checkPreviousLoanRequests(visitorData, req) {
       (loanRequest) =>
         loanRequest.monthlyIncome === monthlyIncome &&
         loanRequest.firstName === firstName &&
-        loanRequest.lastName === lastName
+        loanRequest.lastName === lastName,
     );
 
     // Whoops, it looks like the data is not the same!
@@ -49,7 +49,7 @@ async function checkPreviousLoanRequests(visitorData, req) {
       return new CheckResult(
         'We are unable to approve your loan automatically since you had requested a loan with a different income or personal details before. We need to verify provided information manually this time. Please, reach out to our agent.',
         messageSeverity.Warning,
-        checkResultType.PossibleLoanFraud
+        checkResultType.PossibleLoanFraud,
       );
     }
   }
@@ -81,13 +81,13 @@ export default loanRiskEndpoint(
       result = new CheckResult(
         'Congratulations, your loan has been approved!',
         messageSeverity.Success,
-        checkResultType.Passed
+        checkResultType.Passed,
       );
     } else {
       result = new CheckResult(
         'Sorry, your monthly income is too low for this loan.',
         messageSeverity.Warning,
-        checkResultType.Challenged
+        checkResultType.Challenged,
       );
     }
 
@@ -96,5 +96,5 @@ export default loanRiskEndpoint(
       calculations,
     });
   },
-  [checkPreviousLoanRequests]
+  [checkPreviousLoanRequests],
 );

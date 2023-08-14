@@ -30,7 +30,7 @@
         'dropdown-b';
     }
 
-    >* {
+    > * {
       @include media('<=desktopHeader') {
         padding-left: rem(20px);
         padding-right: rem(20px);
@@ -107,7 +107,7 @@
     flex-direction: column;
     padding: 0 0 rem(24px);
 
-    row-gap: rem(40px);
+    row-gap: rem(24px);
   }
 
   &.onlyLeft {
@@ -204,8 +204,6 @@
     max-width: unset;
     padding-bottom: rem(6px);
   }
-
-
 }
 
 .linkDescription {

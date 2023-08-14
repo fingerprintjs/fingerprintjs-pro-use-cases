@@ -4,9 +4,10 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { SITE_URL } from '../../shared/const';
 import { ARTICLE_VIEW_LIMIT } from '../../shared/paywall/constants';
-import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { ArticleData } from '../../server/paywall/articles';
 import { CustomPageProps } from '../_app';
+import { USE_CASES } from '../../client/components/common/content';
 
 export async function getServerSideProps() {
   const articlesResponse = await fetch(`${SITE_URL}/api/paywall/get-articles`).then((res) => res.json());
@@ -24,17 +25,7 @@ type PaywallProps = CustomPageProps & {
 
 export default function Paywall({ articles, embed }: PaywallProps) {
   return (
-    <UseCaseWrapper
-      title="Paywall"
-      description={<p>This page demonstrates paywall implementation using Fingerprint Pro.</p>}
-      listItems={[
-        <>
-          We keep track of how many articles you have viewed per day. You can view {ARTICLE_VIEW_LIMIT} articles daily.
-        </>,
-        <>If you exceed your daily free limit of views, we return an error instead of an article.</>,
-        <>You can try switching to the incognito mode or clearing cookies.</>,
-      ]}
-    >
+    <UseCaseWrapper useCase={USE_CASES.paywall}>
       {articles && (
         <Stack spacing={6}>
           {articles.map((article) => (

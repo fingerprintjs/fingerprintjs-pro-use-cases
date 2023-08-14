@@ -39,7 +39,7 @@ export function useUserPreferences() {
         // Store the result in localStorage to get it faster on page reload
         localStorage.setItem('hasDarkMode', String(data?.data?.hasDarkMode));
       },
-    }
+    },
   );
 
   // Use the same query object to update preferences synchronously further down
@@ -48,7 +48,7 @@ export function useUserPreferences() {
     (data: UserPreferences) => {
       queryClient.setQueryData<UserPreferencesResponse>(GET_USER_PREFERENCES_QUERY, { data });
     },
-    [queryClient]
+    [queryClient],
   );
 
   // On component mount, set the query state of the user preferences to the value stored in localStorage
@@ -68,7 +68,7 @@ export function useUserPreferences() {
         // If user changes dark mode while the query is still loading, cancel the query
         abortController.abort();
       },
-    }
+    },
   );
 
   return {

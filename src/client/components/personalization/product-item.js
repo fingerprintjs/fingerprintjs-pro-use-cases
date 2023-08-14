@@ -26,7 +26,7 @@ export function ProductItem({ product: { price, name, image, id } }) {
       }
     },
     1000,
-    [wasAdded]
+    [wasAdded],
   );
 
   return (

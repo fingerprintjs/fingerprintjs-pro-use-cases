@@ -1,6 +1,5 @@
 @use 'sass:math';
 
-
 @import '~include-media/dist/_include-media';
 
 // Grid multiplier
@@ -46,9 +45,11 @@
 @mixin transition-duration($d...) {
   transition-duration: $d;
 }
+
 @mixin transition-property($p...) {
   transition-property: $p;
 }
+
 @mixin transition-timing-function($e...) {
   transition-timing-function: $e;
 }
@@ -106,9 +107,10 @@
   $u3: unit($min-font-size);
   $u4: unit($max-font-size);
 
-  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+  @if $u1 ==$u2 and $u1 ==$u3 and $u1 ==$u4 {
     & {
       font-size: $min-font-size;
+
       @media screen and (min-width: $min-vw) {
         font-size: calc(
           #{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} *
@@ -180,11 +182,14 @@
     overflow-y: scroll;
     padding: #{$padding};
     // padding-right: $scollbarSize;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 
     &::-webkit-scrollbar {
-      display: none; /* Chrome, Safari and Opera */
+      display: none;
+      /* Chrome, Safari and Opera */
     }
   }
 }
@@ -193,6 +198,7 @@
   &::-webkit-scrollbar {
     display: none;
   }
+
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -253,12 +259,15 @@
   @if $size {
     font-size: rem($size);
   }
+
   @if $color {
     color: $color;
   }
+
   @if $weight {
     font-weight: $weight;
   }
+
   @if $lh {
     line-height: $lh;
   }
@@ -270,12 +279,15 @@
   @if $size {
     font-size: rem($size);
   }
+
   @if $color {
     color: $color;
   }
+
   @if $weight {
     font-weight: $weight;
   }
+
   @if $lh {
     line-height: $lh;
   }
@@ -286,9 +298,11 @@
   font-size: rem($size);
   font-weight: $weight;
   line-height: $lh;
+
   @if $color {
     color: $color;
   }
+
   @include media('<=phoneLandscape') {
     font-size: rem($mobileSize);
     line-height: $lhMobile;
@@ -300,9 +314,11 @@
   font-size: rem($size);
   font-weight: $weight;
   line-height: $lh;
+
   @if $color {
     color: $color;
   }
+
   @include media('<=phoneLandscape') {
     font-size: rem($mobileSize);
     line-height: $lhMobile;
@@ -314,22 +330,27 @@
   font-size: rem($size);
   font-weight: $weight;
   line-height: $lh;
+
   @if $color {
     color: $color;
   }
+
   @include media('<=phoneLandscape') {
     font-size: rem($mobileSize);
     line-height: $lhMobile;
   }
 }
+
 @mixin inter-body($size: 20px, $mobileSize: 16px, $weight: 400, $lh: 160%, $lhMobile: 160%, $color: v('dark-gray')) {
   font-family: v(ff-inter);
   font-size: rem($size);
   font-weight: $weight;
   line-height: $lh;
+
   @if $color {
     color: $color;
   }
+
   @include media('<=phoneLandscape') {
     font-size: rem($mobileSize);
     line-height: $lhMobile;
@@ -338,12 +359,15 @@
 }
 
 @mixin fade-in($waitTime, $translate: false) {
-  animation: wait #{$waitTime}, fade-in 0.7s #{$waitTime};
+  animation:
+    wait #{$waitTime},
+    fade-in 0.7s #{$waitTime};
 
   @keyframes wait {
     0% {
       opacity: 0;
     }
+
     100% {
       opacity: 0;
     }
@@ -352,12 +376,15 @@
   @keyframes fade-in {
     0% {
       opacity: 0;
+
       @if $translate {
         transform: translateY($translate);
       }
     }
+
     100% {
       opacity: 1;
+
       @if $translate {
         transform: translateY(0px);
       }
@@ -373,9 +400,11 @@
       transform: scale($scaleX, $scaleY);
       opacity: 0;
     }
+
     50% {
       opacity: $opacity;
     }
+
     to {
       transform: scale($scaleX, $scaleY);
       opacity: 0;
@@ -386,7 +415,10 @@
 @mixin fontface($path, $family, $type: '', $weight, $style: normal) {
   @font-face {
     font-family: $family;
-    src: local(''), url('#{$path}#{$type}.woff2') format('woff2'), url('#{$path}#{$type}.woff') format('woff');
+    src:
+      local(''),
+      url('#{$path}#{$type}.woff2') format('woff2'),
+      url('#{$path}#{$type}.woff') format('woff');
     font-weight: $weight;
     font-style: $style;
     font-display: swap;
@@ -396,7 +428,9 @@
 @mixin fontfaceWoff2($path, $family, $type: '', $weight, $style: normal) {
   @font-face {
     font-family: $family;
-    src: local(''), url('#{$path}#{$type}.woff2') format('woff2');
+    src:
+      local(''),
+      url('#{$path}#{$type}.woff2') format('woff2');
     font-weight: $weight;
     font-style: $style;
     font-display: swap;
@@ -416,11 +450,13 @@
   animation-iteration-count: 1;
   animation-fill-mode: both;
   animation-delay: 0.6s;
+
   @keyframes moveUp {
     0% {
       opacity: 0;
       transform: translateY(30px);
     }
+
     100% {
       opacity: 1;
       transform: translateY(0px);
@@ -473,9 +509,20 @@
 =======================================*/
 
 @mixin boxWithShadow($radius: 6px) {
-  box-shadow: 0px 3px 2px rgba(20, 20, 21, 0.02), 0px 0px 1px rgba(114, 114, 115, 0.15),
-    0px 7px 6px rgba(20, 20, 21, 0.04), 0px 12px 10px rgba(20, 20, 21, 0.03), 0px 22px 18px rgba(20, 20, 21, 0.03),
-    0px 42px 33px rgba(20, 20, 21, 0.02), 0px 100px 80px rgba(20, 20, 21, 0.02);
+  box-shadow:
+    0px 3px 2px rgba(20, 20, 21, 0.02),
+    0px 0px 1px rgba(114, 114, 115, 0.15),
+    0px 7px 6px rgba(20, 20, 21, 0.04),
+    0px 12px 10px rgba(20, 20, 21, 0.03),
+    0px 22px 18px rgba(20, 20, 21, 0.03),
+    0px 42px 33px rgba(20, 20, 21, 0.02),
+    0px 100px 80px rgba(20, 20, 21, 0.02);
 
   border-radius: rem($radius);
+}
+
+@mixin shadowMedium() {
+  box-shadow:
+    0px 0px 1px 0px rgba(232, 232, 232, 0.35),
+    0px 4px 15px 0px rgba(161, 161, 161, 0.15);
 }

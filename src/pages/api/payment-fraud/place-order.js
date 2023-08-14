@@ -113,7 +113,7 @@ async function checkVisitorIdForStolenCard(visitorData) {
     return new CheckResult(
       'According to our records, you paid with a stolen card. We did not process the payment.',
       messageSeverity.Error,
-      checkResultType.PaidWithStolenCard
+      checkResultType.PaidWithStolenCard,
     );
   }
 }
@@ -138,7 +138,7 @@ async function checkForCardCracking(visitorData) {
     return new CheckResult(
       'You placed more than 3 unsuccessful payment attempts during the last 365 days. This payment attempt was not performed.',
       messageSeverity.Error,
-      checkResultType.TooManyUnsuccessfulPayments
+      checkResultType.TooManyUnsuccessfulPayments,
     );
   }
 }
@@ -161,7 +161,7 @@ async function checkVisitorIdForChargebacks(visitorData) {
     return new CheckResult(
       'You performed more than 1 chargeback during the last 1 year, we did not perform the payment.',
       messageSeverity.Error,
-      checkResultType.TooManyChargebacks
+      checkResultType.TooManyChargebacks,
     );
   }
 }
@@ -172,13 +172,13 @@ async function processPayment(visitorData, request) {
     return new CheckResult(
       'Thank you for your payment. Everything is OK.',
       messageSeverity.Success,
-      checkResultType.Passed
+      checkResultType.Passed,
     );
   } else {
     return new CheckResult(
       'Incorrect card details, try again.',
       messageSeverity.Error,
-      checkResultType.IncorrectCardDetails
+      checkResultType.IncorrectCardDetails,
     );
   }
 }

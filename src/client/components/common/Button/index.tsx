@@ -49,7 +49,7 @@ const Button = memo(function Button({
     { [styles.medium]: size === 'medium' },
     { [styles.large]: size === 'large' },
     { [styles.disabled]: disabled },
-    className
+    className,
   );
   const newTabProps = openNewTab && { target: '_blank', rel: 'noreferrer' };
 

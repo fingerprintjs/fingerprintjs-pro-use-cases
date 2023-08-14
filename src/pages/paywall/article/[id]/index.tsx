@@ -3,8 +3,10 @@ import { Skeleton, SkeletonTypeMap } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import { useGetArticle } from '../../../../client/api/personalization/use-get-article';
-import { UseCaseWrapper } from '../../../../client/components/use-case-wrapper';
+import { UseCaseWrapper } from '../../../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { CustomPageProps } from '../../../_app';
+import Link from 'next/link';
+import { ArrowBack } from '@mui/icons-material';
 
 function ArticleSkeleton({ animation = false }: { animation?: SkeletonTypeMap['props']['animation'] }) {
   const skeletons = Array.from({ length: 4 }).map((_, index) => <Skeleton key={index} animation={animation} />);
@@ -20,13 +22,17 @@ export default function Article({ embed }: CustomPageProps) {
   const queryData = articleQuery.data;
   const data = queryData?.data;
 
+  const returnUrl = `/paywall${embed ? '/embed' : ''}`;
+
   return (
-    <UseCaseWrapper
-      title={data?.article.title}
-      hideSrcListItem
-      hideDivider
-      returnUrl={`/paywall${embed ? '/embed' : ''}`}
-    >
+    <UseCaseWrapper useCase={{ title: data?.article.title }} hideGithubLink>
+      {/* This back button is temporary, will be addressed in the use case redesign */}
+      {returnUrl && (
+        <Link href={returnUrl} style={{ display: 'flex', gap: '4px' }}>
+          <ArrowBack />
+          Go back to articles
+        </Link>
+      )}
       <Typography
         className="ArticleContent"
         sx={{

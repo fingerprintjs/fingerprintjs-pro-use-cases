@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import {
   Accordion,
   AccordionDetails,
@@ -403,11 +403,13 @@ function Playground() {
 export default function PlaygroundPage() {
   return (
     <UseCaseWrapper
-      title="Fingerprint Pro Playground"
-      description={<p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>}
-      showAdminLink={false}
-      hideSrcListItem={true}
-      contentSx={{ boxShadow: 'none', maxWidth: '1248px' }}
+      useCase={{
+        title: 'Fingerprint Pro Playground',
+        description: <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>,
+        doNotMentionResetButton: true,
+      }}
+      hideGithubLink={true}
+      contentSx={{ boxShadow: 'none', maxWidth: '1248px', minHeight: '40vh' }}
     >
       <Playground />
     </UseCaseWrapper>

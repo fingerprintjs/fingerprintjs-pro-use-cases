@@ -9,17 +9,17 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import FlightCard, { Flight } from '../../client/components/web-scraping/FlightCard';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import styles from '../../styles/web-scraping.module.css';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import Link from 'next/link';
 import { useQueryState } from 'use-location-state/next';
 import { useQuery, UseQueryResult } from 'react-query';
 import { GetServerSideProps, NextPage } from 'next';
 import { FlightQuery } from '../api/web-scraping/flights';
 import { CheckResultObject } from '../../server/checkResult';
+import { USE_CASES } from '../../client/components/common/content';
 
 // Make URL query object available as props to the page on first render
 // to read `from`, `to` params and a `disableBotDetection` param for testing and demo purposes
@@ -87,7 +87,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
       ignoreCache: true,
     },
     // Don't fingerprint the visitor on mount, but when they click "Search flights", the fingerprint must be fresh
-    { immediate: false }
+    { immediate: false },
   );
 
   /**
@@ -119,64 +119,14 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
     {
       refetchOnMount: 'always',
       retry: false,
-    }
+    },
   );
 
   const { isFetching } = getFlightsQuery;
 
   return (
     <>
-      <UseCaseWrapper
-        title="Web Scraping Prevention"
-        showAdminLink={false}
-        description={
-          <div>
-            <p>
-              Web scraping is the process of extracting data from websites using automated scripts or bots. If your
-              website shows data that is expensive to collect or compute (e.g., flight connections and prices), a bad
-              actor or competitor could steal it and use it for their own purposes.
-            </p>
-            <p>
-              Protecting the data with CAPCHAs hurts user experience and server-side bot detection based on IP address
-              reputation is not reliable. Fingerprint Pro provides client-side bot detection that can recognize even
-              sophisticated bots and browser automation tools.
-            </p>
-          </div>
-        }
-        // Todo: Add a link to the blog post when it's published
-        listItems={[
-          <>
-            The <code>flights</code> API endpoint on this page is protected by{' '}
-            <a href="https://dev.fingerprint.com/docs/bot-detection-quick-start-guide" target={'_blank'}>
-              {' '}
-              Fingerprint Pro Bot Detection
-            </a>
-            .
-          </>,
-          <>Using a normal browser, you can search for flights and see the results.</>,
-          <>
-            Try scraping the results using Selenium, Puppeteer, Playwright, Cypress, or a{' '}
-            <a href="https://dev.fingerprint.com/docs/bot-detection-vs-botd" target="_blank">
-              similar tool
-            </a>
-            .
-          </>,
-          <>The endpoint will return an error message if the request is coming from a bot.</>,
-          <>
-            Try tampering with the <code>requestId</code> parameter, request headers or changing your IP address, see if
-            that helps 🙂
-          </>,
-          <>
-            To see how the page would behave without Bot Detection, reload it with{' '}
-            <Link href={'/web-scraping?disableBotDetection=1'}>
-              <Typography component={'code'} whiteSpace={'nowrap'}>
-                ?disableBotDetection=1
-              </Typography>
-            </Link>{' '}
-            in the URL.
-          </>,
-        ]}
-      >
+      <UseCaseWrapper useCase={USE_CASES.webScraping}>
         <Box marginBottom={(theme) => theme.spacing(2)}>
           <Typography variant="overline">Search for today&apos;s flights</Typography>
         </Box>

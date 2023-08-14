@@ -29,5 +29,5 @@ export default personalizationEndpoint(
     return res.status(200).json({
       data: result,
     });
-  }
+  },
 );

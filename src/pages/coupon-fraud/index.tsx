@@ -1,5 +1,5 @@
 import { useVisitorData } from '../../client/use-visitor-data';
-import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { useCallback, useEffect, useState } from 'react';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { Stack, Typography } from '@mui/material';
 import { useRequestCouponClaim } from '../../client/api/coupon-fraud/use-coupon-claim';
 import React from 'react';
+import { USE_CASES } from '../../client/components/common/content';
 
 export default function CouponFraudUseCase() {
   const visitorDataQuery = useVisitorData({
@@ -31,7 +32,7 @@ export default function CouponFraudUseCase() {
         body: { couponCode },
       });
     },
-    [couponClaimMutation, couponCode, visitorDataQuery]
+    [couponClaimMutation, couponCode, visitorDataQuery],
   );
 
   useEffect(() => {
@@ -43,19 +44,7 @@ export default function CouponFraudUseCase() {
   const isLoading = visitorDataQuery.isLoading || couponClaimMutation.isLoading;
 
   return (
-    <UseCaseWrapper
-      title="Coupon Fraud problem"
-      description={<p>This page demonstrates how to solve the coupon fraud problem.</p>}
-      articleURL={'https://fingerprint.com/use-cases/coupon-promo-abuse/'}
-      listItems={[
-        <>You can apply a coupon to the specific item only once.</>,
-        <>You cannot spam coupon codes, there is a 1-hour threshold.</>,
-        <>You cannot apply the same coupon in incognito mode.</>,
-        <>
-          Sample coupon codes are <code>Promo3000</code> and <code>BlackFriday</code>.
-        </>,
-      ]}
-    >
+    <UseCaseWrapper useCase={USE_CASES.couponFraud}>
       <form onSubmit={handleSubmit}>
         <Typography fontSize={20}>iPhone 14 Pro Max 256 GB - Deep Purple</Typography>
         <Image width={256} height={200} style={{ objectFit: 'contain' }} src="/iphone14.png" alt="iPhone image" />
@@ -64,7 +53,7 @@ export default function CouponFraudUseCase() {
         </Typography>
 
         <Typography>Do you have a coupon? Apply to get a discount!</Typography>
-        <Stack direction="row">
+        <Stack direction="row" gap={'8px'}>
           <FormControl fullWidth variant="outlined" sx={{ minWidth: '70%' }}>
             <TextField
               id="coupon_code"

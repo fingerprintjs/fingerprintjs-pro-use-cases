@@ -1,4 +1,4 @@
-import { UseCaseWrapper } from '../../client/components/use-case-wrapper';
+import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { FunctionComponent, useCallback, useMemo, useState } from 'react';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
@@ -17,6 +17,7 @@ import { useRequestLoan } from '../../client/api/loan-risk/use-request-loan';
 import Alert from '@mui/material/Alert';
 import { calculateMonthInstallment } from '../../shared/loan-risk/calculate-month-installment';
 import React from 'react';
+import { USE_CASES } from '../../client/components/common/content';
 
 type SliderFieldProps = {
   label: string;
@@ -88,7 +89,7 @@ export default function LoanRisk() {
         loanValue,
         loanDuration,
       }),
-    [loanDuration, loanValue]
+    [loanDuration, loanValue],
   );
 
   const handleSubmit = useCallback(
@@ -102,26 +103,13 @@ export default function LoanRisk() {
         body: { loanValue, monthlyIncome, loanDuration, firstName, lastName },
       });
     },
-    [firstName, lastName, loanDuration, loanRequestMutation, loanValue, monthlyIncome, visitorDataQuery]
+    [firstName, lastName, loanDuration, loanRequestMutation, loanValue, monthlyIncome, visitorDataQuery],
   );
 
   const isLoading = visitorDataQuery.isLoading || loanRequestMutation.isLoading;
 
   return (
-    <UseCaseWrapper
-      title="Loan Risk problem"
-      description={
-        <p>
-          This page demonstrates a loan request form protected against fraud. Thanks to Fingerprint Pro you can compare
-          previous loan requests sent by a given user without authentications and between normal and incognito mode.
-        </p>
-      }
-      listItems={[
-        `We perform simple calculations to check if you can get a loan.`,
-        `Try to change your monthly income, first name, or last name after the first submission. If we find your previous records associated with your visitorId that contains different values, you will receive a warning and we won't perform any calculations.`,
-        `You can also try switching to the incognito mode or clearing cookies.`,
-      ]}
-    >
+    <UseCaseWrapper useCase={USE_CASES.loanRisk}>
       <form onSubmit={handleSubmit}>
         <Stack direction="column" spacing={6}>
           <TextField

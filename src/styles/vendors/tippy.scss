@@ -102,9 +102,12 @@
 .tippy-box[data-theme~='github'] .tippy-content {
   @include inter($size: 16px, $weight: 400, $lh: 160%, $color: v('dark-gray'));
   padding: rem(8px) rem(10px);
-  box-shadow: 0px 4px 15px rgba(161, 161, 161, 0.15), 0px 0px 1px rgba(232, 232, 232, 0.35);
+  box-shadow:
+    0px 4px 15px rgba(161, 161, 161, 0.15),
+    0px 0px 1px rgba(232, 232, 232, 0.35);
 
-  background: linear-gradient(white 0 0) padding-box,
+  background:
+    linear-gradient(white 0 0) padding-box,
     linear-gradient(181.6deg, #d0d0d0 50.63%, rgba(232, 232, 232, 0) 97.06%) border-box;
   border: 0.05px solid transparent;
 }
