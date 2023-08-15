@@ -6,6 +6,7 @@ import { Box, Divider, Typography } from '@mui/material';
 import styles from './index.module.scss';
 import Container from '../client/components/common/Container';
 import { HOMEPAGE_CARDS } from '../client/components/common/content';
+import LinkArrow from '../client/img/externalLinkArrow.svg';
 import Image from 'next/image';
 
 export default function Index() {
@@ -28,9 +29,17 @@ export default function Index() {
       <div className={styles.useCaseGrid}>
         {HOMEPAGE_CARDS.map((card) => (
           <Link className={styles.useCaseCard} href={card.url}>
-            <Image src={card.iconSvg} alt="" className={styles.useCaseIcon} />
-            <h3 className={styles.useCaseTitle}>{card.title}</h3>
-            <div className={styles.useCaseDescription}>{card.description}</div>
+            <div>
+              <Image src={card.iconSvg} alt="" className={styles.useCaseIcon} />
+              <h3 className={styles.useCaseTitle}>{card.title}</h3>
+              <div className={styles.useCaseDescription}>{card.description}</div>
+            </div>
+            <div>
+              <span className={styles.viewPrompt}>
+                view use case demo
+                <Image src={LinkArrow} alt="" />
+              </span>
+            </div>
           </Link>
         ))}
       </div>
