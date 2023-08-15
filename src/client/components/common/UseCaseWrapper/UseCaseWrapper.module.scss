@@ -219,7 +219,7 @@ h1.title {
     @include transition((box-shadow, border));
 
     &:hover {
-      @include boxWithShadow;
+      @include shadowLarge;
       border: 1px solid white;
     }
 

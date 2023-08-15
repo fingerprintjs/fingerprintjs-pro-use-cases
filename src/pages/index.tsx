@@ -1,14 +1,5 @@
 import Link from 'next/link';
-import {
-  AirplaneTicket,
-  Block,
-  CreditScore,
-  Money,
-  People,
-  PrecisionManufacturing,
-  Settings,
-  Fingerprint,
-} from '@mui/icons-material';
+
 import { PageTile, PageTileProps } from '../client/components/PageTile';
 import { Box, Divider, Typography } from '@mui/material';
 
@@ -36,11 +27,11 @@ export default function Index() {
       </Container>
       <div className={styles.useCaseGrid}>
         {HOMEPAGE_CARDS.map((card) => (
-          <div className={styles.useCaseCard}>
+          <Link className={styles.useCaseCard} href={card.url}>
             <Image src={card.iconSvg} alt="" className={styles.useCaseIcon} />
             <h3 className={styles.useCaseTitle}>{card.title}</h3>
-            <div>{card.description}</div>
-          </div>
+            <div className={styles.useCaseDescription}>{card.description}</div>
+          </Link>
         ))}
       </div>
     </>

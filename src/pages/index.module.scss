@@ -57,8 +57,15 @@
   border-radius: 8px;
   border: 1px solid v('gray-box-stroke');
   overflow: hidden;
+  color: unset;
 
   @include shadowMedium();
+  @include transition((box-shadow, border));
+
+  &:hover {
+    @include shadowLarge();
+    border: 1px solid white;
+  }
 
   .useCaseIcon {
     margin-bottom: rem(32px);
@@ -74,7 +81,7 @@
   }
 
   .useCaseDescription {
-    color: v('dark-black');
+    color: v('dark-gray');
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
