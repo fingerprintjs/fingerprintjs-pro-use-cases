@@ -59,4 +59,26 @@
   overflow: hidden;
 
   @include shadowMedium();
+
+  .useCaseIcon {
+    margin-bottom: rem(32px);
+  }
+
+  .useCaseTitle {
+    color: v('dark-black');
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
+  }
+
+  .useCaseDescription {
+    color: v('dark-black');
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 160%;
+    letter-spacing: 0.16px;
+  }
 }

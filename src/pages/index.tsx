@@ -15,6 +15,7 @@ import { Box, Divider, Typography } from '@mui/material';
 import styles from './index.module.scss';
 import Container from '../client/components/common/Container';
 import { HOMEPAGE_CARDS } from '../client/components/common/content';
+import Image from 'next/image';
 
 export default function Index() {
   return (
@@ -36,7 +37,8 @@ export default function Index() {
       <div className={styles.useCaseGrid}>
         {HOMEPAGE_CARDS.map((card) => (
           <div className={styles.useCaseCard}>
-            <h4>{card.title}</h4>
+            <Image src={card.iconSvg} alt="" className={styles.useCaseIcon} />
+            <h3 className={styles.useCaseTitle}>{card.title}</h3>
             <div>{card.description}</div>
           </div>
         ))}

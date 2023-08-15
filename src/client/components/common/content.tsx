@@ -1,4 +1,12 @@
 import Link from 'next/link';
+import SmartSignalsIcon from '../../img/smartSignalsIcon.svg';
+import CouponFraudIcon from '../../img/couponFraudIcon.svg';
+import CredentialStuffingIcon from '../../img/credentialStuffingIcon.svg';
+import LoanRiskIcon from '../../img/LoanRiskIcon.svg';
+import PaymentFraudIcon from '../../img/paymentFraudIcon.svg';
+import PaywallIcon from '../../img/paywallIcon.svg';
+import PersonalizationIcon from '../../img/personalizationIcon.svg';
+import ScrapingIcon from '../../img/scrapingIcon.svg';
 
 export type UseCase = {
   url: string;
@@ -7,6 +15,7 @@ export type UseCase = {
   descriptionHomepage?: React.ReactNode | readonly React.ReactNode[];
   articleUrl?: string;
   instructions: readonly React.ReactNode[];
+  iconSvg?: any | undefined;
   moreResources?: readonly {
     type: 'Use case tutorial' | 'Case study' | 'Industry' | 'Article';
     title: string;
@@ -18,6 +27,7 @@ export const USE_CASES = {
   couponFraud: {
     title: 'Coupon Fraud',
     url: '/coupon-fraud',
+    iconSvg: CouponFraudIcon,
     descriptionHomepage: [
       <p>
         Safeguard campaign funds from abuse by implementing Fingerprint to identify bad faith users who repeatedly use
@@ -62,6 +72,7 @@ export const USE_CASES = {
     title: 'Credential Stuffing',
     url: '/credential-stuffing',
     articleUrl: 'https://fingerprint.com/use-cases/credential-stuffing/',
+    iconSvg: CredentialStuffingIcon,
     instructions: [
       <>
         Put in the username <code>user</code> and password <code>password</code>.
@@ -107,6 +118,7 @@ export const USE_CASES = {
   loanRisk: {
     title: 'Loan Risk',
     url: '/loan-risk',
+    iconSvg: LoanRiskIcon,
     descriptionHomepage: [
       <p>
         Validate loan applications against prior submissions by users, whether they are anonymous or authenticated.
@@ -142,6 +154,7 @@ export const USE_CASES = {
   paymentFraud: {
     title: 'Payment Fraud',
     url: '/payment-fraud',
+    iconSvg: PaymentFraudIcon,
     articleUrl: 'https://fingerprint.com/use-cases/payment-fraud/',
     descriptionHomepage: [
       <p>
@@ -184,6 +197,7 @@ export const USE_CASES = {
   paywall: {
     title: 'Paywall',
     url: '/paywall',
+    iconSvg: PaywallIcon,
     descriptionHomepage: [
       <p>
         Accurately identify returning users to provide limited access to your content and ensure users aren’t able to
@@ -209,6 +223,7 @@ export const USE_CASES = {
   personalization: {
     title: 'Personalization',
     url: '/personalization',
+    iconSvg: PersonalizationIcon,
     articleUrl: 'https://fingerprint.com/use-cases/personalization/',
     descriptionHomepage: [
       <p>
@@ -251,6 +266,7 @@ export const USE_CASES = {
   webScraping: {
     title: 'Web Scraping Prevention',
     url: '/web-scraping',
+    iconSvg: ScrapingIcon,
     articleUrl: 'https://fingerprint.com/use-cases/web-scraping-prevention/',
     descriptionHomepage: [
       <p>
@@ -329,6 +345,7 @@ const PLAYGROUND_METADATA = {
       VPN detection, browser tampering detection, IP blocklist matching, and more.
     </p>,
   ],
+  iconSvg: SmartSignalsIcon,
 };
 
 export const PLATFORM_MENU_ITEMS = [PLAYGROUND_METADATA];
@@ -337,12 +354,14 @@ type HomePageCard = {
   title: string;
   url: string;
   description: React.ReactNode | readonly React.ReactNode[];
+  iconSvg: any;
 };
 
 export const HOMEPAGE_CARDS: HomePageCard[] = [PLAYGROUND_METADATA, ...USE_CASES_ARRAY].map((useCase) => ({
   title: useCase.title,
   url: useCase.url,
   description: useCase.descriptionHomepage,
+  iconSvg: useCase.iconSvg,
 }));
 
 export const URL = {
