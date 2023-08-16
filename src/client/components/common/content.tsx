@@ -182,6 +182,7 @@ export const USE_CASES = {
       </>,
       <>Try placing an order again. You won't be able to with your history of stealing credit cards.</>,
     ],
+    doNotMentionResetButton: true,
     moreResources: [
       {
         type: 'Use case tutorial',
@@ -318,6 +319,7 @@ export const USE_CASES = {
         in the URL.
       </>,
     ],
+    doNotMentionResetButton: true,
     moreResources: [
       {
         url: 'https://fingerprint.com/use-cases/web-scraping-prevention/',
