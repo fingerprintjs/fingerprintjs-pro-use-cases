@@ -1,13 +1,11 @@
 import Link from 'next/link';
 
-import { PageTile, PageTileProps } from '../client/components/PageTile';
-import { Box, Divider, Typography } from '@mui/material';
-
 import styles from './index.module.scss';
 import Container from '../client/components/common/Container';
 import { HOMEPAGE_CARDS } from '../client/components/common/content';
 import LinkArrow from '../client/img/externalLinkArrow.svg';
 import Image from 'next/image';
+import { TEST_IDS } from '../client/e2eTestIDs';
 
 export default function Index() {
   return (
@@ -31,7 +29,9 @@ export default function Index() {
           <Link className={styles.useCaseCard} href={card.url}>
             <div>
               <Image src={card.iconSvg} alt="" className={styles.useCaseIcon} />
-              <h3 className={styles.useCaseTitle}>{card.title}</h3>
+              <h3 className={styles.useCaseTitle} data-test={TEST_IDS.homepageCard.useCaseTitle}>
+                {card.title}
+              </h3>
               <div className={styles.useCaseDescription}>{card.description}</div>
             </div>
             <div>
