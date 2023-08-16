@@ -91,6 +91,11 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
       <div className={styles.contentWrapper}>
         <div className={styles.backgroundRectangle} />
         <Container size="large" className={styles.content}>
+          <div className={styles.browserBar}>
+            <div />
+            <div />
+            <div />
+          </div>
           <Paper
             elevation={0}
             sx={{
