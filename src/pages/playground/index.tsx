@@ -403,10 +403,12 @@ function Playground() {
 export default function PlaygroundPage() {
   return (
     <UseCaseWrapper
-      title="Fingerprint Pro Playground"
-      description={<p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>}
-      mentionResetButton={false}
-      hideSrcListItem={true}
+      useCase={{
+        title: 'Fingerprint Pro Playground',
+        description: <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>,
+        doNotMentionResetButton: true,
+      }}
+      hideGithubLink={true}
       contentSx={{ boxShadow: 'none', maxWidth: '1248px', minHeight: '40vh' }}
     >
       <Playground />

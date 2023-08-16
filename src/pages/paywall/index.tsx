@@ -9,8 +9,6 @@ import { ArticleData } from '../../server/paywall/articles';
 import { CustomPageProps } from '../_app';
 import { USE_CASES } from '../../client/components/common/content';
 
-const PAYWALL = USE_CASES.paywall;
-
 export async function getServerSideProps() {
   const articlesResponse = await fetch(`${SITE_URL}/api/paywall/get-articles`).then((res) => res.json());
 
@@ -27,12 +25,7 @@ type PaywallProps = CustomPageProps & {
 
 export default function Paywall({ articles, embed }: PaywallProps) {
   return (
-    <UseCaseWrapper
-      title={PAYWALL.title}
-      description={PAYWALL.description}
-      listItems={PAYWALL.instructions}
-      moreResources={PAYWALL.moreResources}
-    >
+    <UseCaseWrapper useCase={USE_CASES.paywall}>
       {articles && (
         <Stack spacing={6}>
           {articles.map((article) => (

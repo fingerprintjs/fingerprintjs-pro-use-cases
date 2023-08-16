@@ -24,9 +24,11 @@ export default function Index({ linkedId }) {
       contentSx={{
         boxShadow: 'none',
       }}
-      hideSrcListItem
-      title="Identified users"
-      description={<p>You can view all identified users here.</p>}
+      hideGithubLink
+      useCase={{
+        title: 'Identified users',
+        description: <p>You can view all identified users here.</p>,
+      }}
     >
       {allVisits.isLoading && <CircularProgress />}
       <Grid container spacing={2}>

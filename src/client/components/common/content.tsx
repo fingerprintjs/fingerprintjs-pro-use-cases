@@ -14,6 +14,7 @@ export type UseCase = {
   description?: React.ReactNode;
   descriptionHomepage?: React.ReactNode | readonly React.ReactNode[];
   articleUrl?: string;
+  doNotMentionResetButton?: boolean;
   instructions: readonly React.ReactNode[];
   iconSvg?: any | undefined;
   moreResources?: readonly {

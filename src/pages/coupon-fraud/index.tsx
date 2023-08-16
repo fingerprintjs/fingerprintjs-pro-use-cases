@@ -11,8 +11,6 @@ import { useRequestCouponClaim } from '../../client/api/coupon-fraud/use-coupon-
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
 
-const COUPON_FRAUD = USE_CASES.couponFraud;
-
 export default function CouponFraudUseCase() {
   const visitorDataQuery = useVisitorData({
     // Don't fetch visitorData on mount
@@ -46,13 +44,7 @@ export default function CouponFraudUseCase() {
   const isLoading = visitorDataQuery.isLoading || couponClaimMutation.isLoading;
 
   return (
-    <UseCaseWrapper
-      title={COUPON_FRAUD.title}
-      description={COUPON_FRAUD.description}
-      articleURL={COUPON_FRAUD.articleUrl}
-      listItems={COUPON_FRAUD.instructions}
-      moreResources={COUPON_FRAUD.moreResources}
-    >
+    <UseCaseWrapper useCase={USE_CASES.couponFraud}>
       <form onSubmit={handleSubmit}>
         <Typography fontSize={20}>iPhone 14 Pro Max 256 GB - Deep Purple</Typography>
         <Image width={256} height={200} style={{ objectFit: 'contain' }} src="/iphone14.png" alt="iPhone image" />

@@ -14,15 +14,12 @@ import FlightCard, { Flight } from '../../client/components/web-scraping/FlightC
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import styles from '../../styles/web-scraping.module.css';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import Link from 'next/link';
 import { useQueryState } from 'use-location-state/next';
 import { useQuery, UseQueryResult } from 'react-query';
 import { GetServerSideProps, NextPage } from 'next';
 import { FlightQuery } from '../api/web-scraping/flights';
 import { CheckResultObject } from '../../server/checkResult';
 import { USE_CASES } from '../../client/components/common/content';
-
-const WEB_SCRAPING = USE_CASES.webScraping;
 
 // Make URL query object available as props to the page on first render
 // to read `from`, `to` params and a `disableBotDetection` param for testing and demo purposes
@@ -129,14 +126,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
 
   return (
     <>
-      <UseCaseWrapper
-        title={WEB_SCRAPING.title}
-        description={WEB_SCRAPING.description}
-        listItems={WEB_SCRAPING.instructions}
-        moreResources={USE_CASES.webScraping.moreResources}
-        articleURL={WEB_SCRAPING.articleUrl}
-        mentionResetButton={false}
-      >
+      <UseCaseWrapper useCase={USE_CASES.webScraping}>
         <Box marginBottom={(theme) => theme.spacing(2)}>
           <Typography variant="overline">Search for today&apos;s flights</Typography>
         </Box>

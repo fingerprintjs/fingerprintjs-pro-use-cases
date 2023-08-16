@@ -48,15 +48,17 @@ export default function Index() {
 
   return (
     <UseCaseWrapper
-      hideSrcListItem
-      mentionResetButton={false}
-      title="Administration"
-      description={
-        <p>
-          On this page, you can remove all info obtained from this browser. This will reenable some scenarios for you if
-          you were locked out of a specific action.
-        </p>
-      }
+      hideGithubLink
+      useCase={{
+        title: 'Administration',
+        description: (
+          <p>
+            On this page, you can remove all info obtained from this browser. This will reenable some scenarios for you
+            if you were locked out of a specific action.
+          </p>
+        ),
+        doNotMentionResetButton: true,
+      }}
       contentSx={{
         minHeight: '40vh',
       }}
