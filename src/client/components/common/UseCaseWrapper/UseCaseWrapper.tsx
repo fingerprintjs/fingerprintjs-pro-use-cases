@@ -6,7 +6,7 @@ import Lightbulb from './lightbulb.svg';
 import Image from 'next/image';
 import { Paper } from '@mui/material';
 import { UseCase } from '../content';
-import ExternalLinkIcon from './externalLinkArrow.svg';
+import ExternalLinkIcon from '../../../img/externalLinkArrow.svg';
 
 type UseCaseWrapperProps = {
   useCase: Partial<UseCase>;
@@ -22,14 +22,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   contentSx,
   useCase,
 }) => {
-  const {
-    title,
-    description,
-    articleUrl,
-    instructions,
-    moreResources,
-    doNotMentionResetButton: hideResetButton,
-  } = useCase ?? {};
+  const { title, description, articleUrl, instructions, moreResources, doNotMentionResetButton } = useCase ?? {};
   const learnMoreRef = useRef<ElementRef<'h3'>>();
 
   return (
@@ -62,7 +55,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
                     <div>{item}</div>
                   </li>
                 ))}
-                {!hideResetButton && (
+                {!doNotMentionResetButton && (
                   <li>
                     <div>
                       You can reset this scenario using the <b>Restart</b> button on the top right.
@@ -91,6 +84,11 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
       <div className={styles.contentWrapper}>
         <div className={styles.backgroundRectangle} />
         <Container size="large" className={styles.content}>
+          <div className={styles.browserBar}>
+            <div />
+            <div />
+            <div />
+          </div>
           <Paper
             elevation={0}
             sx={{
@@ -101,7 +99,6 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
               maxWidth: '600px',
               margin: '0px auto',
               borderRadius: '12px',
-              minHeight: '60vh',
               ...contentSx,
             }}
           >

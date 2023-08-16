@@ -15,9 +15,7 @@
 }
 
 /* Make Next pages full height */
-div#__next,
-html,
-body {
+div#__next {
   height: 100%;
   width: 100%;
 }

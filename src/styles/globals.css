@@ -5,15 +5,6 @@
   --text-secondary: #757575;
 }
 
-/* Base */
-body,
-html {
-  margin: 0;
-  height: 100%;
-  /* font-family: 'Roboto', sans-serif, -apple-system, Arial; */
-  overflow-x: hidden;
-}
-
 .UsecaseWrapper_alert {
   margin-top: 2.5rem;
   margin-bottom: 2.5rem;

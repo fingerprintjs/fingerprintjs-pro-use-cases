@@ -1,12 +1,22 @@
 import Link from 'next/link';
+import SmartSignalsIcon from '../../img/smartSignalsIcon.svg';
+import CouponFraudIcon from '../../img/couponFraudIcon.svg';
+import CredentialStuffingIcon from '../../img/credentialStuffingIcon.svg';
+import LoanRiskIcon from '../../img/loanRiskIcon.svg';
+import PaymentFraudIcon from '../../img/paymentFraudIcon.svg';
+import PaywallIcon from '../../img/paywallIcon.svg';
+import PersonalizationIcon from '../../img/personalizationIcon.svg';
+import ScrapingIcon from '../../img/scrapingIcon.svg';
 
 export type UseCase = {
   title: string;
   url: string;
   description?: React.ReactNode;
+  descriptionHomepage?: React.ReactNode | readonly React.ReactNode[];
   articleUrl?: string;
-  instructions: readonly React.ReactNode[];
   doNotMentionResetButton?: boolean;
+  instructions: readonly React.ReactNode[];
+  iconSvg?: any | undefined;
   moreResources?: readonly {
     type: 'Use case tutorial' | 'Case study' | 'Industry' | 'Article';
     title: string;
@@ -18,6 +28,17 @@ export const USE_CASES = {
   couponFraud: {
     title: 'Coupon Fraud',
     url: '/coupon-fraud',
+    iconSvg: CouponFraudIcon,
+    descriptionHomepage: [
+      <p>
+        Safeguard campaign funds from abuse by implementing Fingerprint to identify bad faith users who repeatedly use
+        coupon codes
+      </p>,
+      <p>
+        Accurately identify coupon fraud by signed-in customers or guests to ensure your marketing campaign yields its
+        full potential.
+      </p>,
+    ],
     description:
       'Use the demo below to see how Fingerprint can help identify fraudsters who repeatedly use the same coupon under different scenarios to gain unauthorized benefits.',
     articleUrl: 'https://fingerprint.com/use-cases/coupon-promo-abuse/',
@@ -63,6 +84,18 @@ export const USE_CASES = {
       <>Try to login with different passwords. You will be blocked after 5 attempts.</>,
       <>Try using incognito mode to log into this page.</>,
     ],
+    iconSvg: CredentialStuffingIcon,
+    descriptionHomepage: [
+      <p>
+        Protect your users against credential stuffing using Fingerprint’s unique visitor ID provided for each user that
+        visits your site.
+      </p>,
+
+      <p>
+        Fingerprint's accurate identification prevents fraudsters from unauthorized account access, minimizing
+        disruption for legitimate users.
+      </p>,
+    ],
     description: (
       <>
         <p>
@@ -86,6 +119,16 @@ export const USE_CASES = {
   loanRisk: {
     title: 'Loan Risk',
     url: '/loan-risk',
+    iconSvg: LoanRiskIcon,
+    descriptionHomepage: [
+      <p>
+        Validate loan applications against prior submissions by users, whether they are anonymous or authenticated.
+      </p>,
+      <p>
+        Use Fingerprint to check for consistency between applications and ignore submissions from previously rejected
+        applicants. 
+      </p>,
+    ],
     description:
       'Use this demo to see how Fingerprint allows you to collect high-quality, low-risk loan applications from your anonymous visitors. Prevent fraudsters and rejected applicants from submitting multiple inconsistent applications.',
     instructions: [
@@ -113,6 +156,14 @@ export const USE_CASES = {
     title: 'Payment Fraud',
     url: '/payment-fraud',
     articleUrl: 'https://fingerprint.com/use-cases/payment-fraud/',
+    iconSvg: PaymentFraudIcon,
+    descriptionHomepage: [
+      <p>
+        Identify anonymous visitors behind every transaction. Use Fingerprint’s Identification to recognize repeated
+        card testing activity and link it to specific users. Protect your users and your business against various forms
+        of payment fraud.
+      </p>,
+    ],
     description:
       'Use the demo to see how Fingerprint can protect your transactions from card cracking attempts, stolen credit cards, and reduce chargebacks.',
     doNotMentionResetButton: true,
@@ -148,6 +199,14 @@ export const USE_CASES = {
   paywall: {
     title: 'Paywall',
     url: '/paywall',
+    iconSvg: PaywallIcon,
+    descriptionHomepage: [
+      <p>
+        Accurately identify returning users to provide limited access to your content and ensure users aren’t able to
+        exceed their predetermined limits.
+      </p>,
+      <p>Your content limit for each user will work even if the user clears cookies or browses in incognito mode.</p>,
+    ],
     description:
       'Use the demo below to see how Fingerprint protects your content from users trying to circumvent your paywall. ',
     instructions: [
@@ -167,6 +226,16 @@ export const USE_CASES = {
     title: 'Personalization',
     url: '/personalization',
     articleUrl: 'https://fingerprint.com/use-cases/personalization/',
+    iconSvg: PersonalizationIcon,
+    descriptionHomepage: [
+      <p>
+        Improve user experience and boost sales by personalizing your website with Fingerprint device intelligence.
+      </p>,
+      <p>
+        Provide your visitors with their search history, interface customization, or a persistent shopping cart without
+        having to rely on cookies or logins.
+      </p>,
+    ],
     description: (
       <>
         <p>
@@ -200,7 +269,17 @@ export const USE_CASES = {
     title: 'Web Scraping Prevention',
     url: '/web-scraping',
     articleUrl: 'https://fingerprint.com/use-cases/web-scraping-prevention/',
-    doNotMentionResetButton: true,
+    iconSvg: ScrapingIcon,
+    descriptionHomepage: [
+      <p>
+        Web scraping extracts data using automated scripts. Data that is valuable to competitors can be stolen, directly
+        impacting your business.
+      </p>,
+      <p>
+        Fingerprint Smart Signal bot detection offers advanced protection without compromising user experience or
+        relying on IP-based solutions.
+      </p>,
+    ],
     description: (
       <>
         <p>
@@ -219,6 +298,7 @@ export const USE_CASES = {
         </p>
       </>
     ),
+    doNotMentionResetButton: true,
     instructions: [
       <>Use a normal browser and search for flights.</>,
       <>
@@ -255,10 +335,37 @@ export const USE_CASES = {
   },
 } as const satisfies Record<string, UseCase>;
 
-export const USE_CASES_ARRAY = Object.values(USE_CASES);
-export const USE_CASES_NAVIGATION = USE_CASES_ARRAY.map((useCase) => ({ title: useCase.title, url: useCase.url }));
+const PLAYGROUND_METADATA: Pick<UseCase, 'title' | 'url' | 'descriptionHomepage' | 'iconSvg'> = {
+  title: 'Smart Signals',
+  url: '/playground',
+  iconSvg: SmartSignalsIcon,
+  descriptionHomepage: [
+    <p>Analyze your own browser with Fingerprint’s identification and Smart Signals.</p>,
+    <p>
+      Test and examine Fingerprint’s signals including IP geolocation, browser bot detection, incognito mode detection,
+      VPN detection, browser tampering detection, IP blocklist matching, and more.
+    </p>,
+  ],
+};
 
-export const PLATFORM_MENU_ITEMS = [{ title: 'Playground', url: '/playground' }];
+export const USE_CASES_ARRAY = Object.values(USE_CASES);
+
+export const USE_CASES_NAVIGATION = USE_CASES_ARRAY.map((useCase) => ({ title: useCase.title, url: useCase.url }));
+export const PLATFORM_NAVIGATION = [PLAYGROUND_METADATA];
+
+type HomePageCard = {
+  title: string;
+  url: string;
+  description: React.ReactNode | readonly React.ReactNode[];
+  iconSvg: any;
+};
+
+export const HOMEPAGE_CARDS: HomePageCard[] = [PLAYGROUND_METADATA, ...USE_CASES_ARRAY].map((useCase) => ({
+  title: useCase.title,
+  url: useCase.url,
+  iconSvg: useCase.iconSvg,
+  description: useCase.descriptionHomepage,
+}));
 
 export const URL = {
   mainSite: 'https://fingerprint.com',

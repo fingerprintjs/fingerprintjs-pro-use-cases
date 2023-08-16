@@ -27,8 +27,6 @@ import React from 'react';
 import { ExtendedGetResult } from '@fingerprintjs/fingerprintjs-pro';
 import { USE_CASES } from '../../client/components/common/content';
 
-const PERSONALIZATION = USE_CASES.personalization;
-
 export default function Index() {
   const { enqueueSnackbar } = useSnackbar();
 

@@ -54,7 +54,7 @@ export function ProductItem({ product: { price, name, image, id } }) {
           </Box>
         )}
       />
-      <CardContent>
+      <CardContent sx={{ flexGrow: 1 }}>
         <Typography gutterBottom variant="h5" className="ProductCard_Name">
           {name}
         </Typography>

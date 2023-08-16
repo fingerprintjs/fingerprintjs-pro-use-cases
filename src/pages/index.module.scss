@@ -1,0 +1,116 @@
+.hero {
+  margin-top: rem(96px);
+  margin-bottom: rem(96px);
+  text-align: center;
+
+  @include media('<=phoneLandscape') {
+    margin-top: rem(40px);
+    margin-bottom: rem(64px);
+    text-align: left;
+  }
+
+  .title {
+    font-family: Inter;
+    margin-bottom: rem(16px);
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
+  }
+
+  .intro {
+    max-width: rem(820px);
+    margin: 0 auto;
+    color: v('dark-gray');
+    font-size: rem(20px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 160%; /* 32px */
+  }
+}
+
+.useCaseGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  column-gap: rem(20px);
+  row-gap: rem(40px);
+  padding: 0 rem(96px) rem(168px) rem(96px);
+  margin: 0 auto;
+  max-width: 1440px; // 1248px + 96 * 2 (padding)
+
+  @include media('<=phoneLandscape') {
+    padding: 0 rem(20px) rem(80px) rem(20px);
+    row-gap: rem(24px);
+  }
+
+  @include media('<=phone') {
+    grid-template-columns: auto;
+  }
+}
+
+.useCaseCard {
+  display: flex;
+  flex-direction: column;
+  padding: rem(32px);
+  justify-content: space-between;
+  align-items: flex-start;
+  border-radius: 8px;
+  border: 1px solid v('gray-box-stroke');
+  overflow: hidden;
+  color: unset;
+
+  @include shadowMedium();
+  @include transition((box-shadow, border));
+
+  @include media('<=phoneLandscape') {
+    padding: rem(24px) rem(16px);
+  }
+
+  &:hover {
+    @include shadowLarge();
+    border: 1px solid white;
+  }
+
+  .useCaseIcon {
+    margin-bottom: rem(32px);
+  }
+
+  .useCaseTitle {
+    color: v('dark-black');
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
+    margin-bottom: rem(8px);
+  }
+
+  .useCaseDescription {
+    color: v('dark-gray');
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 160%;
+    letter-spacing: 0.16px;
+
+    p {
+      margin-top: 0;
+      margin-bottom: rem(32px);
+    }
+  }
+
+  .viewPrompt {
+    color: v('orange-gradient');
+    font-family: JetBrains Mono;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 100%; /* 16px */
+    letter-spacing: -0.16px;
+
+    img {
+      display: inline;
+      vertical-align: baseline;
+      margin-left: rem(5px);
+    }
+  }
+}

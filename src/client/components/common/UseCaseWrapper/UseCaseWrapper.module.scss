@@ -153,6 +153,21 @@ h1.title {
     height: rem(64px);
   }
 
+  .browserBar {
+    background-color: v('light-gray-background');
+    padding: rem(12px) rem(18px);
+    border-bottom: 1px solid v('gray-box-stroke');
+    display: flex;
+    gap: rem(8px);
+
+    div {
+      border-radius: 50%;
+      background-color: v('gray-box-stroke');
+      height: rem(12px);
+      width: rem(12px);
+    }
+  }
+
   .content {
     border: 1px solid v('gray-box-stroke');
     border-radius: rem(12px);
@@ -219,7 +234,7 @@ h1.title {
     @include transition((box-shadow, border));
 
     &:hover {
-      @include boxWithShadow;
+      @include shadowLarge;
       border: 1px solid white;
     }
 
