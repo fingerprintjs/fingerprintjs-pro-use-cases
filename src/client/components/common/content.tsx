@@ -166,6 +166,7 @@ export const USE_CASES = {
     ],
     description:
       'Use the demo to see how Fingerprint can protect your transactions from card cracking attempts, stolen credit cards, and reduce chargebacks.',
+    doNotMentionResetButton: true,
     instructions: [
       <>Change the pre-filled card details to simulate testing stolen credit cards.</>,
       <>Try placing an order multiple times. You will be stopped after 3 attempts.</>,
@@ -182,7 +183,6 @@ export const USE_CASES = {
       </>,
       <>Try placing an order again. You won't be able to with your history of stealing credit cards.</>,
     ],
-    doNotMentionResetButton: true,
     moreResources: [
       {
         type: 'Use case tutorial',
@@ -298,6 +298,7 @@ export const USE_CASES = {
         </p>
       </>
     ),
+    doNotMentionResetButton: true,
     instructions: [
       <>Use a normal browser and search for flights.</>,
       <>
@@ -319,7 +320,6 @@ export const USE_CASES = {
         in the URL.
       </>,
     ],
-    doNotMentionResetButton: true,
     moreResources: [
       {
         url: 'https://fingerprint.com/use-cases/web-scraping-prevention/',
