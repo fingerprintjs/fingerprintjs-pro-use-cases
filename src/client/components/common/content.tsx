@@ -9,8 +9,8 @@ import PersonalizationIcon from '../../img/personalizationIcon.svg';
 import ScrapingIcon from '../../img/scrapingIcon.svg';
 
 export type UseCase = {
-  url: string;
   title: string;
+  url: string;
   description?: React.ReactNode;
   descriptionHomepage?: React.ReactNode | readonly React.ReactNode[];
   articleUrl?: string;
@@ -73,7 +73,6 @@ export const USE_CASES = {
     title: 'Credential Stuffing',
     url: '/credential-stuffing',
     articleUrl: 'https://fingerprint.com/use-cases/credential-stuffing/',
-    iconSvg: CredentialStuffingIcon,
     instructions: [
       <>
         Put in the username <code>user</code> and password <code>password</code>.
@@ -85,6 +84,7 @@ export const USE_CASES = {
       <>Try to login with different passwords. You will be blocked after 5 attempts.</>,
       <>Try using incognito mode to log into this page.</>,
     ],
+    iconSvg: CredentialStuffingIcon,
     descriptionHomepage: [
       <p>
         Protect your users against credential stuffing using Fingerprint’s unique visitor ID provided for each user that
@@ -155,8 +155,8 @@ export const USE_CASES = {
   paymentFraud: {
     title: 'Payment Fraud',
     url: '/payment-fraud',
-    iconSvg: PaymentFraudIcon,
     articleUrl: 'https://fingerprint.com/use-cases/payment-fraud/',
+    iconSvg: PaymentFraudIcon,
     descriptionHomepage: [
       <p>
         Identify anonymous visitors behind every transaction. Use Fingerprint’s Identification to recognize repeated
@@ -224,8 +224,8 @@ export const USE_CASES = {
   personalization: {
     title: 'Personalization',
     url: '/personalization',
-    iconSvg: PersonalizationIcon,
     articleUrl: 'https://fingerprint.com/use-cases/personalization/',
+    iconSvg: PersonalizationIcon,
     descriptionHomepage: [
       <p>
         Improve user experience and boost sales by personalizing your website with Fingerprint device intelligence.
@@ -267,8 +267,8 @@ export const USE_CASES = {
   webScraping: {
     title: 'Web Scraping Prevention',
     url: '/web-scraping',
-    iconSvg: ScrapingIcon,
     articleUrl: 'https://fingerprint.com/use-cases/web-scraping-prevention/',
+    iconSvg: ScrapingIcon,
     descriptionHomepage: [
       <p>
         Web scraping extracts data using automated scripts. Data that is valuable to competitors can be stolen, directly
@@ -333,12 +333,10 @@ export const USE_CASES = {
   },
 } as const satisfies Record<string, UseCase>;
 
-export const USE_CASES_ARRAY = Object.values(USE_CASES);
-export const USE_CASES_NAVIGATION = USE_CASES_ARRAY.map((useCase) => ({ title: useCase.title, url: useCase.url }));
-
-const PLAYGROUND_METADATA = {
+const PLAYGROUND_METADATA: Partial<UseCase> = {
   title: 'Smart Signals',
   url: '/playground',
+  iconSvg: SmartSignalsIcon,
   descriptionHomepage: [
     <p>Analyze your own browser with Fingerprint’s identification and Smart Signals.</p>,
     <p>
@@ -346,10 +344,12 @@ const PLAYGROUND_METADATA = {
       VPN detection, browser tampering detection, IP blocklist matching, and more.
     </p>,
   ],
-  iconSvg: SmartSignalsIcon,
 };
 
-export const PLATFORM_MENU_ITEMS = [PLAYGROUND_METADATA];
+export const USE_CASES_ARRAY = Object.values(USE_CASES);
+
+export const USE_CASES_NAVIGATION = USE_CASES_ARRAY.map((useCase) => ({ title: useCase.title, url: useCase.url }));
+export const PLATFORM_NAVIGATION = [PLAYGROUND_METADATA];
 
 type HomePageCard = {
   title: string;
@@ -361,8 +361,8 @@ type HomePageCard = {
 export const HOMEPAGE_CARDS: HomePageCard[] = [PLAYGROUND_METADATA, ...USE_CASES_ARRAY].map((useCase) => ({
   title: useCase.title,
   url: useCase.url,
-  description: useCase.descriptionHomepage,
   iconSvg: useCase.iconSvg,
+  description: useCase.descriptionHomepage,
 }));
 
 export const URL = {

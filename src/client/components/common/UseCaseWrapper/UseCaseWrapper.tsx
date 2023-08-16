@@ -6,7 +6,7 @@ import Lightbulb from './lightbulb.svg';
 import Image from 'next/image';
 import { Paper } from '@mui/material';
 import { UseCase } from '../content';
-import ExternalLinkIcon from './externalLinkArrow.svg';
+import ExternalLinkIcon from '../../../img/externalLinkArrow.svg';
 
 type UseCaseWrapperProps = {
   useCase: Partial<UseCase>;
