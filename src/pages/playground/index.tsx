@@ -409,7 +409,7 @@ export default function PlaygroundPage() {
         doNotMentionResetButton: true,
       }}
       hideGithubLink={true}
-      contentSx={{ boxShadow: 'none', maxWidth: '1248px', minHeight: '40vh' }}
+      contentSx={{ boxShadow: 'none', maxWidth: '1248px', minHeight: '60vh' }}
     >
       <Playground />
     </UseCaseWrapper>
