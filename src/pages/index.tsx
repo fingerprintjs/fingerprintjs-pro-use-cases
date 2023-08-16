@@ -36,7 +36,7 @@ export default function Index() {
             </div>
             <div>
               <span className={styles.viewPrompt}>
-                view use case demo
+                See use case demo
                 <Image src={LinkArrow} alt="" />
               </span>
             </div>
