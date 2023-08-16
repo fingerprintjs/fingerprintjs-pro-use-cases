@@ -2,7 +2,7 @@ import Link from 'next/link';
 import SmartSignalsIcon from '../../img/smartSignalsIcon.svg';
 import CouponFraudIcon from '../../img/couponFraudIcon.svg';
 import CredentialStuffingIcon from '../../img/credentialStuffingIcon.svg';
-import LoanRiskIcon from '../../img/LoanRiskIcon.svg';
+import LoanRiskIcon from '../../img/loanRiskIcon.svg';
 import PaymentFraudIcon from '../../img/paymentFraudIcon.svg';
 import PaywallIcon from '../../img/paywallIcon.svg';
 import PersonalizationIcon from '../../img/personalizationIcon.svg';
