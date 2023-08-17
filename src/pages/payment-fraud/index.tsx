@@ -1,32 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
 import makeStyles from '@mui/styles/makeStyles';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { useVisitorData } from '../../client/use-visitor-data';
 import React from 'react';
 import { Theme } from '@mui/material/styles/createTheme';
 import { USE_CASES } from '../../client/components/common/content';
+import Button from '../../client/components/common/Button';
 
-const PAYMENT_FRAUD = USE_CASES.paymentFraud;
-
-const useStyles = makeStyles<Theme>((theme) => ({
-  margin: {
-    'margin-top': theme.spacing(1),
-    'margin-bottom': theme.spacing(1),
-  },
-  withoutLabel: {
-    marginTop: theme.spacing(3),
-  },
-}));
+import styles from './paymentFraud.module.scss';
 
 export default function Index() {
   const visitorDataQuery = useVisitorData({
@@ -89,73 +71,55 @@ export default function Index() {
 
   return (
     <UseCaseWrapper useCase={USE_CASES.paymentFraud}>
-      <form onSubmit={handleSubmit} className="Form_container">
-        <FormControl fullWidth className={clsx(useStyles().margin)} variant="outlined">
-          <Typography variant="caption" className="UserInput_label">
-            Card Number
-          </Typography>
-          <TextField
-            name="cardNumber"
-            placeholder="Card Number"
-            defaultValue={cardNumber}
-            variant="outlined"
-            onChange={(e) => setCardNumber(e.target.value)}
-            required
-          />
-        </FormControl>
-        <Grid container spacing={3}>
-          <Grid item xs={6}>
-            <FormControl className={clsx(useStyles().margin)} variant="outlined" fullWidth>
-              <Typography variant="caption" className="UserInput_label">
-                Expiration
-              </Typography>
-              <TextField
-                placeholder="Expiration"
-                defaultValue={cardExpiration}
-                variant="outlined"
-                onChange={(e) => setCardExpiration(e.target.value)}
-                required
-              />
-            </FormControl>
-          </Grid>
-          <Grid item xs={6}>
-            <FormControl className={clsx(useStyles().margin)} variant="outlined" fullWidth>
-              <Typography variant="caption" className="UserInput_label">
-                CVV
-              </Typography>
-              <OutlinedInput
-                placeholder="CVV"
-                defaultValue={cardCvv}
-                onChange={(e) => setCardCvv(e.target.value)}
-                required
-              />
-            </FormControl>
-          </Grid>
-        </Grid>
-        <Grid container justifyContent="flex-start">
-          <FormControlLabel
-            control={<Checkbox name="applyChargeback" color="primary" />}
-            label="Ask for chargeback after purchase"
-            onChange={(_event, checked) => setApplyChargeback(checked)}
-          />
-          <FormControlLabel
-            control={<Checkbox name="usingStolenCard" color="primary" />}
-            label="Flag this visitor using stolen card after purchase"
-            onChange={(_event, checked) => {
-              setUsingStolenCard(checked);
-            }}
-          />
-        </Grid>
-        <Button
-          className="Form_button"
-          disabled={isWaitingForResponse}
-          size="large"
-          type="submit"
-          variant="contained"
-          color="primary"
-          disableElevation
-          fullWidth
-        >
+      <form onSubmit={handleSubmit} className={styles.paymentForm}>
+        <label>Card Number</label>
+        <input
+          type="text"
+          name="cardNumber"
+          placeholder="Card Number"
+          defaultValue={cardNumber}
+          onChange={(e) => setCardNumber(e.target.value)}
+          required
+        />
+
+        <label>Expiration</label>
+        <input
+          type="text"
+          placeholder="Expiration"
+          defaultValue={cardExpiration}
+          onChange={(e) => setCardExpiration(e.target.value)}
+          required
+        />
+
+        <label>CVV</label>
+        <input
+          type="text"
+          placeholder="CVV"
+          defaultValue={cardCvv}
+          onChange={(e) => setCardCvv(e.target.value)}
+          required
+        />
+
+        <hr />
+
+        <div>
+          <label className={styles.checkboxLabel}>
+            <input type="checkbox" onChange={(event) => setApplyChargeback(event.target.checked)} />
+            Ask for chargeback after purchase
+          </label>
+
+          <label className={styles.checkboxLabel}>
+            <input
+              type="checkbox"
+              onChange={(event) => {
+                setUsingStolenCard(event.target.checked);
+              }}
+            />
+            Flag this visitor using stolen card after purchase
+          </label>
+        </div>
+
+        <Button disabled={isWaitingForResponse} size="large" type="submit">
           {isWaitingForResponse ? 'Hold on, doing magic...' : 'Place an order'}
         </Button>
       </form>
