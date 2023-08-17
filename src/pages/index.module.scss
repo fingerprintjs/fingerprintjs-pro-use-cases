@@ -16,6 +16,10 @@
     font-style: normal;
     font-weight: 600;
     line-height: 130%;
+
+    @include media('<=phoneLandscape') {
+      font-size: rem(34px);
+    }
   }
 
   .intro {
@@ -25,7 +29,11 @@
     font-size: rem(20px);
     font-style: normal;
     font-weight: 400;
-    line-height: 160%; /* 32px */
+    line-height: 160%;
+
+    @include media('<=phoneLandscape') {
+      font-size: rem(16px);
+    }
   }
 }
 
@@ -78,7 +86,7 @@
   .useCaseTitle {
     color: v('dark-black');
     font-family: Inter;
-    font-size: 24px;
+    font-size: rem(24px);
     font-style: normal;
     font-weight: 600;
     line-height: 130%;
@@ -87,11 +95,15 @@
 
   .useCaseDescription {
     color: v('dark-gray');
-    font-size: 16px;
+    font-size: rem(16px);
     font-style: normal;
     font-weight: 400;
     line-height: 160%;
     letter-spacing: 0.16px;
+
+    @include media('<=phoneLandscape') {
+      font-size: rem(14px);
+    }
 
     p {
       margin-top: 0;
@@ -102,10 +114,14 @@
   .viewPrompt {
     color: v('orange-gradient');
     font-family: JetBrains Mono;
-    font-size: 16px;
+    font-size: rem(16px);
     font-weight: 500;
     line-height: 100%; /* 16px */
     letter-spacing: -0.16px;
+
+    @include media('<=phoneLandscape') {
+      font-size: rem(14px);
+    }
 
     img {
       display: inline;
