@@ -264,9 +264,7 @@ h1.title {
   border-radius: 50%;
 
   display: flex;
-  width: 72px;
-  height: 72px;
-  padding: 32px;
+  padding: 24px;
   justify-content: center;
   align-items: center;
   background-color: v('white');
@@ -291,5 +289,10 @@ h1.title {
     img {
       animation: spin 1s infinite linear;
     }
+  }
+
+  @include media('<=phoneLandscape') {
+    padding: rem(16px);
+    right: rem(16px);
   }
 }
