@@ -4,7 +4,7 @@ import MobileNavbar from '../MobileNavbar/MobileNavbar';
 import Container from '../Container';
 import HeaderBar from '../HeaderBar/HeaderBar';
 import classNames from 'classnames';
-import { PLATFORM_NAVIGATION, URL, USE_CASES_ARRAY, USE_CASES_NAVIGATION } from '../content';
+import { PLATFORM_NAVIGATION, URL, USE_CASES_NAVIGATION } from '../content';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import Image from 'next/image';
 import LogoSvg from './fpjs.svg';
@@ -46,7 +46,7 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const { mutate, shouldDisplayResetButton } = useReset({});
+  const { mutate, shouldDisplayResetButton, isLoading: isResetLoading } = useReset({});
 
   return (
     <>
@@ -108,7 +108,11 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                     }
                     enterTouchDelay={400}
                   >
-                    <button className={classNames(styles.desktopOnly, styles.resetButton)} onClick={() => mutate()}>
+                    <button
+                      className={classNames(styles.desktopOnly, styles.resetButton, isResetLoading && styles.loading)}
+                      onClick={() => mutate()}
+                      disabled={isResetLoading}
+                    >
                       Restart
                       <Image src={Restart} alt="Restart button" />
                     </button>

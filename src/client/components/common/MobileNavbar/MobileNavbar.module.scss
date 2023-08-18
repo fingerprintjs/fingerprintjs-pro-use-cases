@@ -96,6 +96,22 @@
       align-items: center;
       font-weight: 500;
     }
+
+    img {
+      transition: scale 0.2s ease;
+    }
+
+    &:hover {
+      img {
+        scale: 1.1;
+      }
+    }
+
+    &.loading {
+      img {
+        animation: spin 1s infinite linear;
+      }
+    }
   }
 
   .contact {

@@ -50,7 +50,7 @@ export const useReset = ({ onError, onSuccess }: UseResetParams) => {
             {
               variant: 'success',
               anchorOrigin: { vertical: 'bottom', horizontal: 'right' },
-              autoHideDuration: 15000,
+              autoHideDuration: 6000,
               className: styles.snackbar,
             },
           );

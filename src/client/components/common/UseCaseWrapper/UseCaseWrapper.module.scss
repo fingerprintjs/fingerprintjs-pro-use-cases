@@ -289,16 +289,7 @@ h1.title {
 
   &.loading {
     img {
-      animation: rotate 1s infinite linear;
+      animation: spin 1s infinite linear;
     }
-  }
-}
-
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
   }
 }

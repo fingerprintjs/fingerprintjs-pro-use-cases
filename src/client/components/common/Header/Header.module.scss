@@ -202,12 +202,25 @@
     gap: rem(8px);
     font-weight: 500;
 
-    &:hover {
-      color: adjust-color(c('orange-gradient'), $saturation: -19%, $lightness: -6%);
-    }
-
     @include media('<=tablet') {
       display: none;
+    }
+
+    img {
+      transition: scale 0.2s ease;
+    }
+
+    &:hover {
+      color: adjust-color(c('orange-gradient'), $saturation: -19%, $lightness: -6%);
+      img {
+        scale: 1.1;
+      }
+    }
+
+    &.loading {
+      img {
+        animation: spin 1s infinite linear;
+      }
     }
   }
 }
