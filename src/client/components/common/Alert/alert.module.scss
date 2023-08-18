@@ -1,0 +1,37 @@
+.alert {
+  display: flex;
+  padding: 12px;
+  gap: rem(8px);
+  border-radius: 6px;
+  align-items: center;
+  font-size: 14px;
+
+  line-height: 160%; /* 22.4px */
+  letter-spacing: 0.14px;
+  overflow: hidden;
+
+  .iconWrapper {
+    align-self: start;
+  }
+
+  @include media('<=phoneLandscape') {
+    padding: rem(8px) rem(12px);
+    font-size: 12px;
+    line-height: 135%;
+  }
+}
+
+.success {
+  background: v('success-background');
+  color: v('success-text');
+}
+
+.error {
+  background: v('error-background');
+  color: v('error-text');
+}
+
+.warning {
+  background: v('warning-background');
+  color: v('warning-text');
+}

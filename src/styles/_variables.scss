@@ -19,13 +19,18 @@ $colors: (
   'orange-gradient': hsl(16, 100%, 57%),
   // Orange/Main Dark Mode
   'orange-dark': #fa7545,
-  'error-text': #90143a,
-  'error-background': #ffe4e4,
   'soft-orange-background': #fffbfa,
   'gray-box-stroke': #e8e8e8,
   'gray-background': #f6f6f6,
   'light-gray-background': #fafafa,
   'gray-5': #89898a,
+
+  'success-background': #edf7ed,
+  'error-background': #ffefef,
+  'warning-background': #fcf4e5,
+  'success-text': #1e4620,
+  'error-text': #901414,
+  'warning-text': #5d3e0f,
 );
 
 $brand-colors: (

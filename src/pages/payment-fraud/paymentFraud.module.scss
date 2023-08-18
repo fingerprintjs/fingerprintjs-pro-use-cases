@@ -49,6 +49,14 @@ form.paymentForm {
     width: 100%;
   }
 
+  .submitButton {
+    width: fit-content;
+    max-width: 100%;
+    margin-left: auto;
+    margin-top: rem(40px);
+    text-wrap: wrap;
+  }
+
   .ccInfoGroup {
     display: flex;
     column-gap: 16px;
@@ -76,6 +84,7 @@ form.paymentForm {
     display: flex;
     flex-direction: column;
     gap: rem(8px);
-    margin: rem(24px) 0;
+    margin-top: rem(24px);
+    margin-bottom: rem(16px);
   }
 }

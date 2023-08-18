@@ -1,14 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
-import makeStyles from '@mui/styles/makeStyles';
-import Alert from '@mui/material/Alert';
+import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { useVisitorData } from '../../client/use-visitor-data';
 import React from 'react';
-import { Theme } from '@mui/material/styles/createTheme';
 import { USE_CASES } from '../../client/components/common/content';
 import Button from '../../client/components/common/Button';
 
 import styles from './paymentFraud.module.scss';
+import Alert from '../../client/components/common/Alert/Alert';
 
 export default function Index() {
   const visitorDataQuery = useVisitorData({
@@ -120,15 +118,11 @@ export default function Index() {
             </label>
           </div>
 
-          <Button disabled={isWaitingForResponse} size="large" type="submit">
-            {isWaitingForResponse ? 'Hold on, doing magic...' : 'Place an order'}
+          {httpResponseStatus ? <Alert severity={severity}>{orderStatusMessage}</Alert> : null}
+          <Button disabled={isWaitingForResponse} size="large" type="submit" className={styles.submitButton}>
+            {isWaitingForResponse ? 'Hold on, doing magic...' : 'Place Order'}
           </Button>
         </form>
-        {httpResponseStatus ? (
-          <Alert severity={severity} className="UsecaseWrapper_alert">
-            {orderStatusMessage}
-          </Alert>
-        ) : null}
       </div>
     </UseCaseWrapper>
   );
