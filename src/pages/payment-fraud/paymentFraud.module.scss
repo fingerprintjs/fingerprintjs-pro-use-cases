@@ -1,3 +1,9 @@
+.wrapper {
+  border: 1px solid v('gray-box-stroke');
+  border-radius: rem(8px);
+  padding: rem(20px);
+}
+
 // Forms
 
 form.paymentForm {
@@ -12,11 +18,13 @@ form.paymentForm {
     font-style: normal;
     font-weight: 600;
     line-height: 145%;
+    display: block;
   }
 
   label.checkboxLabel {
     display: flex;
     gap: rem(8px);
+    align-items: center;
 
     color: v('dark-gray');
     font-size: 14px;
@@ -38,6 +46,17 @@ form.paymentForm {
     font-weight: 400;
     line-height: 160%; /* 25.6px */
     letter-spacing: 0.16px;
+    width: 100%;
+  }
+
+  .ccInfoGroup {
+    display: flex;
+    column-gap: 16px;
+    flex-wrap: wrap;
+
+    > div {
+      flex-grow: 1;
+    }
   }
 
   input[type='checkbox'] {
@@ -51,5 +70,12 @@ form.paymentForm {
     width: 100%;
     border-top: 1px solid v('gray-box-stroke');
     margin: 0;
+  }
+
+  div.checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: rem(8px);
+    margin: rem(24px) 0;
   }
 }

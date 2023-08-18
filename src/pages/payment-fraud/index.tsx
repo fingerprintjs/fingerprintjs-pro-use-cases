@@ -28,12 +28,6 @@ export default function Index() {
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   const [httpResponseStatus, setHttpResponseStatus] = useState<number | undefined>();
 
-  const messageRef = useRef<HTMLDivElement>();
-
-  useEffect(() => {
-    !isWaitingForResponse && messageRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [isWaitingForResponse]);
-
   async function handleSubmit(e) {
     e.preventDefault();
     setIsWaitingForResponse(true);
@@ -70,64 +64,72 @@ export default function Index() {
   }
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.paymentFraud}>
-      <form onSubmit={handleSubmit} className={styles.paymentForm}>
-        <label>Card Number</label>
-        <input
-          type="text"
-          name="cardNumber"
-          placeholder="Card Number"
-          defaultValue={cardNumber}
-          onChange={(e) => setCardNumber(e.target.value)}
-          required
-        />
+    <UseCaseWrapper useCase={USE_CASES.paymentFraud} contentSx={{ maxWidth: 'none' }}>
+      <div className={styles.wrapper}>
+        <form onSubmit={handleSubmit} className={styles.paymentForm}>
+          <label>Card Number</label>
+          <input
+            type="text"
+            name="cardNumber"
+            placeholder="Card Number"
+            defaultValue={cardNumber}
+            onChange={(e) => setCardNumber(e.target.value)}
+            required
+          />
 
-        <label>Expiration</label>
-        <input
-          type="text"
-          placeholder="Expiration"
-          defaultValue={cardExpiration}
-          onChange={(e) => setCardExpiration(e.target.value)}
-          required
-        />
+          <div className={styles.ccInfoGroup}>
+            <div>
+              <label>Expiration</label>
+              <input
+                type="text"
+                placeholder="Expiration"
+                defaultValue={cardExpiration}
+                onChange={(e) => setCardExpiration(e.target.value)}
+                required
+              />
+            </div>
 
-        <label>CVV</label>
-        <input
-          type="text"
-          placeholder="CVV"
-          defaultValue={cardCvv}
-          onChange={(e) => setCardCvv(e.target.value)}
-          required
-        />
+            <div>
+              <label>CVV</label>
+              <input
+                type="text"
+                placeholder="CVV"
+                defaultValue={cardCvv}
+                onChange={(e) => setCardCvv(e.target.value)}
+                required
+              />
+            </div>
+          </div>
 
-        <hr />
+          <hr />
 
-        <div>
-          <label className={styles.checkboxLabel}>
-            <input type="checkbox" onChange={(event) => setApplyChargeback(event.target.checked)} />
-            Ask for chargeback after purchase
-          </label>
+          <div className={styles.checkboxes}>
+            <label className={styles.checkboxLabel}>
+              <input type="checkbox" onChange={(event) => setApplyChargeback(event.target.checked)} />
+              Ask for chargeback after purchase
+            </label>
 
-          <label className={styles.checkboxLabel}>
-            <input
-              type="checkbox"
-              onChange={(event) => {
-                setUsingStolenCard(event.target.checked);
-              }}
-            />
-            Flag this visitor using stolen card after purchase
-          </label>
-        </div>
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                onChange={(event) => {
+                  setUsingStolenCard(event.target.checked);
+                }}
+              />
+              Flag this visitor using stolen card after purchase
+            </label>
+          </div>
 
-        <Button disabled={isWaitingForResponse} size="large" type="submit">
-          {isWaitingForResponse ? 'Hold on, doing magic...' : 'Place an order'}
-        </Button>
-      </form>
-      {httpResponseStatus ? (
-        <Alert ref={messageRef} severity={severity} className="UsecaseWrapper_alert">
-          {orderStatusMessage}
-        </Alert>
-      ) : null}
+          <Button disabled={isWaitingForResponse} size="large" type="submit">
+            {isWaitingForResponse ? 'Hold on, doing magic...' : 'Place an order'}
+          </Button>
+        </form>
+        {httpResponseStatus ? (
+          <Alert severity={severity} className="UsecaseWrapper_alert">
+            {orderStatusMessage}
+          </Alert>
+        ) : null}
+      </div>
     </UseCaseWrapper>
   );
 }
