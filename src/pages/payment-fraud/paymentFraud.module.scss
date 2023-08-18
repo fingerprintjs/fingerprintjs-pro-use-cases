@@ -2,6 +2,13 @@
   border: 1px solid v('gray-box-stroke');
   border-radius: rem(8px);
   padding: rem(20px);
+  overflow: hidden;
+  max-width: 556px;
+  margin: 0 auto;
+
+  @include media('<=phoneLandscape') {
+    padding: rem(12px);
+  }
 }
 
 // Forms
@@ -19,12 +26,18 @@ form.paymentForm {
     font-weight: 600;
     line-height: 145%;
     display: block;
+
+    @include media('<=phoneLandscape') {
+      font-size: rem(14px);
+    }
   }
 
   label.checkboxLabel {
-    display: flex;
+    // display: flex;
+    display: grid;
+    grid-template-columns: rem(16px) auto;
     gap: rem(8px);
-    align-items: center;
+    align-items: start;
 
     color: v('dark-gray');
     font-size: rem(14px);
@@ -47,6 +60,11 @@ form.paymentForm {
     line-height: 160%;
     letter-spacing: 0.16px;
     width: 100%;
+
+    @include media('<=phoneLandscape') {
+      padding: rem(10px) rem(12px);
+      font-size: rem(14px);
+    }
   }
 
   .submitButton {
@@ -55,6 +73,10 @@ form.paymentForm {
     margin-left: auto;
     margin-top: rem(40px);
     text-wrap: wrap;
+
+    @include media('<=phoneLandscape') {
+      margin-top: rem(24px);
+    }
   }
 
   .ccInfoGroup {
@@ -72,6 +94,7 @@ form.paymentForm {
     height: rem(16px);
     // https://caniuse.com/mdn-css_properties_accent-color good enough for a visual tweak
     accent-color: v('orange-gradient');
+    margin-top: revert;
   }
 
   hr {
