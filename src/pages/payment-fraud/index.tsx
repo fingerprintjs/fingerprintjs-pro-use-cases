@@ -103,13 +103,18 @@ export default function Index() {
 
           <div className={styles.checkboxes}>
             <label className={styles.checkboxLabel}>
-              <input type="checkbox" onChange={(event) => setApplyChargeback(event.target.checked)} />
+              <input
+                type="checkbox"
+                name="applyChargeback"
+                onChange={(event) => setApplyChargeback(event.target.checked)}
+              />
               Ask for chargeback after purchase
             </label>
 
             <label className={styles.checkboxLabel}>
               <input
                 type="checkbox"
+                name="usingStolenCard"
                 onChange={(event) => {
                   setUsingStolenCard(event.target.checked);
                 }}
