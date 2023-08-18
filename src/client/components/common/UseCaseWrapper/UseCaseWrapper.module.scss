@@ -256,3 +256,49 @@ h1.title {
     }
   }
 }
+
+.floatyResetButton {
+  position: fixed;
+  top: 40vh;
+  right: 32px;
+  border-radius: 50%;
+
+  display: flex;
+  width: 72px;
+  height: 72px;
+  padding: 32px;
+  justify-content: center;
+  align-items: center;
+  background-color: v('white');
+  z-index: 2;
+  cursor: pointer;
+
+  @include shadowLarge();
+
+  img {
+    height: rem(24px);
+    width: rem(24px);
+    transition: scale 0.2s ease;
+  }
+
+  &:hover {
+    img {
+      scale: 1.1;
+    }
+  }
+
+  &.loading {
+    img {
+      animation: rotate 1s infinite linear;
+    }
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

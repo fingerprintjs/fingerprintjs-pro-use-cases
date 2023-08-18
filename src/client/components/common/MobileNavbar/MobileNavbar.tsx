@@ -5,7 +5,7 @@ import styles from './MobileNavbar.module.scss';
 import { PLATFORM_NAVIGATION, URL, USE_CASES_NAVIGATION } from '../content';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import Image from 'next/image';
-import Restart from '../Header/Restart.svg';
+import Restart from '../../../img/restart.svg';
 import { useReset } from '../../../hooks/useReset/useReset';
 
 interface MobileNavbarProps {

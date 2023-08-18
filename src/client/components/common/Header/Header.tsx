@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Prism from 'prismjs';
-import MobileNavbar from '../MobileNavbar';
+import MobileNavbar from '../MobileNavbar/MobileNavbar';
 import Container from '../Container';
 import HeaderBar from '../HeaderBar/HeaderBar';
 import classNames from 'classnames';
@@ -9,7 +9,7 @@ import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import Image from 'next/image';
 import LogoSvg from './fpjs.svg';
 import LogoDarkSvg from './fpjsDark.svg';
-import Restart from './Restart.svg';
+import Restart from '../../../img/restart.svg';
 
 import styles from './Header.module.scss';
 import Link from 'next/link';

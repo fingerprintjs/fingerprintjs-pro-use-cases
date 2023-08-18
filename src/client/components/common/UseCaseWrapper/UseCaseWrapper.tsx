@@ -4,9 +4,12 @@ import styles from './UseCaseWrapper.module.scss';
 import Button from '../Button';
 import Lightbulb from './lightbulb.svg';
 import Image from 'next/image';
-import { Paper } from '@mui/material';
+import { Paper, Tooltip } from '@mui/material';
 import { UseCase } from '../content';
 import ExternalLinkIcon from '../../../img/externalLinkArrow.svg';
+import RestartIcon from '../../../img/restart.svg';
+import { useReset } from '../../../hooks/useReset/useReset';
+import classNames from 'classnames';
 
 type UseCaseWrapperProps = {
   useCase: Partial<UseCase>;
@@ -25,8 +28,17 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   const { title, description, articleUrl, instructions, moreResources, doNotMentionResetButton } = useCase ?? {};
   const learnMoreRef = useRef<ElementRef<'h3'>>();
 
+  const { mutate, shouldDisplayResetButton, isLoading } = useReset({});
+
   return (
     <>
+      {shouldDisplayResetButton && (
+        <div className={classNames([styles.floatyResetButton, isLoading && styles.loading])} onClick={() => mutate()}>
+          <Tooltip title="Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action.">
+            <Image src={RestartIcon} alt="Reset scenario" />
+          </Tooltip>
+        </div>
+      )}
       <Container size="large">
         <h1 className={styles.title}>{title}</h1>
         <div className={styles.description}>{description}</div>
