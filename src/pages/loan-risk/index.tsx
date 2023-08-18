@@ -18,6 +18,7 @@ import Alert from '@mui/material/Alert';
 import { calculateMonthInstallment } from '../../shared/loan-risk/calculate-month-installment';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
+import { CustomPageProps } from '../_app';
 
 type SliderFieldProps = {
   label: string;
@@ -70,7 +71,7 @@ const SliderField: FunctionComponent<SliderFieldProps> = ({
     </Stack>
   );
 };
-export default function LoanRisk() {
+export default function LoanRisk({ embed }: CustomPageProps) {
   const visitorDataQuery = useVisitorData({
     // Don't invoke query on mount
     enabled: false,
@@ -109,7 +110,7 @@ export default function LoanRisk() {
   const isLoading = visitorDataQuery.isLoading || loanRequestMutation.isLoading;
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.loanRisk}>
+    <UseCaseWrapper useCase={USE_CASES.loanRisk} embed={embed}>
       <form onSubmit={handleSubmit}>
         <Stack direction="column" spacing={6}>
           <TextField

@@ -335,7 +335,7 @@ export const USE_CASES = {
   },
 } as const satisfies Record<string, UseCase>;
 
-const PLAYGROUND_METADATA: Pick<UseCase, 'title' | 'url' | 'descriptionHomepage' | 'iconSvg'> = {
+export const PLAYGROUND_METADATA: Pick<UseCase, 'title' | 'url' | 'descriptionHomepage' | 'iconSvg'> = {
   title: 'Smart Signals',
   url: '/playground',
   iconSvg: SmartSignalsIcon,

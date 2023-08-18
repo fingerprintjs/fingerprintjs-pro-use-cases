@@ -20,6 +20,7 @@ import { GetServerSideProps, NextPage } from 'next';
 import { FlightQuery } from '../api/web-scraping/flights';
 import { CheckResultObject } from '../../server/checkResult';
 import { USE_CASES } from '../../client/components/common/content';
+import { CustomPageProps } from '../_app';
 
 // Make URL query object available as props to the page on first render
 // to read `from`, `to` params and a `disableBotDetection` param for testing and demo purposes
@@ -71,7 +72,12 @@ type QueryAsProps = {
   disableBotDetection: boolean;
 };
 
-export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBotDetection }) => {
+export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
+  from,
+  to,
+  disableBotDetection,
+  embed,
+}) => {
   const [fromCode, setFromCode] = useQueryState('from', from?.toUpperCase() ?? AIRPORTS[0].code);
   const [toCode, setToCode] = useQueryState('to', to?.toUpperCase() ?? AIRPORTS[1].code);
 
@@ -126,7 +132,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps> = ({ from, to, disableBo
 
   return (
     <>
-      <UseCaseWrapper useCase={USE_CASES.webScraping}>
+      <UseCaseWrapper useCase={USE_CASES.webScraping} embed={embed}>
         <Box marginBottom={(theme) => theme.spacing(2)}>
           <Typography variant="overline">Search for today&apos;s flights</Typography>
         </Box>

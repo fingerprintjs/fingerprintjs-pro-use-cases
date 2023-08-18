@@ -15,6 +15,7 @@ import { useVisitorData } from '../../client/use-visitor-data';
 import React from 'react';
 import { Theme } from '@mui/material/styles/createTheme';
 import { USE_CASES } from '../../client/components/common/content';
+import { CustomPageProps } from '../_app';
 
 const PAYMENT_FRAUD = USE_CASES.paymentFraud;
 
@@ -28,7 +29,7 @@ const useStyles = makeStyles<Theme>((theme) => ({
   },
 }));
 
-export default function Index() {
+export default function Index({ embed }: CustomPageProps) {
   const visitorDataQuery = useVisitorData({
     // Don't fetch visitorData on mount
     enabled: false,
@@ -88,7 +89,7 @@ export default function Index() {
   }
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.paymentFraud}>
+    <UseCaseWrapper useCase={USE_CASES.paymentFraud} embed={embed}>
       <form onSubmit={handleSubmit} className="Form_container">
         <FormControl fullWidth className={clsx(useStyles().margin)} variant="outlined">
           <Typography variant="caption" className="UserInput_label">

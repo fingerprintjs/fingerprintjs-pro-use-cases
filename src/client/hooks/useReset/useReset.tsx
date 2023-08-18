@@ -4,6 +4,7 @@ import { ResetRequest, ResetResponse } from '../../../pages/api/admin/reset';
 import { useSnackbar } from 'notistack';
 import styles from './userReset.module.scss';
 import { useRouter } from 'next/router';
+import { PLAYGROUND_METADATA, USE_CASES } from '../../components/common/content';
 
 type UseResetParams = {
   onError?: () => void;
@@ -57,5 +58,9 @@ export const useReset = ({ onError, onSuccess }: UseResetParams) => {
     },
   );
 
-  return { ...resetMutation, shouldDisplayResetButton: asPath !== '/' && asPath !== '/playground' };
+  return {
+    ...resetMutation,
+    shouldDisplayResetButton:
+      asPath !== '/' && !asPath.startsWith(PLAYGROUND_METADATA.url) && !asPath.startsWith(USE_CASES.webScraping.url),
+  };
 };

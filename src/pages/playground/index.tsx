@@ -29,6 +29,7 @@ import { FormatIpAddress } from '../../client/components/playground/ipFormatUtil
 import { usePlaygroundSignals } from '../../client/components/playground/usePlaygroundSignals';
 import { getLocationName } from '../../shared/utils/getLocationName';
 import { PLAYGROUND_TAG } from '../../client/components/playground/playgroundTags';
+import { CustomPageProps } from '../_app';
 
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('../../client/components/playground/Map'), { ssr: false });
@@ -400,7 +401,7 @@ function Playground() {
   );
 }
 
-export default function PlaygroundPage() {
+export default function PlaygroundPage({ embed }: CustomPageProps) {
   return (
     <UseCaseWrapper
       useCase={{
@@ -410,6 +411,7 @@ export default function PlaygroundPage() {
       }}
       hideGithubLink={true}
       contentSx={{ boxShadow: 'none', maxWidth: '1248px', minHeight: '60vh' }}
+      embed={embed}
     >
       <Playground />
     </UseCaseWrapper>

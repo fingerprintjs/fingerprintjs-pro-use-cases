@@ -17,6 +17,7 @@ type UseCaseWrapperProps = {
   hideGithubLink?: boolean;
   returnUrl?: string;
   contentSx?: React.CSSProperties;
+  embed?: boolean;
 };
 
 export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
@@ -24,6 +25,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   hideGithubLink: hideSrcListItem = false,
   contentSx,
   useCase,
+  embed,
 }) => {
   const { title, description, articleUrl, instructions, moreResources, doNotMentionResetButton } = useCase ?? {};
   const learnMoreRef = useRef<ElementRef<'h3'>>();
@@ -32,7 +34,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
 
   return (
     <>
-      {shouldDisplayResetButton && (
+      {embed && shouldDisplayResetButton && (
         <div className={classNames([styles.floatyResetButton, isLoading && styles.loading])} onClick={() => mutate()}>
           <Tooltip title="Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action.">
             <Image src={RestartIcon} alt="Reset scenario" />

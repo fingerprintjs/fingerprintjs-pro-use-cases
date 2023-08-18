@@ -15,18 +15,22 @@ import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/Us
 import { useVisitorData } from '../../client/use-visitor-data';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
+import { CustomPageProps } from '../_app';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
+    // @ts-ignore
     'margin-top': theme.spacing(1),
+    // @ts-ignore
     'margin-bottom': theme.spacing(1),
   },
   withoutLabel: {
+    // @ts-ignore
     marginTop: theme.spacing(3),
   },
 }));
 
-export default function Index() {
+export default function Index({ embed }: CustomPageProps) {
   const visitorDataQuery = useVisitorData({
     // Don't fetch visitorData on mount
     enabled: false,
@@ -51,6 +55,7 @@ export default function Index() {
   const messageRef = useRef();
 
   useEffect(() => {
+    // @ts-ignore
     !isWaitingForResponse && messageRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [isWaitingForResponse]);
 
@@ -82,6 +87,7 @@ export default function Index() {
     const responseStatus = response.status;
     setAuthMessage(responseJson.message);
     setSeverity(responseJson.severity);
+    // @ts-ignore
     setHttpResponseStatus(responseStatus);
     setIsWaitingForResponse(false);
   }
@@ -95,7 +101,7 @@ export default function Index() {
   };
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.credentialStuffing}>
+    <UseCaseWrapper useCase={USE_CASES.credentialStuffing} embed={embed}>
       <form onSubmit={handleSubmit} className="Form_container">
         <FormControl fullWidth className={clsx(useStyles().margin)} variant="outlined">
           <Typography variant="caption" className="UserInput_label">
