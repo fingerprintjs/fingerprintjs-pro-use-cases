@@ -27,24 +27,24 @@ form.paymentForm {
     align-items: center;
 
     color: v('dark-gray');
-    font-size: 14px;
+    font-size: rem(14px);
     font-weight: 400;
-    line-height: 160%; /* 22.4px */
+    line-height: 160%;
     letter-spacing: 0.14px;
   }
 
   input[type='text'] {
     padding: rem(16px) rem(12px);
-    border-radius: 6px;
+    border-radius: rem(6px);
     border: 1px solid v('gray-box-stroke');
     margin-top: rem(8px);
     margin-bottom: rem(16px);
 
     color: v('gray-5');
-    font-size: 16px;
+    font-size: rem(16px);
     font-style: normal;
     font-weight: 400;
-    line-height: 160%; /* 25.6px */
+    line-height: 160%;
     letter-spacing: 0.16px;
     width: 100%;
   }
