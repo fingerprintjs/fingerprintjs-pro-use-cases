@@ -308,6 +308,12 @@ h1.title {
     }
   }
 
+  &.pulse {
+    animation: pulse 0.8s infinite linear;
+    border: 1px solid v('orange-gradient');
+    background-color: v('soft-orange-background');
+  }
+
   @include media('<=phoneLandscape') {
     padding: rem(16px);
     right: rem(16px);

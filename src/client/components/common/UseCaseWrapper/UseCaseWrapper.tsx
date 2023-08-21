@@ -1,4 +1,4 @@
-import { ElementRef, FunctionComponent, useRef } from 'react';
+import { ElementRef, FunctionComponent, useRef, useState } from 'react';
 import Container from '../Container';
 import styles from './UseCaseWrapper.module.scss';
 import Button from '../Button';
@@ -31,13 +31,18 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   const learnMoreRef = useRef<ElementRef<'h3'>>();
 
   const { mutate, shouldDisplayResetButton, isLoading } = useReset({});
+  const [pulseResetButton, setPulseResetButton] = useState(false);
 
   return (
     <>
       {embed && shouldDisplayResetButton && (
         <Tooltip title="Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action.">
           <div
-            className={classNames([styles.floatyResetButton, isLoading && styles.loading])}
+            className={classNames([
+              styles.floatyResetButton,
+              isLoading && styles.loading,
+              pulseResetButton && styles.pulse,
+            ])}
             onClick={() => !isLoading && mutate()}
           >
             <div className={styles.resetTitle}>Restart</div>
@@ -76,7 +81,15 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
                 {!doNotMentionResetButton && (
                   <li>
                     <div>
-                      You can reset this scenario using the <b>Restart</b> button on the top right.
+                      You can reset this scenario using the{' '}
+                      <b
+                        onMouseEnter={() => setPulseResetButton(true)}
+                        onMouseLeave={() => setPulseResetButton(false)}
+                        style={{ cursor: 'help' }}
+                      >
+                        Restart
+                      </b>{' '}
+                      button on the top right.
                     </div>
                   </li>
                 )}
