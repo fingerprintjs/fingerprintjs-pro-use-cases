@@ -17,8 +17,6 @@ import { Theme } from '@mui/material/styles/createTheme';
 import { USE_CASES } from '../../client/components/common/content';
 import { CustomPageProps } from '../_app';
 
-const PAYMENT_FRAUD = USE_CASES.paymentFraud;
-
 const useStyles = makeStyles<Theme>((theme) => ({
   margin: {
     'margin-top': theme.spacing(1),

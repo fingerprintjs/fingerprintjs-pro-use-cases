@@ -35,7 +35,10 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   return (
     <>
       {embed && shouldDisplayResetButton && (
-        <div className={classNames([styles.floatyResetButton, isLoading && styles.loading])} onClick={() => mutate()}>
+        <div
+          className={classNames([styles.floatyResetButton, isLoading && styles.loading])}
+          onClick={() => !isLoading && mutate()}
+        >
           <Tooltip title="Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action.">
             <Image src={RestartIcon} alt="Reset scenario" />
           </Tooltip>
