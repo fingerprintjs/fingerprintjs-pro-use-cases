@@ -20,6 +20,22 @@ type UseCaseWrapperProps = {
   embed?: boolean;
 };
 
+type RestartHintProps = {
+  setPulseResetButton: (value: boolean) => void;
+};
+
+const RestartHint: React.FC<RestartHintProps> = ({ setPulseResetButton }) => {
+  return (
+    <b
+      onMouseEnter={() => setPulseResetButton(true)}
+      onMouseLeave={() => setPulseResetButton(false)}
+      style={{ cursor: 'help' }}
+    >
+      Restart
+    </b>
+  );
+};
+
 export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   children,
   hideGithubLink: hideSrcListItem = false,
@@ -81,14 +97,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
                 {!doNotMentionResetButton && (
                   <li>
                     <div>
-                      You can reset this scenario using the{' '}
-                      <b
-                        onMouseEnter={() => setPulseResetButton(true)}
-                        onMouseLeave={() => setPulseResetButton(false)}
-                        style={{ cursor: 'help' }}
-                      >
-                        Restart
-                      </b>{' '}
+                      You can reset this scenario using the <RestartHint setPulseResetButton={setPulseResetButton} />{' '}
                       button on the top right.
                     </div>
                   </li>
