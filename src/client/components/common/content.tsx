@@ -7,15 +7,17 @@ import PaymentFraudIcon from '../../img/paymentFraudIcon.svg';
 import PaywallIcon from '../../img/paywallIcon.svg';
 import PersonalizationIcon from '../../img/personalizationIcon.svg';
 import ScrapingIcon from '../../img/scrapingIcon.svg';
+import { ReactNode } from 'react';
+import { RestartHint, RestartHintProps } from './UseCaseWrapper/RestartHint';
 
 export type UseCase = {
   title: string;
   url: string;
-  description?: React.ReactNode;
-  descriptionHomepage?: React.ReactNode | readonly React.ReactNode[];
+  description?: ReactNode;
+  descriptionHomepage?: ReactNode | readonly ReactNode[];
   articleUrl?: string;
   doNotMentionResetButton?: boolean;
-  instructions: readonly React.ReactNode[];
+  instructions: readonly (ReactNode | ((props: RestartHintProps) => ReactNode))[];
   iconSvg?: any | undefined;
   moreResources?: readonly {
     type: 'Use case tutorial' | 'Case study' | 'Industry' | 'Article';
@@ -170,14 +172,18 @@ export const USE_CASES = {
     instructions: [
       <>Change the pre-filled card details to simulate testing stolen credit cards.</>,
       <>Try placing an order multiple times. You will be stopped after 3 attempts.</>,
-      <>
-        Click the <b>Restart</b> button to reset the demo.
-      </>,
+      ({ setPulseResetButton }) => (
+        <>
+          Click the <RestartHint setPulseResetButton={setPulseResetButton} /> button to reset the demo.
+        </>
+      ),
       <>Use the correct pre-filled card details but select "Ask for chargeback" and place your order.</>,
       <>Try placing an order again. You won't be able to do it with your chargeback history.</>,
-      <>
-        Click the <b>Restart</b> button to reset the demo.
-      </>,
+      ({ setPulseResetButton }) => (
+        <>
+          Click the <RestartHint setPulseResetButton={setPulseResetButton} /> button to reset the demo.
+        </>
+      ),
       <>
         Select "Flag this as stolen credit card after purchase" to simulate using a stolen card and place your order.
       </>,
@@ -356,7 +362,7 @@ export const PLATFORM_NAVIGATION = [PLAYGROUND_METADATA];
 type HomePageCard = {
   title: string;
   url: string;
-  description: React.ReactNode | readonly React.ReactNode[];
+  description: ReactNode | readonly ReactNode[];
   iconSvg: any;
 };
 

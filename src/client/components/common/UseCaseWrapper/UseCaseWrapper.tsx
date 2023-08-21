@@ -10,6 +10,7 @@ import ExternalLinkIcon from '../../../img/externalLinkArrow.svg';
 import RestartIcon from '../../../img/restart.svg';
 import { useReset } from '../../../hooks/useReset/useReset';
 import classNames from 'classnames';
+import { RestartHint } from './RestartHint';
 
 type UseCaseWrapperProps = {
   useCase: Partial<UseCase>;
@@ -18,22 +19,6 @@ type UseCaseWrapperProps = {
   returnUrl?: string;
   contentSx?: React.CSSProperties;
   embed?: boolean;
-};
-
-type RestartHintProps = {
-  setPulseResetButton: (value: boolean) => void;
-};
-
-const RestartHint: React.FC<RestartHintProps> = ({ setPulseResetButton }) => {
-  return (
-    <b
-      onMouseEnter={() => setPulseResetButton(true)}
-      onMouseLeave={() => setPulseResetButton(false)}
-      style={{ cursor: 'help' }}
-    >
-      Restart
-    </b>
-  );
 };
 
 export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
@@ -91,7 +76,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
                 {instructions?.map((item, index) => (
                   <li key={index}>
                     {/* The wrapper div here is necessary for styles to work. */}
-                    <div>{item}</div>
+                    <div>{typeof item === 'function' ? item({ setPulseResetButton }) : item}</div>
                   </li>
                 ))}
                 {!doNotMentionResetButton && (
