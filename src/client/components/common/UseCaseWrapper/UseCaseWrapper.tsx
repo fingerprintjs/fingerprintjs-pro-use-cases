@@ -21,6 +21,22 @@ type UseCaseWrapperProps = {
   embed?: boolean;
 };
 
+type RestartHintProps = {
+  setPulseResetButton: (value: boolean) => void;
+};
+
+const RestartHint: React.FC<RestartHintProps> = ({ setPulseResetButton }) => {
+  return (
+    <b
+      onMouseEnter={() => setPulseResetButton(true)}
+      onMouseLeave={() => setPulseResetButton(false)}
+      style={{ cursor: 'help' }}
+    >
+      Restart
+    </b>
+  );
+};
+
 export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   children,
   hideGithubLink: hideSrcListItem = false,
