@@ -57,6 +57,8 @@ form.useCaseForm {
     letter-spacing: 0.16px;
     width: 100%;
 
+    outline-color: v('orange-gradient');
+
     @include media('<=phoneLandscape') {
       padding: rem(10px) rem(12px);
       font-size: rem(14px);
