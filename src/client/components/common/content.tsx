@@ -114,6 +114,11 @@ export const USE_CASES = {
         title: 'Credential Stuffing',
         url: 'https://fingerprint.com/use-cases/credential-stuffing/',
       },
+      {
+        type: 'Article',
+        title: 'Account takeover',
+        url: 'https://fingerprint.com/account-takeover/',
+      },
     ],
   },
   loanRisk: {
