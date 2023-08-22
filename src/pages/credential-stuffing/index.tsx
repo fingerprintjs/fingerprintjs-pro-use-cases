@@ -77,7 +77,6 @@ export default function Index() {
             placeholder="Password"
             type={'password'}
             defaultValue={password}
-            value={password || ''}
             onChange={(e) => setPassword(e.target.value)}
           />
           {httpResponseStatus ? (
