@@ -4,7 +4,7 @@ import MobileNavbar from '../MobileNavbar';
 import Container from '../Container';
 import HeaderBar from '../HeaderBar/HeaderBar';
 import classNames from 'classnames';
-import { PLATFORM_NAVIGATION, URL, USE_CASES_ARRAY, USE_CASES_NAVIGATION } from '../content';
+import { PLATFORM_NAVIGATION, URL, USE_CASES_NAVIGATION } from '../content';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import Image from 'next/image';
 import LogoSvg from './fpjs.svg';

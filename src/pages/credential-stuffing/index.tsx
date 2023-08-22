@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
-
+import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { useVisitorData } from '../../client/use-visitor-data';
 import React from 'react';
@@ -25,13 +24,6 @@ export default function Index() {
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
 
   const [httpResponseStatus, setHttpResponseStatus] = useState<number | null>();
-  const [showPassword, setShowPassword] = useState(false);
-
-  const messageRef = useRef<HTMLDivElement | null>();
-
-  useEffect(() => {
-    !isWaitingForResponse && messageRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [isWaitingForResponse]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -65,14 +57,6 @@ export default function Index() {
     setIsWaitingForResponse(false);
   }
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
   return (
     <UseCaseWrapper useCase={USE_CASES.credentialStuffing}>
       <div className={formStyles.wrapper}>
@@ -91,7 +75,7 @@ export default function Index() {
           <input
             name="password"
             placeholder="Password"
-            type={showPassword ? 'text' : 'password'}
+            type={'password'}
             defaultValue={password}
             value={password || ''}
             onChange={(e) => setPassword(e.target.value)}
