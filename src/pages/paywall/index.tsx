@@ -3,7 +3,6 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { SITE_URL } from '../../shared/const';
-import { ARTICLE_VIEW_LIMIT } from '../../shared/paywall/constants';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { ArticleData } from '../../server/paywall/articles';
 import { CustomPageProps } from '../_app';

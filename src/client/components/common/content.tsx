@@ -13,14 +13,14 @@ import { RestartHint, RestartHintProps } from './UseCaseWrapper/RestartHint';
 export type UseCase = {
   title: string;
   url: string;
-  description?: ReactNode;
-  descriptionHomepage?: ReactNode | readonly ReactNode[];
+  description?: React.ReactNode;
+  descriptionHomepage?: readonly React.ReactNode[];
   articleUrl?: string;
   doNotMentionResetButton?: boolean;
   instructions: readonly (ReactNode | ((props: RestartHintProps) => ReactNode))[];
   iconSvg?: any | undefined;
   moreResources?: readonly {
-    type: 'Use case tutorial' | 'Case study' | 'Industry' | 'Article';
+    type: 'Use case tutorial' | 'Case study' | 'Industry' | 'Article' | 'Use case';
     title: string;
     url: string;
   }[];
@@ -115,6 +115,11 @@ export const USE_CASES = {
         type: 'Use case tutorial',
         title: 'Credential Stuffing',
         url: 'https://fingerprint.com/use-cases/credential-stuffing/',
+      },
+      {
+        type: 'Use case',
+        title: 'Account takeover',
+        url: 'https://fingerprint.com/account-takeover/',
       },
     ],
   },
@@ -359,18 +364,13 @@ export const USE_CASES_ARRAY = Object.values(USE_CASES);
 export const USE_CASES_NAVIGATION = USE_CASES_ARRAY.map((useCase) => ({ title: useCase.title, url: useCase.url }));
 export const PLATFORM_NAVIGATION = [PLAYGROUND_METADATA];
 
-type HomePageCard = {
-  title: string;
-  url: string;
-  description: ReactNode | readonly ReactNode[];
-  iconSvg: any;
-};
+type HomePageCard = Pick<UseCase, 'title' | 'url' | 'iconSvg' | 'descriptionHomepage'>;
 
 export const HOMEPAGE_CARDS: HomePageCard[] = [PLAYGROUND_METADATA, ...USE_CASES_ARRAY].map((useCase) => ({
   title: useCase.title,
   url: useCase.url,
   iconSvg: useCase.iconSvg,
-  description: useCase.descriptionHomepage,
+  descriptionHomepage: useCase.descriptionHomepage,
 }));
 
 export const URL = {

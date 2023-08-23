@@ -1,36 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
-import makeStyles from '@mui/styles/makeStyles';
-import IconButton from '@mui/material/IconButton';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
-import FormControl from '@mui/material/FormControl';
-import TextField from '@mui/material/TextField';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import Typography from '@mui/material/Typography';
-import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
+import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { useVisitorData } from '../../client/use-visitor-data';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
-import { CustomPageProps } from '../_app';
+import Alert from '../../client/components/common/Alert/Alert';
+import Button from '../../client/components/common/Button';
+import styles from './credentialStuffing.module.scss';
+import formStyles from '../../styles/forms.module.scss';
+import classNames from 'classnames';
+import hiddenIcon from './iconHidden.svg';
+import shownIcon from './iconShown.svg';
+import Image from 'next/image';
 
-const useStyles = makeStyles((theme) => ({
-  margin: {
-    // @ts-ignore
-    'margin-top': theme.spacing(1),
-    // @ts-ignore
-    'margin-bottom': theme.spacing(1),
-  },
-  withoutLabel: {
-    // @ts-ignore
-    marginTop: theme.spacing(3),
-  },
-}));
-
-export default function Index({ embed }: CustomPageProps) {
+export default function Index() {
   const visitorDataQuery = useVisitorData({
     // Don't fetch visitorData on mount
     enabled: false,
@@ -39,25 +21,12 @@ export default function Index({ embed }: CustomPageProps) {
   // Default mocked user data
   const [userName, setUserName] = useState('user');
   const [password, setPassword] = useState('password');
+  const [showPassword, setShowPassword] = useState(false);
 
   const [authMessage, setAuthMessage] = useState();
   const [severity, setSeverity] = useState();
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
-  /**
-   * @type {[number, React.Dispatch<number>]}
-   */
-  const [httpResponseStatus, setHttpResponseStatus] = useState();
-  const [showPassword, setShowPassword] = useState(false);
-
-  /**
-   * @type {React.MutableRefObject<HTMLDivElement | null>}
-   */
-  const messageRef = useRef();
-
-  useEffect(() => {
-    // @ts-ignore
-    !isWaitingForResponse && messageRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [isWaitingForResponse]);
+  const [httpResponseStatus, setHttpResponseStatus] = useState<number | null>();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -87,79 +56,47 @@ export default function Index({ embed }: CustomPageProps) {
     const responseStatus = response.status;
     setAuthMessage(responseJson.message);
     setSeverity(responseJson.severity);
-    // @ts-ignore
     setHttpResponseStatus(responseStatus);
     setIsWaitingForResponse(false);
   }
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
   return (
-    <UseCaseWrapper useCase={USE_CASES.credentialStuffing} embed={embed}>
-      <form onSubmit={handleSubmit} className="Form_container">
-        <FormControl fullWidth className={clsx(useStyles().margin)} variant="outlined">
-          <Typography variant="caption" className="UserInput_label">
-            Username
-          </Typography>
-          <TextField
+    <UseCaseWrapper useCase={USE_CASES.credentialStuffing}>
+      <div className={formStyles.wrapper}>
+        <form onSubmit={handleSubmit} className={classNames(formStyles.useCaseForm, styles.credentialStuffingForm)}>
+          <label>Username</label>
+          <input
+            type="text"
             name="username"
             placeholder="Username"
-            variant="outlined"
             defaultValue={userName}
             onChange={(e) => setUserName(e.target.value)}
             required
           />
-        </FormControl>
-        <FormControl fullWidth className={clsx(useStyles().margin)} variant="outlined">
-          <Typography variant="caption" className="UserInput_label">
-            Password
-          </Typography>
-          <OutlinedInput
+
+          <label>Password</label>
+          <input
             name="password"
             placeholder="Password"
+            className={styles.password}
             type={showPassword ? 'text' : 'password'}
             defaultValue={password}
-            value={password || ''}
             onChange={(e) => setPassword(e.target.value)}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                  size="large"
-                >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            }
-            required
           />
-        </FormControl>
-        <Button
-          className="Form_button"
-          disabled={isWaitingForResponse}
-          size="large"
-          type="submit"
-          variant="contained"
-          color="primary"
-          disableElevation
-          fullWidth
-        >
-          {isWaitingForResponse ? 'Hold on, doing magic...' : 'Log In'}
-        </Button>
-      </form>
-      {httpResponseStatus ? (
-        <Alert ref={messageRef} severity={severity} className="UsecaseWrapper_alert">
-          {authMessage}
-        </Alert>
-      ) : null}
+          <button className={styles.showHideIcon} type="button" onClick={() => setShowPassword(!showPassword)}>
+            <Image src={showPassword ? shownIcon : hiddenIcon} alt={showPassword ? 'Hide password' : 'Show password'} />
+          </button>
+
+          {httpResponseStatus ? (
+            <Alert severity={severity} className={styles.alert}>
+              {authMessage}
+            </Alert>
+          ) : null}
+          <Button disabled={isWaitingForResponse} type="submit">
+            {isWaitingForResponse ? 'Hold on, doing magic...' : 'Log In'}
+          </Button>
+        </form>
+      </div>
     </UseCaseWrapper>
   );
 }

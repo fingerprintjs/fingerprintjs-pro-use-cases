@@ -6,8 +6,10 @@ import { USE_CASES } from '../../client/components/common/content';
 import Button from '../../client/components/common/Button';
 
 import styles from './paymentFraud.module.scss';
+import formStyles from '../../styles/forms.module.scss';
 import Alert from '../../client/components/common/Alert/Alert';
 import { CustomPageProps } from '../_app';
+import classNames from 'classnames';
 
 export default function Index({ embed }: CustomPageProps) {
   const visitorDataQuery = useVisitorData({
@@ -64,8 +66,8 @@ export default function Index({ embed }: CustomPageProps) {
 
   return (
     <UseCaseWrapper useCase={USE_CASES.paymentFraud} contentSx={{ maxWidth: 'none' }} embed={embed}>
-      <div className={styles.wrapper}>
-        <form onSubmit={handleSubmit} className={styles.paymentForm}>
+      <div className={formStyles.wrapper}>
+        <form onSubmit={handleSubmit} className={classNames(formStyles.useCaseForm, styles.paymentForm)}>
           <label>Card Number</label>
           <input
             type="text"
@@ -103,7 +105,7 @@ export default function Index({ embed }: CustomPageProps) {
           <hr />
 
           <div className={styles.checkboxes}>
-            <label className={styles.checkboxLabel}>
+            <label className={formStyles.checkboxLabel}>
               <input
                 type="checkbox"
                 name="applyChargeback"
@@ -112,7 +114,7 @@ export default function Index({ embed }: CustomPageProps) {
               Ask for chargeback after purchase
             </label>
 
-            <label className={styles.checkboxLabel}>
+            <label className={formStyles.checkboxLabel}>
               <input
                 type="checkbox"
                 name="usingStolenCard"
@@ -125,7 +127,7 @@ export default function Index({ embed }: CustomPageProps) {
           </div>
 
           {httpResponseStatus ? <Alert severity={severity}>{orderStatusMessage}</Alert> : null}
-          <Button disabled={isWaitingForResponse} size="large" type="submit" className={styles.submitButton}>
+          <Button disabled={isWaitingForResponse} size="large" type="submit">
             {isWaitingForResponse ? 'Hold on, doing magic...' : 'Place Order'}
           </Button>
         </form>

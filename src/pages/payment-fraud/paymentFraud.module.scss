@@ -1,84 +1,4 @@
-.wrapper {
-  border: 1px solid v('gray-box-stroke');
-  border-radius: rem(8px);
-  padding: rem(20px);
-  overflow: hidden;
-  max-width: 556px;
-  margin: 0 auto;
-
-  @include media('<=phoneLandscape') {
-    padding: rem(12px);
-  }
-}
-
-// Forms
-
 form.paymentForm {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-
-  label {
-    color: v('dark-black');
-    font-size: rem(16px);
-    font-style: normal;
-    font-weight: 600;
-    line-height: 145%;
-    display: block;
-
-    @include media('<=phoneLandscape') {
-      font-size: rem(14px);
-    }
-  }
-
-  label.checkboxLabel {
-    // display: flex;
-    display: grid;
-    grid-template-columns: rem(16px) auto;
-    gap: rem(8px);
-    align-items: start;
-
-    color: v('dark-gray');
-    font-size: rem(14px);
-    font-weight: 400;
-    line-height: 160%;
-    letter-spacing: 0.14px;
-  }
-
-  input[type='text'] {
-    padding: rem(16px) rem(12px);
-    border-radius: rem(6px);
-    border: 1px solid v('gray-box-stroke');
-    margin-top: rem(8px);
-    margin-bottom: rem(16px);
-
-    color: v('gray-5');
-    font-size: rem(16px);
-    font-style: normal;
-    font-weight: 400;
-    line-height: 160%;
-    letter-spacing: 0.16px;
-    width: 100%;
-
-    @include media('<=phoneLandscape') {
-      padding: rem(10px) rem(12px);
-      font-size: rem(14px);
-    }
-  }
-
-  .submitButton {
-    width: fit-content;
-    max-width: 100%;
-    margin-left: auto;
-    margin-top: rem(40px);
-    text-wrap: wrap;
-
-    @include media('<=phoneLandscape') {
-      margin-top: rem(24px);
-    }
-  }
-
   .ccInfoGroup {
     display: flex;
     column-gap: 16px;
@@ -89,25 +9,19 @@ form.paymentForm {
     }
   }
 
-  input[type='checkbox'] {
-    width: rem(16px);
-    height: rem(16px);
-    // https://caniuse.com/mdn-css_properties_accent-color good enough for a visual tweak
-    accent-color: v('orange-gradient');
-    margin-top: revert;
-  }
-
-  hr {
-    width: 100%;
-    border-top: 1px solid v('gray-box-stroke');
-    margin: 0;
-  }
-
   div.checkboxes {
     display: flex;
     flex-direction: column;
     gap: rem(8px);
     margin-top: rem(24px);
-    margin-bottom: rem(16px);
+  }
+
+  button[type='submit'] {
+    margin-left: auto;
+    margin-top: rem(40px);
+
+    @include media('<=phoneLandscape') {
+      margin-top: rem(24px);
+    }
   }
 }
