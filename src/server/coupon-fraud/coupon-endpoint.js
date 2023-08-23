@@ -1,5 +1,4 @@
 import { ensurePostRequest } from '../server';
-import { initCoupons } from './database';
 import { validateCouponRequest } from './visitor-validations';
 
 export const couponEndpoint =
@@ -8,8 +7,6 @@ export const couponEndpoint =
     if (!ensurePostRequest(req, res)) {
       return;
     }
-
-    await initCoupons();
 
     res.setHeader('Content-Type', 'application/json');
 
