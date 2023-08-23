@@ -27,4 +27,4 @@ async function initCoupons() {
   await CouponCode.findOrCreate({ where: { code: { [Op.eq]: 'BlackFriday' } }, defaults: { code: 'BlackFriday' } });
 }
 
-await initCoupons();
+initCoupons();
