@@ -24,7 +24,7 @@ test.describe('Personalization', () => {
     const cartItem = cartItems.first();
 
     await expect(cartItem.locator('.CartItem_Name')).toHaveText(
-      await product.locator('.ProductCard_Name').textContent()
+      await product.locator('.ProductCard_Name').textContent(),
     );
 
     await cartItem.locator('.CartItem_Add').click();
@@ -65,6 +65,7 @@ test.describe('Personalization', () => {
     const products = page.locator('.ProductCard');
 
     const checkFoundProducts = async () => {
+      await page.waitForTimeout(3000);
       await expect
         .poll(async () => {
           const textContents = await Promise.all((await products.all()).map((p) => p.textContent()));
