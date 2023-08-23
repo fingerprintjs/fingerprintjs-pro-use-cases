@@ -8,6 +8,9 @@ import Button from '../../client/components/common/Button';
 import styles from './credentialStuffing.module.scss';
 import formStyles from '../../styles/forms.module.scss';
 import classNames from 'classnames';
+import hiddenIcon from './iconHidden.svg';
+import shownIcon from './iconShown.svg';
+import Image from 'next/image';
 
 export default function Index() {
   const visitorDataQuery = useVisitorData({
@@ -18,11 +21,11 @@ export default function Index() {
   // Default mocked user data
   const [userName, setUserName] = useState('user');
   const [password, setPassword] = useState('password');
+  const [showPassword, setShowPassword] = useState(false);
 
   const [authMessage, setAuthMessage] = useState();
   const [severity, setSeverity] = useState();
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
-
   const [httpResponseStatus, setHttpResponseStatus] = useState<number | null>();
 
   async function handleSubmit(e) {
@@ -75,10 +78,15 @@ export default function Index() {
           <input
             name="password"
             placeholder="Password"
-            type={'password'}
+            className={styles.password}
+            type={showPassword ? 'text' : 'password'}
             defaultValue={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <button className={styles.showHideIcon} type="button" onClick={() => setShowPassword(!showPassword)}>
+            <Image src={showPassword ? shownIcon : hiddenIcon} alt={showPassword ? 'Hide password' : 'Show password'} />
+          </button>
+
           {httpResponseStatus ? (
             <Alert severity={severity} className={styles.alert}>
               {authMessage}
