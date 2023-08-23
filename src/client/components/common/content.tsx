@@ -18,7 +18,7 @@ export type UseCase = {
   instructions: readonly React.ReactNode[];
   iconSvg?: any | undefined;
   moreResources?: readonly {
-    type: 'Use case tutorial' | 'Case study' | 'Industry' | 'Article';
+    type: 'Use case tutorial' | 'Case study' | 'Industry' | 'Article' | 'Use case';
     title: string;
     url: string;
   }[];
@@ -115,7 +115,7 @@ export const USE_CASES = {
         url: 'https://fingerprint.com/use-cases/credential-stuffing/',
       },
       {
-        type: 'Article',
+        type: 'Use case',
         title: 'Account takeover',
         url: 'https://fingerprint.com/account-takeover/',
       },
