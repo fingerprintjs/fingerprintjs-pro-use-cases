@@ -25,4 +25,4 @@ export const LoanRequest = sequelize.define('loan_request', {
   },
 });
 
-LoanRequest.sync({ force: false });
+await LoanRequest.sync({ force: false });

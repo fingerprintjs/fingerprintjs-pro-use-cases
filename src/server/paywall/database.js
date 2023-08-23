@@ -14,4 +14,4 @@ export const ArticleView = sequelize.define('article_view', {
   },
 });
 
-ArticleView.sync({ force: false });
+await ArticleView.sync({ force: false });
