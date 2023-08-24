@@ -88,7 +88,6 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
    */
   const { getData: getVisitorData } = useVisitorData(
     {
-      products: disableBotDetection ? ['identification'] : ['botd'],
       // Don't use a cached fingerprint, it must be fresh to avoid replay attacks
       ignoreCache: true,
     },
