@@ -20,19 +20,11 @@ export const CouponClaim = sequelize.define('coupon-claim', {
   },
 });
 
-let didInit = false;
-
-const couponModels = [CouponCode, CouponClaim];
-
-export async function initCoupons() {
-  if (didInit) {
-    return;
-  }
-
-  didInit = true;
-
-  await Promise.all(couponModels.map((model) => model.sync({ force: false }))).catch(console.error);
+async function initCoupons() {
+  await Promise.all([CouponCode, CouponClaim].map((model) => model.sync({ force: false }))).catch(console.error);
 
   await CouponCode.findOrCreate({ where: { code: { [Op.eq]: 'Promo3000' } }, defaults: { code: 'Promo3000' } });
   await CouponCode.findOrCreate({ where: { code: { [Op.eq]: 'BlackFriday' } }, defaults: { code: 'BlackFriday' } });
 }
+
+initCoupons();

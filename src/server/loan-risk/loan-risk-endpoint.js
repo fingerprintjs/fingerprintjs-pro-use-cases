@@ -4,7 +4,6 @@ import {
   getVisitorDataWithRequestId,
   reportSuspiciousActivity,
 } from '../server';
-import { initLoanRisk } from './database';
 import { checkResultType } from '../checkResult';
 import {
   checkConfidenceScore,
@@ -28,8 +27,6 @@ export const loanRiskEndpoint =
     if (!ensurePostRequest(req, res)) {
       return;
     }
-
-    await initLoanRisk();
 
     res.setHeader('Content-Type', 'application/json');
 

@@ -14,14 +14,4 @@ export const ArticleView = sequelize.define('article_view', {
   },
 });
 
-let didInit = false;
-
-export async function initPaywall() {
-  if (didInit) {
-    return;
-  }
-
-  await ArticleView.sync({ force: false });
-
-  didInit = true;
-}
+ArticleView.sync({ force: false });

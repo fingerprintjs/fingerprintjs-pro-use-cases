@@ -25,6 +25,4 @@ export const LoanRequest = sequelize.define('loan_request', {
   },
 });
 
-export async function initLoanRisk() {
-  await LoanRequest.sync({ force: false });
-}
+LoanRequest.sync({ force: false });

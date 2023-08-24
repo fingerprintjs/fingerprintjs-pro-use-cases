@@ -4,7 +4,6 @@ import {
   getVisitorDataWithRequestId,
   reportSuspiciousActivity,
 } from '../server';
-import { initPaywall } from './database';
 import { checkCountOfViewedArticles } from './article-views';
 import { checkResultType } from '../checkResult';
 import {
@@ -32,8 +31,6 @@ export const paywallEndpoint =
     if (!ensurePostRequest(req, res)) {
       return;
     }
-
-    await initPaywall();
 
     res.setHeader('Content-Type', 'application/json');
 

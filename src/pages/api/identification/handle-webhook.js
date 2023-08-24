@@ -13,7 +13,8 @@ async function handle(req) {
 
   const visit = req.body;
 
-  if (!visit) {
+  if (!visit || !visit.visitorId) {
+    console.error('Missing visit or visitorId', JSON.stringify(req.body, null, 2));
     return;
   }
 
