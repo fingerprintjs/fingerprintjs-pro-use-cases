@@ -256,3 +256,66 @@ h1.title {
     }
   }
 }
+
+.floatyResetButton {
+  position: fixed;
+  top: 40vh;
+  right: 32px;
+  border-radius: 48px;
+
+  display: flex;
+  padding: 24px;
+  justify-content: center;
+  align-items: center;
+  background-color: v('white');
+  z-index: 2;
+  cursor: pointer;
+
+  z-index: v('z-floaty-reset-button');
+
+  @include shadowLarge();
+
+  img {
+    height: rem(24px);
+    width: rem(24px);
+    transition: scale 0.2s ease;
+  }
+
+  .resetTitle {
+    color: v('orange-gradient');
+    font-size: rem(16px);
+    font-weight: 500;
+    width: 0;
+    overflow: hidden;
+    transition: width 0.2s ease;
+  }
+
+  &:hover {
+    img {
+      scale: 1.1;
+    }
+
+    .resetTitle {
+      // width: auto does not work with transitions well, but you can hardcode the right width for the specific static word you want
+      width: rem(68px);
+      padding-right: rem(12px);
+    }
+  }
+
+  &.loading {
+    img {
+      animation: spin 1s infinite linear;
+    }
+  }
+
+  &.pulse {
+    animation: pulse 0.8s infinite linear;
+    border: 1px solid v('orange-gradient');
+    background-color: v('soft-orange-background');
+  }
+
+  @include media('<=phoneLandscape') {
+    padding: rem(16px);
+    right: rem(16px);
+  }
+}

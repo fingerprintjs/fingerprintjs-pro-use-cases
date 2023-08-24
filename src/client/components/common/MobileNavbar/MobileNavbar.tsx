@@ -5,7 +5,7 @@ import styles from './MobileNavbar.module.scss';
 import { PLATFORM_NAVIGATION, URL, USE_CASES_NAVIGATION } from '../content';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import Image from 'next/image';
-import Restart from '../Header/Restart.svg';
+import Restart from '../../../img/restart.svg';
 import { useReset } from '../../../hooks/useReset/useReset';
 
 interface MobileNavbarProps {
@@ -13,17 +13,18 @@ interface MobileNavbarProps {
   closeMobileMenu: () => void;
 }
 export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbarProps) {
-  const { mutate } = useReset({});
+  const { mutate, isLoading: isResetLoading } = useReset({});
 
   return (
     <nav className={classNames(styles.nav, { [styles.darkNavHeader]: darkMode })}>
       <div className={styles.container}>
         <div className={classNames(styles.links, styles.top)}>
           <Button
-            className={classNames(styles.resetButton)}
+            className={classNames(styles.resetButton, isResetLoading && styles.loading)}
             onClick={() => mutate()}
             variant="primary"
             outlined
+            disabled={isResetLoading}
             size={'medium'}
             title="Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action."
           >

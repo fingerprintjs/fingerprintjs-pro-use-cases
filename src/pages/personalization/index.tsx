@@ -26,8 +26,9 @@ import { useCart } from '../../client/api/personalization/use-cart';
 import React from 'react';
 import { ExtendedGetResult } from '@fingerprintjs/fingerprintjs-pro';
 import { USE_CASES } from '../../client/components/common/content';
+import { CustomPageProps } from '../_app';
 
-export default function Index() {
+export default function Index({ embed }: CustomPageProps) {
   const { enqueueSnackbar } = useSnackbar();
 
   const { isLoading: isFpDataLoading, data } = useVisitorData({ extendedResult: true });
@@ -97,7 +98,7 @@ export default function Index() {
           <Button onClick={() => setDidAcknowledge(true)}>Okay, I understand</Button>
         </DialogActions>
       </Dialog>
-      <UseCaseWrapper useCase={USE_CASES.personalization}>
+      <UseCaseWrapper useCase={USE_CASES.personalization} embed={embed}>
         <PersonalizationTopSection
           search={search}
           onSearch={setSearch}

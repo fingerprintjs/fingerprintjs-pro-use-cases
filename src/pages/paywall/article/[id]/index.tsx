@@ -25,7 +25,12 @@ export default function Article({ embed }: CustomPageProps) {
   const returnUrl = `/paywall${embed ? '/embed' : ''}`;
 
   return (
-    <UseCaseWrapper useCase={{ title: data?.article.title }} hideGithubLink contentSx={{ minHeight: '60vh' }}>
+    <UseCaseWrapper
+      useCase={{ title: data?.article.title }}
+      hideGithubLink
+      contentSx={{ minHeight: '60vh' }}
+      embed={embed}
+    >
       {/* This back button is temporary, will be addressed in the use case redesign */}
       {returnUrl && (
         <Link href={returnUrl} style={{ display: 'flex', gap: '4px' }}>

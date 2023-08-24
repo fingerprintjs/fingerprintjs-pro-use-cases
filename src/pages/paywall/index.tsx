@@ -24,7 +24,7 @@ type PaywallProps = CustomPageProps & {
 
 export default function Paywall({ articles, embed }: PaywallProps) {
   return (
-    <UseCaseWrapper useCase={USE_CASES.paywall}>
+    <UseCaseWrapper useCase={USE_CASES.paywall} embed={embed}>
       {articles && (
         <Stack spacing={6}>
           {articles.map((article) => (

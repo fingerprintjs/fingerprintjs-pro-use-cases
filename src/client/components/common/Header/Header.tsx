@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Prism from 'prismjs';
-import MobileNavbar from '../MobileNavbar';
+import MobileNavbar from '../MobileNavbar/MobileNavbar';
 import Container from '../Container';
 import HeaderBar from '../HeaderBar/HeaderBar';
 import classNames from 'classnames';
@@ -9,7 +9,7 @@ import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import Image from 'next/image';
 import LogoSvg from './fpjs.svg';
 import LogoDarkSvg from './fpjsDark.svg';
-import Restart from './Restart.svg';
+import Restart from '../../../img/restart.svg';
 
 import styles from './Header.module.scss';
 import Link from 'next/link';
@@ -46,7 +46,7 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const { mutate, shouldDisplayResetButton } = useReset({});
+  const { mutate, shouldDisplayResetButton, isLoading: isResetLoading } = useReset({});
 
   return (
     <>
@@ -108,7 +108,11 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                     }
                     enterTouchDelay={400}
                   >
-                    <button className={classNames(styles.desktopOnly, styles.resetButton)} onClick={() => mutate()}>
+                    <button
+                      className={classNames(styles.desktopOnly, styles.resetButton, isResetLoading && styles.loading)}
+                      onClick={() => mutate()}
+                      disabled={isResetLoading}
+                    >
                       Restart
                       <Image src={Restart} alt="Restart button" />
                     </button>

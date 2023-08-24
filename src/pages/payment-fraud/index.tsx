@@ -8,9 +8,10 @@ import Button from '../../client/components/common/Button';
 import styles from './paymentFraud.module.scss';
 import formStyles from '../../styles/forms.module.scss';
 import Alert from '../../client/components/common/Alert/Alert';
+import { CustomPageProps } from '../_app';
 import classNames from 'classnames';
 
-export default function Index() {
+export default function Index({ embed }: CustomPageProps) {
   const visitorDataQuery = useVisitorData({
     // Don't fetch visitorData on mount
     enabled: false,
@@ -64,7 +65,7 @@ export default function Index() {
   }
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.paymentFraud} contentSx={{ maxWidth: 'none' }}>
+    <UseCaseWrapper useCase={USE_CASES.paymentFraud} contentSx={{ maxWidth: 'none' }} embed={embed}>
       <div className={formStyles.wrapper}>
         <form onSubmit={handleSubmit} className={classNames(formStyles.useCaseForm, styles.paymentForm)}>
           <label>Card Number</label>

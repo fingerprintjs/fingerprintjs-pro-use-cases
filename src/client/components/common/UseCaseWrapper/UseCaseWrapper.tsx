@@ -1,12 +1,16 @@
-import { ElementRef, FunctionComponent, useRef } from 'react';
+import { ElementRef, FunctionComponent, useRef, useState } from 'react';
 import Container from '../Container';
 import styles from './UseCaseWrapper.module.scss';
 import Button from '../Button';
 import Lightbulb from './lightbulb.svg';
 import Image from 'next/image';
-import { Paper } from '@mui/material';
+import { Paper, Tooltip } from '@mui/material';
 import { UseCase } from '../content';
 import ExternalLinkIcon from '../../../img/externalLinkArrow.svg';
+import RestartIcon from '../../../img/restart.svg';
+import { useReset } from '../../../hooks/useReset/useReset';
+import classNames from 'classnames';
+import { RestartHint } from './RestartHint';
 
 type UseCaseWrapperProps = {
   useCase: Partial<UseCase>;
@@ -14,6 +18,7 @@ type UseCaseWrapperProps = {
   hideGithubLink?: boolean;
   returnUrl?: string;
   contentSx?: React.CSSProperties;
+  embed?: boolean;
 };
 
 export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
@@ -21,12 +26,31 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   hideGithubLink: hideSrcListItem = false,
   contentSx,
   useCase,
+  embed,
 }) => {
   const { title, description, articleUrl, instructions, moreResources, doNotMentionResetButton } = useCase ?? {};
   const learnMoreRef = useRef<ElementRef<'h3'>>();
 
+  const { mutate, shouldDisplayResetButton, isLoading } = useReset({});
+  const [pulseResetButton, setPulseResetButton] = useState(false);
+
   return (
     <>
+      {embed && shouldDisplayResetButton && (
+        <Tooltip title="Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action.">
+          <div
+            className={classNames([
+              styles.floatyResetButton,
+              isLoading && styles.loading,
+              pulseResetButton && styles.pulse,
+            ])}
+            onClick={() => !isLoading && mutate()}
+          >
+            <div className={styles.resetTitle}>Restart</div>
+            <Image src={RestartIcon} alt="Reset scenario" />
+          </div>
+        </Tooltip>
+      )}
       <Container size="large">
         <h1 className={styles.title}>{title}</h1>
         <div className={styles.description}>{description}</div>
@@ -52,13 +76,14 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
                 {instructions?.map((item, index) => (
                   <li key={index}>
                     {/* The wrapper div here is necessary for styles to work. */}
-                    <div>{item}</div>
+                    <div>{typeof item === 'function' ? item({ setPulseResetButton }) : item}</div>
                   </li>
                 ))}
                 {!doNotMentionResetButton && (
                   <li>
                     <div>
-                      You can reset this scenario using the <b>Restart</b> button on the top right.
+                      You can reset this scenario using the <RestartHint setPulseResetButton={setPulseResetButton} />{' '}
+                      button on the top right.
                     </div>
                   </li>
                 )}

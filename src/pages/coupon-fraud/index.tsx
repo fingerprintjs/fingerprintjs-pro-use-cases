@@ -10,8 +10,9 @@ import { Stack, Typography } from '@mui/material';
 import { useRequestCouponClaim } from '../../client/api/coupon-fraud/use-coupon-claim';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
+import { CustomPageProps } from '../_app';
 
-export default function CouponFraudUseCase() {
+export default function CouponFraudUseCase({ embed }: CustomPageProps) {
   const visitorDataQuery = useVisitorData({
     // Don't fetch visitorData on mount
     enabled: false,
@@ -44,7 +45,7 @@ export default function CouponFraudUseCase() {
   const isLoading = visitorDataQuery.isLoading || couponClaimMutation.isLoading;
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.couponFraud}>
+    <UseCaseWrapper useCase={USE_CASES.couponFraud} embed={embed}>
       <form onSubmit={handleSubmit}>
         <Typography fontSize={20}>iPhone 14 Pro Max 256 GB - Deep Purple</Typography>
         <Image width={256} height={200} style={{ objectFit: 'contain' }} src="/iphone14.png" alt="iPhone image" />
