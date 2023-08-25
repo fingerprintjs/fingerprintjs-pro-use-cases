@@ -19,6 +19,17 @@ import AllStar from './shoeAllStar.svg';
 import Plus from './buttonPlus.svg';
 import Minus from './buttonMinus.svg';
 
+const AIRMAX_PRICE = 356.02;
+const ALLSTAR_PRICE = 102.5;
+const TAXES = 12;
+
+const format$ = (price: number) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(price);
+};
+
 type ShoeProps = {
   name: string;
   color: string;
@@ -35,7 +46,7 @@ const Shoe: FunctionComponent<ShoeProps> = ({ image, name, color, price, count }
         <div className={styles.shoeName}>{name}</div>
         <div className={styles.shoeColor}>{color}</div>
         <div className={styles.priceAndCount}>
-          <div className={styles.price}>${price}</div>
+          <div className={styles.price}>{format$(price)}</div>
           <div className={styles.count}>
             <Image src={Minus} alt="Decrease item count" />
             <span>0{count}</span>
@@ -82,19 +93,35 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
   return (
     <UseCaseWrapper useCase={USE_CASES.couponFraud} embed={embed} contentSx={{ maxWidth: 'none' }}>
       <div className={classNames(styles.wrapper, formStyles.wrapper)}>
-        <Shoe color="Fingerprint Orange" count={1} image={AirMax} name="Nike AirMax Max Size 8.5" price={356.02}></Shoe>
+        <Shoe
+          color="Fingerprint Orange"
+          count={1}
+          image={AirMax}
+          name="Nike AirMax Max Size 8.5"
+          price={AIRMAX_PRICE}
+        ></Shoe>
         <Shoe
           color="Fingerprint Orange"
           count={1}
           image={AllStar}
           name="All Stars Limited Edition Size 6.5"
-          price={102.5}
+          price={ALLSTAR_PRICE}
         ></Shoe>
+        <div className={styles.summary}>
+          <div className={styles.item}>
+            <span>Subtotal</span>
+            <span>{format$(ALLSTAR_PRICE + AIRMAX_PRICE)}</span>
+          </div>
+          <div className={styles.item}>
+            <span>Taxes</span>
+            <span>{format$(TAXES)}</span>
+          </div>
+          <div className={styles.item}>
+            <b>Total</b>
+            <span>{format$(ALLSTAR_PRICE + AIRMAX_PRICE + TAXES)}</span>
+          </div>
+        </div>
         <form onSubmit={handleSubmit}>
-          {/* <Typography fontWeight="bold" mb={2}>
-            {new Intl.NumberFormat('en-US', { currency: 'USD', style: 'currency' }).format(price)}
-          </Typography> */}
-
           <Typography>Do you have a coupon? Apply to get a discount!</Typography>
           <Stack direction="row" gap={'8px'}>
             <FormControl fullWidth variant="outlined" sx={{ minWidth: '70%' }}>

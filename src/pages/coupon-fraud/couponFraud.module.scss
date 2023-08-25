@@ -74,3 +74,32 @@ div.wrapper {
     }
   }
 }
+
+.summary {
+  .item {
+    display: flex;
+    justify-content: space-between;
+
+    :first-child {
+      color: v('dark-gray');
+      font-weight: 400;
+      line-height: 175%;
+      letter-spacing: 0.16px;
+    }
+
+    b:first-child {
+      font-weight: 600;
+    }
+
+    :last-child {
+      color: v('dark-black');
+      font-weight: 600;
+    }
+
+    &:last-child {
+      border-top: 1px solid v('gray-box-stroke');
+      padding-top: rem(32px);
+      margin-top: rem(8px);
+    }
+  }
+}
