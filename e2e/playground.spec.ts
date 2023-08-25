@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { PLAYGROUND_TAG } from '../src/client/components/playground/playgroundTags';
-import { isAgentResponse, isServerResponse } from '../src/client/components/playground/zodUtils';
+import { isAgentResponse, isServerResponse } from './zodUtils';
 
 const getAgentResponse = async (page) => {
   const agentResponse = await page.textContent(`[data-test="${PLAYGROUND_TAG.agentResponseJSON}"]`);
