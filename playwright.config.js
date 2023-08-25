@@ -87,8 +87,9 @@ module.exports = defineConfig({
   // outputDir: 'test-results/',
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   port: 3000,
-  // },
+  webServer: {
+    command: 'npm run test:start',
+    port: 3000,
+    reuseExistingServer: !process.env.CI,
+  },
 });

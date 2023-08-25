@@ -12,6 +12,7 @@
     "prettier:fix": "yarn prettier --write",
     "format": "yarn prettier:fix && yarn lint:fix",
     "test": "vitest",
+    "test:start": "yarn build && yarn start",
     "test:e2e": "playwright test",
     "test:e2e:chrome": "playwright test --project='chromium'"
   },
