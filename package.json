@@ -12,6 +12,7 @@
     "prettier:fix": "yarn prettier --write",
     "format": "yarn prettier:fix && yarn lint:fix",
     "test": "vitest",
+    "test:start": "yarn build && yarn start",
     "test:e2e": "playwright test",
     "test:e2e:chrome": "playwright test --project='chromium'"
   },
@@ -24,9 +25,7 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/lab": "^5.0.0-alpha.134",
     "@mui/material": "^5.13.5",
-    "@mui/styles": "^5.13.2",
     "classnames": "^2.3.2",
-    "clsx": "^1.2.1",
     "framer-motion": "^10.13.2",
     "include-media": "^2.0.0",
     "leaflet": "^1.9.4",
