@@ -1,6 +1,6 @@
 import { useVisitorData } from '../../client/use-visitor-data';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import { useCallback, useEffect, useState } from 'react';
+import { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -11,6 +11,41 @@ import { useRequestCouponClaim } from '../../client/api/coupon-fraud/use-coupon-
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
 import { CustomPageProps } from '../_app';
+import styles from './couponFraud.module.scss';
+import formStyles from '../../styles/forms.module.scss';
+import classNames from 'classnames';
+import AirMax from './shoeAirMax.svg';
+import AllStar from './shoeAllStar.svg';
+import Plus from './buttonPlus.svg';
+import Minus from './buttonMinus.svg';
+
+type ShoeProps = {
+  name: string;
+  color: string;
+  price: number;
+  image: any;
+  count: number;
+};
+
+const Shoe: FunctionComponent<ShoeProps> = ({ image, name, color, price, count }) => {
+  return (
+    <div className={styles.shoe}>
+      <Image src={image} alt="shoe" width={92} height={92} />
+      <div className={styles.shoeDescription}>
+        <div className={styles.shoeName}>{name}</div>
+        <div className={styles.shoeColor}>{color}</div>
+        <div className={styles.priceAndCount}>
+          <div className={styles.price}>${price}</div>
+          <div className={styles.count}>
+            <Image src={Minus} alt="Decrease item count" />
+            <span>0{count}</span>
+            <Image src={Plus} alt="Increase item count" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function CouponFraudUseCase({ embed }: CustomPageProps) {
   const visitorDataQuery = useVisitorData({
@@ -45,47 +80,55 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
   const isLoading = visitorDataQuery.isLoading || couponClaimMutation.isLoading;
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.couponFraud} embed={embed}>
-      <form onSubmit={handleSubmit}>
-        <Typography fontSize={20}>iPhone 14 Pro Max 256 GB - Deep Purple</Typography>
-        <Image width={256} height={200} style={{ objectFit: 'contain' }} src="/iphone14.png" alt="iPhone image" />
-        <Typography fontWeight="bold" mb={2}>
-          {new Intl.NumberFormat('en-US', { currency: 'USD', style: 'currency' }).format(price)}
-        </Typography>
+    <UseCaseWrapper useCase={USE_CASES.couponFraud} embed={embed} contentSx={{ maxWidth: 'none' }}>
+      <div className={classNames(styles.wrapper, formStyles.wrapper)}>
+        <Shoe color="Fingerprint Orange" count={1} image={AirMax} name="Nike AirMax Max Size 8.5" price={356.02}></Shoe>
+        <Shoe
+          color="Fingerprint Orange"
+          count={1}
+          image={AllStar}
+          name="All Stars Limited Edition Size 6.5"
+          price={102.5}
+        ></Shoe>
+        <form onSubmit={handleSubmit}>
+          {/* <Typography fontWeight="bold" mb={2}>
+            {new Intl.NumberFormat('en-US', { currency: 'USD', style: 'currency' }).format(price)}
+          </Typography> */}
 
-        <Typography>Do you have a coupon? Apply to get a discount!</Typography>
-        <Stack direction="row" gap={'8px'}>
-          <FormControl fullWidth variant="outlined" sx={{ minWidth: '70%' }}>
-            <TextField
-              id="coupon_code"
-              placeholder="Enter a coupon"
-              variant="outlined"
-              defaultValue={couponCode}
-              onChange={(e) => setCouponCode(e.target.value)}
-              required
-            />
-          </FormControl>
-          <Button
-            className="Form_button"
-            disabled={isLoading}
-            size="large"
-            type="submit"
-            variant="contained"
-            color="primary"
-            disableElevation
-            fullWidth
-          >
-            {isLoading ? 'Applying...' : 'Apply'}
-          </Button>
-        </Stack>
-        <div>
-          {couponClaimMutation.data?.message && !couponClaimMutation.isLoading && (
-            <Alert severity={couponClaimMutation.data.severity} className="UsecaseWrapper_alert">
-              {couponClaimMutation.data.message}
-            </Alert>
-          )}
-        </div>
-      </form>
+          <Typography>Do you have a coupon? Apply to get a discount!</Typography>
+          <Stack direction="row" gap={'8px'}>
+            <FormControl fullWidth variant="outlined" sx={{ minWidth: '70%' }}>
+              <TextField
+                id="coupon_code"
+                placeholder="Enter a coupon"
+                variant="outlined"
+                defaultValue={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                required
+              />
+            </FormControl>
+            <Button
+              className="Form_button"
+              disabled={isLoading}
+              size="large"
+              type="submit"
+              variant="contained"
+              color="primary"
+              disableElevation
+              fullWidth
+            >
+              {isLoading ? 'Applying...' : 'Apply'}
+            </Button>
+          </Stack>
+          <div>
+            {couponClaimMutation.data?.message && !couponClaimMutation.isLoading && (
+              <Alert severity={couponClaimMutation.data.severity} className="UsecaseWrapper_alert">
+                {couponClaimMutation.data.message}
+              </Alert>
+            )}
+          </div>
+        </form>
+      </div>
     </UseCaseWrapper>
   );
 }
