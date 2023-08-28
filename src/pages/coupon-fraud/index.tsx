@@ -4,9 +4,8 @@ import { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Alert from '@mui/material/Alert';
 import Image from 'next/image';
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useRequestCouponClaim } from '../../client/api/coupon-fraud/use-coupon-claim';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
@@ -18,6 +17,7 @@ import AirMax from './shoeAirMax.svg';
 import AllStar from './shoeAllStar.svg';
 import Plus from './buttonPlus.svg';
 import Minus from './buttonMinus.svg';
+import Alert from '../../client/components/common/Alert/Alert';
 
 const AIRMAX_PRICE = 356.02;
 const ALLSTAR_PRICE = 102.5;
@@ -121,40 +121,40 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
             <span>{format$(ALLSTAR_PRICE + AIRMAX_PRICE + TAXES)}</span>
           </div>
         </div>
-        <form onSubmit={handleSubmit}>
-          <Typography>Do you have a coupon? Apply to get a discount!</Typography>
-          <Stack direction="row" gap={'8px'}>
-            <FormControl fullWidth variant="outlined" sx={{ minWidth: '70%' }}>
-              <TextField
-                id="coupon_code"
-                placeholder="Enter a coupon"
-                variant="outlined"
-                defaultValue={couponCode}
-                onChange={(e) => setCouponCode(e.target.value)}
-                required
-              />
-            </FormControl>
-            <Button
-              className="Form_button"
-              disabled={isLoading}
-              size="large"
-              type="submit"
-              variant="contained"
-              color="primary"
-              disableElevation
-              fullWidth
-            >
-              {isLoading ? 'Applying...' : 'Apply'}
-            </Button>
-          </Stack>
-          <div>
-            {couponClaimMutation.data?.message && !couponClaimMutation.isLoading && (
-              <Alert severity={couponClaimMutation.data.severity} className="UsecaseWrapper_alert">
-                {couponClaimMutation.data.message}
-              </Alert>
-            )}
-          </div>
-        </form>
+        <div className={styles.innerWrapper}>
+          <form onSubmit={handleSubmit}>
+            <div>Do you have a coupon? Apply to get a discount!</div>
+            <Stack direction="row" gap={'8px'}>
+              <FormControl fullWidth variant="outlined" sx={{ minWidth: '70%' }}>
+                <TextField
+                  id="coupon_code"
+                  placeholder="Enter a coupon"
+                  variant="outlined"
+                  defaultValue={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value)}
+                  required
+                />
+              </FormControl>
+              <Button
+                className="Form_button"
+                disabled={isLoading}
+                size="large"
+                type="submit"
+                variant="contained"
+                color="primary"
+                disableElevation
+                fullWidth
+              >
+                {isLoading ? 'Applying...' : 'Apply'}
+              </Button>
+            </Stack>
+            <div>
+              {couponClaimMutation.data?.message && !couponClaimMutation.isLoading && (
+                <Alert severity={couponClaimMutation.data.severity}>{couponClaimMutation.data.message}</Alert>
+              )}
+            </div>
+          </form>
+        </div>
       </div>
     </UseCaseWrapper>
   );

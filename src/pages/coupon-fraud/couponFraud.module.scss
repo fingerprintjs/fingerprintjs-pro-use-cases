@@ -8,6 +8,18 @@ div.wrapper {
   @include media('<=phoneLandscape') {
     padding: rem(12px);
   }
+
+  .innerWrapper {
+    border: 1px solid v('gray-box-stroke');
+    border-radius: 6px;
+    padding: rem(16px);
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: rem(16px);
+    }
+  }
 }
 
 .shoe {
