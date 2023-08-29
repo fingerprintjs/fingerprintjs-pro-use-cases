@@ -66,16 +66,20 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
 
   const [couponCode, setCouponCode] = useState('');
   const [discount, setDiscount] = useState(0);
+  const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
 
   const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault();
+      setIsWaitingForResponse(true);
       const fpData = await visitorDataQuery.refetch();
 
       await couponClaimMutation.mutateAsync({
         fpData: fpData.data,
         body: { couponCode },
       });
+
+      setIsWaitingForResponse(false);
     },
     [couponClaimMutation, couponCode, visitorDataQuery],
   );
@@ -85,8 +89,6 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
       setDiscount(30);
     }
   }, [couponClaimMutation]);
-
-  const isLoading = visitorDataQuery.isLoading || couponClaimMutation.isLoading;
 
   const subTotal = AIRMAX_PRICE + ALLSTAR_PRICE;
   const discountApplied = (subTotal * discount) / 100;
@@ -120,7 +122,7 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
           </div>
           {discount > 0 && (
             <div className={classNames(styles.item, styles.discount)}>
-              <span>Coupon Discount 30%</span>
+              <span>Coupon Discount {discount}%</span>
               <span>-{format$(discountApplied)}</span>
             </div>
           )}
@@ -140,8 +142,8 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
                 onChange={(e) => setCouponCode(e.target.value)}
                 required
               />
-              <Button disabled={isLoading} type="submit" size="medium">
-                {isLoading ? 'Processing...' : 'Apply'}
+              <Button disabled={isWaitingForResponse} type="submit" size="medium">
+                {isWaitingForResponse ? 'Processing...' : 'Apply'}
               </Button>
             </div>
             {couponClaimMutation.data?.message && !couponClaimMutation.isLoading && (
