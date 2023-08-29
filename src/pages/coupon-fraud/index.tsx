@@ -1,11 +1,8 @@
 import { useVisitorData } from '../../client/use-visitor-data';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { FunctionComponent, useCallback, useEffect, useState } from 'react';
-import FormControl from '@mui/material/FormControl';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+
 import Image from 'next/image';
-import { Stack } from '@mui/material';
 import { useRequestCouponClaim } from '../../client/api/coupon-fraud/use-coupon-claim';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
@@ -18,6 +15,7 @@ import AllStar from './shoeAllStar.svg';
 import Plus from './buttonPlus.svg';
 import Minus from './buttonMinus.svg';
 import Alert from '../../client/components/common/Alert/Alert';
+import Button from '../../client/components/common/Button';
 
 const AIRMAX_PRICE = 356.02;
 const ALLSTAR_PRICE = 102.5;
@@ -67,7 +65,7 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
   const couponClaimMutation = useRequestCouponClaim();
 
   const [couponCode, setCouponCode] = useState('');
-  const [price, setPrice] = useState(1119);
+  const [discount, setDiscount] = useState(0);
 
   const handleSubmit = useCallback(
     async (event) => {
@@ -84,11 +82,15 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
 
   useEffect(() => {
     if (couponClaimMutation?.data?.severity === 'success') {
-      setPrice(1000);
+      setDiscount(30);
     }
   }, [couponClaimMutation]);
 
   const isLoading = visitorDataQuery.isLoading || couponClaimMutation.isLoading;
+
+  const subTotal = AIRMAX_PRICE + ALLSTAR_PRICE;
+  const discountApplied = (subTotal * discount) / 100;
+  const total = subTotal + TAXES - discountApplied;
 
   return (
     <UseCaseWrapper useCase={USE_CASES.couponFraud} embed={embed} contentSx={{ maxWidth: 'none' }}>
@@ -110,51 +112,48 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
         <div className={styles.summary}>
           <div className={styles.item}>
             <span>Subtotal</span>
-            <span>{format$(ALLSTAR_PRICE + AIRMAX_PRICE)}</span>
+            <span>{format$(subTotal)}</span>
           </div>
           <div className={styles.item}>
             <span>Taxes</span>
             <span>{format$(TAXES)}</span>
           </div>
+          {discount > 0 && (
+            <div className={classNames(styles.item, styles.discount)}>
+              <span>Coupon Discount 30%</span>
+              <span>-{format$(discountApplied)}</span>
+            </div>
+          )}
           <div className={styles.item}>
             <b>Total</b>
-            <span>{format$(ALLSTAR_PRICE + AIRMAX_PRICE + TAXES)}</span>
+            <span>{format$(total)}</span>
           </div>
         </div>
         <div className={styles.innerWrapper}>
-          <form onSubmit={handleSubmit}>
-            <div>Do you have a coupon? Apply to get a discount!</div>
-            <Stack direction="row" gap={'8px'}>
-              <FormControl fullWidth variant="outlined" sx={{ minWidth: '70%' }}>
-                <TextField
-                  id="coupon_code"
-                  placeholder="Enter a coupon"
-                  variant="outlined"
-                  defaultValue={couponCode}
-                  onChange={(e) => setCouponCode(e.target.value)}
-                  required
-                />
-              </FormControl>
-              <Button
-                className="Form_button"
-                disabled={isLoading}
-                size="large"
-                type="submit"
-                variant="contained"
-                color="primary"
-                disableElevation
-                fullWidth
-              >
-                {isLoading ? 'Applying...' : 'Apply'}
+          <form onSubmit={handleSubmit} className={classNames(formStyles.useCaseForm, styles.couponFraudForm)}>
+            <p>Do you have a coupon? Apply to get a discount!</p>
+            <div className={styles.couponInputContainer}>
+              <input
+                type="text"
+                id="coupon_code"
+                placeholder="Enter a coupon"
+                onChange={(e) => setCouponCode(e.target.value)}
+                required
+              />
+              <Button disabled={isLoading} type="submit" size="medium">
+                {isLoading ? 'Processing...' : 'Apply'}
               </Button>
-            </Stack>
-            <div>
-              {couponClaimMutation.data?.message && !couponClaimMutation.isLoading && (
-                <Alert severity={couponClaimMutation.data.severity}>{couponClaimMutation.data.message}</Alert>
-              )}
             </div>
+            {couponClaimMutation.data?.message && !couponClaimMutation.isLoading && (
+              <div>
+                <Alert severity={couponClaimMutation.data.severity}>{couponClaimMutation.data.message}</Alert>
+              </div>
+            )}
           </form>
         </div>
+        <Button disabled={true} type="button" className={styles.confirmOrderButton}>
+          Confirm order
+        </Button>
       </div>
     </UseCaseWrapper>
   );

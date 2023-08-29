@@ -28,6 +28,11 @@ div.wrapper {
   gap: rem(24px);
   border-bottom: 1px solid var(--stroke-light-mode-light, #e8e8e8);
 
+  @include media('<=phone') {
+    flex-direction: column;
+    gap: rem(8px);
+  }
+
   .shoeDescription {
     flex-grow: 1;
 
@@ -51,6 +56,11 @@ div.wrapper {
     .priceAndCount {
       display: flex;
       justify-content: space-between;
+
+      @include media('<=phone') {
+        flex-direction: column;
+        gap: rem(8px);
+      }
     }
 
     .price {
@@ -67,6 +77,7 @@ div.wrapper {
       justify-content: center;
       align-items: center;
       gap: 3px;
+      align-self: flex-start;
 
       border-radius: 1.5px;
       border: 0.75px solid v('gray-box-stroke');
@@ -92,6 +103,10 @@ div.wrapper {
     display: flex;
     justify-content: space-between;
 
+    @include media('<=360px') {
+      flex-direction: column;
+    }
+
     :first-child {
       color: v('dark-gray');
       font-weight: 400;
@@ -106,6 +121,7 @@ div.wrapper {
     :last-child {
       color: v('dark-black');
       font-weight: 600;
+      align-self: flex-end;
     }
 
     &:last-child {
@@ -114,4 +130,57 @@ div.wrapper {
       margin-top: rem(8px);
     }
   }
+
+  .item.discount {
+    border-radius: rem(6px);
+    padding: 12px;
+    margin-top: rem(16px);
+    margin-bottom: rem(16px);
+    background-color: v('soft-orange-background');
+    @include dashedOrangeBorder(6);
+
+    span {
+      color: v('orange-gradient');
+      font-weight: 600;
+      line-height: 145%;
+    }
+  }
+}
+
+.couponFraudForm {
+  p {
+    color: v('dark-black');
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 145%;
+    margin: 0px;
+  }
+
+  .couponInputContainer {
+    display: flex;
+    gap: rem(8px);
+
+    @include media('<=phone') {
+      flex-direction: column;
+
+      button[type='submit'] {
+        width: 100%;
+        padding: rem(12px);
+      }
+    }
+
+    input[type='text'] {
+      margin: 0px;
+      padding: rem(14px) rem(10px);
+      font-size: rem(14px);
+      line-height: 130%;
+      letter-spacing: 0.133px;
+    }
+  }
+}
+
+.confirmOrderButton {
+  width: fit-content;
+  margin-left: auto;
+  max-width: 100%;
 }
