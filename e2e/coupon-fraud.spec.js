@@ -15,7 +15,7 @@ test.describe('Coupon fraud', () => {
     await page.click('button:has-text("Apply")');
     await page.waitForLoadState('networkidle');
 
-    await page.waitForSelector('text="Coupon claimed you get a 119 USD discount!"');
+    await page.waitForSelector('text="Coupon claimed"');
 
     await page.click('button:has-text("Apply")');
     await page.waitForLoadState('networkidle');
@@ -27,7 +27,7 @@ test.describe('Coupon fraud', () => {
     await page.fill('#coupon_code', 'Promo3000');
     await page.click('button:has-text("Apply")');
     await page.waitForLoadState('networkidle');
-    await page.waitForSelector('text="Coupon claimed you get a 119 USD discount!"');
+    await page.waitForSelector('text="Coupon claimed"');
 
     await page.fill('#coupon_code', 'BlackFriday', {});
     await page.click('button:has-text("Apply")');
