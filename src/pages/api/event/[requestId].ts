@@ -8,9 +8,24 @@ export default async function getFingerprintEvent(req: NextApiRequest, res: Next
     region: BACKEND_REGION,
     apiKey: SERVER_API_KEY,
   });
+
   try {
-    const eventResponse = await client.getEvent(requestId);
-    res.status(200).json(eventResponse);
+    if (!process.env.CUSTOM_SERVER_API_URL) {
+      // Just for testing purposes on staging environment, use the FingerprintJsServerApiClient under normal circumstances as shown below
+      var myHeaders = new Headers();
+      myHeaders.append('Auth-API-Key', SERVER_API_KEY);
+
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+      };
+
+      const eventResponse = await (await fetch(`https://warden.fpjs.sh/events/${requestId}`, requestOptions)).json();
+      res.status(200).json(eventResponse);
+    } else {
+      const eventResponse = await client.getEvent(requestId);
+      res.status(200).json(eventResponse);
+    }
   } catch (error) {
     console.log(error);
     if (isEventError(error)) {

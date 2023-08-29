@@ -2,7 +2,7 @@ import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { FunctionComponent } from 'react';
 
 const IpBlocklistResult: FunctionComponent<{ event: EventResponse | undefined }> = ({ event }) => {
-  const blocklistData = event?.products?.ipBlocklist.data;
+  const blocklistData = event?.products?.ipBlocklist?.data;
   if (blocklistData?.result === false) {
     return <>Not detected</>;
   }
