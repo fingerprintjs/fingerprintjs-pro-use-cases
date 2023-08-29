@@ -17,7 +17,6 @@ import { green, red } from '@mui/material/colors';
 import { lightGreen } from '@mui/material/colors';
 import { blueGrey } from '@mui/material/colors';
 import dynamic from 'next/dynamic';
-import { useUserPreferences } from '../../client/api/personalization/use-user-preferences';
 import MyTable, { TableCellData } from '../../client/components/playground/MyTable';
 import BotDetectionResult from '../../client/components/playground/BotDetectionResult';
 import Info from '../../client/components/playground/InfoIcon';
@@ -46,7 +45,7 @@ function Playground() {
     serverError,
   } = usePlaygroundSignals();
 
-  const { hasDarkMode } = useUserPreferences();
+  const hasDarkMode = false;
 
   const locationName = useMemo<string>(() => {
     return getLocationName(agentResponse?.ipLocation);

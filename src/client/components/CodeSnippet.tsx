@@ -2,7 +2,6 @@ import { PropsWithChildren } from 'react';
 import { PrismAsyncLight } from 'react-syntax-highlighter';
 import lightTheme from 'react-syntax-highlighter/dist/cjs/styles/prism/coy';
 import darkTheme from 'react-syntax-highlighter/dist/cjs/styles/prism/coldark-dark';
-import { useUserPreferences } from '../api/personalization/use-user-preferences';
 
 export interface CodeSnippetProps {
   language: string;
@@ -25,7 +24,7 @@ export function CodeSnippet({
   children,
   dataTestId,
 }: PropsWithChildren<CodeSnippetProps>) {
-  const { hasDarkMode } = useUserPreferences();
+  const hasDarkMode = false;
 
   const PRISM_CUSTOM_STYLE = {
     backgroundColor: hasDarkMode ? undefined : '#F5F5F5',

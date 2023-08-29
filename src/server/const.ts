@@ -23,3 +23,5 @@ export const SCRIPT_URL_PATTERN =
 export const ENDPOINT =
   process.env.NEXT_PUBLIC_ENDPOINT ??
   `https://fpcf.fingerprinthub.com/DBqbMN7zXxwl4Ei8/S7lqsWfAyw2lq4Za?region=${FRONTEND_REGION}`;
+
+export const CUSTOM_SERVER_API_URL = process.env.CUSTOM_SERVER_API_URL;
