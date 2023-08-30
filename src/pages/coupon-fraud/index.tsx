@@ -19,7 +19,7 @@ import Button from '../../client/components/common/Button';
 
 const AIRMAX_PRICE = 356.02;
 const ALLSTAR_PRICE = 102.5;
-const TAXES = 12;
+const TAXES = 6;
 
 const format$ = (price: number) => {
   return new Intl.NumberFormat('en-US', {
@@ -34,9 +34,11 @@ type ShoeProps = {
   price: number;
   image: any;
   count: number;
+  increaseCount: () => void;
+  decreaseCount: () => void;
 };
 
-const Shoe: FunctionComponent<ShoeProps> = ({ image, name, color, price, count }) => {
+const Shoe: FunctionComponent<ShoeProps> = ({ image, name, color, price, count, increaseCount, decreaseCount }) => {
   return (
     <div className={styles.shoe}>
       <Image src={image} alt="shoe" width={92} height={92} />
@@ -46,9 +48,9 @@ const Shoe: FunctionComponent<ShoeProps> = ({ image, name, color, price, count }
         <div className={styles.priceAndCount}>
           <div className={styles.price}>{format$(price)}</div>
           <div className={styles.count}>
-            <Image src={Minus} alt="Decrease item count" />
-            <span>0{count}</span>
-            <Image src={Plus} alt="Increase item count" />
+            <Image src={Minus} alt="Decrease item count" onClick={decreaseCount} />
+            <span>{String(count).padStart(2, '0')}</span>
+            <Image src={Plus} alt="Increase item count" onClick={increaseCount} />
           </div>
         </div>
       </div>
@@ -63,6 +65,9 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
   });
 
   const couponClaimMutation = useRequestCouponClaim();
+
+  const [airMaxCount, setAirMaxCount] = useState(1);
+  const [allStarCount, setAllStarCount] = useState(1);
 
   const [couponCode, setCouponCode] = useState('');
   const [discount, setDiscount] = useState(0);
@@ -90,26 +95,31 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
     }
   }, [couponClaimMutation]);
 
-  const subTotal = AIRMAX_PRICE + ALLSTAR_PRICE;
+  const subTotal = AIRMAX_PRICE * airMaxCount + ALLSTAR_PRICE * allStarCount;
   const discountApplied = (subTotal * discount) / 100;
-  const total = subTotal + TAXES - discountApplied;
+  const taxesApplied = TAXES * (airMaxCount + allStarCount);
+  const total = subTotal + taxesApplied - discountApplied;
 
   return (
     <UseCaseWrapper useCase={USE_CASES.couponFraud} embed={embed} contentSx={{ maxWidth: 'none' }}>
       <div className={classNames(styles.wrapper, formStyles.wrapper)}>
         <Shoe
           color="Fingerprint Orange"
-          count={1}
+          count={airMaxCount}
           image={AirMax}
           name="Nike AirMax Max Size 8.5"
           price={AIRMAX_PRICE}
+          increaseCount={() => setAirMaxCount(airMaxCount + 1)}
+          decreaseCount={() => setAirMaxCount(Math.max(1, airMaxCount - 1))}
         ></Shoe>
         <Shoe
           color="Fingerprint Orange"
-          count={1}
+          count={allStarCount}
           image={AllStar}
           name="All Stars Limited Edition Size 6.5"
           price={ALLSTAR_PRICE}
+          increaseCount={() => setAllStarCount(allStarCount + 1)}
+          decreaseCount={() => setAllStarCount(Math.max(1, allStarCount - 1))}
         ></Shoe>
         <div className={styles.summary}>
           <div className={styles.item}>
@@ -118,7 +128,7 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
           </div>
           <div className={styles.item}>
             <span>Taxes</span>
-            <span>{format$(TAXES)}</span>
+            <span>{format$(taxesApplied)}</span>
           </div>
           {discount > 0 && (
             <div className={classNames(styles.item, styles.discount)}>
