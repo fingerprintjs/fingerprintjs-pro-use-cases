@@ -153,7 +153,7 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
             )}
           </form>
         </div>
-        <Button disabled={true} type="button" className={styles.confirmOrderButton}>
+        <Button variant="white" type="button" size="small" disabled={true} className={styles.confirmOrderButton}>
           Confirm order
         </Button>
       </div>
