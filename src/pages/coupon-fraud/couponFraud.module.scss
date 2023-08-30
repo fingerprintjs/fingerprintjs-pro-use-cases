@@ -26,7 +26,7 @@ div.wrapper {
   display: flex;
   padding-bottom: rem(32px);
   gap: rem(24px);
-  border-bottom: 1px solid var(--stroke-light-mode-light, #e8e8e8);
+  border-bottom: 1px solid v('gray-box-stroke');
 
   @include media('<=phone') {
     flex-direction: column;
@@ -89,11 +89,6 @@ div.wrapper {
       font-weight: 400;
       line-height: 115.5%;
       letter-spacing: 0.12px;
-
-      span:first-child,
-      span:last-child {
-        font-size: rem(20px);
-      }
     }
   }
 }
