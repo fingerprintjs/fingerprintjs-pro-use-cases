@@ -1,9 +1,9 @@
 div.wrapper {
   max-width: 660px;
-  padding: 32px 20px 24px 20px;
+  padding: rem(32px) rem(20px) rem(24px) rem(20px);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: rem(24px);
 
   @include media('<=phoneLandscape') {
     padding: rem(12px);
@@ -11,7 +11,7 @@ div.wrapper {
 
   .innerWrapper {
     border: 1px solid v('gray-box-stroke');
-    border-radius: 6px;
+    border-radius: rem(6px);
     padding: rem(16px);
 
     form {
@@ -73,10 +73,10 @@ div.wrapper {
 
     .count {
       display: flex;
-      padding: 4.5px 6px;
+      padding: rem(4.5px) rem(6px);
       justify-content: center;
       align-items: center;
-      gap: 3px;
+      gap: rem(3px);
       align-self: flex-start;
 
       border-radius: 1.5px;
@@ -92,7 +92,7 @@ div.wrapper {
 
       span:first-child,
       span:last-child {
-        font-size: 20px;
+        font-size: rem(20px);
       }
     }
   }
@@ -135,7 +135,7 @@ div.wrapper {
 
   .item.discount {
     border-radius: rem(6px);
-    padding: 12px;
+    padding: rem(12px);
     margin-top: rem(16px);
     margin-bottom: rem(16px);
     background-color: v('soft-orange-background');
@@ -152,7 +152,7 @@ div.wrapper {
 .couponFraudForm {
   p {
     color: v('dark-black');
-    font-size: 16px;
+    font-size: rem(16px);
     font-weight: 600;
     line-height: 145%;
     margin: 0px;
@@ -189,7 +189,7 @@ div.wrapper {
   border: none;
 
   color: v('dark-gray');
-  font-size: 16px;
+  font-size: rem(16px);
   font-weight: 600;
   line-height: 150%; /* 24px */
 }
