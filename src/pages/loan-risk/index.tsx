@@ -11,14 +11,15 @@ import {
   loanValueValidation,
   monthlyIncomeValidation,
 } from '../../client/loan-risk/validation';
-import Button from '@mui/material/Button';
 import { useVisitorData } from '../../client/use-visitor-data';
 import { useRequestLoan } from '../../client/api/loan-risk/use-request-loan';
-import Alert from '@mui/material/Alert';
 import { calculateMonthInstallment } from '../../shared/loan-risk/calculate-month-installment';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
 import { CustomPageProps } from '../_app';
+import Button from '../../client/components/common/Button';
+import Alert from '../../client/components/common/Alert/Alert';
+import formStyles from '../../styles/forms.module.scss';
 
 type SliderFieldProps = {
   label: string;
@@ -111,22 +112,18 @@ export default function LoanRisk({ embed }: CustomPageProps) {
 
   return (
     <UseCaseWrapper useCase={USE_CASES.loanRisk} embed={embed}>
-      <form onSubmit={handleSubmit}>
-        <Stack direction="column" spacing={6}>
-          <TextField
+      <div className={formStyles.wrapper}>
+        <form onSubmit={handleSubmit} className={formStyles.useCaseForm}>
+          <label>First name</label>
+          <input
+            type="text"
             name="firstName"
-            label="First name"
             value={firstName}
             onChange={(event) => setFirstName(event.target.value)}
             required
           />
-          <TextField
-            name="lastName"
-            label="Last name"
-            value={lastName}
-            onChange={(event) => setLastName(event.target.value)}
-            required
-          />
+          <label>Last name</label>
+          <input type="text" value={lastName} onChange={(event) => setLastName(event.target.value)} required />
           <SliderField
             name="loanValue"
             prefix="$"
@@ -154,19 +151,17 @@ export default function LoanRisk({ embed }: CustomPageProps) {
             value={loanDuration}
             onChange={setLoanDuration}
           />
-          <Typography id="month_installment">
-            Your month installment is: <strong id="month_installment_value">${monthInstallment.toFixed(2)}</strong>
-          </Typography>
-          <Button type="submit" variant="contained" size="large" disabled={isLoading}>
+          <div>
+            Your month installment is: <strong>${monthInstallment.toFixed(2)}</strong>
+          </div>
+          <Button type="submit" disabled={isLoading}>
             {isLoading ? 'Hold on, doing magic...' : 'Request loan'}
           </Button>
-        </Stack>
-      </form>
-      {loanRequestMutation.data?.message && !loanRequestMutation.isLoading && (
-        <Alert severity={loanRequestMutation.data.severity} className="UsecaseWrapper_alert">
-          {loanRequestMutation.data.message}
-        </Alert>
-      )}
+        </form>
+        {loanRequestMutation.data?.message && !loanRequestMutation.isLoading && (
+          <Alert severity={loanRequestMutation.data.severity}>{loanRequestMutation.data.message}</Alert>
+        )}
+      </div>
     </UseCaseWrapper>
   );
 }
