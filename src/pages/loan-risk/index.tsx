@@ -1,6 +1,5 @@
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { FunctionComponent, useCallback, useMemo, useState } from 'react';
-import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import FormLabel from '@mui/material/FormLabel';
@@ -20,6 +19,7 @@ import { CustomPageProps } from '../_app';
 import Button from '../../client/components/common/Button';
 import Alert from '../../client/components/common/Alert/Alert';
 import formStyles from '../../styles/forms.module.scss';
+import { Slider } from '../../client/components/common/Slider/Slider';
 
 type SliderFieldProps = {
   label: string;
@@ -47,14 +47,7 @@ const SliderField: FunctionComponent<SliderFieldProps> = ({
       <FormLabel>{label}</FormLabel>
       <Stack direction="row" alignItems="center" spacing={2}>
         {prefix && <Typography>{prefix}</Typography>}
-        <Slider
-          min={min}
-          max={max}
-          valueLabelFormat={(value) => `${prefix ? `${prefix} ` : ''} ${value} ${suffix ?? ''}`}
-          value={value}
-          onChange={(_event, value: number) => onChange(value)}
-          valueLabelDisplay="auto"
-        />
+        <Slider min={min} max={max} value={value} onChange={(value: number) => onChange(value)} />
         <TextField
           name={name}
           type="number"
