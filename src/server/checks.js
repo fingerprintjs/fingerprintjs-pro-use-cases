@@ -38,7 +38,7 @@ export function checkFreshIdentificationRequest(visitorData) {
 // If it's lower than the certain threshold we recommend using an additional way of verification, e.g. 2FA or email.
 // More info: https://dev.fingerprint.com/docs/understanding-your-confidence-score
 export function checkConfidenceScore(visitorData) {
-  if (visitorData.visits[0].confidence.score < MIN_CONFIDENCE_SCORE) {
+  if (visitorData?.visits[0]?.confidence?.score < MIN_CONFIDENCE_SCORE) {
     return new CheckResult(
       "Low confidence score, we'd rather verify you with the second factor,",
       messageSeverity.Error,
