@@ -8,6 +8,7 @@ export default async function getFingerprintEvent(req: NextApiRequest, res: Next
     region: BACKEND_REGION,
     apiKey: SERVER_API_KEY,
   });
+
   try {
     const eventResponse = await client.getEvent(requestId);
     res.status(200).json(eventResponse);
