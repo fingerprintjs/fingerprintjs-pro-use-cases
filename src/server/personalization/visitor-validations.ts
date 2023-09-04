@@ -39,6 +39,10 @@ export async function validatePersonalizationRequest(req, res): Promise<Personal
 
   const visitorData = await getVisitorDataWithRequestId(visitorId, requestId);
 
+  if (!visitorData) {
+    return result;
+  }
+
   result.visitorId = visitorData.visitorId;
 
   for (const check of checks) {
