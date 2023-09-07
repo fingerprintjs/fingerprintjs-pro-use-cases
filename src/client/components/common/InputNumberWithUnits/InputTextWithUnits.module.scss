@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  padding: 8px;
+  align-items: center;
+  gap: 3px;
+  width: fit-content;
+
+  border-radius: rem(4px);
+  border: 1px solid v('gray-box-stroke');
+}
+
+.input {
+  border: none;
+  width: auto !important;
+}

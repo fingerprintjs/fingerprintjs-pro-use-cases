@@ -20,6 +20,7 @@ import Button from '../../client/components/common/Button';
 import Alert from '../../client/components/common/Alert/Alert';
 import formStyles from '../../styles/forms.module.scss';
 import { Slider } from '../../client/components/common/Slider/Slider';
+import { InputNumberWithUnits } from '../../client/components/common/InputNumberWithUnits/InputNumberWithUnits';
 
 type SliderFieldProps = {
   label: string;
@@ -43,12 +44,18 @@ const SliderField: FunctionComponent<SliderFieldProps> = ({
   name,
 }) => {
   return (
-    <Stack direction="column">
-      <FormLabel>{label}</FormLabel>
-      <Stack direction="row" alignItems="center" spacing={2}>
+    <div>
+      <label>{label}</label>
+      <div>
         {prefix && <Typography>{prefix}</Typography>}
         <Slider min={min} max={max} value={value} onChange={(value: number) => onChange(value)} />
-        <TextField
+        <InputNumberWithUnits
+          value={value}
+          onChange={(value: number) => onChange(value)}
+          suffix={suffix}
+          prefix={prefix}
+        />
+        {/* <TextField
           name={name}
           type="number"
           value={value}
@@ -60,9 +67,9 @@ const SliderField: FunctionComponent<SliderFieldProps> = ({
             startAdornment: prefix && <InputAdornment position="start">{prefix}</InputAdornment>,
             endAdornment: suffix && <InputAdornment position="end">{suffix}</InputAdornment>,
           }}
-        />
-      </Stack>
-    </Stack>
+        /> */}
+      </div>
+    </div>
   );
 };
 export default function LoanRisk({ embed }: CustomPageProps) {

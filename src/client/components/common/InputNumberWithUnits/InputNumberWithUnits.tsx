@@ -1,21 +1,24 @@
-import { ChangeEvent, FC } from 'react';
+import { FC } from 'react';
 import styles from './InputTextWithUnits.module.scss';
 
 interface TextInputProps {
   prefix?: string;
   suffix?: string;
-  value?: string;
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+  value?: number;
+  onChange?: (value: number) => void;
 }
 
-const InputTextWithUnits: FC<TextInputProps> = ({ prefix, suffix, value, onChange }) => {
+export const InputNumberWithUnits: FC<TextInputProps> = ({ prefix, suffix, value, onChange }) => {
   return (
-    <div>
+    <div className={styles.container}>
       {prefix && <div>{prefix}</div>}
-      <input type="text" value={value} onChange={onChange} />
+      <input
+        className={styles.input}
+        type="number"
+        value={value}
+        onChange={(event) => onChange(Number(event.target.value))}
+      />
       {suffix && <div>{suffix}</div>}
     </div>
   );
 };
-
-export default InputTextWithUnits;
