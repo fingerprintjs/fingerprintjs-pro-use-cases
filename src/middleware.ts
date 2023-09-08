@@ -7,8 +7,7 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   // Note: We need to read the hostname from a header because request.url, request.nextURL just say "localhost" on Digital Ocean
   const host = request.headers.get('host');
-  // To-do: Change to fingerprinthub.com when the switch happens
-  if (host === 'staging.fingerprinthub.com') {
+  if (host === 'fingerprinthub.com') {
     const newURL = new URL(request.nextUrl.pathname, 'https://demo.fingerprint.com');
     newURL.search = request.nextUrl.search;
     return NextResponse.redirect(newURL);
