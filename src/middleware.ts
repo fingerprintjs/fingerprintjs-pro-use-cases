@@ -1,4 +1,3 @@
-import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 /**
@@ -10,6 +9,6 @@ export function middleware(request: NextRequest) {
   if (host === 'fingerprinthub.com') {
     const newURL = new URL(request.nextUrl.pathname, 'https://demo.fingerprint.com');
     newURL.search = request.nextUrl.search;
-    return NextResponse.redirect(newURL);
+    return Response.redirect(newURL, 301);
   }
 }
