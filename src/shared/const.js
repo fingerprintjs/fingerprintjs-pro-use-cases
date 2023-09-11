@@ -1,6 +1,7 @@
 // @ts-check
+export const PRODUCTION_DOMAIN = 'https://demo.fingerprint.com';
 export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
-export const SITE_URL = IS_PRODUCTION ? 'https://fingerprinthub.com/' : 'http://localhost:3000/';
+export const SITE_URL = IS_PRODUCTION ? PRODUCTION_DOMAIN : 'http://localhost:3000/';
 
 // Milliseconds helpers
 export const MINUTE_MS = 60 * 1000;
