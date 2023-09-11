@@ -19,7 +19,7 @@ export const FRONTEND_REGION = process.env.NEXT_PUBLIC_FRONTEND_REGION ?? 'us';
 export const BACKEND_REGION: Region = BackendRegionMap[process.env.BACKEND_REGION] ?? Region.Global;
 export const SCRIPT_URL_PATTERN =
   process.env.NEXT_PUBLIC_SCRIPT_URL_PATTERN ??
-  'https://fingerprint.com/s2MB/?b=load-vercel&v=<version>&a=<apiKey>&l=<loaderVersion>';
+  'https://fpcf.fingerprinthub.com/DBqbMN7zXxwl4Ei8/J5XlHIBN67YHskdR?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>';
 export const ENDPOINT =
   process.env.NEXT_PUBLIC_ENDPOINT ??
   `https://fpcf.fingerprinthub.com/DBqbMN7zXxwl4Ei8/S7lqsWfAyw2lq4Za?region=${FRONTEND_REGION}`;
