@@ -6,9 +6,10 @@ interface NumberInputWithUnitsProps {
   suffix?: string;
   value?: number;
   onChange?: (value: number) => void;
+  name?: string;
 }
 
-export const NumberInputWithUnits: FC<NumberInputWithUnitsProps> = ({ prefix, suffix, value, onChange }) => {
+export const NumberInputWithUnits: FC<NumberInputWithUnitsProps> = ({ prefix, suffix, value, onChange, name }) => {
   return (
     <div className={styles.container}>
       {prefix && <div>{prefix}</div>}
@@ -16,6 +17,7 @@ export const NumberInputWithUnits: FC<NumberInputWithUnitsProps> = ({ prefix, su
         className={styles.input}
         type="number"
         value={value}
+        name={name}
         onChange={(event) => onChange(Number(event.target.value))}
       />
       {suffix && <div>{suffix}</div>}

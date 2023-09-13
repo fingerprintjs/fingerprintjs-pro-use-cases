@@ -19,6 +19,7 @@ import { Slider } from '../../client/components/common/Slider/Slider';
 import { NumberInputWithUnits } from '../../client/components/common/InputNumberWithUnits/InputNumberWithUnits';
 import styles from './loanRisk.module.scss';
 import classNames from 'classnames';
+import { TEST_IDS } from '../../client/e2eTestIDs';
 
 type SliderFieldProps = {
   label: string;
@@ -54,6 +55,7 @@ const SliderField: FunctionComponent<SliderFieldProps> = ({
           onChange={(value: number) => onChange(value)}
           suffix={suffix}
           prefix={prefix}
+          name={name}
         />
       </div>
     </div>
@@ -111,7 +113,13 @@ export default function LoanRisk({ embed }: CustomPageProps) {
               required
             />
             <label>Surname</label>
-            <input type="text" value={lastName} onChange={(event) => setLastName(event.target.value)} required />
+            <input
+              type="text"
+              name="lastName"
+              value={lastName}
+              onChange={(event) => setLastName(event.target.value)}
+              required
+            />
           </div>
           <div className={styles.loanWrapper}>
             <div className={styles.sliders}>
@@ -144,7 +152,9 @@ export default function LoanRisk({ embed }: CustomPageProps) {
               />
               <div className={styles.summary}>
                 <span>Your monthly installment is: </span>
-                <div className={styles.monthlyPayment}>$ {monthlyInstallment.toFixed(0)}</div>
+                <div className={styles.monthlyPayment} data-test={TEST_IDS.loanRisk.monthlyInstallmentValue}>
+                  $ {monthlyInstallment.toFixed(0)}
+                </div>
               </div>
             </div>
             {loanRequestMutation.data?.message && !loanRequestMutation.isLoading && (
