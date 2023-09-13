@@ -1,0 +1,14 @@
+.sliderFieldWrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: rem(16px);
+}
+
+.sliderWrapper {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: rem(8px);
+  font-weight: 600;
+}

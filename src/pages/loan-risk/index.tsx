@@ -1,10 +1,6 @@
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { FunctionComponent, useCallback, useMemo, useState } from 'react';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import FormLabel from '@mui/material/FormLabel';
-import InputAdornment from '@mui/material/InputAdornment';
-import TextField from '@mui/material/TextField';
+
 import {
   loanDurationValidation,
   loanValueValidation,
@@ -21,6 +17,7 @@ import Alert from '../../client/components/common/Alert/Alert';
 import formStyles from '../../styles/forms.module.scss';
 import { Slider } from '../../client/components/common/Slider/Slider';
 import { InputNumberWithUnits } from '../../client/components/common/InputNumberWithUnits/InputNumberWithUnits';
+import styles from './loanRisk.module.scss';
 
 type SliderFieldProps = {
   label: string;
@@ -46,28 +43,17 @@ const SliderField: FunctionComponent<SliderFieldProps> = ({
   return (
     <div>
       <label>{label}</label>
-      <div>
-        {prefix && <Typography>{prefix}</Typography>}
-        <Slider min={min} max={max} value={value} onChange={(value: number) => onChange(value)} />
+      <div className={styles.sliderFieldWrapper}>
+        <div className={styles.sliderWrapper}>
+          {prefix && prefix}
+          <Slider min={min} max={max} value={value} onChange={(value: number) => onChange(value)} />
+        </div>
         <InputNumberWithUnits
           value={value}
           onChange={(value: number) => onChange(value)}
           suffix={suffix}
           prefix={prefix}
         />
-        {/* <TextField
-          name={name}
-          type="number"
-          value={value}
-          onChange={(event) => {
-            const number = parseInt(event.target.value);
-            return onChange(number);
-          }}
-          InputProps={{
-            startAdornment: prefix && <InputAdornment position="start">{prefix}</InputAdornment>,
-            endAdornment: suffix && <InputAdornment position="end">{suffix}</InputAdornment>,
-          }}
-        /> */}
       </div>
     </div>
   );
