@@ -18,6 +18,7 @@ import formStyles from '../../styles/forms.module.scss';
 import { Slider } from '../../client/components/common/Slider/Slider';
 import { InputNumberWithUnits } from '../../client/components/common/InputNumberWithUnits/InputNumberWithUnits';
 import styles from './loanRisk.module.scss';
+import classNames from 'classnames';
 
 type SliderFieldProps = {
   label: string;
@@ -71,7 +72,7 @@ export default function LoanRisk({ embed }: CustomPageProps) {
   const [monthlyIncome, setMonthlyIncome] = useState(10000);
   const [loanDuration, setLoanDuration] = useState(loanDurationValidation.min);
 
-  const monthInstallment = useMemo(
+  const monthlyInstallment = useMemo(
     () =>
       calculateMonthInstallment({
         loanValue,
@@ -97,56 +98,63 @@ export default function LoanRisk({ embed }: CustomPageProps) {
   const isLoading = visitorDataQuery.isLoading || loanRequestMutation.isLoading;
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.loanRisk} embed={embed}>
-      <div className={formStyles.wrapper}>
+    <UseCaseWrapper useCase={USE_CASES.loanRisk} embed={embed} contentSx={{ maxWidth: 'none' }}>
+      <div className={classNames(formStyles.wrapper, styles.formWrapper)}>
         <form onSubmit={handleSubmit} className={formStyles.useCaseForm}>
-          <label>First name</label>
-          <input
-            type="text"
-            name="firstName"
-            value={firstName}
-            onChange={(event) => setFirstName(event.target.value)}
-            required
-          />
-          <label>Last name</label>
-          <input type="text" value={lastName} onChange={(event) => setLastName(event.target.value)} required />
-          <SliderField
-            name="loanValue"
-            prefix="$"
-            min={loanValueValidation.min}
-            max={loanValueValidation.max}
-            label="How much money do you need?"
-            value={loanValue}
-            onChange={setLoanValue}
-          />
-          <SliderField
-            name="monthlyIncome"
-            prefix="$"
-            min={monthlyIncomeValidation.min}
-            max={monthlyIncomeValidation.max}
-            label="How much do you make per month?"
-            value={monthlyIncome}
-            onChange={setMonthlyIncome}
-          />
-          <SliderField
-            name="loanDuration"
-            suffix="Months"
-            min={loanDurationValidation.min}
-            max={loanDurationValidation.max}
-            label="Loan term (months)"
-            value={loanDuration}
-            onChange={setLoanDuration}
-          />
-          <div>
-            Your month installment is: <strong>${monthInstallment.toFixed(2)}</strong>
+          <div className={styles.nameWrapper}>
+            <label>Name</label>
+            <input
+              type="text"
+              name="firstName"
+              value={firstName}
+              onChange={(event) => setFirstName(event.target.value)}
+              required
+            />
+            <label>Surname</label>
+            <input type="text" value={lastName} onChange={(event) => setLastName(event.target.value)} required />
           </div>
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? 'Hold on, doing magic...' : 'Request loan'}
-          </Button>
+          <div className={styles.loanWrapper}>
+            <div className={styles.sliders}>
+              <SliderField
+                name="loanValue"
+                prefix="$"
+                min={loanValueValidation.min}
+                max={loanValueValidation.max}
+                label="How much money do you need?"
+                value={loanValue}
+                onChange={setLoanValue}
+              />
+              <SliderField
+                name="monthlyIncome"
+                prefix="$"
+                min={monthlyIncomeValidation.min}
+                max={monthlyIncomeValidation.max}
+                label="How much do you make per month?"
+                value={monthlyIncome}
+                onChange={setMonthlyIncome}
+              />
+              <SliderField
+                name="loanDuration"
+                suffix="Months"
+                min={loanDurationValidation.min}
+                max={loanDurationValidation.max}
+                label="Loan term (months)"
+                value={loanDuration}
+                onChange={setLoanDuration}
+              />
+              <div className={styles.summary}>
+                <span>Your monthly installment is: </span>
+                <div className={styles.monthlyPayment}>$ {monthlyInstallment.toFixed(0)}</div>
+              </div>
+            </div>
+            {loanRequestMutation.data?.message && !loanRequestMutation.isLoading && (
+              <Alert severity={loanRequestMutation.data.severity}>{loanRequestMutation.data.message}</Alert>
+            )}
+            <Button type="submit" disabled={isLoading} className={styles.requestLoadButton}>
+              {isLoading ? 'Hold on, doing magic...' : 'Request loan'}
+            </Button>
+          </div>
         </form>
-        {loanRequestMutation.data?.message && !loanRequestMutation.isLoading && (
-          <Alert severity={loanRequestMutation.data.severity}>{loanRequestMutation.data.message}</Alert>
-        )}
       </div>
     </UseCaseWrapper>
   );

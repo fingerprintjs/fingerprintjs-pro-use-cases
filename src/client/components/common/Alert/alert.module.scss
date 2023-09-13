@@ -19,6 +19,10 @@
     font-size: 12px;
     line-height: 135%;
   }
+
+  @include media('<=360px') {
+    flex-direction: column;
+  }
 }
 
 .success {

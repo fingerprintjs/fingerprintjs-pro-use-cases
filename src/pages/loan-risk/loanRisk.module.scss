@@ -1,8 +1,48 @@
+.formWrapper {
+  padding: rem(32px);
+
+  @include media('<=phoneLandscape') {
+    padding: rem(12px);
+  }
+}
+
+.nameWrapper {
+  margin-bottom: rem(16px);
+}
+
+.loanWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: rem(40px);
+  margin-top: rem(32px);
+}
+
+.sliders {
+  display: flex;
+  flex-direction: column;
+  gap: rem(16px);
+
+  > :last-child {
+    margin-top: rem(12px);
+  }
+}
+
 .sliderFieldWrapper {
   width: 100%;
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 2.5fr 1fr;
   gap: rem(16px);
+  margin-top: rem(4px);
+
+  @include media('<=phoneLandscape') {
+    grid-template-columns: 2fr 1fr;
+  }
+
+  @include media('<=phone') {
+    grid-template-columns: 1fr;
+    gap: rem(8px);
+    margin-bottom: rem(16px);
+  }
 }
 
 .sliderWrapper {
@@ -11,4 +51,33 @@
   align-items: center;
   gap: rem(8px);
   font-weight: 600;
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: rem(8px);
+
+  @include media('<=phone') {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+}
+
+.monthlyPayment {
+  display: flex;
+  padding: 6px 8px;
+  align-items: center;
+  border-radius: 4px;
+  border: 1px solid v('orange-gradient');
+
+  color: v('orange-gradient');
+  font-weight: 500;
+  line-height: 145%;
+  white-space: nowrap;
+}
+
+.requestLoadButton {
+  margin-left: auto;
 }
