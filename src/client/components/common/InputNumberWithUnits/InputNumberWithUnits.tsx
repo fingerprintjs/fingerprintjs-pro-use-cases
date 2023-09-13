@@ -1,14 +1,14 @@
 import { FC } from 'react';
 import styles from './InputTextWithUnits.module.scss';
 
-interface TextInputProps {
+interface NumberInputWithUnitsProps {
   prefix?: string;
   suffix?: string;
   value?: number;
   onChange?: (value: number) => void;
 }
 
-export const InputNumberWithUnits: FC<TextInputProps> = ({ prefix, suffix, value, onChange }) => {
+export const NumberInputWithUnits: FC<NumberInputWithUnitsProps> = ({ prefix, suffix, value, onChange }) => {
   return (
     <div className={styles.container}>
       {prefix && <div>{prefix}</div>}

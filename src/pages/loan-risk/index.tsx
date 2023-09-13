@@ -16,7 +16,7 @@ import Button from '../../client/components/common/Button';
 import Alert from '../../client/components/common/Alert/Alert';
 import formStyles from '../../styles/forms.module.scss';
 import { Slider } from '../../client/components/common/Slider/Slider';
-import { InputNumberWithUnits } from '../../client/components/common/InputNumberWithUnits/InputNumberWithUnits';
+import { NumberInputWithUnits } from '../../client/components/common/InputNumberWithUnits/InputNumberWithUnits';
 import styles from './loanRisk.module.scss';
 import classNames from 'classnames';
 
@@ -49,7 +49,7 @@ const SliderField: FunctionComponent<SliderFieldProps> = ({
           {prefix && prefix}
           <Slider min={min} max={max} value={value} onChange={(value: number) => onChange(value)} />
         </div>
-        <InputNumberWithUnits
+        <NumberInputWithUnits
           value={value}
           onChange={(value: number) => onChange(value)}
           suffix={suffix}
