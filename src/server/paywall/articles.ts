@@ -1,7 +1,6 @@
 /**
  * Mock articles "database". In the real world, these articles could be fetched from anywhere.
  * */
-
 export type ArticleData = {
   id: string;
   date: string;
@@ -39,3 +38,13 @@ You’re doing your best to serve and relate to your customers on a human, frien
     content: `The balance between consumer convenience and security is a delicate process, especially in a competitive, high-value market. For example, when banks and credit card companies provide online loan applications, they make it convenient for potential customers to get a loan. Still, they also make it convenient for identity thieves and hackers. `,
   },
 ];
+
+const SHORT_ARTICLE_CONTENT_LENGTH = 100;
+
+export const ARTICLES_SHORTENED = ARTICLES.map((article) => ({
+  ...article,
+  content:
+    article.content.length > SHORT_ARTICLE_CONTENT_LENGTH
+      ? article.content.slice(0, SHORT_ARTICLE_CONTENT_LENGTH).concat('...')
+      : article.content,
+}));
