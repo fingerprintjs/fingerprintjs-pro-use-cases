@@ -6,7 +6,7 @@ import { isRequestIdFormatValid, originIsAllowed, visitIpMatchesRequestIp } from
 import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, BACKEND_REGION, SERVER_API_KEY } from '../../../server/const';
 import { sendErrorResponse, sendForbiddenResponse, sendOkResponse } from '../../../server/response';
 import { ensurePostRequest, messageSeverity } from '../../../server/server';
-import { DAY_MS, FIVE_MINUTES_MS, HOUR_MS } from '../../../shared/timUtils';
+import { DAY_MS, FIVE_MINUTES_MS, HOUR_MS } from '../../../shared/timeUtils';
 import { AIRPORTS } from '../../web-scraping';
 
 export type FlightQuery = {
