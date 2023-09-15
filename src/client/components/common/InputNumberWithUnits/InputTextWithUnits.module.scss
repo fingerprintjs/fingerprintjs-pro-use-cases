@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  padding: rem(8px);
+  align-items: center;
+  justify-content: flex-end;
+  gap: rem(3px);
+  width: fit-content;
+
+  border-radius: rem(4px);
+  border: 1px solid v('gray-box-stroke');
+
+  line-height: 115%;
+  font-size: rem(16px);
+  letter-spacing: 0.16px;
+  background-color: v('light-gray-background');
+  max-width: 100%;
+}
+
+.input {
+  border: none;
+  width: 100%;
+  min-width: rem(48px);
+  max-width: 100%;
+  background-color: v('light-gray-background');
+}

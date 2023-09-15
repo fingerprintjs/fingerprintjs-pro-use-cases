@@ -1,6 +1,8 @@
-// @ts-check
 import { expect, test } from '@playwright/test';
 import { reset } from './admin';
+import { TEST_IDS } from '../src/client/e2eTestIDs';
+
+const testIds = TEST_IDS.loanRisk;
 
 async function waitForSuccessfulSubmit(page) {
   await page.click('[type="submit"]');
@@ -12,7 +14,7 @@ async function waitForBlockedLoanSubmit(page) {
   await page.click('[type="submit"]');
   await page.waitForLoadState('networkidle');
   await page.waitForSelector(
-    'text="We are unable to approve your loan automatically since you had requested a loan with a different income or personal details before. We need to verify provided information manually this time. Please, reach out to our agent."'
+    'text="We are unable to approve your loan automatically since you had requested a loan with a different income or personal details before. We need to verify provided information manually this time. Please, reach out to our agent."',
   );
 }
 
@@ -49,10 +51,9 @@ test.describe('Loan risk', () => {
     await page.fill('[name="monthlyIncome"]', '20000');
     await page.fill('[name="loanDuration"]', '4');
 
-    const monthInstallmentValue = page.locator('#month_installment_value');
+    const monthInstallmentValue = page.locator(`[data-test="${testIds.monthlyInstallmentValue}"]`);
 
-    await expect(monthInstallmentValue).toHaveText('$575.00');
-
+    await expect(monthInstallmentValue).toHaveText('$ 575');
     await waitForSuccessfulSubmit(page);
   });
 
