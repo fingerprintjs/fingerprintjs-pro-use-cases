@@ -1,12 +1,10 @@
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
 import { SITE_URL } from '../../shared/const';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { ArticleData } from '../../server/paywall/articles';
 import { CustomPageProps } from '../_app';
 import { USE_CASES } from '../../client/components/common/content';
+import Image from 'next/image';
+import { FunctionComponent } from 'react';
 
 export async function getServerSideProps() {
   const articlesResponse = await fetch(`${SITE_URL}/api/paywall/get-articles`).then((res) => res.json());
@@ -18,35 +16,43 @@ export async function getServerSideProps() {
   };
 }
 
+type ArticleCardProps = {
+  article: ArticleData;
+  embed?: boolean;
+};
+const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article, embed }) => {
+  return (
+    <a href={`/paywall/article/${article.id}${embed ? '/embed' : ''}`} key={article.id}>
+      <Image src={article.image} alt="" />
+      <div>
+        <Image src={article.author.avatar} alt={`Picture of ${article.author.name}`} />
+        <div>{article.author.name}</div>
+        <div>{article.date}</div>
+      </div>
+      <h3>{article.title}</h3>
+      <p>{article.content}</p>
+      <div>
+        {article.tags.map((tag) => (
+          <div key={tag}>{tag}</div>
+        ))}
+      </div>
+    </a>
+  );
+};
+
 type PaywallProps = CustomPageProps & {
   articles: ArticleData[];
 };
 
 export default function Paywall({ articles, embed }: PaywallProps) {
   return (
-    <UseCaseWrapper useCase={USE_CASES.paywall} embed={embed}>
+    <UseCaseWrapper useCase={USE_CASES.paywall} embed={embed} contentSx={{ maxWidth: 'none' }}>
       {articles && (
-        <Stack spacing={6}>
+        <div>
           {articles.map((article) => (
-            <Card
-              href={`/paywall/article/${article.id}${embed ? '/embed' : ''}`}
-              key={article.id}
-              variant="outlined"
-              component="a"
-              className="ArticleLink"
-            >
-              <CardContent>
-                <Typography variant="h5" gutterBottom>
-                  {article.title}
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  {article.content}
-                </Typography>
-                <Typography variant="caption">{article.date}</Typography>
-              </CardContent>
-            </Card>
+            <ArticleCard key={article.id} article={article} embed={embed} />
           ))}
-        </Stack>
+        </div>
       )}
     </UseCaseWrapper>
   );
