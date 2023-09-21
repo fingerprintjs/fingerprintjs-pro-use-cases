@@ -21,6 +21,7 @@ export const ourOrigins = [
   'https://localhost:3000',
   'http://localhost:3000',
   'https://staging.fingerprinthub.com',
+  'https://demo.fingerprint.com',
 ];
 
 /** @typedef {'success'|'warning'|'error'} Severity */
