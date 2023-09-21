@@ -18,6 +18,7 @@ export const sequelize = new Sequelize('database', '', '', {
 // It is recommended to use production origins instead.
 export const ourOrigins = [
   'https://fingerprinthub.com',
+  'https://demo.fingerprint.com',
   'https://localhost:3000',
   'http://localhost:3000',
   'https://staging.fingerprinthub.com',

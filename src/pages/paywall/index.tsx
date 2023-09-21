@@ -2,18 +2,15 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import { SITE_URL } from '../../shared/const';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import { ArticleData } from '../../server/paywall/articles';
+import { ARTICLES_SHORTENED, ArticleData } from '../../server/paywall/articles';
 import { CustomPageProps } from '../_app';
 import { USE_CASES } from '../../client/components/common/content';
 
 export async function getServerSideProps() {
-  const articlesResponse = await fetch(`${SITE_URL}/api/paywall/get-articles`).then((res) => res.json());
-
   return {
     props: {
-      articles: articlesResponse.data,
+      articles: ARTICLES_SHORTENED,
     },
   };
 }
