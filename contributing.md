@@ -24,4 +24,4 @@ yarn lint
 
 ### How to publish
 
-- Project is deployed to [demo.fingerprint.com](https://demo.fingerprint.com) with each merge into the `main` branch.
+- Project is deployed to [fingerprinthub.com](https://fingerprinthub.com) with each merge into the `main` branch.
