@@ -5,6 +5,8 @@ import { CustomPageProps } from '../_app';
 import { USE_CASES } from '../../client/components/common/content';
 import Image from 'next/image';
 import { FunctionComponent } from 'react';
+import styles from './paywall.module.scss';
+import { useRouter } from 'next/router';
 
 export async function getServerSideProps() {
   const articlesResponse = await fetch(`${SITE_URL}/api/paywall/get-articles`).then((res) => res.json());
@@ -21,22 +23,28 @@ type ArticleCardProps = {
   embed?: boolean;
 };
 const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article, embed }) => {
+  const link = `/paywall/article/${article.id}${embed ? '/embed' : ''}`;
+  const router = useRouter();
   return (
-    <a href={`/paywall/article/${article.id}${embed ? '/embed' : ''}`} key={article.id}>
-      <Image src={article.image} alt="" />
+    <div className={styles.articleCard} onClick={() => router.push(link)}>
+      <div style={{ position: 'relative', width: '100%' }}>
+        <Image src={article.image} alt="" className={styles.articleCardImage} fill={true} />
+      </div>
       <div>
         <Image src={article.author.avatar} alt={`Picture of ${article.author.name}`} />
         <div>{article.author.name}</div>
         <div>{article.date}</div>
       </div>
-      <h3>{article.title}</h3>
+      <a href={link} key={article.id}>
+        {article.title}
+      </a>
       <p>{article.content}</p>
       <div>
         {article.tags.map((tag) => (
           <div key={tag}>{tag}</div>
         ))}
       </div>
-    </a>
+    </div>
   );
 };
 
@@ -48,7 +56,7 @@ export default function Paywall({ articles, embed }: PaywallProps) {
   return (
     <UseCaseWrapper useCase={USE_CASES.paywall} embed={embed} contentSx={{ maxWidth: 'none' }}>
       {articles && (
-        <div>
+        <div className={styles.articles}>
           {articles.map((article) => (
             <ArticleCard key={article.id} article={article} embed={embed} />
           ))}
