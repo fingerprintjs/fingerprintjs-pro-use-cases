@@ -27,9 +27,7 @@ const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article, embed }) =>
   const router = useRouter();
   return (
     <div className={styles.articleCard} onClick={() => router.push(link)}>
-      <div style={{ position: 'relative', width: '100%' }}>
-        <Image src={article.image} alt="" className={styles.articleCardImage} fill={true} />
-      </div>
+      <Image src={article.image} alt="" className={styles.articleCardImage} sizes="100vw" />
       <div>
         <Image src={article.author.avatar} alt={`Picture of ${article.author.name}`} />
         <div>{article.author.name}</div>
