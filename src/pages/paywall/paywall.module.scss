@@ -1,0 +1,28 @@
+.articles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(266px, 1fr));
+  gap: rem(24px);
+  margin: 0 auto;
+
+  @include media('<=phoneLandscape') {
+    padding: 0 rem(20px) rem(80px) rem(20px);
+    row-gap: rem(24px);
+  }
+
+  @include media('<=phone') {
+    grid-template-columns: auto;
+  }
+}
+
+.articleCard {
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  border: 1px solid v('gray-box-stroke');
+  cursor: pointer;
+}
+
+.articleCardImage {
+  //   width: 100%;
+  object-fit: contain;
+}
