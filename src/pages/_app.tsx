@@ -5,7 +5,6 @@ import { ThemeProvider } from '../client/theme-provider';
 import Head from 'next/head';
 import { SnackbarProvider } from 'notistack';
 import { SnackbarAction } from '../client/components/snackbar-action';
-import { SocketProvider } from '../client/api/socket-provider';
 import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import { FP_LOAD_OPTIONS } from '../client/use-visitor-data';
 import { Paper } from '@mui/material';
@@ -51,19 +50,17 @@ function CustomApp({ Component, pageProps }: AppProps<CustomPageProps>) {
             vertical: 'bottom',
           }}
         >
-          <SocketProvider>
-            <FpjsProvider loadOptions={FP_LOAD_OPTIONS}>
-              <Head>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-                <title>Fingerprint Pro Use Cases</title>
-              </Head>
-              <DeploymentUtils />
-              <Layout embed={pageProps.embed}>
-                <Component {...pageProps} />
-              </Layout>
-            </FpjsProvider>
-          </SocketProvider>
+          <FpjsProvider loadOptions={FP_LOAD_OPTIONS}>
+            <Head>
+              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+              <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+              <title>Fingerprint Pro Use Cases</title>
+            </Head>
+            <DeploymentUtils />
+            <Layout embed={pageProps.embed}>
+              <Component {...pageProps} />
+            </Layout>
+          </FpjsProvider>
         </SnackbarProvider>
       </ThemeProvider>
     </QueryClientProvider>
