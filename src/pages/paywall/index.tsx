@@ -28,8 +28,8 @@ const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article, embed }) =>
   return (
     <div className={styles.articleCard} onClick={() => router.push(link)}>
       <Image src={article.image} alt="" className={styles.articleCardImage} sizes="100vw" />
-      <div>
-        <Image src={article.author.avatar} alt={`Picture of ${article.author.name}`} />
+      <div className={styles.byline}>
+        <Image src={article.author.avatar} className={styles.authorImage} alt={`Picture of ${article.author.name}`} />
         <div>{article.author.name}</div>
         <div>{article.date}</div>
       </div>

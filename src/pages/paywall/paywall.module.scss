@@ -26,3 +26,14 @@
   width: 100%;
   height: auto;
 }
+
+.byline {
+  display: flex;
+}
+
+.authorImage {
+  height: rem(120px);
+  width: rem(120px);
+  border-radius: rem(120px);
+  object-fit: contain;
+}
