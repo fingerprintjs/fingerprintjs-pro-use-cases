@@ -10,6 +10,8 @@ import ScrapingIcon from '../../img/scrapingIcon.svg';
 import { ReactNode } from 'react';
 import { RestartHint, RestartHintProps } from './UseCaseWrapper/RestartHint';
 
+export const PRODUCTION_URL = 'https://fingerprinthub.com';
+
 export type UseCase = {
   title: string;
   url: string;

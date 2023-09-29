@@ -1,17 +1,15 @@
-import { HOMEPAGE_CARDS } from '../client/components/common/content';
-
-const PRODUCTION_HOST = 'https://fingerprinthub.com';
+import { HOMEPAGE_CARDS, PRODUCTION_URL } from '../client/components/common/content';
 
 function generateSiteMap() {
   return `<?xml version="1.0" encoding="UTF-8"?>
    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
      <url>
-       <loc>${PRODUCTION_HOST}</loc>
+       <loc>${PRODUCTION_URL}</loc>
      </url>
      ${HOMEPAGE_CARDS.map(({ url }) => {
        return `
        <url>
-           <loc>${`${PRODUCTION_HOST}${url}`}</loc>
+           <loc>${`${PRODUCTION_URL}${url}`}</loc>
        </url>
      `;
      }).join('')}

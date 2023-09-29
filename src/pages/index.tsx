@@ -7,10 +7,16 @@ import LinkArrow from '../client/img/externalLinkArrow.svg';
 import Image from 'next/image';
 import { TEST_IDS } from '../client/e2eTestIDs';
 import { Fragment } from 'react';
+import { HeadSEO } from '../client/components/common/HeadSEO';
 
 export default function Index() {
   return (
     <>
+      <HeadSEO
+        title="Fingerprint Use Cases | Discover Device Intelligence Use Cases"
+        description={`Explore an extensive range of use cases supported by Fingerprint, and learn how to successfully implement it for your 
+        business with practical guidance and a comprehensive demo.`}
+      />
       <Container size="large" className={styles.hero}>
         <h1 className={styles.title}>Fingerprint use cases</h1>
         <div className={styles.intro}>
