@@ -8,8 +8,10 @@ import Image from 'next/image';
 import { TEST_IDS } from '../client/e2eTestIDs';
 import { Fragment } from 'react';
 import { SEO } from '../client/components/common/seo';
+import { useRouter } from 'next/router';
 
 export default function Index() {
+  const router = useRouter();
   return (
     <>
       <SEO
@@ -33,12 +35,12 @@ export default function Index() {
       </Container>
       <div className={styles.useCaseGrid}>
         {HOMEPAGE_CARDS.map((card) => (
-          <Link className={styles.useCaseCard} href={card.url} key={card.url}>
+          <div className={styles.useCaseCard} key={card.url} onClick={() => router.push(card.url)}>
             <div>
               <Image src={card.iconSvg} alt="" className={styles.useCaseIcon} />
-              <h3 className={styles.useCaseTitle} data-test={TEST_IDS.homepageCard.useCaseTitle}>
+              <Link className={styles.useCaseTitle} data-test={TEST_IDS.homepageCard.useCaseTitle} href={card.url}>
                 {card.title}
-              </h3>
+              </Link>
               <div className={styles.useCaseDescription}>
                 {card.descriptionHomepage.map((line, i) => (
                   <Fragment key={i}>{line}</Fragment>
@@ -51,7 +53,7 @@ export default function Index() {
                 <Image src={LinkArrow} alt="" />
               </span>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
     </>

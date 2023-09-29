@@ -66,6 +66,7 @@
   border: 1px solid v('gray-box-stroke');
   overflow: hidden;
   color: unset;
+  cursor: pointer;
 
   @include shadowMedium();
   @include transition((box-shadow, border));
@@ -91,6 +92,7 @@
     font-weight: 600;
     line-height: 130%;
     margin-bottom: rem(8px);
+    display: block;
   }
 
   .useCaseDescription {
