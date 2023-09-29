@@ -1,6 +1,6 @@
 import { HOMEPAGE_CARDS } from '../client/components/common/content';
 
-const PRODUCTION_HOST = 'https://demo.fingerprint.com';
+const PRODUCTION_HOST = 'https://fingerprinthub.com';
 
 function generateSiteMap() {
   return `<?xml version="1.0" encoding="UTF-8"?>
