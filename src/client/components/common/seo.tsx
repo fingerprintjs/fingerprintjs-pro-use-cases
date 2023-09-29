@@ -6,12 +6,12 @@ type HeadSEOProps = {
   title: string;
   description: string;
   image?: string;
-  url?: string;
+  path?: string;
 };
 
-export const SEO: FunctionComponent<HeadSEOProps> = ({ title, description, image, url }) => {
+export const SEO: FunctionComponent<HeadSEOProps> = ({ title, description, image, path }) => {
   const metaImage = image ?? `${PRODUCTION_URL}/fingerprintDefaultMetaImage.png`;
-  const metaUrl = url ?? PRODUCTION_URL;
+  const metaUrl = `${PRODUCTION_URL}${path ?? ''}`;
   return (
     <Head>
       <title>{title}</title>

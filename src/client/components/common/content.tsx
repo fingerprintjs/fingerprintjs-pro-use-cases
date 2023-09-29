@@ -14,9 +14,11 @@ export const PRODUCTION_URL = 'https://fingerprinthub.com';
 
 export type UseCase = {
   title: string;
+  titleMeta: string;
   url: string;
   description?: React.ReactNode;
   descriptionHomepage?: readonly React.ReactNode[];
+  descriptionMeta: string;
   articleUrl?: string;
   doNotMentionResetButton?: boolean;
   instructions: readonly (ReactNode | ((props: RestartHintProps) => ReactNode))[];
@@ -31,6 +33,7 @@ export type UseCase = {
 export const USE_CASES = {
   couponFraud: {
     title: 'Coupon Fraud',
+    titleMeta: 'Fingerprint Use Cases | Coupon Promo Fraud and Abuse Live Demo',
     url: '/coupon-fraud',
     iconSvg: CouponFraudIcon,
     descriptionHomepage: [
@@ -45,6 +48,8 @@ export const USE_CASES = {
     ],
     description:
       'Use the demo below to see how Fingerprint can help identify fraudsters who repeatedly use the same coupon under different scenarios to gain unauthorized benefits.',
+    descriptionMeta:
+      'See in real-time how Fingerprint can stop and prevent coupon promotional abuse. Try out our coupon fraud demo and learn how we safeguard your promotions.',
     articleUrl: 'https://fingerprint.com/use-cases/coupon-promo-abuse/',
     instructions: [
       <>
@@ -75,6 +80,7 @@ export const USE_CASES = {
   },
   credentialStuffing: {
     title: 'Credential Stuffing',
+    titleMeta: 'Fingerprint Use Cases | Credential Stuffing Live Demo',
     url: '/credential-stuffing',
     articleUrl: 'https://fingerprint.com/use-cases/credential-stuffing/',
     instructions: [
@@ -112,6 +118,8 @@ export const USE_CASES = {
         </p>
       </>
     ),
+    descriptionMeta:
+      'See in real-time how Fingerprint can stop credential stuffing preventing unauthorized account access before it happens. Try out our live demo to learn how.',
     moreResources: [
       {
         type: 'Use case tutorial',
@@ -127,6 +135,7 @@ export const USE_CASES = {
   },
   loanRisk: {
     title: 'Loan Risk',
+    titleMeta: 'Fingerprint Use Cases | Loan Fraud Live Demo',
     url: '/loan-risk',
     iconSvg: LoanRiskIcon,
     descriptionHomepage: [
@@ -140,6 +149,8 @@ export const USE_CASES = {
     ],
     description:
       'Use this demo to see how Fingerprint allows you to collect high-quality, low-risk loan applications from your anonymous visitors. Prevent fraudsters and rejected applicants from submitting multiple inconsistent applications.',
+    descriptionMeta:
+      'See in real-time how Fingerprint can stop and prevent fraudsters and rejected applicants from submitting multiple inconsistent applications. Try out our live demo to learn how.',
     instructions: [
       <>Pick some values in the form and submit your loan application.</>,
       <>
@@ -163,6 +174,7 @@ export const USE_CASES = {
   },
   paymentFraud: {
     title: 'Payment Fraud',
+    titleMeta: 'Fingerprint Use Cases | Payment Fraud Live Demo',
     url: '/payment-fraud',
     articleUrl: 'https://fingerprint.com/use-cases/payment-fraud/',
     iconSvg: PaymentFraudIcon,
@@ -175,6 +187,8 @@ export const USE_CASES = {
     ],
     description:
       'Use the demo to see how Fingerprint can protect your transactions from card cracking attempts, stolen credit cards, and reduce chargebacks.',
+    descriptionMeta:
+      'See in real-time how Fingerprint can stop and prevent online payment fraud. Try out our live demo to see how Fingerprint can protect your transactions from card cracking attempts, stolen credit cards, and reduce chargebacks.',
     doNotMentionResetButton: true,
     instructions: [
       <>Change the pre-filled card details to simulate testing stolen credit cards.</>,
@@ -211,6 +225,7 @@ export const USE_CASES = {
   },
   paywall: {
     title: 'Paywall',
+    titleMeta: 'Fingerprint Use Cases | Content Paywall Live Demo',
     url: '/paywall',
     iconSvg: PaywallIcon,
     descriptionHomepage: [
@@ -222,6 +237,8 @@ export const USE_CASES = {
     ],
     description:
       'Use the demo below to see how Fingerprint protects your content from users trying to circumvent your paywall. ',
+    descriptionMeta:
+      'See in real-time how Fingerprint can stop and prevent content paywall evasion. Try out our live demo to see how Fingerprint protects your content from users trying to circumvent your paywall.',
     instructions: [
       <>Browse the articles below and open a few of them.</>,
       <>You will hit a paywall when opening your third article.</>,
@@ -237,6 +254,7 @@ export const USE_CASES = {
   },
   personalization: {
     title: 'Personalization',
+    titleMeta: 'Fingerprint Use Cases | eCommerce Personalization Live Demo',
     url: '/personalization',
     articleUrl: 'https://fingerprint.com/use-cases/personalization/',
     iconSvg: PersonalizationIcon,
@@ -262,6 +280,8 @@ export const USE_CASES = {
         </p>
       </>
     ),
+    descriptionMeta:
+      'See in real-time how Fingerprint can help you provide your visitors a tailored experience without having to create an account. Try out our live demo to see how user personalization works with Fingerprint.',
     instructions: [
       <>Search for new products.</>,
       <>Add some items to your cart.</>,
@@ -280,6 +300,7 @@ export const USE_CASES = {
   },
   webScraping: {
     title: 'Web Scraping Prevention',
+    titleMeta: 'Fingerprint Use Cases | Content Scraping Prevention Live Demo',
     url: '/web-scraping',
     articleUrl: 'https://fingerprint.com/use-cases/web-scraping-prevention/',
     iconSvg: ScrapingIcon,
@@ -311,6 +332,8 @@ export const USE_CASES = {
         </p>
       </>
     ),
+    descriptionMeta:
+      'See in real-time how Fingerprint can stop and prevent content scraping bots. Try out our live demo to see how Fingerprint’s bot detection identifies and blocks malicious bots, and prevents unauthorized data extraction.',
     doNotMentionResetButton: true,
     instructions: [
       <>Use a normal browser and search for flights.</>,
@@ -348,7 +371,10 @@ export const USE_CASES = {
   },
 } as const satisfies Record<string, UseCase>;
 
-export const PLAYGROUND_METADATA: Pick<UseCase, 'title' | 'url' | 'descriptionHomepage' | 'iconSvg'> = {
+export const PLAYGROUND_METADATA: Pick<
+  UseCase,
+  'title' | 'url' | 'descriptionHomepage' | 'iconSvg' | 'titleMeta' | 'descriptionMeta'
+> = {
   title: 'Smart Signals',
   url: '/playground',
   iconSvg: SmartSignalsIcon,
@@ -359,6 +385,8 @@ export const PLAYGROUND_METADATA: Pick<UseCase, 'title' | 'url' | 'descriptionHo
       VPN detection, browser tampering detection, IP blocklist matching, and more.
     </p>,
   ],
+  titleMeta: 'Fingerprint Use Cases | Smart Signals Playground',
+  descriptionMeta: 'Analyze your browser with Fingerprint Pro and see all the available signals.',
 };
 
 export const USE_CASES_ARRAY = Object.values(USE_CASES);

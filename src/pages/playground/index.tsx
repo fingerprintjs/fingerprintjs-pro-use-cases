@@ -29,6 +29,7 @@ import { usePlaygroundSignals } from '../../client/components/playground/usePlay
 import { getLocationName } from '../../shared/utils/getLocationName';
 import { PLAYGROUND_TAG } from '../../client/components/playground/playgroundTags';
 import { CustomPageProps } from '../_app';
+import { PLAYGROUND_METADATA } from '../../client/components/common/content';
 
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('../../client/components/playground/Map'), { ssr: false });
@@ -404,6 +405,7 @@ export default function PlaygroundPage({ embed }: CustomPageProps) {
   return (
     <UseCaseWrapper
       useCase={{
+        ...PLAYGROUND_METADATA,
         title: 'Fingerprint Pro Playground',
         description: <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>,
         doNotMentionResetButton: true,
