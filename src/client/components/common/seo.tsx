@@ -8,8 +8,8 @@ type HeadSEOProps = {
   image?: string;
 };
 
-export const HeadSEO: FunctionComponent<HeadSEOProps> = ({ title, description, image }) => {
-  const metaImage = image ?? `${PRODUCTION_URL}/fingerprintDefaultMetaImage.png`;
+export const SEO: FunctionComponent<HeadSEOProps> = ({ title, description, image }) => {
+  const metaImage = image ?? `/fingerprintDefaultMetaImage.png`;
   return (
     <Head>
       <title>{title}</title>
