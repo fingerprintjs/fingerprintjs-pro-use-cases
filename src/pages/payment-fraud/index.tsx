@@ -3,7 +3,7 @@ import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/Us
 import { useVisitorData } from '../../client/use-visitor-data';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
-import Button from '../../client/components/common/Button';
+import Button from '../../client/components/common/Button/Button';
 
 import styles from './paymentFraud.module.scss';
 import formStyles from '../../styles/forms.module.scss';

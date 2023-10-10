@@ -13,7 +13,7 @@ import Restart from '../../../img/restart.svg';
 
 import styles from './Header.module.scss';
 import Link from 'next/link';
-import Button from '../Button';
+import Button from '../Button/Button';
 import { useReset } from '../../../hooks/useReset/useReset';
 import { Tooltip } from '@mui/material';
 
@@ -118,6 +118,16 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                     </button>
                   </Tooltip>
                 )}
+                <Button
+                  href={'https://fingerprint.com/contact-sales'}
+                  size="medium"
+                  variant={'ghost'}
+                  openNewTab
+                  className={styles.button}
+                  buttonId="click_top_nav_contact_sales"
+                >
+                  Contact sales
+                </Button>
                 <Button
                   href={'https://dashboard.fingerprint.com/login'}
                   size="medium"

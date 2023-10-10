@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../Button';
+import Button from '../Button/Button';
 import classNames from 'classnames';
 import styles from './MobileNavbar.module.scss';
 import { PLATFORM_NAVIGATION, URL, USE_CASES_NAVIGATION } from '../content';
@@ -39,11 +39,31 @@ export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbar
             outlined
             size="medium"
             openNewTab
+            buttonId="log-in-top-nav"
           >
             Log in
           </Button>
-          <Button variant="primary" size="medium" href={URL.signupUrl} className={styles.signupButton} openNewTab>
+          <Button
+            variant="primary"
+            size="medium"
+            href={URL.signupUrl}
+            className={styles.signupButton}
+            openNewTab
+            buttonId="sign-up-top-nav"
+          >
             Sign up
+          </Button>
+        </div>
+        <div className={classNames(styles.links, styles.top)}>
+          <Button
+            href={'https://fingerprint.com/contact-sales'}
+            size="medium"
+            variant={'ghost'}
+            openNewTab
+            className={styles.button}
+            buttonId="click_top_nav_contact_sales"
+          >
+            Contact sales
           </Button>
         </div>
         <div className={classNames(styles.links, styles.main)}>

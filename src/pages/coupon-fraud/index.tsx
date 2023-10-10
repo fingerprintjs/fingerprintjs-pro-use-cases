@@ -15,7 +15,7 @@ import AllStar from './shoeAllStar.svg';
 import Plus from './buttonPlus.svg';
 import Minus from './buttonMinus.svg';
 import Alert from '../../client/components/common/Alert/Alert';
-import Button from '../../client/components/common/Button';
+import Button from '../../client/components/common/Button/Button';
 
 const AIRMAX_PRICE = 356.02;
 const ALLSTAR_PRICE = 102.5;
