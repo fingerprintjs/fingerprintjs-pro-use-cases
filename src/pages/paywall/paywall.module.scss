@@ -5,7 +5,6 @@
   margin: 0 auto;
 
   @include media('<=phoneLandscape') {
-    padding: 0 rem(20px) rem(80px) rem(20px);
     row-gap: rem(24px);
   }
 
@@ -20,12 +19,50 @@
   border-radius: 6px;
   border: 1px solid v('gray-box-stroke');
   cursor: pointer;
+  overflow: hidden;
+}
+
+.heroArticleCard {
+  margin-bottom: rem(24px);
+
+  @include media('>=phoneLandscape') {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: rem(96px);
+    column-gap: rem(32px);
+    border: none;
+    align-items: stretch;
+
+    .byline {
+      margin-bottom: rem(8px);
+    }
+
+    .articleCardImage {
+      border-radius: 4px;
+      border: 1px solid v('gray-box-stroke');
+      margin-bottom: 0;
+    }
+
+    .articleCardTitle {
+      font-size: 48px;
+      line-height: 130%;
+    }
+
+    .articleCardContent {
+      padding: 0;
+    }
+
+    .articleCardTags {
+      margin-top: rem(16px);
+    }
+  }
 }
 
 .articleCardImage {
   width: 100%;
   height: auto;
   margin-bottom: rem(8px);
+  background-color: #fff8f6;
 }
 
 .articleCardContent {

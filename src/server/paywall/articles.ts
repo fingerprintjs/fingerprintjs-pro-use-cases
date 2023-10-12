@@ -59,6 +59,15 @@ You’re doing your best to serve and relate to your customers on a human, frien
     author: { name: 'Sarah Thompson', avatar: GenericAvatarImage },
     tags: ['Fingerprinting', 'Fraud'],
   },
+  {
+    id: '5',
+    date: '1 month ago',
+    title: 'The Basics of Loan Fraud and How To Prevent It',
+    content: `The balance between consumer convenience and security is a delicate process, especially in a competitive, high-value market. For example, when banks and credit card companies provide online loan applications, they make it convenient for potential customers to get a loan. Still, they also make it convenient for identity thieves and hackers. `,
+    image: ArticleHeroSvg,
+    author: { name: 'Sarah Thompson', avatar: GenericAvatarImage },
+    tags: ['Fingerprinting', 'Fraud'],
+  },
 ];
 
 const SHORT_ARTICLE_CONTENT_LENGTH = 100;

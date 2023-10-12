@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { FunctionComponent } from 'react';
 import styles from './paywall.module.scss';
 import { useRouter } from 'next/router';
+import classNames from 'classnames';
 
 export async function getServerSideProps() {
   return {
@@ -18,12 +19,16 @@ export async function getServerSideProps() {
 type ArticleCardProps = {
   article: ArticleData;
   embed?: boolean;
+  isHeroArticle?: boolean;
 };
-const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article, embed }) => {
+const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article, embed, isHeroArticle }) => {
   const link = `/paywall/article/${article.id}${embed ? '/embed' : ''}`;
   const router = useRouter();
   return (
-    <div className={styles.articleCard} onClick={() => router.push(link)}>
+    <div
+      className={classNames(styles.articleCard, isHeroArticle && styles.heroArticleCard)}
+      onClick={() => router.push(link)}
+    >
       <Image src={article.image} alt="" className={styles.articleCardImage} sizes="100vw" />
       <div className={styles.articleCardContent}>
         <div className={styles.byline}>
@@ -53,11 +58,14 @@ type PaywallProps = CustomPageProps & {
 };
 
 export default function Paywall({ articles, embed }: PaywallProps) {
+  const heroArticle = articles[0];
+  const gridArticles = articles.slice(1);
   return (
     <UseCaseWrapper useCase={USE_CASES.paywall} embed={embed} contentSx={{ maxWidth: 'none' }}>
-      {articles && (
+      {heroArticle && <ArticleCard article={heroArticle} embed={embed} isHeroArticle />}
+      {gridArticles && (
         <div className={styles.articles}>
-          {articles.map((article) => (
+          {gridArticles.map((article) => (
             <ArticleCard key={article.id} article={article} embed={embed} />
           ))}
         </div>
