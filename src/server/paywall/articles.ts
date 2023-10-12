@@ -60,3 +60,13 @@ You’re doing your best to serve and relate to your customers on a human, frien
     tags: ['Fingerprinting', 'Fraud'],
   },
 ];
+
+const SHORT_ARTICLE_CONTENT_LENGTH = 100;
+
+export const ARTICLES_SHORTENED = ARTICLES.map((article) => ({
+  ...article,
+  content:
+    article.content.length > SHORT_ARTICLE_CONTENT_LENGTH
+      ? article.content.slice(0, SHORT_ARTICLE_CONTENT_LENGTH).concat('...')
+      : article.content,
+}));

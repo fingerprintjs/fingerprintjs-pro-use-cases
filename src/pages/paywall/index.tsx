@@ -1,6 +1,5 @@
-import { SITE_URL } from '../../shared/const';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import { ArticleData } from '../../server/paywall/articles';
+import { ARTICLES_SHORTENED, ArticleData } from '../../server/paywall/articles';
 import { CustomPageProps } from '../_app';
 import { USE_CASES } from '../../client/components/common/content';
 import Image from 'next/image';
@@ -9,11 +8,9 @@ import styles from './paywall.module.scss';
 import { useRouter } from 'next/router';
 
 export async function getServerSideProps() {
-  const articlesResponse = await fetch(`${SITE_URL}/api/paywall/get-articles`).then((res) => res.json());
-
   return {
     props: {
-      articles: articlesResponse.data,
+      articles: ARTICLES_SHORTENED,
     },
   };
 }
