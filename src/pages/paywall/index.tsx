@@ -25,19 +25,24 @@ const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article, embed }) =>
   return (
     <div className={styles.articleCard} onClick={() => router.push(link)}>
       <Image src={article.image} alt="" className={styles.articleCardImage} sizes="100vw" />
-      <div className={styles.byline}>
-        <Image src={article.author.avatar} className={styles.authorImage} alt={`Picture of ${article.author.name}`} />
-        <div>{article.author.name}</div>
-        <div>{article.date}</div>
-      </div>
-      <a href={link} key={article.id}>
-        {article.title}
-      </a>
-      <p>{article.content}</p>
-      <div>
-        {article.tags.map((tag) => (
-          <div key={tag}>{tag}</div>
-        ))}
+      <div className={styles.articleCardContent}>
+        <div className={styles.byline}>
+          <Image src={article.author.avatar} className={styles.authorImage} alt={`Picture of ${article.author.name}`} />
+          <div>{article.author.name}</div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="3" height="4" viewBox="0 0 3 4" fill="none">
+            <circle cx="1.5" cy="1.66016" r="1.5" fill="#434344" />
+          </svg>
+          <div>{article.date}</div>
+        </div>
+        <a href={link} key={article.id} className={styles.articleCardTitle}>
+          {article.title}
+        </a>
+        <p className={styles.articleCardDescription}>{article.content}</p>
+        <div className={styles.articleCardTags}>
+          {article.tags.map((tag) => (
+            <div key={tag}>{tag}</div>
+          ))}
+        </div>
       </div>
     </div>
   );

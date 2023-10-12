@@ -1,6 +1,6 @@
 .articles {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(266px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
   gap: rem(24px);
   margin: 0 auto;
 
@@ -25,15 +25,68 @@
 .articleCardImage {
   width: 100%;
   height: auto;
+  margin-bottom: rem(8px);
+}
+
+.articleCardContent {
+  padding: rem(16px);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .byline {
   display: flex;
+  gap: rem(6px);
+  align-items: center;
+  margin-bottom: rem(16px);
+  flex-wrap: wrap;
+
+  color: v('dark-gray');
+  font-size: 14px;
+  font-style: normal;
+  line-height: 160%;
+  letter-spacing: 0.14px;
+}
+
+.articleCardTitle {
+  color: v('dark-gray');
+  font-size: rem(20px);
+  font-weight: 600;
+  line-height: 140%;
+}
+
+.articleCardDescription {
+  color: v('dark-gray');
+  font-size: 14px;
+  line-height: 160%;
+  letter-spacing: 0.14px;
+  flex-grow: 1;
 }
 
 .authorImage {
-  height: rem(120px);
-  width: rem(120px);
-  border-radius: rem(120px);
+  height: rem(20px);
+  width: rem(20px);
+  border-radius: 50%;
   object-fit: contain;
+}
+
+.articleCardTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(8px);
+  margin-top: rem(32px);
+
+  div {
+    display: flex;
+    padding: rem(4px) rem(10px) rem(5px) rem(10px);
+    justify-content: center;
+    align-items: center;
+    border-radius: rem(16px);
+    background: v('gray-box-stroke');
+    color: v('dark-black');
+    text-align: center;
+    font-size: 14px;
+    line-height: 150%;
+  }
 }
