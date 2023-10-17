@@ -1,12 +1,10 @@
 import { useRouter } from 'next/router';
 import { Skeleton, SkeletonTypeMap } from '@mui/material';
-import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import { useGetArticle } from '../../../../client/api/personalization/use-get-article';
 import { UseCaseWrapper } from '../../../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { CustomPageProps } from '../../../_app';
-import Link from 'next/link';
-import { ArrowBack } from '@mui/icons-material';
+import { USE_CASES } from '../../../../client/components/common/content';
 
 function ArticleSkeleton({ animation = false }: { animation?: SkeletonTypeMap['props']['animation'] }) {
   const skeletons = Array.from({ length: 4 }).map((_, index) => <Skeleton key={index} animation={animation} />);
@@ -25,27 +23,9 @@ export default function Article({ embed }: CustomPageProps) {
   const returnUrl = `/paywall${embed ? '/embed' : ''}`;
 
   return (
-    <UseCaseWrapper
-      useCase={{ title: data?.article.title }}
-      hideGithubLink
-      contentSx={{ minHeight: '60vh' }}
-      embed={embed}
-    >
-      {/* This back button is temporary, will be addressed in the use case redesign */}
-      {returnUrl && (
-        <Link href={returnUrl} style={{ display: 'flex', gap: '4px' }}>
-          <ArrowBack />
-          Go back to articles
-        </Link>
-      )}
-      <Typography
-        className="ArticleContent"
-        sx={{
-          marginTop: (theme) => theme.spacing(6),
-        }}
-      >
-        {data?.article.content ?? <ArticleSkeleton animation={articleQuery.isLoading ? 'wave' : false} />}
-      </Typography>
+    <UseCaseWrapper useCase={USE_CASES.paywall} embed={embed} contentSx={{ maxWidth: 'none' }}>
+      {data?.article.content ?? <ArticleSkeleton animation={articleQuery.isLoading ? 'wave' : false} />}
+
       {queryData?.message && queryData?.severity ? (
         <Alert severity={queryData.severity} className="UsecaseWrapper_alert">
           {queryData.message}
