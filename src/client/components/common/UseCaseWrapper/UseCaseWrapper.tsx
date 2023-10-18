@@ -1,7 +1,7 @@
 import { ElementRef, FunctionComponent, useRef, useState } from 'react';
 import Container from '../Container';
 import styles from './UseCaseWrapper.module.scss';
-import Button from '../Button';
+import Button from '../Button/Button';
 import Lightbulb from './lightbulb.svg';
 import Image from 'next/image';
 import { Paper, Tooltip } from '@mui/material';

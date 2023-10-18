@@ -13,7 +13,7 @@ import Restart from '../../../img/restart.svg';
 
 import styles from './Header.module.scss';
 import Link from 'next/link';
-import Button from '../Button';
+import Button from '../Button/Button';
 import { useReset } from '../../../hooks/useReset/useReset';
 import { Tooltip } from '@mui/material';
 
@@ -112,6 +112,7 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                       className={classNames(styles.desktopOnly, styles.resetButton, isResetLoading && styles.loading)}
                       onClick={() => mutate()}
                       disabled={isResetLoading}
+                      id="click_top_nav_restart"
                     >
                       Restart
                       <Image src={Restart} alt="Restart button" />
@@ -119,26 +120,24 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                   </Tooltip>
                 )}
                 <Button
-                  href={'https://dashboard.fingerprint.com/login'}
+                  href={URL.contactSales}
                   size="medium"
-                  variant={darkMode ? 'dark' : 'primary'}
                   outlined
                   openNewTab
                   className={styles.button}
-                  buttonId="log-in-top-nav"
+                  buttonId="click_top_nav_contact_sales"
                 >
-                  Login
+                  Contact sales
                 </Button>
-
                 <Button
                   variant="primary"
                   size="medium"
                   className={styles.signupButton}
                   href={URL.signupUrl}
                   openNewTab
-                  buttonId="sign-up-top-nav"
+                  buttonId="click_top_nav_get_started"
                 >
-                  Sign up
+                  Get started
                 </Button>
                 <button
                   aria-label="Mobile Menu"
