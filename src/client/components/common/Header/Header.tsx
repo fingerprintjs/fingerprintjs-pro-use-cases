@@ -112,6 +112,7 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                       className={classNames(styles.desktopOnly, styles.resetButton, isResetLoading && styles.loading)}
                       onClick={() => mutate()}
                       disabled={isResetLoading}
+                      id="click_top_nav_restart"
                     >
                       Restart
                       <Image src={Restart} alt="Restart button" />
@@ -119,9 +120,9 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                   </Tooltip>
                 )}
                 <Button
-                  href={'https://fingerprint.com/contact-sales'}
+                  href={URL.contactSales}
                   size="medium"
-                  variant={'ghost'}
+                  outlined
                   openNewTab
                   className={styles.button}
                   buttonId="click_top_nav_contact_sales"
@@ -129,26 +130,14 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                   Contact sales
                 </Button>
                 <Button
-                  href={'https://dashboard.fingerprint.com/login'}
-                  size="medium"
-                  variant={darkMode ? 'dark' : 'primary'}
-                  outlined
-                  openNewTab
-                  className={styles.button}
-                  buttonId="log-in-top-nav"
-                >
-                  Login
-                </Button>
-
-                <Button
                   variant="primary"
                   size="medium"
                   className={styles.signupButton}
                   href={URL.signupUrl}
                   openNewTab
-                  buttonId="sign-up-top-nav"
+                  buttonId="click_top_nav_get_started"
                 >
-                  Sign up
+                  Get started
                 </Button>
                 <button
                   aria-label="Mobile Menu"

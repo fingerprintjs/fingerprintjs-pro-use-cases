@@ -419,6 +419,7 @@ export const URL = {
   statusUrl: 'https://status.fingerprint.com',
   supportMail: 'support@fingerprint.com',
   salesMail: 'sales@fingerprint.com',
+  contactSales: 'https://fingerprint.com/contact-sales',
   worKMail: 'work@fingerprint.com',
   pressMail: 'press@fingerprint.com',
   discordServerURL: 'https://discord.gg/ad6R2ttHVX',

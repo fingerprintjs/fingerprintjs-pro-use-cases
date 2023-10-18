@@ -27,6 +27,7 @@ export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbar
             disabled={isResetLoading}
             size={'medium'}
             title="Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action."
+            buttonId="click_top_nav_restart"
           >
             Restart
             <Image src={Restart} alt="Restart button" />
@@ -34,14 +35,14 @@ export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbar
         </div>
         <div className={classNames(styles.links, styles.top)}>
           <Button
-            href={URL.dashboardLoginUrl}
+            href={URL.contactSales}
             variant={darkMode ? 'dark' : 'primary'}
             outlined
             size="medium"
             openNewTab
-            buttonId="log-in-top-nav"
+            buttonId="click_top_nav_contact_sales"
           >
-            Log in
+            Contact sales
           </Button>
           <Button
             variant="primary"
@@ -49,23 +50,12 @@ export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbar
             href={URL.signupUrl}
             className={styles.signupButton}
             openNewTab
-            buttonId="sign-up-top-nav"
+            buttonId="click_top_nav_get_started"
           >
-            Sign up
+            Get started
           </Button>
         </div>
-        <div className={classNames(styles.links, styles.top)}>
-          <Button
-            href={'https://fingerprint.com/contact-sales'}
-            size="medium"
-            variant={'ghost'}
-            openNewTab
-            className={styles.button}
-            buttonId="click_top_nav_contact_sales"
-          >
-            Contact sales
-          </Button>
-        </div>
+
         <div className={classNames(styles.links, styles.main)}>
           <div className={styles.container}>
             <DropdownMenu
