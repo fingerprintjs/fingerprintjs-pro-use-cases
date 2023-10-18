@@ -1,3 +1,5 @@
+// Article listing
+
 .articles {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
@@ -171,4 +173,28 @@
       line-height: 130%;
     }
   }
+}
+
+// Article
+
+.backArrow {
+  transform: scaleX(-1);
+  vertical-align: baseline;
+  margin-right: rem(4px);
+}
+
+.buckButton {
+  margin-bottom: rem(24px);
+}
+
+.articleImage {
+  margin-top: rem(40px);
+  margin-bottom: rem(40px);
+  width: 100%;
+  height: 400px;
+  background-color: #fff8f6;
+}
+
+.articleTitle {
+  margin-bottom: rem(16px);
 }
