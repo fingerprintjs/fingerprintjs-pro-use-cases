@@ -69,9 +69,11 @@ export default function Article({ embed }: CustomPageProps) {
             <div>{calculateReadingTime(article.content)}</div>
           </div>
           <h2 className={styles.articleTitle}>{article.title}</h2>
-          {article.content.map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
-          ))}
+          <div className={styles.articleContent}>
+            {article.content.map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
+          </div>
         </div>
       )}
     </UseCaseWrapper>

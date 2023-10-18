@@ -196,5 +196,31 @@
 }
 
 .articleTitle {
+  color: v('dark-black');
+  font-family: Inter;
+  font-size: 48px;
+  font-weight: 600;
+  line-height: 130%;
   margin-bottom: rem(16px);
+}
+
+.articleContent {
+  p {
+    margin-top: 32px;
+    margin-bottom: rem(32px);
+    line-height: 160%;
+    letter-spacing: 0.16px;
+    color: v('dark-gray');
+  }
+
+  p:first-of-type {
+    margin-top: rem(16px);
+    font-size: rem(20px);
+    font-weight: 500;
+    line-height: 140%;
+  }
+
+  p:last-of-type {
+    margin-bottom: rem(16px);
+  }
 }
