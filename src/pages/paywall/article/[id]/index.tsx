@@ -15,9 +15,12 @@ function ArticleSkeleton({ animation = false }: { animation?: SkeletonTypeMap['p
   return <>{skeletons}</>;
 }
 
-function calculateReadingTime(text, wordsPerMinute = 200) {
-  const words = text.split(/\s+/).filter((word) => word.length > 0);
-  const readingTimeMins = words.length / wordsPerMinute;
+function calculateReadingTime(text: string[], wordsPerMinute = 200) {
+  const words = text
+    .join('')
+    .split(/\s+/)
+    .filter((word) => word.length > 0);
+  const readingTimeMins = Math.round(words.length / wordsPerMinute);
   return `${Math.max(readingTimeMins, 1)} min read`;
 }
 
@@ -29,11 +32,8 @@ export const BylineDot = () => (
 
 export default function Article({ embed }: CustomPageProps) {
   const router = useRouter();
-
-  const { data, isLoading } = useGetArticle(router.query.id);
-
+  const { data } = useGetArticle(router.query.id);
   const { article, remainingViews } = data?.data ?? {};
-
   const returnUrl = `/paywall${embed ? '/embed' : ''}`;
 
   return (
@@ -69,10 +69,11 @@ export default function Article({ embed }: CustomPageProps) {
             <div>{calculateReadingTime(article.content)}</div>
           </div>
           <h2 className={styles.articleTitle}>{article.title}</h2>
-          {article.content}
+          {article.content.map((paragraph, index) => (
+            <p key={index}>{paragraph}</p>
+          ))}
         </div>
       )}
-      {article?.content}
     </UseCaseWrapper>
   );
 }
