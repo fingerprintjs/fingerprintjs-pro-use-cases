@@ -32,13 +32,11 @@
       justify-content: space-between;
       flex: none;
       padding: 0 rem(20px) rem(16px) rem(20px);
+      gap: 1rem;
+      flex-wrap: wrap;
 
       > * {
         flex: 1;
-
-        + * {
-          margin-left: 1rem;
-        }
       }
 
       @include media('>tablet') {

@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../Button';
+import Button from '../Button/Button';
 import classNames from 'classnames';
 import styles from './MobileNavbar.module.scss';
 import { PLATFORM_NAVIGATION, URL, USE_CASES_NAVIGATION } from '../content';
@@ -27,6 +27,7 @@ export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbar
             disabled={isResetLoading}
             size={'medium'}
             title="Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action."
+            buttonId="click_top_nav_restart"
           >
             Restart
             <Image src={Restart} alt="Restart button" />
@@ -34,18 +35,27 @@ export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbar
         </div>
         <div className={classNames(styles.links, styles.top)}>
           <Button
-            href={URL.dashboardLoginUrl}
+            href={URL.contactSales}
             variant={darkMode ? 'dark' : 'primary'}
             outlined
             size="medium"
             openNewTab
+            buttonId="click_top_nav_contact_sales"
           >
-            Log in
+            Contact sales
           </Button>
-          <Button variant="primary" size="medium" href={URL.signupUrl} className={styles.signupButton} openNewTab>
-            Sign up
+          <Button
+            variant="primary"
+            size="medium"
+            href={URL.signupUrl}
+            className={styles.signupButton}
+            openNewTab
+            buttonId="click_top_nav_get_started"
+          >
+            Get started
           </Button>
         </div>
+
         <div className={classNames(styles.links, styles.main)}>
           <div className={styles.container}>
             <DropdownMenu

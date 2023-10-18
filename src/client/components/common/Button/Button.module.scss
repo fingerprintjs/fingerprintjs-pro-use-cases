@@ -81,6 +81,12 @@
     }
   }
 
+  &.ghost {
+    color: v('orange-gradient');
+    background-color: transparent;
+    border: none;
+  }
+
   &.large {
     padding: rem(15px) rem(23px);
   }
