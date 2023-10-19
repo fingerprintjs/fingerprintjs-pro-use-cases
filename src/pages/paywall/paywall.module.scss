@@ -177,6 +177,10 @@
 
 // Article
 
+.articleContainer {
+  padding: rem(64px) rem(56px);
+}
+
 .backArrow {
   transform: scaleX(-1);
   vertical-align: baseline;
@@ -223,4 +227,18 @@
   p:last-of-type {
     margin-bottom: rem(16px);
   }
+}
+
+.readMoreContainer {
+  padding: rem(64px) rem(56px) rem(96px) rem(56px);
+  border-top: 1px solid v('gray-box-stroke');
+}
+
+.readMore {
+  color: v('dark-black');
+  font-family: Inter;
+  font-size: rem(28px);
+  font-weight: 600;
+  line-height: 130%;
+  margin-bottom: rem(32px);
 }
