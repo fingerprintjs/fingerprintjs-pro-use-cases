@@ -8,7 +8,7 @@ test.describe('Paywall', () => {
     await page.goto('/paywall');
   });
 
-  test.only('Should show two articles, then show a paywall', async ({ page }) => {
+  test('Should show two articles, then show a paywall', async ({ page }) => {
     const articles = await page.getByTestId(TEST_IDS.paywall.articleCard);
 
     await articles.first().click();
