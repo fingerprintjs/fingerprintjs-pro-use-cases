@@ -5,4 +5,8 @@ export const TEST_IDS = {
   loanRisk: {
     monthlyInstallmentValue: 'monthlyInstallmentValue',
   },
+  paywall: {
+    articleCard: 'articleCard',
+    articleContent: 'articleContent',
+  },
 } as const;

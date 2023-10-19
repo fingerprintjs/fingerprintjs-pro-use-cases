@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import { Skeleton, SkeletonTypeMap } from '@mui/material';
-import { useGetArticle } from '../../../../client/api/personalization/use-get-article';
 import { UseCaseWrapper } from '../../../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { CustomPageProps } from '../../../_app';
 import { USE_CASES } from '../../../../client/components/common/content';
@@ -11,6 +10,9 @@ import styles from '../../paywall.module.scss';
 import Alert from '../../../../client/components/common/Alert/Alert';
 import { ArticleGrid, Byline } from '../..';
 import { ARTICLES } from '../../../../server/paywall/articles';
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useQuery } from 'react-query';
+import { ArticleResponse } from '../../../api/paywall/article/[id]';
 
 function ArticleSkeleton({ animation = false }: { animation?: SkeletonTypeMap['props']['animation'] }) {
   const skeletons = Array.from({ length: 4 }).map((_, index) => <Skeleton key={index} animation={animation} />);
@@ -19,10 +21,30 @@ function ArticleSkeleton({ animation = false }: { animation?: SkeletonTypeMap['p
 
 export default function Article({ embed }: CustomPageProps) {
   const router = useRouter();
-  const { data } = useGetArticle(router.query.id);
-  const { article, remainingViews } = data?.data ?? {};
+  const articleId = router.query.id;
+
+  const { data: fingerprintData } = useVisitorData({
+    ignoreCache: true,
+  });
+
+  const { data: articleData } = useQuery<ArticleResponse>(
+    ['GET_ARTICLE_QUERY', articleId],
+    () =>
+      fetch(`/api/paywall/article/${articleId}`, {
+        method: 'POST',
+        body: JSON.stringify({
+          requestId: fingerprintData?.requestId,
+          visitorId: fingerprintData?.visitorId,
+        }),
+      }).then((res) => res.json()),
+    {
+      enabled: Boolean(fingerprintData),
+    },
+  );
+
+  const { article, remainingViews } = articleData?.data ?? {};
   const returnUrl = `/paywall${embed ? '/embed' : ''}`;
-  const relatedArticles = ARTICLES.filter((article) => article.id !== router.query.id).slice(0, 4);
+  const relatedArticles = ARTICLES.filter((article) => article.id !== articleId).slice(0, 4);
 
   return (
     <UseCaseWrapper useCase={USE_CASES.paywall} embed={embed} contentSx={{ maxWidth: 'none', padding: 0 }}>
@@ -33,9 +55,11 @@ export default function Article({ embed }: CustomPageProps) {
             Back to articles
           </Link>
         </div>
-        {!data && <ArticleSkeleton animation="wave" />}
-        {data && data.message && data.severity !== 'success' && <Alert severity={data.severity}>{data.message}</Alert>}
-        {data && data.severity === 'success' && (
+        {!articleData && <ArticleSkeleton animation="wave" />}
+        {articleData && articleData.message && articleData.severity !== 'success' && (
+          <Alert severity={articleData.severity}>{articleData.message}</Alert>
+        )}
+        {articleData && articleData.severity === 'success' && (
           <Alert severity="warning">
             {remainingViews > 0
               ? `You have ${remainingViews} remaining free article views.`

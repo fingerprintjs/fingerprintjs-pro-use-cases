@@ -7,6 +7,7 @@ import { FunctionComponent } from 'react';
 import styles from './paywall.module.scss';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
+import { TEST_IDS } from '../../client/e2eTestIDs';
 
 /**
  * Byline helper component
@@ -57,6 +58,7 @@ const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article, embed, isHe
     <div
       className={classNames(styles.articleCard, isHeroArticle && styles.heroArticleCard)}
       onClick={() => router.push(link)}
+      data-test={TEST_IDS.paywall.articleCard}
     >
       <Image src={article.image} alt="" className={styles.articleCardImage} sizes="100vw" />
       <div className={styles.articleCardContent}>
