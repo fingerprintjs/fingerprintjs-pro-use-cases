@@ -1,5 +1,5 @@
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import { ARTICLES_SHORTENED, ArticleData } from '../../server/paywall/articles';
+import { ARTICLES, ArticleData } from '../../server/paywall/articles';
 import { CustomPageProps } from '../_app';
 import { USE_CASES } from '../../client/components/common/content';
 import Image from 'next/image';
@@ -64,7 +64,7 @@ const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article, embed, isHe
         <a href={link} key={article.id} className={styles.articleCardTitle}>
           {article.title}
         </a>
-        <p className={styles.articleCardDescription}>{article.content}</p>
+        <p className={styles.articleCardDescription}>{article.description}</p>
         <div className={styles.articleCardTags}>
           {article.tags.map((tag) => (
             <div key={tag}>{tag}</div>
@@ -75,7 +75,7 @@ const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article, embed, isHe
   );
 };
 
-const ArticleGrid: FunctionComponent<{ articles: ArticleData[]; embed?: boolean }> = ({ articles, embed }) => {
+export const ArticleGrid: FunctionComponent<{ articles: ArticleData[]; embed?: boolean }> = ({ articles, embed }) => {
   return (
     <div className={styles.articles}>
       {articles.map((article) => (
@@ -88,21 +88,9 @@ const ArticleGrid: FunctionComponent<{ articles: ArticleData[]; embed?: boolean 
 /**
  * Main Paywall use case page with article listing
  */
-export async function getServerSideProps() {
-  return {
-    props: {
-      articles: ARTICLES_SHORTENED,
-    },
-  };
-}
-
-type PaywallProps = CustomPageProps & {
-  articles: ArticleData[];
-};
-
-export default function Paywall({ articles, embed }: PaywallProps) {
-  const heroArticle = articles[0];
-  const gridArticles = articles.slice(1);
+export default function Paywall({ embed }: CustomPageProps) {
+  const heroArticle = ARTICLES[0];
+  const gridArticles = ARTICLES.slice(1);
   return (
     <UseCaseWrapper useCase={USE_CASES.paywall} embed={embed} contentSx={{ maxWidth: 'none' }}>
       {heroArticle && <ArticleCard article={heroArticle} embed={embed} isHeroArticle />}

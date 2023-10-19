@@ -13,6 +13,7 @@ export type ArticleData = {
     name: string;
     avatar: any;
   };
+  description: string;
   content: string[];
   image: any;
   tags: string[];
@@ -23,6 +24,8 @@ export const ARTICLES: ArticleData[] = [
     id: '1',
     date: '1 hour ago',
     title: 'How to defend your site from common cyber attacks',
+    description:
+      "Websites are an integral part of our lives, but that also makes them a prime target for cyberattacks — malicious attempts to exploit vulnerabilities in your website's security to steal sensitive information.",
     content: [
       "Websites are an integral part of our lives, but that also makes them a prime target for cyberattacks — malicious attempts to exploit vulnerabilities in your website's security to steal sensitive information, disrupt services, or cause other types of damage.",
       'Depending on the nature of your website and services, successful cyberattacks can have severe consequences such as financial loss, reputational damage, and legal liabilities.',
@@ -38,6 +41,8 @@ export const ARTICLES: ArticleData[] = [
     id: '2',
     date: '2 days ago',
     title: 'How to avoid online auction fraud',
+    description:
+      "Online auction fraud is a risk for buyers and sellers, and it's one of the easiest scams to set up. Most people know they can buy anything on sites like eBay and Webstore.",
     content: [
       "Online auction fraud is a risk for buyers and sellers, and it's one of the easiest scams to set up. Most people know they can buy anything on sites like eBay and Webstore, but they may not be aware of the signs of a scam auction. Scammers take advantage of this lack of knowledge, making online auction fraud a common avenue for criminals.",
       'Online auction fraud is so prevalent that governments have a list of common warning signs, but millions of people are still at risk. Site owners must also take precautions to protect buyers and sellers, but detecting fake auctions is a team effort that requires everyone involved to be vigilant.',
@@ -52,6 +57,8 @@ export const ARTICLES: ArticleData[] = [
     id: '3',
     date: '1 week ago',
     title: 'Friendly Fraud: What It Is & How to Protect Your Business',
+    description:
+      'Friendly fraud may not sound all that threatening, but it accounts for 70% of all credit card fraud and costs the eCommerce industry billions annually.',
     content: [
       'Friendly fraud may not sound all that threatening, but it accounts for 70% of all credit card fraud and costs the eCommerce industry billions annually.',
       'You’re doing your best to serve and relate to your customers on a human, friendly level. You’re constantly trying to make them happy, anticipate their needs, and improve their lives. You’re doing your best to provide the best customer experience, but not every customer is acting with the best intentions.',
@@ -66,6 +73,8 @@ export const ARTICLES: ArticleData[] = [
     id: '4',
     date: '1 month ago',
     title: 'The Basics of Loan Fraud and How To Prevent It',
+    description:
+      'The balance between consumer convenience and security is a delicate process, especially in a competitive, high-value market.',
     content: [
       'The balance between consumer convenience and security is a delicate process, especially in a competitive, high-value market. For example, when banks and credit card companies provide online loan applications, they make it convenient for potential customers to get a loan. Still, they also make it convenient for identity thieves and hackers.',
       'In 2021, the National Mortgage Application Fraud Risk Index increased by 15% between the 2021 first quarter and the first quarter of 2022. Credit card fraud also skyrocketed by the last quarter of 2021. Fraud affects everyone, from consumers to the banks that approve applications. The amount of money lost may vary, but it raises costs to consumers and leads to hefty monetary losses for financial institutions. The biggest channel for fraudsters is the mobile market as more financial institutions continue to provide services using apps.',
@@ -80,6 +89,8 @@ export const ARTICLES: ArticleData[] = [
     id: '5',
     date: '1 month ago',
     title: 'Why Social Engineering Attacks Are Successful with Technical Staff',
+    description:
+      'Many organizations focus on data protection from outside attacks but fail to realize that many threats happen from within.',
     content: [
       "Many organizations focus on data protection from outside attacks but fail to realize that many threats happen from within. Insider threats can be malicious or innocent mistakes; however, social engineering is a common factor among both types. You'd expect untrained employees unfamiliar with cyber-attacks to fall victim to social engineering.",
       "Still, the technical staff (e.g., engineers, security people) are also a target and occasionally fall victim to it. Social engineering is effective because companies rely entirely on their employees' ability to detect it. Even the most cyber-savvy individuals can have a mishap, usually from being busy, stressed, tired, or simply forgetting to take a minute to ask questions.",
@@ -91,8 +102,3 @@ export const ARTICLES: ArticleData[] = [
     tags: ['Fingerprinting', 'Fraud'],
   },
 ];
-
-export const ARTICLES_SHORTENED = ARTICLES.map((article) => ({
-  ...article,
-  content: article.content[0].split(' ').slice(0, 20).join(' ') + '...',
-}));

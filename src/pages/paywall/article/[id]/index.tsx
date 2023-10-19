@@ -9,7 +9,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from '../../paywall.module.scss';
 import Alert from '../../../../client/components/common/Alert/Alert';
-import { Byline } from '../..';
+import { ArticleGrid, Byline } from '../..';
+import { ARTICLES } from '../../../../server/paywall/articles';
 
 function ArticleSkeleton({ animation = false }: { animation?: SkeletonTypeMap['props']['animation'] }) {
   const skeletons = Array.from({ length: 4 }).map((_, index) => <Skeleton key={index} animation={animation} />);
@@ -21,6 +22,7 @@ export default function Article({ embed }: CustomPageProps) {
   const { data } = useGetArticle(router.query.id);
   const { article, remainingViews } = data?.data ?? {};
   const returnUrl = `/paywall${embed ? '/embed' : ''}`;
+  const relatedArticles = ARTICLES.filter((article) => article.id !== router.query.id).slice(0, 4);
 
   return (
     <UseCaseWrapper useCase={USE_CASES.paywall} embed={embed} contentSx={{ maxWidth: 'none', padding: 0 }}>
@@ -56,6 +58,7 @@ export default function Article({ embed }: CustomPageProps) {
       {article && (
         <div className={styles.readMoreContainer}>
           <h3 className={styles.readMore}>More articles to read</h3>
+          <ArticleGrid articles={relatedArticles} embed={embed} />
         </div>
       )}
     </UseCaseWrapper>
