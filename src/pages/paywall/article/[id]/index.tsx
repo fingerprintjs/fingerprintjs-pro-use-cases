@@ -24,24 +24,19 @@ export default function Article({ embed }: CustomPageProps) {
   const router = useRouter();
   const articleId = router.query.id;
 
-  const { data: fingerprintData } = useVisitorData({
+  const { getData: getVisitorData } = useVisitorData({
     ignoreCache: true,
   });
 
-  const { data: articleData } = useQuery<ArticleResponse>(
-    ['GET_ARTICLE_QUERY', articleId],
-    () =>
-      fetch(`/api/paywall/article/${articleId}`, {
+  const { data: articleData } = useQuery<ArticleResponse>(['GET_ARTICLE_QUERY', articleId], async () => {
+    const { requestId, visitorId } = await getVisitorData();
+    return await (
+      await fetch(`/api/paywall/article/${articleId}`, {
         method: 'POST',
-        body: JSON.stringify({
-          requestId: fingerprintData?.requestId,
-          visitorId: fingerprintData?.visitorId,
-        }),
-      }).then((res) => res.json()),
-    {
-      enabled: Boolean(fingerprintData),
-    },
-  );
+        body: JSON.stringify({ requestId, visitorId }),
+      })
+    ).json();
+  });
 
   const { article, remainingViews } = articleData?.data ?? {};
   const returnUrl = `/paywall${embed ? '/embed' : ''}`;
