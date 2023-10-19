@@ -213,7 +213,7 @@
 .articleTitle {
   color: v('dark-black');
   font-family: Inter;
-  font-size: 48px;
+  font-size: rem(48px);
   font-weight: 600;
   line-height: 130%;
   margin-bottom: rem(16px);
@@ -225,7 +225,7 @@
 
 .articleContent {
   p {
-    margin-top: 32px;
+    margin-top: rem(32px);
     margin-bottom: rem(32px);
     line-height: 160%;
     letter-spacing: 0.16px;

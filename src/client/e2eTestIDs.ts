@@ -8,5 +8,6 @@ export const TEST_IDS = {
   paywall: {
     articleCard: 'articleCard',
     articleContent: 'articleContent',
+    goBack: 'goBack',
   },
 } as const;
