@@ -5,6 +5,9 @@
 }
 
 .leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: rem(32px);
 }
 
 .rightColumn {
@@ -22,6 +25,9 @@
 .cart {
 }
 
+/**
+* Product Card
+*/
 .productCard {
   border-radius: 8px;
   padding: rem(16px);
@@ -77,4 +83,28 @@
 
 .addToFavorites {
   padding: 8px !important;
+}
+
+/**
+* Search
+*/
+
+.searchBox {
+  display: flex;
+  height: 64px;
+  padding: 16px;
+  align-items: center;
+  gap: 10px;
+
+  border-radius: 6px;
+  border: 1px solid v('gray-box-stroke');
+}
+
+.searchInput {
+  color: v('dark-gray');
+  font-size: rem(16px);
+  line-height: 160%;
+  letter-spacing: 0.16px;
+  border: none;
+  width: 100%;
 }

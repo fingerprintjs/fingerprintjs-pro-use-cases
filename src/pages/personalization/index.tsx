@@ -31,6 +31,29 @@ import styles from './personalization.module.scss';
 import Image from 'next/image';
 import Button from '../../client/components/common/Button/Button';
 import HeartIcon from './img/heart.svg';
+import SearchIcon from './img/search.svg';
+import { s } from 'vitest/dist/env-afee91f0';
+
+type SearchProps = {
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+};
+const Search: FunctionComponent<SearchProps> = ({ search, setSearch }) => {
+  return (
+    <div>
+      <div className={styles.searchBox}>
+        <Image src={SearchIcon} alt="Search" />
+        <input
+          type="text"
+          className={styles.searchInput}
+          placeholder="Search for your favorite coffee"
+          onChange={(e) => setSearch(e.target.value)}
+          value={search}
+        />
+      </div>
+    </div>
+  );
+};
 
 type Product = {
   price: number;
@@ -164,7 +187,9 @@ export default function Index({ embed }: CustomPageProps) {
 
         <div className={styles.twoColumnContainer}>
           <div className={styles.leftColumn}>
-            <div className={styles.search}></div>
+            <div className={styles.search}>
+              <Search search={search} setSearch={setSearch} />
+            </div>
             <div className={styles.products}>
               {isLoading ? (
                 <CircularProgress
