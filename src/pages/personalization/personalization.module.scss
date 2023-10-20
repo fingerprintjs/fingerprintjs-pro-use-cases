@@ -14,6 +14,9 @@
 }
 
 .search {
+  display: flex;
+  flex-direction: column;
+  gap: rem(8px);
 }
 
 .products {
@@ -107,4 +110,9 @@
   letter-spacing: 0.16px;
   border: none;
   width: 100%;
+}
+
+.searchTerm {
+  color: v('orange-gradient');
+  cursor: pointer;
 }

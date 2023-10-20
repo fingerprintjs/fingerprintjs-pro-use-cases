@@ -32,7 +32,6 @@ import Image from 'next/image';
 import Button from '../../client/components/common/Button/Button';
 import HeartIcon from './img/heart.svg';
 import SearchIcon from './img/search.svg';
-import { s } from 'vitest/dist/env-afee91f0';
 
 type SearchProps = {
   search: string;
@@ -50,6 +49,31 @@ const Search: FunctionComponent<SearchProps> = ({ search, setSearch }) => {
           onChange={(e) => setSearch(e.target.value)}
           value={search}
         />
+      </div>
+    </div>
+  );
+};
+
+const SEARCH_HISTORY_DISPLAY_LIMIT = 6;
+
+type SearchHistoryProps = {
+  searchHistory: string[];
+  setSearchHistory: (searchTerm: string) => void;
+};
+
+const SearchHistory: FunctionComponent<SearchHistoryProps> = ({ searchHistory, setSearchHistory }) => {
+  return (
+    <div>
+      <div className={styles.searchHistory}>
+        Last searches:{' '}
+        {searchHistory.slice(0, SEARCH_HISTORY_DISPLAY_LIMIT).map((searchTerm, index) => (
+          <>
+            <span key={index} onClick={() => setSearchHistory(searchTerm)} className={styles.searchTerm}>
+              {searchTerm}
+            </span>
+            ,{' '}
+          </>
+        ))}
       </div>
     </div>
   );
@@ -176,19 +200,14 @@ export default function Index({ embed }: CustomPageProps) {
         </DialogActions>
       </Dialog> */}
       <UseCaseWrapper useCase={USE_CASES.personalization} embed={embed} contentSx={{ maxWidth: 'none' }}>
-        {/* <PersonalizationTopSection
-          search={search}
-          onSearch={setSearch}
-          searchHistory={searchHistoryQuery.data}
-          onSearchHistoryClick={(query) => {
-            setSearch(query);
-          }}
-        /> */}
-
         <div className={styles.twoColumnContainer}>
           <div className={styles.leftColumn}>
             <div className={styles.search}>
               <Search search={search} setSearch={setSearch} />
+              <SearchHistory
+                searchHistory={searchHistoryQuery.data.data.map((searchTerm) => searchTerm.query)}
+                setSearchHistory={(searchTerm) => setSearch(searchTerm)}
+              />
             </div>
             <div className={styles.products}>
               {isLoading ? (
