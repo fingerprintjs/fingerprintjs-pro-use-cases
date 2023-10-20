@@ -14,9 +14,7 @@ import { usePersonalizationNotification } from '../../hooks/personalization/use-
 
 export function ProductItem({ product: { price, name, image, id } }) {
   const { addCartItemMutation } = useCart();
-
   const { showNotification } = usePersonalizationNotification();
-
   const [wasAdded, setWasAdded] = useState(false);
 
   useDebounce(
