@@ -25,9 +25,6 @@
   gap: rem(20px);
 }
 
-.cart {
-}
-
 /**
 * Product Card
 */
@@ -115,4 +112,30 @@
 .searchTerm {
   color: v('orange-gradient');
   cursor: pointer;
+}
+
+.cartContainer {
+  display: flex;
+  padding: rem(32px) (16px) (24px) (16px);
+  flex-direction: column;
+  border-radius: 6px;
+  border: 1px solid v('gray-box-stroke');
+}
+
+.cartIconContainer {
+  position: relative;
+  width: fit-content;
+}
+
+.cartCountBadge {
+  position: absolute;
+  top: -2px;
+  right: -5px;
+  border-radius: 50%;
+  color: white;
+  padding: 1px 4px;
+  font-size: rem(7px);
+  font-weight: 500;
+  line-height: 145%;
+  background-color: v('orange-gradient');
 }

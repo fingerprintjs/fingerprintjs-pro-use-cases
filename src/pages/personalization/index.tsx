@@ -32,6 +32,7 @@ import Image from 'next/image';
 import Button from '../../client/components/common/Button/Button';
 import HeartIcon from './img/heart.svg';
 import SearchIcon from './img/search.svg';
+import CartIcon from './img/cart.svg';
 
 type SearchProps = {
   search: string;
@@ -223,14 +224,19 @@ export default function Index({ embed }: CustomPageProps) {
                       <ProductCard key={product.id} product={product} />
                     ))
                   ) : (
-                    <Typography variant="h5">No coffees found :(</Typography>
+                    <div>No coffees found :(</div>
                   )}
                 </>
               )}
             </div>
           </div>
           <div className={styles.rightColumn}>
-            <div className={styles.cart}></div>
+            <div className={styles.cartContainer}>
+              <div className={styles.cartIconContainer}>
+                <Image src={CartIcon} alt="Cart" />
+                <div className={styles.cartCountBadge}>{cartQuery.data?.data?.length}</div>
+              </div>
+            </div>
           </div>
         </div>
       </UseCaseWrapper>
