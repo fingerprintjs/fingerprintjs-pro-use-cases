@@ -2,18 +2,19 @@ import { apiRequest } from '../api';
 import { useMutation, useQuery } from 'react-query';
 import { useVisitorData } from '../../use-visitor-data';
 import { useCallback } from 'react';
+import { GetResult } from '@fingerprintjs/fingerprintjs-pro';
 
 function getCart(fpData) {
   return apiRequest('/api/personalization/cart/get-items', fpData);
 }
 
-function addCartItem(productId, fpData) {
+function addCartItem(productId: number, fpData: GetResult) {
   return apiRequest('/api/personalization/cart/add-item', fpData, {
     productId,
   });
 }
 
-function removeCartItem(itemId, fpData) {
+function removeCartItem(itemId: number, fpData: GetResult) {
   return apiRequest('/api/personalization/cart/remove-item', fpData, { itemId });
 }
 
@@ -36,14 +37,14 @@ export function useCart() {
     [cartQuery],
   );
 
-  const addCartItemMutation = useMutation(
+  const addCartItemMutation = useMutation<any, any, { productId: number }>(
     ADD_CART_ITEM_MUTATION,
     ({ productId }) => addCartItem(productId, visitorData),
     {
       onSuccess: refetchCartOnSuccess,
     },
   );
-  const removeCartItemMutation = useMutation(
+  const removeCartItemMutation = useMutation<any, any, { itemId: number }>(
     REMOVE_CART_ITEM_MUTATION,
     ({ itemId }) => removeCartItem(itemId, visitorData),
     {

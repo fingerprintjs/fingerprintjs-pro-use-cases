@@ -84,7 +84,7 @@ type Product = {
   price: number;
   name: string;
   image: string;
-  id: string;
+  id: number;
 };
 
 const ProductCard: FunctionComponent<{ product: Product }> = ({ product }) => {
@@ -101,6 +101,7 @@ const ProductCard: FunctionComponent<{ product: Product }> = ({ product }) => {
     1000,
     [wasAdded],
   );
+
   return (
     <div className={styles.productCard}>
       <Image
@@ -119,7 +120,33 @@ const ProductCard: FunctionComponent<{ product: Product }> = ({ product }) => {
         <div className={styles.productCardBodyBottomRow}>
           <div className={styles.productCardPrice}>${product.price.toFixed(2)}</div>
           <div className={styles.productCardButtons}>
-            <Button size="small">Add to Cart</Button>
+            {/* <LoadingButton
+              className="ProductCard_AddToCart"
+              fullWidth
+              startIcon={wasAdded ? <Check /> : undefined}
+              loading={addCartItemMutation.isLoading}
+              onClick={async () => {
+                await addCartItemMutation.mutateAsync({ productId: id });
+
+                showNotification('Product added to cart!');
+
+                setWasAdded(true);
+              }}
+              variant="contained"
+              color={wasAdded ? 'success' : 'primary'}
+            >
+              {wasAdded ? 'Added' : 'Add to cart'}
+            </LoadingButton> */}
+            <Button
+              size="small"
+              onClick={async () => {
+                await addCartItemMutation.mutateAsync({ productId: product.id });
+                showNotification('Product added to cart!');
+                setWasAdded(true);
+              }}
+            >
+              Add to Cart
+            </Button>
             <Button size="small" outlined disabled className={styles.addToFavorites}>
               <Image src={HeartIcon} alt="Add to favorites" />
             </Button>
