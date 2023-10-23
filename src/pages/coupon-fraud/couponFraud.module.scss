@@ -1,15 +1,3 @@
-div.wrapper {
-  max-width: 660px;
-  padding: rem(32px) rem(20px) rem(24px) rem(20px);
-  display: flex;
-  flex-direction: column;
-  gap: rem(24px);
-
-  @include media('<=phoneLandscape') {
-    padding: rem(12px);
-  }
-}
-
 .innerWrapper {
   border: 1px solid v('gray-box-stroke');
   border-radius: rem(6px);
@@ -19,57 +7,6 @@ div.wrapper {
     display: flex;
     flex-direction: column;
     gap: rem(16px);
-  }
-}
-
-.summary {
-  margin-bottom: rem(32px);
-}
-
-.item {
-  display: flex;
-  justify-content: space-between;
-
-  @include media('<=360px') {
-    flex-direction: column;
-  }
-
-  :first-child {
-    color: v('dark-gray');
-    font-weight: 400;
-    line-height: 175%;
-    letter-spacing: 0.16px;
-  }
-
-  b:first-child {
-    font-weight: 600;
-  }
-
-  :last-child {
-    color: v('dark-black');
-    font-weight: 600;
-    align-self: flex-end;
-  }
-
-  &:last-child {
-    border-top: 1px solid v('gray-box-stroke');
-    padding-top: rem(32px);
-    margin-top: rem(8px);
-  }
-}
-
-.item.discount {
-  border-radius: rem(6px);
-  padding: rem(12px);
-  margin-top: rem(16px);
-  margin-bottom: rem(16px);
-  background-color: v('soft-orange-background');
-  @include dashedOrangeBorder(6);
-
-  span {
-    color: v('orange-gradient');
-    font-weight: 600;
-    line-height: 145%;
   }
 }
 
