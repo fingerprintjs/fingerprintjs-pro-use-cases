@@ -12,8 +12,8 @@ import formStyles from '../../styles/forms.module.scss';
 import classNames from 'classnames';
 import AirMax from './shoeAirMax.svg';
 import AllStar from './shoeAllStar.svg';
-import Plus from './buttonPlus.svg';
-import Minus from './buttonMinus.svg';
+import { ButtonPlusSvg } from '../../client/img/buttonPlusSvg';
+import { ButtonMinusSvg } from '../../client/img/buttonMinusSvg';
 import Alert from '../../client/components/common/Alert/Alert';
 import Button from '../../client/components/common/Button/Button';
 
@@ -48,9 +48,9 @@ const Shoe: FunctionComponent<ShoeProps> = ({ image, name, color, price, count, 
         <div className={styles.priceAndCount}>
           <div className={styles.price}>{format$(price)}</div>
           <div className={styles.count}>
-            <Image src={Minus} alt="Decrease item count" onClick={decreaseCount} />
+            <ButtonMinusSvg onClick={decreaseCount} />
             <span>{String(count).padStart(2, '0')}</span>
-            <Image src={Plus} alt="Increase item count" onClick={increaseCount} />
+            <ButtonPlusSvg onClick={increaseCount} />
           </div>
         </div>
       </div>

@@ -20,6 +20,8 @@ import HeartIcon from './img/heart.svg';
 import SearchIcon from './img/search.svg';
 import CartIcon from './img/cart.svg';
 import { UserCartItem } from '../../server/personalization/database';
+import { ButtonPlusSvg } from '../../client/img/buttonPlusSvg';
+import { ButtonMinusSvg } from '../../client/img/buttonMinusSvg';
 
 type SearchProps = {
   search: string;
@@ -80,10 +82,14 @@ const ItemCounter: FunctionComponent<{
   removeItem: () => void;
 }> = ({ count, addItem, removeItem }) => {
   return (
-    <div className={styles.itemCounter}>
-      <button onClick={removeItem}>-</button>
+    <div className={styles.productCardItemCounter}>
+      <div onClick={removeItem}>
+        <ButtonMinusSvg />
+      </div>
       <span>{count}</span>
-      <button onClick={addItem}>+</button>
+      <div onClick={addItem}>
+        <ButtonPlusSvg />
+      </div>
     </div>
   );
 };
@@ -135,23 +141,6 @@ const ProductCard: FunctionComponent<{ product: Product }> = ({ product }) => {
         <div className={styles.productCardBodyBottomRow}>
           <div className={styles.productCardPrice}>${product.price.toFixed(2)}</div>
           <div className={styles.productCardButtons}>
-            {/* <LoadingButton
-              className="ProductCard_AddToCart"
-              fullWidth
-              startIcon={wasAdded ? <Check /> : undefined}
-              loading={addCartItemMutation.isLoading}
-              onClick={async () => {
-                await addCartItemMutation.mutateAsync({ productId: id });
-
-                showNotification('Product added to cart!');
-
-                setWasAdded(true);
-              }}
-              variant="contained"
-              color={wasAdded ? 'success' : 'primary'}
-            >
-              {wasAdded ? 'Added' : 'Add to cart'}
-            </LoadingButton> */}
             {cartItem ? (
               <ItemCounter count={cartItem.count} addItem={addToCart} removeItem={removeFromCart} />
             ) : (

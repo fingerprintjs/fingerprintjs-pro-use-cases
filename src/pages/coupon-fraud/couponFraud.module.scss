@@ -83,6 +83,7 @@ div.wrapper {
 
   border-radius: 1.5px;
   border: 0.75px solid v('gray-box-stroke');
+  stroke: v('dark-gray');
 
   color: v('dark-gray');
   font-family: Inter;
@@ -92,7 +93,7 @@ div.wrapper {
   line-height: 115.5%;
   letter-spacing: 0.12px;
 
-  img {
+  svg {
     cursor: pointer;
   }
 }

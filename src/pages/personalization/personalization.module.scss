@@ -85,6 +85,28 @@
   padding: 8px !important;
 }
 
+.productCardItemCounter {
+  display: flex;
+  padding: 0px 6px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 4px;
+  border: 1px solid v('orange-gradient');
+
+  color: v('orange-gradient');
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 150%;
+
+  div {
+    cursor: pointer;
+    display: flex;
+    stroke: v('orange-gradient');
+    padding: 8px 10px;
+  }
+}
+
 /**
 * Search
 */
