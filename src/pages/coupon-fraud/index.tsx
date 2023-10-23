@@ -1,6 +1,6 @@
 import { useVisitorData } from '../../client/use-visitor-data';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import { FunctionComponent, useCallback, useEffect, useState } from 'react';
+import { FunctionComponent, PropsWithChildren, useCallback, useEffect, useState } from 'react';
 
 import Image from 'next/image';
 import { useRequestCouponClaim } from '../../client/api/coupon-fraud/use-coupon-claim';
@@ -28,9 +28,9 @@ const format$ = (price: number) => {
   }).format(price);
 };
 
-type ShoeProps = {
+type CartProduct = {
   name: string;
-  color: string;
+  subheadline: string;
   price: number;
   image: any;
   count: number;
@@ -38,13 +38,15 @@ type ShoeProps = {
   decreaseCount: () => void;
 };
 
-const Shoe: FunctionComponent<ShoeProps> = ({ image, name, color, price, count, increaseCount, decreaseCount }) => {
+const Product: FunctionComponent<{ product: CartProduct }> = ({
+  product: { name, subheadline, price, image, count, increaseCount, decreaseCount },
+}) => {
   return (
     <div className={styles.shoe}>
-      <Image src={image} alt="shoe" width={92} height={92} />
-      <div className={styles.shoeDescription}>
-        <div className={styles.shoeName}>{name}</div>
-        <div className={styles.shoeColor}>{color}</div>
+      <Image src={image} alt={name} width={92} height={92} />
+      <div className={styles.productDescription}>
+        <div className={styles.productName}>{name}</div>
+        <div className={styles.productSubheadline}>{subheadline}</div>
         <div className={styles.priceAndCount}>
           <div className={styles.price}>{format$(price)}</div>
           <div className={styles.count}>
@@ -54,6 +56,47 @@ const Shoe: FunctionComponent<ShoeProps> = ({ image, name, color, price, count, 
           </div>
         </div>
       </div>
+    </div>
+  );
+};
+
+const Cart: FunctionComponent<PropsWithChildren<{ items: CartProduct[]; discount: number }>> = ({
+  items,
+  discount,
+  children,
+}) => {
+  const subTotal = items.reduce((acc, item) => acc + item.price * item.count, 0);
+  const discountApplied = (subTotal * discount) / 100;
+  const taxesApplied = TAXES * items.length;
+  const total = subTotal + taxesApplied - discountApplied;
+
+  return (
+    <div className={classNames(styles.wrapper, formStyles.wrapper)}>
+      {items.map((item) => (
+        <Product key={item.name} product={item} />
+      ))}
+
+      <div className={styles.summary}>
+        <div className={styles.item}>
+          <span>Subtotal</span>
+          <span>{format$(subTotal)}</span>
+        </div>
+        <div className={styles.item}>
+          <span>Taxes</span>
+          <span>{format$(taxesApplied)}</span>
+        </div>
+        {discount > 0 && (
+          <div className={classNames(styles.item, styles.discount)}>
+            <span>Coupon Discount {discount}%</span>
+            <span>-{format$(discountApplied)}</span>
+          </div>
+        )}
+        <div className={styles.item}>
+          <b>Total</b>
+          <span>{format$(total)}</span>
+        </div>
+      </div>
+      {children}
     </div>
   );
 };
@@ -95,52 +138,30 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
     }
   }, [couponClaimMutation]);
 
-  const subTotal = AIRMAX_PRICE * airMaxCount + ALLSTAR_PRICE * allStarCount;
-  const discountApplied = (subTotal * discount) / 100;
-  const taxesApplied = TAXES * (airMaxCount + allStarCount);
-  const total = subTotal + taxesApplied - discountApplied;
+  const cartItems = [
+    {
+      name: 'Nike AirMax Max Size 8.5',
+      subheadline: 'Fingerprint Orange',
+      price: AIRMAX_PRICE,
+      image: AirMax,
+      count: airMaxCount,
+      increaseCount: () => setAirMaxCount(airMaxCount + 1),
+      decreaseCount: () => setAirMaxCount(Math.max(1, airMaxCount - 1)),
+    },
+    {
+      name: 'All Stars Limited Edition Size 6.5',
+      subheadline: 'Fingerprint Orange',
+      price: ALLSTAR_PRICE,
+      image: AllStar,
+      count: allStarCount,
+      increaseCount: () => setAllStarCount(allStarCount + 1),
+      decreaseCount: () => setAllStarCount(Math.max(1, allStarCount - 1)),
+    },
+  ];
 
   return (
     <UseCaseWrapper useCase={USE_CASES.couponFraud} embed={embed} contentSx={{ maxWidth: 'none' }}>
-      <div className={classNames(styles.wrapper, formStyles.wrapper)}>
-        <Shoe
-          color="Fingerprint Orange"
-          count={airMaxCount}
-          image={AirMax}
-          name="Nike AirMax Max Size 8.5"
-          price={AIRMAX_PRICE}
-          increaseCount={() => setAirMaxCount(airMaxCount + 1)}
-          decreaseCount={() => setAirMaxCount(Math.max(1, airMaxCount - 1))}
-        ></Shoe>
-        <Shoe
-          color="Fingerprint Orange"
-          count={allStarCount}
-          image={AllStar}
-          name="All Stars Limited Edition Size 6.5"
-          price={ALLSTAR_PRICE}
-          increaseCount={() => setAllStarCount(allStarCount + 1)}
-          decreaseCount={() => setAllStarCount(Math.max(1, allStarCount - 1))}
-        ></Shoe>
-        <div className={styles.summary}>
-          <div className={styles.item}>
-            <span>Subtotal</span>
-            <span>{format$(subTotal)}</span>
-          </div>
-          <div className={styles.item}>
-            <span>Taxes</span>
-            <span>{format$(taxesApplied)}</span>
-          </div>
-          {discount > 0 && (
-            <div className={classNames(styles.item, styles.discount)}>
-              <span>Coupon Discount {discount}%</span>
-              <span>-{format$(discountApplied)}</span>
-            </div>
-          )}
-          <div className={styles.item}>
-            <b>Total</b>
-            <span>{format$(total)}</span>
-          </div>
-        </div>
+      <Cart items={cartItems} discount={discount}>
         <div className={styles.innerWrapper}>
           <form onSubmit={handleSubmit} className={classNames(formStyles.useCaseForm, styles.couponFraudForm)}>
             <p>Do you have a coupon? Apply to get a discount!</p>
@@ -166,7 +187,7 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
         <Button variant="white" type="button" size="small" disabled={true} className={styles.confirmOrderButton}>
           Confirm order
         </Button>
-      </div>
+      </Cart>
     </UseCaseWrapper>
   );
 }

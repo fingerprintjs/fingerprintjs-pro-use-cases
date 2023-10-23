@@ -34,11 +34,11 @@ div.wrapper {
   }
 }
 
-.shoeDescription {
+.productDescription {
   flex-grow: 1;
 }
 
-.shoeName {
+.productName {
   color: v('dark-black');
   font-size: rem(16px);
   font-weight: 600;
@@ -46,7 +46,7 @@ div.wrapper {
   margin-bottom: rem(4px);
 }
 
-.shoeColor {
+.productSubheadline {
   color: v('dark-gray');
   font-size: rem(16px);
   font-weight: 400;
