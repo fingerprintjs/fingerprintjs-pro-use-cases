@@ -1,22 +1,8 @@
 import { FunctionComponent, useEffect, useState } from 'react';
-import { ProductItem } from '../../client/components/personalization/product-item';
-import { PersonalizationTopSection } from '../../client/components/personalization/personalization-top-section';
 import { useDebounce, useSessionStorage } from 'react-use';
 import { useSearchHistory } from '../../client/api/personalization/use-search-history';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import {
-  Box,
-  // Button,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { CircularProgress, useMediaQuery, useTheme } from '@mui/material';
 import { useProducts } from '../../client/api/personalization/use-products';
 import { useVisitorData } from '../../client/use-visitor-data';
 import { usePersonalizationNotification } from '../../client/hooks/personalization/use-personalization-notification';
@@ -33,6 +19,7 @@ import Button from '../../client/components/common/Button/Button';
 import HeartIcon from './img/heart.svg';
 import SearchIcon from './img/search.svg';
 import CartIcon from './img/cart.svg';
+import { UserCartItem } from '../../server/personalization/database';
 
 type SearchProps = {
   search: string;
@@ -87,10 +74,38 @@ type Product = {
   id: number;
 };
 
+const ItemCounter: FunctionComponent<{
+  count: number;
+  addItem: () => void;
+  removeItem: () => void;
+}> = ({ count, addItem, removeItem }) => {
+  return (
+    <div className={styles.itemCounter}>
+      <button onClick={removeItem}>-</button>
+      <span>{count}</span>
+      <button onClick={addItem}>+</button>
+    </div>
+  );
+};
+
 const ProductCard: FunctionComponent<{ product: Product }> = ({ product }) => {
-  const { addCartItemMutation } = useCart();
+  const { addCartItemMutation, removeCartItemMutation, cartQuery } = useCart();
   const { showNotification } = usePersonalizationNotification();
   const [wasAdded, setWasAdded] = useState(false);
+
+  const cartItem: UserCartItem | undefined = cartQuery.data?.data.find((item) => item.productId === product.id);
+
+  const addToCart = async () => {
+    await addCartItemMutation.mutateAsync({ productId: product.id });
+    if (!cartItem) {
+      showNotification('Product added to cart!');
+    }
+    setWasAdded(true);
+  };
+
+  const removeFromCart = async () => {
+    await removeCartItemMutation.mutateAsync({ itemId: cartItem?.id });
+  };
 
   useDebounce(
     () => {
@@ -137,16 +152,14 @@ const ProductCard: FunctionComponent<{ product: Product }> = ({ product }) => {
             >
               {wasAdded ? 'Added' : 'Add to cart'}
             </LoadingButton> */}
-            <Button
-              size="small"
-              onClick={async () => {
-                await addCartItemMutation.mutateAsync({ productId: product.id });
-                showNotification('Product added to cart!');
-                setWasAdded(true);
-              }}
-            >
-              Add to Cart
-            </Button>
+            {cartItem ? (
+              <ItemCounter count={cartItem.count} addItem={addToCart} removeItem={removeFromCart} />
+            ) : (
+              <Button size="small" onClick={addToCart}>
+                {addCartItemMutation.isLoading ? 'Adding...' : 'Add to cart'}
+              </Button>
+            )}
+
             <Button size="small" outlined disabled className={styles.addToFavorites}>
               <Image src={HeartIcon} alt="Add to favorites" />
             </Button>

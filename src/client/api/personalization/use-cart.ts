@@ -3,6 +3,7 @@ import { useMutation, useQuery } from 'react-query';
 import { useVisitorData } from '../../use-visitor-data';
 import { useCallback } from 'react';
 import { GetResult } from '@fingerprintjs/fingerprintjs-pro';
+import { UserCartItem } from '../../../server/personalization/database';
 
 function getCart(fpData) {
   return apiRequest('/api/personalization/cart/get-items', fpData);
@@ -25,7 +26,7 @@ const REMOVE_CART_ITEM_MUTATION = 'REMOVE_CART_ITEM_MUTATION';
 export function useCart() {
   const { data: visitorData } = useVisitorData();
 
-  const cartQuery = useQuery(GET_CART_QUERY, () => getCart(visitorData), {
+  const cartQuery = useQuery<{ data: UserCartItem[]; size: number }>(GET_CART_QUERY, () => getCart(visitorData), {
     enabled: Boolean(visitorData),
   });
   const refetchCartOnSuccess = useCallback(

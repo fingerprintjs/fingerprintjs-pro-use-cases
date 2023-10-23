@@ -1,8 +1,17 @@
 import { sequelize } from '../server';
 import * as Sequelize from 'sequelize';
 
+interface Product
+  extends Sequelize.Model<Sequelize.InferAttributes<Product>, Sequelize.InferCreationAttributes<Product>> {
+  price: number;
+  name: string;
+  image: string;
+  timestamp: string;
+  tags: string[];
+}
+
 // Defines db model for product.
-export const Product = sequelize.define('product', {
+export const Product = sequelize.define<Product>('product', {
   price: {
     type: Sequelize.FLOAT,
   },
@@ -56,8 +65,27 @@ export const UserSearchHistory = sequelize.define('user_search_history', {
   },
 });
 
+interface UserCartItemModel
+  extends Sequelize.Model<
+    Sequelize.InferAttributes<UserCartItemModel>,
+    Sequelize.InferCreationAttributes<UserCartItemModel>
+  > {
+  visitorId: string;
+  count: number;
+  timestamp: Date;
+}
+
+export type UserCartItem = {
+  id: number;
+  visitorId: string;
+  count: number;
+  timestamp: Date;
+  product: Product;
+  productId: number;
+};
+
 // Defines db model for cart item.
-export const UserCartItem = sequelize.define('user_cart_item', {
+export const UserCartItem = sequelize.define<UserCartItemModel>('user_cart_item', {
   visitorId: {
     type: Sequelize.STRING,
   },
