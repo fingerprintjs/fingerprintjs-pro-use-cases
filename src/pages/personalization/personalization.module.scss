@@ -1,3 +1,7 @@
+/** 
+ * Layout 
+ */
+
 .twoColumnContainer {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -35,161 +39,9 @@
   gap: rem(20px);
 }
 
-/**
-* Product Card
-*/
-.productCard {
-  border-radius: 8px;
-  padding: rem(16px);
-  border: 1px solid v('gray-box-stroke');
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
-  gap: rem(24px);
-
-  @include media('<=phone') {
-    grid-template-columns: 1fr;
-    padding: rem(12px);
-  }
-}
-
-.productCardImage {
-  max-width: 100%;
-  object-fit: cover;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.productCardBody {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.productCardName {
-  color: v('dark-black');
-  font-size: rem(24px);
-  font-weight: 500;
-  line-height: 130%;
-
-  @include media('<=phoneLandscape') {
-    font-size: rem(20px);
-  }
-}
-
-.productCardSize {
-  color: v('dark-black');
-  font-size: rem(16px);
-  font-weight: 300;
-  line-height: 145%; /* 23.2px */
-}
-
-.productCardBodyBottomRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: rem(8px);
-}
-
-.productCardPrice {
-  color: v('orange-gradient');
-  font-size: rem(16px);
-  line-height: 160%;
-  letter-spacing: 0.16px;
-}
-
-.productCardButtons {
-  display: flex;
-  gap: rem(8px);
-  flex-wrap: wrap;
-}
-
-.addToFavorites {
-  padding: 8px !important;
-}
-
-.productCardItemCounter {
-  display: flex;
-  padding: 0px 6px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  border-radius: 4px;
-  border: 1px solid v('orange-gradient');
-
-  color: v('orange-gradient');
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 150%;
-  height: 37px;
-
-  @include media('<=phone') {
-    gap: 4px;
-  }
-
-  div {
-    cursor: pointer;
-    display: flex;
-    stroke: v('orange-gradient');
-    padding: 8px 10px;
-
-    @include media('<=phone') {
-      padding: 6px 8px;
-    }
-  }
-}
-
-/**
-* Search
-*/
-
-.searchIcon {
-  @include media('<=phoneLandscape') {
-    height: 24px;
-    width: 24px;
-  }
-}
-
-.searchBox {
-  display: flex;
-  height: 64px;
-  padding: rem(16px);
-  align-items: center;
-  gap: rem(10px);
-
-  border-radius: 6px;
-  border: 1px solid v('gray-box-stroke');
-
-  @include media('<=phoneLandscape') {
-    padding: rem(12px) rem(16px);
-  }
-}
-
-.searchInput {
-  color: v('dark-gray');
-  font-size: rem(16px);
-  line-height: 160%;
-  letter-spacing: 0.16px;
-  border: none;
-  width: 100%;
-
-  @include media('<=phoneLandscape') {
-    font-size: rem(14px);
-  }
-}
-
-.searchHistory {
-  @include media('<=phoneLandscape') {
-    font-size: rem(12px);
-  }
-}
-
-.searchTerm {
-  color: v('orange-gradient');
-  cursor: pointer;
-}
-
-/** Cart */
+/** 
+ * Cart 
+ */
 
 .cartContainer {
   display: flex;
