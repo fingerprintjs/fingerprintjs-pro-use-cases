@@ -96,14 +96,6 @@
   }
 }
 
-.summary {
-  margin-bottom: rem(32px);
-
-  @include media('<=phone') {
-    margin-bottom: rem(16px);
-  }
-}
-
 .item {
   display: flex;
   justify-content: space-between;

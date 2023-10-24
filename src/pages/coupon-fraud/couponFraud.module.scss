@@ -14,6 +14,11 @@ div.wrapper {
   border: 1px solid v('gray-box-stroke');
   border-radius: rem(6px);
   padding: rem(16px);
+  margin-top: rem(32px);
+
+  @include media('<=phone') {
+    margin-top: rem(16px);
+  }
 
   form {
     display: flex;
