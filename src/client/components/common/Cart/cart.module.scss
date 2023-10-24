@@ -16,6 +16,7 @@
 
   img {
     object-fit: cover;
+    border: 1px solid v('light-grey');
   }
 
   @include media('<=phoneLandscape') {
