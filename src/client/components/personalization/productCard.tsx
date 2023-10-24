@@ -9,6 +9,7 @@ import Image from 'next/image';
 import styles from './productCard.module.scss';
 import Button from '../common/Button/Button';
 import HeartIcon from '../../img/heart.svg';
+import { TEST_IDS } from '../../e2eTestIDs';
 
 type Product = {
   price: number;
@@ -65,7 +66,7 @@ export const ProductCard: FunctionComponent<{ product: Product }> = ({ product }
   );
 
   return (
-    <div className={styles.productCard}>
+    <div className={styles.productCard} data-test={TEST_IDS.personalization.coffeeProduct}>
       <Image
         src={product.image}
         alt={product.name}
@@ -76,16 +77,24 @@ export const ProductCard: FunctionComponent<{ product: Product }> = ({ product }
       />
       <div className={styles.productCardBody}>
         <div>
-          <div className={styles.productCardName}>{product.name}</div>
+          <div className={styles.productCardName} data-test={TEST_IDS.personalization.coffeeProductName}>
+            {product.name}
+          </div>
           <div className={styles.productCardSize}>Big</div>
         </div>
         <div className={styles.productCardBodyBottomRow}>
-          <div className={styles.productCardPrice}>${product.price.toFixed(2)}</div>
+          <div
+            className={styles.productCardPrice}
+            data-test={TEST_IDS.personalization.coffeeProductPrice}
+            data-price={product.price}
+          >
+            ${product.price.toFixed(2)}
+          </div>
           <div className={styles.productCardButtons}>
             {cartItem ? (
               <ItemCounter count={cartItem.count} addItem={addToCart} removeItem={removeFromCart} />
             ) : (
-              <Button size="small" onClick={addToCart}>
+              <Button size="small" onClick={addToCart} data-test={TEST_IDS.personalization.addToCart}>
                 {addCartItemMutation.isLoading ? 'Adding...' : 'Add to cart'}
               </Button>
             )}

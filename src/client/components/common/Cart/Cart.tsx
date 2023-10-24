@@ -4,6 +4,7 @@ import styles from './cart.module.scss';
 import { ButtonMinusSvg } from '../../../img/buttonMinusSvg';
 import { ButtonPlusSvg } from '../../../img/buttonPlusSvg';
 import Image from 'next/image';
+import { TEST_IDS } from '../../../e2eTestIDs';
 
 const format$ = (price: number) => {
   return new Intl.NumberFormat('en-US', {
@@ -23,21 +24,25 @@ export type CartProduct = {
   decreaseCount: () => void;
 };
 
-const Product: FunctionComponent<{ product: CartProduct }> = ({
+const CartProduct: FunctionComponent<{ product: CartProduct }> = ({
   product: { name, subheadline, price, image, count, increaseCount, decreaseCount },
 }) => {
   return (
-    <div className={styles.product}>
+    <div className={styles.product} data-test={TEST_IDS.common.cart.cartItem}>
       <Image src={image} alt={name} width={92} height={92} />
       <div className={styles.productDescription}>
-        <div className={styles.productName}>{name}</div>
+        <div className={styles.productName} data-test={TEST_IDS.common.cart.cartItemName}>
+          {name}
+        </div>
         <div className={styles.productSubheadline}>{subheadline}</div>
         <div className={styles.priceAndCount}>
-          <div className={styles.price}>{format$(price)}</div>
+          <div className={styles.price} data-test={TEST_IDS.common.cart.cartItemPrice}>
+            {format$(price)}
+          </div>
           <div className={styles.count}>
-            <ButtonMinusSvg onClick={decreaseCount} />
-            <span>{String(count).padStart(2, '0')}</span>
-            <ButtonPlusSvg onClick={increaseCount} />
+            <ButtonMinusSvg onClick={decreaseCount} data-test={TEST_IDS.common.cart.cartItemMinusOne} />
+            <span data-test={TEST_IDS.common.cart.cartItemCount}>{String(count).padStart(2, '0')}</span>
+            <ButtonPlusSvg onClick={increaseCount} data-test={TEST_IDS.common.cart.cartItemPlusOne} />
           </div>
         </div>
       </div>
@@ -61,13 +66,15 @@ export const Cart: FunctionComponent<CartProps> = ({ items, discount, taxPerItem
   return (
     <div className={styles.cartWrapper}>
       {items.map((item) => (
-        <Product key={item.id} product={item} />
+        <CartProduct key={item.id} product={item} />
       ))}
 
       <div className={styles.summary}>
         <div className={styles.item}>
           <span>Subtotal</span>
-          <span>{format$(subTotal)}</span>
+          <span data-test={TEST_IDS.common.cart.cartSubTotal} data-test-value={subTotal}>
+            {format$(subTotal)}
+          </span>
         </div>
         <div className={styles.item}>
           <span>Taxes</span>

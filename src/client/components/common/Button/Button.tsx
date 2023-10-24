@@ -34,6 +34,7 @@ const Button = memo(function Button({
   disabled,
   buttonId,
   title,
+  ...props
 }: ButtonProps) {
   const classes = classNames(
     styles.button,
@@ -83,7 +84,7 @@ const Button = memo(function Button({
       </a>
     )
   ) : (
-    <button id={buttonId} type={type} className={classes} onClick={onClick} aria-label={label} title={title}>
+    <button id={buttonId} type={type} className={classes} onClick={onClick} aria-label={label} title={title} {...props}>
       <span>{children}</span>
     </button>
   );
