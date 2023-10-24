@@ -32,7 +32,7 @@ const Search: FunctionComponent<SearchProps> = ({ search, setSearch }) => {
   return (
     <div>
       <div className={styles.searchBox}>
-        <Image src={SearchIcon} alt="Search" />
+        <Image src={SearchIcon} alt="Search" className={styles.searchIcon} />
         <input
           type="text"
           className={styles.searchInput}
@@ -278,21 +278,18 @@ export default function Index({ embed }: CustomPageProps) {
           </div>
           <div className={styles.rightColumn}>
             <div className={styles.cartContainer}>
-              <div className={styles.cartIconContainer}>
-                <Image src={CartIcon} alt="Cart" />
-                {itemCount > 0 && <div className={styles.cartCountBadge}>{itemCount}</div>}
-              </div>
-              <div className={styles.cartStatus}>
-                Your cart {itemCount > 0 ? `has ${itemCount} item${itemCount > 1 ? 's' : ''}` : 'is empty'}
+              <div className={styles.cartContainerTop}>
+                <div className={styles.cartIconContainer}>
+                  <Image src={CartIcon} alt="Cart" />
+                  {itemCount > 0 && <div className={styles.cartCountBadge}>{itemCount}</div>}
+                </div>
+                <div className={styles.cartStatus}>
+                  Your cart {itemCount > 0 ? `has ${itemCount} item${itemCount > 1 ? 's' : ''}` : 'is empty'}
+                </div>
               </div>
               {cartItems?.length > 0 && (
                 <div className={styles.cartWrapper}>
                   <Cart items={cartItems} discount={0} taxPerItem={2} />
-                  <div className={styles.confirmOrderButtonWrapper}>
-                    <Button variant="ghost" size="small" disabled={true} className={styles.confirmOrderButton}>
-                      Confirm order
-                    </Button>
-                  </div>
                 </div>
               )}
             </div>

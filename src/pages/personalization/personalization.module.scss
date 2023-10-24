@@ -48,6 +48,7 @@
 
   @include media('<=phone') {
     grid-template-columns: 1fr;
+    padding: rem(12px);
   }
 }
 
@@ -67,6 +68,10 @@
   font-size: rem(24px);
   font-weight: 500;
   line-height: 130%;
+
+  @include media('<=phoneLandscape') {
+    font-size: rem(20px);
+  }
 }
 
 .productCardSize {
@@ -115,11 +120,19 @@
   font-weight: 600;
   line-height: 150%;
 
+  @include media('<=phone') {
+    gap: 4px;
+  }
+
   div {
     cursor: pointer;
     display: flex;
     stroke: v('orange-gradient');
     padding: 8px 10px;
+
+    @include media('<=phone') {
+      padding: 6px 8px;
+    }
   }
 }
 
@@ -127,15 +140,26 @@
 * Search
 */
 
+.searchIcon {
+  @include media('<=phoneLandscape') {
+    height: 24px;
+    width: 24px;
+  }
+}
+
 .searchBox {
   display: flex;
   height: 64px;
-  padding: 16px;
+  padding: rem(16px);
   align-items: center;
-  gap: 10px;
+  gap: rem(10px);
 
   border-radius: 6px;
   border: 1px solid v('gray-box-stroke');
+
+  @include media('<=phoneLandscape') {
+    padding: rem(12px) rem(16px);
+  }
 }
 
 .searchInput {
@@ -145,6 +169,16 @@
   letter-spacing: 0.16px;
   border: none;
   width: 100%;
+
+  @include media('<=phoneLandscape') {
+    font-size: rem(14px);
+  }
+}
+
+.searchHistory {
+  @include media('<=phoneLandscape') {
+    font-size: rem(12px);
+  }
 }
 
 .searchTerm {
@@ -152,18 +186,37 @@
   cursor: pointer;
 }
 
+/** Cart */
+
 .cartContainer {
   display: flex;
   padding: rem(32px) (16px) (24px) (16px);
   flex-direction: column;
   border-radius: 6px;
   border: 1px solid v('gray-box-stroke');
+
+  @include media('<=phone') {
+    padding: rem(16px) rem(12px);
+  }
+}
+
+.cartContainerTop {
+  display: flex;
+  flex-direction: column;
+  gap: rem(8px);
+  padding-bottom: rem(8px);
+
+  @include media('<=tablet') {
+    flex-direction: row;
+    align-items: center;
+    gap: rem(16px);
+    padding-bottom: rem(12px);
+  }
 }
 
 .cartIconContainer {
   position: relative;
   width: fit-content;
-  margin-bottom: rem(8px);
 }
 
 .cartCountBadge {
@@ -179,25 +232,11 @@
   background-color: v('orange-gradient');
 }
 
-.cartStatus {
-  padding-bottom: rem(16px);
-}
-
 .cartWrapper {
   border-top: 1px solid v('gray-box-stroke');
   padding-top: rem(32px);
-}
 
-.confirmOrderButtonWrapper {
-  display: flex;
-  justify-content: center;
-}
-
-.confirmOrderButton {
-  width: fit-content;
-  color: v('dark-gray') !important;
-  opacity: 100% !important;
-  font-size: rem(16px);
-  font-weight: 600;
-  line-height: 150%;
+  @include media('<=tablet') {
+    padding-top: rem(16px);
+  }
 }
