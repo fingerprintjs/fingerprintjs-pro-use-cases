@@ -26,7 +26,7 @@ export async function seedProducts() {
     }),
     Product.create({
       price: 8,
-      name: `Decaffeinated coffee`,
+      name: `Decaf coffee`,
       image: '/personalization/img/decaf.svg',
       tags: ['Big'],
       timestamp: new Date().getTime().toString(),

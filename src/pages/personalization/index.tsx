@@ -1,8 +1,8 @@
 import { FunctionComponent, useEffect, useState } from 'react';
-import { useDebounce, useSessionStorage } from 'react-use';
+import { useDebounce } from 'react-use';
 import { useSearchHistory } from '../../client/api/personalization/use-search-history';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import { CircularProgress, useMediaQuery, useTheme } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import { useProducts } from '../../client/api/personalization/use-products';
 import { useVisitorData } from '../../client/use-visitor-data';
 import { usePersonalizationNotification } from '../../client/hooks/personalization/use-personalization-notification';
@@ -53,6 +53,10 @@ type SearchHistoryProps = {
 };
 
 const SearchHistory: FunctionComponent<SearchHistoryProps> = ({ searchHistory, setSearchHistory }) => {
+  if (searchHistory.length === 0) {
+    return null;
+  }
+
   return (
     <div>
       <div className={styles.searchHistory}>
@@ -130,8 +134,8 @@ const ProductCard: FunctionComponent<{ product: Product }> = ({ product }) => {
         src={product.image}
         alt={product.name}
         sizes="100vw"
-        width="250"
-        height="172"
+        width={250}
+        height={172}
         className={styles.productCardImage}
       />
       <div className={styles.productCardBody}>
@@ -165,10 +169,7 @@ export default function Index({ embed }: CustomPageProps) {
 
   const { isLoading: isFpDataLoading, data } = useVisitorData({ extendedResult: true });
 
-  const theme = useTheme();
-  const isSmallerScreen = useMediaQuery(theme.breakpoints.down('md'));
-
-  const [didAcknowledge, setDidAcknowledge] = useSessionStorage('didAcknowledgePersonalizationUseCaseWarning', false);
+  // const [didAcknowledge, setDidAcknowledge] = useSessionStorage('didAcknowledgePersonalizationUseCaseWarning', false);
   const [search, setSearch] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [userWelcomed, setUserWelcomed] = useState(false);

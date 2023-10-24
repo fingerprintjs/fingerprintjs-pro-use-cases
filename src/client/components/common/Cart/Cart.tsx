@@ -1,7 +1,6 @@
 import classNames from 'classnames';
-import { FunctionComponent, PropsWithChildren } from 'react';
+import { FunctionComponent } from 'react';
 import styles from './cart.module.scss';
-import formStyles from '../../../../styles/forms.module.scss';
 import { ButtonMinusSvg } from '../../../img/buttonMinusSvg';
 import { ButtonPlusSvg } from '../../../img/buttonPlusSvg';
 import Image from 'next/image';
@@ -54,8 +53,9 @@ type CartProps = {
 
 export const Cart: FunctionComponent<CartProps> = ({ items, discount, taxPerItem }) => {
   const subTotal = items.reduce((acc, item) => acc + item.price * item.count, 0);
+  const totalCount = items.reduce((acc, item) => acc + item.count, 0);
   const discountApplied = (subTotal * discount) / 100;
-  const taxesApplied = taxPerItem * items.length;
+  const taxesApplied = taxPerItem * totalCount;
   const total = subTotal + taxesApplied - discountApplied;
 
   return (
