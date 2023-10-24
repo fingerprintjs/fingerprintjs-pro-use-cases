@@ -190,13 +190,15 @@
 
 .cartContainer {
   display: flex;
-  padding: rem(32px) (16px) (24px) (16px);
+  padding: rem(32px) rem(16px);
   flex-direction: column;
   border-radius: 6px;
   border: 1px solid v('gray-box-stroke');
+  gap: rem(16px);
 
-  @include media('<=phone') {
+  @include media('<=phoneLandscape') {
     padding: rem(16px) rem(12px);
+    gap: rem(12px);
   }
 }
 
@@ -204,13 +206,11 @@
   display: flex;
   flex-direction: column;
   gap: rem(8px);
-  padding-bottom: rem(8px);
 
   @include media('<=tablet') {
     flex-direction: row;
     align-items: center;
     gap: rem(16px);
-    padding-bottom: rem(12px);
   }
 }
 
