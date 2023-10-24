@@ -147,6 +147,7 @@
 .cartIconContainer {
   position: relative;
   width: fit-content;
+  margin-bottom: rem(8px);
 }
 
 .cartCountBadge {
@@ -160,4 +161,27 @@
   font-weight: 500;
   line-height: 145%;
   background-color: v('orange-gradient');
+}
+
+.cartStatus {
+  padding-bottom: rem(16px);
+}
+
+.cartWrapper {
+  border-top: 1px solid v('gray-box-stroke');
+  padding-top: rem(32px);
+}
+
+.confirmOrderButtonWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.confirmOrderButton {
+  width: fit-content;
+  color: v('dark-gray') !important;
+  opacity: 100% !important;
+  font-size: rem(16px);
+  font-weight: 600;
+  line-height: 150%;
 }

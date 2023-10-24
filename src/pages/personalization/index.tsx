@@ -22,6 +22,7 @@ import CartIcon from './img/cart.svg';
 import { UserCartItem } from '../../server/personalization/database';
 import { ButtonPlusSvg } from '../../client/img/buttonPlusSvg';
 import { ButtonMinusSvg } from '../../client/img/buttonMinusSvg';
+import { Cart, CartProduct } from '../../client/components/common/Cart/Cart';
 
 type SearchProps = {
   search: string;
@@ -173,7 +174,7 @@ export default function Index({ embed }: CustomPageProps) {
   const [userWelcomed, setUserWelcomed] = useState(false);
 
   const searchHistoryQuery = useSearchHistory();
-  const { cartQuery } = useCart();
+  const { addCartItemMutation, removeCartItemMutation, cartQuery } = useCart();
   const productsQuery = useProducts(searchQuery);
   const { hasDarkMode } = useUserPreferences();
 
@@ -210,6 +211,21 @@ export default function Index({ embed }: CustomPageProps) {
       setUserWelcomed(true);
     }
   }, [cartQuery.data, data, enqueueSnackbar, hasDarkMode, searchHistoryQuery.data, userWelcomed]);
+
+  const cartItems: CartProduct[] = cartQuery.data?.data.map((item) => {
+    return {
+      id: item.id,
+      name: item.product.name,
+      subheadline: 'Big',
+      price: item.product.price,
+      image: item.product.image,
+      count: item.count,
+      increaseCount: () => addCartItemMutation.mutateAsync({ productId: item.productId }),
+      decreaseCount: () => removeCartItemMutation.mutateAsync({ itemId: item.id }),
+    };
+  });
+
+  const itemCount = cartItems?.length ?? 0;
 
   return (
     <>
@@ -263,8 +279,21 @@ export default function Index({ embed }: CustomPageProps) {
             <div className={styles.cartContainer}>
               <div className={styles.cartIconContainer}>
                 <Image src={CartIcon} alt="Cart" />
-                <div className={styles.cartCountBadge}>{cartQuery.data?.data?.length}</div>
+                {itemCount > 0 && <div className={styles.cartCountBadge}>{itemCount}</div>}
               </div>
+              <div className={styles.cartStatus}>
+                Your cart {itemCount > 0 ? `has ${itemCount} item${itemCount > 1 ? 's' : ''}` : 'is empty'}
+              </div>
+              {cartItems?.length > 0 && (
+                <div className={styles.cartWrapper}>
+                  <Cart items={cartItems} discount={0} taxPerItem={2} />
+                  <div className={styles.confirmOrderButtonWrapper}>
+                    <Button variant="ghost" size="small" disabled={true} className={styles.confirmOrderButton}>
+                      Confirm order
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -1,3 +1,15 @@
+div.wrapper {
+  max-width: 660px;
+  padding: rem(32px) rem(20px) rem(24px) rem(20px);
+  display: flex;
+  flex-direction: column;
+  gap: rem(24px);
+
+  @include media('<=phoneLandscape') {
+    padding: rem(12px);
+  }
+}
+
 .innerWrapper {
   border: 1px solid v('gray-box-stroke');
   border-radius: rem(6px);

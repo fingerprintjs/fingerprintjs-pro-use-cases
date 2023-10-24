@@ -13,7 +13,8 @@ const format$ = (price: number) => {
   }).format(price);
 };
 
-type CartProduct = {
+export type CartProduct = {
+  id: number | string;
   name: string;
   subheadline: string;
   price: number;
@@ -51,16 +52,16 @@ type CartProps = {
   taxPerItem: number;
 };
 
-export const Cart: FunctionComponent<PropsWithChildren<CartProps>> = ({ items, discount, children, taxPerItem }) => {
+export const Cart: FunctionComponent<CartProps> = ({ items, discount, taxPerItem }) => {
   const subTotal = items.reduce((acc, item) => acc + item.price * item.count, 0);
   const discountApplied = (subTotal * discount) / 100;
   const taxesApplied = taxPerItem * items.length;
   const total = subTotal + taxesApplied - discountApplied;
 
   return (
-    <div className={classNames(styles.wrapper, formStyles.wrapper)}>
+    <div className={styles.cartWrapper}>
       {items.map((item) => (
-        <Product key={item.name} product={item} />
+        <Product key={item.id} product={item} />
       ))}
 
       <div className={styles.summary}>
@@ -83,7 +84,6 @@ export const Cart: FunctionComponent<PropsWithChildren<CartProps>> = ({ items, d
           <span>{format$(total)}</span>
         </div>
       </div>
-      {children}
     </div>
   );
 };

@@ -58,6 +58,7 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
 
   const cartItems = [
     {
+      id: 0,
       name: 'Nike AirMax Max Size 8.5',
       subheadline: 'Fingerprint Orange',
       price: AIRMAX_PRICE,
@@ -67,6 +68,7 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
       decreaseCount: () => setAirMaxCount(Math.max(1, airMaxCount - 1)),
     },
     {
+      id: 1,
       name: 'All Stars Limited Edition Size 6.5',
       subheadline: 'Fingerprint Orange',
       price: ALLSTAR_PRICE,
@@ -79,7 +81,8 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
 
   return (
     <UseCaseWrapper useCase={USE_CASES.couponFraud} embed={embed} contentSx={{ maxWidth: 'none' }}>
-      <Cart items={cartItems} discount={discount} taxPerItem={TAXES}>
+      <div className={classNames(styles.wrapper, formStyles.wrapper)}>
+        <Cart items={cartItems} discount={discount} taxPerItem={TAXES}></Cart>
         <div className={styles.innerWrapper}>
           <form onSubmit={handleSubmit} className={classNames(formStyles.useCaseForm, styles.couponFraudForm)}>
             <p>Do you have a coupon? Apply to get a discount!</p>
@@ -105,7 +108,7 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
         <Button variant="white" type="button" size="small" disabled={true} className={styles.confirmOrderButton}>
           Confirm order
         </Button>
-      </Cart>
+      </div>
     </UseCaseWrapper>
   );
 }

@@ -1,13 +1,7 @@
-div.wrapper {
-  max-width: 660px;
-  padding: rem(32px) rem(20px) rem(24px) rem(20px);
+.cartWrapper {
   display: flex;
   flex-direction: column;
   gap: rem(24px);
-
-  @include media('<=phoneLandscape') {
-    padding: rem(12px);
-  }
 }
 
 .product {
