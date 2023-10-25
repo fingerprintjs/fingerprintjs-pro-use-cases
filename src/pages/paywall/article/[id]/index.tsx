@@ -8,12 +8,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from '../../paywall.module.scss';
 import Alert from '../../../../client/components/common/Alert/Alert';
-import { ArticleGrid, Byline } from '../..';
 import { ARTICLES } from '../../../../server/paywall/articles';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useQuery } from 'react-query';
 import { ArticleResponse } from '../../../api/paywall/article/[id]';
 import { TEST_IDS } from '../../../../client/e2eTestIDs';
+import { ArticleGrid, Byline } from '../../../../client/components/paywall/ArticleGrid';
 
 function ArticleSkeleton({ animation = false }: { animation?: SkeletonTypeMap['props']['animation'] }) {
   const skeletons = Array.from({ length: 4 }).map((_, index) => <Skeleton key={index} animation={animation} />);
