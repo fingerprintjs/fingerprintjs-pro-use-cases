@@ -43,7 +43,7 @@
   color: v('dark-black');
   font-size: rem(16px);
   font-weight: 300;
-  line-height: 145%; /* 23.2px */
+  line-height: 145%;
 }
 
 .productCardBodyBottomRow {
@@ -81,7 +81,7 @@
   border: 1px solid v('orange-gradient');
 
   color: v('orange-gradient');
-  font-size: 14px;
+  font-size: rem(14px);
   font-weight: 600;
   line-height: 150%;
   height: 37px;
