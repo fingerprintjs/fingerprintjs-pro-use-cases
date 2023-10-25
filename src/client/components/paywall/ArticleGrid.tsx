@@ -5,12 +5,7 @@ import { ArticleData } from '../../../server/paywall/articles';
 import { TEST_IDS } from '../../e2eTestIDs';
 import Image from 'next/image';
 import styles from './articleGrid.module.scss';
-
-const BylineDot = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="3" height="4" viewBox="0 0 3 4" fill="none">
-    <circle cx="1.5" cy="1.66016" r="1.5" fill="#434344" />
-  </svg>
-);
+import BylineDot from './dot.svg';
 
 function calculateReadingTime(text: string[], wordsPerMinute = 200) {
   const words = text
@@ -25,11 +20,11 @@ export const Byline = ({ article, includeReadingTime }: { article: ArticleData; 
   <div className={styles.byline}>
     <Image src={article.author.avatar} className={styles.authorImage} alt={`Picture of ${article.author.name}`} />
     <div>{article.author.name}</div>
-    <BylineDot />
+    <Image src={BylineDot} alt="" />
     <div>{article.date}</div>
     {includeReadingTime && (
       <>
-        <BylineDot />
+        <Image src={BylineDot} alt="" />
         <div>{calculateReadingTime(article.content)}</div>
       </>
     )}
