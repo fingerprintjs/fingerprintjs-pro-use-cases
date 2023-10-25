@@ -3,7 +3,7 @@ import { reset } from './admin';
 import { TEST_IDS } from '../src/client/e2eTestIDs';
 
 const CART_ID = TEST_IDS.common.cart;
-const PAGE_ID = TEST_IDS.personalization;
+const PERS_ID = TEST_IDS.personalization;
 
 test.describe('Personalization', () => {
   test.beforeEach(async ({ page, context }) => {
@@ -16,7 +16,7 @@ test.describe('Personalization', () => {
   });
 
   test('should add and remove items from cart', async ({ page }) => {
-    const products = page.getByTestId(PAGE_ID.coffeeProduct);
+    const products = page.getByTestId(PERS_ID.coffeeProduct);
     const cartItems = page.getByTestId(CART_ID.cartItem);
     const getSubTotal = async () => {
       const subTotal = await page.getByTestId(CART_ID.cartSubTotal).getAttribute('data-test-value');
@@ -24,12 +24,12 @@ test.describe('Personalization', () => {
     };
 
     const product = products.nth(0);
-    const productPrice = parseFloat(await product.getByTestId(PAGE_ID.coffeeProductPrice).getAttribute('data-price'));
-    await product.getByTestId(PAGE_ID.addToCart).click();
+    const productPrice = parseFloat(await product.getByTestId(PERS_ID.coffeeProductPrice).getAttribute('data-price'));
+    await product.getByTestId(PERS_ID.addToCart).click();
     const cartItem = cartItems.first();
 
     await expect(cartItem.getByTestId(CART_ID.cartItemName)).toHaveText(
-      await product.getByTestId(PAGE_ID.coffeeProductName).textContent(),
+      await product.getByTestId(PERS_ID.coffeeProductName).textContent(),
     );
     const subTotal = await getSubTotal();
     expect(subTotal).toBe(productPrice);
@@ -48,14 +48,14 @@ test.describe('Personalization', () => {
     await expect.poll(() => cartItems.count()).toBe(0);
   });
 
-  test.only('should remember cart contents after reloading page', async ({ page }) => {
-    const products = page.getByTestId(PAGE_ID.coffeeProduct);
+  test('should remember cart contents after reloading page', async ({ page }) => {
+    const products = page.getByTestId(PERS_ID.coffeeProduct);
     const cartItems = page.getByTestId(CART_ID.cartItem);
 
     const product = products.nth(0);
     const cartItem = cartItems.first();
 
-    await product.getByTestId(PAGE_ID.addToCart).click();
+    await product.getByTestId(PERS_ID.addToCart).click();
     await cartItem.getByTestId(CART_ID.cartItemPlusOne).click();
 
     await page.reload();
@@ -65,17 +65,16 @@ test.describe('Personalization', () => {
   });
 
   test('should filter products and remember search history', async ({ page }) => {
-    await page.fill('[name="search"]', 'Decaf coffee');
+    await page.getByTestId(PERS_ID.search).fill('Decaf coffee');
 
-    const searchHistory = page.locator('.SearchHistory_Item');
-    const products = page.locator('.ProductCard');
+    const searchHistory = page.getByTestId(PERS_ID.searchHistoryItem);
+    const products = page.getByTestId(PERS_ID.coffeeProduct);
 
     const checkFoundProducts = async () => {
       await page.waitForTimeout(3000);
       await expect
         .poll(async () => {
           const textContents = await Promise.all((await products.all()).map((p) => p.textContent()));
-
           return textContents.every((p) => p.includes('Decaf coffee'));
         })
         .toBe(true);

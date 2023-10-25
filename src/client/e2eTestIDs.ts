@@ -10,6 +10,8 @@ export const TEST_IDS = {
     coffeeProductPrice: 'coffeeProductPrice',
     coffeeProductName: 'coffeeProductName',
     addToCart: 'addToCart',
+    search: 'search',
+    searchHistoryItem: 'searchHistoryItem',
   },
   common: {
     cart: {
