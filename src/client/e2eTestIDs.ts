@@ -1,4 +1,15 @@
 export const TEST_IDS = {
+  common: {
+    cart: {
+      cartItem: 'cartItem',
+      cartItemName: 'cartItemName',
+      cartItemPlusOne: 'cartItemPlusOne',
+      cartItemMinusOne: 'cartItemMinusOne',
+      cartItemCount: 'cartItemCount',
+      cartItemPrice: 'cartItemPrice',
+      cartSubTotal: 'cartSubTotal',
+    },
+  },
   homepageCard: {
     useCaseTitle: 'useCaseTitle',
   },
@@ -13,15 +24,9 @@ export const TEST_IDS = {
     search: 'search',
     searchHistoryItem: 'searchHistoryItem',
   },
-  common: {
-    cart: {
-      cartItem: 'cartItem',
-      cartItemName: 'cartItemName',
-      cartItemPlusOne: 'cartItemPlusOne',
-      cartItemMinusOne: 'cartItemMinusOne',
-      cartItemCount: 'cartItemCount',
-      cartItemPrice: 'cartItemPrice',
-      cartSubTotal: 'cartSubTotal',
-    },
+  paywall: {
+    articleCard: 'articleCard',
+    articleContent: 'articleContent',
+    goBack: 'goBack',
   },
 } as const;
