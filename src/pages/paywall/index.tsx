@@ -1,50 +1,19 @@
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import { ARTICLES_SHORTENED, ArticleData } from '../../server/paywall/articles';
+import { ARTICLES } from '../../server/paywall/articles';
 import { CustomPageProps } from '../_app';
 import { USE_CASES } from '../../client/components/common/content';
+import { ArticleCard, ArticleGrid } from '../../client/components/paywall/ArticleGrid';
 
-export async function getServerSideProps() {
-  return {
-    props: {
-      articles: ARTICLES_SHORTENED,
-    },
-  };
-}
-
-type PaywallProps = CustomPageProps & {
-  articles: ArticleData[];
-};
-
-export default function Paywall({ articles, embed }: PaywallProps) {
+/**
+ * Main Paywall use case page with article listing
+ */
+export default function Paywall({ embed }: CustomPageProps) {
+  const heroArticle = ARTICLES[0];
+  const gridArticles = ARTICLES.slice(1);
   return (
-    <UseCaseWrapper useCase={USE_CASES.paywall} embed={embed}>
-      {articles && (
-        <Stack spacing={6}>
-          {articles.map((article) => (
-            <Card
-              href={`/paywall/article/${article.id}${embed ? '/embed' : ''}`}
-              key={article.id}
-              variant="outlined"
-              component="a"
-              className="ArticleLink"
-            >
-              <CardContent>
-                <Typography variant="h5" gutterBottom>
-                  {article.title}
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  {article.content}
-                </Typography>
-                <Typography variant="caption">{article.date}</Typography>
-              </CardContent>
-            </Card>
-          ))}
-        </Stack>
-      )}
+    <UseCaseWrapper useCase={USE_CASES.paywall} embed={embed} contentSx={{ maxWidth: 'none' }}>
+      {heroArticle && <ArticleCard article={heroArticle} embed={embed} isHeroArticle />}
+      {gridArticles && <ArticleGrid articles={gridArticles} embed={embed} />}
     </UseCaseWrapper>
   );
 }
