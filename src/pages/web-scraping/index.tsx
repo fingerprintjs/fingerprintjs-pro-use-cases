@@ -144,18 +144,6 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
         >
           <Grid container spacing={1} marginBottom={3}>
             <Grid item xs={12} sm={5.5}>
-              {/* <FormControl fullWidth>
-                <Autocomplete
-                  id="from"
-                  size="small"
-                  autoHighlight
-                  options={AIRPORTS.filter((airport) => airport.code !== toCode)}
-                  getOptionLabel={(option) => `${option.city} (${option.code})`}
-                  value={AIRPORTS.find((airport) => airport.code === fromCode) ?? null}
-                  onChange={(_e, value) => setFromCode(value?.code ?? '')}
-                  renderInput={(params) => <TextField {...params} label="From" />}
-                />
-              </FormControl> */}
               <Select value={fromCode} onValueChange={(value) => setFromCode(value)} fullWidth>
                 {AIRPORTS.filter((airport) => airport.code !== toCode).map((airport) => (
                   <SelectItem key={airport.code} value={airport.code}>
@@ -170,18 +158,13 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
               </Box>
             </Grid>
             <Grid item xs={12} sm={5.5}>
-              <FormControl fullWidth>
-                <Autocomplete
-                  id="to"
-                  size="small"
-                  autoHighlight
-                  options={AIRPORTS.filter((airport) => airport.code !== fromCode)}
-                  getOptionLabel={(option) => `${option.city} (${option.code})`}
-                  value={AIRPORTS.find((airport) => airport.code === toCode) ?? null}
-                  onChange={(e, value) => setToCode(value?.code ?? '')}
-                  renderInput={(params) => <TextField {...params} label="To" />}
-                />
-              </FormControl>
+              <Select value={toCode} onValueChange={(value) => setToCode(value)} fullWidth>
+                {AIRPORTS.filter((airport) => airport.code !== fromCode).map((airport) => (
+                  <SelectItem key={airport.code} value={airport.code}>
+                    {airport.city} ({airport.code})
+                  </SelectItem>
+                ))}
+              </Select>
             </Grid>
           </Grid>
           {

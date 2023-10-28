@@ -1,5 +1,6 @@
 import React from 'react';
 import * as RadixSelect from '@radix-ui/react-select';
+import * as ScrollArea from '@radix-ui/react-scroll-area';
 import classnames from 'classnames';
 import styles from './Select.module.scss';
 import ChevronIcon from '../../../img/chevron.svg';
@@ -23,7 +24,14 @@ export const Select = React.forwardRef<
       </RadixSelect.Trigger>
       <RadixSelect.Portal>
         <RadixSelect.Content className={styles.SelectContent} position="popper" style={{ zIndex: 1 }}>
-          <RadixSelect.Viewport className={styles.SelectViewport}>{children}</RadixSelect.Viewport>
+          <ScrollArea.Root className={styles.ScrollAreaRoot} type="auto">
+            <RadixSelect.Viewport className={styles.SelectViewport} asChild>
+              <ScrollArea.Viewport className={styles.ScrollAreaViewport}>{children}</ScrollArea.Viewport>
+            </RadixSelect.Viewport>
+            <ScrollArea.Scrollbar className={styles.ScrollAreaScrollbar} orientation="vertical">
+              <ScrollArea.Thumb className={styles.ScrollAreaThumb} />
+            </ScrollArea.Scrollbar>
+          </ScrollArea.Root>
         </RadixSelect.Content>
       </RadixSelect.Portal>
     </RadixSelect.Root>
