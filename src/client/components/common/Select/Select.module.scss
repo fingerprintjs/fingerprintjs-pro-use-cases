@@ -1,0 +1,83 @@
+.SelectTrigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  background-color: white;
+  border-radius: 6px;
+  border: 1px solid v('gray-box-stroke');
+  height: 48px;
+
+  color: v('dark-black');
+  font-family: Inter;
+  font-size: rem(16px);
+  line-height: 160%; /* 25.6px */
+  letter-spacing: 0.16px;
+
+  &:hover {
+    border: 1px solid black;
+  }
+  [data-placeholder] {
+    color: v('gray-text');
+  }
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.SelectContent {
+  overflow: hidden;
+  background-color: white;
+  border-radius: 6px;
+  z-index: var(--z-dropdown);
+  height: 360px;
+  max-height: var(--radix-select-content-available-height);
+  box-shadow:
+    0px 10px 38px -10px rgba(22, 23, 24, 0.35),
+    0px 10px 20px -15px rgba(22, 23, 24, 0.2);
+}
+
+.SelectViewport {
+  padding: 5px;
+}
+
+.SelectItem {
+  font-size: rem(16px);
+  line-height: 160%;
+  color: v('dark-black');
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 35px 0 25px;
+  position: relative;
+  user-select: none;
+  cursor: pointer;
+}
+
+.SelectItem[data-disabled] {
+  color: v('gray-box-stroke');
+  pointer-events: none;
+}
+
+.SelectItem[data-highlighted] {
+  outline: none;
+  background-color: v('soft-orange-background');
+  color: v('orange-gradient');
+}
+
+.SelectItem[data-state='checked'] {
+  background-color: v('soft-orange-background');
+  font-weight: 600;
+}
+
+.SelectItemIndicator {
+  position: absolute;
+  left: 0;
+  width: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

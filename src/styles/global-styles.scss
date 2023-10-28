@@ -163,19 +163,3 @@ svg,
 img {
   vertical-align: middle;
 }
-
-// img {
-//   width: 100%;
-//   height: auto;
-// }
-
-// In Safari and iOS the img element is placed above the wrapper hiding the curved borders
-.gatsby-image-wrapper {
-  position: relative;
-  z-index: 0;
-}
-
-// We don't want to show the captcha badge
-.grecaptcha-badge {
-  visibility: hidden;
-}
