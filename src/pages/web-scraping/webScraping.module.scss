@@ -38,3 +38,10 @@
 .arrowIcon {
   margin: 14px 8px;
 }
+
+.flightCardsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin-top: 64px;
+}

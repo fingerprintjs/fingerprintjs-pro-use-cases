@@ -200,10 +200,7 @@ const Results = ({ data, isFetching, error }: UseQueryResult<FlightQueryResult, 
   }
   if (!flights) return null;
   return (
-    <div>
-      <Box marginTop={(theme) => theme.spacing(2)}>
-        <Typography variant="overline">Found {flights.length} flights</Typography>
-      </Box>
+    <div className={newStyles.flightCardsContainer}>
       {flights.map((flight) => (
         <FlightCard key={flight.flightNumber} flight={flight} />
       ))}
