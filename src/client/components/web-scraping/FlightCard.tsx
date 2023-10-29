@@ -7,15 +7,16 @@ import Image from 'next/image';
 import Button from '../common/Button/Button';
 import StarIcon from '../../img/star.svg';
 import { TEST_IDS } from '../../e2eTestIDs';
+import { HOUR_MS, MINUTE_MS } from '../../../shared/timeUtils';
 
 const TEST_ID = TEST_IDS.webScraping;
 
 // convert time in milliseconds to hours and minutes
-// const formatDurationTime = (time: number) => {
-//   const hours = Math.floor(time / HOUR_MS);
-//   const minutes = (time % HOUR_MS) / MINUTE_MS;
-//   return `${hours}h ${minutes > 0 ? `${minutes}m` : ''}`;
-// };
+const formatDurationTime = (time: number) => {
+  const hours = Math.floor(time / HOUR_MS);
+  const minutes = (time % HOUR_MS) / MINUTE_MS;
+  return `${hours}h ${minutes > 0 ? `${minutes}m` : ''}`;
+};
 
 const formatTime = (time: number) => {
   const date = new Date(time);
@@ -75,11 +76,10 @@ const SingleFlight: FunctionComponent<SingleFlightProps> = ({
         <div className={styles.time} data-test={TEST_ID.departureTime}>
           {formatTime(departureTime)}
         </div>
-        <div className={styles.transition}>Direct</div>
+        <div className={styles.transition}>Direct {formatDurationTime(arrivalTime - departureTime)}</div>
         <div className={styles.time} data-test={TEST_ID.arrivalTime}>
           {formatTime(arrivalTime)}
         </div>
-        {/* <div>{formatDurationTime(arrivalTime - departureTime)}</div> */}
       </div>
     </>
   );

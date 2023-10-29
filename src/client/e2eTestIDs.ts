@@ -20,4 +20,7 @@ export const TEST_IDS = {
     arrivalTime: 'arrivalTime',
     airline: 'airline',
   },
+  common: {
+    alert: 'alert',
+  },
 } as const;
