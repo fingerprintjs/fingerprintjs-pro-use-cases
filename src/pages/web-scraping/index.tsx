@@ -1,4 +1,4 @@
-import { Alert, Box, CircularProgress, Typography } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import FlightCard, { Flight } from '../../client/components/web-scraping/FlightCard';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
@@ -14,6 +14,7 @@ import ArrowIcon from '../../client/img/arrowRight.svg';
 import Image from 'next/image';
 import newStyles from './webScraping.module.scss';
 import Button from '../../client/components/common/Button/Button';
+import Alert from '../../client/components/common/Alert/Alert';
 
 // Make URL query object available as props to the page on first render
 // to read `from`, `to` params and a `disableBotDetection` param for testing and demo purposes
@@ -131,6 +132,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
             event.preventDefault();
             getFlightsQuery.refetch();
           }}
+          className={newStyles.form}
         >
           <div className={newStyles.formInput}>
             <div className={newStyles.locationLabel}>From</div>
@@ -178,25 +180,17 @@ const Results = ({ data, isFetching, error }: UseQueryResult<FlightQueryResult, 
 
   if (isFetching) {
     return (
-      <Box display={'flex'} justifyContent={'center'} margin={3}>
+      <div className={newStyles.loaderContainer}>
         <CircularProgress />
-      </Box>
+      </div>
     );
   }
 
   if (error) {
-    return (
-      <Alert severity="error" className="UsecaseWrapper_alert message">
-        {error.message}
-      </Alert>
-    );
+    return <Alert severity="error">{error.message}</Alert>;
   }
   if (message && severity !== 'success') {
-    return (
-      <Alert severity={severity} className="UsecaseWrapper_alert message">
-        {message}
-      </Alert>
-    );
+    return <Alert severity={severity}>{message}</Alert>;
   }
   if (!flights) return null;
   return (

@@ -17,8 +17,9 @@
   cursor: pointer;
 
   &:hover {
-    border: 1px solid black;
+    border: 1px solid v('orange-gradient');
   }
+
   [data-placeholder] {
     color: v('gray-text');
   }

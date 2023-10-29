@@ -97,7 +97,7 @@
 
 .checkoutContainer {
   padding: rem(16px) rem(16px) rem(32px) rem(32px);
-  border-left: 1px dotted v('orange-gradient');
+  border-left: 1px dashed v('orange-gradient');
   display: flex;
   flex-direction: column;
   gap: rem(24px);
@@ -160,6 +160,7 @@
 
   button {
     flex-grow: 1;
+    cursor: default;
   }
 }
 
