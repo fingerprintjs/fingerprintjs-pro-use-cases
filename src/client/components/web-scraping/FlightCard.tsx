@@ -72,11 +72,12 @@ const SingleFlight: FunctionComponent<SingleFlightProps> = ({
           <div data-test={TEST_ID.destinationAirportCode}>{toCode}</div>
           <div>{toCity}</div>
         </div>
-        <div />
         <div className={styles.time} data-test={TEST_ID.departureTime}>
           {formatTime(departureTime)}
         </div>
-        <div className={styles.transition}>Direct {formatDurationTime(arrivalTime - departureTime)}</div>
+        <div className={styles.transition}>
+          Direct <span>{formatDurationTime(arrivalTime - departureTime)}</span>
+        </div>
         <div className={styles.time} data-test={TEST_ID.arrivalTime}>
           {formatTime(arrivalTime)}
         </div>

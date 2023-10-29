@@ -14,10 +14,14 @@
 
 .formInput {
   display: grid;
-  grid-template-columns: 1fr auto 1fr auto;
   gap: 8px;
   align-items: center;
   width: 100%;
+  grid-template-columns: 1fr auto 1fr auto;
+
+  grid-template-areas:
+    'fromLabel  fromLabel toLabel toLabel'
+    'fromSelect arrow toSelect search';
 
   .searchButton {
     display: flex;
@@ -25,10 +29,22 @@
     padding: 11px 56px;
     justify-content: center;
     align-items: center;
+    grid-area: search;
+  }
+
+  @include media('<=desktop') {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'fromLabel'
+      'fromSelect'
+      'toLabel'
+      'toSelect'
+      'search';
   }
 }
 
-.locationLabel {
+.locationLabelFrom,
+.locationLabelTo {
   color: v('dark-gray');
   font-family: Inter;
   font-size: 14px;
@@ -39,8 +55,33 @@
   text-transform: uppercase;
 }
 
+.locationLabelFrom {
+  grid-area: fromLabel;
+}
+
+.locationLabelTo {
+  grid-area: toLabel;
+}
+
+.formSelectFrom {
+  grid-area: fromSelect;
+}
+
+.formSelectTo {
+  grid-area: toSelect;
+}
+
+.nothing {
+  grid-area: nothing;
+}
+
 .arrowIcon {
   margin: 14px 8px;
+  grid-area: arrow;
+
+  @include media('<=desktop') {
+    display: none;
+  }
 }
 
 .loaderContainer {

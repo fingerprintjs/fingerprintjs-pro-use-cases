@@ -160,7 +160,7 @@ function getFlightResults(fromCode: string, toCode: string): Flight[] {
     const tripLength = roundToFiveMinutes(3 * DAY_MS + Math.random() * DAY_MS);
     const returnDepartureTime = departureTime + tripLength;
     const returnArrivalTime = arrivalTime + tripLength;
-    const price = 50 + Math.floor(Math.random() * 500) * 2;
+    const price = 50 + Math.floor(Math.random() * 400) * 2;
     const flightNumber = `${airline.slice(0, 2).toUpperCase()}${Math.floor(Math.random() * 1000)}`;
 
     results.push({

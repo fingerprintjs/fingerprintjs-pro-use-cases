@@ -4,6 +4,10 @@
   @include shadowSmall();
   display: grid;
   grid-template-columns: 3.15fr 1fr;
+
+  @include media('<=desktop') {
+    grid-template-columns: 1fr;
+  }
 }
 
 .flightsContainer {
@@ -12,6 +16,11 @@
   padding-bottom: rem(32px);
   column-gap: rem(32px);
   row-gap: rem(20px);
+
+  @include media('<=desktop') {
+    grid-template-columns: 1fr;
+    row-gap: 16px;
+  }
 }
 
 .generalFlightInfo {
@@ -26,7 +35,14 @@
   flex-direction: column;
   gap: 8px;
   background: v('light-gray-background');
-  border-radius: 0px 0px 16px 0px;
+  border-radius: 8px 0px 16px 0px;
+
+  @include media('<=desktop') {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 8px 8px 0 0;
+  }
 }
 
 .airline {
@@ -39,6 +55,10 @@
   display: flex;
   gap: 8px;
   align-items: center;
+
+  @include media('<=desktop') {
+    padding-top: rem(16px);
+  }
 }
 
 .flightLabel {
@@ -57,7 +77,11 @@
 .flightTimes {
   display: grid;
   gap: 32px;
-  grid-template-columns: 1fr 1fr 1fr auto;
+  grid-template-columns: 1fr 1fr 1fr;
+
+  @include media('<=desktop') {
+    gap: 8px;
+  }
 }
 
 .location {
@@ -76,6 +100,10 @@
     font-weight: 400;
     line-height: 145%;
   }
+
+  @include media('<=desktop') {
+    padding: 0 16px;
+  }
 }
 
 .time {
@@ -84,6 +112,7 @@
   font-weight: 600;
   line-height: 130%;
   padding: 0 16px;
+  white-space: nowrap;
 }
 
 .transition {
@@ -93,6 +122,10 @@
   line-height: 145%;
   text-align: center;
   border-bottom: 1px solid v('orange-gradient');
+
+  span {
+    white-space: nowrap;
+  }
 }
 
 .checkoutContainer {
@@ -101,6 +134,11 @@
   display: flex;
   flex-direction: column;
   gap: rem(24px);
+
+  @include media('<=desktop') {
+    border-left: none;
+    border-top: 1px dashed v('orange-gradient');
+  }
 }
 
 .priceLabel {
