@@ -4,6 +4,10 @@ import { FunctionComponent } from 'react';
 import styles from './FlightCard.module.scss';
 import { FLIGHT_TAG } from './flightTags';
 import { HOUR_MS, MINUTE_MS } from '../../../shared/timeUtils';
+import DepartureIcon from '../../img/departure.svg';
+import ArrivalIcon from '../../img/arrival.svg';
+import AirCanada from '../../img/airCanada.svg';
+import Image from 'next/image';
 
 // convert time in milliseconds to hours and minutes
 const formatDurationTime = (time: number) => {
@@ -45,10 +49,16 @@ const SingleFlight: FunctionComponent<SingleFlightProps> = ({
     <div className={styles.flight}>
       <div className={styles.generalFlightInfo}>
         <div className={styles.labelDateContainer}>
-          <div className={styles.flightLabel}>{label}</div>
+          <div className={styles.flightLabel}>
+            <Image src={label === 'Departure' ? DepartureIcon : ArrivalIcon} alt="" />
+            {label}
+          </div>
           <div>{departure.toLocaleDateString('en-US', dateOptions)}</div>
         </div>
-        <div className={styles.airline}>{airline}</div>
+        <div className={styles.airline}>
+          <Image src={AirCanada} alt="" />
+          {airline}
+        </div>
       </div>
       <div className={styles.flightTimes}>
         <div className={styles.location}>

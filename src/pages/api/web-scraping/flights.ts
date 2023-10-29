@@ -9,6 +9,8 @@ import { DAY_MS, FIVE_MINUTES_MS, HOUR_MS } from '../../../shared/timeUtils';
 import { AIRPORTS } from '../../web-scraping';
 import { Flight } from '../../../client/components/web-scraping/FlightCard';
 
+const roundToFiveMinutes = (time: number) => Math.round(time / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
+
 export type FlightQuery = {
   from: string;
   to: string;
@@ -153,10 +155,9 @@ function getFlightResults(fromCode: string, toCode: string): Flight[] {
   const airlines = ['United', 'Delta', 'American', 'Southwest', 'Alaska', 'JetBlue'];
   for (const airline of airlines.slice(0, 2 + Math.floor(Math.random() * 4))) {
     const now = Date.now();
-    const departureTime = Math.round((now + Math.random() * DAY_MS) / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
-    const arrivalTime =
-      Math.round((departureTime + 3 * HOUR_MS + Math.random() * (DAY_MS / 2)) / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
-    const tripLength = 3 * DAY_MS + ((Math.random() * DAY_MS) / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
+    const departureTime = roundToFiveMinutes(now + Math.random() * DAY_MS);
+    const arrivalTime = roundToFiveMinutes(departureTime + 3 * HOUR_MS + Math.random() * (DAY_MS / 2));
+    const tripLength = roundToFiveMinutes(3 * DAY_MS + Math.random() * DAY_MS);
     const returnDepartureTime = departureTime + tripLength;
     const returnArrivalTime = arrivalTime + tripLength;
     const price = Math.floor(Math.random() * 1000);
