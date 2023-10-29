@@ -2,19 +2,16 @@
   border-radius: 8px;
   border: 1px solid v('gray-box-stroke');
   @include shadowSmall();
+  display: grid;
+  grid-template-columns: 3.15fr 1fr;
 }
 
 .flightsContainer {
-  display: flex;
-  flex-direction: column;
-  gap: rem(20px);
-  padding-bottom: rem(16px);
-}
-
-.flight {
   display: grid;
   grid-template-columns: 1fr 3fr;
-  gap: rem(32px);
+  padding-bottom: rem(32px);
+  column-gap: rem(32px);
+  row-gap: rem(20px);
 }
 
 .generalFlightInfo {
@@ -25,7 +22,6 @@
 
 .labelDateContainer {
   display: flex;
-  //   width: 260px;
   padding: rem(16px);
   flex-direction: column;
   gap: 8px;
@@ -100,4 +96,78 @@
 }
 
 .checkoutContainer {
+  padding: rem(16px) rem(16px) rem(32px) rem(32px);
+  border-left: 1px dotted v('orange-gradient');
+  display: flex;
+  flex-direction: column;
+  gap: rem(24px);
+}
+
+.priceLabel {
+  margin-bottom: rem(8px);
+  color: v('dark-black');
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 160%;
+  letter-spacing: 0.14px;
+  text-align: right;
+}
+
+.pricePerAdult {
+  color: v('dark-black');
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 130%;
+  margin-bottom: rem(16px);
+  text-align: right;
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  border-top: 1px dashed v('light-grey');
+}
+
+.priceItems {
+  display: flex;
+  flex-direction: column;
+  gap: rem(14px);
+  padding-bottom: 4px;
+}
+
+.priceItem {
+  display: flex;
+  justify-content: space-between;
+  color: v('dark-gray');
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 160%;
+  letter-spacing: 0.14px;
+}
+
+.finalPrice {
+  display: flex;
+  justify-content: space-between;
+  color: v('dark-black');
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 130%;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+
+  button {
+    flex-grow: 1;
+  }
+}
+
+.favorite {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: rem(12px) rem(14px);
+  border-radius: 8px;
+  border: 1px solid v('orange-gradient');
 }

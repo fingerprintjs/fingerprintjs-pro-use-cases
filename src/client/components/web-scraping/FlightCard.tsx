@@ -1,20 +1,19 @@
-import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
-import FlightIcon from '@mui/icons-material/Flight';
 import { FunctionComponent } from 'react';
 import styles from './FlightCard.module.scss';
 import { FLIGHT_TAG } from './flightTags';
-import { HOUR_MS, MINUTE_MS } from '../../../shared/timeUtils';
 import DepartureIcon from '../../img/departure.svg';
 import ArrivalIcon from '../../img/arrival.svg';
 import AirCanada from '../../img/airCanada.svg';
 import Image from 'next/image';
+import Button from '../common/Button/Button';
+import StarIcon from '../../img/star.svg';
 
 // convert time in milliseconds to hours and minutes
-const formatDurationTime = (time: number) => {
-  const hours = Math.floor(time / HOUR_MS);
-  const minutes = (time % HOUR_MS) / MINUTE_MS;
-  return `${hours}h ${minutes > 0 ? `${minutes}m` : ''}`;
-};
+// const formatDurationTime = (time: number) => {
+//   const hours = Math.floor(time / HOUR_MS);
+//   const minutes = (time % HOUR_MS) / MINUTE_MS;
+//   return `${hours}h ${minutes > 0 ? `${minutes}m` : ''}`;
+// };
 
 const formatTime = (time: number) => {
   const date = new Date(time);
@@ -46,7 +45,7 @@ const SingleFlight: FunctionComponent<SingleFlightProps> = ({
   const departure = new Date(departureTime);
   const dateOptions: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric', year: 'numeric' };
   return (
-    <div className={styles.flight}>
+    <>
       <div className={styles.generalFlightInfo}>
         <div className={styles.labelDateContainer}>
           <div className={styles.flightLabel}>
@@ -76,7 +75,7 @@ const SingleFlight: FunctionComponent<SingleFlightProps> = ({
         <div className={styles.time}>{formatTime(arrivalTime)}</div>
         {/* <div>{formatDurationTime(arrivalTime - departureTime)}</div> */}
       </div>
-    </div>
+    </>
   );
 };
 
@@ -99,13 +98,10 @@ export type FlightCardProps = {
 };
 
 export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
-  // const departure = new Date(flight.departureTime);
-  // const arrival = new Date(flight.arrivalTime);
-  // const returnDeparture = new Date(flight.returnDepartureTime);
-  // const returnArrival = new Date(flight.returnArrivalTime);
-  // const duration = arrival.getTime() - departure.getTime();
-  // const timeOptions: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
-  // const dateOptions: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
+  const taxes = 20;
+  const priceTwoAdults = flight.price - taxes;
+  const pricePerAdult = priceTwoAdults / 2;
+  const total = flight.price;
 
   return (
     <div className={styles.flightCard}>
@@ -131,7 +127,35 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
           label="Arrival"
         />
       </div>
-      <div className={styles.checkoutContainer}></div>
+      <div className={styles.checkoutContainer}>
+        <div>
+          <div className={styles.priceLabel}>Price per adult</div>
+          <div className={styles.pricePerAdult}>${pricePerAdult}</div>
+        </div>
+        <div className={styles.priceItems}>
+          <div className={styles.priceItem}>
+            <span>2 adults</span>
+            <span>${priceTwoAdults}</span>
+          </div>
+          <div className={styles.priceItem}>
+            <span>Taxes and charges</span>
+            <span>${taxes}</span>
+          </div>
+        </div>
+        <div className={styles.finalPrice}>
+          <span>Final price</span>
+          <span>${total}</span>
+        </div>
+        <div className={styles.line}></div>
+        <div className={styles.actions}>
+          <div className={styles.favorite}>
+            <Image src={StarIcon} alt="Save to favorites" />
+          </div>
+          <Button size="medium" variant="primary">
+            Buy
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };
