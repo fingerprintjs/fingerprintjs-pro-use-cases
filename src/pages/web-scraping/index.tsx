@@ -1,18 +1,6 @@
-import {
-  Alert,
-  Autocomplete,
-  Box,
-  Button,
-  CircularProgress,
-  FormControl,
-  Grid,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Alert, Box, CircularProgress, Typography } from '@mui/material';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import FlightCard, { Flight } from '../../client/components/web-scraping/FlightCard';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import styles from '../../styles/web-scraping.module.css';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useQueryState } from 'next-usequerystate';
 import { useQuery, UseQueryResult } from 'react-query';
@@ -22,6 +10,10 @@ import { CheckResultObject } from '../../server/checkResult';
 import { USE_CASES } from '../../client/components/common/content';
 import { CustomPageProps } from '../_app';
 import { Select, SelectItem } from '../../client/components/common/Select/Select';
+import ArrowIcon from '../../client/img/arrowRight.svg';
+import Image from 'next/image';
+import newStyles from './webScraping.module.scss';
+import Button from '../../client/components/common/Button/Button';
 
 // Make URL query object available as props to the page on first render
 // to read `from`, `to` params and a `disableBotDetection` param for testing and demo purposes
@@ -132,18 +124,20 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
 
   return (
     <>
-      <UseCaseWrapper useCase={USE_CASES.webScraping} embed={embed}>
-        <Box marginBottom={(theme) => theme.spacing(2)}>
-          <Typography variant="overline">Search for today&apos;s flights</Typography>
-        </Box>
+      <UseCaseWrapper useCase={USE_CASES.webScraping} embed={embed} contentSx={{ maxWidth: 'none' }}>
+        <h2 className={newStyles.searchTitle}>Search for today&apos;s flights</h2>
         <form
           onSubmit={(event) => {
             event.preventDefault();
             getFlightsQuery.refetch();
           }}
         >
-          <Grid container spacing={1} marginBottom={3}>
-            <Grid item xs={12} sm={5.5}>
+          <div className={newStyles.formInput}>
+            <div className={newStyles.locationLabel}>From</div>
+            <div />
+            <div className={newStyles.locationLabel}>To</div>
+            <div />
+            <div className={newStyles.formLocationBlock}>
               <Select value={fromCode} onValueChange={(value) => setFromCode(value)} fullWidth>
                 {AIRPORTS.filter((airport) => airport.code !== toCode).map((airport) => (
                   <SelectItem key={airport.code} value={airport.code}>
@@ -151,13 +145,9 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
                   </SelectItem>
                 ))}
               </Select>
-            </Grid>
-            <Grid item xs={12} sm={1} display="flex" justifyContent={'center'} alignItems="center">
-              <Box alignItems={'center'} display="flex" justifyContent={'center'} fontSize={28}>
-                <ArrowForwardIcon className={styles.formArrow} />
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={5.5}>
+            </div>
+            <Image src={ArrowIcon} alt="" className={newStyles.arrowIcon} />
+            <div className={newStyles.formLocationBlock}>
               <Select value={toCode} onValueChange={(value) => setToCode(value)} fullWidth>
                 {AIRPORTS.filter((airport) => airport.code !== fromCode).map((airport) => (
                   <SelectItem key={airport.code} value={airport.code}>
@@ -165,21 +155,17 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
                   </SelectItem>
                 ))}
               </Select>
-            </Grid>
-          </Grid>
-          {
+            </div>
             <Button
               type="submit"
-              size="large"
-              variant="contained"
-              color="primary"
-              disableElevation
-              fullWidth
+              size="medium"
+              variant="primary"
+              className={newStyles.searchButton}
               disabled={!toCode || !fromCode || isFetching}
             >
-              Search flights
+              Search
             </Button>
-          }
+          </div>
         </form>
         <Results {...getFlightsQuery} />
       </UseCaseWrapper>
