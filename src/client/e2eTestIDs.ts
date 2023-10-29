@@ -10,4 +10,14 @@ export const TEST_IDS = {
     articleContent: 'articleContent',
     goBack: 'goBack',
   },
+  webScraping: {
+    search: 'search',
+    card: 'card',
+    originAirportCode: 'originAirportCode',
+    destinationAirportCode: 'destinationAirportCode',
+    price: 'price',
+    departureTime: 'departureTime',
+    arrivalTime: 'arrivalTime',
+    airline: 'airline',
+  },
 } as const;

@@ -1,12 +1,14 @@
 import { FunctionComponent } from 'react';
 import styles from './FlightCard.module.scss';
-import { FLIGHT_TAG } from './flightTags';
 import DepartureIcon from '../../img/departure.svg';
 import ArrivalIcon from '../../img/arrival.svg';
 import AirCanada from '../../img/airCanada.svg';
 import Image from 'next/image';
 import Button from '../common/Button/Button';
 import StarIcon from '../../img/star.svg';
+import { TEST_IDS } from '../../e2eTestIDs';
+
+const TEST_ID = TEST_IDS.webScraping;
 
 // convert time in milliseconds to hours and minutes
 // const formatDurationTime = (time: number) => {
@@ -56,23 +58,27 @@ const SingleFlight: FunctionComponent<SingleFlightProps> = ({
         </div>
         <div className={styles.airline}>
           <Image src={AirCanada} alt="" />
-          {airline}
+          <span data-test={TEST_ID.airline}>{airline}</span>
         </div>
       </div>
       <div className={styles.flightTimes}>
         <div className={styles.location}>
-          <div>{fromCode}</div>
+          <div data-test={TEST_ID.originAirportCode}>{fromCode}</div>
           <div>{fromCity}</div>
         </div>
         <div />
         <div className={styles.location}>
-          <div>{toCode}</div>
+          <div data-test={TEST_ID.destinationAirportCode}>{toCode}</div>
           <div>{toCity}</div>
         </div>
         <div />
-        <div className={styles.time}>{formatTime(departureTime)}</div>
+        <div className={styles.time} data-test={TEST_ID.departureTime}>
+          {formatTime(departureTime)}
+        </div>
         <div className={styles.transition}>Direct</div>
-        <div className={styles.time}>{formatTime(arrivalTime)}</div>
+        <div className={styles.time} data-test={TEST_ID.arrivalTime}>
+          {formatTime(arrivalTime)}
+        </div>
         {/* <div>{formatDurationTime(arrivalTime - departureTime)}</div> */}
       </div>
     </>
@@ -104,7 +110,7 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
   const total = flight.price;
 
   return (
-    <div className={styles.flightCard}>
+    <div className={styles.flightCard} data-test={TEST_ID.card}>
       <div className={styles.flightsContainer}>
         <SingleFlight
           fromCity={flight.fromCity}
@@ -144,7 +150,7 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
         </div>
         <div className={styles.finalPrice}>
           <span>Final price</span>
-          <span>${total}</span>
+          <span data-test={TEST_ID.price}>${total}</span>
         </div>
         <div className={styles.line}></div>
         <div className={styles.actions}>
@@ -161,76 +167,3 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
 };
 
 export default FlightCard;
-
-// <Card sx={(theme) => ({ marginTop: theme.spacing(2) })} variant={'outlined'} data-test={FLIGHT_TAG.card}>
-//   <CardContent>
-//     <div className={styles.container}>
-//       <div className={styles.origin} data-test={FLIGHT_TAG.origin}>
-//         <Typography fontSize={'small'} className={styles.date}>
-//           {departure.toLocaleDateString('en-US', dateOptions)}
-//         </Typography>
-//         <Typography className={styles.time} data-test={FLIGHT_TAG.time}>
-//           {departure.toLocaleTimeString('en-US', timeOptions)}
-//         </Typography>
-//         <Typography className={styles.city}>{flight.fromCity}</Typography>
-//         <Typography
-//           className={styles.airportCode}
-//           fontSize="small"
-//           data-test={FLIGHT_TAG.airportCode}
-//         >{`(${flight.fromCode})`}</Typography>
-//       </div>
-//       <div className={styles.middle}>
-//         <Typography fontSize={'small'} className={styles.duration}>
-//           {formatTime(duration)}
-//         </Typography>
-//         <div className={styles.transition}>
-//           <div className={styles.circleContainer}>
-//             <div className={styles.circle} />
-//           </div>
-//           <div className={styles.line}></div>
-//           <div className={styles.arrow}>
-//             <FlightIcon fontSize="small" />
-//           </div>
-//           <div className={styles.line}></div>
-//           <div className={styles.circleContainer}>
-//             <div className={styles.circle} />
-//           </div>
-//         </div>
-//         <Typography
-//           fontSize={'small'}
-//           className={styles.airline}
-//           // @ts-ignore
-//           sx={(theme) => ({ backgroundColor: theme.palette.headerLight })}
-//           data-test={FLIGHT_TAG.airline}
-//         >
-//           {flight.airline}
-//         </Typography>
-//       </div>
-//       <div className={styles.destination} data-test={FLIGHT_TAG.destination}>
-//         <Typography fontSize="small" className={styles.date}>
-//           {arrival.toLocaleDateString('en-US', dateOptions)}
-//         </Typography>
-//         <Typography className={styles.time} data-test={FLIGHT_TAG.time}>
-//           {arrival.toLocaleTimeString('en-US', timeOptions)}
-//         </Typography>
-//         <Typography className={styles.city}>{flight.toCity}</Typography>
-//         <Typography
-//           className={styles.airportCode}
-//           data-test={FLIGHT_TAG.airportCode}
-//           fontSize="small"
-//         >{`(${flight.toCode})`}</Typography>
-//       </div>
-//     </div>
-//   </CardContent>
-//   <CardActions
-//     sx={(theme) => ({
-//       // @ts-ignore
-//       backgroundColor: theme.palette.accentBackground,
-//     })}
-//     className={styles.actions}
-//   >
-//     <Button variant="outlined">
-//       Book for&nbsp;<span data-test={FLIGHT_TAG.price}>${flight.price}</span>
-//     </Button>
-//   </CardActions>
-// </Card>
