@@ -24,6 +24,12 @@ const formatTime = (time: number) => {
   return date.toLocaleTimeString('en-US', timeOptions);
 };
 
+const formatDate = (time: number) => {
+  const date = new Date(time);
+  const dateOptions: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric', year: 'numeric' };
+  return date.toLocaleDateString('en-US', dateOptions);
+};
+
 type SingleFlightProps = {
   fromCity: string;
   toCity: string;
@@ -45,8 +51,6 @@ const SingleFlight: FunctionComponent<SingleFlightProps> = ({
   airline,
   label,
 }) => {
-  const departure = new Date(departureTime);
-  const dateOptions: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric', year: 'numeric' };
   return (
     <>
       <div className={styles.generalFlightInfo}>
@@ -55,7 +59,7 @@ const SingleFlight: FunctionComponent<SingleFlightProps> = ({
             <Image src={label === 'Departure' ? DepartureIcon : ArrivalIcon} alt="" />
             {label}
           </div>
-          <div>{departure.toLocaleDateString('en-US', dateOptions)}</div>
+          <div>{formatDate(departureTime)}</div>
         </div>
         <div className={styles.airline}>
           <Image src={AirCanada} alt="" />

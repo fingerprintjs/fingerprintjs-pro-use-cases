@@ -52,7 +52,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    border-radius: 8px 8px 0 0;
+    border-radius: rem(8px) rem(8px) 0 0;
     padding: rem(6px) rem(12px);
     flex-wrap: wrap;
   }
@@ -83,7 +83,7 @@
 .flightLabel {
   color: v('dark-black');
   font-family: Inter;
-  font-size: 24px;
+  font-size: rem(24px);
   font-style: normal;
   font-weight: 600;
   line-height: 130%;
@@ -93,7 +93,7 @@
   align-items: flex-end;
 
   @include media('<=desktop') {
-    font-size: 16px;
+    font-size: rem(16px);
 
     img {
       width: 20px;
@@ -116,20 +116,19 @@
 }
 
 .location {
-  padding: 16px 16px 0px 16px;
+  padding: rem(16px) rem(16px) 0px rem(16px);
   color: v('dark-black');
   display: flex;
   flex-direction: column;
 
   @include media('<=desktop') {
-    padding: 16px 8px 0px 8px;
+    padding: rem(16px) rem(8px) 0px rem(8px);
   }
 
   @include media('<=tablet') {
-    padding: 0 12px;
+    padding: 0 rem(12px);
   }
 
-  // Airport code
   .airportCode {
     font-size: rem(24px);
     font-weight: 600;
@@ -141,10 +140,9 @@
   }
 
   .city {
-    font-size: 16px;
+    font-size: rem(16px);
     font-weight: 400;
     line-height: 145%;
-    // margin-bottom: 64px;
 
     @include media('<=desktop') {
       font-size: rem(12px);
@@ -153,7 +151,7 @@
 
   .time {
     color: v('dark-black');
-    font-size: 24px;
+    font-size: rem(24px);
     font-weight: 600;
     line-height: 130%;
     white-space: nowrap;
@@ -176,7 +174,7 @@
   padding: rem(16px);
 
   @include media('<=desktop') {
-    padding: 16px 8px 0px 8px;
+    padding: rem(16px) rem(8px) 0px rem(8px);
   }
 
   @include media('<360px') {
@@ -226,7 +224,7 @@
 .priceLabel {
   margin-bottom: rem(8px);
   color: v('dark-black');
-  font-size: 14px;
+  font-size: rem(14px);
   font-weight: 500;
   line-height: 160%;
   letter-spacing: 0.14px;
@@ -240,7 +238,7 @@
 
 .pricePerAdult {
   color: v('dark-black');
-  font-size: 24px;
+  font-size: rem(24px);
   font-weight: 600;
   line-height: 130%;
   margin-bottom: rem(16px);
@@ -273,18 +271,18 @@
   display: flex;
   justify-content: space-between;
   color: v('dark-gray');
-  font-size: 14px;
+  font-size: rem(14px);
   font-weight: 400;
   line-height: 160%;
   letter-spacing: 0.14px;
   flex-wrap: wrap;
 
-  @include media('<=desktop') {
-    font-size: rem(12px);
-  }
-
   :last-child {
     margin-left: auto;
+  }
+
+  @include media('<=desktop') {
+    font-size: rem(12px);
   }
 }
 
@@ -292,7 +290,7 @@
   display: flex;
   justify-content: space-between;
   color: v('dark-black');
-  font-size: 24px;
+  font-size: rem(24px);
   font-weight: 600;
   line-height: 130%;
   flex-wrap: wrap;
