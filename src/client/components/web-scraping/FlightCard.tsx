@@ -64,22 +64,26 @@ const SingleFlight: FunctionComponent<SingleFlightProps> = ({
       </div>
       <div className={styles.flightTimes}>
         <div className={styles.location}>
-          <div data-test={TEST_ID.originAirportCode}>{fromCode}</div>
-          <div>{fromCity}</div>
-        </div>
-        <div />
-        <div className={styles.location}>
-          <div data-test={TEST_ID.destinationAirportCode}>{toCode}</div>
-          <div>{toCity}</div>
-        </div>
-        <div className={styles.time} data-test={TEST_ID.departureTime}>
-          {formatTime(departureTime)}
+          <div className={styles.airportCode} data-test={TEST_ID.originAirportCode}>
+            {fromCode}
+          </div>
+          <div className={styles.city}>{fromCity}</div>
+          <div className={styles.time} data-test={TEST_ID.departureTime}>
+            {formatTime(departureTime)}
+          </div>
         </div>
         <div className={styles.transition}>
-          Direct <span>{formatDurationTime(arrivalTime - departureTime)}</span>
+          <div>Direct</div>
+          <div>{formatDurationTime(arrivalTime - departureTime)}</div>
         </div>
-        <div className={styles.time} data-test={TEST_ID.arrivalTime}>
-          {formatTime(arrivalTime)}
+        <div className={styles.location}>
+          <div className={styles.airportCode} data-test={TEST_ID.destinationAirportCode}>
+            {toCode}
+          </div>
+          <div className={styles.city}>{toCity}</div>
+          <div className={styles.time} data-test={TEST_ID.arrivalTime}>
+            {formatTime(arrivalTime)}
+          </div>
         </div>
       </div>
     </>

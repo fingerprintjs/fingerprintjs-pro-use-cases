@@ -4,6 +4,7 @@
   @include shadowSmall();
   display: grid;
   grid-template-columns: 3.15fr 1fr;
+  overflow: hidden;
 
   @include media('<=desktop') {
     grid-template-columns: 1fr;
@@ -19,7 +20,8 @@
 
   @include media('<=desktop') {
     grid-template-columns: 1fr;
-    row-gap: 16px;
+    row-gap: rem(16px);
+    padding-bottom: rem(16px);
   }
 }
 
@@ -45,6 +47,7 @@
     border-radius: 8px 8px 0 0;
     font-size: rem(10px);
     padding: rem(6px) rem(12px);
+    flex-wrap: wrap;
   }
 }
 
@@ -98,16 +101,26 @@
   grid-template-columns: 1fr 1fr 1fr;
 
   @include media('<=desktop') {
-    gap: 8px;
+    gap: 0px;
+  }
+
+  @include media('<360px') {
+    grid-template-columns: auto;
   }
 }
 
 .location {
-  padding: 16px;
+  padding: 16px 16px 0px 16px;
   color: v('dark-black');
+  display: flex;
+  flex-direction: column;
+
+  @include media('<=desktop') {
+    padding: 0 12px;
+  }
 
   // Airport code
-  :first-child {
+  .airportCode {
     font-size: rem(24px);
     font-weight: 600;
     line-height: 130%;
@@ -117,49 +130,64 @@
     }
   }
 
-  // City name
-  :last-child {
+  .city {
     font-size: 16px;
     font-weight: 400;
     line-height: 145%;
+    // margin-bottom: 64px;
 
     @include media('<=desktop') {
       font-size: rem(12px);
     }
   }
 
-  @include media('<=desktop') {
-    padding: 0 16px;
-  }
-}
+  .time {
+    color: v('dark-black');
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 130%;
+    white-space: nowrap;
+    margin-top: auto;
 
-.time {
-  color: v('dark-black');
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 130%;
-  padding: 0 16px;
-  white-space: nowrap;
-
-  @include media('<=desktop') {
-    font-size: rem(18px);
+    @include media('<=desktop') {
+      font-size: rem(18px);
+      margin-top: rem(8px);
+    }
   }
 }
 
 .transition {
   color: v('orange-gradient');
-  font-size: 16px;
-  font-weight: 500;
   line-height: 145%;
   text-align: center;
-  border-bottom: 1px solid v('orange-gradient');
-
-  span {
-    white-space: nowrap;
-  }
+  padding: rem(16px);
 
   @include media('<=desktop') {
-    font-size: rem(14px);
+    padding: 0;
+  }
+
+  @include media('<360px') {
+    padding: rem(16px);
+  }
+
+  // Direct
+  :first-child {
+    border-bottom: 1px solid v('orange-gradient');
+    font-size: rem(16px);
+    font-weight: 500;
+    padding-bottom: 2px;
+    @include media('<=desktop') {
+      font-size: rem(14px);
+    }
+  }
+
+  // Duration
+  :last-child {
+    white-space: nowrap;
+    font-size: rem(12px);
+    @include media('<=desktop') {
+      font-size: rem(10px);
+    }
   }
 }
 
@@ -173,6 +201,8 @@
   @include media('<=desktop') {
     border-left: none;
     border-top: 1px dashed v('orange-gradient');
+    padding: rem(16px) rem(12px);
+    gap: rem(16px);
   }
 }
 
@@ -230,9 +260,14 @@
   font-weight: 400;
   line-height: 160%;
   letter-spacing: 0.14px;
+  flex-wrap: wrap;
 
   @include media('<=desktop') {
     font-size: rem(12px);
+  }
+
+  :last-child {
+    margin-left: auto;
   }
 }
 
@@ -243,6 +278,7 @@
   font-size: 24px;
   font-weight: 600;
   line-height: 130%;
+  flex-wrap: wrap;
 
   @include media('<=desktop') {
     font-size: rem(20px);
