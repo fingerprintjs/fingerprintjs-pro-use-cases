@@ -10,6 +10,10 @@
 
 .form {
   margin-bottom: 64px;
+
+  @include media('<=desktop') {
+    margin-bottom: 16px;
+  }
 }
 
 .formInput {
@@ -18,10 +22,7 @@
   align-items: center;
   width: 100%;
   grid-template-columns: 1fr auto 1fr auto;
-
-  grid-template-areas:
-    'fromLabel  fromLabel toLabel toLabel'
-    'fromSelect arrow toSelect search';
+  align-items: flex-end;
 
   .searchButton {
     display: flex;
@@ -29,22 +30,15 @@
     padding: 11px 56px;
     justify-content: center;
     align-items: center;
-    grid-area: search;
   }
 
   @include media('<=desktop') {
     grid-template-columns: 1fr;
-    grid-template-areas:
-      'fromLabel'
-      'fromSelect'
-      'toLabel'
-      'toSelect'
-      'search';
+    gap: 12px;
   }
 }
 
-.locationLabelFrom,
-.locationLabelTo {
+.locationLabel {
   color: v('dark-gray');
   font-family: Inter;
   font-size: 14px;
@@ -53,31 +47,11 @@
   line-height: 100%;
   letter-spacing: 0.42px;
   text-transform: uppercase;
-}
-
-.locationLabelFrom {
-  grid-area: fromLabel;
-}
-
-.locationLabelTo {
-  grid-area: toLabel;
-}
-
-.formSelectFrom {
-  grid-area: fromSelect;
-}
-
-.formSelectTo {
-  grid-area: toSelect;
-}
-
-.nothing {
-  grid-area: nothing;
+  margin-bottom: 8px;
 }
 
 .arrowIcon {
   margin: 14px 8px;
-  grid-area: arrow;
 
   @include media('<=desktop') {
     display: none;

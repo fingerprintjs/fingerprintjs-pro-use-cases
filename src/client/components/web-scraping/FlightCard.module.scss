@@ -36,12 +36,15 @@
   gap: 8px;
   background: v('light-gray-background');
   border-radius: 8px 0px 16px 0px;
+  font-size: rem(14px);
 
   @include media('<=desktop') {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     border-radius: 8px 8px 0 0;
+    font-size: rem(10px);
+    padding: rem(6px) rem(12px);
   }
 }
 
@@ -58,6 +61,12 @@
 
   @include media('<=desktop') {
     padding-top: rem(16px);
+    font-size: rem(14px);
+
+    img {
+      width: 18px;
+      height: 18px;
+    }
   }
 }
 
@@ -72,6 +81,15 @@
   display: flex;
   gap: 8px;
   align-items: flex-end;
+
+  @include media('<=desktop') {
+    font-size: 16px;
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
 }
 
 .flightTimes {
@@ -88,17 +106,26 @@
   padding: 16px;
   color: v('dark-black');
 
+  // Airport code
   :first-child {
-    font-size: 24px;
+    font-size: rem(24px);
     font-weight: 600;
     line-height: 130%;
+
+    @include media('<=desktop') {
+      font-size: rem(20px);
+    }
   }
 
+  // City name
   :last-child {
     font-size: 16px;
-
     font-weight: 400;
     line-height: 145%;
+
+    @include media('<=desktop') {
+      font-size: rem(12px);
+    }
   }
 
   @include media('<=desktop') {
@@ -113,6 +140,10 @@
   line-height: 130%;
   padding: 0 16px;
   white-space: nowrap;
+
+  @include media('<=desktop') {
+    font-size: rem(18px);
+  }
 }
 
 .transition {
@@ -125,6 +156,10 @@
 
   span {
     white-space: nowrap;
+  }
+
+  @include media('<=desktop') {
+    font-size: rem(14px);
   }
 }
 
@@ -149,6 +184,11 @@
   line-height: 160%;
   letter-spacing: 0.14px;
   text-align: right;
+
+  @include media('<=desktop') {
+    font-size: rem(12px);
+    margin-bottom: rem(4px);
+  }
 }
 
 .pricePerAdult {
@@ -158,6 +198,10 @@
   line-height: 130%;
   margin-bottom: rem(16px);
   text-align: right;
+
+  @include media('<=desktop') {
+    font-size: rem(20px);
+  }
 }
 
 .line {
@@ -171,6 +215,11 @@
   flex-direction: column;
   gap: rem(14px);
   padding-bottom: 4px;
+
+  @include media('<=desktop') {
+    gap: rem(4px);
+    padding-bottom: 0;
+  }
 }
 
 .priceItem {
@@ -181,6 +230,10 @@
   font-weight: 400;
   line-height: 160%;
   letter-spacing: 0.14px;
+
+  @include media('<=desktop') {
+    font-size: rem(12px);
+  }
 }
 
 .finalPrice {
@@ -190,6 +243,10 @@
   font-size: 24px;
   font-weight: 600;
   line-height: 130%;
+
+  @include media('<=desktop') {
+    font-size: rem(20px);
+  }
 }
 
 .actions {
@@ -206,7 +263,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: rem(12px) rem(14px);
+  height: 38px;
+  width: 42px;
   border-radius: 8px;
   border: 1px solid v('orange-gradient');
+  opacity: 0.7;
 }

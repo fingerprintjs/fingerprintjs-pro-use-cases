@@ -158,7 +158,7 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
           <div className={styles.favorite}>
             <Image src={StarIcon} alt="Save to favorites" />
           </div>
-          <Button size="medium" variant="primary">
+          <Button size="small" variant="primary" disabled outlined>
             Buy
           </Button>
         </div>
