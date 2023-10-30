@@ -67,7 +67,7 @@
   flex-wrap: wrap;
 }
 
-.productCardButtons  .addToFavorites {
+.productCardButtons .addToFavorites {
   padding: 8px;
 }
 
@@ -93,7 +93,6 @@
   div {
     cursor: pointer;
     display: flex;
-    stroke: v('orange-gradient');
     padding: 8px 10px;
 
     @include media('<=phone') {
