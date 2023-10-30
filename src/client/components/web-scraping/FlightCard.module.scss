@@ -7,6 +7,10 @@
   overflow: hidden;
 
   @include media('<=desktop') {
+    grid-template-columns: 2.5fr 1fr;
+  }
+
+  @include media('<=tablet') {
     grid-template-columns: 1fr;
   }
 }
@@ -18,7 +22,7 @@
   column-gap: rem(32px);
   row-gap: rem(20px);
 
-  @include media('<=desktop') {
+  @include media('<=tablet') {
     grid-template-columns: 1fr;
     row-gap: rem(16px);
     padding-bottom: rem(16px);
@@ -41,11 +45,14 @@
   font-size: rem(14px);
 
   @include media('<=desktop') {
+    font-size: rem(10px);
+  }
+
+  @include media('<=tablet') {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     border-radius: 8px 8px 0 0;
-    font-size: rem(10px);
     padding: rem(6px) rem(12px);
     flex-wrap: wrap;
   }
@@ -97,11 +104,10 @@
 
 .flightTimes {
   display: grid;
-  gap: 32px;
   grid-template-columns: 1fr 1fr 1fr;
 
-  @include media('<=desktop') {
-    gap: 0px;
+  @include media('<=tablet') {
+    grid-template-columns: auto 1fr auto;
   }
 
   @include media('<360px') {
@@ -116,6 +122,10 @@
   flex-direction: column;
 
   @include media('<=desktop') {
+    padding: 16px 8px 0px 8px;
+  }
+
+  @include media('<=tablet') {
     padding: 0 12px;
   }
 
@@ -151,6 +161,9 @@
 
     @include media('<=desktop') {
       font-size: rem(18px);
+    }
+
+    @include media('<tablet') {
       margin-top: rem(8px);
     }
   }
@@ -163,7 +176,7 @@
   padding: rem(16px);
 
   @include media('<=desktop') {
-    padding: 0;
+    padding: 16px 8px 0px 8px;
   }
 
   @include media('<360px') {
@@ -199,6 +212,10 @@
   gap: rem(24px);
 
   @include media('<=desktop') {
+    padding: rem(16px);
+  }
+
+  @include media('<=tablet') {
     border-left: none;
     border-top: 1px dashed v('orange-gradient');
     padding: rem(16px) rem(12px);
@@ -279,6 +296,10 @@
   font-weight: 600;
   line-height: 130%;
   flex-wrap: wrap;
+
+  :last-child {
+    margin-left: auto;
+  }
 
   @include media('<=desktop') {
     font-size: rem(20px);

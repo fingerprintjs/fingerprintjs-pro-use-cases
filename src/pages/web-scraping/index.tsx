@@ -12,7 +12,7 @@ import { CustomPageProps } from '../_app';
 import { Select, SelectItem } from '../../client/components/common/Select/Select';
 import ArrowIcon from '../../client/img/arrowRight.svg';
 import Image from 'next/image';
-import newStyles from './webScraping.module.scss';
+import styles from './webScraping.module.scss';
 import Button from '../../client/components/common/Button/Button';
 import Alert from '../../client/components/common/Alert/Alert';
 
@@ -126,17 +126,17 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
   return (
     <>
       <UseCaseWrapper useCase={USE_CASES.webScraping} embed={embed} contentSx={{ maxWidth: 'none' }}>
-        <h2 className={newStyles.searchTitle}>Search for today&apos;s flights</h2>
+        <h2 className={styles.searchTitle}>Search for today&apos;s flights</h2>
         <form
           onSubmit={(event) => {
             event.preventDefault();
             getFlightsQuery.refetch();
           }}
-          className={newStyles.form}
+          className={styles.form}
         >
-          <div className={newStyles.formInput}>
+          <div className={styles.formInput}>
             <div>
-              <div className={newStyles.locationLabel}>From</div>
+              <div className={styles.locationLabel}>From</div>
               <Select value={fromCode} onValueChange={(value) => setFromCode(value)} fullWidth>
                 {AIRPORTS.filter((airport) => airport.code !== toCode).map((airport) => (
                   <SelectItem key={airport.code} value={airport.code}>
@@ -145,9 +145,9 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
                 ))}
               </Select>
             </div>
-            <Image src={ArrowIcon} alt="" className={newStyles.arrowIcon} />
+            <Image src={ArrowIcon} alt="" className={styles.arrowIcon} />
             <div>
-              <div className={newStyles.locationLabel}>To</div>
+              <div className={styles.locationLabel}>To</div>
               <Select value={toCode} onValueChange={(value) => setToCode(value)} fullWidth>
                 {AIRPORTS.filter((airport) => airport.code !== fromCode).map((airport) => (
                   <SelectItem key={airport.code} value={airport.code}>
@@ -160,7 +160,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
               type="submit"
               size="medium"
               variant="primary"
-              className={newStyles.searchButton}
+              className={styles.searchButton}
               disabled={!toCode || !fromCode || isFetching}
             >
               Search
@@ -178,7 +178,7 @@ const Results = ({ data, isFetching, error }: UseQueryResult<FlightQueryResult, 
 
   if (isFetching) {
     return (
-      <div className={newStyles.loaderContainer}>
+      <div className={styles.loaderContainer}>
         <CircularProgress />
       </div>
     );
@@ -192,7 +192,7 @@ const Results = ({ data, isFetching, error }: UseQueryResult<FlightQueryResult, 
   }
   if (!flights) return null;
   return (
-    <div className={newStyles.flightCardsContainer}>
+    <div className={styles.flightCardsContainer}>
       {flights.map((flight) => (
         <FlightCard key={flight.flightNumber} flight={flight} />
       ))}

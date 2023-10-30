@@ -154,7 +154,7 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
           </div>
         </div>
         <div className={styles.finalPrice}>
-          <span>Final price</span>
+          <span>Total</span>
           <span data-test={TEST_ID.price}>${total}</span>
         </div>
         <div className={styles.line}></div>
