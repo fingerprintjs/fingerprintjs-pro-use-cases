@@ -23,8 +23,6 @@ export const FRONTEND_REGION: AgentRegion = (process.env.NEXT_PUBLIC_FRONTEND_RE
 export const BACKEND_REGION: Region = BackendRegionMap[process.env.BACKEND_REGION] ?? Region.Global;
 export const SCRIPT_URL_PATTERN =
   process.env.NEXT_PUBLIC_SCRIPT_URL_PATTERN ??
-  'https://fpcf.fingerprinthub.com/DBqbMN7zXxwl4Ei8/J5XlHIBN67YHskdR?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>';
-export const ENDPOINT =
-  process.env.NEXT_PUBLIC_ENDPOINT ??
-  `https://fpcf.fingerprinthub.com/DBqbMN7zXxwl4Ei8/S7lqsWfAyw2lq4Za?region=${FRONTEND_REGION}`;
+  'https://metrics.fingerprinthub.com/web/v<version>/<apiKey>/loader_v<loaderVersion>.js';
+export const ENDPOINT = process.env.NEXT_PUBLIC_ENDPOINT ?? 'https://metrics.fingerprinthub.com';
 export const CUSTOM_TLS_ENDPOINT = process.env.NEXT_PUBLIC_CUSTOM_TLS_ENDPOINT;
