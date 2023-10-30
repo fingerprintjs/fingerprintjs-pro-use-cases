@@ -1,11 +1,15 @@
 .searchTitle {
   color: v('dark-black');
   font-family: Inter;
-  font-size: 24px;
+  font-size: rem(24px);
   font-style: normal;
   font-weight: 500;
   line-height: 130%;
   margin-bottom: 24px;
+
+  @include media('<=phoneLandscape') {
+    font-size: rem(16px);
+  }
 }
 
 .form {
@@ -32,12 +36,13 @@
     align-items: center;
   }
 
-  @include media('<=desktop') {
+  @include media('<=tablet') {
     grid-template-columns: 1fr;
     gap: 12px;
   }
 }
 
+// From/To label
 .locationLabel {
   color: v('dark-gray');
   font-family: Inter;
@@ -48,12 +53,16 @@
   letter-spacing: 0.42px;
   text-transform: uppercase;
   margin-bottom: 8px;
+
+  @include media('<=phoneLandscape') {
+    font-size: rem(12px);
+  }
 }
 
 .arrowIcon {
   margin: 14px 8px;
 
-  @include media('<=desktop') {
+  @include media('<=tablet') {
     display: none;
   }
 }

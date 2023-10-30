@@ -24,6 +24,19 @@
   [data-placeholder] {
     color: v('gray-text');
   }
+
+  @include media('<=phoneLandscape') {
+    font-size: rem(14px);
+  }
+}
+
+.SelectIcon {
+  img {
+    @include media('<=phoneLandscape') {
+      width: 14px;
+      height: 12px;
+    }
+  }
 }
 
 .fullWidth {
@@ -59,6 +72,10 @@
   position: relative;
   user-select: none;
   cursor: pointer;
+
+  @include media('<=phoneLandscape') {
+    font-size: rem(14px);
+  }
 }
 
 .SelectItem[data-disabled] {
