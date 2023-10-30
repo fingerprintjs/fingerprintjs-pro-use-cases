@@ -4,7 +4,6 @@ import * as ScrollArea from '@radix-ui/react-scroll-area';
 import classnames from 'classnames';
 import styles from './Select.module.scss';
 import ChevronIcon from '../../../img/chevron.svg';
-import CheckIcon from '../../../img/check.svg';
 import Image from 'next/image';
 
 export const Select = React.forwardRef<
@@ -45,9 +44,6 @@ export const SelectItem = React.forwardRef<
   return (
     <RadixSelect.Item className={classnames(styles.SelectItem, className)} {...props} ref={forwardedRef}>
       <RadixSelect.ItemText>{children}</RadixSelect.ItemText>
-      <RadixSelect.ItemIndicator className={styles.SelectItemIndicator}>
-        <Image src={CheckIcon} width={12} alt="" />
-      </RadixSelect.ItemIndicator>
     </RadixSelect.Item>
   );
 });
