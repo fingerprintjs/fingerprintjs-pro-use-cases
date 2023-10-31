@@ -4,10 +4,10 @@ import { CUSTOM_TLS_ENDPOINT, ENDPOINT, FRONTEND_REGION, PUBLIC_API_KEY, SCRIPT_
 
 export const FP_LOAD_OPTIONS: LoadOptions = {
   apiKey: PUBLIC_API_KEY,
-  scriptUrlPattern: [SCRIPT_URL_PATTERN, FingerprintJS.defaultScriptUrlPattern],
-  endpoint: [ENDPOINT, FingerprintJS.defaultEndpoint],
-  region: FRONTEND_REGION,
-  tlsEndpoint: CUSTOM_TLS_ENDPOINT ? [CUSTOM_TLS_ENDPOINT, FingerprintJS.defaultTlsEndpoint] : undefined,
+  // scriptUrlPattern: [SCRIPT_URL_PATTERN, FingerprintJS.defaultScriptUrlPattern],
+  // endpoint: [ENDPOINT, FingerprintJS.defaultEndpoint],
+  region: 'eu',
+  // tlsEndpoint: CUSTOM_TLS_ENDPOINT ? [CUSTOM_TLS_ENDPOINT, FingerprintJS.defaultTlsEndpoint] : undefined,
 };
 
 // This example demonstrates using the NPM package for the Fingerprint Pro agent.
