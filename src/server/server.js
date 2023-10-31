@@ -72,7 +72,7 @@ export async function getVisitorDataWithRequestId(visitorId, requestId) {
   }
 
     // TODO: Change endpoint
-    const response = await fetch(`https://api.fpjs.io/visitors/${visitorId}?request_id=${requestId}`, {
+    const response = await fetch(`https://eu.api.fpjs.io/visitors/${visitorId}?request_id=${requestId}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -82,7 +82,7 @@ export async function getVisitorDataWithRequestId(visitorId, requestId) {
 
     const responseStatus = response.status;
     if (responseStatus !== 200) {
-      throw new Error('Invalid Server API Rquest for the visitors endpoint.');
+      throw new Error('Invalid Server API Request for the visitors endpoint.');
     }
     const responseJson = await response.json();
     return responseJson;
@@ -96,7 +96,7 @@ export async function getEventDataWithRequestId(requestId) {
   }
 
   // TODO: Change endpoint
-  const response = await fetch(`https://api.fpjs.io/events/${requestId}`, {
+  const response = await fetch(`https://eu.api.fpjs.io/events/${requestId}`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
