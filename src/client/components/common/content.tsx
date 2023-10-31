@@ -237,7 +237,7 @@ export const USE_CASES = {
       </p>,
     ],
     description:
-      'Use the demo to see how Fingerprint can protect your transactions from card cracking attempts, stolen credit cards, and reduce chargebacks.',
+      'Use the demo to see how Fingerprint can protect your transactions from card cracking attempts, stolen credit cards, and reduce chargebacks. Each transaction is also assessed against rules with the specific weight configured in the Fingerprint dashboard. If the summary of these scores hits the threshold, the transaction will be declined. Try to submit a transaction from the Tor browser or via proxy in the incognito mode. Your transaction will be declined.',
     descriptionMeta:
       'See in real-time how Fingerprint can stop and prevent online payment fraud. Try out our live demo to see how Fingerprint can protect your transactions from card cracking attempts, stolen credit cards, and reduce chargebacks.',
     doNotMentionResetButton: true,
