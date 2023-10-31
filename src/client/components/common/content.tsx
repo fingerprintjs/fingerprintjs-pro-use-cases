@@ -223,6 +223,57 @@ export const USE_CASES = {
       },
     ],
   },
+  paymentFraudEventRiskScore: {
+    title: 'Payment Fraud With Event Risk Score',
+    titleMeta: 'Fingerprint Use Cases | Payment Fraud Live Demo',
+    url: '/payment-fraud-event-risk-score',
+    articleUrl: 'https://fingerprint.com/use-cases/payment-fraud/',
+    iconSvg: PaymentFraudIcon,
+    descriptionHomepage: [
+      <p>
+        Identify anonymous visitors behind every transaction. Use Fingerprint’s Identification to recognize repeated
+        card testing activity and link it to specific users. Protect your users and your business against various forms
+        of payment fraud.
+      </p>,
+    ],
+    description:
+      'Use the demo to see how Fingerprint can protect your transactions from card cracking attempts, stolen credit cards, and reduce chargebacks.',
+    descriptionMeta:
+      'See in real-time how Fingerprint can stop and prevent online payment fraud. Try out our live demo to see how Fingerprint can protect your transactions from card cracking attempts, stolen credit cards, and reduce chargebacks.',
+    doNotMentionResetButton: true,
+    instructions: [
+      <>Change the pre-filled card details to simulate testing stolen credit cards.</>,
+      <>Try placing an order multiple times. You will be stopped after 3 attempts.</>,
+      ({ setPulseResetButton }) => (
+        <>
+          Click the <RestartHint setPulseResetButton={setPulseResetButton} /> button to reset the demo.
+        </>
+      ),
+      <>Use the correct pre-filled card details but select "Ask for chargeback" and place your order.</>,
+      <>Try placing an order again. You won't be able to do it with your chargeback history.</>,
+      ({ setPulseResetButton }) => (
+        <>
+          Click the <RestartHint setPulseResetButton={setPulseResetButton} /> button to reset the demo.
+        </>
+      ),
+      <>
+        Select "Flag this as stolen credit card after purchase" to simulate using a stolen card and place your order.
+      </>,
+      <>Try placing an order again. You won't be able to with your history of stealing credit cards.</>,
+    ],
+    moreResources: [
+      {
+        type: 'Use case tutorial',
+        title: 'Payment Fraud',
+        url: 'https://fingerprint.com/use-cases/payment-fraud/',
+      },
+      {
+        url: 'https://fingerprint.com/blog/omnichannel-fraud/',
+        type: 'Article',
+        title: 'Omnichannel Fraud',
+      },
+    ],
+  },
   paywall: {
     title: 'Paywall',
     titleMeta: 'Fingerprint Use Cases | Content Paywall Live Demo',

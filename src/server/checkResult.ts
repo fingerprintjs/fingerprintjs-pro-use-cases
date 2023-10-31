@@ -49,6 +49,7 @@ export const checkResultType = Object.freeze({
   TooManyUnsuccessfulPayments: 'TooManyUnsuccessfulPayments',
   PaidWithStolenCard: 'PaidWithStolenCard',
   IncorrectCardDetails: 'IncorrectCardDetails',
+  CardTesting: 'CardTesting',
 
   // Loan risk specific checks.
   PossibleLoanFraud: 'PossibleLoanFraud',

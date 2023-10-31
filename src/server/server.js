@@ -1,9 +1,9 @@
 // @ts-check
 import { Sequelize } from 'sequelize';
 import { areVisitorIdAndRequestIdValid } from './checks';
-import { fingerprintJsApiClient } from './fingerprint-api';
 import { CheckResult, checkResultType } from './checkResult';
 import { sendForbiddenResponse } from './response';
+import { SERVER_API_KEY } from './const';
 
 // Provision the database.
 // In the Stackblitz environment, this db is stored locally in your browser.
@@ -71,10 +71,45 @@ export async function getVisitorDataWithRequestId(visitorId, requestId) {
     throw new Error('visitorId or requestId not provided.');
   }
 
-  // Use our Node SDK to obtain visitor history
-  return fingerprintJsApiClient.getVisitorHistory(visitorId, {
-    request_id: requestId,
+    // TODO: Change endpoint
+    const response = await fetch(`https://api.fpjs.io/visitors/${visitorId}?request_id=${requestId}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Auth-API-Key': SERVER_API_KEY
+      },
+    });
+
+    const responseStatus = response.status;
+    if (responseStatus !== 200) {
+      throw new Error('Invalid Server API Rquest for the visitors endpoint.');
+    }
+    const responseJson = await response.json();
+    return responseJson;
+}
+
+export async function getEventDataWithRequestId(requestId) {
+  // Do not request Server API if provided data is obviously forged,
+  // throw an error instead.
+  if (!requestId) {
+    throw new Error('requestId not provided.');
+  }
+
+  // TODO: Change endpoint
+  const response = await fetch(`https://api.fpjs.io/events/${requestId}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Auth-API-Key': SERVER_API_KEY
+    },
   });
+
+  const responseStatus = response.status;
+  if (responseStatus !== 200) {
+    throw new Error('Invalid Server API Rquest for the events endpoint.');
+  }
+  const responseJson = await response.json();
+  return responseJson;
 }
 
 // Report suspicious user activity according to internal processes here.
