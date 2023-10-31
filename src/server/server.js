@@ -22,6 +22,7 @@ export const ourOrigins = [
   'https://localhost:3000',
   'http://localhost:3000',
   'https://staging.fingerprinthub.com',
+  'https://threat-busters-pfdw2.ondigitalocean.app',
 ];
 
 /** @typedef {'success'|'warning'|'error'} Severity */
