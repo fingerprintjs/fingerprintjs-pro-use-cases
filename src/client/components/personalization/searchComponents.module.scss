@@ -1,0 +1,45 @@
+.searchIcon {
+  @include media('<=phoneLandscape') {
+    height: 24px;
+    width: 24px;
+  }
+}
+
+.searchBox {
+  display: flex;
+  height: 64px;
+  padding: rem(16px);
+  align-items: center;
+  gap: rem(10px);
+
+  border-radius: 6px;
+  border: 1px solid v('gray-box-stroke');
+
+  @include media('<=phoneLandscape') {
+    padding: rem(12px) rem(16px);
+  }
+}
+
+.searchInput {
+  color: v('dark-gray');
+  font-size: rem(16px);
+  line-height: 160%;
+  letter-spacing: 0.16px;
+  border: none;
+  width: 100%;
+
+  @include media('<=phoneLandscape') {
+    font-size: rem(14px);
+  }
+}
+
+.searchHistory {
+  @include media('<=phoneLandscape') {
+    font-size: rem(12px);
+  }
+}
+
+.searchTerm {
+  color: v('orange-gradient');
+  cursor: pointer;
+}

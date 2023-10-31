@@ -11,7 +11,7 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData, v
     });
   }
 
-  const cartItems = await UserCartItem.findAll({
+  const cartItems = (await UserCartItem.findAll({
     where: {
       visitorId: {
         [Op.eq]: visitorId,
@@ -19,7 +19,8 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData, v
     },
     order: [['timestamp', 'DESC']],
     include: Product,
-  });
+    // To-do: Clean this up later, find out how to represent DB associations in TypeScript correctly
+  })) as unknown as UserCartItem[];
 
   return res.status(200).json({
     data: cartItems,

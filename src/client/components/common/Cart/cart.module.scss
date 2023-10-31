@@ -1,0 +1,149 @@
+.cartWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: rem(24px);
+
+  @include media('<=phoneLandscape') {
+    gap: rem(16px);
+  }
+}
+
+.product {
+  display: flex;
+  padding-bottom: rem(32px);
+  gap: rem(24px);
+  border-bottom: 1px solid v('gray-box-stroke');
+
+  img {
+    object-fit: cover;
+    border: 1px solid v('light-grey');
+    border-radius: 2px;
+  }
+
+  @include media('<=phoneLandscape') {
+    padding-bottom: rem(16px);
+  }
+
+  @include media('<=phone') {
+    flex-direction: column;
+    gap: rem(8px);
+  }
+}
+
+.productDescription {
+  flex-grow: 1;
+}
+
+.productName {
+  color: v('dark-black');
+  font-size: rem(16px);
+  font-weight: 600;
+  line-height: 145%;
+  margin-bottom: rem(4px);
+}
+
+.productSubheadline {
+  color: v('dark-gray');
+  font-size: rem(16px);
+  font-weight: 400;
+  line-height: 160%;
+  letter-spacing: 0.16px;
+  margin-bottom: rem(16px);
+
+  @include media('<=phoneLandscape') {
+    font-size: rem(14px);
+  }
+}
+
+.priceAndCount {
+  display: flex;
+  justify-content: space-between;
+
+  @include media('<phoneSmall') {
+    flex-direction: column;
+    gap: rem(8px);
+  }
+}
+
+.price {
+  color: v('dark-black');
+  font-family: Inter;
+  font-size: rem(16px);
+  font-weight: 600;
+  line-height: 145%;
+}
+
+.count {
+  display: flex;
+  padding: rem(4.5px) rem(6px);
+  justify-content: center;
+  align-items: center;
+  gap: rem(3px);
+  align-self: flex-start;
+
+  border-radius: 1.5px;
+  border: 0.75px solid v('gray-box-stroke');
+
+  color: v('dark-gray');
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 115.5%;
+  letter-spacing: 0.12px;
+
+  svg {
+    cursor: pointer;
+  }
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+
+  @include media('<=phoneSmall') {
+    flex-direction: column;
+  }
+
+  :first-child {
+    color: v('dark-gray');
+    font-weight: 400;
+    line-height: 175%;
+    letter-spacing: 0.16px;
+  }
+
+  b:first-child {
+    font-weight: 600;
+  }
+
+  :last-child {
+    color: v('dark-black');
+    font-weight: 600;
+    align-self: flex-end;
+  }
+
+  &:last-child {
+    border-top: 1px solid v('gray-box-stroke');
+    padding-top: rem(32px);
+    margin-top: rem(8px);
+
+    @include media('<=phone') {
+      padding-top: rem(16px);
+    }
+  }
+}
+
+.item.discount {
+  border-radius: rem(6px);
+  padding: rem(12px);
+  margin-top: rem(16px);
+  margin-bottom: rem(16px);
+  background-color: v('soft-orange-background');
+  @include dashedOrangeBorder(6);
+
+  span {
+    color: v('orange-gradient');
+    font-weight: 600;
+    line-height: 145%;
+  }
+}

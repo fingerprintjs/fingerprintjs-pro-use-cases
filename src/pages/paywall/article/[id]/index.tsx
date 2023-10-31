@@ -3,7 +3,7 @@ import { Skeleton, SkeletonTypeMap } from '@mui/material';
 import { UseCaseWrapper } from '../../../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { CustomPageProps } from '../../../_app';
 import { USE_CASES } from '../../../../client/components/common/content';
-import LinkArrow from '../../../../client/img/externalLinkArrow.svg';
+import BackArrow from '../../../../client/img/arrowLeft.svg';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from '../../paywall.module.scss';
@@ -47,7 +47,7 @@ export default function Article({ embed }: CustomPageProps) {
       <div className={styles.articleContainer}>
         <div className={styles.buckButton} data-test={TEST_IDS.paywall.goBack}>
           <Link href={returnUrl}>
-            <Image src={LinkArrow} alt="" className={styles.backArrow} />
+            <Image src={BackArrow} alt="" className={styles.backArrow} />
             Back to articles
           </Link>
         </div>
