@@ -1,6 +1,6 @@
 import FingerprintJS, { LoadOptions } from '@fingerprintjs/fingerprintjs-pro';
 import { useQuery } from 'react-query';
-import { CUSTOM_TLS_ENDPOINT, ENDPOINT, FRONTEND_REGION, PUBLIC_API_KEY, SCRIPT_URL_PATTERN } from '../server/const';
+import { PUBLIC_API_KEY } from '../server/const';
 
 export const FP_LOAD_OPTIONS: LoadOptions = {
   apiKey: PUBLIC_API_KEY,
