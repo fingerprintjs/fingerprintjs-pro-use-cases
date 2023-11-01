@@ -17,6 +17,8 @@ import {
 } from '../../../server/checks';
 import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
 
+let riskScoreDebugInfo = '';
+
 // Defines db model for payment attempt.
 export const PaymentAttempt = sequelize.define('payment-attempt', {
   visitorId: {
@@ -124,14 +126,12 @@ async function checkVisitorIdForStolenCard(visitorData) {
 async function checkRiskScore(visitorData, request, eventData) {
   // TODO: change once you have data from the ServerAPI
   const eventRiskScore = eventData.products.eventRisk.data.score
-  console.log(JSON.stringify(eventData.products.eventRisk))
-  console.log(eventRiskScore)
-  //const eventRiskScore = 11
+  riskScoreDebugInfo = JSON.stringify(eventData.products.eventRisk);
   const riskScoreThreshold = 8
 
   if (eventRiskScore > riskScoreThreshold) {
     return new CheckResult(
-      `Too high Risk Score for an event, suspicion on card testing. Transaction declined because the actual risk score: ${eventRiskScore} is higher than threshold: 10.`,
+      `Too high Risk Score for an event, suspicion on card testing. Transaction declined because the actual risk score: ${eventRiskScore} is higher than threshold: ${riskScoreThreshold}. Risk Score debug info: ${riskScoreDebugInfo}.`,
       messageSeverity.Error,
       checkResultType.CardTesting,
     );
@@ -190,7 +190,7 @@ async function processPayment(visitorData, request) {
   // Checks if the provided card details are correct.
   if (areCardDetailsCorrect(request)) {
     return new CheckResult(
-      'Thank you for your payment. Everything is OK.',
+      `Thank you for your payment. Everything went fine as expected. Risk Score debug info: ${riskScoreDebugInfo}.`,
       messageSeverity.Success,
       checkResultType.Passed,
     );

@@ -23,8 +23,6 @@ export default function Index({ embed }: CustomPageProps) {
   const [cardExpiration, setCardExpiration] = useState('04/28');
 
   const [orderStatusMessage, setOrderStatusMessage] = useState();
-  const [applyChargeback, setApplyChargeback] = useState(false);
-  const [usingStolenCard, setUsingStolenCard] = useState(false);
   const [severity, setSeverity] = useState();
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   const [httpResponseStatus, setHttpResponseStatus] = useState<number | undefined>();
@@ -40,8 +38,6 @@ export default function Index({ embed }: CustomPageProps) {
       cardNumber,
       cardCvv,
       cardExpiration,
-      applyChargeback,
-      usingStolenCard,
       visitorId,
       requestId,
     };
@@ -102,29 +98,6 @@ export default function Index({ embed }: CustomPageProps) {
             </div>
           </div>
 
-          <hr />
-
-          <div className={styles.checkboxes}>
-            <label className={formStyles.checkboxLabel}>
-              <input
-                type="checkbox"
-                name="applyChargeback"
-                onChange={(event) => setApplyChargeback(event.target.checked)}
-              />
-              Ask for chargeback after purchase
-            </label>
-
-            <label className={formStyles.checkboxLabel}>
-              <input
-                type="checkbox"
-                name="usingStolenCard"
-                onChange={(event) => {
-                  setUsingStolenCard(event.target.checked);
-                }}
-              />
-              Flag this visitor using stolen card after purchase
-            </label>
-          </div>
 
           {httpResponseStatus ? <Alert severity={severity}>{orderStatusMessage}</Alert> : null}
           <Button disabled={isWaitingForResponse} size="large" type="submit">
