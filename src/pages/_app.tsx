@@ -14,6 +14,7 @@ import { FunctionComponent, PropsWithChildren } from 'react';
 import DeploymentUtils from '../client/DeploymentUtils';
 import Footer from '../client/components/common/Footer/Footer';
 import styles from '../styles/layout.module.scss';
+import * as FingerprintJS from "@fingerprintjs/fingerprintjs-pro-static";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,7 +51,10 @@ function CustomApp({ Component, pageProps }: AppProps<CustomPageProps>) {
             vertical: 'bottom',
           }}
         >
-          <FpjsProvider loadOptions={FP_LOAD_OPTIONS}>
+          <FpjsProvider
+            loadOptions={FP_LOAD_OPTIONS}       
+            // @ts-ignore
+            customAgent={FingerprintJS}>
             <Head>
               <meta name="viewport" content="width=device-width, initial-scale=1.0" />
               <link rel="icon" type="image/x-icon" href="/favicon.ico" />

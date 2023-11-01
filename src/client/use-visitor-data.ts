@@ -1,13 +1,23 @@
-import FingerprintJS, { LoadOptions } from '@fingerprintjs/fingerprintjs-pro';
-import { useQuery } from 'react-query';
-import { PUBLIC_API_KEY } from '../server/const';
+import * as FingerprintJS from '@fingerprintjs/fingerprintjs-pro-static'
 
-export const FP_LOAD_OPTIONS: LoadOptions = {
+import { useQuery } from 'react-query';
+import { LOCAL_ENDPOINTS, PUBLIC_API_KEY } from '../server/const';
+
+const modules = globalThis.hasOwnProperty("document")
+? [
+    FingerprintJS.makeIdentificationModule(), // If you use identification
+    FingerprintJS.makeBotdModule(), // If you use bot detection
+    FingerprintJS.makeLatencyReportModule(), // For performance monitoring
+  ]
+: [];
+
+export const FP_LOAD_OPTIONS: any = {
   apiKey: PUBLIC_API_KEY,
   // scriptUrlPattern: [SCRIPT_URL_PATTERN, FingerprintJS.defaultScriptUrlPattern],
-  // endpoint: [ENDPOINT, FingerprintJS.defaultEndpoint],
-  region: 'eu',
+  endpoint: [LOCAL_ENDPOINTS],
+  // region: 'eu',
   // tlsEndpoint: CUSTOM_TLS_ENDPOINT ? [CUSTOM_TLS_ENDPOINT, FingerprintJS.defaultTlsEndpoint] : undefined,
+  modules: modules
 };
 
 // This example demonstrates using the NPM package for the Fingerprint Pro agent.
@@ -24,7 +34,6 @@ async function getVisitorData({ extendedResult = true, linkedId }) {
   return fp.get({
     extendedResult,
     linkedId,
-    products: ['identification'],
   });
 }
 

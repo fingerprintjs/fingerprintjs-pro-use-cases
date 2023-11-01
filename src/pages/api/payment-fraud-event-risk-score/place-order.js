@@ -123,8 +123,10 @@ async function checkVisitorIdForStolenCard(visitorData) {
 
 async function checkRiskScore(visitorData, request, eventData) {
   // TODO: change once you have data from the ServerAPI
-  // const eventRiskScore = eventData.products.eventRisk.data.score
-  const eventRiskScore = 11
+  const eventRiskScore = eventData.products.eventRisk.data.score
+  console.log(JSON.stringify(eventData.products.eventRisk))
+  console.log(eventRiskScore)
+  //const eventRiskScore = 11
   const riskScoreThreshold = 8
 
   if (eventRiskScore > riskScoreThreshold) {

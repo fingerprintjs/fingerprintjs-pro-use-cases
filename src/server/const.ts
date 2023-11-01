@@ -17,8 +17,10 @@ type AgentRegion = LoadOptions['region'];
 
 // Warning: In the real world The Server API key should be secretly stored in the environment variables/secrets.
 // We are keeping it here just to make it easy to run the demo.
-export const SERVER_API_KEY = 'rurc0LEbnSl1brnkkEl2';
-export const PUBLIC_API_KEY = 'aFfpesIMfGaVVBsgZn8s';
+export const SERVER_API_KEY = process.env.PRIVATE_API_KEY;
+export const PUBLIC_API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+export const LOCAL_ENDPOINTS = "http://localhost:5051"
+
 export const FRONTEND_REGION: AgentRegion = (process.env.NEXT_PUBLIC_FRONTEND_REGION as AgentRegion) ?? 'us';
 export const BACKEND_REGION: Region = BackendRegionMap[process.env.BACKEND_REGION] ?? Region.Global;
 export const SCRIPT_URL_PATTERN =

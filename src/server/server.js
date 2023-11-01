@@ -3,7 +3,7 @@ import { Sequelize } from 'sequelize';
 import { areVisitorIdAndRequestIdValid } from './checks';
 import { CheckResult, checkResultType } from './checkResult';
 import { sendForbiddenResponse } from './response';
-import { SERVER_API_KEY } from './const';
+import { LOCAL_ENDPOINTS, SERVER_API_KEY } from './const';
 
 // Provision the database.
 // In the Stackblitz environment, this db is stored locally in your browser.
@@ -73,7 +73,7 @@ export async function getVisitorDataWithRequestId(visitorId, requestId) {
   }
 
     // TODO: Change endpoint
-    const response = await fetch(`https://eu.api.fpjs.io/visitors/${visitorId}?request_id=${requestId}`, {
+    const response = await fetch(`${LOCAL_ENDPOINTS}/visitors/${visitorId}?request_id=${requestId}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -97,7 +97,7 @@ export async function getEventDataWithRequestId(requestId) {
   }
 
   // TODO: Change endpoint
-  const response = await fetch(`https://eu.api.fpjs.io/events/${requestId}`, {
+  const response = await fetch(`${LOCAL_ENDPOINTS}/events/${requestId}`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',

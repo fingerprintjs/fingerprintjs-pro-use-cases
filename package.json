@@ -19,9 +19,9 @@
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
-    "@fingerprintjs/fingerprintjs-pro": "^3.6.2",
-    "@fingerprintjs/fingerprintjs-pro-react": "^2.3.0",
+    "@fingerprintjs/fingerprintjs-pro-react": "^2.6.1",
     "@fingerprintjs/fingerprintjs-pro-server-api": "^2.3.0",
+    "@fingerprintjs/fingerprintjs-pro-static": "^3.8.27",
     "@mui/icons-material": "^5.11.16",
     "@mui/lab": "^5.0.0-alpha.134",
     "@mui/material": "^5.13.5",
