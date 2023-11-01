@@ -123,12 +123,13 @@ async function checkVisitorIdForStolenCard(visitorData) {
 
 async function checkRiskScore(visitorData, request, eventData) {
   // TODO: change once you have data from the ServerAPI
-  // const eventRiskScore = eventData.products.riskScore.data.result
+  // const eventRiskScore = eventData.products.eventRisk.data.score
   const eventRiskScore = 11
+  const riskScoreThreshold = 8
 
-  if (eventRiskScore > 10) {
+  if (eventRiskScore > riskScoreThreshold) {
     return new CheckResult(
-      'Too high Risk Score for an event, suspicion on card testing. Transaction declined.',
+      `Too high Risk Score for an event, suspicion on card testing. Transaction declined because the actual risk score: ${eventRiskScore} is higher than threshold: 10.`,
       messageSeverity.Error,
       checkResultType.CardTesting,
     );

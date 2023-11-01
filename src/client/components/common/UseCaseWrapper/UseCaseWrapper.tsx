@@ -24,7 +24,7 @@ type UseCaseWrapperProps = {
 
 export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   children,
-  hideGithubLink: hideSrcListItem = false,
+  hideGithubLink: hideSrcListItem = true,
   contentSx,
   useCase,
   embed,
