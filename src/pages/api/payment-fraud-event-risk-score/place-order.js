@@ -124,7 +124,7 @@ async function checkVisitorIdForStolenCard(visitorData) {
 }
 
 async function checkRiskScore(visitorData, request, eventData) {
-  const cardTestingRulesetId = "1698900837933-125"
+  const cardTestingRulesetId = '1698900837933-125'
   const availableRulesets = eventData.products.eventRisk.data.ruleSets
   const cardTestingRuleset = availableRulesets.filter(r => r.id === cardTestingRulesetId)[0]
   const eventRiskScore = cardTestingRuleset.score
