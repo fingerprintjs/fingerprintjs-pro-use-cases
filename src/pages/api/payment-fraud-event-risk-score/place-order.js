@@ -56,7 +56,7 @@ export default async function handler(req, res) {
   res.setHeader('Content-Type', 'application/json');
 
   return await tryToProcessPayment(req, res, [
-    checkFreshIdentificationRequest,
+    // checkFreshIdentificationRequest, // disabled for demo
     checkConfidenceScore,
     checkIpAddressIntegrity,
     checkOriginsIntegrity,
