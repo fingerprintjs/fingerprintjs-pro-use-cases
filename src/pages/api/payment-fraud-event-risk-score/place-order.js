@@ -125,13 +125,19 @@ async function checkVisitorIdForStolenCard(visitorData) {
 
 async function checkRiskScore(visitorData, request, eventData) {
   // TODO: change once you have data from the ServerAPI
-  const eventRiskScore = eventData.products.eventRisk.data.score
-  riskScoreDebugInfo = JSON.stringify(eventData.products.eventRisk);
+  const cardTestingRulesetId = "1698900837933-125"
+  const availableRulesets = eventData.products.eventRisk.data.ruleSets
+  const cardTestingRuleset = availableRulesets.filter(r => r.id === cardTestingRulesetId)[0]
+  const eventRiskScore = cardTestingRuleset.score
+  const cardTestingThreshold = cardTestingRuleset.risk_threshold
+
+  console.log(JSON.stringify(eventData))
+  riskScoreDebugInfo = JSON.stringify(cardTestingRuleset);
   const riskScoreThreshold = 8
 
   if (eventRiskScore > riskScoreThreshold) {
     return new CheckResult(
-      `Too high Risk Score for an event, suspicion on card testing. Transaction declined because the actual risk score: ${eventRiskScore} is higher than threshold: ${riskScoreThreshold}. Risk Score debug info: ${riskScoreDebugInfo}.`,
+      `Too high Risk Score for an event, suspicion on card testing. Transaction declined because the actual risk score: ${eventRiskScore} is higher than threshold: ${cardTestingThreshold}. Risk Score debug info: ${riskScoreDebugInfo}.`,
       messageSeverity.Error,
       checkResultType.CardTesting,
     );
@@ -190,7 +196,7 @@ async function processPayment(visitorData, request) {
   // Checks if the provided card details are correct.
   if (areCardDetailsCorrect(request)) {
     return new CheckResult(
-      `Thank you for your payment. Everything went fine as expected. Risk Score debug info: ${riskScoreDebugInfo}.`,
+      `Thank you for your payment. Everything went fine and as expected. Risk Score debug info: ${riskScoreDebugInfo}.`,
       messageSeverity.Success,
       checkResultType.Passed,
     );
