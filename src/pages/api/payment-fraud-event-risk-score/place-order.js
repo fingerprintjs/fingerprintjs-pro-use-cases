@@ -130,13 +130,11 @@ async function checkRiskScore(visitorData, request, eventData) {
   const eventRiskScore = cardTestingRuleset.score
   const cardTestingThreshold = cardTestingRuleset.risk_threshold
 
-  console.log(JSON.stringify(eventData))
-  riskScoreDebugInfo = JSON.stringify(cardTestingRuleset);
-  const riskScoreThreshold = 8
+  riskScoreDebugInfo = JSON.stringify(availableRulesets);
 
-  if (eventRiskScore > riskScoreThreshold) {
+  if (eventRiskScore > cardTestingThreshold) {
     return new CheckResult(
-      `Too high Risk Score for an event, suspicion on card testing. Transaction declined because the actual risk score: ${eventRiskScore} is higher than threshold: ${cardTestingThreshold}. Risk Score debug info: ${riskScoreDebugInfo}.`,
+      `Too high Risk Score for an event, suspicion on card testing. Transaction declined because the actual risk score: ${eventRiskScore} is higher than threshold: ${cardTestingThreshold}. Risk Score debug info: Applied ruleset: ${JSON.stringify(cardTestingRuleset)}. All available rulesets: ${JSON.stringify(availableRulesets)}`,
       messageSeverity.Error,
       checkResultType.CardTesting,
     );
