@@ -9,6 +9,7 @@ export const TEST_IDS = {
       cartItemPrice: 'cartItemPrice',
       cartSubTotal: 'cartSubTotal',
     },
+    alert: 'alert',
   },
   homepageCard: {
     useCaseTitle: 'useCaseTitle',
@@ -38,8 +39,5 @@ export const TEST_IDS = {
     departureTime: 'departureTime',
     arrivalTime: 'arrivalTime',
     airline: 'airline',
-  },
-  common: {
-    alert: 'alert',
   },
 } as const;
