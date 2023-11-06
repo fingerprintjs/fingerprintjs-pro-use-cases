@@ -1,6 +1,5 @@
 import { EventResponse, FingerprintJsServerApiClient } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Flight } from '../../../client/components/web-scraping/FlightCard';
 import { CheckResult, CheckResultObject, checkResultType } from '../../../server/checkResult';
 import { isRequestIdFormatValid, originIsAllowed, visitIpMatchesRequestIp } from '../../../server/checks';
 import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, BACKEND_REGION, SERVER_API_KEY } from '../../../server/const';
@@ -8,6 +7,9 @@ import { sendErrorResponse, sendForbiddenResponse, sendOkResponse } from '../../
 import { ensurePostRequest, messageSeverity } from '../../../server/server';
 import { DAY_MS, FIVE_MINUTES_MS, HOUR_MS } from '../../../shared/timeUtils';
 import { AIRPORTS } from '../../web-scraping';
+import { Flight } from '../../../client/components/web-scraping/FlightCard';
+
+const roundToFiveMinutes = (time: number) => Math.round(time / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
 
 export type FlightQuery = {
   from: string;
@@ -149,14 +151,16 @@ function getFlightResults(fromCode: string, toCode: string): Flight[] {
   if (!AIRPORTS.find((airport) => airport.code === fromCode) || !AIRPORTS.find((airport) => airport.code === toCode)) {
     return [];
   }
-  const results = [];
+  const results: Flight[] = [];
   const airlines = ['United', 'Delta', 'American', 'Southwest', 'Alaska', 'JetBlue'];
   for (const airline of airlines.slice(0, 2 + Math.floor(Math.random() * 4))) {
     const now = Date.now();
-    const departureTime = Math.round((now + Math.random() * DAY_MS) / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
-    const arrivalTime =
-      Math.round((departureTime + 3 * HOUR_MS + Math.random() * (DAY_MS / 2)) / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
-    const price = Math.floor(Math.random() * 1000);
+    const departureTime = roundToFiveMinutes(now + Math.random() * DAY_MS);
+    const arrivalTime = roundToFiveMinutes(departureTime + 3 * HOUR_MS + Math.random() * (DAY_MS / 2));
+    const tripLength = roundToFiveMinutes(3 * DAY_MS + Math.random() * DAY_MS);
+    const returnDepartureTime = departureTime + tripLength;
+    const returnArrivalTime = arrivalTime + tripLength;
+    const price = 50 + Math.floor(Math.random() * 400) * 2;
     const flightNumber = `${airline.slice(0, 2).toUpperCase()}${Math.floor(Math.random() * 1000)}`;
 
     results.push({
@@ -166,6 +170,8 @@ function getFlightResults(fromCode: string, toCode: string): Flight[] {
       toCity: AIRPORTS.find((airport) => airport.code === toCode)?.city ?? 'City not found',
       departureTime,
       arrivalTime,
+      returnDepartureTime,
+      returnArrivalTime,
       price,
       airline,
       flightNumber,

@@ -1,9 +1,11 @@
-import { ElementHandle, expect, test } from '@playwright/test';
+import { Locator, expect, test } from '@playwright/test';
 import { writeFileSync } from 'fs';
-import { FLIGHT_TAG } from '../../src/client/components/web-scraping/flightTags';
+import { TEST_IDS } from './../../src/client/e2eTestIDs';
 
-const scrapeText = async (parent: ElementHandle, selector: string) => {
-  const element = await parent.$(selector);
+const TEST_ID = TEST_IDS.webScraping;
+
+const scrapeText = async (parent: Locator, testId: string) => {
+  const element = await parent.getByTestId(testId).first();
   return element ? await element.textContent() : null;
 };
 
@@ -13,31 +15,19 @@ test.describe('Scraping flights', () => {
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(3000);
 
-    const flightCards = await page.$$(`[data-test="${FLIGHT_TAG.card}"]`);
+    const flightCards = await page.getByTestId(TEST_ID.card).all();
     console.log('Found flight cards: ', flightCards.length);
     expect(flightCards.length > 0).toBe(true);
 
     const flightData = [];
     for (const flightCard of flightCards) {
       flightData.push({
-        price: await scrapeText(flightCard, `[data-test="${FLIGHT_TAG.price}"]`),
-        airline: await scrapeText(flightCard, `[data-test="${FLIGHT_TAG.airline}"]`),
-        from: await scrapeText(
-          flightCard,
-          `[data-test="${FLIGHT_TAG.origin}"] [data-test="${FLIGHT_TAG.airportCode}"]`
-        ),
-        to: await scrapeText(
-          flightCard,
-          `[data-test="${FLIGHT_TAG.destination}"] [data-test="${FLIGHT_TAG.airportCode}"]`
-        ),
-        departureTime: await scrapeText(
-          flightCard,
-          `[data-test="${FLIGHT_TAG.origin}"] [data-test="${FLIGHT_TAG.time}"]`
-        ),
-        arrivalTime: await scrapeText(
-          flightCard,
-          `[data-test="${FLIGHT_TAG.destination}"] [data-test="${FLIGHT_TAG.time}"]`
-        ),
+        price: await scrapeText(flightCard, TEST_ID.price),
+        airline: await scrapeText(flightCard, TEST_ID.airline),
+        from: await scrapeText(flightCard, TEST_ID.originAirportCode),
+        to: await scrapeText(flightCard, TEST_ID.destinationAirportCode),
+        departureTime: await scrapeText(flightCard, TEST_ID.departureTime),
+        arrivalTime: await scrapeText(flightCard, TEST_ID.arrivalTime),
       });
     }
 

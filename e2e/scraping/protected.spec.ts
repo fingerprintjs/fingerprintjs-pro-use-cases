@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test';
+import { TEST_IDS } from '../../src/client/e2eTestIDs';
 
 test.describe('Scraping flights', () => {
   test('is not possible with Bot detection on', async ({ page }) => {
     await page.goto('/web-scraping');
-    await page.click('button:has-text("Search flights")');
     await page.waitForLoadState('networkidle');
-    await expect(page.locator('.message')).toContainText('Malicious bot detected');
+    await expect(page.getByTestId(TEST_IDS.common.alert)).toContainText('Malicious bot detected');
   });
 });

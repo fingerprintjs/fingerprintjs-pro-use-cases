@@ -1,26 +1,20 @@
-import {
-  Alert,
-  Autocomplete,
-  Box,
-  Button,
-  CircularProgress,
-  FormControl,
-  Grid,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import FlightCard, { Flight } from '../../client/components/web-scraping/FlightCard';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import styles from '../../styles/web-scraping.module.css';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import { useQueryState } from 'use-location-state/next';
+import { useQueryState } from 'next-usequerystate';
 import { useQuery, UseQueryResult } from 'react-query';
 import { GetServerSideProps, NextPage } from 'next';
 import { FlightQuery } from '../api/web-scraping/flights';
 import { CheckResultObject } from '../../server/checkResult';
 import { USE_CASES } from '../../client/components/common/content';
 import { CustomPageProps } from '../_app';
+import { Select, SelectItem } from '../../client/components/common/Select/Select';
+import ArrowIcon from '../../client/img/arrowRight.svg';
+import Image from 'next/image';
+import styles from './webScraping.module.scss';
+import Button from '../../client/components/common/Button/Button';
+import Alert from '../../client/components/common/Alert/Alert';
 
 // Make URL query object available as props to the page on first render
 // to read `from`, `to` params and a `disableBotDetection` param for testing and demo purposes
@@ -78,8 +72,8 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
   disableBotDetection,
   embed,
 }) => {
-  const [fromCode, setFromCode] = useQueryState('from', from?.toUpperCase() ?? AIRPORTS[0].code);
-  const [toCode, setToCode] = useQueryState('to', to?.toUpperCase() ?? AIRPORTS[1].code);
+  const [fromCode, setFromCode] = useQueryState('from', { defaultValue: from?.toUpperCase() ?? AIRPORTS[0].code });
+  const [toCode, setToCode] = useQueryState('to', { defaultValue: to?.toUpperCase() ?? AIRPORTS[1].code });
 
   /**
    * We use the Fingerprint Pro React SDK hook to get visitor data (https://github.com/fingerprintjs/fingerprintjs-pro-react)
@@ -131,64 +125,47 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
 
   return (
     <>
-      <UseCaseWrapper useCase={USE_CASES.webScraping} embed={embed}>
-        <Box marginBottom={(theme) => theme.spacing(2)}>
-          <Typography variant="overline">Search for today&apos;s flights</Typography>
-        </Box>
+      <UseCaseWrapper useCase={USE_CASES.webScraping} embed={embed} contentSx={{ maxWidth: 'none' }}>
+        <h2 className={styles.searchTitle}>Search for today&apos;s flights</h2>
         <form
           onSubmit={(event) => {
             event.preventDefault();
             getFlightsQuery.refetch();
           }}
+          className={styles.form}
         >
-          <Grid container spacing={1} marginBottom={3}>
-            <Grid item xs={12} sm={5.5}>
-              <FormControl fullWidth>
-                <Autocomplete
-                  id="from"
-                  size="small"
-                  autoHighlight
-                  options={AIRPORTS.filter((airport) => airport.code !== toCode)}
-                  getOptionLabel={(option) => `${option.city} (${option.code})`}
-                  value={AIRPORTS.find((airport) => airport.code === fromCode) ?? null}
-                  onChange={(_e, value) => setFromCode(value?.code ?? '')}
-                  renderInput={(params) => <TextField {...params} label="From" />}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={1} display="flex" justifyContent={'center'} alignItems="center">
-              <Box alignItems={'center'} display="flex" justifyContent={'center'} fontSize={28}>
-                <ArrowForwardIcon className={styles.formArrow} />
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={5.5}>
-              <FormControl fullWidth>
-                <Autocomplete
-                  id="to"
-                  size="small"
-                  autoHighlight
-                  options={AIRPORTS.filter((airport) => airport.code !== fromCode)}
-                  getOptionLabel={(option) => `${option.city} (${option.code})`}
-                  value={AIRPORTS.find((airport) => airport.code === toCode) ?? null}
-                  onChange={(e, value) => setToCode(value?.code ?? '')}
-                  renderInput={(params) => <TextField {...params} label="To" />}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-          {
+          <div className={styles.formInput}>
+            <div>
+              <div className={styles.locationLabel}>From</div>
+              <Select value={fromCode} onValueChange={(value) => setFromCode(value)} fullWidth>
+                {AIRPORTS.filter((airport) => airport.code !== toCode).map((airport) => (
+                  <SelectItem key={airport.code} value={airport.code}>
+                    {airport.city} ({airport.code})
+                  </SelectItem>
+                ))}
+              </Select>
+            </div>
+            <Image src={ArrowIcon} alt="" className={styles.arrowIcon} />
+            <div>
+              <div className={styles.locationLabel}>To</div>
+              <Select value={toCode} onValueChange={(value) => setToCode(value)} fullWidth>
+                {AIRPORTS.filter((airport) => airport.code !== fromCode).map((airport) => (
+                  <SelectItem key={airport.code} value={airport.code}>
+                    {airport.city} ({airport.code})
+                  </SelectItem>
+                ))}
+              </Select>
+            </div>
             <Button
               type="submit"
-              size="large"
-              variant="contained"
-              color="primary"
-              disableElevation
-              fullWidth
+              size="medium"
+              variant="primary"
+              className={styles.searchButton}
               disabled={!toCode || !fromCode || isFetching}
             >
-              Search flights
+              Search
             </Button>
-          }
+          </div>
         </form>
         <Results {...getFlightsQuery} />
       </UseCaseWrapper>
@@ -201,32 +178,21 @@ const Results = ({ data, isFetching, error }: UseQueryResult<FlightQueryResult, 
 
   if (isFetching) {
     return (
-      <Box display={'flex'} justifyContent={'center'} margin={3}>
+      <div className={styles.loaderContainer}>
         <CircularProgress />
-      </Box>
+      </div>
     );
   }
 
   if (error) {
-    return (
-      <Alert severity="error" className="UsecaseWrapper_alert message">
-        {error.message}
-      </Alert>
-    );
+    return <Alert severity="error">{error.message}</Alert>;
   }
   if (message && severity !== 'success') {
-    return (
-      <Alert severity={severity} className="UsecaseWrapper_alert message">
-        {message}
-      </Alert>
-    );
+    return <Alert severity={severity}>{message}</Alert>;
   }
   if (!flights) return null;
   return (
-    <div>
-      <Box marginTop={(theme) => theme.spacing(2)}>
-        <Typography variant="overline">Found {flights.length} flights</Typography>
-      </Box>
+    <div className={styles.flightCardsContainer}>
       {flights.map((flight) => (
         <FlightCard key={flight.flightNumber} flight={flight} />
       ))}

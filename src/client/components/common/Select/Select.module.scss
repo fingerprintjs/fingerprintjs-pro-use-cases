@@ -1,0 +1,127 @@
+.SelectTrigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  background-color: white;
+  border-radius: 6px;
+  border: 1px solid v('gray-box-stroke');
+  height: 48px;
+
+  color: v('dark-black');
+  font-family: Inter;
+  font-size: rem(16px);
+  line-height: 160%; /* 25.6px */
+  letter-spacing: 0.16px;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    border: 1px solid v('orange-gradient');
+  }
+
+  [data-placeholder] {
+    color: v('gray-text');
+  }
+
+  @include media('<=phoneLandscape') {
+    font-size: rem(14px);
+  }
+}
+
+.SelectIcon {
+  img {
+    @include media('<=phoneLandscape') {
+      width: 14px;
+      height: 12px;
+    }
+  }
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.SelectContent {
+  overflow: hidden;
+  background-color: white;
+  border-radius: 6px;
+  border: 1px solid v('gray-box-stroke');
+  z-index: var(--z-dropdown);
+  height: 360px;
+  max-height: var(--radix-select-content-available-height);
+  margin-top: 4px;
+  width: var(--radix-select-trigger-width);
+  @include shadowLarge();
+}
+
+.SelectViewport {
+  padding: 5px;
+}
+
+.SelectItem {
+  font-size: rem(16px);
+  line-height: 160%;
+  color: v('dark-black');
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0px 8px;
+  position: relative;
+  user-select: none;
+  cursor: pointer;
+
+  @include media('<=phoneLandscape') {
+    font-size: rem(14px);
+  }
+}
+
+.SelectItem[data-disabled] {
+  color: v('gray-box-stroke');
+  pointer-events: none;
+}
+
+.SelectItem[data-highlighted] {
+  outline: none;
+  background-color: v('soft-orange-background');
+  color: v('orange-gradient');
+}
+
+.SelectItem[data-state='checked'] {
+  background-color: v('soft-orange-background');
+  font-weight: 600;
+}
+
+.SelectItemIndicator {
+  position: absolute;
+  left: 0;
+  width: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ScrollAreaRoot {
+  width: 100%;
+  height: 100%;
+  --radix-scroll-area-thumb-width: 3px;
+}
+
+.ScrollAreaViewport {
+  width: 100%;
+  height: 100%;
+}
+
+.ScrollAreaScrollbar {
+  width: 6px;
+  padding: 5px 2px;
+  background-color: white;
+}
+
+.ScrollAreaThumb {
+  background-color: v('gray-5');
+  border-radius: 3px;
+  width: var(--radix-scroll-area-thumb-width);
+}

@@ -1,0 +1,326 @@
+.flightCard {
+  border-radius: 8px;
+  border: 1px solid v('gray-box-stroke');
+  @include shadowSmall();
+  display: grid;
+  grid-template-columns: 3.15fr 1fr;
+  overflow: hidden;
+
+  @include media('<=desktop') {
+    grid-template-columns: 2.5fr 1fr;
+  }
+
+  @include media('<=tablet') {
+    grid-template-columns: 1fr;
+  }
+}
+
+.flightsContainer {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  padding-bottom: rem(32px);
+  column-gap: rem(32px);
+  row-gap: rem(20px);
+
+  @include media('<=tablet') {
+    grid-template-columns: 1fr;
+    row-gap: rem(16px);
+    padding-bottom: rem(16px);
+  }
+}
+
+.generalFlightInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.labelDateContainer {
+  display: flex;
+  padding: rem(16px);
+  flex-direction: column;
+  gap: 8px;
+  background: v('light-gray-background');
+  border-radius: 8px 0px 16px 0px;
+  font-size: rem(14px);
+
+  @include media('<=desktop') {
+    font-size: rem(10px);
+  }
+
+  @include media('<=tablet') {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: rem(8px) rem(8px) 0 0;
+    padding: rem(6px) rem(12px);
+    flex-wrap: wrap;
+  }
+}
+
+.airline {
+  color: v('dark-black');
+  font-family: Inter;
+  line-height: 160%;
+  letter-spacing: 0.16px;
+  padding: 0 rem(16px);
+
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  @include media('<=desktop') {
+    padding-top: rem(16px);
+    font-size: rem(14px);
+
+    img {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+.flightLabel {
+  color: v('dark-black');
+  font-family: Inter;
+  font-size: rem(24px);
+  font-style: normal;
+  font-weight: 600;
+  line-height: 130%;
+
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+
+  @include media('<=desktop') {
+    font-size: rem(16px);
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+.flightTimes {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+
+  @include media('<=tablet') {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  @include media('<360px') {
+    grid-template-columns: auto;
+  }
+}
+
+.location {
+  padding: rem(16px) rem(16px) 0px rem(16px);
+  color: v('dark-black');
+  display: flex;
+  flex-direction: column;
+
+  @include media('<=desktop') {
+    padding: rem(16px) rem(8px) 0px rem(8px);
+  }
+
+  @include media('<=tablet') {
+    padding: 0 rem(12px);
+  }
+
+  .airportCode {
+    font-size: rem(24px);
+    font-weight: 600;
+    line-height: 130%;
+
+    @include media('<=desktop') {
+      font-size: rem(20px);
+    }
+  }
+
+  .city {
+    font-size: rem(16px);
+    font-weight: 400;
+    line-height: 145%;
+
+    @include media('<=desktop') {
+      font-size: rem(12px);
+    }
+  }
+
+  .time {
+    color: v('dark-black');
+    font-size: rem(24px);
+    font-weight: 600;
+    line-height: 130%;
+    white-space: nowrap;
+    margin-top: auto;
+
+    @include media('<=desktop') {
+      font-size: rem(18px);
+    }
+
+    @include media('<tablet') {
+      margin-top: rem(8px);
+    }
+  }
+}
+
+.transition {
+  color: v('orange-gradient');
+  line-height: 145%;
+  text-align: center;
+  padding: rem(16px);
+
+  @include media('<=desktop') {
+    padding: rem(16px) rem(8px) 0px rem(8px);
+  }
+
+  @include media('<360px') {
+    padding: rem(16px);
+  }
+
+  // Direct
+  :first-child {
+    border-bottom: 1px solid v('orange-gradient');
+    font-size: rem(16px);
+    font-weight: 500;
+    padding-bottom: 2px;
+    @include media('<=desktop') {
+      font-size: rem(14px);
+    }
+  }
+
+  // Duration
+  :last-child {
+    white-space: nowrap;
+    font-size: rem(12px);
+    @include media('<=desktop') {
+      font-size: rem(10px);
+    }
+  }
+}
+
+.checkoutContainer {
+  padding: rem(16px) rem(16px) rem(32px) rem(32px);
+  border-left: 1px dashed v('orange-gradient');
+  display: flex;
+  flex-direction: column;
+  gap: rem(24px);
+
+  @include media('<=desktop') {
+    padding: rem(16px);
+  }
+
+  @include media('<=tablet') {
+    border-left: none;
+    border-top: 1px dashed v('orange-gradient');
+    padding: rem(16px) rem(12px);
+    gap: rem(16px);
+  }
+}
+
+.priceLabel {
+  margin-bottom: rem(8px);
+  color: v('dark-black');
+  font-size: rem(14px);
+  font-weight: 500;
+  line-height: 160%;
+  letter-spacing: 0.14px;
+  text-align: right;
+
+  @include media('<=desktop') {
+    font-size: rem(12px);
+    margin-bottom: rem(4px);
+  }
+}
+
+.pricePerAdult {
+  color: v('dark-black');
+  font-size: rem(24px);
+  font-weight: 600;
+  line-height: 130%;
+  margin-bottom: rem(16px);
+  text-align: right;
+
+  @include media('<=desktop') {
+    font-size: rem(20px);
+  }
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  border-top: 1px dashed v('light-grey');
+}
+
+.priceItems {
+  display: flex;
+  flex-direction: column;
+  gap: rem(14px);
+  padding-bottom: 4px;
+
+  @include media('<=desktop') {
+    gap: rem(4px);
+    padding-bottom: 0;
+  }
+}
+
+.priceItem {
+  display: flex;
+  justify-content: space-between;
+  color: v('dark-gray');
+  font-size: rem(14px);
+  font-weight: 400;
+  line-height: 160%;
+  letter-spacing: 0.14px;
+  flex-wrap: wrap;
+
+  :last-child {
+    margin-left: auto;
+  }
+
+  @include media('<=desktop') {
+    font-size: rem(12px);
+  }
+}
+
+.finalPrice {
+  display: flex;
+  justify-content: space-between;
+  color: v('dark-black');
+  font-size: rem(24px);
+  font-weight: 600;
+  line-height: 130%;
+  flex-wrap: wrap;
+
+  :last-child {
+    margin-left: auto;
+  }
+
+  @include media('<=desktop') {
+    font-size: rem(20px);
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+
+  button {
+    flex-grow: 1;
+    cursor: default;
+  }
+}
+
+.favorite {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  width: 42px;
+  border-radius: 8px;
+  border: 1px solid v('orange-gradient');
+  opacity: 0.7;
+}
