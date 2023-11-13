@@ -50,7 +50,7 @@ export const USE_CASES = {
       'Use the demo below to see how Fingerprint can help identify fraudsters who repeatedly use the same coupon under different scenarios to gain unauthorized benefits.',
     descriptionMeta:
       'See in real-time how Fingerprint can stop and prevent coupon promotional abuse. Try out our coupon fraud demo and learn how we safeguard your promotions.',
-    articleUrl: 'https://fingerprint.com/use-cases/coupon-promo-abuse/',
+    articleUrl: 'https://fingerprint.com/blog/prevent-coupon-promo-abuse-increase-sales/',
     instructions: [
       <>
         Use the sample coupon code <code>Promo3000</code> and click Apply.
@@ -82,7 +82,7 @@ export const USE_CASES = {
     title: 'Credential Stuffing',
     titleMeta: 'Fingerprint Use Cases | Credential Stuffing Live Demo',
     url: '/credential-stuffing',
-    articleUrl: 'https://fingerprint.com/use-cases/credential-stuffing/',
+    articleUrl: 'https://fingerprint.com/blog/stop-credential-stuffing/',
     instructions: [
       <>
         Put in the username <code>user</code> and password <code>password</code>.
@@ -137,6 +137,7 @@ export const USE_CASES = {
     title: 'Loan Risk',
     titleMeta: 'Fingerprint Use Cases | Loan Fraud Live Demo',
     url: '/loan-risk',
+    articleUrl: 'https://fingerprint.com/blog/detect-repeat-applications-loan-risk/',
     iconSvg: LoanRiskIcon,
     descriptionHomepage: [
       <p>
@@ -176,7 +177,7 @@ export const USE_CASES = {
     title: 'Payment Fraud',
     titleMeta: 'Fingerprint Use Cases | Payment Fraud Live Demo',
     url: '/payment-fraud',
-    articleUrl: 'https://fingerprint.com/use-cases/payment-fraud/',
+    articleUrl: 'https://fingerprint.com/blog/reducing-payment-fraud-with-reliable-visitor-identification/',
     iconSvg: PaymentFraudIcon,
     descriptionHomepage: [
       <p>
@@ -256,7 +257,7 @@ export const USE_CASES = {
     title: 'Personalization',
     titleMeta: 'Fingerprint Use Cases | eCommerce Personalization Live Demo',
     url: '/personalization',
-    articleUrl: 'https://fingerprint.com/use-cases/personalization/',
+    articleUrl: 'https://fingerprint.com/blog/providing-personalization-to-anonymous-users/',
     iconSvg: PersonalizationIcon,
     descriptionHomepage: [
       <p>
@@ -302,7 +303,7 @@ export const USE_CASES = {
     title: 'Web Scraping Prevention',
     titleMeta: 'Fingerprint Use Cases | Content Scraping Prevention Live Demo',
     url: '/web-scraping',
-    articleUrl: 'https://fingerprint.com/use-cases/web-scraping-prevention/',
+    articleUrl: 'https://fingerprint.com/blog/preventing-content-scraping/',
     iconSvg: ScrapingIcon,
     descriptionHomepage: [
       <p>
