@@ -64,7 +64,7 @@ export const USE_CASES = {
       {
         type: 'Use case tutorial',
         title: 'Coupon Promo Abuse',
-        url: 'https://fingerprint.com/use-cases/coupon-promo-abuse/',
+        url: 'https://fingerprint.com/blog/prevent-coupon-promo-abuse-increase-sales/',
       },
       {
         type: 'Case study',
@@ -124,7 +124,7 @@ export const USE_CASES = {
       {
         type: 'Use case tutorial',
         title: 'Credential Stuffing',
-        url: 'https://fingerprint.com/use-cases/credential-stuffing/',
+        url: 'https://fingerprint.com/blog/stop-credential-stuffing/',
       },
       {
         type: 'Use case',
@@ -161,11 +161,11 @@ export const USE_CASES = {
       <>Try bypassing the protection by switching to incognito mode or deleting your cookies.</>,
     ],
     moreResources: [
-      // {
-      //   type: 'Use case tutorial',
-      //   title: 'Loan Risk',
-      //   url: 'https://fingerprint.com/use-cases/loan-risk/',
-      // }
+      {
+        type: 'Use case tutorial',
+        title: 'Loan Risk',
+        url: 'https://fingerprint.com/blog/detect-repeat-applications-loan-risk/',
+      }
       {
         url: 'https://fingerprint.com/blog/what-is-loan-fraud/',
         type: 'Article',
@@ -215,7 +215,7 @@ export const USE_CASES = {
       {
         type: 'Use case tutorial',
         title: 'Payment Fraud',
-        url: 'https://fingerprint.com/use-cases/payment-fraud/',
+        url: 'https://fingerprint.com/blog/reducing-payment-fraud-with-reliable-visitor-identification/',
       },
       {
         url: 'https://fingerprint.com/blog/omnichannel-fraud/',
@@ -295,7 +295,7 @@ export const USE_CASES = {
       {
         type: 'Use case tutorial',
         title: 'Personalization',
-        url: 'https://fingerprint.com/use-cases/personalization/',
+        url: 'https://fingerprint.com/blog/providing-personalization-to-anonymous-users/',
       },
     ],
   },
@@ -359,7 +359,7 @@ export const USE_CASES = {
     ],
     moreResources: [
       {
-        url: 'https://fingerprint.com/use-cases/web-scraping-prevention/',
+        url: 'https://fingerprint.com/blog/preventing-content-scraping/',
         type: 'Use case tutorial',
         title: 'Web Scraping Prevention',
       },
