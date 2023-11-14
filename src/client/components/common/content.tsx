@@ -165,7 +165,7 @@ export const USE_CASES = {
         type: 'Use case tutorial',
         title: 'Loan Risk',
         url: 'https://fingerprint.com/blog/detect-repeat-applications-loan-risk/',
-      }
+      },
       {
         url: 'https://fingerprint.com/blog/what-is-loan-fraud/',
         type: 'Article',
