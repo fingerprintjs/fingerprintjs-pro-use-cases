@@ -1,15 +1,11 @@
-import { FingerprintJsServerApiClient, isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { BACKEND_REGION, SERVER_API_KEY } from '../../../server/const';
+import { fingerprintJsApiClient } from '../../../server/fingerprint-api';
 
 export default async function getFingerprintEvent(req: NextApiRequest, res: NextApiResponse) {
   const { requestId } = req.query as { requestId: string };
-  const client = new FingerprintJsServerApiClient({
-    region: BACKEND_REGION,
-    apiKey: SERVER_API_KEY,
-  });
 
-  return await tryGetFingerprintEvent(res, client, requestId);
+  return await tryGetFingerprintEvent(res, requestId);
 }
 
 /**
@@ -17,13 +13,12 @@ export default async function getFingerprintEvent(req: NextApiRequest, res: Next
  * */
 async function tryGetFingerprintEvent(
   res: NextApiResponse,
-  client: FingerprintJsServerApiClient,
   requestId: string,
   retryCount = 5,
   retryDelay: number = 3000,
 ) {
   try {
-    const eventResponse = await client.getEvent(requestId);
+    const eventResponse = await fingerprintJsApiClient.getEvent(requestId);
     res.status(200).json(eventResponse);
   } catch (error) {
     console.error(error);
@@ -35,7 +30,7 @@ async function tryGetFingerprintEvent(
 
     // Retry only Not Found (404) requests.
     if (error.status === 404) {
-      setTimeout(() => tryGetFingerprintEvent(res, client, requestId, retryCount - 1, retryDelay), retryDelay);
+      setTimeout(() => tryGetFingerprintEvent(res, requestId, retryCount - 1, retryDelay), retryDelay);
     } else {
       handleOtherError(res, error);
     }
