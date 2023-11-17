@@ -51,5 +51,5 @@ function handleFinalRetry(res: NextApiResponse, error: any) {
 
 function handleOtherError(res: NextApiResponse, error: any) {
   res.statusMessage = `Something went wrong ${error}`;
-  res.status(500);
+  res.status(500).end();
 }
