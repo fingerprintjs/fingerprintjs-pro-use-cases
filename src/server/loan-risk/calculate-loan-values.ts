@@ -6,10 +6,13 @@ import { calculateMonthInstallment } from '../../shared/loan-risk/calculate-mont
  * */
 export const MIN_INCOME_PER_MONTH = 500;
 
-/**
- * Provides simplified calculations for a loan, and decides whether it will be approved or not.
- * */
-export function calculateLoanValues({ loanValue, monthlyIncome, loanDuration }) {
+type LoanAsk = {
+  loanValue: number;
+  monthlyIncome: number;
+  loanDuration: number;
+};
+
+export function calculateLoanValues({ loanValue, monthlyIncome, loanDuration }: LoanAsk) {
   const monthInstallment = calculateMonthInstallment({ loanValue, loanDuration });
   const remainingIncome = monthlyIncome - monthInstallment;
 

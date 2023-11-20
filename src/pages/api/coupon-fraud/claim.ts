@@ -94,7 +94,7 @@ export default couponEndpoint(
   async (req, res, { visitorId, couponCode }) => {
     await claimCoupon(visitorId, couponCode);
 
-    const result = new CheckResult('Coupon claimed', messageSeverity.Success);
+    const result = new CheckResult('Coupon claimed', messageSeverity.Success, checkResultType.Passed);
 
     return sendOkResponse(res, result);
   },

@@ -1,7 +1,6 @@
 import { ARTICLES, ArticleData } from '../../../../server/paywall/articles';
 import { paywallEndpoint } from '../../../../server/paywall/paywall-endpoint';
-import { countViewedArticles, saveArticleView } from '../../../../server/paywall/article-views';
-import { ARTICLE_VIEW_LIMIT } from '../../../../shared/paywall/constants';
+import { ARTICLE_VIEW_LIMIT, countViewedArticles, saveArticleView } from '../../../../server/paywall/article-views';
 import { CheckResultObject } from '../../../../server/checkResult';
 
 export type ArticleResponse = CheckResultObject<{
