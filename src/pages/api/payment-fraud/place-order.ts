@@ -1,4 +1,4 @@
-import { Sequelize } from 'sequelize';
+import { Attributes, DataTypes, InferAttributes, InferCreationAttributes, Model, Op } from 'sequelize';
 import {
   ensurePostRequest,
   ensureValidRequestIdAndVisitorId,
@@ -16,24 +16,34 @@ import {
 } from '../../../server/checks';
 import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
 
-// Defines db model for payment attempt.
-export const PaymentAttemptDbModel = sequelize.define('payment-attempt', {
+interface PaymentAttemptAttributes
+  extends Model<InferAttributes<PaymentAttemptAttributes>, InferCreationAttributes<PaymentAttemptAttributes>> {
+  visitorId: string;
+  isChargebacked: boolean;
+  usedStolenCard: boolean;
+  checkResult: string;
+  timestamp: number;
+}
+
+export const PaymentAttemptDbModel = sequelize.define<PaymentAttemptAttributes>('payment-attempt', {
   visitorId: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
   },
   isChargebacked: {
-    type: Sequelize.BOOLEAN,
+    type: DataTypes.BOOLEAN,
   },
   usedStolenCard: {
-    type: Sequelize.BOOLEAN,
+    type: DataTypes.BOOLEAN,
   },
   checkResult: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
   },
   timestamp: {
-    type: Sequelize.DATE,
+    type: DataTypes.DATE,
   },
 });
+
+export type PaymentAttempt = Attributes<PaymentAttemptAttributes>;
 
 // Mocked credit card details.
 const mockedCard = {
@@ -124,10 +134,10 @@ async function checkForCardCracking(visitorData) {
     where: {
       visitorId: visitorData.visitorId,
       timestamp: {
-        [Sequelize.Op.gt]: new Date().getTime() - 365 * 24 * 60 * 1000,
+        [Op.gt]: new Date().getTime() - 365 * 24 * 60 * 1000,
       },
       checkResult: {
-        [Sequelize.Op.not]: checkResultType.Passed,
+        [Op.not]: checkResultType.Passed,
       },
     },
   });
@@ -150,7 +160,7 @@ async function checkVisitorIdForChargebacks(visitorData) {
       visitorId: visitorData.visitorId,
       isChargebacked: true,
       timestamp: {
-        [Sequelize.Op.gt]: new Date().getTime() - 365 * 24 * 60 * 1000,
+        [Op.gt]: new Date().getTime() - 365 * 24 * 60 * 1000,
       },
     },
   });
