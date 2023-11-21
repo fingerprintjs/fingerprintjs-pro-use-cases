@@ -1,9 +1,9 @@
-import { UserSearchHistory } from '../../../server/personalization/database';
+import { UserSearchHistoryDbModel } from '../../../server/personalization/database';
 import { Op } from 'sequelize';
 import { personalizationEndpoint } from '../../../server/personalization/personalization-endpoint';
 
 // Endpoint for fetching user search history for given visitorId
-export default personalizationEndpoint(async (req, res, { usePersonalizedData, visitorId }) => {
+export default personalizationEndpoint(async (_req, res, { usePersonalizedData, visitorId }) => {
   if (!usePersonalizedData) {
     return res.status(200).json({
       data: [],
@@ -11,7 +11,7 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData, v
     });
   }
 
-  const history = await UserSearchHistory.findAll({
+  const history = await UserSearchHistoryDbModel.findAll({
     order: [['timestamp', 'DESC']],
     where: {
       visitorId: {

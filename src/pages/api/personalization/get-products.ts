@@ -1,14 +1,14 @@
-import { Product, UserSearchHistory } from '../../../server/personalization/database';
+import { ProductDbModel, UserSearchHistoryDbModel } from '../../../server/personalization/database';
 import { Op } from 'sequelize';
 import { personalizationEndpoint } from '../../../server/personalization/personalization-endpoint';
 import { seedProducts } from '../../../server/personalization/seed';
 
-function searchProducts(query) {
+function searchProducts(query: string) {
   if (!query) {
-    return Product.findAll();
+    return ProductDbModel.findAll();
   }
 
-  return Product.findAll({
+  return ProductDbModel.findAll({
     where: {
       name: {
         [Op.like]: `%${query}%`,
@@ -19,7 +19,7 @@ function searchProducts(query) {
 
 // Persists search query for given visitorId
 async function persistSearchPhrase(query, visitorId) {
-  const existingHistory = await UserSearchHistory.findOne({
+  const existingHistory = await UserSearchHistoryDbModel.findOne({
     where: {
       query: {
         [Op.eq]: query,
@@ -38,7 +38,7 @@ async function persistSearchPhrase(query, visitorId) {
     return;
   }
 
-  await UserSearchHistory.create({
+  await UserSearchHistoryDbModel.create({
     visitorId,
     query,
     timestamp: new Date().getTime(),
@@ -52,7 +52,7 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData, v
 
   const { query } = JSON.parse(req.body);
 
-  let productsCount = await Product.count();
+  let productsCount = await ProductDbModel.count();
 
   if (!productsCount) {
     await seedProducts();

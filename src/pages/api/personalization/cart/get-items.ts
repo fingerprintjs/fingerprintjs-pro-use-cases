@@ -1,5 +1,5 @@
 import { personalizationEndpoint } from '../../../../server/personalization/personalization-endpoint';
-import { Product, UserCartItem } from '../../../../server/personalization/database';
+import { UserCartItem, ProductDbModel, UserCartItemDbModel } from '../../../../server/personalization/database';
 import { Op } from 'sequelize';
 
 // Returns cart items for the given visitorId
@@ -11,14 +11,14 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData, v
     });
   }
 
-  const cartItems = (await UserCartItem.findAll({
+  const cartItems = (await UserCartItemDbModel.findAll({
     where: {
       visitorId: {
         [Op.eq]: visitorId,
       },
     },
     order: [['timestamp', 'DESC']],
-    include: Product,
+    include: ProductDbModel,
     // To-do: Clean this up later, find out how to represent DB associations in TypeScript correctly
   })) as unknown as UserCartItem[];
 

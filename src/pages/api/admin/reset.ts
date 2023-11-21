@@ -6,7 +6,11 @@ import {
 } from '../../../server/server';
 import { LoginAttemptDbModel } from '../credential-stuffing/authenticate';
 import { PaymentAttemptDbModel } from '../payment-fraud/place-order';
-import { UserCartItem, UserPreferences, UserSearchHistory } from '../../../server/personalization/database';
+import {
+  UserCartItemDbModel,
+  UserPreferencesDbModel,
+  UserSearchHistoryDbModel,
+} from '../../../server/personalization/database';
 import { LoanRequestDbModel } from '../../../server/loan-risk/database';
 import { ArticleViewDbModel } from '../../../server/paywall/database';
 import { CouponClaimDbModel } from '../../../server/coupon-fraud/database';
@@ -83,13 +87,12 @@ async function deleteVisitorIdData(visitorData) {
 
   const couponsRemoved = await tryToDestroy(() => CouponClaimDbModel.destroy(options));
 
-  const deletedPersonalizationResult = await Promise.all(
-    [UserCartItem, UserPreferences, UserCartItem, UserSearchHistory].map((model) =>
-      tryToDestroy(() => model.destroy(options)),
-    ),
-  );
+  const deletedCartItemsCount = await tryToDestroy(() => UserCartItemDbModel.destroy(options));
+  const deletedUserPreferencesCount = await tryToDestroy(() => UserPreferencesDbModel.destroy(options));
+  const deletedUserSearchHistoryCount = await tryToDestroy(() => UserSearchHistoryDbModel.destroy(options));
 
-  const deletedPersonalizationCount = deletedPersonalizationResult.reduce((acc, cur) => acc + cur, 0);
+  const deletedPersonalizationCount =
+    deletedCartItemsCount + deletedUserPreferencesCount + deletedUserSearchHistoryCount;
 
   const deletedLoanRequests = await tryToDestroy(() => LoanRequestDbModel.destroy(options));
   const deletedPaywallData = await tryToDestroy(() => ArticleViewDbModel.destroy(options));
