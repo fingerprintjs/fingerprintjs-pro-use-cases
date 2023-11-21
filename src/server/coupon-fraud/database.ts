@@ -10,7 +10,7 @@ interface CouponClaimAttributes
   timestamp: Date;
 }
 
-export const CouponClaim = sequelize.define<CouponClaimAttributes>('coupon-claim', {
+export const CouponClaimDbModel = sequelize.define<CouponClaimAttributes>('coupon-claim', {
   visitorId: {
     type: DataTypes.STRING,
   },
@@ -22,6 +22,6 @@ export const CouponClaim = sequelize.define<CouponClaimAttributes>('coupon-claim
   },
 });
 
-CouponClaim.sync({ force: false });
+CouponClaimDbModel.sync({ force: false });
 
 export type CouponClaim = Attributes<CouponClaimAttributes>;

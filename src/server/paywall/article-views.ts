@@ -1,18 +1,19 @@
 import { Op } from 'sequelize';
-import { ArticleView } from './database';
+import { ArticleViewDbModel } from './database';
 import { getTodayDateRange } from '../../shared/utils/date';
 import { messageSeverity } from '../server';
 import { CheckResult, checkResultType } from '../checkResult';
+import { NextApiRequest } from 'next';
 
 export const ARTICLE_VIEW_LIMIT = 2;
 
 /**
  * Saves article view into the database. If it already exists, we update its timestamp.
  * */
-export async function saveArticleView(articleId, visitorId) {
+export async function saveArticleView(articleId: string, visitorId: string) {
   const { timestampEnd, timestampStart } = getTodayDateRange();
 
-  const [view, created] = await ArticleView.findOrCreate({
+  const [view, created] = await ArticleViewDbModel.findOrCreate({
     where: {
       articleId: {
         [Op.eq]: articleId,
@@ -33,7 +34,6 @@ export async function saveArticleView(articleId, visitorId) {
 
   if (!created) {
     view.timestamp = new Date();
-
     await view.save();
   }
 
@@ -43,10 +43,10 @@ export async function saveArticleView(articleId, visitorId) {
 /**
  * Returns count of all articles that were viewed by given visitorId today.
  * */
-export async function countViewedArticles(visitorId) {
+export async function countViewedArticles(visitorId: string) {
   const { timestampEnd, timestampStart } = getTodayDateRange();
 
-  return await ArticleView.count({
+  return await ArticleViewDbModel.count({
     where: {
       visitorId: {
         [Op.eq]: visitorId,
@@ -61,18 +61,18 @@ export async function countViewedArticles(visitorId) {
 /**
  * Checks if the given visitor has exceeded his daily limit of free article views.
  * */
-export async function checkCountOfViewedArticles(visitorData, req) {
+export async function checkCountOfViewedArticles(visitorData: { visitorId: string }, req: NextApiRequest) {
   const { timestampEnd, timestampStart } = getTodayDateRange();
 
   const [count, existingView] = await Promise.all([
     countViewedArticles(visitorData.visitorId),
-    ArticleView.findOne({
+    ArticleViewDbModel.findOne({
       where: {
         visitorId: {
           [Op.eq]: visitorData.visitorId,
         },
         articleId: {
-          [Op.eq]: req.query.id,
+          [Op.eq]: req.query.id as string,
         },
         timestamp: {
           [Op.between]: [timestampStart, timestampEnd],

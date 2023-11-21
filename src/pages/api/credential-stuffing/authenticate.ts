@@ -24,7 +24,7 @@ const mockedUser = {
 };
 
 // Defines db model for login attempt.
-export const LoginAttempt = sequelize.define('login-attempt', {
+export const LoginAttemptDbModel = sequelize.define('login-attempt', {
   visitorId: {
     type: DataTypes.STRING,
   },
@@ -39,7 +39,7 @@ export const LoginAttempt = sequelize.define('login-attempt', {
   },
 });
 
-LoginAttempt.sync({ force: false });
+LoginAttemptDbModel.sync({ force: false });
 
 function getKnownVisitorIds() {
   const defaultVisitorIds = ['bXbwuhCBRB9lLTK692vw', 'ABvLgKyH3fAr6uAjn0vq', 'BNvLgKyHefAr9iOjn0ul'];
@@ -103,7 +103,7 @@ async function tryToLogin(req, res, ruleChecks) {
 
 async function checkUnsuccessfulIdentifications(visitorData) {
   // Gets all unsuccessful attempts during the last 24 hours.
-  const visitorLoginAttemptCountQueryResult = await LoginAttempt.findAndCountAll({
+  const visitorLoginAttemptCountQueryResult = await LoginAttemptDbModel.findAndCountAll({
     where: {
       visitorId: visitorData.visitorId,
       timestamp: {
@@ -163,7 +163,7 @@ function isLoggingInFromKnownDevice(providedVisitorId, knownVisitorIds) {
 
 // Persists login attempt to the database.
 async function logLoginAttempt(visitorId, userName, loginAttemptResult) {
-  await LoginAttempt.create({
+  await LoginAttemptDbModel.create({
     visitorId,
     userName,
     loginAttemptResult,

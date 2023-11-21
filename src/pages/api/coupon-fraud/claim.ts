@@ -1,7 +1,7 @@
 import { messageSeverity } from '../../../server/server';
 import { Op } from 'sequelize';
 import { couponEndpoint } from '../../../server/coupon-fraud/coupon-endpoint';
-import { COUPON_CODES, CouponClaim } from '../../../server/coupon-fraud/database';
+import { COUPON_CODES, CouponClaimDbModel } from '../../../server/coupon-fraud/database';
 import { CheckResult, checkResultType } from '../../../server/checkResult';
 import { sendOkResponse } from '../../../server/response';
 
@@ -9,7 +9,7 @@ async function checkVisitorClaimedRecently(visitorId) {
   const oneHourBefore = new Date();
   oneHourBefore.setHours(oneHourBefore.getHours() - 1);
 
-  return await CouponClaim.findOne({
+  return await CouponClaimDbModel.findOne({
     where: {
       visitorId,
       timestamp: {
@@ -20,7 +20,7 @@ async function checkVisitorClaimedRecently(visitorId) {
 }
 
 async function getVisitorClaim(visitorId, couponCode) {
-  return await CouponClaim.findOne({
+  return await CouponClaimDbModel.findOne({
     where: { visitorId, couponCode },
   });
 }
@@ -36,7 +36,7 @@ export function checkCoupon(code) {
  * Claim coupon on behalf of the visitor.
  */
 export async function claimCoupon(visitorId, couponCode) {
-  const claim = await CouponClaim.create({
+  const claim = await CouponClaimDbModel.create({
     couponCode,
     visitorId,
     timestamp: new Date(),

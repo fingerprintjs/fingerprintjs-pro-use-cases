@@ -4,12 +4,12 @@ import {
   getVisitorDataWithRequestId,
   messageSeverity,
 } from '../../../server/server';
-import { LoginAttempt } from '../credential-stuffing/authenticate';
-import { PaymentAttempt } from '../payment-fraud/place-order';
+import { LoginAttemptDbModel } from '../credential-stuffing/authenticate';
+import { PaymentAttemptDbModel } from '../payment-fraud/place-order';
 import { UserCartItem, UserPreferences, UserSearchHistory } from '../../../server/personalization/database';
-import { LoanRequest } from '../../../server/loan-risk/database';
-import { ArticleView } from '../../../server/paywall/database';
-import { CouponClaim } from '../../../server/coupon-fraud/database';
+import { LoanRequestDbModel } from '../../../server/loan-risk/database';
+import { ArticleViewDbModel } from '../../../server/paywall/database';
+import { CouponClaimDbModel } from '../../../server/coupon-fraud/database';
 import { CheckResult, checkResultType } from '../../../server/checkResult';
 import {
   checkConfidenceScore,
@@ -77,11 +77,11 @@ async function deleteVisitorIdData(visitorData) {
     where: { visitorId: visitorData.visitorId },
   };
 
-  const loginAttemptsRowsRemoved = await tryToDestroy(() => LoginAttempt.destroy(options));
+  const loginAttemptsRowsRemoved = await tryToDestroy(() => LoginAttemptDbModel.destroy(options));
 
-  const paymentAttemptsRowsRemoved = await tryToDestroy(() => PaymentAttempt.destroy(options));
+  const paymentAttemptsRowsRemoved = await tryToDestroy(() => PaymentAttemptDbModel.destroy(options));
 
-  const couponsRemoved = await tryToDestroy(() => CouponClaim.destroy(options));
+  const couponsRemoved = await tryToDestroy(() => CouponClaimDbModel.destroy(options));
 
   const deletedPersonalizationResult = await Promise.all(
     [UserCartItem, UserPreferences, UserCartItem, UserSearchHistory].map((model) =>
@@ -91,8 +91,8 @@ async function deleteVisitorIdData(visitorData) {
 
   const deletedPersonalizationCount = deletedPersonalizationResult.reduce((acc, cur) => acc + cur, 0);
 
-  const deletedLoanRequests = await tryToDestroy(() => LoanRequest.destroy(options));
-  const deletedPaywallData = await tryToDestroy(() => ArticleView.destroy(options));
+  const deletedLoanRequests = await tryToDestroy(() => LoanRequestDbModel.destroy(options));
+  const deletedPaywallData = await tryToDestroy(() => ArticleViewDbModel.destroy(options));
 
   return new CheckResult(
     `Deleted ${loginAttemptsRowsRemoved} rows for Credential Stuffing problem. Deleted ${paymentAttemptsRowsRemoved} rows for Payment Fraud problem. Deleted ${deletedPersonalizationCount} entries related to personalization.  Deleted ${deletedLoanRequests} loan request entries. Deleted ${deletedPaywallData} rows for the Paywall problem. Deleted ${couponsRemoved} rows for the Coupon fraud problem.`,
