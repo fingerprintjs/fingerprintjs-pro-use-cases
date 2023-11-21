@@ -1,7 +1,7 @@
 import { messageSeverity } from '../../../server/server';
 import { Op } from 'sequelize';
 import { couponEndpoint } from '../../../server/coupon-fraud/coupon-endpoint';
-import { CouponClaim, CouponCode } from '../../../server/coupon-fraud/database';
+import { COUPON_CODES, CouponClaim } from '../../../server/coupon-fraud/database';
 import { CheckResult, checkResultType } from '../../../server/checkResult';
 import { sendOkResponse } from '../../../server/response';
 
@@ -28,14 +28,8 @@ async function getVisitorClaim(visitorId, couponCode) {
 /**
  * Checks if a coupon exists with the given coupon code.
  */
-export async function checkCoupon(code) {
-  return await CouponCode.findOne({
-    where: {
-      code: {
-        [Op.eq]: code,
-      },
-    },
-  });
+export function checkCoupon(code) {
+  return COUPON_CODES.includes(code);
 }
 
 /**
