@@ -2,9 +2,9 @@ import { GetResult } from '@fingerprintjs/fingerprintjs-pro';
 
 export function apiRequest(
   pathname: string,
-  fpData: GetResult,
+  fpData: GetResult | undefined,
   body: Record<string, any> = {},
-  abortSignal: AbortSignal = null,
+  abortSignal: AbortSignal | null = null,
 ) {
   return fetch(pathname, {
     method: 'POST',

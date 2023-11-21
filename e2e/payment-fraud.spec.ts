@@ -1,15 +1,14 @@
-import { test } from '@playwright/test';
+import { Page, test } from '@playwright/test';
 import { reset } from './admin';
 
-async function waitForSuccessfulSubmit(page) {
+async function waitForSuccessfulSubmit(page: Page) {
   await page.click('[type="submit"]');
 
   await page.waitForSelector('text="Thank you for your payment. Everything is OK."');
 }
 
-async function waitForInvalidCardSubmit(page) {
+async function waitForInvalidCardSubmit(page: Page) {
   await page.click('[type="submit"]');
-
   await page.waitForSelector('text="Incorrect card details, try again."');
 }
 

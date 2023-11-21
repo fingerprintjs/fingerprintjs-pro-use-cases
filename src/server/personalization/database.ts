@@ -44,7 +44,7 @@ export const ProductDbModel = sequelize.define<ProductAttributes>('product', {
   },
 });
 
-type Product = Attributes<ProductAttributes>;
+export type Product = Attributes<ProductAttributes>;
 
 interface UserPreferencesAttributes
   extends Model<InferAttributes<UserPreferencesAttributes>, InferCreationAttributes<UserPreferencesAttributes>> {

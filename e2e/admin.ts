@@ -1,7 +1,9 @@
+import { BrowserContext } from '@playwright/test';
+
 /**
  * @param {import('@playwright/test').BrowserContext} context
  * */
-export async function reset(context) {
+export async function reset(context: BrowserContext) {
   const page = await context.newPage();
 
   await page.goto('/admin');

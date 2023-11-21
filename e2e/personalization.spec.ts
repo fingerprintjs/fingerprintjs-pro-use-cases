@@ -19,17 +19,20 @@ test.describe('Personalization', () => {
     const products = page.getByTestId(PERS_ID.coffeeProduct);
     const cartItems = page.getByTestId(CART_ID.cartItem);
     const getSubTotal = async () => {
-      const subTotal = await page.getByTestId(CART_ID.cartSubTotal).getAttribute('data-test-value');
+      const subTotal =
+        (await page.getByTestId(CART_ID.cartSubTotal).getAttribute('data-test-value')) ?? 'Subtotal not found';
       return parseFloat(subTotal);
     };
 
     const product = products.nth(0);
-    const productPrice = parseFloat(await product.getByTestId(PERS_ID.coffeeProductPrice).getAttribute('data-price'));
+    const productPrice = parseFloat(
+      (await product.getByTestId(PERS_ID.coffeeProductPrice).getAttribute('data-price')) ?? 'Product price not found',
+    );
     await product.getByTestId(PERS_ID.addToCart).click();
     const cartItem = cartItems.first();
 
     await expect(cartItem.getByTestId(CART_ID.cartItemName)).toHaveText(
-      await product.getByTestId(PERS_ID.coffeeProductName).textContent(),
+      (await product.getByTestId(PERS_ID.coffeeProductName).textContent()) ?? 'Product name not found',
     );
     const subTotal = await getSubTotal();
     expect(subTotal).toBe(productPrice);
@@ -75,7 +78,7 @@ test.describe('Personalization', () => {
       await expect
         .poll(async () => {
           const textContents = await Promise.all((await products.all()).map((p) => p.textContent()));
-          return textContents.every((p) => p.includes('Decaf coffee'));
+          return textContents.every((p) => p?.includes('Decaf coffee'));
         })
         .toBe(true);
     };

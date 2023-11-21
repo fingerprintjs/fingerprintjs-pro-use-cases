@@ -27,14 +27,14 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData, v
   const [cartItem, created] = await UserCartItemDbModel.findOrCreate({
     where: {
       visitorId: {
-        [Op.eq]: visitorId,
+        [Op.eq]: visitorId ?? '',
       },
       productId: {
         [Op.eq]: productId,
       },
     },
     defaults: {
-      visitorId,
+      visitorId: visitorId ?? '',
       count: 1,
       timestamp: new Date(),
       productId,
