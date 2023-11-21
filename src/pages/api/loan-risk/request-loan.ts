@@ -1,9 +1,10 @@
 import { loanRiskEndpoint } from '../../../server/loan-risk/loan-risk-endpoint';
-import { LoanRequest } from '../../../server/loan-risk/database';
+import { LoanRequestDbModel } from '../../../server/loan-risk/database';
 import { Op } from 'sequelize';
 import { messageSeverity } from '../../../server/server';
 import { calculateLoanValues } from '../../../server/loan-risk/calculate-loan-values';
 import { CheckResult, checkResultType } from '../../../server/checkResult';
+import { NextApiRequest } from 'next';
 
 /**
  * Validates previous loan requests sent by a given user.
@@ -12,7 +13,7 @@ import { CheckResult, checkResultType } from '../../../server/checkResult';
  * If monthly income is not the same as in the previous request, we return a warning.
  *
  * */
-async function checkPreviousLoanRequests(visitorData, req) {
+async function checkPreviousLoanRequests(visitorData: { visitorId: string }, req: NextApiRequest) {
   const { monthlyIncome, firstName, lastName } = JSON.parse(req.body);
 
   const timestampStart = new Date();
@@ -22,7 +23,7 @@ async function checkPreviousLoanRequests(visitorData, req) {
   timestampEnd.setHours(23, 59, 59, 59);
 
   // Find previous loan requests that were sent by this visitorId today.
-  const previousLoanRequests = await LoanRequest.findAll({
+  const previousLoanRequests = await LoanRequestDbModel.findAll({
     where: {
       visitorId: {
         [Op.eq]: visitorData.visitorId,
@@ -65,7 +66,7 @@ export default loanRiskEndpoint(
       loanDuration,
     });
 
-    await LoanRequest.create({
+    await LoanRequestDbModel.create({
       visitorId: visitorData.visitorId,
       timestamp: new Date(),
       monthlyIncome,
