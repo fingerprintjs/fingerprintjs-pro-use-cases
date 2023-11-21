@@ -7,20 +7,15 @@ export function ThemeProvider({ children }) {
 
   const theme = useMemo(() => {
     const secondary = 'rgba(0, 0, 0, 0.87)';
-    const headerLight = '#f2f2f7';
 
     return createTheme({
       palette: {
-        header: hasDarkMode ? secondary : headerLight,
         primary: {
           main: '#FF5D22',
         },
         secondary: {
           main: secondary,
         },
-        gray: hasDarkMode ? '#bdbdbd' : '#757575',
-        headerLight,
-        accentBackground: hasDarkMode ? '#171717' : '#fafafa',
         mode: hasDarkMode ? 'dark' : 'light',
       },
       components: {
