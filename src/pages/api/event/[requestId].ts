@@ -21,7 +21,7 @@ async function tryGetFingerprintEvent(
     res.status(200).json(eventResponse);
   } catch (error) {
     // Retry only Not Found (404) requests.
-    if (error.status === 404 && retryCount > 1) {
+    if (isEventError(error) && error.status === 404 && retryCount > 1) {
       setTimeout(() => tryGetFingerprintEvent(res, requestId, retryCount - 1, retryDelay), retryDelay);
     } else {
       console.error(error);
@@ -30,12 +30,12 @@ async function tryGetFingerprintEvent(
   }
 }
 
-function sendErrorResponse(res: NextApiResponse, error: any) {
+function sendErrorResponse(res: NextApiResponse, error: unknown) {
   if (isEventError(error)) {
-    res.statusMessage = `${error.error.code} - ${error.error.message}`;
+    res.statusMessage = `${error.error?.code} - ${error.error?.message}`;
     res.status(error.status).json({
-      message: error.error.message,
-      code: error.error.code,
+      message: error.error?.message,
+      code: error.error?.code,
     });
   } else {
     res.statusMessage = `Something went wrong ${error}`;

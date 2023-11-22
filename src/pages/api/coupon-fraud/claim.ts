@@ -4,8 +4,9 @@ import { couponEndpoint } from '../../../server/coupon-fraud/coupon-endpoint';
 import { COUPON_CODES, CouponClaimDbModel } from '../../../server/coupon-fraud/database';
 import { CheckResult, checkResultType } from '../../../server/checkResult';
 import { sendOkResponse } from '../../../server/response';
+import { RuleCheck } from '../../../server/checks';
 
-async function checkVisitorClaimedRecently(visitorId) {
+async function checkVisitorClaimedRecently(visitorId: string) {
   const oneHourBefore = new Date();
   oneHourBefore.setHours(oneHourBefore.getHours() - 1);
 
@@ -19,7 +20,7 @@ async function checkVisitorClaimedRecently(visitorId) {
   });
 }
 
-async function getVisitorClaim(visitorId, couponCode) {
+async function getVisitorClaim(visitorId: string, couponCode: string) {
   return await CouponClaimDbModel.findOne({
     where: { visitorId, couponCode },
   });
@@ -28,14 +29,14 @@ async function getVisitorClaim(visitorId, couponCode) {
 /**
  * Checks if a coupon exists with the given coupon code.
  */
-export function checkCoupon(code) {
+export function checkCoupon(code: string) {
   return COUPON_CODES.includes(code);
 }
 
 /**
  * Claim coupon on behalf of the visitor.
  */
-export async function claimCoupon(visitorId, couponCode) {
+export async function claimCoupon(visitorId: string, couponCode: string) {
   const claim = await CouponClaimDbModel.create({
     couponCode,
     visitorId,
@@ -46,7 +47,7 @@ export async function claimCoupon(visitorId, couponCode) {
   return claim;
 }
 
-async function checkIfCouponExists(visitorData, req, couponCode) {
+const checkIfCouponExists: RuleCheck = async (_visitorData, _req, couponCode: string) => {
   const coupon = await checkCoupon(couponCode);
 
   // Check if the coupon exists.
@@ -57,10 +58,10 @@ async function checkIfCouponExists(visitorData, req, couponCode) {
       checkResultType.CouponDoesNotExist,
     );
   }
-}
+};
 
-async function checkIfCouponWasClaimed({ visitorId }, req, couponCode) {
-  const wasCouponClaimedByVisitor = await getVisitorClaim(visitorId, couponCode);
+const checkIfCouponWasClaimed: RuleCheck = async (visitorData, req, couponCode) => {
+  const wasCouponClaimedByVisitor = await getVisitorClaim(visitorData.visitorId, couponCode);
 
   // Check if the visitor claimed this coupon before.
   if (wasCouponClaimedByVisitor) {
@@ -70,10 +71,10 @@ async function checkIfCouponWasClaimed({ visitorId }, req, couponCode) {
       checkResultType.CouponAlreadyClaimed,
     );
   }
-}
+};
 
-async function checkIfClaimedAnotherCouponRecently({ visitorId }) {
-  const visitorClaimedAnotherCouponRecently = await checkVisitorClaimedRecently(visitorId);
+const checkIfClaimedAnotherCouponRecently: RuleCheck = async (visitorData) => {
+  const visitorClaimedAnotherCouponRecently = await checkVisitorClaimedRecently(visitorData.visitorId);
 
   if (visitorClaimedAnotherCouponRecently) {
     return new CheckResult(
@@ -82,11 +83,13 @@ async function checkIfClaimedAnotherCouponRecently({ visitorId }) {
       checkResultType.AnotherCouponClaimedRecently,
     );
   }
-}
+};
 
 export default couponEndpoint(
-  async (req, res, { visitorId, couponCode }) => {
-    await claimCoupon(visitorId, couponCode);
+  async (req, res, validateCouponResult) => {
+    if (validateCouponResult && validateCouponResult.visitorId && validateCouponResult.couponCode) {
+      await claimCoupon(validateCouponResult.visitorId, validateCouponResult.visitorId);
+    }
 
     const result = new CheckResult('Coupon claimed', messageSeverity.Success, checkResultType.Passed);
 

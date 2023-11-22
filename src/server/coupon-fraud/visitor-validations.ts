@@ -1,15 +1,26 @@
 import { ensureValidRequestIdAndVisitorId, getVisitorDataWithRequestId } from '../server';
 import { checkResultType } from '../checkResult';
 import {
+  RuleCheck,
   checkConfidenceScore,
   checkFreshIdentificationRequest,
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
 } from '../checks';
 import { sendForbiddenResponse } from '../response';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-export async function validateCouponRequest(req, res, additionalChecks = []) {
-  const result = {
+type ValidateCouponResult = {
+  visitorId: string | null;
+  couponCode: string | null;
+};
+
+export async function validateCouponRequest(
+  req: NextApiRequest,
+  res: NextApiResponse,
+  additionalChecks: RuleCheck[] = [],
+): Promise<ValidateCouponResult | void> {
+  const result: { visitorId: string | null; couponCode: string | null } = {
     visitorId: null,
     couponCode: null,
   };

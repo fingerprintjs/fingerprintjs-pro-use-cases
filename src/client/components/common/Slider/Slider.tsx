@@ -30,8 +30,8 @@ export const Slider: React.FC<SliderProps> = ({
     max={max}
     min={min}
     step={step}
-    value={[value]}
-    onValueChange={(value) => onChange(value[0])}
+    value={value ? [value] : undefined}
+    onValueChange={(value) => onChange?.(value[0])}
   >
     <RadixSlider.Track className={styles.SliderTrack}>
       <RadixSlider.Range className={styles.SliderRange} />

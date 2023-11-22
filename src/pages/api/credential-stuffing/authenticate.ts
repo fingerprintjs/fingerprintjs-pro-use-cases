@@ -9,12 +9,14 @@ import {
 } from '../../../server/server';
 import { CheckResult, checkResultType } from '../../../server/checkResult';
 import {
+  RuleCheck,
   checkConfidenceScore,
   checkFreshIdentificationRequest,
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
 } from '../../../server/checks';
 import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 // Mocked user with leaked credentials associated with visitorIds.
 const mockedUser = {
@@ -50,7 +52,7 @@ function getKnownVisitorIds() {
   return visitorIdsFromEnv ? [...defaultVisitorIds, ...visitorIdsFromEnv] : defaultVisitorIds;
 }
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // This API route accepts only POST requests.
   if (!ensurePostRequest(req, res)) {
     return;
@@ -68,7 +70,7 @@ export default async function handler(req, res) {
   ]);
 }
 
-async function tryToLogin(req, res, ruleChecks) {
+async function tryToLogin(req: NextApiRequest, res: NextApiResponse, ruleChecks: RuleCheck[]) {
   // Get requestId and visitorId from the client.
   const visitorId = req.body.visitorId;
   const requestId = req.body.requestId;
@@ -101,7 +103,7 @@ async function tryToLogin(req, res, ruleChecks) {
   }
 }
 
-async function checkUnsuccessfulIdentifications(visitorData) {
+const checkUnsuccessfulIdentifications: RuleCheck = async (visitorData) => {
   // Gets all unsuccessful attempts during the last 24 hours.
   const visitorLoginAttemptCountQueryResult = await LoginAttemptDbModel.findAndCountAll({
     where: {
@@ -126,9 +128,9 @@ async function checkUnsuccessfulIdentifications(visitorData) {
       checkResultType.TooManyLoginAttempts,
     );
   }
-}
+};
 
-async function checkCredentialsAndKnownVisitorIds(visitorData, request) {
+const checkCredentialsAndKnownVisitorIds: RuleCheck = async (visitorData, request) => {
   // Checks if the provided credentials are correct.
   if (areCredentialsCorrect(request.body.userName, request.body.password)) {
     if (isLoggingInFromKnownDevice(visitorData.visitorId, mockedUser.knownVisitorIds)) {
@@ -149,20 +151,20 @@ async function checkCredentialsAndKnownVisitorIds(visitorData, request) {
       checkResultType.IncorrectCredentials,
     );
   }
-}
+};
 
 // Dummy action simulating authentication.
-function areCredentialsCorrect(name, password) {
+function areCredentialsCorrect(name: string, password: string) {
   return name === mockedUser.userName && password === mockedUser.password;
 }
 
 // Checks if the provided visitorId is associated with the user.
-function isLoggingInFromKnownDevice(providedVisitorId, knownVisitorIds) {
+function isLoggingInFromKnownDevice(providedVisitorId: string, knownVisitorIds: string[]) {
   return knownVisitorIds.includes(providedVisitorId);
 }
 
 // Persists login attempt to the database.
-async function logLoginAttempt(visitorId, userName, loginAttemptResult) {
+async function logLoginAttempt(visitorId: string, userName: string, loginAttemptResult: string) {
   await LoginAttemptDbModel.create({
     visitorId,
     userName,

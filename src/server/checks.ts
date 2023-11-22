@@ -1,18 +1,26 @@
+import { VisitorsResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { CheckResult, checkResultType } from './checkResult';
 import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, IPv4_REGEX, MIN_CONFIDENCE_SCORE } from './const';
 import { messageSeverity, ourOrigins } from './server';
+import { NextApiRequest } from 'next';
 
 // Validates format of visitorId and requestId.
-export const isVisitorIdFormatValid = (visitorId) => /^[a-zA-Z0-9]{20}$/.test(visitorId);
-export const isRequestIdFormatValid = (requestId) => /^\d{13}\.[a-zA-Z0-9]{6}$/.test(requestId);
-export function areVisitorIdAndRequestIdValid(visitorId, requestId) {
+export const isVisitorIdFormatValid = (visitorId: string) => /^[a-zA-Z0-9]{20}$/.test(visitorId);
+export const isRequestIdFormatValid = (requestId: string) => /^\d{13}\.[a-zA-Z0-9]{6}$/.test(requestId);
+export function areVisitorIdAndRequestIdValid(visitorId: string, requestId: string) {
   return isRequestIdFormatValid(requestId) && isVisitorIdFormatValid(visitorId);
 }
 
-export function checkFreshIdentificationRequest(visitorData) {
+export type RuleCheck = (
+  visitorData: VisitorsResponse,
+  req: NextApiRequest,
+  ...args: any
+) => (CheckResult | undefined) | Promise<CheckResult | undefined>;
+
+export const checkFreshIdentificationRequest: RuleCheck = (visitorData: VisitorsResponse) => {
   // The Server API must contain information about this specific identification request.
   // If not, the request might have been tampered with and we don't trust this identification attempt.
-  if (visitorData.error || visitorData.visits.length !== 1) {
+  if (!visitorData.visits || visitorData.visits.length !== 1) {
     return new CheckResult(
       'Hmmm, sneaky trying to forge information from the client-side, no luck this time, no sensitive action was performed.',
       messageSeverity.Error,
@@ -31,12 +39,12 @@ export function checkFreshIdentificationRequest(visitorData) {
       checkResultType.OldTimestamp,
     );
   }
-}
+};
 
 // The Confidence Score reflects the system's degree of certainty that the visitor identifier is correct.
 // If it's lower than the certain threshold we recommend using an additional way of verification, e.g. 2FA or email.
 // More info: https://dev.fingerprint.com/docs/understanding-your-confidence-score
-export function checkConfidenceScore(visitorData) {
+export const checkConfidenceScore: RuleCheck = (visitorData) => {
   if (visitorData?.visits[0]?.confidence?.score < MIN_CONFIDENCE_SCORE) {
     return new CheckResult(
       "Low confidence score, we'd rather verify you with the second factor,",
@@ -44,10 +52,10 @@ export function checkConfidenceScore(visitorData) {
       checkResultType.LowConfidenceScore,
     );
   }
-}
+};
 
 // Checks if the authentication request comes from the same IP address as the identification request.
-export function checkIpAddressIntegrity(visitorData, request) {
+export const checkIpAddressIntegrity: RuleCheck = (visitorData, request) => {
   if (!visitIpMatchesRequestIp(visitorData.visits[0].ip, request)) {
     return new CheckResult(
       'IP mismatch. An attacker might have tried to phish the victim.',
@@ -55,15 +63,9 @@ export function checkIpAddressIntegrity(visitorData, request) {
       checkResultType.IpMismatch,
     );
   }
-}
+};
 
-/**
- *
- * @param {string} visitIp
- * @param {import('http').IncomingMessage} request
- * @returns {boolean}
- */
-export function visitIpMatchesRequestIp(visitIp = '', request) {
+export function visitIpMatchesRequestIp(visitIp = '', request: NextApiRequest) {
   // This check is skipped on purpose in the Stackblitz and localhost environments.
   if (process.env.NODE_ENV === 'development') {
     return true;
@@ -78,7 +80,8 @@ export function visitIpMatchesRequestIp(visitIp = '', request) {
    * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
    * https://adam-p.ca/blog/2022/03/x-forwarded-for/.
    */
-  const requestIp = /** @type {string} */ request.headers['x-forwarded-for']?.split(',')[0] ?? '';
+  const xForwardedFor = request.headers['x-forwarded-for'];
+  const requestIp = Array.isArray(xForwardedFor) ? xForwardedFor[0] : xForwardedFor?.split(',')[0] ?? '';
 
   // IPv6 addresses are not supported yet, skip the check
   if (!IPv4_REGEX.test(requestIp)) {
@@ -91,7 +94,7 @@ export function visitIpMatchesRequestIp(visitIp = '', request) {
 // Checks if the authentication request comes from a known origin and
 // if the authentication request's origin corresponds to the origin/URL provided by the Fingerprint Pro Server API.
 // Additionally, one should set Request Filtering settings in the dashboard: https://dev.fingerprint.com/docs/request-filtering
-export function checkOriginsIntegrity(visitorData, request) {
+export const checkOriginsIntegrity: RuleCheck = (visitorData, request) => {
   if (!originIsAllowed(visitorData.visits[0].url, request)) {
     return new CheckResult(
       'Origin mismatch. An attacker might have tried to phish the victim.',
@@ -99,15 +102,9 @@ export function checkOriginsIntegrity(visitorData, request) {
       checkResultType.ForeignOrigin,
     );
   }
-}
+};
 
-/**
- *
- * @param {string} url
- * @param {import('http').IncomingMessage} request
- * @returns {boolean}
- */
-export function originIsAllowed(url = '', request) {
+export function originIsAllowed(url = '', request: NextApiRequest) {
   // This check is skipped on purpose in the Stackblitz and localhost environments.
   if (process.env.NODE_ENV === 'development') {
     return true;

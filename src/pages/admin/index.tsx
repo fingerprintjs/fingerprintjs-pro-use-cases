@@ -15,7 +15,7 @@ export default function Index() {
     enabled: false,
   });
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsWaitingForResponse(true);
 

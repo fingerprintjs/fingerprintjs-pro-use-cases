@@ -17,7 +17,13 @@ export const FP_LOAD_OPTIONS: LoadOptions = {
 // const fpPromise = import('https://fpcdn.io/v3/rzpSduhT63F6jaS35HFo').then(
 //   (FingerprintJS) => FingerprintJS.load()
 // );
-async function getVisitorData({ extendedResult = true, linkedId }) {
+
+type GetVisitorDataArgs = {
+  extendedResult?: boolean;
+  linkedId?: string;
+};
+
+async function getVisitorData({ extendedResult = true, linkedId }: GetVisitorDataArgs) {
   const fpPromise = FingerprintJS.load(FP_LOAD_OPTIONS);
   const fp = await fpPromise;
 
