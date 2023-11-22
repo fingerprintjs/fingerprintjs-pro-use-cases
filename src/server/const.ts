@@ -20,7 +20,8 @@ type AgentRegion = LoadOptions['region'];
 export const SERVER_API_KEY = process.env.PRIVATE_API_KEY ?? 'fMUtVoWHKddpfOheQww2';
 export const PUBLIC_API_KEY = process.env.NEXT_PUBLIC_API_KEY ?? 'lwIgYR2dpSJfW830B24h';
 export const FRONTEND_REGION: AgentRegion = (process.env.NEXT_PUBLIC_FRONTEND_REGION as AgentRegion) ?? 'us';
-export const BACKEND_REGION: Region = BackendRegionMap[process.env.BACKEND_REGION] ?? Region.Global;
+export const BACKEND_REGION: Region =
+  BackendRegionMap[process.env.BACKEND_REGION as keyof typeof BackendRegionMap] ?? Region.Global;
 export const SCRIPT_URL_PATTERN =
   process.env.NEXT_PUBLIC_SCRIPT_URL_PATTERN ??
   'https://metrics.fingerprinthub.com/web/v<version>/<apiKey>/loader_v<loaderVersion>.js';

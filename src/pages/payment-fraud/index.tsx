@@ -10,6 +10,7 @@ import formStyles from '../../styles/forms.module.scss';
 import Alert from '../../client/components/common/Alert/Alert';
 import { CustomPageProps } from '../_app';
 import classNames from 'classnames';
+import { Severity } from '../../server/checkResult';
 
 export default function Index({ embed }: CustomPageProps) {
   const visitorDataQuery = useVisitorData({
@@ -25,16 +26,16 @@ export default function Index({ embed }: CustomPageProps) {
   const [orderStatusMessage, setOrderStatusMessage] = useState();
   const [applyChargeback, setApplyChargeback] = useState(false);
   const [usingStolenCard, setUsingStolenCard] = useState(false);
-  const [severity, setSeverity] = useState();
+  const [severity, setSeverity] = useState<Severity | undefined>();
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   const [httpResponseStatus, setHttpResponseStatus] = useState<number | undefined>();
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsWaitingForResponse(true);
 
     const fpQuery = await visitorDataQuery.refetch();
-    const { requestId, visitorId } = fpQuery.data;
+    const { requestId, visitorId } = fpQuery.data ?? {};
 
     const orderData = {
       cardNumber,
@@ -126,7 +127,7 @@ export default function Index({ embed }: CustomPageProps) {
             </label>
           </div>
 
-          {httpResponseStatus ? <Alert severity={severity}>{orderStatusMessage}</Alert> : null}
+          {httpResponseStatus ? <Alert severity={severity ?? 'warning'}>{orderStatusMessage}</Alert> : null}
           <Button disabled={isWaitingForResponse} size="large" type="submit">
             {isWaitingForResponse ? 'Hold on, doing magic...' : 'Place Order'}
           </Button>

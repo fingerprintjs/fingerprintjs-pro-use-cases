@@ -9,12 +9,14 @@ import {
 } from '../../../server/server';
 import { CheckResult, checkResultType } from '../../../server/checkResult';
 import {
+  RuleCheck,
   checkConfidenceScore,
   checkFreshIdentificationRequest,
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
 } from '../../../server/checks';
 import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 interface PaymentAttemptAttributes
   extends Model<InferAttributes<PaymentAttemptAttributes>, InferCreationAttributes<PaymentAttemptAttributes>> {
@@ -54,7 +56,7 @@ const mockedCard = {
 
 PaymentAttemptDbModel.sync({ force: false });
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // This API route accepts only POST requests.
   if (!ensurePostRequest(req, res)) {
     return;
@@ -74,7 +76,7 @@ export default async function handler(req, res) {
   ]);
 }
 
-async function tryToProcessPayment(req, res, ruleChecks) {
+async function tryToProcessPayment(req: NextApiRequest, res: NextApiResponse, ruleChecks: RuleCheck[]) {
   // Get requestId and visitorId from the client.
   const visitorId = req.body.visitorId;
   const requestId = req.body.requestId;
@@ -108,7 +110,7 @@ async function tryToProcessPayment(req, res, ruleChecks) {
   }
 }
 
-async function checkVisitorIdForStolenCard(visitorData) {
+const checkVisitorIdForStolenCard: RuleCheck = async (visitorData) => {
   // Get all stolen card records for the visitorId
   const stolenCardUsedCount = await PaymentAttemptDbModel.findAndCountAll({
     where: {
@@ -126,9 +128,9 @@ async function checkVisitorIdForStolenCard(visitorData) {
       checkResultType.PaidWithStolenCard,
     );
   }
-}
+};
 
-async function checkForCardCracking(visitorData) {
+const checkForCardCracking: RuleCheck = async (visitorData) => {
   // Gets all unsuccessful attempts for the visitor during the last 365 days.
   const invalidCardAttemptCountQueryResult = await PaymentAttemptDbModel.findAndCountAll({
     where: {
@@ -151,9 +153,9 @@ async function checkForCardCracking(visitorData) {
       checkResultType.TooManyUnsuccessfulPayments,
     );
   }
-}
+};
 
-async function checkVisitorIdForChargebacks(visitorData) {
+const checkVisitorIdForChargebacks: RuleCheck = async (visitorData) => {
   // Gets all unsuccessful attempts during the last 365  days.
   const countOfChargebacksForVisitorId = await PaymentAttemptDbModel.findAndCountAll({
     where: {
@@ -174,9 +176,9 @@ async function checkVisitorIdForChargebacks(visitorData) {
       checkResultType.TooManyChargebacks,
     );
   }
-}
+};
 
-async function processPayment(visitorData, request) {
+const processPayment: RuleCheck = async (visitorData, request) => {
   // Checks if the provided card details are correct.
   if (areCardDetailsCorrect(request)) {
     return new CheckResult(
@@ -191,10 +193,10 @@ async function processPayment(visitorData, request) {
       checkResultType.IncorrectCardDetails,
     );
   }
-}
+};
 
 // Dummy action simulating card verification.
-function areCardDetailsCorrect(request) {
+function areCardDetailsCorrect(request: NextApiRequest) {
   return (
     request.body.cardNumber === mockedCard.number &&
     request.body.cardExpiration === mockedCard.expiration &&
@@ -203,7 +205,12 @@ function areCardDetailsCorrect(request) {
 }
 
 // Persists placed order to the database.
-async function logPaymentAttempt(visitorId, isChargebacked, usedStolenCard, paymentAttemptCheckResult) {
+async function logPaymentAttempt(
+  visitorId: string,
+  isChargebacked: boolean,
+  usedStolenCard: boolean,
+  paymentAttemptCheckResult: string,
+) {
   await PaymentAttemptDbModel.create({
     visitorId,
     isChargebacked,

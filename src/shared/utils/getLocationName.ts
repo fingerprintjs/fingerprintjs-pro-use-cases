@@ -2,7 +2,6 @@ import { IpLocation } from '@fingerprintjs/fingerprintjs-pro';
 
 export const UNKNOWN_LOCATION = 'Unknown';
 export function getLocationName(ipLocation?: IpLocation) {
-  console.log(ipLocation);
   const addressParts: string[] = [];
   if (!ipLocation) {
     return UNKNOWN_LOCATION;
@@ -12,7 +11,7 @@ export function getLocationName(ipLocation?: IpLocation) {
     addressParts.push(city.name);
   }
 
-  if (subdivisions?.length > 0) {
+  if (subdivisions && subdivisions.length > 0) {
     addressParts.push(subdivisions[0].name);
   }
 

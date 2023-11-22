@@ -1,4 +1,9 @@
-export function FormatIpAddress({ ipAddress }: { ipAddress: string }) {
+import { FunctionComponent } from 'react';
+
+export const FormatIpAddress: FunctionComponent<{ ipAddress?: string }> = ({ ipAddress }) => {
+  if (!ipAddress) {
+    return null;
+  }
   // Check if the string matches the IPv6 address pattern
   const ipv6Regex = /^(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}$/i;
   if (!ipv6Regex.test(ipAddress)) {
@@ -17,4 +22,4 @@ export function FormatIpAddress({ ipAddress }: { ipAddress: string }) {
       {secondHalf}
     </span>
   );
-}
+};

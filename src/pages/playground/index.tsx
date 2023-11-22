@@ -110,8 +110,8 @@ function Playground() {
         ],
       },
       {
-        content: Math.trunc(agentResponse?.confidence.score * 100) / 100,
-        cellStyle: { backgroundColor: agentResponse?.confidence.score >= 0.7 ? GREEN : RED },
+        content: agentResponse?.confidence.score ? Math.trunc(agentResponse.confidence.score * 100) / 100 : 'N/A',
+        cellStyle: { backgroundColor: agentResponse && agentResponse.confidence.score >= 0.7 ? GREEN : RED },
       },
     ],
   ];

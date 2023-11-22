@@ -55,7 +55,7 @@ export default function Article({ embed }: CustomPageProps) {
         {articleData && articleData.message && articleData.severity !== 'success' && (
           <Alert severity={articleData.severity}>{articleData.message}</Alert>
         )}
-        {articleData && articleData.severity === 'success' && (
+        {articleData && articleData.severity === 'success' && remainingViews && (
           <Alert severity="warning">
             {remainingViews > 0
               ? `You have ${remainingViews} remaining free article views.`

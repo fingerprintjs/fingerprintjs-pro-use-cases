@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next';
 import { HOMEPAGE_CARDS, PRODUCTION_URL } from '../client/components/common/content';
 
 function generateSiteMap() {
@@ -21,7 +22,7 @@ function SiteMap() {
   // getServerSideProps will do the heavy lifting
 }
 
-export async function getServerSideProps({ res }) {
+export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const sitemap = generateSiteMap();
 
   res.setHeader('Content-Type', 'text/xml');
@@ -32,6 +33,6 @@ export async function getServerSideProps({ res }) {
   return {
     props: {},
   };
-}
+};
 
 export default SiteMap;

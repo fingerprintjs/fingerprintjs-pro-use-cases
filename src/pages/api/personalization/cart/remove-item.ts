@@ -20,6 +20,12 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData })
     },
   });
 
+  if (!item) {
+    return res.status(400).json({
+      error: 'Item not found',
+    });
+  }
+
   item.count--;
 
   if (item.count <= 0) {
