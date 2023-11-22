@@ -10,6 +10,12 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData, v
     });
   }
 
+  if (!visitorId) {
+    return res.status(400).json({
+      error: 'Visitor ID not available',
+    });
+  }
+
   const { hasDarkMode } = JSON.parse(req.body);
   const hasDarkModeBool = Boolean(hasDarkMode);
 
@@ -22,6 +28,7 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData, v
     defaults: {
       visitorId,
       hasDarkMode: hasDarkModeBool,
+      timestamp: new Date(),
     },
   });
 

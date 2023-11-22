@@ -12,6 +12,12 @@ export default personalizationEndpoint(
       });
     }
 
+    if (!visitorId) {
+      return res.status(400).json({
+        error: 'Visitor ID not available',
+      });
+    }
+
     const result = await UserPreferencesDbModel.findOne({
       where: {
         visitorId: {

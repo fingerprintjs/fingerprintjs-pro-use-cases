@@ -2,7 +2,7 @@ import { VisitorsResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { CheckResult, checkResultType } from './checkResult';
 import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, IPv4_REGEX, MIN_CONFIDENCE_SCORE } from './const';
 import { messageSeverity, ourOrigins } from './server';
-import { NextApiRequest } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 // Validates format of visitorId and requestId.
 export const isVisitorIdFormatValid = (visitorId: string) => /^[a-zA-Z0-9]{20}$/.test(visitorId);
@@ -10,6 +10,8 @@ export const isRequestIdFormatValid = (requestId: string) => /^\d{13}\.[a-zA-Z0-
 export function areVisitorIdAndRequestIdValid(visitorId: string, requestId: string) {
   return isRequestIdFormatValid(requestId) && isVisitorIdFormatValid(visitorId);
 }
+
+export type RequestCallback = (req: NextApiRequest, res: NextApiResponse, visitorData: VisitorsResponse) => void;
 
 export type RuleCheck = (
   visitorData: VisitorsResponse,

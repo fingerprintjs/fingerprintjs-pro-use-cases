@@ -14,7 +14,7 @@ export type ArticleResponse = CheckResultObject<{
  * If a user has exceeded limit of articles that he can view for free, we return an error.
  */
 export default paywallEndpoint(async (req, res, visitorData) => {
-  const { id } = req.query;
+  const { id } = req.query as { id: string };
 
   const article = ARTICLES.find((article) => article.id === id);
 

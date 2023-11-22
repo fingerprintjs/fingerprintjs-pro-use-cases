@@ -7,12 +7,15 @@ import {
 import { checkCountOfViewedArticles } from './article-views';
 import { checkResultType } from '../checkResult';
 import {
+  RequestCallback,
+  RuleCheck,
   checkConfidenceScore,
   checkFreshIdentificationRequest,
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
 } from '../checks';
 import { sendForbiddenResponse } from '../response';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 // Base checks for every endpoint related to paywall
 const paywallChecks = [
@@ -24,10 +27,9 @@ const paywallChecks = [
   checkCountOfViewedArticles,
 ];
 
-// Provides common logic used in the paywall use-case
 export const paywallEndpoint =
-  (requestCallback, optionalChecks = []) =>
-  async (req, res) => {
+  (requestCallback: RequestCallback, optionalChecks: RuleCheck[] = []) =>
+  async (req: NextApiRequest, res: NextApiResponse) => {
     if (!ensurePostRequest(req, res)) {
       return;
     }
