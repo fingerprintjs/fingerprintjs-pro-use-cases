@@ -1,4 +1,3 @@
-// @ts-check
 import { CheckResult, checkResultType } from './checkResult';
 import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, IPv4_REGEX, MIN_CONFIDENCE_SCORE } from './const';
 import { messageSeverity, ourOrigins } from './server';
@@ -79,7 +78,7 @@ export function visitIpMatchesRequestIp(visitIp = '', request) {
    * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
    * https://adam-p.ca/blog/2022/03/x-forwarded-for/.
    */
-  const requestIp = /** @type {string} */ (request.headers['x-forwarded-for'])?.split(',')[0] ?? '';
+  const requestIp = /** @type {string} */ request.headers['x-forwarded-for']?.split(',')[0] ?? '';
 
   // IPv6 addresses are not supported yet, skip the check
   if (!IPv4_REGEX.test(requestIp)) {

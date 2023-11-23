@@ -1,5 +1,5 @@
 import { personalizationEndpoint } from '../../../../server/personalization/personalization-endpoint';
-import { Product, UserCartItem } from '../../../../server/personalization/database';
+import { ProductDbModel, UserCartItemDbModel } from '../../../../server/personalization/database';
 import { Op } from 'sequelize';
 
 // Adds an item to cart for the given visitorId
@@ -10,10 +10,10 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData, v
 
   const { productId } = JSON.parse(req.body);
 
-  const product = await Product.findOne({
+  const product = await ProductDbModel.findOne({
     where: {
       id: {
-        [Op.eq]: productId,
+        [Op.eq]: productId as string,
       },
     },
   });
@@ -24,7 +24,7 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData, v
     });
   }
 
-  const [cartItem, created] = await UserCartItem.findOrCreate({
+  const [cartItem, created] = await UserCartItemDbModel.findOrCreate({
     where: {
       visitorId: {
         [Op.eq]: visitorId,

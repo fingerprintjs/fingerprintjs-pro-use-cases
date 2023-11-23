@@ -1,5 +1,5 @@
 import { personalizationEndpoint } from '../../../../server/personalization/personalization-endpoint';
-import { UserCartItem } from '../../../../server/personalization/database';
+import { UserCartItemDbModel } from '../../../../server/personalization/database';
 import { Op } from 'sequelize';
 
 // Removes an item from cart for given visitorId
@@ -12,7 +12,7 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData })
 
   const { itemId } = JSON.parse(req.body);
 
-  const item = await UserCartItem.findOne({
+  const item = await UserCartItemDbModel.findOne({
     where: {
       id: {
         [Op.eq]: itemId,

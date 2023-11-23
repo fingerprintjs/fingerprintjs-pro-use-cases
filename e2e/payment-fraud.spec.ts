@@ -1,4 +1,3 @@
-// @ts-check
 import { test } from '@playwright/test';
 import { reset } from './admin';
 
@@ -34,7 +33,7 @@ test.describe('Payment fraud', () => {
     await page.click('[type="submit"]');
 
     await page.waitForSelector(
-      'text="You performed more than 1 chargeback during the last 1 year, we did not perform the payment."'
+      'text="You performed more than 1 chargeback during the last 1 year, we did not perform the payment."',
     );
   });
 
@@ -47,7 +46,7 @@ test.describe('Payment fraud', () => {
 
     await page.click('[type="submit"]');
     await page.waitForSelector(
-      'text="You placed more than 3 unsuccessful payment attempts during the last 365 days. This payment attempt was not performed."'
+      'text="You placed more than 3 unsuccessful payment attempts during the last 365 days. This payment attempt was not performed."',
     );
   });
 
@@ -58,7 +57,7 @@ test.describe('Payment fraud', () => {
 
     await page.click('[type="submit"]');
     await page.waitForSelector(
-      'text="According to our records, you paid with a stolen card. We did not process the payment."'
+      'text="According to our records, you paid with a stolen card. We did not process the payment."',
     );
   });
 });

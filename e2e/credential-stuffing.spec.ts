@@ -1,4 +1,3 @@
-// @ts-check
 import { test } from '@playwright/test';
 import { reset } from './admin';
 
@@ -13,7 +12,7 @@ test.describe('Credential stuffing', () => {
     await page.click('[type="submit"]');
 
     await page.waitForSelector(
-      'text="Provided credentials are correct but we\'ve never seen you logging in using this device. Confirm your identity with a second factor."'
+      'text="Provided credentials are correct but we\'ve never seen you logging in using this device. Confirm your identity with a second factor."',
     );
   });
 
@@ -31,7 +30,7 @@ test.describe('Credential stuffing', () => {
     }
 
     await page.waitForSelector(
-      'text="You had more than 5 attempts during the last 24 hours. This login attempt was not performed."'
+      'text="You had more than 5 attempts during the last 24 hours. This login attempt was not performed."',
     );
   });
 });

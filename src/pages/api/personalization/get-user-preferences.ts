@@ -1,4 +1,4 @@
-import { UserPreferences } from '../../../server/personalization/database';
+import { UserPreferencesDbModel } from '../../../server/personalization/database';
 import { Op } from 'sequelize';
 import { personalizationEndpoint } from '../../../server/personalization/personalization-endpoint';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -12,7 +12,7 @@ export default personalizationEndpoint(
       });
     }
 
-    const result = await UserPreferences.findOne({
+    const result = await UserPreferencesDbModel.findOne({
       where: {
         visitorId: {
           [Op.eq]: visitorId,

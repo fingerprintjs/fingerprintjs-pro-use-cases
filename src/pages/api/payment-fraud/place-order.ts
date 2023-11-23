@@ -1,4 +1,4 @@
-import { Sequelize } from 'sequelize';
+import { Attributes, DataTypes, InferAttributes, InferCreationAttributes, Model, Op } from 'sequelize';
 import {
   ensurePostRequest,
   ensureValidRequestIdAndVisitorId,
@@ -16,24 +16,34 @@ import {
 } from '../../../server/checks';
 import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
 
-// Defines db model for payment attempt.
-export const PaymentAttempt = sequelize.define('payment-attempt', {
+interface PaymentAttemptAttributes
+  extends Model<InferAttributes<PaymentAttemptAttributes>, InferCreationAttributes<PaymentAttemptAttributes>> {
+  visitorId: string;
+  isChargebacked: boolean;
+  usedStolenCard: boolean;
+  checkResult: string;
+  timestamp: number;
+}
+
+export const PaymentAttemptDbModel = sequelize.define<PaymentAttemptAttributes>('payment-attempt', {
   visitorId: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
   },
   isChargebacked: {
-    type: Sequelize.BOOLEAN,
+    type: DataTypes.BOOLEAN,
   },
   usedStolenCard: {
-    type: Sequelize.BOOLEAN,
+    type: DataTypes.BOOLEAN,
   },
   checkResult: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
   },
   timestamp: {
-    type: Sequelize.DATE,
+    type: DataTypes.DATE,
   },
 });
+
+export type PaymentAttempt = Attributes<PaymentAttemptAttributes>;
 
 // Mocked credit card details.
 const mockedCard = {
@@ -42,7 +52,7 @@ const mockedCard = {
   cvv: '123',
 };
 
-PaymentAttempt.sync({ force: false });
+PaymentAttemptDbModel.sync({ force: false });
 
 export default async function handler(req, res) {
   // This API route accepts only POST requests.
@@ -100,7 +110,7 @@ async function tryToProcessPayment(req, res, ruleChecks) {
 
 async function checkVisitorIdForStolenCard(visitorData) {
   // Get all stolen card records for the visitorId
-  const stolenCardUsedCount = await PaymentAttempt.findAndCountAll({
+  const stolenCardUsedCount = await PaymentAttemptDbModel.findAndCountAll({
     where: {
       visitorId: visitorData.visitorId,
       usedStolenCard: true,
@@ -120,14 +130,14 @@ async function checkVisitorIdForStolenCard(visitorData) {
 
 async function checkForCardCracking(visitorData) {
   // Gets all unsuccessful attempts for the visitor during the last 365 days.
-  const invalidCardAttemptCountQueryResult = await PaymentAttempt.findAndCountAll({
+  const invalidCardAttemptCountQueryResult = await PaymentAttemptDbModel.findAndCountAll({
     where: {
       visitorId: visitorData.visitorId,
       timestamp: {
-        [Sequelize.Op.gt]: new Date().getTime() - 365 * 24 * 60 * 1000,
+        [Op.gt]: new Date().getTime() - 365 * 24 * 60 * 1000,
       },
       checkResult: {
-        [Sequelize.Op.not]: checkResultType.Passed,
+        [Op.not]: checkResultType.Passed,
       },
     },
   });
@@ -145,12 +155,12 @@ async function checkForCardCracking(visitorData) {
 
 async function checkVisitorIdForChargebacks(visitorData) {
   // Gets all unsuccessful attempts during the last 365  days.
-  const countOfChargebacksForVisitorId = await PaymentAttempt.findAndCountAll({
+  const countOfChargebacksForVisitorId = await PaymentAttemptDbModel.findAndCountAll({
     where: {
       visitorId: visitorData.visitorId,
       isChargebacked: true,
       timestamp: {
-        [Sequelize.Op.gt]: new Date().getTime() - 365 * 24 * 60 * 1000,
+        [Op.gt]: new Date().getTime() - 365 * 24 * 60 * 1000,
       },
     },
   });
@@ -194,7 +204,7 @@ function areCardDetailsCorrect(request) {
 
 // Persists placed order to the database.
 async function logPaymentAttempt(visitorId, isChargebacked, usedStolenCard, paymentAttemptCheckResult) {
-  await PaymentAttempt.create({
+  await PaymentAttemptDbModel.create({
     visitorId,
     isChargebacked,
     usedStolenCard,

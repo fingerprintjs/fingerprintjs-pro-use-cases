@@ -1,5 +1,5 @@
 import { Op } from 'sequelize';
-import { UserPreferences } from '../../../server/personalization/database';
+import { UserPreferencesDbModel } from '../../../server/personalization/database';
 import { personalizationEndpoint } from '../../../server/personalization/personalization-endpoint';
 
 // Updates user preferences (for now only dark mode preference) for given visitorId
@@ -13,7 +13,7 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData, v
   const { hasDarkMode } = JSON.parse(req.body);
   const hasDarkModeBool = Boolean(hasDarkMode);
 
-  const [userPreferences, created] = await UserPreferences.findOrCreate({
+  const [userPreferences, created] = await UserPreferencesDbModel.findOrCreate({
     where: {
       visitorId: {
         [Op.eq]: visitorId,

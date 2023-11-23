@@ -1,4 +1,3 @@
-// @ts-check
 import { test } from '@playwright/test';
 import { reset } from './admin';
 

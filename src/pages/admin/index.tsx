@@ -1,16 +1,15 @@
-// @ts-check
 import { useState } from 'react';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { useVisitorData } from '../../client/use-visitor-data';
+import { Severity } from '../../server/checkResult';
 
 export default function Index() {
-  const [statusMessage, setStatusMessage] = useState();
-  const [severity, setSeverity] = useState();
+  const [statusMessage, setStatusMessage] = useState<string>();
+  const [severity, setSeverity] = useState<Severity>();
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
-  /** @type {[number | undefined, import('react').Dispatch<number | undefined> ]} */
-  const [httpResponseStatus, setHttpResponseStatus] = useState();
+  const [httpResponseStatus, setHttpResponseStatus] = useState<number | undefined>();
 
   const visitorData = useVisitorData({
     enabled: false,

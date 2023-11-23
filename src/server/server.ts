@@ -1,9 +1,9 @@
-// @ts-check
 import { Sequelize } from 'sequelize';
 import { areVisitorIdAndRequestIdValid } from './checks';
 import { fingerprintJsApiClient } from './fingerprint-api';
 import { CheckResult, checkResultType } from './checkResult';
 import { sendForbiddenResponse } from './response';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 // Provision the database.
 // In the Stackblitz environment, this db is stored locally in your browser.
@@ -24,7 +24,7 @@ export const ourOrigins = [
   'https://staging.fingerprinthub.com',
 ];
 
-/** @typedef {'success'|'warning'|'error'} Severity */
+export type Severity = 'success' | 'warning' | 'error';
 
 export const messageSeverity = Object.freeze({
   Success: 'success',
@@ -32,7 +32,12 @@ export const messageSeverity = Object.freeze({
   Error: 'error',
 });
 
-export function ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId) {
+export function ensureValidRequestIdAndVisitorId(
+  req: NextApiRequest,
+  res: NextApiResponse,
+  visitorId: string,
+  requestId: string,
+) {
   if (!areVisitorIdAndRequestIdValid(visitorId, requestId)) {
     reportSuspiciousActivity(req);
     sendForbiddenResponse(
@@ -64,7 +69,7 @@ export function ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId)
 //   serverApiFilter
 // );
 // return visitorData;
-export async function getVisitorDataWithRequestId(visitorId, requestId) {
+export async function getVisitorDataWithRequestId(visitorId: string, requestId: string) {
   // Do not request Server API if provided data is obviously forged,
   // throw an error instead.
   if (!visitorId || !requestId) {
@@ -83,12 +88,7 @@ export function reportSuspiciousActivity(_context) {
   return _context;
 }
 
-/**
- * @param {import('next').NextApiRequest} req
- * @param {import('next').NextApiResponse} res
- * @returns {boolean}
- */
-export function ensurePostRequest(req, res) {
+export function ensurePostRequest(req: NextApiRequest, res: NextApiResponse): boolean {
   if (req.method !== 'POST') {
     res.status(405).send({ message: 'Only POST requests allowed' });
     return false;
@@ -97,12 +97,7 @@ export function ensurePostRequest(req, res) {
   return true;
 }
 
-/**
- * @param {import('next').NextApiRequest} req
- * @param {import('next').NextApiResponse} res
- * @returns {boolean}
- */
-export function ensureGetRequest(req, res) {
+export function ensureGetRequest(req: NextApiRequest, res: NextApiResponse): boolean {
   if (req.method !== 'GET') {
     res.status(405).send({ message: 'Only GET requests allowed' });
     return false;

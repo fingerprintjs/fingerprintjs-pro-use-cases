@@ -1,8 +1,17 @@
+import {
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  DataTypes,
+  Attributes,
+  ForeignKey,
+  CreationOptional,
+} from 'sequelize';
 import { sequelize } from '../server';
-import * as Sequelize from 'sequelize';
 
-interface Product
-  extends Sequelize.Model<Sequelize.InferAttributes<Product>, Sequelize.InferCreationAttributes<Product>> {
+interface ProductAttributes
+  extends Model<InferAttributes<ProductAttributes>, InferCreationAttributes<ProductAttributes>> {
+  id: CreationOptional<number>;
   price: number;
   name: string;
   image: string;
@@ -11,99 +20,117 @@ interface Product
 }
 
 // Defines db model for product.
-export const Product = sequelize.define<Product>('product', {
+export const ProductDbModel = sequelize.define<ProductAttributes>('product', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+
   price: {
-    type: Sequelize.FLOAT,
+    type: DataTypes.FLOAT,
   },
   name: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
   },
   image: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
   },
   timestamp: {
-    type: Sequelize.DATE,
+    type: DataTypes.DATE,
   },
   tags: {
-    type: Sequelize.JSONB,
+    type: DataTypes.JSONB,
   },
 });
 
-interface UserPreferencesModel
-  extends Sequelize.Model<
-    Sequelize.InferAttributes<UserPreferencesModel>,
-    Sequelize.InferCreationAttributes<UserPreferencesModel>
-  > {
+type Product = Attributes<ProductAttributes>;
+
+interface UserPreferencesAttributes
+  extends Model<InferAttributes<UserPreferencesAttributes>, InferCreationAttributes<UserPreferencesAttributes>> {
   visitorId: string;
   hasDarkMode: boolean;
   timestamp: Date;
 }
 
 // Defines db model for user preferences.
-export const UserPreferences = sequelize.define<UserPreferencesModel>('user_data', {
+export const UserPreferencesDbModel = sequelize.define<UserPreferencesAttributes>('user_data', {
   visitorId: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
   },
   hasDarkMode: {
-    type: Sequelize.BOOLEAN,
+    type: DataTypes.BOOLEAN,
   },
   timestamp: {
-    type: Sequelize.DATE,
+    type: DataTypes.DATE,
   },
 });
 
-// Defines db model for search history.
-export const UserSearchHistory = sequelize.define('user_search_history', {
-  visitorId: {
-    type: Sequelize.STRING,
-  },
-  query: {
-    type: Sequelize.STRING,
-  },
-  timestamp: {
-    type: Sequelize.DATE,
-  },
-});
-
-interface UserCartItemModel
-  extends Sequelize.Model<
-    Sequelize.InferAttributes<UserCartItemModel>,
-    Sequelize.InferCreationAttributes<UserCartItemModel>
-  > {
+interface UserSearchHistoryAttributes
+  extends Model<InferAttributes<UserSearchHistoryAttributes>, InferCreationAttributes<UserSearchHistoryAttributes>> {
   visitorId: string;
-  count: number;
-  timestamp: Date;
+  query: string;
+  timestamp: number;
 }
 
-export type UserCartItem = {
-  id: number;
-  visitorId: string;
-  count: number;
-  timestamp: Date;
-  product: Product;
-  productId: number;
-};
-
-// Defines db model for cart item.
-export const UserCartItem = sequelize.define<UserCartItemModel>('user_cart_item', {
+// Defines db model for search history.
+export const UserSearchHistoryDbModel = sequelize.define<UserSearchHistoryAttributes>('user_search_history', {
   visitorId: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
   },
-  count: {
-    type: Sequelize.INTEGER,
+  query: {
+    type: DataTypes.STRING,
   },
   timestamp: {
-    type: Sequelize.DATE,
+    type: DataTypes.DATE,
   },
 });
 
+interface UserCartItemAttributes
+  extends Model<InferAttributes<UserCartItemAttributes>, InferCreationAttributes<UserCartItemAttributes>> {
+  id: CreationOptional<number>;
+  visitorId: string;
+  count: number;
+  timestamp: Date;
+  productId: ForeignKey<number>;
+}
+
+// Defines db model for cart item.
+export const UserCartItemDbModel = sequelize.define<UserCartItemAttributes>('user_cart_item', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  visitorId: {
+    type: DataTypes.STRING,
+  },
+  count: {
+    type: DataTypes.INTEGER,
+  },
+  timestamp: {
+    type: DataTypes.DATE,
+  },
+  productId: {
+    type: DataTypes.INTEGER,
+  },
+});
+
+export type UserCartItem = Attributes<UserCartItemAttributes> & { product: Product };
+
 // Setup relations
-Product.hasMany(UserCartItem);
-UserCartItem.belongsTo(Product);
+ProductDbModel.hasMany(UserCartItemDbModel);
+UserCartItemDbModel.belongsTo(ProductDbModel);
 
 let didInit = false;
 
-const productModels = [Product, UserCartItem, UserPreferences, UserCartItem, UserSearchHistory];
+const productModels = [
+  ProductDbModel,
+  UserCartItemDbModel,
+  UserPreferencesDbModel,
+  UserCartItemDbModel,
+  UserSearchHistoryDbModel,
+];
 
 export async function initProducts() {
   if (didInit) {
