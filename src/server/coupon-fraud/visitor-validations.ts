@@ -9,10 +9,11 @@ import {
 } from '../checks';
 import { sendForbiddenResponse } from '../response';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { CouponCodeString } from './database';
 
 type ValidateCouponResult = {
   visitorId: string | null;
-  couponCode: string | null;
+  couponCode: CouponCodeString | null;
 };
 
 export async function validateCouponRequest(
@@ -20,7 +21,7 @@ export async function validateCouponRequest(
   res: NextApiResponse,
   additionalChecks: RuleCheck[] = [],
 ): Promise<ValidateCouponResult | void> {
-  const result: { visitorId: string | null; couponCode: string | null } = {
+  const result: { visitorId: string | null; couponCode: CouponCodeString | null } = {
     visitorId: null,
     couponCode: null,
   };

@@ -1,7 +1,7 @@
 import { messageSeverity } from '../../../server/server';
 import { Op } from 'sequelize';
 import { couponEndpoint } from '../../../server/coupon-fraud/coupon-endpoint';
-import { COUPON_CODES, CouponClaimDbModel } from '../../../server/coupon-fraud/database';
+import { COUPON_CODES, CouponClaimDbModel, CouponCodeString } from '../../../server/coupon-fraud/database';
 import { CheckResult, checkResultType } from '../../../server/checkResult';
 import { sendOkResponse } from '../../../server/response';
 import { RuleCheck } from '../../../server/checks';
@@ -29,14 +29,14 @@ async function getVisitorClaim(visitorId: string, couponCode: string) {
 /**
  * Checks if a coupon exists with the given coupon code.
  */
-export function checkCoupon(code: string) {
+export function checkCoupon(code: CouponCodeString) {
   return COUPON_CODES.includes(code);
 }
 
 /**
  * Claim coupon on behalf of the visitor.
  */
-export async function claimCoupon(visitorId: string, couponCode: string) {
+export async function claimCoupon(visitorId: string, couponCode: CouponCodeString) {
   const claim = await CouponClaimDbModel.create({
     couponCode,
     visitorId,
@@ -47,7 +47,7 @@ export async function claimCoupon(visitorId: string, couponCode: string) {
   return claim;
 }
 
-const checkIfCouponExists: RuleCheck = async (_visitorData, _req, couponCode: string) => {
+const checkIfCouponExists: RuleCheck = async (_visitorData, _req, couponCode: CouponCodeString) => {
   const coupon = await checkCoupon(couponCode);
 
   // Check if the coupon exists.
@@ -88,7 +88,7 @@ const checkIfClaimedAnotherCouponRecently: RuleCheck = async (visitorData) => {
 export default couponEndpoint(
   async (req, res, validateCouponResult) => {
     if (validateCouponResult && validateCouponResult.visitorId && validateCouponResult.couponCode) {
-      await claimCoupon(validateCouponResult.visitorId, validateCouponResult.visitorId);
+      await claimCoupon(validateCouponResult.visitorId, validateCouponResult.couponCode);
     }
 
     const result = new CheckResult('Coupon claimed', messageSeverity.Success, checkResultType.Passed);
