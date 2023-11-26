@@ -24,7 +24,7 @@ import {
 } from '../../../server/checks';
 import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { VisitorsResponse, isVisitorsError } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { isVisitorsError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 
 export type ResetResponse = {
   message: string;
@@ -84,7 +84,7 @@ const deleteVisitorIdData: RuleCheck = async (visitorData) => {
   }
 
   const options = {
-    where: { visitorId: (visitorData as VisitorsResponse).visitorId! },
+    where: { visitorId: visitorData.visitorId },
   };
 
   const loginAttemptsRowsRemoved = await tryToDestroy(() => LoginAttemptDbModel.destroy(options));

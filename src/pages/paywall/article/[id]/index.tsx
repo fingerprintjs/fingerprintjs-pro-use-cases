@@ -42,9 +42,6 @@ export default function Article({ embed }: CustomPageProps) {
   const returnUrl = `/paywall${embed ? '/embed' : ''}`;
   const relatedArticles = ARTICLES.filter((article) => article.id !== articleId).slice(0, 4);
 
-  console.log(articleData);
-  console.log(remainingViews);
-
   return (
     <UseCaseWrapper useCase={USE_CASES.paywall} embed={embed} contentSx={{ maxWidth: 'none', padding: 0 }}>
       <div className={styles.articleContainer}>
