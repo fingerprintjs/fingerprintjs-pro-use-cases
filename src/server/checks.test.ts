@@ -22,7 +22,7 @@ describe('checks', () => {
             identification: {
               // @ts-ignore Mocked test object
               data: {
-                ip: sampleIps.ipv6[0],
+                ip: sampleIps.ipv4[0],
               },
             },
           },
