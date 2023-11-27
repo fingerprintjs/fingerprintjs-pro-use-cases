@@ -36,8 +36,7 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
   }
 
   // Retrieve analysis event from the Server API using the request ID
-  // @ts-ignore TODO: fix types
-  let botData: EventResponse['products']['botd']['data'] | undefined;
+  let botData: NonNullable<NonNullable<EventResponse['products']>['botd']>['data'];
   try {
     const client = new FingerprintJsServerApiClient({ region: BACKEND_REGION, apiKey: SERVER_API_KEY });
     const eventResponse = await client.getEvent(requestId);

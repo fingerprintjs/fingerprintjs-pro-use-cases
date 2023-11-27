@@ -34,8 +34,8 @@ export default function Index() {
     e.preventDefault();
     setIsWaitingForResponse(true);
 
-    const fpQuery = await getData();
-    const { requestId, visitorId } = fpQuery;
+    const fpData = await getData();
+    const { requestId, visitorId } = fpData;
 
     const loginData = {
       userName,

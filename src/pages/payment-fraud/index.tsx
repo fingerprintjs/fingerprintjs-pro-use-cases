@@ -36,8 +36,8 @@ export default function Index({ embed }: CustomPageProps) {
     e.preventDefault();
     setIsWaitingForResponse(true);
 
-    const fpQuery = await getData();
-    const { requestId, visitorId } = fpQuery;
+    const fpData = await getData();
+    const { requestId, visitorId } = fpData;
 
     const orderData = {
       cardNumber,
