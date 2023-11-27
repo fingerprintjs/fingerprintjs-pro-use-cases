@@ -133,7 +133,7 @@ const checkUnsuccessfulIdentifications: RuleCheck = async (eventResponse) => {
 const checkCredentialsAndKnownVisitorIds: RuleCheck = async (eventResponse, request) => {
   // Checks if the provided credentials are correct.
 
-  if (!credentialAreCorrect(request.body.userName, request.body.password)) {
+  if (!areCredentialsCorrect(request.body.userName, request.body.password)) {
     return new CheckResult(
       'Incorrect credentials, try again.',
       messageSeverity.Error,
@@ -164,7 +164,7 @@ const checkCredentialsAndKnownVisitorIds: RuleCheck = async (eventResponse, requ
 };
 
 // Dummy action simulating authentication.
-function credentialAreCorrect(name: string, password: string) {
+function areCredentialsCorrect(name: string, password: string) {
   return name === mockedUser.userName && password === mockedUser.password;
 }
 
