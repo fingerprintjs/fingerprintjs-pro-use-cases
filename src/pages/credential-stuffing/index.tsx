@@ -28,12 +28,12 @@ export default function Index() {
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   const [httpResponseStatus, setHttpResponseStatus] = useState<number | null>();
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsWaitingForResponse(true);
 
     const fpQuery = await visitorDataQuery.refetch();
-    const { requestId, visitorId } = fpQuery.data;
+    const { requestId, visitorId } = fpQuery.data ?? {};
 
     const loginData = {
       userName,
@@ -88,7 +88,7 @@ export default function Index() {
           </button>
 
           {httpResponseStatus ? (
-            <Alert severity={severity} className={styles.alert}>
+            <Alert severity={severity ?? 'warning'} className={styles.alert}>
               {authMessage}
             </Alert>
           ) : null}

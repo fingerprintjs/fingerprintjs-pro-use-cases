@@ -19,6 +19,7 @@ describe('checks', () => {
       const result = checkIpAddressIntegrity(
         {
           visits: [
+            // @ts-ignore Mocked test object
             {
               ip: sampleIps.ipv4[0],
             },
@@ -37,6 +38,7 @@ describe('checks', () => {
       const result = checkIpAddressIntegrity(
         {
           visits: [
+            // @ts-ignore Mocked test object
             {
               ip: sampleIps.ipv4[0],
             },
@@ -55,6 +57,7 @@ describe('checks', () => {
       const result = checkIpAddressIntegrity(
         {
           visits: [
+            // @ts-ignore Mocked test object
             {
               ip: sampleIps.ipv4[0],
             },

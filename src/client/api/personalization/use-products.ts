@@ -2,8 +2,10 @@ import { useQuery, useQueryClient } from 'react-query';
 import { SEARCH_HISTORY_QUERY } from './use-search-history';
 import { useVisitorData } from '../../use-visitor-data';
 import { apiRequest } from '../api';
+import { GetResult } from '@fingerprintjs/fingerprintjs-pro';
+import { GetProductResponse } from '../../../pages/api/personalization/get-products';
 
-function getProducts(fpData, query) {
+function getProducts(fpData: GetResult | undefined, query: string): Promise<GetProductResponse> {
   return apiRequest('/api/personalization/get-products', fpData, {
     query,
   });
@@ -11,7 +13,7 @@ function getProducts(fpData, query) {
 
 export const GET_PRODUCTS_QUERY = 'GET_PRODUCTS_QUERY';
 
-export function useProducts(search) {
+export function useProducts(search: string) {
   const { data: fpData } = useVisitorData();
 
   const queryClient = useQueryClient();

@@ -5,17 +5,17 @@ import { useCallback } from 'react';
 import { GetResult } from '@fingerprintjs/fingerprintjs-pro';
 import { UserCartItem } from '../../../server/personalization/database';
 
-function getCart(fpData) {
+function getCart(fpData?: GetResult) {
   return apiRequest('/api/personalization/cart/get-items', fpData);
 }
 
-function addCartItem(productId: number, fpData: GetResult) {
+function addCartItem(productId: number, fpData?: GetResult | undefined) {
   return apiRequest('/api/personalization/cart/add-item', fpData, {
     productId,
   });
 }
 
-function removeCartItem(itemId: number, fpData: GetResult) {
+function removeCartItem(itemId: number, fpData?: GetResult) {
   return apiRequest('/api/personalization/cart/remove-item', fpData, { itemId });
 }
 
@@ -30,7 +30,7 @@ export function useCart() {
     enabled: Boolean(visitorData),
   });
   const refetchCartOnSuccess = useCallback(
-    async (data) => {
+    async (data: UserCartItem[]) => {
       if (data) {
         await cartQuery.refetch();
       }

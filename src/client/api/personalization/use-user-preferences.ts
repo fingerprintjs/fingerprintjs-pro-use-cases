@@ -14,11 +14,14 @@ type UserPreferencesResponse = {
 
 const GET_USER_PREFERENCES_QUERY = 'GET_USER_PREFERENCES_QUERY';
 
-function getUserPreferencesFromServer(fpData: GetResult, abortSignal: AbortSignal): Promise<UserPreferencesResponse> {
+function getUserPreferencesFromServer(
+  fpData: GetResult | undefined,
+  abortSignal: AbortSignal,
+): Promise<UserPreferencesResponse> {
   return apiRequest('/api/personalization/get-user-preferences', fpData, undefined, abortSignal);
 }
 
-function updateUserPreferencesOnServer(fpData: GetResult, preferences: UserPreferences) {
+function updateUserPreferencesOnServer(fpData: GetResult | undefined, preferences: UserPreferences) {
   return apiRequest('/api/personalization/update-user-preferences', fpData, preferences);
 }
 

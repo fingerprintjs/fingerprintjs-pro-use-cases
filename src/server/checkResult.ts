@@ -13,7 +13,7 @@ export class CheckResult {
   type: string;
   data?: any;
 
-  constructor(message: string, severity: Severity, type: string, data = undefined) {
+  constructor(message: string, severity: Severity, type: string, data?: Record<string, any>) {
     this.message = message;
     this.severity = severity;
     this.type = type;

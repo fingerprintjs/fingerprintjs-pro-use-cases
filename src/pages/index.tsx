@@ -42,9 +42,7 @@ export default function Index() {
                 {card.title}
               </Link>
               <div className={styles.useCaseDescription}>
-                {card.descriptionHomepage.map((line, i) => (
-                  <Fragment key={i}>{line}</Fragment>
-                ))}
+                {card.descriptionHomepage?.map((line, i) => <Fragment key={i}>{line}</Fragment>)}
               </div>
             </div>
             <div>

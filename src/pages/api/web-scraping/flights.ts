@@ -1,4 +1,4 @@
-import { EventResponse, FingerprintJsServerApiClient } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { EventResponse, FingerprintJsServerApiClient, isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { CheckResult, CheckResultObject, checkResultType } from '../../../server/checkResult';
 import { isRequestIdFormatValid, originIsAllowed, visitIpMatchesRequestIp } from '../../../server/checks';
@@ -36,7 +36,7 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
   }
 
   // Retrieve analysis event from the Server API using the request ID
-  let botData: EventResponse['products']['botd']['data'] | undefined;
+  let botData: NonNullable<NonNullable<EventResponse['products']>['botd']>['data'];
   try {
     const client = new FingerprintJsServerApiClient({ region: BACKEND_REGION, apiKey: SERVER_API_KEY });
     const eventResponse = await client.getEvent(requestId);
@@ -44,7 +44,7 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
   } catch (error) {
     console.log(error);
     // Throw a specific error if the request ID is not found
-    if (error.status === 404) {
+    if (isEventError(error) && error.status === 404) {
       sendForbiddenResponse(
         res,
         new CheckResult(
@@ -55,7 +55,7 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
       );
     } else {
       // Handle other errors
-      sendErrorResponse(res, new CheckResult(error, messageSeverity.Error, checkResultType.ServerError));
+      sendErrorResponse(res, new CheckResult(String(error), messageSeverity.Error, checkResultType.ServerError));
     }
   }
 

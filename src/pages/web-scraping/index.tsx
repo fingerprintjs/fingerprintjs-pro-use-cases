@@ -188,7 +188,7 @@ const Results = ({ data, isFetching, error }: UseQueryResult<FlightQueryResult, 
     return <Alert severity="error">{error.message}</Alert>;
   }
   if (message && severity !== 'success') {
-    return <Alert severity={severity}>{message}</Alert>;
+    return <Alert severity={severity ?? 'warning'}>{message}</Alert>;
   }
   if (!flights) return null;
   return (

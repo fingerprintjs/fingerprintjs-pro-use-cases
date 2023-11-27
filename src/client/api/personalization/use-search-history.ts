@@ -1,8 +1,9 @@
 import { useQuery } from 'react-query';
 import { useVisitorData } from '../../use-visitor-data';
 import { apiRequest } from '../api';
+import { GetResult } from '@fingerprintjs/fingerprintjs-pro';
 
-function getSearchHistory(fpData) {
+function getSearchHistory(fpData: GetResult | undefined) {
   return apiRequest('/api/personalization/get-search-history', fpData);
 }
 

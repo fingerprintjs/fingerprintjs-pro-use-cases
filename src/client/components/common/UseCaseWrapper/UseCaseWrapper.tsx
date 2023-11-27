@@ -30,14 +30,16 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   embed,
 }) => {
   const { title, description, articleUrl, instructions, moreResources, doNotMentionResetButton } = useCase ?? {};
-  const learnMoreRef = useRef<ElementRef<'h3'>>();
+  const learnMoreRef = useRef<ElementRef<'h3'>>(null);
 
   const { mutate, shouldDisplayResetButton, isLoading } = useReset({});
   const [pulseResetButton, setPulseResetButton] = useState(false);
 
+  const moreResourcesPresent = moreResources && moreResources.length > 0;
+
   return (
     <>
-      <SEO title={useCase.titleMeta} description={useCase.descriptionMeta} path={useCase.url} />
+      <SEO title={useCase.titleMeta ?? ''} description={useCase.descriptionMeta ?? ''} path={useCase.url} />
       {embed && shouldDisplayResetButton && (
         <Tooltip title="Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action.">
           <div
@@ -70,7 +72,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
             </a>
           )}
         </div>
-        {instructions?.length > 0 && (
+        {instructions && instructions.length > 0 && (
           <div className={styles.howToUse}>
             <div>
               <h2>How to use this demo</h2>
@@ -92,7 +94,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
               </ol>
             </div>
             <div>
-              {moreResources?.length > 0 && (
+              {moreResourcesPresent && (
                 <Button
                   onClick={() => learnMoreRef?.current?.scrollIntoView({ behavior: 'smooth' })}
                   size="large"
@@ -134,7 +136,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
         </Container>
       </div>
 
-      {moreResources?.length > 0 ? (
+      {moreResourcesPresent ? (
         <Container size="large" className={styles.learnMore}>
           <h3 className={styles.learnMoreTitle} ref={learnMoreRef}>
             Learn more

@@ -1,12 +1,14 @@
 import { sequelize } from '../server';
 import { Attributes, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 
-export const COUPON_CODES = ['Promo3000', 'BlackFriday'];
+export const COUPON_CODES = ['Promo3000', 'BlackFriday'] as const;
+
+export type CouponCodeString = (typeof COUPON_CODES)[number];
 
 interface CouponClaimAttributes
   extends Model<InferAttributes<CouponClaimAttributes>, InferCreationAttributes<CouponClaimAttributes>> {
   visitorId: string;
-  couponCode: string;
+  couponCode: CouponCodeString;
   timestamp: Date;
 }
 

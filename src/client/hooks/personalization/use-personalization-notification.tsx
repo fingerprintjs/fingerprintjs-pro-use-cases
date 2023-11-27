@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useSnackbar } from 'notistack';
+import { SnackbarKey, useSnackbar } from 'notistack';
 import Button from '@mui/material/Button';
 import { useCopyToClipboard } from 'react-use';
 
@@ -9,7 +9,7 @@ export function usePersonalizationNotification() {
   const [, copyToClipboard] = useCopyToClipboard();
 
   const showLinkCopiedSnackbar = useCallback(
-    (prevSnackbarId) => {
+    (prevSnackbarId: SnackbarKey) => {
       closeSnackbar(prevSnackbarId);
 
       enqueueSnackbar('Link copied! You can now open it in incognito mode.', {
@@ -20,7 +20,7 @@ export function usePersonalizationNotification() {
   );
 
   const showNotification = useCallback(
-    (message) => {
+    (message: string) => {
       enqueueSnackbar(`${message} It's also available in your incognito mode.`, {
         variant: 'success',
         action: (snackbarId) => (

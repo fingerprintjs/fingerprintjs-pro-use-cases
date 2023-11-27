@@ -1,4 +1,4 @@
-import { ProductDbModel, UserSearchHistoryDbModel } from '../../../server/personalization/database';
+import { Product, ProductDbModel, UserSearchHistoryDbModel } from '../../../server/personalization/database';
 import { Op } from 'sequelize';
 import { personalizationEndpoint } from '../../../server/personalization/personalization-endpoint';
 import { seedProducts } from '../../../server/personalization/seed';
@@ -18,7 +18,7 @@ function searchProducts(query: string) {
 }
 
 // Persists search query for given visitorId
-async function persistSearchPhrase(query, visitorId) {
+async function persistSearchPhrase(query: string, visitorId: string) {
   const existingHistory = await UserSearchHistoryDbModel.findOne({
     where: {
       query: {
@@ -45,6 +45,14 @@ async function persistSearchPhrase(query, visitorId) {
   });
 }
 
+export type GetProductResponse = {
+  data: {
+    products: Product[];
+    querySaved: boolean;
+  };
+  size: number;
+};
+
 // Returns products from database, supports simple search query.
 // If search query is provided and visitorId is valid it is saved in database.
 export default personalizationEndpoint(async (req, res, { usePersonalizedData, visitorId }) => {
@@ -60,17 +68,19 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData, v
 
   const products = await searchProducts(query);
 
-  if (query && usePersonalizedData) {
+  if (query && usePersonalizedData && visitorId) {
     await persistSearchPhrase(query.trim(), visitorId);
 
     querySaved = true;
   }
 
-  return res.status(200).json({
+  const response: GetProductResponse = {
     data: {
       products,
       querySaved,
     },
     size: products.length,
-  });
+  };
+
+  return res.status(200).json(response);
 });

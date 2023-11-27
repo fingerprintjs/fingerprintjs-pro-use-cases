@@ -1,16 +1,16 @@
-import { expect, test } from '@playwright/test';
+import { Page, expect, test } from '@playwright/test';
 import { reset } from './admin';
 import { TEST_IDS } from '../src/client/e2eTestIDs';
 
 const testIds = TEST_IDS.loanRisk;
 
-async function waitForSuccessfulSubmit(page) {
+async function waitForSuccessfulSubmit(page: Page) {
   await page.click('[type="submit"]');
   await page.waitForLoadState('networkidle');
   await page.waitForSelector('text="Congratulations, your loan has been approved!"');
 }
 
-async function waitForBlockedLoanSubmit(page) {
+async function waitForBlockedLoanSubmit(page: Page) {
   await page.click('[type="submit"]');
   await page.waitForLoadState('networkidle');
   await page.waitForSelector(
@@ -22,19 +22,19 @@ test.describe('Loan risk', () => {
   const blockLoanCases = [
     {
       name: 'first name',
-      fillForm: async (page) => {
+      fillForm: async (page: Page) => {
         await page.fill('[name="firstName"]', 'Greg');
       },
     },
     {
       name: 'last name',
-      fillForm: async (page) => {
+      fillForm: async (page: Page) => {
         await page.fill('[name="lastName"]', 'Wick');
       },
     },
     {
       name: 'income',
-      fillForm: async (page) => {
+      fillForm: async (page: Page) => {
         await page.fill('[name="monthlyIncome"]', '30000');
       },
     },

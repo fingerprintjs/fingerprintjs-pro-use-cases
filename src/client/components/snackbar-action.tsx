@@ -1,7 +1,7 @@
-import { useSnackbar } from 'notistack';
+import { SnackbarKey, useSnackbar } from 'notistack';
 import Button from '@mui/material/Button';
 
-export function SnackbarAction({ snackbarId }) {
+export function SnackbarAction({ snackbarId }: { snackbarId: SnackbarKey }) {
   const { closeSnackbar } = useSnackbar();
 
   return (

@@ -57,9 +57,9 @@ export default function Index({ embed }: CustomPageProps) {
   useEffect(() => {
     if (
       (data as ExtendedGetResult)?.incognito &&
-      data.visitorFound &&
+      data?.visitorFound &&
       !userWelcomed &&
-      (searchHistoryQuery.data.data?.length || hasDarkMode || cartQuery.data?.data?.length)
+      (searchHistoryQuery.data?.data?.length || hasDarkMode || cartQuery.data?.data?.length)
     ) {
       enqueueSnackbar('Welcome back! We applied your dark mode preference and synced your cart and search terms.', {
         variant: 'info',
@@ -70,7 +70,7 @@ export default function Index({ embed }: CustomPageProps) {
     }
   }, [cartQuery.data, data, enqueueSnackbar, hasDarkMode, searchHistoryQuery.data, userWelcomed]);
 
-  const cartItems: CartProduct[] = cartQuery.data?.data.map((item) => {
+  const cartItems: CartProduct[] | undefined = cartQuery.data?.data.map((item) => {
     return {
       id: item.id,
       name: item.product.name,
@@ -109,7 +109,7 @@ export default function Index({ embed }: CustomPageProps) {
             <div className={styles.search}>
               <Search search={search} setSearch={setSearch} />
               <SearchHistory
-                searchHistory={searchHistoryQuery.data.data.map((searchTerm) => searchTerm.query)}
+                searchHistory={searchHistoryQuery.data?.data.map((searchTerm) => searchTerm.query)}
                 setSearchHistory={(searchTerm) => setSearch(searchTerm)}
               />
             </div>
@@ -144,7 +144,7 @@ export default function Index({ embed }: CustomPageProps) {
                   Your cart {itemCount > 0 ? `has ${itemCount} item${itemCount > 1 ? 's' : ''}` : 'is empty'}
                 </div>
               </div>
-              {cartItems?.length > 0 && (
+              {cartItems && cartItems.length > 0 && (
                 <div className={styles.cartWrapper}>
                   <Cart items={cartItems} discount={0} taxPerItem={2} />
                 </div>

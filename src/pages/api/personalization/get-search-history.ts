@@ -11,6 +11,12 @@ export default personalizationEndpoint(async (_req, res, { usePersonalizedData, 
     });
   }
 
+  if (!visitorId) {
+    return res.status(400).json({
+      error: 'Visitor ID not available',
+    });
+  }
+
   const history = await UserSearchHistoryDbModel.findAll({
     order: [['timestamp', 'DESC']],
     where: {

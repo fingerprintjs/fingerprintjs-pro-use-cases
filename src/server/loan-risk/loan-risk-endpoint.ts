@@ -6,12 +6,15 @@ import {
 } from '../server';
 import { checkResultType } from '../checkResult';
 import {
+  RequestCallback,
+  RuleCheck,
   checkConfidenceScore,
   checkFreshIdentificationRequest,
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
 } from '../checks';
 import { sendForbiddenResponse } from '../response';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 // Server API validations.
 const loanChecks = [
@@ -22,8 +25,8 @@ const loanChecks = [
 ];
 
 export const loanRiskEndpoint =
-  (requestCallback, optionalChecks = []) =>
-  async (req, res) => {
+  (requestCallback: RequestCallback, optionalChecks: RuleCheck[] = []) =>
+  async (req: NextApiRequest, res: NextApiResponse) => {
     if (!ensurePostRequest(req, res)) {
       return;
     }

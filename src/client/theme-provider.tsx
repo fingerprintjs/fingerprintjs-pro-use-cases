@@ -1,8 +1,8 @@
 import { createTheme } from '@mui/material/styles';
 import { StyledEngineProvider, ThemeProvider as MuiThemeProvider } from '@mui/material';
-import { useMemo } from 'react';
+import { FunctionComponent, PropsWithChildren, useMemo } from 'react';
 
-export function ThemeProvider({ children }) {
+export const ThemeProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const hasDarkMode = false;
 
   const theme = useMemo(() => {
@@ -58,4 +58,4 @@ export function ThemeProvider({ children }) {
       <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
     </StyledEngineProvider>
   );
-}
+};

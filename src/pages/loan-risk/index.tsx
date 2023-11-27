@@ -84,10 +84,15 @@ export default function LoanRisk({ embed }: CustomPageProps) {
   );
 
   const handleSubmit = useCallback(
-    async (event) => {
+    async (event: React.FormEvent) => {
       event.preventDefault();
 
       const fpData = await visitorDataQuery.refetch();
+
+      if (!fpData.data) {
+        console.log("Visitor data couldn't be fetched");
+        return;
+      }
 
       await loanRequestMutation.mutateAsync({
         fpData: fpData.data,

@@ -29,12 +29,12 @@ export const Search: FunctionComponent<SearchProps> = ({ search, setSearch }) =>
 const SEARCH_HISTORY_DISPLAY_LIMIT = 6;
 
 type SearchHistoryProps = {
-  searchHistory: string[];
+  searchHistory?: string[];
   setSearchHistory: (searchTerm: string) => void;
 };
 
 export const SearchHistory: FunctionComponent<SearchHistoryProps> = ({ searchHistory, setSearchHistory }) => {
-  if (searchHistory.length === 0) {
+  if (!searchHistory || searchHistory?.length === 0) {
     return null;
   }
 

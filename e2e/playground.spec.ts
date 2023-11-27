@@ -1,18 +1,20 @@
-import { expect, test } from '@playwright/test';
+import { Page, expect, test } from '@playwright/test';
 import { PLAYGROUND_TAG } from '../src/client/components/playground/playgroundTags';
 import { isAgentResponse, isServerResponse } from './zodUtils';
 
-const getAgentResponse = async (page) => {
-  const agentResponse = await page.textContent(`[data-test="${PLAYGROUND_TAG.agentResponseJSON}"]`);
+const getAgentResponse = async (page: Page) => {
+  const agentResponse =
+    (await page.textContent(`[data-test="${PLAYGROUND_TAG.agentResponseJSON}"]`)) ?? 'Agent response not found';
   return JSON.parse(agentResponse);
 };
 
-const getServerResponse = async (page) => {
-  const serverResponse = await page.textContent(`[data-test="${PLAYGROUND_TAG.serverResponseJSON}"]`);
+const getServerResponse = async (page: Page) => {
+  const serverResponse =
+    (await page.textContent(`[data-test="${PLAYGROUND_TAG.serverResponseJSON}"]`)) ?? 'Server response not found';
   return JSON.parse(serverResponse);
 };
 
-const clickRefreshButton = async (page) => {
+const clickRefreshButton = async (page: Page) => {
   await page.click(`[data-test="${PLAYGROUND_TAG.refreshButton}"]`);
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(3000);

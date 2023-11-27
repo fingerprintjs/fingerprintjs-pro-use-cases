@@ -35,17 +35,18 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
 
   const handleSubmit = useCallback(
-    async (event) => {
+    async (event: React.FormEvent) => {
       event.preventDefault();
       setIsWaitingForResponse(true);
       const fpData = await visitorDataQuery.refetch();
 
-      await couponClaimMutation.mutateAsync({
-        fpData: fpData.data,
-        body: { couponCode },
-      });
-
-      setIsWaitingForResponse(false);
+      if (fpData.data) {
+        await couponClaimMutation.mutateAsync({
+          fpData: fpData.data,
+          body: { couponCode },
+        });
+        setIsWaitingForResponse(false);
+      }
     },
     [couponClaimMutation, couponCode, visitorDataQuery],
   );

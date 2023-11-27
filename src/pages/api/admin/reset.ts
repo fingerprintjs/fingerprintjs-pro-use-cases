@@ -16,6 +16,7 @@ import { ArticleViewDbModel } from '../../../server/paywall/database';
 import { CouponClaimDbModel } from '../../../server/coupon-fraud/database';
 import { CheckResult, checkResultType } from '../../../server/checkResult';
 import {
+  RuleCheck,
   checkConfidenceScore,
   checkFreshIdentificationRequest,
   checkIpAddressIntegrity,
@@ -23,6 +24,7 @@ import {
 } from '../../../server/checks';
 import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { isVisitorsError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 
 export type ResetResponse = {
   message: string;
@@ -52,7 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   ]);
 }
 
-async function tryToReset(req, res, ruleChecks) {
+async function tryToReset(req: NextApiRequest, res: NextApiResponse, ruleChecks: RuleCheck[]) {
   // Get requestId and visitorId from the client.
   const { visitorId, requestId } = req.body as ResetRequest;
 
@@ -76,7 +78,11 @@ async function tryToReset(req, res, ruleChecks) {
   }
 }
 
-async function deleteVisitorIdData(visitorData) {
+const deleteVisitorIdData: RuleCheck = async (visitorData) => {
+  if (isVisitorsError(visitorData)) {
+    return;
+  }
+
   const options = {
     where: { visitorId: visitorData.visitorId },
   };
@@ -102,9 +108,9 @@ async function deleteVisitorIdData(visitorData) {
     messageSeverity.Success,
     checkResultType.Passed,
   );
-}
+};
 
-const tryToDestroy = async (callback) => {
+const tryToDestroy = async (callback: () => Promise<any>) => {
   try {
     return await callback();
   } catch (err) {

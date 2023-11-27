@@ -18,7 +18,7 @@ export const NumberInputWithUnits: FC<NumberInputWithUnitsProps> = ({ prefix, su
         type="number"
         value={value}
         name={name}
-        onChange={(event) => onChange(Number(event.target.value))}
+        onChange={(event) => onChange?.(Number(event.target.value))}
       />
       {suffix && <div>{suffix}</div>}
     </div>

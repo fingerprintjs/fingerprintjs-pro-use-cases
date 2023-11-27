@@ -84,7 +84,7 @@ export async function getVisitorDataWithRequestId(visitorId: string, requestId: 
 
 // Report suspicious user activity according to internal processes here.
 // Possibly this action could also lock the user's account temporarily or ban a specific action.
-export function reportSuspiciousActivity(_context) {
+export function reportSuspiciousActivity(_context: any) {
   return _context;
 }
 

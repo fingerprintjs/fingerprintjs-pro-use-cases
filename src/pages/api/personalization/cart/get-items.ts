@@ -3,11 +3,17 @@ import { UserCartItem, ProductDbModel, UserCartItemDbModel } from '../../../../s
 import { Op } from 'sequelize';
 
 // Returns cart items for the given visitorId
-export default personalizationEndpoint(async (req, res, { usePersonalizedData, visitorId }) => {
+export default personalizationEndpoint(async (_req, res, { usePersonalizedData, visitorId }) => {
   if (!usePersonalizedData) {
     return res.status(200).json({
       data: [],
       size: 0,
+    });
+  }
+
+  if (!visitorId) {
+    return res.status(400).json({
+      error: 'Visitor ID not found',
     });
   }
 

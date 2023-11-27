@@ -38,9 +38,9 @@ describe('getLocationName test', () => {
       getLocationName({
         city: { name: 'Columbus' },
         country: { code: 'US', name: 'United States' },
-        // @ts-ignore
         subdivisions: [
           { isoCode: 'OH', name: 'Ohio' },
+          // @ts-ignore Mock test object
           { isoCode: 'FK', name: 'Fake additional subdivision' },
         ],
       }),
