@@ -3,7 +3,7 @@ import { ArticleViewDbModel } from './database';
 import { getTodayDateRange } from '../../shared/utils/date';
 import { messageSeverity } from '../server';
 import { CheckResult, checkResultType } from '../checkResult';
-import { NextApiRequest } from 'next';
+import { RuleCheck } from '../checks';
 
 export const ARTICLE_VIEW_LIMIT = 2;
 
@@ -61,15 +61,20 @@ export async function countViewedArticles(visitorId: string) {
 /**
  * Checks if the given visitor has exceeded his daily limit of free article views.
  * */
-export async function checkCountOfViewedArticles(visitorData: { visitorId: string }, req: NextApiRequest) {
+export const checkCountOfViewedArticles: RuleCheck = async (eventResponse, req) => {
   const { timestampEnd, timestampStart } = getTodayDateRange();
 
+  const visitorId = eventResponse.products?.identification?.data?.visitorId;
+  if (!visitorId) {
+    return new CheckResult('Could not find visitor ID', messageSeverity.Error, checkResultType.RequestIdMismatch);
+  }
+
   const [count, existingView] = await Promise.all([
-    countViewedArticles(visitorData.visitorId),
+    countViewedArticles(visitorId),
     ArticleViewDbModel.findOne({
       where: {
         visitorId: {
-          [Op.eq]: visitorData.visitorId,
+          [Op.eq]: visitorId,
         },
         articleId: {
           [Op.eq]: req.query.id as string,
@@ -88,4 +93,4 @@ export async function checkCountOfViewedArticles(visitorData: { visitorId: strin
       checkResultType.ArticleViewLimitExceeded,
     );
   }
-}
+};

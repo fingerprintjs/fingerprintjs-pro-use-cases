@@ -1,4 +1,4 @@
-import { VisitorsResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { CheckResult, checkResultType } from './checkResult';
 import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, IPv4_REGEX, MIN_CONFIDENCE_SCORE } from './const';
 import { messageSeverity, ourOrigins } from './server';
@@ -11,18 +11,19 @@ export function areVisitorIdAndRequestIdValid(visitorId: string, requestId: stri
   return isRequestIdFormatValid(requestId) && isVisitorIdFormatValid(visitorId);
 }
 
-export type RequestCallback = (req: NextApiRequest, res: NextApiResponse, visitorData: VisitorsResponse) => void;
+export type RequestCallback = (req: NextApiRequest, res: NextApiResponse, visitorData: EventResponse) => void;
 
 export type RuleCheck = (
-  visitorData: VisitorsResponse,
+  eventResponse: EventResponse,
   req: NextApiRequest,
   ...args: any
 ) => (CheckResult | undefined) | Promise<CheckResult | undefined>;
 
-export const checkFreshIdentificationRequest: RuleCheck = (visitorData: VisitorsResponse) => {
+export const checkFreshIdentificationRequest: RuleCheck = (eventResponse) => {
   // The Server API must contain information about this specific identification request.
   // If not, the request might have been tampered with and we don't trust this identification attempt.
-  if (!visitorData.visits || visitorData.visits.length !== 1) {
+  const timestamp = eventResponse?.products?.identification?.data?.timestamp;
+  if (!eventResponse || !timestamp) {
     return new CheckResult(
       'Hmmm, sneaky trying to forge information from the client-side, no luck this time, no sensitive action was performed.',
       messageSeverity.Error,
@@ -32,7 +33,7 @@ export const checkFreshIdentificationRequest: RuleCheck = (visitorData: Visitors
 
   // An attacker might have acquired a valid requestId and visitorId via phishing.
   // It's recommended to check freshness of the identification request to prevent replay attacks.
-  const requestTimestampDiff = new Date().getTime() - visitorData.visits[0].timestamp;
+  const requestTimestampDiff = new Date().getTime() - timestamp;
 
   if (requestTimestampDiff > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
     return new CheckResult(
@@ -46,8 +47,9 @@ export const checkFreshIdentificationRequest: RuleCheck = (visitorData: Visitors
 // The Confidence Score reflects the system's degree of certainty that the visitor identifier is correct.
 // If it's lower than the certain threshold we recommend using an additional way of verification, e.g. 2FA or email.
 // More info: https://dev.fingerprint.com/docs/understanding-your-confidence-score
-export const checkConfidenceScore: RuleCheck = (visitorData) => {
-  if (visitorData?.visits[0]?.confidence?.score < MIN_CONFIDENCE_SCORE) {
+export const checkConfidenceScore: RuleCheck = (eventResponse) => {
+  const confidenceScore = eventResponse?.products?.identification?.data?.confidence.score;
+  if (!confidenceScore || confidenceScore < MIN_CONFIDENCE_SCORE) {
     return new CheckResult(
       "Low confidence score, we'd rather verify you with the second factor,",
       messageSeverity.Error,
@@ -57,8 +59,8 @@ export const checkConfidenceScore: RuleCheck = (visitorData) => {
 };
 
 // Checks if the authentication request comes from the same IP address as the identification request.
-export const checkIpAddressIntegrity: RuleCheck = (visitorData, request) => {
-  if (!visitIpMatchesRequestIp(visitorData.visits[0].ip, request)) {
+export const checkIpAddressIntegrity: RuleCheck = (eventResponse, request) => {
+  if (!visitIpMatchesRequestIp(eventResponse.products?.identification?.data?.ip, request)) {
     return new CheckResult(
       'IP mismatch. An attacker might have tried to phish the victim.',
       messageSeverity.Error,
@@ -96,8 +98,8 @@ export function visitIpMatchesRequestIp(visitIp = '', request: NextApiRequest) {
 // Checks if the authentication request comes from a known origin and
 // if the authentication request's origin corresponds to the origin/URL provided by the Fingerprint Pro Server API.
 // Additionally, one should set Request Filtering settings in the dashboard: https://dev.fingerprint.com/docs/request-filtering
-export const checkOriginsIntegrity: RuleCheck = (visitorData, request) => {
-  if (!originIsAllowed(visitorData.visits[0].url, request)) {
+export const checkOriginsIntegrity: RuleCheck = (eventResponse, request) => {
+  if (!originIsAllowed(eventResponse.products?.identification?.data?.url, request)) {
     return new CheckResult(
       'Origin mismatch. An attacker might have tried to phish the victim.',
       messageSeverity.Error,

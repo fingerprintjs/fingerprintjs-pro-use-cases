@@ -56,30 +56,16 @@ export function ensureValidRequestIdAndVisitorId(
 }
 
 // Every identification request should be validated using the Fingerprint Pro Server API.
-// Alternatively, on the Node.js environment one can use Server API Node.js library: https://github.com/fingerprintjs/fingerprintjs-pro-server-api-node-sdk
-// const client = new FingerprintJsServerApiClient({
-//   region: Region.Global,
-//   apiKey: SERVER_API_KEY,
-//   authenticationMode: AuthenticationMode.QueryParameter,
-// });
 
-// const serverApiFilter = { request_id: requestId };
-// const visitorData = await client.getVisitorHistory(
-//   visitorId,
-//   serverApiFilter
-// );
-// return visitorData;
-export async function getVisitorDataWithRequestId(visitorId: string, requestId: string) {
+export async function getIdentificationEvent(requestId?: string) {
   // Do not request Server API if provided data is obviously forged,
   // throw an error instead.
-  if (!visitorId || !requestId) {
+  if (!requestId) {
     throw new Error('visitorId or requestId not provided.');
   }
 
-  // Use our Node SDK to obtain visitor history
-  return fingerprintJsApiClient.getVisitorHistory(visitorId, {
-    request_id: requestId,
-  });
+  // Use Fingerprint Node SDK get the identification event from the Server API.
+  return fingerprintJsApiClient.getEvent(requestId);
 }
 
 // Report suspicious user activity according to internal processes here.

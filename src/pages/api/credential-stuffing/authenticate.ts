@@ -2,7 +2,7 @@ import { DataTypes, Op } from 'sequelize';
 import {
   ensurePostRequest,
   ensureValidRequestIdAndVisitorId,
-  getVisitorDataWithRequestId,
+  getIdentificationEvent,
   messageSeverity,
   reportSuspiciousActivity,
   sequelize,
@@ -83,7 +83,7 @@ async function tryToLogin(req: NextApiRequest, res: NextApiResponse, ruleChecks:
   // Information from the client side might have been tampered.
   // It's best practice to validate provided information with the Server API.
   // It is recommended to use the requestId and visitorId pair.
-  const visitorData = await getVisitorDataWithRequestId(visitorId, requestId);
+  const visitorData = await getIdentificationEvent(requestId);
 
   for (const ruleCheck of ruleChecks) {
     const result = await ruleCheck(visitorData, req);
@@ -103,11 +103,11 @@ async function tryToLogin(req: NextApiRequest, res: NextApiResponse, ruleChecks:
   }
 }
 
-const checkUnsuccessfulIdentifications: RuleCheck = async (visitorData) => {
+const checkUnsuccessfulIdentifications: RuleCheck = async (eventResponse) => {
   // Gets all unsuccessful attempts during the last 24 hours.
   const visitorLoginAttemptCountQueryResult = await LoginAttemptDbModel.findAndCountAll({
     where: {
-      visitorId: visitorData.visitorId,
+      visitorId: eventResponse.products?.identification?.data?.visitorId,
       timestamp: {
         [Op.gt]: new Date().getTime() - 24 * 60 * 1000,
       },
@@ -130,31 +130,41 @@ const checkUnsuccessfulIdentifications: RuleCheck = async (visitorData) => {
   }
 };
 
-const checkCredentialsAndKnownVisitorIds: RuleCheck = async (visitorData, request) => {
+const checkCredentialsAndKnownVisitorIds: RuleCheck = async (eventResponse, request) => {
   // Checks if the provided credentials are correct.
-  if (areCredentialsCorrect(request.body.userName, request.body.password)) {
-    if (isLoggingInFromKnownDevice(visitorData.visitorId, mockedUser.knownVisitorIds)) {
-      return new CheckResult('We logged you in successfully.', messageSeverity.Success, checkResultType.Passed);
-      // If they provided valid credentials but they never logged in using this visitorId,
-      // we recommend using an additional way of verification, e.g. 2FA or email.
-    } else {
-      return new CheckResult(
-        "Provided credentials are correct but we've never seen you logging in using this device. Confirm your identity with a second factor.",
-        messageSeverity.Warning,
-        checkResultType.Challenged,
-      );
-    }
-  } else {
+
+  if (!credentialAreCorrect(request.body.userName, request.body.password)) {
     return new CheckResult(
       'Incorrect credentials, try again.',
       messageSeverity.Error,
       checkResultType.IncorrectCredentials,
     );
   }
+
+  const visitorId = eventResponse.products?.identification?.data?.visitorId;
+  if (!visitorId) {
+    return new CheckResult(
+      'Missing visitor ID. Please try again.',
+      messageSeverity.Error,
+      checkResultType.IncorrectCredentials,
+    );
+  }
+
+  if (!isLoggingInFromKnownDevice(visitorId, mockedUser.knownVisitorIds)) {
+    // If they provided valid credentials but they never logged in using this visitorId,
+    // we recommend using an additional way of verification, e.g. 2FA or email.
+    return new CheckResult(
+      "Provided credentials are correct but we've never seen you logging in using this device. Confirm your identity with a second factor.",
+      messageSeverity.Warning,
+      checkResultType.Challenged,
+    );
+  }
+
+  return new CheckResult('We logged you in successfully.', messageSeverity.Success, checkResultType.Passed);
 };
 
 // Dummy action simulating authentication.
-function areCredentialsCorrect(name: string, password: string) {
+function credentialAreCorrect(name: string, password: string) {
   return name === mockedUser.userName && password === mockedUser.password;
 }
 

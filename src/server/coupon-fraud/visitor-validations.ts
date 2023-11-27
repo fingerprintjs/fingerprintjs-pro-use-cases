@@ -1,4 +1,4 @@
-import { ensureValidRequestIdAndVisitorId, getVisitorDataWithRequestId } from '../server';
+import { ensureValidRequestIdAndVisitorId, getIdentificationEvent } from '../server';
 import { checkResultType } from '../checkResult';
 import {
   RuleCheck,
@@ -40,13 +40,13 @@ export async function validateCouponRequest(
     ...additionalChecks,
   ];
 
-  const visitorData = await getVisitorDataWithRequestId(visitorId, requestId);
+  const eventResponse = await getIdentificationEvent(requestId);
 
-  result.visitorId = visitorData.visitorId;
+  result.visitorId = eventResponse.products?.identification?.data?.visitorId ?? null;
   result.couponCode = couponCode;
 
   for (const check of checks) {
-    const checkResult = await check(visitorData, req, couponCode);
+    const checkResult = await check(eventResponse, req, couponCode);
 
     if (checkResult) {
       switch (checkResult.type) {

@@ -1,7 +1,7 @@
 import {
   ensurePostRequest,
   ensureValidRequestIdAndVisitorId,
-  getVisitorDataWithRequestId,
+  getIdentificationEvent,
   reportSuspiciousActivity,
 } from '../server';
 import { checkResultType } from '../checkResult';
@@ -42,10 +42,10 @@ export const loanRiskEndpoint =
     // Information from the client side might have been tampered.
     // It's best practice to validate provided information with the Server API.
     // It is recommended to use the requestId and visitorId pair.
-    const visitorData = await getVisitorDataWithRequestId(visitorId, requestId);
+    const eventResponse = await getIdentificationEvent(requestId);
 
     for (const ruleCheck of [...loanChecks, ...optionalChecks]) {
-      const result = await ruleCheck(visitorData, req);
+      const result = await ruleCheck(eventResponse, req);
 
       if (result) {
         switch (result.type) {
@@ -59,5 +59,5 @@ export const loanRiskEndpoint =
       }
     }
 
-    return requestCallback(req, res, visitorData);
+    return requestCallback(req, res, eventResponse);
   };
