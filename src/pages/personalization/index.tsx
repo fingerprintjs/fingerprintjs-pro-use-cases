@@ -4,7 +4,6 @@ import { useSearchHistory } from '../../client/api/personalization/use-search-hi
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { useProducts } from '../../client/api/personalization/use-products';
-import { useVisitorData } from '../../client/use-visitor-data';
 import { usePersonalizationNotification } from '../../client/hooks/personalization/use-personalization-notification';
 import { useSnackbar } from 'notistack';
 import { useUserPreferences } from '../../client/api/personalization/use-user-preferences';
@@ -20,6 +19,7 @@ import CartIcon from '../../client/img/cart.svg';
 import { Cart, CartProduct } from '../../client/components/common/Cart/Cart';
 import { Search, SearchHistory } from '../../client/components/personalization/searchComponents';
 import { ProductCard } from '../../client/components/personalization/productCard';
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 
 export default function Index({ embed }: CustomPageProps) {
   const { enqueueSnackbar } = useSnackbar();

@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useVisitorData } from '../../use-visitor-data';
 import { apiRequest } from '../api';
 import { GetResult } from '@fingerprintjs/fingerprintjs-pro';
 import { useCallback, useEffect, useMemo } from 'react';
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 
 type UserPreferences = {
   hasDarkMode: boolean;

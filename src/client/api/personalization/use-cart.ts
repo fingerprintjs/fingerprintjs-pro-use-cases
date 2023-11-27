@@ -1,9 +1,9 @@
 import { apiRequest } from '../api';
 import { useMutation, useQuery } from 'react-query';
-import { useVisitorData } from '../../use-visitor-data';
 import { useCallback } from 'react';
 import { GetResult } from '@fingerprintjs/fingerprintjs-pro';
 import { UserCartItem } from '../../../server/personalization/database';
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 
 function getCart(fpData?: GetResult) {
   return apiRequest('/api/personalization/cart/get-items', fpData);

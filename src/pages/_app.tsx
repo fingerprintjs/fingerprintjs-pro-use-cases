@@ -5,8 +5,7 @@ import { ThemeProvider } from '../client/theme-provider';
 import Head from 'next/head';
 import { SnackbarProvider } from 'notistack';
 import { SnackbarAction } from '../client/components/snackbar-action';
-import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
-import { FP_LOAD_OPTIONS } from '../client/use-visitor-data';
+import { FpjsProvider, LoadOptions } from '@fingerprintjs/fingerprintjs-pro-react';
 import { Paper } from '@mui/material';
 import { AppProps } from 'next/app';
 import NewHeader from '../client/components/common/Header/Header';
@@ -14,6 +13,8 @@ import { FunctionComponent, PropsWithChildren } from 'react';
 import DeploymentUtils from '../client/DeploymentUtils';
 import Footer from '../client/components/common/Footer/Footer';
 import styles from '../styles/layout.module.scss';
+import { PUBLIC_API_KEY, SCRIPT_URL_PATTERN, ENDPOINT, FRONTEND_REGION, CUSTOM_TLS_ENDPOINT } from '../server/const';
+import { FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,6 +23,14 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+export const FP_LOAD_OPTIONS: LoadOptions = {
+  apiKey: PUBLIC_API_KEY,
+  scriptUrlPattern: [SCRIPT_URL_PATTERN, FingerprintJSPro.defaultScriptUrlPattern],
+  endpoint: [ENDPOINT, FingerprintJSPro.defaultEndpoint],
+  region: FRONTEND_REGION,
+  tlsEndpoint: CUSTOM_TLS_ENDPOINT,
+};
 
 const Layout: FunctionComponent<PropsWithChildren<{ embed: boolean }>> = ({ children, embed }) => {
   return (

@@ -137,7 +137,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
           <div className={styles.formInput}>
             <div>
               <div className={styles.locationLabel}>From</div>
-              <Select value={fromCode} onValueChange={(value) => setFromCode(value)} fullWidth>
+              <Select value={fromCode} onValueChange={(value: string) => setFromCode(value)} fullWidth>
                 {AIRPORTS.filter((airport) => airport.code !== toCode).map((airport) => (
                   <SelectItem key={airport.code} value={airport.code}>
                     {airport.city} ({airport.code})
@@ -148,7 +148,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
             <Image src={ArrowIcon} alt="" className={styles.arrowIcon} />
             <div>
               <div className={styles.locationLabel}>To</div>
-              <Select value={toCode} onValueChange={(value) => setToCode(value)} fullWidth>
+              <Select value={toCode} onValueChange={(value: string) => setToCode(value)} fullWidth>
                 {AIRPORTS.filter((airport) => airport.code !== fromCode).map((airport) => (
                   <SelectItem key={airport.code} value={airport.code}>
                     {airport.city} ({airport.code})
