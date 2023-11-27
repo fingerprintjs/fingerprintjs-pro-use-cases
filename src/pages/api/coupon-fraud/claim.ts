@@ -6,7 +6,7 @@ import { CheckResult, checkResultType } from '../../../server/checkResult';
 import { sendOkResponse } from '../../../server/response';
 import { RuleCheck } from '../../../server/checks';
 
-async function checkVisitorClaimedRecently(visitorId?: string) {
+async function checkVisitorClaimedRecently(visitorId: string) {
   const oneHourBefore = new Date();
   oneHourBefore.setHours(oneHourBefore.getHours() - 1);
 
@@ -20,7 +20,7 @@ async function checkVisitorClaimedRecently(visitorId?: string) {
   });
 }
 
-async function getVisitorClaim(visitorId?: string, couponCode?: string) {
+async function getVisitorClaim(visitorId: string, couponCode?: string) {
   return await CouponClaimDbModel.findOne({
     where: { visitorId, couponCode },
   });
@@ -62,6 +62,9 @@ const checkIfCouponExists: RuleCheck = async (_visitorData, _req, couponCode: Co
 
 const checkIfCouponWasClaimed: RuleCheck = async (eventResponse, _req, couponCode) => {
   const visitorId = eventResponse.products?.identification?.data?.visitorId;
+  if (!visitorId) {
+    return new CheckResult('Could not find visitor ID', messageSeverity.Error, checkResultType.RequestIdMismatch);
+  }
   const wasCouponClaimedByVisitor = await getVisitorClaim(visitorId, couponCode);
 
   // Check if the visitor claimed this coupon before.
@@ -76,6 +79,10 @@ const checkIfCouponWasClaimed: RuleCheck = async (eventResponse, _req, couponCod
 
 const checkIfClaimedAnotherCouponRecently: RuleCheck = async (eventData) => {
   const visitorId = eventData.products?.identification?.data?.visitorId;
+  if (!visitorId) {
+    return new CheckResult('Could not find visitor ID', messageSeverity.Error, checkResultType.RequestIdMismatch);
+  }
+
   const visitorClaimedAnotherCouponRecently = await checkVisitorClaimedRecently(visitorId);
 
   if (visitorClaimedAnotherCouponRecently) {
