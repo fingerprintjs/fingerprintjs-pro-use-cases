@@ -90,10 +90,10 @@ async function tryToProcessPayment(req: NextApiRequest, res: NextApiResponse, ru
   // Information from the client side might have been tampered.
   // It's best practice to validate provided information with the Server API.
   // It is recommended to use the requestId and visitorId pair.
-  const visitorData = await getIdentificationEvent(requestId);
+  const eventResponse = await getIdentificationEvent(requestId);
 
   for (const ruleCheck of ruleChecks) {
-    const result = await ruleCheck(visitorData, req);
+    const result = await ruleCheck(eventResponse, req);
 
     if (result) {
       await logPaymentAttempt(visitorId, applyChargeback, usedStolenCard, result.type);
@@ -178,7 +178,7 @@ const checkVisitorIdForChargebacks: RuleCheck = async (eventResponse) => {
   }
 };
 
-const processPayment: RuleCheck = async (visitorData, request) => {
+const processPayment: RuleCheck = async (_eventResponse, request) => {
   // Checks if the provided card details are correct.
   if (areCardDetailsCorrect(request)) {
     return new CheckResult(

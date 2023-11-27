@@ -62,10 +62,10 @@ async function tryToReset(req: NextApiRequest, res: NextApiResponse, ruleChecks:
     return;
   }
 
-  const visitorData = await getIdentificationEvent(requestId);
+  const eventResponse = await getIdentificationEvent(requestId);
 
   for (const ruleCheck of ruleChecks) {
-    const result = await ruleCheck(visitorData, req);
+    const result = await ruleCheck(eventResponse, req);
 
     if (result) {
       switch (result.type) {

@@ -20,7 +20,7 @@ async function checkVisitorClaimedRecently(visitorId: string) {
   });
 }
 
-async function getVisitorClaim(visitorId: string, couponCode?: string) {
+async function getVisitorClaim(visitorId: string, couponCode: string) {
   return await CouponClaimDbModel.findOne({
     where: { visitorId, couponCode },
   });
@@ -65,6 +65,7 @@ const checkIfCouponWasClaimed: RuleCheck = async (eventResponse, _req, couponCod
   if (!visitorId) {
     return new CheckResult('Could not find visitor ID', messageSeverity.Error, checkResultType.RequestIdMismatch);
   }
+
   const wasCouponClaimedByVisitor = await getVisitorClaim(visitorId, couponCode);
 
   // Check if the visitor claimed this coupon before.

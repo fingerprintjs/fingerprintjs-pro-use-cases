@@ -83,10 +83,10 @@ async function tryToLogin(req: NextApiRequest, res: NextApiResponse, ruleChecks:
   // Information from the client side might have been tampered.
   // It's best practice to validate provided information with the Server API.
   // It is recommended to use the requestId and visitorId pair.
-  const visitorData = await getIdentificationEvent(requestId);
+  const eventResponse = await getIdentificationEvent(requestId);
 
   for (const ruleCheck of ruleChecks) {
-    const result = await ruleCheck(visitorData, req);
+    const result = await ruleCheck(eventResponse, req);
 
     if (result) {
       await logLoginAttempt(visitorId, userName, result.type);
