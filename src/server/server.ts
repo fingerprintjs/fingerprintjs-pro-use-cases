@@ -61,7 +61,7 @@ export async function getIdentificationEvent(requestId?: string) {
   // Do not request Server API if provided data is obviously forged,
   // throw an error instead.
   if (!requestId) {
-    throw new Error('visitorId or requestId not provided.');
+    throw new Error('requestId not provided.');
   }
 
   // Use Fingerprint Node SDK get the identification event from the Server API.
