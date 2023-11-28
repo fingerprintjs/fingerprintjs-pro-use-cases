@@ -1,7 +1,7 @@
-import { IpLocation } from '@fingerprintjs/fingerprintjs-pro';
+import { FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
 
 export const UNKNOWN_LOCATION = 'Unknown';
-export function getLocationName(ipLocation?: IpLocation) {
+export function getLocationName(ipLocation?: FingerprintJSPro.IpLocation) {
   const addressParts: string[] = [];
   if (!ipLocation) {
     return UNKNOWN_LOCATION;

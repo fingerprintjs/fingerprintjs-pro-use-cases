@@ -548,7 +548,7 @@
     "@fingerprintjs/fingerprintjs-pro" "^3.8.5"
     tslib "^2.5.0"
 
-"@fingerprintjs/fingerprintjs-pro@^3.8.5", "@fingerprintjs/fingerprintjs-pro@^3.8.6":
+"@fingerprintjs/fingerprintjs-pro@^3.8.5":
   version "3.8.6"
   resolved "https://registry.yarnpkg.com/@fingerprintjs/fingerprintjs-pro/-/fingerprintjs-pro-3.8.6.tgz#32add2697ee8efb6f9d548dcd2fe6b28482c9324"
   integrity sha512-PlUGx8HeCtE0cvIcD9r/C61p0xWw7A+9ah10r8tHlmuzjP9EjbpWEa7OSUKCO3QsYBrrKG0pS4W8HhBqzj05rg==

@@ -9,7 +9,6 @@ import { useSnackbar } from 'notistack';
 import { useUserPreferences } from '../../client/api/personalization/use-user-preferences';
 import { useCart } from '../../client/api/personalization/use-cart';
 import React from 'react';
-import { ExtendedGetResult } from '@fingerprintjs/fingerprintjs-pro';
 import { USE_CASES } from '../../client/components/common/content';
 import { CustomPageProps } from '../_app';
 import styles from './personalization.module.scss';
@@ -56,7 +55,7 @@ export default function Index({ embed }: CustomPageProps) {
 
   useEffect(() => {
     if (
-      (data as ExtendedGetResult)?.incognito &&
+      data?.incognito &&
       data?.visitorFound &&
       !userWelcomed &&
       (searchHistoryQuery.data?.data?.length || hasDarkMode || cartQuery.data?.data?.length)

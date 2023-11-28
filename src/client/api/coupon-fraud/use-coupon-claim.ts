@@ -1,4 +1,4 @@
-import { ExtendedGetResult, GetResult } from '@fingerprintjs/fingerprintjs-pro';
+import { FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
 import { apiRequest } from '../api';
 import { useMutation } from 'react-query';
 
@@ -7,7 +7,7 @@ function claimCoupon({ fpData, body }: CouponClaim) {
 }
 
 type CouponClaim = {
-  fpData: GetResult | ExtendedGetResult;
+  fpData: FingerprintJSPro.GetResult;
   body: {
     couponCode: string;
   };
