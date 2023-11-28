@@ -1,7 +1,7 @@
 import {
   Severity,
   ensureValidRequestIdAndVisitorId,
-  getVisitorDataWithRequestId,
+  getIdentificationEvent,
   messageSeverity,
 } from '../../../server/server';
 import { LoginAttemptDbModel } from '../credential-stuffing/authenticate';
@@ -62,10 +62,10 @@ async function tryToReset(req: NextApiRequest, res: NextApiResponse, ruleChecks:
     return;
   }
 
-  const visitorData = await getVisitorDataWithRequestId(visitorId, requestId);
+  const eventResponse = await getIdentificationEvent(requestId);
 
   for (const ruleCheck of ruleChecks) {
-    const result = await ruleCheck(visitorData, req);
+    const result = await ruleCheck(eventResponse, req);
 
     if (result) {
       switch (result.type) {
@@ -78,13 +78,13 @@ async function tryToReset(req: NextApiRequest, res: NextApiResponse, ruleChecks:
   }
 }
 
-const deleteVisitorIdData: RuleCheck = async (visitorData) => {
-  if (isVisitorsError(visitorData)) {
+const deleteVisitorIdData: RuleCheck = async (eventResponse) => {
+  if (isVisitorsError(eventResponse)) {
     return;
   }
 
   const options = {
-    where: { visitorId: visitorData.visitorId },
+    where: { visitorId: eventResponse.products?.identification?.data?.visitorId },
   };
 
   const loginAttemptsRowsRemoved = await tryToDestroy(() => LoginAttemptDbModel.destroy(options));

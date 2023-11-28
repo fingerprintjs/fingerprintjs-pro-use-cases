@@ -2,7 +2,7 @@ import { Attributes, DataTypes, InferAttributes, InferCreationAttributes, Model,
 import {
   ensurePostRequest,
   ensureValidRequestIdAndVisitorId,
-  getVisitorDataWithRequestId,
+  getIdentificationEvent,
   messageSeverity,
   reportSuspiciousActivity,
   sequelize,
@@ -90,10 +90,10 @@ async function tryToProcessPayment(req: NextApiRequest, res: NextApiResponse, ru
   // Information from the client side might have been tampered.
   // It's best practice to validate provided information with the Server API.
   // It is recommended to use the requestId and visitorId pair.
-  const visitorData = await getVisitorDataWithRequestId(visitorId, requestId);
+  const eventResponse = await getIdentificationEvent(requestId);
 
   for (const ruleCheck of ruleChecks) {
-    const result = await ruleCheck(visitorData, req);
+    const result = await ruleCheck(eventResponse, req);
 
     if (result) {
       await logPaymentAttempt(visitorId, applyChargeback, usedStolenCard, result.type);
@@ -110,11 +110,11 @@ async function tryToProcessPayment(req: NextApiRequest, res: NextApiResponse, ru
   }
 }
 
-const checkVisitorIdForStolenCard: RuleCheck = async (visitorData) => {
+const checkVisitorIdForStolenCard: RuleCheck = async (eventResponse) => {
   // Get all stolen card records for the visitorId
   const stolenCardUsedCount = await PaymentAttemptDbModel.findAndCountAll({
     where: {
-      visitorId: visitorData.visitorId,
+      visitorId: eventResponse.products?.identification?.data?.visitorId,
       usedStolenCard: true,
     },
   });
@@ -130,11 +130,11 @@ const checkVisitorIdForStolenCard: RuleCheck = async (visitorData) => {
   }
 };
 
-const checkForCardCracking: RuleCheck = async (visitorData) => {
+const checkForCardCracking: RuleCheck = async (eventResponse) => {
   // Gets all unsuccessful attempts for the visitor during the last 365 days.
   const invalidCardAttemptCountQueryResult = await PaymentAttemptDbModel.findAndCountAll({
     where: {
-      visitorId: visitorData.visitorId,
+      visitorId: eventResponse.products?.identification?.data?.visitorId,
       timestamp: {
         [Op.gt]: new Date().getTime() - 365 * 24 * 60 * 1000,
       },
@@ -155,11 +155,11 @@ const checkForCardCracking: RuleCheck = async (visitorData) => {
   }
 };
 
-const checkVisitorIdForChargebacks: RuleCheck = async (visitorData) => {
+const checkVisitorIdForChargebacks: RuleCheck = async (eventResponse) => {
   // Gets all unsuccessful attempts during the last 365  days.
   const countOfChargebacksForVisitorId = await PaymentAttemptDbModel.findAndCountAll({
     where: {
-      visitorId: visitorData.visitorId,
+      visitorId: eventResponse.products?.identification?.data?.visitorId,
       isChargebacked: true,
       timestamp: {
         [Op.gt]: new Date().getTime() - 365 * 24 * 60 * 1000,
@@ -178,7 +178,7 @@ const checkVisitorIdForChargebacks: RuleCheck = async (visitorData) => {
   }
 };
 
-const processPayment: RuleCheck = async (visitorData, request) => {
+const processPayment: RuleCheck = async (_eventResponse, request) => {
   // Checks if the provided card details are correct.
   if (areCardDetailsCorrect(request)) {
     return new CheckResult(

@@ -4,7 +4,7 @@ import { Op } from 'sequelize';
 import { messageSeverity } from '../../../server/server';
 import { calculateLoanValues } from '../../../server/loan-risk/calculate-loan-values';
 import { CheckResult, checkResultType } from '../../../server/checkResult';
-import { NextApiRequest } from 'next';
+import { RuleCheck } from '../../../server/checks';
 
 /**
  * Validates previous loan requests sent by a given user.
@@ -13,7 +13,7 @@ import { NextApiRequest } from 'next';
  * If monthly income is not the same as in the previous request, we return a warning.
  *
  * */
-async function checkPreviousLoanRequests(visitorData: { visitorId: string }, req: NextApiRequest) {
+const checkPreviousLoanRequests: RuleCheck = async (eventResponse, req) => {
   const { monthlyIncome, firstName, lastName } = JSON.parse(req.body);
 
   const timestampStart = new Date();
@@ -26,7 +26,7 @@ async function checkPreviousLoanRequests(visitorData: { visitorId: string }, req
   const previousLoanRequests = await LoanRequestDbModel.findAll({
     where: {
       visitorId: {
-        [Op.eq]: visitorData.visitorId,
+        [Op.eq]: eventResponse.products?.identification?.data?.visitorId,
       },
       timestamp: {
         [Op.between]: [timestampStart, timestampEnd],
@@ -54,10 +54,10 @@ async function checkPreviousLoanRequests(visitorData: { visitorId: string }, req
       );
     }
   }
-}
+};
 
 export default loanRiskEndpoint(
-  async (req, res, visitorData) => {
+  async (req, res, eventResponse) => {
     const { loanValue, monthlyIncome, loanDuration, firstName, lastName } = JSON.parse(req.body);
 
     const calculations = calculateLoanValues({
@@ -66,8 +66,16 @@ export default loanRiskEndpoint(
       loanDuration,
     });
 
+    const visitorId = eventResponse?.products?.identification?.data?.visitorId;
+
+    if (!visitorId) {
+      return res.status(400).json({
+        error: new Error('Missing visitor ID'),
+      });
+    }
+
     await LoanRequestDbModel.create({
-      visitorId: visitorData.visitorId,
+      visitorId,
       timestamp: new Date(),
       monthlyIncome,
       loanDuration,

@@ -1,4 +1,4 @@
-import { ensureValidRequestIdAndVisitorId, getVisitorDataWithRequestId } from '../server';
+import { ensureValidRequestIdAndVisitorId, getIdentificationEvent } from '../server';
 import { checkResultType } from '../checkResult';
 import { checkConfidenceScore, checkIpAddressIntegrity, checkOriginsIntegrity } from '../checks';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -41,16 +41,17 @@ export async function validatePersonalizationRequest(
     checkOriginsIntegrity,
   ];
 
-  const visitorData = await getVisitorDataWithRequestId(visitorId, requestId);
+  const eventResponse = await getIdentificationEvent(requestId);
+  const serverVisitorId = eventResponse.products?.identification?.data?.visitorId;
 
-  if (!visitorData) {
+  if (!serverVisitorId) {
     return result;
   }
 
-  result.visitorId = visitorData.visitorId;
+  result.visitorId = serverVisitorId;
 
   for (const check of checks) {
-    const checkResult = await check(visitorData, req);
+    const checkResult = await check(eventResponse, req);
 
     if (checkResult) {
       switch (checkResult.type) {

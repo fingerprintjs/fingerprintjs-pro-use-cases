@@ -18,13 +18,16 @@ describe('checks', () => {
     it('should skip ipv6 addresses', () => {
       const result = checkIpAddressIntegrity(
         {
-          visits: [
-            // @ts-ignore Mocked test object
-            {
-              ip: sampleIps.ipv4[0],
+          products: {
+            identification: {
+              // @ts-ignore Mocked test object
+              data: {
+                ip: sampleIps.ipv4[0],
+              },
             },
-          ],
+          },
         },
+
         {
           headers: {
             'x-forwarded-for': sampleIps.ipv6[0],
@@ -37,12 +40,14 @@ describe('checks', () => {
     it('should return undefined if ipv4 matches', () => {
       const result = checkIpAddressIntegrity(
         {
-          visits: [
-            // @ts-ignore Mocked test object
-            {
-              ip: sampleIps.ipv4[0],
+          products: {
+            identification: {
+              // @ts-ignore Mocked test object
+              data: {
+                ip: sampleIps.ipv4[0],
+              },
             },
-          ],
+          },
         },
         {
           headers: {
@@ -56,12 +61,14 @@ describe('checks', () => {
     it('should return CheckResult if ipv4 does not match', () => {
       const result = checkIpAddressIntegrity(
         {
-          visits: [
-            // @ts-ignore Mocked test object
-            {
-              ip: sampleIps.ipv4[0],
+          products: {
+            identification: {
+              // @ts-ignore Mocked test object
+              data: {
+                ip: sampleIps.ipv4[0],
+              },
             },
-          ],
+          },
         },
         {
           headers: {
