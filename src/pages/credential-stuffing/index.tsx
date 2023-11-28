@@ -14,7 +14,7 @@ import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 
 export default function Index() {
   const { getData } = useVisitorData(
-    {},
+    { ignoreCache: true },
     {
       immediate: false,
     },

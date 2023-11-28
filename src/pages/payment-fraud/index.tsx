@@ -14,7 +14,7 @@ import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 
 export default function Index({ embed }: CustomPageProps) {
   const { getData } = useVisitorData(
-    {},
+    { ignoreCache: true },
     {
       immediate: false,
     },

@@ -63,7 +63,7 @@ const SliderField: FunctionComponent<SliderFieldProps> = ({
 };
 export default function LoanRisk({ embed }: CustomPageProps) {
   const { getData, isLoading: isVisitorDataLoading } = useVisitorData(
-    {},
+    { ignoreCache: true },
     {
       immediate: false,
     },

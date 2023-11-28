@@ -11,7 +11,7 @@ export default function Index() {
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   const [httpResponseStatus, setHttpResponseStatus] = useState<number | undefined>();
 
-  const { getData } = useVisitorData({}, { immediate: false });
+  const { getData } = useVisitorData({ ignoreCache: true }, { immediate: false });
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
