@@ -1,11 +1,10 @@
 import { test } from '@playwright/test';
-import { reset } from './admin';
+import { resetScenarios } from './resetHelper';
 
 test.describe('Credential stuffing', () => {
-  test.beforeEach(async ({ page, context }) => {
-    await reset(context);
-
+  test.beforeEach(async ({ page }) => {
     await page.goto('/credential-stuffing');
+    await resetScenarios(page);
   });
 
   test('should prevent login even with correct credentials', async ({ page }) => {

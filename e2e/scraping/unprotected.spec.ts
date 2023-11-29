@@ -1,6 +1,6 @@
 import { Locator, expect, test } from '@playwright/test';
 import { writeFileSync } from 'fs';
-import { TEST_IDS } from './../../src/client/e2eTestIDs';
+import { TEST_IDS } from '../../src/client/testIDs';
 
 const TEST_ID = TEST_IDS.webScraping;
 

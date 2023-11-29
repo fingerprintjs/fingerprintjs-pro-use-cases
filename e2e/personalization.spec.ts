@@ -1,18 +1,17 @@
 import { expect, test } from '@playwright/test';
-import { reset } from './admin';
-import { TEST_IDS } from '../src/client/e2eTestIDs';
+import { resetScenarios } from './resetHelper';
+import { TEST_IDS } from '../src/client/testIDs';
 
 const CART_ID = TEST_IDS.common.cart;
 const PERS_ID = TEST_IDS.personalization;
 
 test.describe('Personalization', () => {
-  test.beforeEach(async ({ page, context }) => {
-    await reset(context);
-
+  test.beforeEach(async ({ page }) => {
     await page.goto('/personalization', {
       waitUntil: 'networkidle',
     });
     await page.click('text="Okay, I understand"');
+    await resetScenarios(page);
   });
 
   test('should add and remove items from cart', async ({ page }) => {

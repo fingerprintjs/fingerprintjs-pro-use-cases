@@ -6,7 +6,7 @@ import WarningIcon from './warning.svg';
 import styles from './alert.module.scss';
 import Image from 'next/image';
 import classNames from 'classnames';
-import { TEST_IDS } from '../../../e2eTestIDs';
+import { TEST_IDS } from '../../../testIDs';
 
 type AlertProps = {
   severity: Severity;

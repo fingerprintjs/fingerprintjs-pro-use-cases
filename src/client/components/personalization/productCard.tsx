@@ -8,7 +8,7 @@ import Image from 'next/image';
 import styles from './productCard.module.scss';
 import Button from '../common/Button/Button';
 import HeartIcon from '../../img/heart.svg';
-import { TEST_IDS } from '../../e2eTestIDs';
+import { TEST_IDS } from '../../testIDs';
 import { UserCartItem } from '../../../server/personalization/database';
 
 type Product = {

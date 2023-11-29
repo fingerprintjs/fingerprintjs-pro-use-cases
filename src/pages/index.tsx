@@ -5,7 +5,7 @@ import Container from '../client/components/common/Container';
 import { HOMEPAGE_CARDS } from '../client/components/common/content';
 import LinkArrow from '../client/img/externalLinkArrow.svg';
 import Image from 'next/image';
-import { TEST_IDS } from '../client/e2eTestIDs';
+import { TEST_IDS } from '../client/testIDs';
 import { Fragment } from 'react';
 import { SEO } from '../client/components/common/seo';
 import { useRouter } from 'next/router';

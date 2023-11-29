@@ -18,7 +18,7 @@ import { Slider } from '../../client/components/common/Slider/Slider';
 import { NumberInputWithUnits } from '../../client/components/common/InputNumberWithUnits/InputNumberWithUnits';
 import styles from './loanRisk.module.scss';
 import classNames from 'classnames';
-import { TEST_IDS } from '../../client/e2eTestIDs';
+import { TEST_IDS } from '../../client/testIDs';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 
 type SliderFieldProps = {

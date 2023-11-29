@@ -6,7 +6,7 @@ import AirCanada from '../../img/airCanada.svg';
 import Image from 'next/image';
 import Button from '../common/Button/Button';
 import StarIcon from '../../img/star.svg';
-import { TEST_IDS } from '../../e2eTestIDs';
+import { TEST_IDS } from '../../testIDs';
 import { HOUR_MS, MINUTE_MS } from '../../../shared/timeUtils';
 
 const TEST_ID = TEST_IDS.webScraping;

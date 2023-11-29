@@ -11,6 +11,11 @@ export const TEST_IDS = {
     },
     alert: 'alert',
   },
+  reset: {
+    resetButton: 'resetButton',
+    resetSuccess: 'resetSuccess',
+    resetError: 'resetError',
+  },
   homepageCard: {
     useCaseTitle: 'useCaseTitle',
   },

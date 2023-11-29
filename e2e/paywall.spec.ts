@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
-import { reset } from './admin';
-import { TEST_IDS } from '../src/client/e2eTestIDs';
+import { resetScenarios } from './resetHelper';
+import { TEST_IDS } from '../src/client/testIDs';
 
 test.describe('Paywall', () => {
-  test.beforeEach(async ({ page, context }) => {
-    await reset(context);
+  test.beforeEach(async ({ page }) => {
     await page.goto('/paywall');
+    await resetScenarios(page);
   });
 
   test('Should show two articles, then show a paywall', async ({ page }) => {

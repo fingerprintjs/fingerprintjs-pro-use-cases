@@ -1,9 +1,8 @@
 import { Page, test } from '@playwright/test';
-import { reset } from './admin';
+import { resetScenarios } from './resetHelper';
 
 async function waitForSuccessfulSubmit(page: Page) {
   await page.click('[type="submit"]');
-
   await page.waitForSelector('text="Thank you for your payment. Everything is OK."');
 }
 
@@ -13,10 +12,9 @@ async function waitForInvalidCardSubmit(page: Page) {
 }
 
 test.describe('Payment fraud', () => {
-  test.beforeEach(async ({ page, context }) => {
-    await reset(context);
-
+  test.beforeEach(async ({ page }) => {
     await page.goto('/payment-fraud');
+    await resetScenarios(page);
   });
 
   test('should pass payment with prefilled details', async ({ page }) => {

@@ -12,7 +12,7 @@ import { ARTICLES } from '../../../../server/paywall/articles';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useQuery } from 'react-query';
 import { ArticleResponse } from '../../../api/paywall/article/[id]';
-import { TEST_IDS } from '../../../../client/e2eTestIDs';
+import { TEST_IDS } from '../../../../client/testIDs';
 import { ArticleGrid, Byline } from '../../../../client/components/paywall/ArticleGrid';
 
 function ArticleSkeleton({ animation = false }: { animation?: SkeletonTypeMap['props']['animation'] }) {

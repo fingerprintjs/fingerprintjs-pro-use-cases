@@ -1,6 +1,6 @@
 import { Page, expect, test } from '@playwright/test';
-import { reset } from './admin';
-import { TEST_IDS } from '../src/client/e2eTestIDs';
+import { resetScenarios } from './resetHelper';
+import { TEST_IDS } from '../src/client/testIDs';
 
 const testIds = TEST_IDS.loanRisk;
 
@@ -40,10 +40,9 @@ test.describe('Loan risk', () => {
     },
   ];
 
-  test.beforeEach(async ({ page, context }) => {
-    await reset(context);
-
+  test.beforeEach(async ({ page }) => {
     await page.goto('/loan-risk');
+    await resetScenarios(page);
   });
 
   test('should correctly calculate loan and approve it on first submit', async ({ page }) => {

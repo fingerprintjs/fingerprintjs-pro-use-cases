@@ -4,7 +4,7 @@ import styles from './cart.module.scss';
 import { ButtonMinusSvg } from '../../../img/buttonMinusSvg';
 import { ButtonPlusSvg } from '../../../img/buttonPlusSvg';
 import Image from 'next/image';
-import { TEST_IDS } from '../../../e2eTestIDs';
+import { TEST_IDS } from '../../../testIDs';
 
 const format$ = (price: number) => {
   return new Intl.NumberFormat('en-US', {

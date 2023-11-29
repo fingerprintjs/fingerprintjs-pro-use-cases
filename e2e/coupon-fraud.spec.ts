@@ -1,11 +1,10 @@
 import { test } from '@playwright/test';
-import { reset } from './admin';
+import { resetScenarios } from './resetHelper';
 
 test.describe('Coupon fraud', () => {
-  test.beforeEach(async ({ page, context }) => {
-    await reset(context);
-
+  test.beforeEach(async ({ page }) => {
     await page.goto('/coupon-fraud');
+    await resetScenarios(page);
   });
 
   test('should apply correct coupon only once', async ({ page }) => {

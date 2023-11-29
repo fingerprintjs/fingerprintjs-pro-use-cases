@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import { FunctionComponent } from 'react';
 import { ArticleData } from '../../../server/paywall/articles';
-import { TEST_IDS } from '../../e2eTestIDs';
+import { TEST_IDS } from '../../testIDs';
 import Image from 'next/image';
 import styles from './articleGrid.module.scss';
 import BylineDot from './dot.svg';
