@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import { useVisitorData } from '../../client/use-visitor-data';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
 import Alert from '../../client/components/common/Alert/Alert';
@@ -11,12 +10,15 @@ import classNames from 'classnames';
 import hiddenIcon from './iconHidden.svg';
 import shownIcon from './iconShown.svg';
 import Image from 'next/image';
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 
 export default function Index() {
-  const visitorDataQuery = useVisitorData({
-    // Don't fetch visitorData on mount
-    enabled: false,
-  });
+  const { getData } = useVisitorData(
+    { ignoreCache: true },
+    {
+      immediate: false,
+    },
+  );
 
   // Default mocked user data
   const [userName, setUserName] = useState('user');
@@ -32,8 +34,8 @@ export default function Index() {
     e.preventDefault();
     setIsWaitingForResponse(true);
 
-    const fpQuery = await visitorDataQuery.refetch();
-    const { requestId, visitorId } = fpQuery.data ?? {};
+    const fpData = await getData();
+    const { requestId, visitorId } = fpData;
 
     const loginData = {
       userName,

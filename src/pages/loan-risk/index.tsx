@@ -6,7 +6,6 @@ import {
   loanValueValidation,
   monthlyIncomeValidation,
 } from '../../client/loan-risk/validation';
-import { useVisitorData } from '../../client/use-visitor-data';
 import { useRequestLoan } from '../../client/api/loan-risk/use-request-loan';
 import { calculateMonthInstallment } from '../../shared/loan-risk/calculate-month-installment';
 import React from 'react';
@@ -20,6 +19,7 @@ import { NumberInputWithUnits } from '../../client/components/common/InputNumber
 import styles from './loanRisk.module.scss';
 import classNames from 'classnames';
 import { TEST_IDS } from '../../client/e2eTestIDs';
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 
 type SliderFieldProps = {
   label: string;
@@ -62,10 +62,12 @@ const SliderField: FunctionComponent<SliderFieldProps> = ({
   );
 };
 export default function LoanRisk({ embed }: CustomPageProps) {
-  const visitorDataQuery = useVisitorData({
-    // Don't invoke query on mount
-    enabled: false,
-  });
+  const { getData, isLoading: isVisitorDataLoading } = useVisitorData(
+    { ignoreCache: true },
+    {
+      immediate: false,
+    },
+  );
   const loanRequestMutation = useRequestLoan();
 
   const [firstName, setFirstName] = useState('John');
@@ -87,22 +89,22 @@ export default function LoanRisk({ embed }: CustomPageProps) {
     async (event: React.FormEvent) => {
       event.preventDefault();
 
-      const fpData = await visitorDataQuery.refetch();
+      const fpData = await getData();
 
-      if (!fpData.data) {
+      if (!fpData) {
         console.log("Visitor data couldn't be fetched");
         return;
       }
 
       await loanRequestMutation.mutateAsync({
-        fpData: fpData.data,
+        fpData,
         body: { loanValue, monthlyIncome, loanDuration, firstName, lastName },
       });
     },
-    [firstName, lastName, loanDuration, loanRequestMutation, loanValue, monthlyIncome, visitorDataQuery],
+    [firstName, lastName, loanDuration, loanRequestMutation, loanValue, monthlyIncome],
   );
 
-  const isLoading = visitorDataQuery.isLoading || loanRequestMutation.isLoading;
+  const isLoading = isVisitorDataLoading || loanRequestMutation.isLoading;
 
   return (
     <UseCaseWrapper useCase={USE_CASES.loanRisk} embed={embed} contentSx={{ maxWidth: 'none' }}>

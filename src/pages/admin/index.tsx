@@ -2,8 +2,8 @@ import { useState } from 'react';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import { useVisitorData } from '../../client/use-visitor-data';
 import { Severity } from '../../server/checkResult';
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 
 export default function Index() {
   const [statusMessage, setStatusMessage] = useState<string>();
@@ -11,15 +11,13 @@ export default function Index() {
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   const [httpResponseStatus, setHttpResponseStatus] = useState<number | undefined>();
 
-  const visitorData = useVisitorData({
-    enabled: false,
-  });
+  const { getData } = useVisitorData({ ignoreCache: true }, { immediate: false });
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsWaitingForResponse(true);
 
-    const { data: fpResult } = await visitorData.refetch();
+    const fpResult = await getData();
     const visitorId = fpResult?.visitorId;
     const requestId = fpResult?.requestId;
 

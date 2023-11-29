@@ -1,21 +1,20 @@
 import { apiRequest } from '../api';
 import { useMutation, useQuery } from 'react-query';
-import { useVisitorData } from '../../use-visitor-data';
 import { useCallback } from 'react';
-import { GetResult } from '@fingerprintjs/fingerprintjs-pro';
 import { UserCartItem } from '../../../server/personalization/database';
+import { useVisitorData, FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
 
-function getCart(fpData?: GetResult) {
+function getCart(fpData?: FingerprintJSPro.GetResult) {
   return apiRequest('/api/personalization/cart/get-items', fpData);
 }
 
-function addCartItem(productId: number, fpData?: GetResult | undefined) {
+function addCartItem(productId: number, fpData?: FingerprintJSPro.GetResult) {
   return apiRequest('/api/personalization/cart/add-item', fpData, {
     productId,
   });
 }
 
-function removeCartItem(itemId: number, fpData?: GetResult) {
+function removeCartItem(itemId: number, fpData?: FingerprintJSPro.GetResult) {
   return apiRequest('/api/personalization/cart/remove-item', fpData, { itemId });
 }
 

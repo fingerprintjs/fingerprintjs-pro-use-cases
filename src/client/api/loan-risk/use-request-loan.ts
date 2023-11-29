@@ -1,4 +1,4 @@
-import { GetResult, ExtendedGetResult } from '@fingerprintjs/fingerprintjs-pro';
+import { FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
 import { apiRequest } from '../api';
 import { useMutation } from 'react-query';
 
@@ -9,7 +9,7 @@ function requestLoan({ fpData, body }: LoanRequest) {
 export const REQUEST_LOAN_MUTATION = 'REQUEST_LOAN_MUTATION';
 
 type LoanRequest = {
-  fpData: GetResult | ExtendedGetResult;
+  fpData: FingerprintJSPro.GetResult;
   body: { loanValue: number; monthlyIncome: number; loanDuration: number; firstName: string; lastName: string };
 };
 

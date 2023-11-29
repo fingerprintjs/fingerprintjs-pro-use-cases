@@ -1,4 +1,4 @@
-import { LoadOptions } from '@fingerprintjs/fingerprintjs-pro';
+import { FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
 import { Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 
 export const IPv4_REGEX = /^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.){3}(25[0-5]|(2[0-4]|1\d|[1-9]|)\d)$/;
@@ -13,7 +13,7 @@ const BackendRegionMap = {
   us: Region.Global,
 };
 
-type AgentRegion = LoadOptions['region'];
+type AgentRegion = FingerprintJSPro.LoadOptions['region'];
 
 // Warning: In the real world The Server API key should be secretly stored in the environment variables/secrets.
 // We are keeping it here just to make it easy to run the demo.

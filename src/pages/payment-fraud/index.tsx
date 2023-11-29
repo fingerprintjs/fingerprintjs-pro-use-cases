@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import { useVisitorData } from '../../client/use-visitor-data';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
 import Button from '../../client/components/common/Button/Button';
@@ -11,12 +10,15 @@ import Alert from '../../client/components/common/Alert/Alert';
 import { CustomPageProps } from '../_app';
 import classNames from 'classnames';
 import { Severity } from '../../server/checkResult';
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 
 export default function Index({ embed }: CustomPageProps) {
-  const visitorDataQuery = useVisitorData({
-    // Don't fetch visitorData on mount
-    enabled: false,
-  });
+  const { getData } = useVisitorData(
+    { ignoreCache: true },
+    {
+      immediate: false,
+    },
+  );
 
   // Default mocked card data
   const [cardNumber, setCardNumber] = useState('4242 4242 4242 4242');
@@ -34,8 +36,8 @@ export default function Index({ embed }: CustomPageProps) {
     e.preventDefault();
     setIsWaitingForResponse(true);
 
-    const fpQuery = await visitorDataQuery.refetch();
-    const { requestId, visitorId } = fpQuery.data ?? {};
+    const fpData = await getData();
+    const { requestId, visitorId } = fpData;
 
     const orderData = {
       cardNumber,

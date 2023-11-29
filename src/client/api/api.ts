@@ -1,8 +1,8 @@
-import { GetResult } from '@fingerprintjs/fingerprintjs-pro';
+import { FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
 
 export function apiRequest(
   pathname: string,
-  fpData: GetResult | undefined,
+  fpData: FingerprintJSPro.GetResult | undefined,
   body: Record<string, any> = {},
   abortSignal: AbortSignal | null = null,
 ) {

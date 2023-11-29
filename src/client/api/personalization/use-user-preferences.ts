@@ -1,8 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useVisitorData } from '../../use-visitor-data';
 import { apiRequest } from '../api';
-import { GetResult } from '@fingerprintjs/fingerprintjs-pro';
 import { useCallback, useEffect, useMemo } from 'react';
+import { useVisitorData, FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
 
 type UserPreferences = {
   hasDarkMode: boolean;
@@ -15,13 +14,13 @@ type UserPreferencesResponse = {
 const GET_USER_PREFERENCES_QUERY = 'GET_USER_PREFERENCES_QUERY';
 
 function getUserPreferencesFromServer(
-  fpData: GetResult | undefined,
+  fpData: FingerprintJSPro.GetResult | undefined,
   abortSignal: AbortSignal,
 ): Promise<UserPreferencesResponse> {
   return apiRequest('/api/personalization/get-user-preferences', fpData, undefined, abortSignal);
 }
 
-function updateUserPreferencesOnServer(fpData: GetResult | undefined, preferences: UserPreferences) {
+function updateUserPreferencesOnServer(fpData: FingerprintJSPro.GetResult | undefined, preferences: UserPreferences) {
   return apiRequest('/api/personalization/update-user-preferences', fpData, preferences);
 }
 

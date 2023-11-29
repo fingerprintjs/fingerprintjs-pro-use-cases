@@ -1,4 +1,3 @@
-import { useVisitorData } from '../../client/use-visitor-data';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -14,16 +13,19 @@ import AllStar from './shoeAllStar.svg';
 import Alert from '../../client/components/common/Alert/Alert';
 import Button from '../../client/components/common/Button/Button';
 import { Cart } from '../../client/components/common/Cart/Cart';
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 
 const AIRMAX_PRICE = 356.02;
 const ALLSTAR_PRICE = 102.5;
 const TAXES = 6;
 
 export default function CouponFraudUseCase({ embed }: CustomPageProps) {
-  const visitorDataQuery = useVisitorData({
-    // Don't fetch visitorData on mount
-    enabled: false,
-  });
+  const { getData } = useVisitorData(
+    {
+      ignoreCache: true,
+    },
+    { immediate: false },
+  );
 
   const couponClaimMutation = useRequestCouponClaim();
 
@@ -38,17 +40,17 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
     async (event: React.FormEvent) => {
       event.preventDefault();
       setIsWaitingForResponse(true);
-      const fpData = await visitorDataQuery.refetch();
+      const fpData = await getData();
 
-      if (fpData.data) {
+      if (fpData) {
         await couponClaimMutation.mutateAsync({
-          fpData: fpData.data,
+          fpData: fpData,
           body: { couponCode },
         });
         setIsWaitingForResponse(false);
       }
     },
-    [couponClaimMutation, couponCode, visitorDataQuery],
+    [couponClaimMutation, couponCode],
   );
 
   useEffect(() => {
