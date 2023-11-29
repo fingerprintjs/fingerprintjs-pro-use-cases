@@ -45,7 +45,7 @@ export const useReset = ({ onError, onSuccess }: UseResetParams) => {
         onSuccess ??
         ((data) => {
           enqueueSnackbar(
-            <div data-test={TEST_IDS.reset.resetSuccess}>
+            <div data-testid={TEST_IDS.reset.resetSuccess}>
               <p>Scenarios reset successfully!</p> <p>{data.message}</p>
             </div>,
             {

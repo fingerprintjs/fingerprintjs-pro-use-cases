@@ -30,7 +30,7 @@ const Alert: FunctionComponent<AlertProps> = ({ severity, children, className, d
   return (
     <div
       className={classNames(styles.alert, STYLES_MAP[severity], className)}
-      data-test={classNames(TEST_IDS.common.alert, dataTestId)}
+      data-testid={classNames(TEST_IDS.common.alert, dataTestId)}
       data-test-severity={severity}
     >
       <div className={styles.iconWrapper}>

@@ -29,7 +29,7 @@ export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbar
             size={'medium'}
             title="Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action."
             buttonId="click_top_nav_restart"
-            data-test={TEST_IDS.reset.resetButton}
+            data-testid={TEST_IDS.reset.resetButton}
           >
             Restart
             <Image src={Restart} alt="Restart button" />

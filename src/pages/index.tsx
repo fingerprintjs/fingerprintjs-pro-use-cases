@@ -38,7 +38,7 @@ export default function Index() {
           <div className={styles.useCaseCard} key={card.url} onClick={() => router.push(card.url)}>
             <div>
               <Image src={card.iconSvg} alt="" className={styles.useCaseIcon} />
-              <Link className={styles.useCaseTitle} data-test={TEST_IDS.homepageCard.useCaseTitle} href={card.url}>
+              <Link className={styles.useCaseTitle} data-testid={TEST_IDS.homepageCard.useCaseTitle} href={card.url}>
                 {card.title}
               </Link>
               <div className={styles.useCaseDescription}>

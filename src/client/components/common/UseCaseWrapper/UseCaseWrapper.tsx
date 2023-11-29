@@ -50,7 +50,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
               pulseResetButton && styles.pulse,
             ])}
             onClick={() => !isLoading && mutate()}
-            data-test={TEST_IDS.reset.resetButton}
+            data-testid={TEST_IDS.reset.resetButton}
           >
             <div className={styles.resetTitle}>Restart</div>
             <Image src={RestartIcon} alt="Reset scenario" />

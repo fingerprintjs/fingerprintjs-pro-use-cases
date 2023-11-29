@@ -30,9 +30,11 @@ test.describe('Personalization', () => {
     await product.getByTestId(PERS_ID.addToCart).click();
     const cartItem = cartItems.first();
 
-    await expect(cartItem.getByTestId(CART_ID.cartItemName)).toHaveText(
-      (await product.getByTestId(PERS_ID.coffeeProductName).textContent()) ?? 'Product name not found',
-    );
+    const cartItemName = (await cartItem.getByTestId(CART_ID.cartItemName).textContent()) ?? 'Cart item name not found';
+    const productName =
+      (await product.getByTestId(PERS_ID.coffeeProductName).textContent()) ?? 'Product name not found';
+    expect(cartItemName).toBe(productName);
+
     const subTotal = await getSubTotal();
     expect(subTotal).toBe(productPrice);
 

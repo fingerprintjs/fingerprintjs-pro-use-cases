@@ -114,7 +114,7 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                       onClick={() => mutate()}
                       disabled={isResetLoading}
                       id="click_top_nav_restart"
-                      data-test={TEST_IDS.reset.resetButton}
+                      data-testid={TEST_IDS.reset.resetButton}
                     >
                       Restart
                       <Image src={Restart} alt="Restart button" />

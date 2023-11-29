@@ -47,7 +47,7 @@ export const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article, embe
     <div
       className={classNames(styles.articleCard, isHeroArticle && styles.heroArticleCard)}
       onClick={() => router.push(link)}
-      data-test={TEST_IDS.paywall.articleCard}
+      data-testid={TEST_IDS.paywall.articleCard}
     >
       <Image src={article.image} alt="" className={styles.articleCardImage} sizes="100vw" />
       <div className={styles.articleCardContent}>

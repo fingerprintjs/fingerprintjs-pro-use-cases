@@ -4,18 +4,18 @@ import { isAgentResponse, isServerResponse } from './zodUtils';
 
 const getAgentResponse = async (page: Page) => {
   const agentResponse =
-    (await page.textContent(`[data-test="${PLAYGROUND_TAG.agentResponseJSON}"]`)) ?? 'Agent response not found';
+    (await (await page.getByTestId(PLAYGROUND_TAG.agentResponseJSON)).textContent()) ?? 'Agent response not found';
   return JSON.parse(agentResponse);
 };
 
 const getServerResponse = async (page: Page) => {
   const serverResponse =
-    (await page.textContent(`[data-test="${PLAYGROUND_TAG.serverResponseJSON}"]`)) ?? 'Server response not found';
+    (await (await page.getByTestId(PLAYGROUND_TAG.serverResponseJSON)).textContent()) ?? 'Server response not found';
   return JSON.parse(serverResponse);
 };
 
 const clickRefreshButton = async (page: Page) => {
-  await page.click(`[data-test="${PLAYGROUND_TAG.refreshButton}"]`);
+  await page.getByTestId(PLAYGROUND_TAG.refreshButton).first().click();
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(3000);
 };
@@ -28,7 +28,7 @@ test.describe('Playground page page', () => {
   test('Page renders basic skeleton elements', async ({ page }) => {
     await page.waitForSelector('text="Fingerprint Pro Playground"');
     await page.waitForSelector('text="Welcome, your visitor ID is"');
-    await page.waitForSelector(`[data-test="${PLAYGROUND_TAG.refreshButton}"]`);
+    await page.waitForSelector(`[data-testid="${PLAYGROUND_TAG.refreshButton}"]`);
 
     await page.waitForSelector('text="Base signals (Pro plan)"');
     await page.waitForSelector('text="Smart signals (Pro Plus plan)"');

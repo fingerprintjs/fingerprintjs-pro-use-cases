@@ -50,7 +50,7 @@ test.describe('Loan risk', () => {
     await page.fill('[name="monthlyIncome"]', '20000');
     await page.fill('[name="loanDuration"]', '4');
 
-    const monthInstallmentValue = page.locator(`[data-test="${testIds.monthlyInstallmentValue}"]`);
+    const monthInstallmentValue = page.getByTestId(testIds.monthlyInstallmentValue);
 
     await expect(monthInstallmentValue).toHaveText('$ 575');
     await waitForSuccessfulSubmit(page);

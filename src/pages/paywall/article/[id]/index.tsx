@@ -45,7 +45,7 @@ export default function Article({ embed }: CustomPageProps) {
   return (
     <UseCaseWrapper useCase={USE_CASES.paywall} embed={embed} contentSx={{ maxWidth: 'none', padding: 0 }}>
       <div className={styles.articleContainer}>
-        <div className={styles.buckButton} data-test={TEST_IDS.paywall.goBack}>
+        <div className={styles.buckButton} data-testid={TEST_IDS.paywall.goBack}>
           <Link href={returnUrl}>
             <Image src={BackArrow} alt="" className={styles.backArrow} />
             Back to articles
@@ -63,7 +63,7 @@ export default function Article({ embed }: CustomPageProps) {
           </Alert>
         )}
         {article && (
-          <div className={styles.article} data-test={TEST_IDS.paywall.articleContent}>
+          <div className={styles.article} data-testid={TEST_IDS.paywall.articleContent}>
             <Image src={article.image} alt={article.title} sizes="100vw" className={styles.articleImage} />
             <Byline article={article} includeReadingTime />
             <h2 className={styles.articleTitle}>{article.title}</h2>

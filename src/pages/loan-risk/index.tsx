@@ -159,7 +159,7 @@ export default function LoanRisk({ embed }: CustomPageProps) {
               />
               <div className={styles.summary}>
                 <span>Your monthly installment is: </span>
-                <div className={styles.monthlyPayment} data-test={TEST_IDS.loanRisk.monthlyInstallmentValue}>
+                <div className={styles.monthlyPayment} data-testid={TEST_IDS.loanRisk.monthlyInstallmentValue}>
                   $ {monthlyInstallment.toFixed(0)}
                 </div>
               </div>
