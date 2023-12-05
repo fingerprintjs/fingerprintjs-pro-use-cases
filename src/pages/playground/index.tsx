@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { FunctionComponent, ReactNode, useMemo } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import {
   Accordion,
@@ -30,6 +30,18 @@ import { getLocationName } from '../../shared/utils/getLocationName';
 import { PLAYGROUND_TAG } from '../../client/components/playground/playgroundTags';
 import { CustomPageProps } from '../_app';
 import { PLAYGROUND_METADATA } from '../../client/components/common/content';
+import Link from 'next/link';
+import externalLinkArrow from '../../client/img/externalLinkArrow.svg';
+import Image from 'next/image';
+
+const DocsLink: FunctionComponent<{ children: ReactNode; href: string }> = ({ children, href }) => {
+  return (
+    <Link href={href} target="_blank" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+      {children}
+      <Image src={externalLinkArrow} alt="" width={11} height={11} />
+    </Link>
+  );
+};
 
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('../../client/components/playground/Map'), { ssr: false });
@@ -81,7 +93,10 @@ function Playground() {
   const baseSignals: TableCellData[][] = [
     [
       {
-        content: ['Visitor ID', <Info key="info">A unique and stable identifier of your browser.</Info>],
+        content: [
+          'Visitor ID',
+          <Info key="info">A unique and stable identifier for your browser or mobile device.</Info>,
+        ],
       },
       { content: agentResponse?.visitorId },
     ],
@@ -119,7 +134,9 @@ function Playground() {
   const smartSignalsProPlus: TableCellData[][] = [
     [
       {
-        content: ['Geolocation', <Info key="info">Your geographic location based on your IP address.</Info>],
+        content: (
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#ip-geolocation">Geolocation</DocsLink>
+        ),
       },
       {
         content: (
@@ -136,7 +153,13 @@ function Playground() {
       },
     ],
     [
-      { content: 'Incognito Mode' },
+      {
+        content: (
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#incognito-detection">
+            Incognito Mode
+          </DocsLink>
+        ),
+      },
       {
         content: agentResponse?.incognito ? 'You are incognito 🕶' : 'Not detected',
         cellStyle: {
@@ -147,11 +170,9 @@ function Playground() {
     [
       {
         content: [
-          'Bot',
-          <Info key="info">
-            Fingerprint detects if the browser is driven by a human, a browser automation tool like Selenium or headless
-            Chrome (bad bot) or search engine crawler (good bot).
-          </Info>,
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#browser-bot-detection">
+            Bot Detection
+          </DocsLink>,
         ],
       },
       {
@@ -164,11 +185,9 @@ function Playground() {
     [
       {
         content: [
-          'VPN',
-          <Info key="info">
-            The visitor is using a VPN (browser timezone does not match IP address timezone or IP address is owned by a
-            public VPN service provider).
-          </Info>,
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#vpn-detection">
+            VPN Detection
+          </DocsLink>,
         ],
       },
       {
@@ -179,11 +198,9 @@ function Playground() {
     [
       {
         content: [
-          'Browser Tampering',
-          <Info key="info">
-            Browser tampering was detected according to our internal thresholds. For example, if the reported user agent
-            is not consistent with other browser attributes.
-          </Info>,
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#browser-tamper-detection">
+            Browser Tampering
+          </DocsLink>,
         ],
       },
       {
@@ -195,10 +212,11 @@ function Playground() {
     ],
     [
       {
-        content: [
-          'Virtual machine',
-          <Info key="info">The browser is running inside a virtual machine (e.g., VMWare).</Info>,
-        ],
+        content: (
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#virtual-machine-detection">
+            Virtual Machine
+          </DocsLink>
+        ),
       },
       {
         content: usedIdentificationEvent?.products?.virtualMachine?.data?.result === true ? 'Yes ☁️💻' : 'Not detected',
@@ -209,12 +227,11 @@ function Playground() {
     ],
     [
       {
-        content: [
-          'Privacy settings',
-          <Info key="info">
-            The visitor is using a privacy aware browser (e.g., Tor) or a browser in which fingerprinting is blocked.
-          </Info>,
-        ],
+        content: (
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#privacy-aware-settings">
+            Privacy Settings
+          </DocsLink>
+        ),
       },
       {
         content:
