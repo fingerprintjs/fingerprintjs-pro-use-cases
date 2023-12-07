@@ -49,6 +49,10 @@ export const TEST_IDS = {
     articleContent: 'articleContent',
     goBack: 'goBack',
   },
+  couponFraud: {
+    couponCode: 'couponCode',
+    submitCoupon: 'submitCoupon',
+  },
   webScraping: {
     search: 'search',
     card: 'card',

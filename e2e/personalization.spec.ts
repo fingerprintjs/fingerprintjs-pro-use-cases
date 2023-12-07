@@ -10,7 +10,7 @@ test.describe('Personalization', () => {
     await page.goto('/personalization', {
       waitUntil: 'networkidle',
     });
-    await page.click('text="Okay, I understand"');
+    await page.getByText('Okay, I understand').click();
     await resetScenarios(page);
   });
 
