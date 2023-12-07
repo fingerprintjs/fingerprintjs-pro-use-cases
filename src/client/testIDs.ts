@@ -21,6 +21,12 @@ export const TEST_IDS = {
   },
   loanRisk: {
     monthlyInstallmentValue: 'monthlyInstallmentValue',
+    submitApplication: 'submitApplication',
+    name: 'name',
+    surname: 'surname',
+    loanValue: 'loanValue',
+    monthlyIncome: 'monthlyIncome',
+    loanTerm: 'loanTerm',
   },
   personalization: {
     coffeeProduct: 'coffeeProduct',

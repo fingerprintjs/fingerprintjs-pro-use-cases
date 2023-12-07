@@ -6,6 +6,13 @@ import { calculateLoanValues } from '../../../server/loan-risk/calculate-loan-va
 import { CheckResult, checkResultType } from '../../../server/checkResult';
 import { RuleCheck } from '../../../server/checks';
 
+export const LOAN_RISK_COPY = {
+  approved: 'Congratulations, your loan has been approved!',
+  incomeLow: 'Sorry, your monthly income is too low for this loan.',
+  inconsistentApplicationChallenged:
+    'We are unable to approve your loan automatically since you had requested a loan with a different income or personal details before. We need to verify provided information manually this time. Please, reach out to our agent.',
+} as const;
+
 /**
  * Validates previous loan requests sent by a given user.
  *
@@ -48,7 +55,7 @@ const checkPreviousLoanRequests: RuleCheck = async (eventResponse, req) => {
     // In our case, we just return a warning.
     if (!hasValidFields) {
       return new CheckResult(
-        'We are unable to approve your loan automatically since you had requested a loan with a different income or personal details before. We need to verify provided information manually this time. Please, reach out to our agent.',
+        LOAN_RISK_COPY.inconsistentApplicationChallenged,
         messageSeverity.Warning,
         checkResultType.PossibleLoanFraud,
       );
@@ -87,17 +94,9 @@ export default loanRiskEndpoint(
     let result;
 
     if (calculations.approved) {
-      result = new CheckResult(
-        'Congratulations, your loan has been approved!',
-        messageSeverity.Success,
-        checkResultType.Passed,
-      );
+      result = new CheckResult(LOAN_RISK_COPY.approved, messageSeverity.Success, checkResultType.Passed);
     } else {
-      result = new CheckResult(
-        'Sorry, your monthly income is too low for this loan.',
-        messageSeverity.Warning,
-        checkResultType.Challenged,
-      );
+      result = new CheckResult(LOAN_RISK_COPY.incomeLow, messageSeverity.Warning, checkResultType.Challenged);
     }
 
     return res.status(200).json({
