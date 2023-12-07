@@ -22,11 +22,10 @@ test.describe('Paywall', () => {
     await page.goBack();
 
     await articles.nth(2).click();
-    await expect(
-      page.getByText(
-        'You have reached your daily view limit, purchase our membership plan to view unlimited articles.',
-      ),
-    ).toBeVisible();
+
+    await page
+      .getByText('You have reached your daily view limit, purchase our membership plan to view unlimited articles.')
+      .waitFor();
     await expect(page.getByTestId(TEST_IDS.paywall.articleContent)).toBeHidden();
   });
 });

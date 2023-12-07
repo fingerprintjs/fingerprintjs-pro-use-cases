@@ -11,6 +11,7 @@ import hiddenIcon from './iconHidden.svg';
 import shownIcon from './iconShown.svg';
 import Image from 'next/image';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { TEST_IDS } from '../../client/testIDs';
 
 export default function Index() {
   const { getData } = useVisitorData(
@@ -83,6 +84,7 @@ export default function Index() {
             className={styles.password}
             type={showPassword ? 'text' : 'password'}
             defaultValue={password}
+            data-testid={TEST_IDS.credentialStuffing.password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <button className={styles.showHideIcon} type="button" onClick={() => setShowPassword(!showPassword)}>
@@ -94,7 +96,7 @@ export default function Index() {
               {authMessage}
             </Alert>
           ) : null}
-          <Button disabled={isWaitingForResponse} type="submit">
+          <Button disabled={isWaitingForResponse} type="submit" data-testid={TEST_IDS.credentialStuffing.login}>
             {isWaitingForResponse ? 'Hold on, doing magic...' : 'Log In'}
           </Button>
         </form>

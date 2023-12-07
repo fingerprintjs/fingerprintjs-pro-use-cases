@@ -25,6 +25,13 @@ const mockedUser = {
   knownVisitorIds: getKnownVisitorIds(),
 };
 
+export const CREDENTIAL_STUFFING_COPY = {
+  tooManyAttempts: 'You had 5 or more attempts during the last 24 hours. This login attempt was not performed.',
+  differentVisitorIdUseMFA:
+    "Provided credentials are correct but we've never seen you logging in using this device. Confirm your identity with a second factor.",
+  invalidCredentials: 'Incorrect credentials, try again.',
+} as const;
+
 // Defines db model for login attempt.
 export const LoginAttemptDbModel = sequelize.define('login-attempt', {
   visitorId: {
@@ -121,9 +128,9 @@ const checkUnsuccessfulIdentifications: RuleCheck = async (eventResponse) => {
 
   // If the visitorId performed 5 unsuccessful login attempts during the last 24 hours we do not perform the login.
   // The count of attempts and time window might vary.
-  if (visitorLoginAttemptCountQueryResult.count > 5) {
+  if (visitorLoginAttemptCountQueryResult.count >= 5) {
     return new CheckResult(
-      'You had more than 5 attempts during the last 24 hours. This login attempt was not performed.',
+      CREDENTIAL_STUFFING_COPY.tooManyAttempts,
       messageSeverity.Error,
       checkResultType.TooManyLoginAttempts,
     );
@@ -135,7 +142,7 @@ const checkCredentialsAndKnownVisitorIds: RuleCheck = async (eventResponse, requ
 
   if (!areCredentialsCorrect(request.body.userName, request.body.password)) {
     return new CheckResult(
-      'Incorrect credentials, try again.',
+      CREDENTIAL_STUFFING_COPY.invalidCredentials,
       messageSeverity.Error,
       checkResultType.IncorrectCredentials,
     );
@@ -154,7 +161,7 @@ const checkCredentialsAndKnownVisitorIds: RuleCheck = async (eventResponse, requ
     // If they provided valid credentials but they never logged in using this visitorId,
     // we recommend using an additional way of verification, e.g. 2FA or email.
     return new CheckResult(
-      "Provided credentials are correct but we've never seen you logging in using this device. Confirm your identity with a second factor.",
+      CREDENTIAL_STUFFING_COPY.differentVisitorIdUseMFA,
       messageSeverity.Warning,
       checkResultType.Challenged,
     );

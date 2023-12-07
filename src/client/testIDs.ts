@@ -45,4 +45,8 @@ export const TEST_IDS = {
     arrivalTime: 'arrivalTime',
     airline: 'airline',
   },
+  credentialStuffing: {
+    login: 'login',
+    password: 'password',
+  },
 } as const;

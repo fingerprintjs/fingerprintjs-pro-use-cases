@@ -13,23 +13,23 @@ test.describe('Coupon fraud', () => {
     await page.click('button:has-text("Apply")');
     await page.waitForLoadState('networkidle');
 
-    await page.waitForSelector('text="Coupon claimed"');
+    await page.getByText('Coupon claimed').waitFor();
 
     await page.click('button:has-text("Apply")');
     await page.waitForLoadState('networkidle');
 
-    await page.waitForSelector('text="The visitor used this coupon before."');
+    await page.getByText('The visitor used this coupon before.').waitFor();
   });
 
   test('should prevent spamming multiple coupons', async ({ page }) => {
     await page.fill('#coupon_code', 'Promo3000');
     await page.click('button:has-text("Apply")');
     await page.waitForLoadState('networkidle');
-    await page.waitForSelector('text="Coupon claimed"');
+    await page.getByText('Coupon claimed').waitFor();
 
     await page.fill('#coupon_code', 'BlackFriday', {});
     await page.click('button:has-text("Apply")');
     await page.waitForLoadState('networkidle');
-    await page.waitForSelector('text="The visitor claimed another coupon recently."');
+    await page.getByText('The visitor claimed another coupon recently.').waitFor();
   });
 });
