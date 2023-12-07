@@ -36,6 +36,14 @@ export const TEST_IDS = {
     search: 'search',
     searchHistoryItem: 'searchHistoryItem',
   },
+  paymentFraud: {
+    submitPayment: 'submitPayment',
+    cardNumber: 'cardNumber',
+    cardExpiration: 'cardExpiration',
+    cardCvv: 'cardCvv',
+    usingStolenCard: 'usingStolenCard',
+    askForChargeback: 'askForChargeback',
+  },
   paywall: {
     articleCard: 'articleCard',
     articleContent: 'articleContent',
