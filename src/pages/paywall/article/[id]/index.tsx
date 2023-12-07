@@ -14,6 +14,7 @@ import { useQuery } from 'react-query';
 import { ArticleResponse } from '../../../api/paywall/article/[id]';
 import { TEST_IDS } from '../../../../client/testIDs';
 import { ArticleGrid, Byline } from '../../../../client/components/paywall/ArticleGrid';
+import { PAYWALL_COPY } from '../../../../server/paywall/paywallCopy';
 
 function ArticleSkeleton({ animation = false }: { animation?: SkeletonTypeMap['props']['animation'] }) {
   const skeletons = Array.from({ length: 4 }).map((_, index) => <Skeleton key={index} animation={animation} />);
@@ -57,9 +58,7 @@ export default function Article({ embed }: CustomPageProps) {
         )}
         {articleData && articleData.severity === 'success' && remainingViews !== undefined && (
           <Alert severity="warning">
-            {remainingViews > 0
-              ? `You have ${remainingViews} remaining free article views.`
-              : 'This is your last free article today.'}
+            {remainingViews > 0 ? PAYWALL_COPY.nArticlesRemaining(remainingViews) : PAYWALL_COPY.lastArticle}
           </Alert>
         )}
         {article && (

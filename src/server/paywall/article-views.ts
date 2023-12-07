@@ -4,6 +4,7 @@ import { getTodayDateRange } from '../../shared/utils/date';
 import { messageSeverity } from '../server';
 import { CheckResult, checkResultType } from '../checkResult';
 import { RuleCheck } from '../checks';
+import { PAYWALL_COPY } from './paywallCopy';
 
 export const ARTICLE_VIEW_LIMIT = 2;
 
@@ -87,10 +88,6 @@ export const checkCountOfViewedArticles: RuleCheck = async (eventResponse, req) 
   ]);
 
   if (!existingView && count >= ARTICLE_VIEW_LIMIT) {
-    return new CheckResult(
-      'You have reached your daily view limit, purchase our membership plan to view unlimited articles.',
-      messageSeverity.Error,
-      checkResultType.ArticleViewLimitExceeded,
-    );
+    return new CheckResult(PAYWALL_COPY.limitReached, messageSeverity.Error, checkResultType.ArticleViewLimitExceeded);
   }
 };

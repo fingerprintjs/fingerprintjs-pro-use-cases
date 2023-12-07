@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { resetScenarios } from './resetHelper';
 import { TEST_IDS } from '../src/client/testIDs';
+import { PAYWALL_COPY } from '../src/server/paywall/paywallCopy';
 
 test.describe('Paywall', () => {
   test.beforeEach(async ({ page }) => {
@@ -12,20 +13,18 @@ test.describe('Paywall', () => {
     const articles = await page.getByTestId(TEST_IDS.paywall.articleCard);
 
     await articles.first().click();
-    await page.getByText('You have 1 remaining free article views.').waitFor();
+    await page.getByText(PAYWALL_COPY.nArticlesRemaining(1)).waitFor();
     await expect(page.getByTestId(TEST_IDS.paywall.articleContent)).toBeVisible();
     await page.goBack();
 
     await articles.nth(1).click();
-    await page.getByText('This is your last free article today.').waitFor();
+    await page.getByText(PAYWALL_COPY.lastArticle).waitFor();
     await expect(page.getByTestId(TEST_IDS.paywall.articleContent)).toBeVisible();
     await page.goBack();
 
     await articles.nth(2).click();
 
-    await page
-      .getByText('You have reached your daily view limit, purchase our membership plan to view unlimited articles.')
-      .waitFor();
+    await page.getByText(PAYWALL_COPY.limitReached).waitFor();
     await expect(page.getByTestId(TEST_IDS.paywall.articleContent)).toBeHidden();
   });
 });

@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { resetScenarios } from './resetHelper';
 import { TEST_IDS } from '../src/client/testIDs';
+import { PERSONALIZATION_COPY } from '../src/pages/personalization';
 
 const CART_ID = TEST_IDS.common.cart;
 const PERS_ID = TEST_IDS.personalization;
@@ -10,7 +11,7 @@ test.describe('Personalization', () => {
     await page.goto('/personalization', {
       waitUntil: 'networkidle',
     });
-    await page.getByText('Okay, I understand').click();
+    await page.getByText(PERSONALIZATION_COPY.okay).click();
     await resetScenarios(page);
   });
 
