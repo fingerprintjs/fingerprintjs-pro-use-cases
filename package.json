@@ -16,6 +16,9 @@
     "test:e2e": "playwright test",
     "test:e2e:chrome": "playwright test --project='chromium'"
   },
+  "engines": {
+    "node": ">=18.17.0"
+  },
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
@@ -34,7 +37,7 @@
     "framer-motion": "^10.13.2",
     "include-media": "^2.0.0",
     "leaflet": "^1.9.4",
-    "next": "^13.5.5",
+    "next": "^14.0.3",
     "next-usequerystate": "^1.9.1",
     "notistack": "^3.0.1",
     "react": "^18.2.0",

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { FunctionComponent, ReactNode, useMemo } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import {
   Accordion,
@@ -30,6 +30,23 @@ import { getLocationName } from '../../shared/utils/getLocationName';
 import { PLAYGROUND_TAG } from '../../client/components/playground/playgroundTags';
 import { CustomPageProps } from '../_app';
 import { PLAYGROUND_METADATA } from '../../client/components/common/content';
+import Link from 'next/link';
+import externalLinkArrow from '../../client/img/externalLinkArrow.svg';
+import Image from 'next/image';
+import styles from './playground.module.scss';
+
+const DocsLink: FunctionComponent<{ children: ReactNode; href: string; style?: React.CSSProperties }> = ({
+  children,
+  href,
+  style,
+}) => {
+  return (
+    <Link href={href} target="_blank" className={styles.docsLink} style={style}>
+      {children}
+      <Image src={externalLinkArrow} alt="" />
+    </Link>
+  );
+};
 
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('../../client/components/playground/Map'), { ssr: false });
@@ -81,7 +98,10 @@ function Playground() {
   const baseSignals: TableCellData[][] = [
     [
       {
-        content: ['Visitor ID', <Info key="info">A unique and stable identifier of your browser.</Info>],
+        content: [
+          'Visitor ID',
+          <Info key="info">A unique and stable identifier for your browser or mobile device.</Info>,
+        ],
       },
       { content: agentResponse?.visitorId },
     ],
@@ -90,10 +110,7 @@ function Playground() {
     [{ content: 'IP Address' }, { content: <FormatIpAddress ipAddress={agentResponse?.ip} /> }],
     [
       {
-        content: [
-          'Last seen',
-          <Info key="info">The last time the Fingerprint has encountered that visitor ID (globally).</Info>,
-        ],
+        content: <DocsLink href="https://dev.fingerprint.com/docs/useful-timestamps#definitions">Last seen</DocsLink>,
       },
       {
         content: agentResponse?.lastSeenAt.global ? timeAgoLabel(agentResponse?.lastSeenAt.global) : 'Unknown',
@@ -102,11 +119,10 @@ function Playground() {
     [
       {
         content: [
-          'Confidence Score',
-          <Info key="info">
-            A value between 0 and 1 representing how confident we are about this identification, depending on the
-            available signals.
-          </Info>,
+          <DocsLink href="https://dev.fingerprint.com/docs/understanding-your-confidence-score">
+            Confidence <br />
+            Score
+          </DocsLink>,
         ],
       },
       {
@@ -119,7 +135,9 @@ function Playground() {
   const smartSignalsProPlus: TableCellData[][] = [
     [
       {
-        content: ['Geolocation', <Info key="info">Your geographic location based on your IP address.</Info>],
+        content: (
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#ip-geolocation">Geolocation</DocsLink>
+        ),
       },
       {
         content: (
@@ -136,7 +154,13 @@ function Playground() {
       },
     ],
     [
-      { content: 'Incognito Mode' },
+      {
+        content: (
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#incognito-detection">
+            Incognito Mode
+          </DocsLink>
+        ),
+      },
       {
         content: agentResponse?.incognito ? 'You are incognito 🕶' : 'Not detected',
         cellStyle: {
@@ -147,11 +171,7 @@ function Playground() {
     [
       {
         content: [
-          'Bot',
-          <Info key="info">
-            Fingerprint detects if the browser is driven by a human, a browser automation tool like Selenium or headless
-            Chrome (bad bot) or search engine crawler (good bot).
-          </Info>,
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#browser-bot-detection">Bot</DocsLink>,
         ],
       },
       {
@@ -164,11 +184,7 @@ function Playground() {
     [
       {
         content: [
-          'VPN',
-          <Info key="info">
-            The visitor is using a VPN (browser timezone does not match IP address timezone or IP address is owned by a
-            public VPN service provider).
-          </Info>,
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#vpn-detection">VPN</DocsLink>,
         ],
       },
       {
@@ -179,11 +195,9 @@ function Playground() {
     [
       {
         content: [
-          'Browser Tampering',
-          <Info key="info">
-            Browser tampering was detected according to our internal thresholds. For example, if the reported user agent
-            is not consistent with other browser attributes.
-          </Info>,
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#browser-tamper-detection">
+            Browser Tampering
+          </DocsLink>,
         ],
       },
       {
@@ -195,10 +209,11 @@ function Playground() {
     ],
     [
       {
-        content: [
-          'Virtual machine',
-          <Info key="info">The browser is running inside a virtual machine (e.g., VMWare).</Info>,
-        ],
+        content: (
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#virtual-machine-detection">
+            Virtual Machine
+          </DocsLink>
+        ),
       },
       {
         content: usedIdentificationEvent?.products?.virtualMachine?.data?.result === true ? 'Yes ☁️💻' : 'Not detected',
@@ -209,12 +224,11 @@ function Playground() {
     ],
     [
       {
-        content: [
-          'Privacy settings',
-          <Info key="info">
-            The visitor is using a privacy aware browser (e.g., Tor) or a browser in which fingerprinting is blocked.
-          </Info>,
-        ],
+        content: (
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#privacy-aware-settings">
+            Privacy Settings
+          </DocsLink>
+        ),
       },
       {
         content:
@@ -230,89 +244,103 @@ function Playground() {
     [
       {
         content: [
-          'IP Blocklist',
-          <Info key="info">
-            IP address was part of a known email (SMTP) spam attack or network (SSH/HTTP) attack.{' '}
-          </Info>,
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#ip-blocklist-matching">
+            IP Blocklist
+          </DocsLink>,
         ],
       },
       {
         content: <IpBlocklistResult event={usedIdentificationEvent} />,
         cellStyle: {
-          backgroundColor: usedIdentificationEvent?.products?.ipBlocklist?.data?.result === true ? RED : GREEN,
+          backgroundColor:
+            usedIdentificationEvent?.products?.ipBlocklist?.data?.result ||
+            usedIdentificationEvent?.products?.proxy?.data?.result ||
+            usedIdentificationEvent?.products?.tor?.data?.result
+              ? RED
+              : GREEN,
         },
       },
     ],
     [
       {
-        content: ['Proxy', <Info key="info">The request IP address is used by a public proxy provider.</Info>],
+        content: [
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#raw-device-attributes">
+            Raw device attributes
+          </DocsLink>,
+        ],
       },
-      {
-        content:
-          usedIdentificationEvent?.products?.proxy?.data?.result === true ? 'You are using a proxy 🔄' : 'Not detected',
-        cellStyle: { backgroundColor: usedIdentificationEvent?.products?.proxy?.data?.result === true ? RED : GREEN },
-      },
-    ],
-    [
-      {
-        content: ['Tor Network', <Info key="info">The request IP address is a known Tor network exit node.</Info>],
-      },
-      {
-        content:
-          usedIdentificationEvent?.products?.tor?.data?.result === true ? 'You are using Tor 🧅' : 'Not detected',
-        cellStyle: { backgroundColor: usedIdentificationEvent?.products?.tor?.data?.result === true ? RED : GREEN },
-      },
-    ],
-    [
-      {
-        content: ['Android Emulator', <Info key="info">Android specific emulator detection.</Info>],
-      },
-      { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },
+      { content: 'Applicable only to browsers. See the JSON below.', cellStyle: { backgroundColor: GRAY } },
     ],
     [
       {
         content: [
-          'Android Tampering',
-          <Info key="info">Android specific root management apps detection, for example, Magisk.</Info>,
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#frida-detection">
+            App is instrumented by Frida
+          </DocsLink>,
         ],
       },
-      { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },
+      { content: 'Applicable only for iOS and Android devices', cellStyle: { backgroundColor: GRAY } },
     ],
     [
       {
         content: [
-          'Android Cloned Application',
-          <Info key="info">Android-specific detection of a fully cloned application present on the device.</Info>,
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#factory-reset-detection">
+            Factory Reset Timestamp
+          </DocsLink>,
         ],
       },
-      { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },
+      { content: 'Applicable only for iOS and Android devices', cellStyle: { backgroundColor: GRAY } },
     ],
     [
       {
         content: [
-          'Android Factory Reset',
-          <Info key="info">Timestamp of a recent factory reset on an Android device.</Info>,
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#geolocation-spoofing-detection">
+            Location spoofing
+          </DocsLink>,
         ],
       },
-      { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },
-    ],
-    [
-      {
-        content: ['iOS Jailbreak', <Info key="info">Jailbreak detected on an iOS device.</Info>],
-      },
-      { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },
+      { content: 'Applicable only for iOS and Android devices', cellStyle: { backgroundColor: GRAY } },
     ],
     [
       {
         content: [
-          'iOS Frida installation',
-          <Info key="info">
-            Frida installation detected on an iOS device. Frida is a code-orchestration tool allowing to inject
-            arbitrary code into the operating system.
-          </Info>,
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#cloned-app-detection">
+            Cloned App
+          </DocsLink>,
         ],
       },
-      { content: 'Not applicable to browsers', cellStyle: { backgroundColor: GRAY } },
+      { content: 'Applicable only to Android devices', cellStyle: { backgroundColor: GRAY } },
+    ],
+    [
+      {
+        content: [
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#android-emulator-detection">
+            Emulator
+          </DocsLink>,
+        ],
+      },
+      { content: 'Applicable only to Android devices', cellStyle: { backgroundColor: GRAY } },
+    ],
+    [
+      {
+        content: [
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#android-tamper-detection">
+            Rooted device
+          </DocsLink>,
+        ],
+      },
+      { content: 'Applicable only to Android devices', cellStyle: { backgroundColor: GRAY } },
+    ],
+
+    [
+      {
+        content: [
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#factory-reset-detection">
+            Jailbroken device
+          </DocsLink>,
+        ],
+      },
+      { content: 'Applicable only to iOS devices', cellStyle: { backgroundColor: GRAY } },
     ],
   ];
 
