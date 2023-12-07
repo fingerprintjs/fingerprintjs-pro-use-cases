@@ -17,7 +17,6 @@ const getServerResponse = async (page: Page) => {
 const clickRefreshButton = async (page: Page) => {
   await page.getByTestId(PLAYGROUND_TAG.refreshButton).first().click();
   await page.waitForLoadState('networkidle');
-  await page.waitForTimeout(3000);
 };
 
 test.describe('Playground page page', () => {

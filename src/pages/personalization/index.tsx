@@ -20,10 +20,6 @@ import { Search, SearchHistory } from '../../client/components/personalization/s
 import { ProductCard } from '../../client/components/personalization/productCard';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 
-export const PERSONALIZATION_COPY = {
-  okay: 'Okay, I understand',
-};
-
 export default function Index({ embed }: CustomPageProps) {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -103,7 +99,7 @@ export default function Index({ embed }: CustomPageProps) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDidAcknowledge(true)}>{PERSONALIZATION_COPY.okay}</Button>
+          <Button onClick={() => setDidAcknowledge(true)}>Okay, I understand</Button>
         </DialogActions>
       </Dialog>
       <UseCaseWrapper useCase={USE_CASES.personalization} embed={embed} contentSx={{ maxWidth: 'none' }}>

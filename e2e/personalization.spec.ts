@@ -1,7 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { resetScenarios } from './resetHelper';
 import { TEST_IDS } from '../src/client/testIDs';
-import { PERSONALIZATION_COPY } from '../src/pages/personalization';
 
 const CART_ID = TEST_IDS.common.cart;
 const PERS_ID = TEST_IDS.personalization;
@@ -11,7 +10,7 @@ test.describe('Personalization', () => {
     await page.goto('/personalization', {
       waitUntil: 'networkidle',
     });
-    await page.getByText(PERSONALIZATION_COPY.okay).click();
+    await page.getByText('Okay, I understand').click();
     await resetScenarios(page);
   });
 
@@ -76,7 +75,6 @@ test.describe('Personalization', () => {
     const products = page.getByTestId(PERS_ID.coffeeProduct);
 
     const checkFoundProducts = async () => {
-      await page.waitForTimeout(3000);
       await expect
         .poll(async () => {
           const textContents = await Promise.all((await products.all()).map((p) => p.textContent()));

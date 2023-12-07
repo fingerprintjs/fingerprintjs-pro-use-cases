@@ -13,7 +13,6 @@ test.describe('Scraping flights', () => {
   test('is possible with Bot detection off', async ({ page }) => {
     await page.goto('/web-scraping?disableBotDetection=1');
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(3000);
 
     const flightCards = await page.getByTestId(TEST_ID.card).all();
     console.log('Found flight cards: ', flightCards.length);
