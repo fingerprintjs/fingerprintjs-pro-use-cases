@@ -91,6 +91,10 @@ jobs:
         run: yarn playwright install --with-deps
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
+      - name: Install Playwright dependencies without browsers if cache hit
+        run: yarn playwright install
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+
       - name: Build website
         run: yarn build
 
