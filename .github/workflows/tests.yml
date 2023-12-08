@@ -14,10 +14,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
+      # - uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 18
+      #     cache: 'yarn'
+
+      - name: 'Cache'
+        uses: actions/cache@v3
         with:
-          node-version: 18
-          cache: 'yarn'
+          path: node_modules
+          key: nodemodules-${{ hashFiles('yarn.lock') }}
+          restore-keys: nodemodules-
 
       - name: Install packages
         run: yarn install --prefer-offline --frozen-lockfile
@@ -34,6 +41,13 @@ jobs:
         with:
           node-version: 18
           cache: 'yarn'
+
+      - name: 'Cache'
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: nodemodules-${{ hashFiles('yarn.lock') }}
+          restore-keys: nodemodules-
 
       - name: Install packages
         run: yarn install --prefer-offline --frozen-lockfile
