@@ -14,8 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # This takes 20s but does not seem necessary for our current setup
+      # This takes 20s but does not seem necessary for our current setup,
+      # as ubuntu-latest already has a reasonable version of Node
       # Add this to all jobs if you encounter problems with Node installation
+      # This also makes use of global yarn cache
       # - uses: actions/setup-node@v3
       #   with:
       #     node-version: 18
@@ -51,10 +53,20 @@ jobs:
 
       - name: Run unit tests
         run: yarn test
+  # run_vercel_tests:
+  #   name: Run e2e tests
+  #   container: mcr.microsoft.com/playwright:v1.36.2
+
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #        with:
+  #          node-version: '18.x'
   e2e:
     name: Playwright e2e tests
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    # runs-on: ubuntu-latest
+    container: mcr.microsoft.com/playwright:v1.40.0-jammy
     strategy:
       fail-fast: false
       matrix:
