@@ -1,18 +1,17 @@
 import { expect, test } from '@playwright/test';
-import { reset } from './admin';
-import { TEST_IDS } from '../src/client/e2eTestIDs';
+import { resetScenarios } from './resetHelper';
+import { TEST_IDS } from '../src/client/testIDs';
 
 const CART_ID = TEST_IDS.common.cart;
 const PERS_ID = TEST_IDS.personalization;
 
 test.describe('Personalization', () => {
-  test.beforeEach(async ({ page, context }) => {
-    await reset(context);
-
+  test.beforeEach(async ({ page }) => {
     await page.goto('/personalization', {
       waitUntil: 'networkidle',
     });
-    await page.click('text="Okay, I understand"');
+    await page.getByText('Okay, I understand').click();
+    await resetScenarios(page);
   });
 
   test('should add and remove items from cart', async ({ page }) => {
@@ -31,9 +30,11 @@ test.describe('Personalization', () => {
     await product.getByTestId(PERS_ID.addToCart).click();
     const cartItem = cartItems.first();
 
-    await expect(cartItem.getByTestId(CART_ID.cartItemName)).toHaveText(
-      (await product.getByTestId(PERS_ID.coffeeProductName).textContent()) ?? 'Product name not found',
-    );
+    const cartItemName = (await cartItem.getByTestId(CART_ID.cartItemName).textContent()) ?? 'Cart item name not found';
+    const productName =
+      (await product.getByTestId(PERS_ID.coffeeProductName).textContent()) ?? 'Product name not found';
+    expect(cartItemName).toBe(productName);
+
     const subTotal = await getSubTotal();
     expect(subTotal).toBe(productPrice);
 
@@ -74,7 +75,6 @@ test.describe('Personalization', () => {
     const products = page.getByTestId(PERS_ID.coffeeProduct);
 
     const checkFoundProducts = async () => {
-      await page.waitForTimeout(3000);
       await expect
         .poll(async () => {
           const textContents = await Promise.all((await products.all()).map((p) => p.textContent()));

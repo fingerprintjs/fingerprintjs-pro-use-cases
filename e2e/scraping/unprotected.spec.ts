@@ -1,6 +1,6 @@
 import { Locator, expect, test } from '@playwright/test';
 import { writeFileSync } from 'fs';
-import { TEST_IDS } from './../../src/client/e2eTestIDs';
+import { TEST_IDS } from '../../src/client/testIDs';
 
 const TEST_ID = TEST_IDS.webScraping;
 
@@ -13,6 +13,7 @@ test.describe('Scraping flights', () => {
   test('is possible with Bot detection off', async ({ page }) => {
     await page.goto('/web-scraping?disableBotDetection=1');
     await page.waitForLoadState('networkidle');
+    // Artificial wait necessary to prevent flakiness
     await page.waitForTimeout(3000);
 
     const flightCards = await page.getByTestId(TEST_ID.card).all();

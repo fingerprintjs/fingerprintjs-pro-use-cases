@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import { FunctionComponent } from 'react';
 import { ArticleData } from '../../../server/paywall/articles';
-import { TEST_IDS } from '../../e2eTestIDs';
+import { TEST_IDS } from '../../testIDs';
 import Image from 'next/image';
 import styles from './articleGrid.module.scss';
 import BylineDot from './dot.svg';
@@ -47,7 +47,7 @@ export const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article, embe
     <div
       className={classNames(styles.articleCard, isHeroArticle && styles.heroArticleCard)}
       onClick={() => router.push(link)}
-      data-test={TEST_IDS.paywall.articleCard}
+      data-testid={TEST_IDS.paywall.articleCard}
     >
       <Image src={article.image} alt="" className={styles.articleCardImage} sizes="100vw" />
       <div className={styles.articleCardContent}>

@@ -6,7 +6,7 @@ import WarningIcon from './warning.svg';
 import styles from './alert.module.scss';
 import Image from 'next/image';
 import classNames from 'classnames';
-import { TEST_IDS } from '../../../e2eTestIDs';
+import { TEST_IDS } from '../../../testIDs';
 
 type AlertProps = {
   severity: Severity;
@@ -30,7 +30,7 @@ const Alert: FunctionComponent<AlertProps> = ({ severity, children, className, d
   return (
     <div
       className={classNames(styles.alert, STYLES_MAP[severity], className)}
-      data-test={classNames(TEST_IDS.common.alert, dataTestId)}
+      data-testid={classNames(TEST_IDS.common.alert, dataTestId)}
       data-test-severity={severity}
     >
       <div className={styles.iconWrapper}>

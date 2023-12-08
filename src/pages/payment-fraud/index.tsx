@@ -11,6 +11,7 @@ import { CustomPageProps } from '../_app';
 import classNames from 'classnames';
 import { Severity } from '../../server/checkResult';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { TEST_IDS } from '../../client/testIDs';
 
 export default function Index({ embed }: CustomPageProps) {
   const { getData } = useVisitorData(
@@ -79,6 +80,7 @@ export default function Index({ embed }: CustomPageProps) {
             defaultValue={cardNumber}
             onChange={(e) => setCardNumber(e.target.value)}
             required
+            data-testid={TEST_IDS.paymentFraud.cardNumber}
           />
 
           <div className={styles.ccInfoGroup}>
@@ -90,6 +92,7 @@ export default function Index({ embed }: CustomPageProps) {
                 defaultValue={cardExpiration}
                 onChange={(e) => setCardExpiration(e.target.value)}
                 required
+                data-testid={TEST_IDS.paymentFraud.cardExpiration}
               />
             </div>
 
@@ -101,6 +104,7 @@ export default function Index({ embed }: CustomPageProps) {
                 defaultValue={cardCvv}
                 onChange={(e) => setCardCvv(e.target.value)}
                 required
+                data-testid={TEST_IDS.paymentFraud.cardCvv}
               />
             </div>
           </div>
@@ -113,6 +117,7 @@ export default function Index({ embed }: CustomPageProps) {
                 type="checkbox"
                 name="applyChargeback"
                 onChange={(event) => setApplyChargeback(event.target.checked)}
+                data-testid={TEST_IDS.paymentFraud.askForChargeback}
               />
               Ask for chargeback after purchase
             </label>
@@ -124,13 +129,19 @@ export default function Index({ embed }: CustomPageProps) {
                 onChange={(event) => {
                   setUsingStolenCard(event.target.checked);
                 }}
+                data-testid={TEST_IDS.paymentFraud.usingStolenCard}
               />
               Flag this visitor using stolen card after purchase
             </label>
           </div>
 
           {httpResponseStatus ? <Alert severity={severity ?? 'warning'}>{orderStatusMessage}</Alert> : null}
-          <Button disabled={isWaitingForResponse} size="large" type="submit">
+          <Button
+            disabled={isWaitingForResponse}
+            size="large"
+            type="submit"
+            data-testid={TEST_IDS.paymentFraud.submitPayment}
+          >
             {isWaitingForResponse ? 'Hold on, doing magic...' : 'Place Order'}
           </Button>
         </form>

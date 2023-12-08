@@ -4,19 +4,20 @@ import { isAgentResponse, isServerResponse } from './zodUtils';
 
 const getAgentResponse = async (page: Page) => {
   const agentResponse =
-    (await page.textContent(`[data-test="${PLAYGROUND_TAG.agentResponseJSON}"]`)) ?? 'Agent response not found';
+    (await (await page.getByTestId(PLAYGROUND_TAG.agentResponseJSON)).textContent()) ?? 'Agent response not found';
   return JSON.parse(agentResponse);
 };
 
 const getServerResponse = async (page: Page) => {
   const serverResponse =
-    (await page.textContent(`[data-test="${PLAYGROUND_TAG.serverResponseJSON}"]`)) ?? 'Server response not found';
+    (await (await page.getByTestId(PLAYGROUND_TAG.serverResponseJSON)).textContent()) ?? 'Server response not found';
   return JSON.parse(serverResponse);
 };
 
 const clickRefreshButton = async (page: Page) => {
-  await page.click(`[data-test="${PLAYGROUND_TAG.refreshButton}"]`);
+  await page.getByTestId(PLAYGROUND_TAG.refreshButton).first().click();
   await page.waitForLoadState('networkidle');
+  // Artificial wait necessary to make sure you get the updated response every time
   await page.waitForTimeout(3000);
 };
 
@@ -26,28 +27,28 @@ test.describe('Playground page page', () => {
   });
 
   test('Page renders basic skeleton elements', async ({ page }) => {
-    await page.waitForSelector('text="Fingerprint Pro Playground"');
-    await page.waitForSelector('text="Welcome, your visitor ID is"');
-    await page.waitForSelector(`[data-test="${PLAYGROUND_TAG.refreshButton}"]`);
+    await page.getByText('Fingerprint Pro Playground', { exact: true }).waitFor();
+    await page.getByText('Welcome, your visitor ID is').waitFor();
+    await page.getByTestId(PLAYGROUND_TAG.refreshButton).first().waitFor();
 
-    await page.waitForSelector('text="Base signals (Pro plan)"');
-    await page.waitForSelector('text="Smart signals (Pro Plus plan)"');
-    await page.waitForSelector('text="Smart signals (Enterprise plan)"');
+    await page.getByText('Base signals (Pro plan)', { exact: true }).waitFor();
+    await page.getByText('Smart signals (Pro Plus plan)', { exact: true }).waitFor();
+    await page.getByText('Smart signals (Enterprise plan)', { exact: true }).waitFor();
 
-    await page.waitForSelector('text="JavaScript Agent Response"');
-    await page.waitForSelector('text="Server API Response"');
+    await page.getByText('JavaScript Agent Response', { exact: true }).waitFor();
+    await page.getByText('Server API Response', { exact: true }).waitFor();
   });
 
   test('Page renders signal tables', async ({ page }) => {
-    await page.waitForSelector('text="Visitor ID"');
-    await page.waitForSelector('text="Last seen"');
-    await page.waitForSelector('text="Confidence Score"');
+    await page.getByText('Visitor ID', { exact: true }).waitFor();
+    await page.getByText('Last seen', { exact: true }).waitFor();
+    await page.getByText('Confidence Score', { exact: true }).waitFor();
 
-    await page.waitForSelector('text="Geolocation"');
-    await page.waitForSelector('text="VPN"');
+    await page.getByText('Geolocation', { exact: true }).waitFor();
+    await page.getByText('VPN', { exact: true }).waitFor();
 
-    await page.waitForSelector('text="IP Blocklist"');
-    await page.waitForSelector('text="Android Emulator"');
+    await page.getByText('IP Blocklist', { exact: true }).waitFor();
+    await page.getByText('Emulator', { exact: true }).waitFor();
   });
 
   test('Page renders agent response', async ({ page }) => {

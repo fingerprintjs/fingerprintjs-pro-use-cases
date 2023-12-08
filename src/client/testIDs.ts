@@ -11,11 +11,22 @@ export const TEST_IDS = {
     },
     alert: 'alert',
   },
+  reset: {
+    resetButton: 'resetButton',
+    resetSuccess: 'resetSuccess',
+    resetError: 'resetError',
+  },
   homepageCard: {
     useCaseTitle: 'useCaseTitle',
   },
   loanRisk: {
     monthlyInstallmentValue: 'monthlyInstallmentValue',
+    submitApplication: 'submitApplication',
+    name: 'name',
+    surname: 'surname',
+    loanValue: 'loanValue',
+    monthlyIncome: 'monthlyIncome',
+    loanTerm: 'loanTerm',
   },
   personalization: {
     coffeeProduct: 'coffeeProduct',
@@ -25,10 +36,22 @@ export const TEST_IDS = {
     search: 'search',
     searchHistoryItem: 'searchHistoryItem',
   },
+  paymentFraud: {
+    submitPayment: 'submitPayment',
+    cardNumber: 'cardNumber',
+    cardExpiration: 'cardExpiration',
+    cardCvv: 'cardCvv',
+    usingStolenCard: 'usingStolenCard',
+    askForChargeback: 'askForChargeback',
+  },
   paywall: {
     articleCard: 'articleCard',
     articleContent: 'articleContent',
     goBack: 'goBack',
+  },
+  couponFraud: {
+    couponCode: 'couponCode',
+    submitCoupon: 'submitCoupon',
   },
   webScraping: {
     search: 'search',
@@ -39,5 +62,9 @@ export const TEST_IDS = {
     departureTime: 'departureTime',
     arrivalTime: 'arrivalTime',
     airline: 'airline',
+  },
+  credentialStuffing: {
+    login: 'login',
+    password: 'password',
   },
 } as const;

@@ -5,7 +5,7 @@ import Container from '../client/components/common/Container';
 import { HOMEPAGE_CARDS } from '../client/components/common/content';
 import LinkArrow from '../client/img/externalLinkArrow.svg';
 import Image from 'next/image';
-import { TEST_IDS } from '../client/e2eTestIDs';
+import { TEST_IDS } from '../client/testIDs';
 import { Fragment } from 'react';
 import { SEO } from '../client/components/common/seo';
 import { useRouter } from 'next/router';
@@ -38,7 +38,7 @@ export default function Index() {
           <div className={styles.useCaseCard} key={card.url} onClick={() => router.push(card.url)}>
             <div>
               <Image src={card.iconSvg} alt="" className={styles.useCaseIcon} />
-              <Link className={styles.useCaseTitle} data-test={TEST_IDS.homepageCard.useCaseTitle} href={card.url}>
+              <Link className={styles.useCaseTitle} data-testid={TEST_IDS.homepageCard.useCaseTitle} href={card.url}>
                 {card.title}
               </Link>
               <div className={styles.useCaseDescription}>

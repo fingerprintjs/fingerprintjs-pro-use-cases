@@ -6,6 +6,13 @@ import { CheckResult, checkResultType } from '../../../server/checkResult';
 import { sendOkResponse } from '../../../server/response';
 import { RuleCheck } from '../../../server/checks';
 
+export const COUPON_FRAUD_COPY = {
+  doesNotExist: 'Provided coupon code does not exist.',
+  usedBefore: 'The visitor used this coupon before.',
+  usedAnotherCouponRecently: 'The visitor claimed another coupon recently.',
+  success: 'Coupon claimed',
+} as const;
+
 async function checkVisitorClaimedRecently(visitorId: string) {
   const oneHourBefore = new Date();
   oneHourBefore.setHours(oneHourBefore.getHours() - 1);
@@ -52,11 +59,7 @@ const checkIfCouponExists: RuleCheck = async (_visitorData, _req, couponCode: Co
 
   // Check if the coupon exists.
   if (!coupon) {
-    return new CheckResult(
-      'Provided coupon code does not exist.',
-      messageSeverity.Error,
-      checkResultType.CouponDoesNotExist,
-    );
+    return new CheckResult(COUPON_FRAUD_COPY.doesNotExist, messageSeverity.Error, checkResultType.CouponDoesNotExist);
   }
 };
 
@@ -70,11 +73,7 @@ const checkIfCouponWasClaimed: RuleCheck = async (eventResponse, _req, couponCod
 
   // Check if the visitor claimed this coupon before.
   if (wasCouponClaimedByVisitor) {
-    return new CheckResult(
-      'The visitor used this coupon before.',
-      messageSeverity.Error,
-      checkResultType.CouponAlreadyClaimed,
-    );
+    return new CheckResult(COUPON_FRAUD_COPY.usedBefore, messageSeverity.Error, checkResultType.CouponAlreadyClaimed);
   }
 };
 
@@ -88,7 +87,7 @@ const checkIfClaimedAnotherCouponRecently: RuleCheck = async (eventData) => {
 
   if (visitorClaimedAnotherCouponRecently) {
     return new CheckResult(
-      'The visitor claimed another coupon recently.',
+      COUPON_FRAUD_COPY.usedAnotherCouponRecently,
       messageSeverity.Error,
       checkResultType.AnotherCouponClaimedRecently,
     );
@@ -101,7 +100,7 @@ export default couponEndpoint(
       await claimCoupon(validateCouponResult.visitorId, validateCouponResult.couponCode);
     }
 
-    const result = new CheckResult('Coupon claimed', messageSeverity.Success, checkResultType.Passed);
+    const result = new CheckResult(COUPON_FRAUD_COPY.success, messageSeverity.Success, checkResultType.Passed);
 
     return sendOkResponse(res, result);
   },

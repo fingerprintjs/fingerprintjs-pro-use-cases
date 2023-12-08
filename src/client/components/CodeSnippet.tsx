@@ -48,7 +48,7 @@ export function CodeSnippet({
       customStyle={PRISM_CUSTOM_STYLE}
       codeTagProps={PRISM_CODE_TAG_PROPS}
       className={className}
-      data-test={dataTestId}
+      data-testid={dataTestId}
     >
       {children}
     </PrismAsyncLight>

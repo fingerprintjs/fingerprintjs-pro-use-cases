@@ -18,7 +18,7 @@ import { Slider } from '../../client/components/common/Slider/Slider';
 import { NumberInputWithUnits } from '../../client/components/common/InputNumberWithUnits/InputNumberWithUnits';
 import styles from './loanRisk.module.scss';
 import classNames from 'classnames';
-import { TEST_IDS } from '../../client/e2eTestIDs';
+import { TEST_IDS } from '../../client/testIDs';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 
 type SliderFieldProps = {
@@ -30,6 +30,7 @@ type SliderFieldProps = {
   prefix?: string;
   suffix?: string;
   name?: string;
+  dataTestId?: string;
 };
 
 const SliderField: FunctionComponent<SliderFieldProps> = ({
@@ -41,6 +42,7 @@ const SliderField: FunctionComponent<SliderFieldProps> = ({
   prefix,
   suffix,
   name,
+  dataTestId,
 }) => {
   return (
     <div>
@@ -56,6 +58,7 @@ const SliderField: FunctionComponent<SliderFieldProps> = ({
           suffix={suffix}
           prefix={prefix}
           name={name}
+          dataTestId={dataTestId}
         />
       </div>
     </div>
@@ -118,6 +121,7 @@ export default function LoanRisk({ embed }: CustomPageProps) {
               value={firstName}
               onChange={(event) => setFirstName(event.target.value)}
               required
+              data-testid={TEST_IDS.loanRisk.name}
             />
             <label>Surname</label>
             <input
@@ -126,6 +130,7 @@ export default function LoanRisk({ embed }: CustomPageProps) {
               value={lastName}
               onChange={(event) => setLastName(event.target.value)}
               required
+              data-testid={TEST_IDS.loanRisk.surname}
             />
           </div>
           <div className={styles.loanWrapper}>
@@ -138,6 +143,7 @@ export default function LoanRisk({ embed }: CustomPageProps) {
                 label="How much money do you need?"
                 value={loanValue}
                 onChange={setLoanValue}
+                dataTestId={TEST_IDS.loanRisk.loanValue}
               />
               <SliderField
                 name="monthlyIncome"
@@ -147,6 +153,7 @@ export default function LoanRisk({ embed }: CustomPageProps) {
                 label="How much do you make per month?"
                 value={monthlyIncome}
                 onChange={setMonthlyIncome}
+                dataTestId={TEST_IDS.loanRisk.monthlyIncome}
               />
               <SliderField
                 name="loanDuration"
@@ -156,10 +163,11 @@ export default function LoanRisk({ embed }: CustomPageProps) {
                 label="Loan term (months)"
                 value={loanDuration}
                 onChange={setLoanDuration}
+                dataTestId={TEST_IDS.loanRisk.loanTerm}
               />
               <div className={styles.summary}>
                 <span>Your monthly installment is: </span>
-                <div className={styles.monthlyPayment} data-test={TEST_IDS.loanRisk.monthlyInstallmentValue}>
+                <div className={styles.monthlyPayment} data-testid={TEST_IDS.loanRisk.monthlyInstallmentValue}>
                   $ {monthlyInstallment.toFixed(0)}
                 </div>
               </div>
@@ -167,7 +175,12 @@ export default function LoanRisk({ embed }: CustomPageProps) {
             {loanRequestMutation.data?.message && !loanRequestMutation.isLoading && (
               <Alert severity={loanRequestMutation.data.severity}>{loanRequestMutation.data.message}</Alert>
             )}
-            <Button type="submit" disabled={isLoading} className={styles.requestLoadButton}>
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className={styles.requestLoanButton}
+              data-testid={TEST_IDS.loanRisk.submitApplication}
+            >
               {isLoading ? 'Hold on, doing magic...' : 'Request loan'}
             </Button>
           </div>

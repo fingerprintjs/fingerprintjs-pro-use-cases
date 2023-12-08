@@ -7,6 +7,7 @@ import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import Image from 'next/image';
 import Restart from '../../../img/restart.svg';
 import { useReset } from '../../../hooks/useReset/useReset';
+import { TEST_IDS } from '../../../testIDs';
 
 interface MobileNavbarProps {
   darkMode?: boolean;
@@ -28,6 +29,7 @@ export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbar
             size={'medium'}
             title="Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action."
             buttonId="click_top_nav_restart"
+            data-testid={TEST_IDS.reset.resetButton}
           >
             Restart
             <Image src={Restart} alt="Restart button" />

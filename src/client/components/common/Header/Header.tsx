@@ -16,6 +16,7 @@ import Link from 'next/link';
 import Button from '../Button/Button';
 import { useReset } from '../../../hooks/useReset/useReset';
 import { Tooltip } from '@mui/material';
+import { TEST_IDS } from '../../../testIDs';
 
 interface HeaderProps {
   notificationBar?: {
@@ -113,6 +114,7 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                       onClick={() => mutate()}
                       disabled={isResetLoading}
                       id="click_top_nav_restart"
+                      data-testid={TEST_IDS.reset.resetButton}
                     >
                       Restart
                       <Image src={Restart} alt="Restart button" />

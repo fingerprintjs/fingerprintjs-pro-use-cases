@@ -4,7 +4,7 @@ import styles from './cart.module.scss';
 import { ButtonMinusSvg } from '../../../img/buttonMinusSvg';
 import { ButtonPlusSvg } from '../../../img/buttonPlusSvg';
 import Image from 'next/image';
-import { TEST_IDS } from '../../../e2eTestIDs';
+import { TEST_IDS } from '../../../testIDs';
 
 const format$ = (price: number) => {
   return new Intl.NumberFormat('en-US', {
@@ -28,21 +28,21 @@ const CartProduct: FunctionComponent<{ product: CartProduct }> = ({
   product: { name, subheadline, price, image, count, increaseCount, decreaseCount },
 }) => {
   return (
-    <div className={styles.product} data-test={TEST_IDS.common.cart.cartItem}>
+    <div className={styles.product} data-testid={TEST_IDS.common.cart.cartItem}>
       <Image src={image} alt={name} width={92} height={92} />
       <div className={styles.productDescription}>
-        <div className={styles.productName} data-test={TEST_IDS.common.cart.cartItemName}>
+        <div className={styles.productName} data-testid={TEST_IDS.common.cart.cartItemName}>
           {name}
         </div>
         <div className={styles.productSubheadline}>{subheadline}</div>
         <div className={styles.priceAndCount}>
-          <div className={styles.price} data-test={TEST_IDS.common.cart.cartItemPrice}>
+          <div className={styles.price} data-testid={TEST_IDS.common.cart.cartItemPrice}>
             {format$(price)}
           </div>
           <div className={styles.count}>
-            <ButtonMinusSvg onClick={decreaseCount} data-test={TEST_IDS.common.cart.cartItemMinusOne} />
-            <span data-test={TEST_IDS.common.cart.cartItemCount}>{String(count).padStart(2, '0')}</span>
-            <ButtonPlusSvg onClick={increaseCount} data-test={TEST_IDS.common.cart.cartItemPlusOne} />
+            <ButtonMinusSvg onClick={decreaseCount} data-testid={TEST_IDS.common.cart.cartItemMinusOne} />
+            <span data-testid={TEST_IDS.common.cart.cartItemCount}>{String(count).padStart(2, '0')}</span>
+            <ButtonPlusSvg onClick={increaseCount} data-testid={TEST_IDS.common.cart.cartItemPlusOne} />
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@ export const Cart: FunctionComponent<CartProps> = ({ items, discount, taxPerItem
       <div className={styles.summary}>
         <div className={styles.item}>
           <span>Subtotal</span>
-          <span data-test={TEST_IDS.common.cart.cartSubTotal} data-test-value={subTotal}>
+          <span data-testid={TEST_IDS.common.cart.cartSubTotal} data-test-value={subTotal}>
             {format$(subTotal)}
           </span>
         </div>

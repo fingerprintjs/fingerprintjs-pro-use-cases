@@ -12,6 +12,7 @@ import { useReset } from '../../../hooks/useReset/useReset';
 import classNames from 'classnames';
 import { RestartHint } from './RestartHint';
 import { SEO } from '../seo';
+import { TEST_IDS } from '../../../testIDs';
 
 type UseCaseWrapperProps = {
   useCase: Partial<UseCase>;
@@ -49,6 +50,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
               pulseResetButton && styles.pulse,
             ])}
             onClick={() => !isLoading && mutate()}
+            data-testid={TEST_IDS.reset.resetButton}
           >
             <div className={styles.resetTitle}>Restart</div>
             <Image src={RestartIcon} alt="Reset scenario" />
