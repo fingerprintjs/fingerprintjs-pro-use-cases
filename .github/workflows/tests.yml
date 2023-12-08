@@ -91,8 +91,8 @@ jobs:
         run: yarn playwright install --with-deps
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
-      - name: Install Playwright dependencies without browsers if cache hit
-        run: yarn playwright install-deps chromium
+      - name: If browser binaries cache hit, install just webkit dependencies
+        run: yarn playwright install-deps webkit
         if: steps.playwright-cache.outputs.cache-hit == 'true'
 
       - name: Build website
