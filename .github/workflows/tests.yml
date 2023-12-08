@@ -65,7 +65,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: 'Cache node modules'
+      - name: Cache node modules
         uses: actions/cache@v3
         with:
           path: node_modules
@@ -75,11 +75,11 @@ jobs:
       - name: Install node modules
         run: yarn install --prefer-offline --frozen-lockfile
 
-      - name: Get installed Playwright version
+      - name: Get installed Playwright version (used in cache key)
         id: playwright-version
-        run: echo "PLAYWRIGHT_VERSION=$(node -e "console.log(require('./package-lock.json').dependencies['@playwright/test'].version)")" >> $GITHUB_ENV
+        run: echo "PLAYWRIGHT_VERSION=$(node -e "process.stdout.write(require('@playwright/test/package.json').version)")" >> $GITHUB_ENV
 
-      - name: Cache playwright binaries
+      - name: Cache Playwright browser binaries
         uses: actions/cache@v3
         id: playwright-cache
         with:
@@ -87,7 +87,7 @@ jobs:
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
 
-      - name: Install Playwright Browsers if cache miss
+      - name: Install Playwright browsers binaries if cache missed
         run: yarn playwright install --with-deps
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
@@ -108,7 +108,8 @@ jobs:
       - name: Run Playwright tests
         run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v3
         if: always()
         with:
           name: playwright-report
