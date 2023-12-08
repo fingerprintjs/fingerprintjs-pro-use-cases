@@ -8,6 +8,16 @@ env:
   # Playwright headless browsers running in CI get low confidence scores, causing flaky tests. Lower the confidence score threshold for CI testing.
   MIN_CONFIDENCE_SCORE: 0
 jobs:
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Run eslint
+        run: yarn lint
   unit-tests:
     runs-on: ubuntu-latest
     steps:

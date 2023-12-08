@@ -101,7 +101,7 @@ export default function LoanRisk({ embed }: CustomPageProps) {
         body: { loanValue, monthlyIncome, loanDuration, firstName, lastName },
       });
     },
-    [firstName, lastName, loanDuration, loanRequestMutation, loanValue, monthlyIncome],
+    [firstName, lastName, loanDuration, loanRequestMutation, loanValue, monthlyIncome, getData],
   );
 
   const isLoading = isVisitorDataLoading || loanRequestMutation.isLoading;

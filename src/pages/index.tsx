@@ -24,7 +24,7 @@ export default function Index() {
         <div className={styles.intro}>
           <p>
             Explore the wide range of major use cases supported by Fingerprint, including a comprehensive demo that
-            showcases both frontend and backend sample implementations with a persistent data layer for each use case. 
+            showcases both frontend and backend sample implementations with a persistent data layer for each use case.
           </p>
 
           <p>

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import Link from 'next/link';
 import SmartSignalsIcon from '../../img/smartSignalsIcon.svg';
 import CouponFraudIcon from '../../img/couponFraudIcon.svg';
@@ -145,7 +146,7 @@ export const USE_CASES = {
       </p>,
       <p>
         Use Fingerprint to check for consistency between applications and ignore submissions from previously rejected
-        applicants. 
+        applicants.
       </p>,
     ],
     description:

@@ -37,6 +37,8 @@ export const Select = React.forwardRef<
   );
 });
 
+Select.displayName = 'Select';
+
 export const SelectItem = React.forwardRef<
   HTMLDivElement,
   RadixSelect.SelectItemProps & React.RefAttributes<HTMLDivElement>
@@ -47,3 +49,5 @@ export const SelectItem = React.forwardRef<
     </RadixSelect.Item>
   );
 });
+
+SelectItem.displayName = 'SelectItem';
