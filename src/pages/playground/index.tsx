@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import { useMemo } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import {
