@@ -1,0 +1,20 @@
+.docsLink {
+  color: v('dark-black');
+
+  text-decoration: underline;
+
+  &:hover {
+    color: v('orange-gradient');
+    img {
+      opacity: 1;
+    }
+  }
+
+  img {
+    opacity: 0;
+    margin-left: rem(2px);
+    vertical-align: baseline;
+    height: rem(10px);
+    color: v('dark-black');
+  }
+}
