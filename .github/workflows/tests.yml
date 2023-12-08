@@ -53,20 +53,10 @@ jobs:
 
       - name: Run unit tests
         run: yarn test
-  # run_vercel_tests:
-  #   name: Run e2e tests
-  #   container: mcr.microsoft.com/playwright:v1.36.2
-
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
-  #        with:
-  #          node-version: '18.x'
   e2e:
     name: Playwright e2e tests
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/playwright:v1.40.0-jammy
     strategy:
       fail-fast: false
       matrix:
@@ -75,18 +65,31 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: 'Cache'
+      - name: 'Cache node modules'
         uses: actions/cache@v3
         with:
           path: node_modules
           key: nodemodules-${{ hashFiles('yarn.lock') }}
           restore-keys: nodemodules-
 
-      - name: Install packages
+      - name: Install node modules
         run: yarn install --prefer-offline --frozen-lockfile
 
-      - name: Install Playwright Browsers
+      - name: Get installed Playwright version
+        id: playwright-version
+        run: echo "PLAYWRIGHT_VERSION=$(node -e "console.log(require('./package-lock.json').dependencies['@playwright/test'].version)")" >> $GITHUB_ENV
+
+      - name: Cache playwright binaries
+        uses: actions/cache@v3
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+
+      - name: Install Playwright Browsers if cache miss
         run: yarn playwright install --with-deps
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
 
       - name: Build website
         run: yarn build
