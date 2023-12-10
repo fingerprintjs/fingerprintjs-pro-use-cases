@@ -57,8 +57,8 @@ jobs:
     name: Playwright e2e tests
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.40.0-jammy
+    # container:
+    #   image: mcr.microsoft.com/playwright:v1.40.0-jammy
     strategy:
       fail-fast: false
       matrix:
@@ -77,26 +77,26 @@ jobs:
       - name: Install node modules
         run: yarn install --prefer-offline --frozen-lockfile
 
-      # - name: Get installed Playwright version (used in cache key)
-      #   id: playwright-version
-      #   run: echo "PLAYWRIGHT_VERSION=$(node -e "process.stdout.write(require('@playwright/test/package.json').version)")" >> $GITHUB_ENV
+      - name: Get installed Playwright version (used in cache key)
+        id: playwright-version
+        run: echo "PLAYWRIGHT_VERSION=$(node -e "process.stdout.write(require('@playwright/test/package.json').version)")" >> $GITHUB_ENV
 
-      # - name: Cache Playwright browser binaries
-      #   uses: actions/cache@v3
-      #   id: playwright-cache
-      #   with:
-      #     path: |
-      #       ~/.cache/ms-playwright
-      #     key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+      - name: Cache Playwright browser binaries
+        uses: actions/cache@v3
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
 
-      # - name: Install Playwright browsers binaries if cache missed
-      #   run: yarn playwright install --with-deps
-      #   if: steps.playwright-cache.outputs.cache-hit != 'true'
+      - name: Install Playwright browsers binaries if cache missed
+        run: yarn playwright install --with-deps
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
 
-      # # Annoying that this has to be here, alternative is using a Playwright docker container which should have this already
-      # - name: If browser binaries cache hit, install just webkit dependencies
-      #   run: yarn playwright install-deps webkit
-      #   if: steps.playwright-cache.outputs.cache-hit == 'true'
+      # Annoying that this has to be here, alternative is using a Playwright docker container which should have this already
+      - name: If browser binaries cache hit, install just webkit dependencies
+        run: yarn playwright install-deps webkit
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
 
       - name: Cache Next build
         uses: actions/cache@v3
@@ -111,21 +111,10 @@ jobs:
       - name: Build website
         run: yarn build
 
-      # - name: Start website
-      #   run: yarn start &
-
-      # - name: Wait for website
-      #   timeout-minutes: 1
-      #   run: |
-      #     while ! curl -s http://localhost:3000 > /dev/null; do
-      #     echo "Waiting for website..."
-      #     sleep 1
-      #     done
-
       - name: Run Playwright tests
         run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-        env:
-          HOME: /root
+        # env:
+        #   HOME: /root
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v3
