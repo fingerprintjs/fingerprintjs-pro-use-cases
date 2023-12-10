@@ -108,19 +108,19 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('yarn.lock') }}-
 
-      - name: Build website
-        run: yarn build
+      # - name: Build website
+      #   run: yarn build
 
-      - name: Start website
-        run: yarn start &
+      # - name: Start website
+      #   run: yarn start &
 
-      - name: Wait for website
-        timeout-minutes: 1
-        run: |
-          while ! curl -s http://localhost:3000 > /dev/null; do
-          echo "Waiting for website..."
-          sleep 1
-          done
+      # - name: Wait for website
+      #   timeout-minutes: 1
+      #   run: |
+      #     while ! curl -s http://localhost:3000 > /dev/null; do
+      #     echo "Waiting for website..."
+      #     sleep 1
+      #     done
 
       - name: Run Playwright tests
         run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}

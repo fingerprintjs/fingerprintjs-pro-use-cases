@@ -7,6 +7,8 @@ import { defineConfig, devices } from '@playwright/test';
 // require('dotenv').config();
 
 const isCi = !!process.env.CI;
+const PORT = process.env.PORT || 3000;
+const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
@@ -40,6 +42,13 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+  },
+
+  webServer: {
+    command: `yarn dev`,
+    url: BASE_URL,
+    timeout: 120 * 1000,
+    reuseExistingServer: !isCi,
   },
 
   /* Configure projects for major browsers */
