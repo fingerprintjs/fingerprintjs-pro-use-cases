@@ -108,8 +108,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('yarn.lock') }}-
 
-      # - name: Build website
-      #   run: yarn build
+      - name: Build website
+        run: yarn build
 
       # - name: Start website
       #   run: yarn start &
