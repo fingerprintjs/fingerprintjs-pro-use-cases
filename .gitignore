@@ -53,3 +53,6 @@ tsconfig.tsbuildinfo
 
 # VS code workspace settings
 .vscode
+
+# MacOS Finder
+.DS_Store
