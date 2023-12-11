@@ -57,8 +57,6 @@ jobs:
     name: Playwright e2e tests
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    # container:
-    #   image: mcr.microsoft.com/playwright:v1.40.0-jammy
     strategy:
       fail-fast: false
       matrix:
@@ -93,7 +91,8 @@ jobs:
         run: yarn playwright install --with-deps
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
-      # Annoying that this has to be here, alternative is using a Playwright docker container which should have this already
+      # Ubuntu needs extra stuff to run webkit tests, alternative is using a Playwright docker container but
+      # that is slower in CI.
       - name: If browser binaries cache hit, install just webkit dependencies
         run: yarn playwright install-deps webkit
         if: steps.playwright-cache.outputs.cache-hit == 'true'
@@ -113,8 +112,6 @@ jobs:
 
       - name: Run Playwright tests
         run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-        # env:
-        #   HOME: /root
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v3
