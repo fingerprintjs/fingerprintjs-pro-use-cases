@@ -2,8 +2,6 @@ import { FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
 import { apiRequest } from '../api';
 import { useMutation } from 'react-query';
 
-// This is a test, should not hit cache
-
 function claimCoupon({ fpData, body }: CouponClaim) {
   return apiRequest('/api/coupon-fraud/claim', fpData, body);
 }
