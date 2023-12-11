@@ -7,9 +7,17 @@ interface NumberInputWithUnitsProps {
   value?: number;
   onChange?: (value: number) => void;
   name?: string;
+  dataTestId?: string;
 }
 
-export const NumberInputWithUnits: FC<NumberInputWithUnitsProps> = ({ prefix, suffix, value, onChange, name }) => {
+export const NumberInputWithUnits: FC<NumberInputWithUnitsProps> = ({
+  prefix,
+  suffix,
+  value,
+  onChange,
+  name,
+  dataTestId,
+}) => {
   return (
     <div className={styles.container}>
       {prefix && <div>{prefix}</div>}
@@ -19,6 +27,7 @@ export const NumberInputWithUnits: FC<NumberInputWithUnitsProps> = ({ prefix, su
         value={value}
         name={name}
         onChange={(event) => onChange?.(Number(event.target.value))}
+        data-testid={dataTestId}
       />
       {suffix && <div>{suffix}</div>}
     </div>

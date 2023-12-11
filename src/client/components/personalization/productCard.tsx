@@ -8,7 +8,7 @@ import Image from 'next/image';
 import styles from './productCard.module.scss';
 import Button from '../common/Button/Button';
 import HeartIcon from '../../img/heart.svg';
-import { TEST_IDS } from '../../e2eTestIDs';
+import { TEST_IDS } from '../../testIDs';
 import { UserCartItem } from '../../../server/personalization/database';
 
 type Product = {
@@ -68,7 +68,7 @@ export const ProductCard: FunctionComponent<{ product: Product }> = ({ product }
   );
 
   return (
-    <div className={styles.productCard} data-test={TEST_IDS.personalization.coffeeProduct}>
+    <div className={styles.productCard} data-testid={TEST_IDS.personalization.coffeeProduct}>
       <Image
         src={product.image}
         alt={product.name}
@@ -79,7 +79,7 @@ export const ProductCard: FunctionComponent<{ product: Product }> = ({ product }
       />
       <div className={styles.productCardBody}>
         <div>
-          <div className={styles.productCardName} data-test={TEST_IDS.personalization.coffeeProductName}>
+          <div className={styles.productCardName} data-testid={TEST_IDS.personalization.coffeeProductName}>
             {product.name}
           </div>
           <div className={styles.productCardSize}>Big</div>
@@ -87,7 +87,7 @@ export const ProductCard: FunctionComponent<{ product: Product }> = ({ product }
         <div className={styles.productCardBodyBottomRow}>
           <div
             className={styles.productCardPrice}
-            data-test={TEST_IDS.personalization.coffeeProductPrice}
+            data-testid={TEST_IDS.personalization.coffeeProductPrice}
             data-price={product.price}
           >
             ${product.price.toFixed(2)}
@@ -96,7 +96,7 @@ export const ProductCard: FunctionComponent<{ product: Product }> = ({ product }
             {cartItem ? (
               <ItemCounter count={cartItem.count} addItem={addToCart} removeItem={removeFromCart} />
             ) : (
-              <Button size="small" onClick={addToCart} data-test={TEST_IDS.personalization.addToCart}>
+              <Button size="small" onClick={addToCart} data-testid={TEST_IDS.personalization.addToCart}>
                 {addCartItemMutation.isLoading ? 'Adding...' : 'Add to cart'}
               </Button>
             )}

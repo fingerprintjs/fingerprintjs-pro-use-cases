@@ -4,19 +4,20 @@ import { isAgentResponse, isServerResponse } from './zodUtils';
 
 const getAgentResponse = async (page: Page) => {
   const agentResponse =
-    (await page.textContent(`[data-test="${PLAYGROUND_TAG.agentResponseJSON}"]`)) ?? 'Agent response not found';
+    (await (await page.getByTestId(PLAYGROUND_TAG.agentResponseJSON)).textContent()) ?? 'Agent response not found';
   return JSON.parse(agentResponse);
 };
 
 const getServerResponse = async (page: Page) => {
   const serverResponse =
-    (await page.textContent(`[data-test="${PLAYGROUND_TAG.serverResponseJSON}"]`)) ?? 'Server response not found';
+    (await (await page.getByTestId(PLAYGROUND_TAG.serverResponseJSON)).textContent()) ?? 'Server response not found';
   return JSON.parse(serverResponse);
 };
 
 const clickRefreshButton = async (page: Page) => {
-  await page.click(`[data-test="${PLAYGROUND_TAG.refreshButton}"]`);
+  await page.getByTestId(PLAYGROUND_TAG.refreshButton).first().click();
   await page.waitForLoadState('networkidle');
+  // Artificial wait necessary to make sure you get the updated response every time
   await page.waitForTimeout(3000);
 };
 

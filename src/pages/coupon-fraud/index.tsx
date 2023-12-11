@@ -14,6 +14,7 @@ import Alert from '../../client/components/common/Alert/Alert';
 import Button from '../../client/components/common/Button/Button';
 import { Cart } from '../../client/components/common/Cart/Cart';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { TEST_IDS } from '../../client/testIDs';
 
 const AIRMAX_PRICE = 356.02;
 const ALLSTAR_PRICE = 102.5;
@@ -92,12 +93,17 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
             <div className={styles.couponInputContainer}>
               <input
                 type="text"
-                id="coupon_code"
                 placeholder="Enter a coupon"
                 onChange={(e) => setCouponCode(e.target.value)}
                 required
+                data-testid={TEST_IDS.couponFraud.couponCode}
               />
-              <Button disabled={isWaitingForResponse} type="submit" size="medium">
+              <Button
+                disabled={isWaitingForResponse}
+                type="submit"
+                size="medium"
+                data-testid={TEST_IDS.couponFraud.submitCoupon}
+              >
                 {isWaitingForResponse ? 'Processing...' : 'Apply'}
               </Button>
             </div>

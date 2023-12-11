@@ -1,36 +1,35 @@
-import { test } from '@playwright/test';
-import { reset } from './admin';
+import { Page, test } from '@playwright/test';
+import { resetScenarios } from './resetHelper';
+import { TEST_IDS } from '../src/client/testIDs';
+import { CREDENTIAL_STUFFING_COPY } from '../src/pages/api/credential-stuffing/authenticate';
+
+const submitForm = async (page: Page) => {
+  // Waits for the button to be clickable out of the box
+  await page.getByTestId(TEST_IDS.credentialStuffing.login).click();
+};
 
 test.describe('Credential stuffing', () => {
-  test.beforeEach(async ({ page, context }) => {
-    await reset(context);
-
+  test.beforeEach(async ({ page }) => {
     await page.goto('/credential-stuffing');
+    await resetScenarios(page);
   });
 
   test('should prevent login even with correct credentials', async ({ page }) => {
-    await page.click('[type="submit"]');
-
-    await page.waitForSelector(
-      'text="Provided credentials are correct but we\'ve never seen you logging in using this device. Confirm your identity with a second factor."',
-    );
+    await submitForm(page);
+    await page.getByText(CREDENTIAL_STUFFING_COPY.differentVisitorIdUseMFA).waitFor();
   });
 
   test('should lock user after 5 invalid login attempts', async ({ page }) => {
-    const submitForm = async () => {
-      await page.click('[type="submit"]');
-      await page.waitForSelector('text=Log in');
-    };
+    await page.getByTestId(TEST_IDS.credentialStuffing.password).fill('wrong-password');
 
-    await page.fill('[name="password"]', 'wrong-password');
-
-    // 6 attempts, last one should be blocked
-    for (let i = 0; i < 7; i++) {
-      await submitForm();
+    // 5 attempts with incorrect password tried and rejected
+    for (let i = 0; i < 5; i++) {
+      await submitForm(page);
+      await page.getByText(CREDENTIAL_STUFFING_COPY.invalidCredentials).waitFor();
     }
 
-    await page.waitForSelector(
-      'text="You had more than 5 attempts during the last 24 hours. This login attempt was not performed."',
-    );
+    // 6th attempt with incorrect password not performed at all
+    await submitForm(page);
+    await page.getByText(CREDENTIAL_STUFFING_COPY.tooManyAttempts).waitFor();
   });
 });

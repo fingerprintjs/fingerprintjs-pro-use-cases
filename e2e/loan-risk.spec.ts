@@ -1,80 +1,67 @@
 import { Page, expect, test } from '@playwright/test';
-import { reset } from './admin';
-import { TEST_IDS } from '../src/client/e2eTestIDs';
+import { resetScenarios } from './resetHelper';
+import { TEST_IDS } from '../src/client/testIDs';
+import { LOAN_RISK_COPY } from '../src/pages/api/loan-risk/request-loan';
 
 const testIds = TEST_IDS.loanRisk;
 
 async function waitForSuccessfulSubmit(page: Page) {
-  await page.click('[type="submit"]');
-  await page.waitForLoadState('networkidle');
-  await page.waitForSelector('text="Congratulations, your loan has been approved!"');
+  await page.getByTestId(testIds.submitApplication).click();
+  await page.getByText(LOAN_RISK_COPY.approved).waitFor();
 }
 
 async function waitForBlockedLoanSubmit(page: Page) {
-  await page.click('[type="submit"]');
-  await page.waitForLoadState('networkidle');
-  await page.waitForSelector(
-    'text="We are unable to approve your loan automatically since you had requested a loan with a different income or personal details before. We need to verify provided information manually this time. Please, reach out to our agent."',
-  );
+  await page.getByTestId(testIds.submitApplication).click();
+  await page.getByText(LOAN_RISK_COPY.inconsistentApplicationChallenged).waitFor();
 }
 
 test.describe('Loan risk', () => {
-  const blockLoanCases = [
-    {
-      name: 'first name',
-      fillForm: async (page: Page) => {
-        await page.fill('[name="firstName"]', 'Greg');
-      },
-    },
-    {
-      name: 'last name',
-      fillForm: async (page: Page) => {
-        await page.fill('[name="lastName"]', 'Wick');
-      },
-    },
-    {
-      name: 'income',
-      fillForm: async (page: Page) => {
-        await page.fill('[name="monthlyIncome"]', '30000');
-      },
-    },
-  ];
-
-  test.beforeEach(async ({ page, context }) => {
-    await reset(context);
-
+  test.beforeEach(async ({ page }) => {
     await page.goto('/loan-risk');
+    await resetScenarios(page);
   });
 
   test('should correctly calculate loan and approve it on first submit', async ({ page }) => {
-    await page.fill('[name="loanValue"]', '2000');
-    await page.fill('[name="monthlyIncome"]', '20000');
-    await page.fill('[name="loanDuration"]', '4');
-
-    const monthInstallmentValue = page.locator(`[data-test="${testIds.monthlyInstallmentValue}"]`);
+    await page.getByTestId(TEST_IDS.loanRisk.loanValue).fill('2000');
+    await page.getByTestId(TEST_IDS.loanRisk.monthlyIncome).fill('20000');
+    await page.getByTestId(TEST_IDS.loanRisk.loanTerm).fill('4');
+    const monthInstallmentValue = page.getByTestId(testIds.monthlyInstallmentValue);
 
     await expect(monthInstallmentValue).toHaveText('$ 575');
     await waitForSuccessfulSubmit(page);
   });
 
   test('should approve loan if only loan value or loan duration changes', async ({ page }) => {
-    await page.fill('[name="loanValue"]', '2000');
+    await page.getByTestId(TEST_IDS.loanRisk.loanValue).fill('2000');
     await waitForSuccessfulSubmit(page);
 
-    await page.fill('[name="loanValue"]', '3000');
+    await page.getByTestId(TEST_IDS.loanRisk.loanValue).fill('3000');
     await waitForSuccessfulSubmit(page);
 
-    await page.fill('[name="loanValue"]', '4000');
-    await page.fill('[name="loanDuration"]', '4');
+    await page.getByTestId(TEST_IDS.loanRisk.loanValue).fill('4000');
+    await page.getByTestId(TEST_IDS.loanRisk.loanTerm).fill('4');
     await waitForSuccessfulSubmit(page);
   });
 
+  const blockLoanCases = [
+    {
+      field: TEST_IDS.loanRisk.name,
+      value: 'Greg',
+    },
+    {
+      field: TEST_IDS.loanRisk.surname,
+      value: 'Wick',
+    },
+    {
+      field: TEST_IDS.loanRisk.monthlyIncome,
+      value: '30000',
+    },
+  ] as const;
+
   blockLoanCases.forEach((testCase) => {
-    test(`should not approve loan if ${testCase.name} changes after first submit`, async ({ page }) => {
+    test(`should not approve loan if ${testCase.field} changes after first submit`, async ({ page }) => {
       await waitForSuccessfulSubmit(page);
-
-      await testCase.fillForm(page);
-
+      await page.getByTestId(testCase.field).fill(testCase.value);
       await waitForBlockedLoanSubmit(page);
     });
   });

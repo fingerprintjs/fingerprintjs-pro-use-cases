@@ -6,7 +6,7 @@ import AirCanada from '../../img/airCanada.svg';
 import Image from 'next/image';
 import Button from '../common/Button/Button';
 import StarIcon from '../../img/star.svg';
-import { TEST_IDS } from '../../e2eTestIDs';
+import { TEST_IDS } from '../../testIDs';
 import { HOUR_MS, MINUTE_MS } from '../../../shared/timeUtils';
 
 const TEST_ID = TEST_IDS.webScraping;
@@ -63,16 +63,16 @@ const SingleFlight: FunctionComponent<SingleFlightProps> = ({
         </div>
         <div className={styles.airline}>
           <Image src={AirCanada} alt="" />
-          <span data-test={TEST_ID.airline}>{airline}</span>
+          <span data-testid={TEST_ID.airline}>{airline}</span>
         </div>
       </div>
       <div className={styles.flightTimes}>
         <div className={styles.location}>
-          <div className={styles.airportCode} data-test={TEST_ID.originAirportCode}>
+          <div className={styles.airportCode} data-testid={TEST_ID.originAirportCode}>
             {fromCode}
           </div>
           <div className={styles.city}>{fromCity}</div>
-          <div className={styles.time} data-test={TEST_ID.departureTime}>
+          <div className={styles.time} data-testid={TEST_ID.departureTime}>
             {formatTime(departureTime)}
           </div>
         </div>
@@ -81,11 +81,11 @@ const SingleFlight: FunctionComponent<SingleFlightProps> = ({
           <div>{formatDurationTime(arrivalTime - departureTime)}</div>
         </div>
         <div className={styles.location}>
-          <div className={styles.airportCode} data-test={TEST_ID.destinationAirportCode}>
+          <div className={styles.airportCode} data-testid={TEST_ID.destinationAirportCode}>
             {toCode}
           </div>
           <div className={styles.city}>{toCity}</div>
-          <div className={styles.time} data-test={TEST_ID.arrivalTime}>
+          <div className={styles.time} data-testid={TEST_ID.arrivalTime}>
             {formatTime(arrivalTime)}
           </div>
         </div>
@@ -119,7 +119,7 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
   const total = flight.price;
 
   return (
-    <div className={styles.flightCard} data-test={TEST_ID.card}>
+    <div className={styles.flightCard} data-testid={TEST_ID.card}>
       <div className={styles.flightsContainer}>
         <SingleFlight
           fromCity={flight.fromCity}
@@ -159,7 +159,7 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
         </div>
         <div className={styles.finalPrice}>
           <span>Total</span>
-          <span data-test={TEST_ID.price}>${total}</span>
+          <span data-testid={TEST_ID.price}>${total}</span>
         </div>
         <div className={styles.line}></div>
         <div className={styles.actions}>

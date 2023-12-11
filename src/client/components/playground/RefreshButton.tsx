@@ -13,7 +13,7 @@ const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: () => v
       sx={{ mr: 'auto', ml: 'auto', mt: (t) => t.spacing(4), mb: (t) => t.spacing(8), display: 'flex' }}
       onClick={() => getAgentData()}
       disabled={loading}
-      data-test={PLAYGROUND_TAG.refreshButton}
+      data-testid={PLAYGROUND_TAG.refreshButton}
     >
       {loading ? (
         <>

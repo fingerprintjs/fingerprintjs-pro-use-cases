@@ -1,22 +1,24 @@
 import { Page, test } from '@playwright/test';
-import { reset } from './admin';
+import { resetScenarios } from './resetHelper';
+import { PAYMENT_FRAUD_COPY } from '../src/pages/api/payment-fraud/place-order';
+import { TEST_IDS } from '../src/client/testIDs';
+
+const submit = (page: Page) => page.getByTestId(TEST_IDS.paymentFraud.submitPayment).click();
 
 async function waitForSuccessfulSubmit(page: Page) {
-  await page.click('[type="submit"]');
-
-  await page.waitForSelector('text="Thank you for your payment. Everything is OK."');
+  await submit(page);
+  await page.getByText(PAYMENT_FRAUD_COPY.successfulPayment).waitFor();
 }
 
 async function waitForInvalidCardSubmit(page: Page) {
-  await page.click('[type="submit"]');
-  await page.waitForSelector('text="Incorrect card details, try again."');
+  await submit(page);
+  await page.getByText(PAYMENT_FRAUD_COPY.incorrectCardDetails).waitFor();
 }
 
 test.describe('Payment fraud', () => {
-  test.beforeEach(async ({ page, context }) => {
-    await reset(context);
-
+  test.beforeEach(async ({ page }) => {
     await page.goto('/payment-fraud');
+    await resetScenarios(page);
   });
 
   test('should pass payment with prefilled details', async ({ page }) => {
@@ -24,39 +26,29 @@ test.describe('Payment fraud', () => {
   });
 
   test('should allow only two chargebacks', async ({ page }) => {
-    await page.check('[name="applyChargeback"]');
-
+    await page.getByTestId(TEST_IDS.paymentFraud.askForChargeback).check();
     await waitForSuccessfulSubmit(page);
     await waitForSuccessfulSubmit(page);
 
-    await page.click('[type="submit"]');
-
-    await page.waitForSelector(
-      'text="You performed more than 1 chargeback during the last 1 year, we did not perform the payment."',
-    );
+    await submit(page);
+    await page.getByText(PAYMENT_FRAUD_COPY.previousChargeback).waitFor();
   });
 
   test('should prevent card cracking after 3 attempts', async ({ page }) => {
-    await page.fill('[name="cardNumber"]', '4242 4242 4242 4243');
-
+    await page.getByTestId(TEST_IDS.paymentFraud.cardNumber).fill('4242 4242 4242 4243');
     await waitForInvalidCardSubmit(page);
     await waitForInvalidCardSubmit(page);
     await waitForInvalidCardSubmit(page);
 
-    await page.click('[type="submit"]');
-    await page.waitForSelector(
-      'text="You placed more than 3 unsuccessful payment attempts during the last 365 days. This payment attempt was not performed."',
-    );
+    await submit(page);
+    await page.getByText(PAYMENT_FRAUD_COPY.tooManyUnsuccessfulPayments).waitFor();
   });
 
-  test('should prevent purchase if card was flagged as stolen', async ({ page }) => {
-    await page.check('[name="usingStolenCard"]');
-
+  test('should prevent another purchase if card was flagged as stolen', async ({ page }) => {
+    await page.getByTestId(TEST_IDS.paymentFraud.usingStolenCard).check();
     await waitForSuccessfulSubmit(page);
 
-    await page.click('[type="submit"]');
-    await page.waitForSelector(
-      'text="According to our records, you paid with a stolen card. We did not process the payment."',
-    );
+    await submit(page);
+    await page.getByText(PAYMENT_FRAUD_COPY.stolenCard).waitFor();
   });
 });

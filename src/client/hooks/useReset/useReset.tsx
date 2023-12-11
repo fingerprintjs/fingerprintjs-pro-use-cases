@@ -5,6 +5,7 @@ import { useSnackbar } from 'notistack';
 import styles from './userReset.module.scss';
 import { useRouter } from 'next/router';
 import { PLAYGROUND_METADATA, USE_CASES } from '../../components/common/content';
+import { TEST_IDS } from '../../testIDs';
 
 type UseResetParams = {
   onError?: () => void;
@@ -44,7 +45,7 @@ export const useReset = ({ onError, onSuccess }: UseResetParams) => {
         onSuccess ??
         ((data) => {
           enqueueSnackbar(
-            <div>
+            <div data-testid={TEST_IDS.reset.resetSuccess}>
               <p>Scenarios reset successfully!</p> <p>{data.message}</p>
             </div>,
             {

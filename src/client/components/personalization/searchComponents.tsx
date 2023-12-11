@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import Image from 'next/image';
 import SearchIcon from '../../img/search.svg';
 import styles from './searchComponents.module.scss';
-import { TEST_IDS } from '../../e2eTestIDs';
+import { TEST_IDS } from '../../testIDs';
 
 type SearchProps = {
   search: string;
@@ -19,7 +19,7 @@ export const Search: FunctionComponent<SearchProps> = ({ search, setSearch }) =>
           placeholder="Search for your favorite coffee"
           onChange={(e) => setSearch(e.target.value)}
           value={search}
-          data-test={TEST_IDS.personalization.search}
+          data-testid={TEST_IDS.personalization.search}
         />
       </div>
     </div>
@@ -48,7 +48,7 @@ export const SearchHistory: FunctionComponent<SearchHistoryProps> = ({ searchHis
               key={index}
               onClick={() => setSearchHistory(searchTerm)}
               className={styles.searchTerm}
-              data-test={TEST_IDS.personalization.searchHistoryItem}
+              data-testid={TEST_IDS.personalization.searchHistoryItem}
             >
               {searchTerm}
             </span>

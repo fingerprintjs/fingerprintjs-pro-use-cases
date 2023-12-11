@@ -18,6 +18,15 @@ import {
 import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+export const PAYMENT_FRAUD_COPY = {
+  stolenCard: 'According to our records, you paid with a stolen card. We did not process the payment.',
+  tooManyUnsuccessfulPayments:
+    'You placed more than 3 unsuccessful payment attempts during the last 365 days. This payment attempt was not performed.',
+  previousChargeback: 'You performed more than 1 chargeback during the last 1 year, we did not perform the payment.',
+  successfulPayment: 'Thank you for your payment. Everything is OK.',
+  incorrectCardDetails: 'Incorrect card details, try again.',
+} as const;
+
 interface PaymentAttemptAttributes
   extends Model<InferAttributes<PaymentAttemptAttributes>, InferCreationAttributes<PaymentAttemptAttributes>> {
   visitorId: string;
@@ -122,11 +131,7 @@ const checkVisitorIdForStolenCard: RuleCheck = async (eventResponse) => {
   // If the visitorId performed more than 1 payment with a stolen card during the last 1 year we do not process the payment.
   // The time window duration might vary.
   if (stolenCardUsedCount.count > 0) {
-    return new CheckResult(
-      'According to our records, you paid with a stolen card. We did not process the payment.',
-      messageSeverity.Error,
-      checkResultType.PaidWithStolenCard,
-    );
+    return new CheckResult(PAYMENT_FRAUD_COPY.stolenCard, messageSeverity.Error, checkResultType.PaidWithStolenCard);
   }
 };
 
@@ -148,7 +153,7 @@ const checkForCardCracking: RuleCheck = async (eventResponse) => {
   // The count of attempts and time window might vary.
   if (invalidCardAttemptCountQueryResult.count > 2) {
     return new CheckResult(
-      'You placed more than 3 unsuccessful payment attempts during the last 365 days. This payment attempt was not performed.',
+      PAYMENT_FRAUD_COPY.tooManyUnsuccessfulPayments,
       messageSeverity.Error,
       checkResultType.TooManyUnsuccessfulPayments,
     );
@@ -171,7 +176,7 @@ const checkVisitorIdForChargebacks: RuleCheck = async (eventResponse) => {
   // The count of chargebacks and time window might vary.
   if (countOfChargebacksForVisitorId.count > 1) {
     return new CheckResult(
-      'You performed more than 1 chargeback during the last 1 year, we did not perform the payment.',
+      PAYMENT_FRAUD_COPY.previousChargeback,
       messageSeverity.Error,
       checkResultType.TooManyChargebacks,
     );
@@ -181,14 +186,10 @@ const checkVisitorIdForChargebacks: RuleCheck = async (eventResponse) => {
 const processPayment: RuleCheck = async (_eventResponse, request) => {
   // Checks if the provided card details are correct.
   if (areCardDetailsCorrect(request)) {
-    return new CheckResult(
-      'Thank you for your payment. Everything is OK.',
-      messageSeverity.Success,
-      checkResultType.Passed,
-    );
+    return new CheckResult(PAYMENT_FRAUD_COPY.successfulPayment, messageSeverity.Success, checkResultType.Passed);
   } else {
     return new CheckResult(
-      'Incorrect card details, try again.',
+      PAYMENT_FRAUD_COPY.incorrectCardDetails,
       messageSeverity.Error,
       checkResultType.IncorrectCardDetails,
     );
