@@ -1,16 +1,17 @@
-const { defineConfig, devices } = require('@playwright/test');
-
+import { defineConfig, devices } from '@playwright/test';
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// require('dotenv').config();
+import 'dotenv/config';
 
-const isCi = !!process.env.CI;
+const IS_CI = !!process.env.CI;
+const PORT = process.env.PORT || 3000;
+const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
-module.exports = defineConfig({
+export default defineConfig({
   testDir: './e2e',
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
@@ -24,13 +25,13 @@ module.exports = defineConfig({
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: isCi,
+  forbidOnly: IS_CI,
   /* Retry on CI only */
-  retries: isCi ? 2 : 0,
+  retries: IS_CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [['html'], isCi ? ['github'] : ['list']],
+  reporter: [['html'], IS_CI ? ['github'] : ['list']],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
@@ -40,6 +41,16 @@ module.exports = defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+  },
+
+  /* In CI/GitHub action, run the production server before running tests
+   * (assumes `yarn build` was called before)
+   */
+  webServer: {
+    command: `yarn start`,
+    url: BASE_URL,
+    timeout: 120 * 1000,
+    reuseExistingServer: !IS_CI,
   },
 
   /* Configure projects for major browsers */
@@ -82,12 +93,4 @@ module.exports = defineConfig({
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
   // outputDir: 'test-results/',
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run test:start',
-  //   port: 3000,
-  //   reuseExistingServer: !process.env.CI,
-  //   timeout: 3 * 60 * 1000,
-  // },
 });

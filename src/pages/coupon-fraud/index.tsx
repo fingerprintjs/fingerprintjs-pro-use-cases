@@ -51,7 +51,7 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
         setIsWaitingForResponse(false);
       }
     },
-    [couponClaimMutation, couponCode],
+    [couponClaimMutation, couponCode, getData],
   );
 
   useEffect(() => {

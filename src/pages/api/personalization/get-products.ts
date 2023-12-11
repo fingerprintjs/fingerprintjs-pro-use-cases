@@ -60,7 +60,7 @@ export default personalizationEndpoint(async (req, res, { usePersonalizedData, v
 
   const { query } = JSON.parse(req.body);
 
-  let productsCount = await ProductDbModel.count();
+  const productsCount = await ProductDbModel.count();
 
   if (!productsCount) {
     await seedProducts();

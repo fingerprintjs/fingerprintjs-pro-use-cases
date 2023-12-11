@@ -1,0 +1,122 @@
+name: Tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+env:
+  # Playwright headless browsers running in CI get low confidence scores, causing flaky tests. Lower the confidence score threshold for CI testing.
+  MIN_CONFIDENCE_SCORE: 0
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # This takes 20s but does not seem necessary for our current setup,
+      # as ubuntu-latest already has a reasonable version of Node
+      # Add this to all jobs if you encounter problems with Node installation
+      # This also makes use of global yarn cache
+      # - uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 18
+      #     cache: 'yarn'
+
+      - name: 'Cache'
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: nodemodules-${{ hashFiles('yarn.lock') }}
+          restore-keys: nodemodules-
+
+      - name: Install packages
+        run: yarn install --prefer-offline --frozen-lockfile
+
+      - name: Lint
+        run: yarn lint
+  unit-tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 'Cache'
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: nodemodules-${{ hashFiles('yarn.lock') }}
+          restore-keys: nodemodules-
+
+      - name: Install packages
+        run: yarn install --prefer-offline --frozen-lockfile
+
+      - name: Run unit tests
+        run: yarn test
+  e2e:
+    name: Playwright e2e tests
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1, 2, 3]
+        shardTotal: [3]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: nodemodules-${{ hashFiles('yarn.lock') }}
+          restore-keys: nodemodules-
+
+      - name: Install node modules
+        run: yarn install --prefer-offline --frozen-lockfile
+
+      - name: Get installed Playwright version (used in cache key)
+        id: playwright-version
+        run: echo "PLAYWRIGHT_VERSION=$(node -e "process.stdout.write(require('@playwright/test/package.json').version)")" >> $GITHUB_ENV
+
+      - name: Cache Playwright browser binaries
+        uses: actions/cache@v3
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+
+      - name: Install Playwright browsers binaries if cache missed
+        run: yarn playwright install --with-deps
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+
+      # Ubuntu needs extra stuff to run webkit tests, alternative is using a Playwright docker container but
+      # that is slower in CI.
+      - name: If browser binaries cache hit, install just webkit dependencies
+        run: yarn playwright install-deps webkit
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+
+      - name: Cache Next build
+        uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/.next/cache
+          # Generate a new cache whenever packages or source files change.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('yarn.lock') }}-${{ hashFiles('src/*') }}
+          # If source files changed but packages didn't, rebuild from a prior cache.
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('yarn.lock') }}-
+
+      - name: Build website
+        run: yarn build
+
+      - name: Run Playwright tests
+        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
