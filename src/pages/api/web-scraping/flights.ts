@@ -8,8 +8,11 @@ import { ensurePostRequest, messageSeverity } from '../../../server/server';
 import { DAY_MS, FIVE_MINUTES_MS, HOUR_MS } from '../../../shared/timeUtils';
 import { AIRPORTS } from '../../web-scraping';
 import { Flight } from '../../../client/components/web-scraping/FlightCard';
+import { saveBotIp } from '../../../server/botd-firewall/saveBotIp';
 
 const roundToFiveMinutes = (time: number) => Math.round(time / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
+export type EventResponseBotData = NonNullable<NonNullable<EventResponse['products']>['botd']>['data'];
+export type EventResponseIdentification = NonNullable<NonNullable<EventResponse['products']>['identification']>['data'];
 
 export type FlightQuery = {
   from: string;
@@ -36,11 +39,13 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
   }
 
   // Retrieve analysis event from the Server API using the request ID
-  let botData: NonNullable<NonNullable<EventResponse['products']>['botd']>['data'];
+  let botData: EventResponseBotData;
+  let identification: EventResponseIdentification;
   try {
     const client = new FingerprintJsServerApiClient({ region: BACKEND_REGION, apiKey: SERVER_API_KEY });
     const eventResponse = await client.getEvent(requestId);
     botData = eventResponse.products?.botd?.data;
+    identification = eventResponse.products?.identification?.data;
   } catch (error) {
     console.log(error);
     // Throw a specific error if the request ID is not found
@@ -83,6 +88,7 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
     );
     // Optionally, here you could also save the bot's IP address to a blocklist in your database
     // and block all requests from this IP address in the future at a web server/firewall level.
+    saveBotIp(botData, identification?.visitorId ?? 'N/A');
     return;
   }
 
