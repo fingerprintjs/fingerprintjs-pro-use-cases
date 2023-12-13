@@ -371,6 +371,70 @@ export const USE_CASES = {
       },
     ],
   },
+  botFirewall: {
+    title: 'Bot-Detection-powered Firewall',
+    titleMeta: 'Fingerprint Use Cases | Bot-Detection-powered Firewall',
+    url: '/bot-firewall',
+    articleUrl: 'https://fingerprint.com/blog/bot-detection-powered-firewall/',
+    iconSvg: ScrapingIcon,
+    descriptionHomepage: [
+      <p key="1">
+        Integrate Fingerprint Bot Detection with your Web Application Firewall and dynamically block IP addresses linked
+        to past bot visits.
+      </p>,
+      <p key="2">
+        Block previously recognized bots on their next visit completely — before they even reach your web page.
+      </p>,
+    ],
+    description: (
+      <>
+        <p>
+          Integrate Fingerprint Bot Detection with your Web Application Firewall and dynamically block IP addresses
+          linked to past bot visits.
+        </p>
+        <p>
+          Fingerprint Bot Detection allows you to identify sophisticated bots and headless browsers by collecting and
+          analyzing browser signals. See our <Link href={'/web-scraping'}>Web scraping demo</Link> for an example of
+          protecting client-site content from bots. This demo goes a step further and uses Bot detection results to
+          block previously recognized bots on their next visit completely — before they even reach your web page.
+        </p>
+      </>
+    ),
+    descriptionMeta:
+      'Integrate Fingerprint Bot Detection with your Web Application Firewall and dynamically block IP addresses linked to past bot visits.',
+    doNotMentionResetButton: true,
+    instructions: [
+      <>
+        Use a locally running instance of Playwright, Cypress, or another headless browser tool to visit
+        <Link href={'https://botd-demo.fingeprint.com/web-scraping'}>
+          {' '}
+          https://botd-demo.fingeprint.com/web-scraping
+        </Link>
+        .
+      </>,
+      <>
+        Your headless browser will be recognized as a bot, and your IP address will be saved to the Bot IP database
+        displayed below.
+      </>,
+      <>
+        Click <b>Block this bot IP</b> to prevent the bot from loading the page at all going forward.
+      </>,
+      <>Try visiting the web scraping demo again (either as a bot or using your regular browser).</>,
+      <>Your IP address is blocked from the page completely.</>,
+    ],
+    moreResources: [
+      {
+        url: 'https://fingerprint.com/blog/preventing-content-scraping/',
+        type: 'Use case tutorial',
+        title: 'Web Scraping Prevention',
+      },
+      {
+        url: 'https://fingerprint.com/blog/betting-bots/',
+        type: 'Article',
+        title: 'Betting Bots',
+      },
+    ],
+  },
 } as const satisfies Record<string, UseCase>;
 
 export const PLAYGROUND_METADATA: Pick<
