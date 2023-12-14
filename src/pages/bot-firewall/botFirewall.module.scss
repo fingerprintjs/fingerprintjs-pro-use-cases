@@ -1,0 +1,23 @@
+.title {
+  color: v('dark-black');
+  font-family: Inter;
+  font-size: rem(24px);
+  text-align: center;
+  margin-bottom: rem(24px);
+}
+
+.reloadButton {
+  margin: 0 auto;
+  display: block;
+  margin-bottom: rem(24px);
+}
+
+.ipsTable {
+  margin: 0 auto;
+
+  td,
+  th {
+    border: 1px solid v('gray-box-stroke');
+    padding: rem(8px);
+  }
+}

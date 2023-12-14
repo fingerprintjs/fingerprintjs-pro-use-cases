@@ -6,7 +6,7 @@ interface BotIPAttributes extends Model<InferAttributes<BotIPAttributes>, InferC
   visitorId: string;
   requestId: string;
   ip: string;
-  timestamp: Date;
+  timestamp: string;
   botResult: string;
   botType: string;
   url: string;

@@ -405,19 +405,16 @@ export const USE_CASES = {
     doNotMentionResetButton: true,
     instructions: [
       <>
-        Use a locally running instance of Playwright, Cypress, or another headless browser tool to visit
-        <Link href={'https://botd-demo.fingeprint.com/web-scraping'}>
-          {' '}
-          https://botd-demo.fingeprint.com/web-scraping
-        </Link>
-        .
+        Use a locally running instance of Playwright, Cypress, or another headless browser tool to visit the
+        <Link href={'/web-scraping'}>web scraping demo</Link>.
       </>,
       <>
         Your headless browser will be recognized as a bot, and your IP address will be saved to the Bot IP database
         displayed below.
       </>,
       <>
-        Click <b>Block this bot IP</b> to prevent the bot from loading the page at all going forward.
+        Click <b>Block this bot IP</b> to prevent the bot from loading the page at all going forward. For demo purposes,
+        you are only allowed to block your own IP.
       </>,
       <>Try visiting the web scraping demo again (either as a bot or using your regular browser).</>,
       <>Your IP address is blocked from the page completely.</>,
