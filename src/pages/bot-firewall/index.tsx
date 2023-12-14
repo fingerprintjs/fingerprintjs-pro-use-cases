@@ -12,6 +12,16 @@ const formatDate = (date: string) => {
   return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
 };
 
+const createFirewallRule = async (ipAddress: string) => {
+  await fetch('/api/bot-firewall/create-firewall-rule', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ ipAddress }),
+  });
+};
+
 export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
   const { data: botIps, refetch } = useQuery({
     queryKey: ['ips'],
@@ -19,6 +29,11 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
       return fetch('/api/bot-firewall/get-ips').then((res) => res.json());
     },
   });
+
+  // const {} = useMutation({
+  //   mutationFn: createFirewallRule,
+
+  // })
 
   if (!botIps) {
     return null;
@@ -50,7 +65,9 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
               <td>{botIp?.botResult}</td>
               <td>{botIp?.botType}</td>
               <td>
-                <Button size="small">Block this IP</Button>
+                <Button size="small" onClick={() => createFirewallRule(botIp?.ip)}>
+                  Block this IP
+                </Button>
               </td>
             </tr>
           ))}
