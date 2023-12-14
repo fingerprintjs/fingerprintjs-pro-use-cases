@@ -2,7 +2,7 @@ import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/Us
 import { NextPage } from 'next';
 import { USE_CASES } from '../../client/components/common/content';
 import { CustomPageProps } from '../_app';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { BotIp } from '../../server/botd-firewall/saveBotVisit';
 import Button from '../../client/components/common/Button/Button';
 import styles from './botFirewall.module.scss';
@@ -12,15 +12,15 @@ const formatDate = (date: string) => {
   return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
 };
 
-const createFirewallRule = async (ipAddress: string) => {
-  await fetch('/api/bot-firewall/create-firewall-rule', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ ipAddress }),
-  });
-};
+// const createFirewallRule = async (ipAddress: string) => {
+//   await fetch('/api/bot-firewall/create-firewall-rule', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({ ipAddress }),
+//   });
+// };
 
 const saveBlockedIp = async (ip: string) => {
   await fetch('/api/bot-firewall/block-bot-ip', {
@@ -40,10 +40,12 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
     },
   });
 
-  // const {} = useMutation({
-  //   mutationFn: createFirewallRule,
-
-  // })
+  const { mutate: blockIp, isLoading: isLoadingBlockIp } = useMutation<unknown, Error, string>({
+    mutationFn: (ip: string) => saveBlockedIp(ip),
+    onSuccess: () => {
+      // refetch();
+    },
+  });
 
   if (!botVisits) {
     return null;
@@ -75,7 +77,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
               <td>{botIp?.botResult}</td>
               <td>{botIp?.botType}</td>
               <td>
-                <Button size="small" onClick={() => saveBlockedIp(botIp?.ip)}>
+                <Button size="small" onClick={() => blockIp(botIp?.ip)} disabled={isLoadingBlockIp}>
                   Block this IP
                 </Button>
               </td>

@@ -34,3 +34,8 @@ export const saveBlockedIp = async (ip?: string) => {
     timestamp: new Date().toISOString(),
   });
 };
+
+export const getBlockedIps = async () => {
+  const blockedIps = await BlockedIpDbModel.findAll();
+  return blockedIps;
+};
