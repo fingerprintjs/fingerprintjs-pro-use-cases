@@ -13,7 +13,7 @@ interface BotIPAttributes extends Model<InferAttributes<BotIPAttributes>, InferC
   userAgent: string;
 }
 
-export const BotIpDbModel = sequelize.define<BotIPAttributes>('botIp', {
+export const BotVisitDbModel = sequelize.define<BotIPAttributes>('botIp', {
   visitorId: {
     type: DataTypes.STRING,
   },
@@ -40,22 +40,22 @@ export const BotIpDbModel = sequelize.define<BotIPAttributes>('botIp', {
   },
 });
 
-BotIpDbModel.sync({ force: false });
+BotVisitDbModel.sync({ force: false });
 
 export type BotIp = Attributes<BotIPAttributes>;
 
-export const saveBotIp = async (botData: EventResponseBotData, visitorId: string) => {
+export const saveBotVisit = async (botData: EventResponseBotData, visitorId: string) => {
   if (!botData) {
     return;
   }
 
   console.log('saving');
 
-  BotIpDbModel.create({
+  BotVisitDbModel.create({
     ip: botData.ip,
     visitorId: visitorId,
     requestId: botData.requestId ?? 'N/A',
-    timestamp: new Date(),
+    timestamp: botData.time ?? 'N/A',
     botResult: botData.bot.result ?? 'N/A',
     botType: botData.bot.type ?? 'N/A',
     userAgent: botData.userAgent ?? 'N/A',

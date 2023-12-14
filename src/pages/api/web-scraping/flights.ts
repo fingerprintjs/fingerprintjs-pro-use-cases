@@ -8,7 +8,7 @@ import { ensurePostRequest, messageSeverity } from '../../../server/server';
 import { DAY_MS, FIVE_MINUTES_MS, HOUR_MS } from '../../../shared/timeUtils';
 import { AIRPORTS } from '../../web-scraping';
 import { Flight } from '../../../client/components/web-scraping/FlightCard';
-import { saveBotIp } from '../../../server/botd-firewall/saveBotIp';
+import { saveBotVisit } from '../../../server/botd-firewall/saveBotVisit';
 
 const roundToFiveMinutes = (time: number) => Math.round(time / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
 export type EventResponseBotData = NonNullable<NonNullable<EventResponse['products']>['botd']>['data'];
@@ -88,7 +88,7 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
     );
     // Optionally, here you could also save the bot's IP address to a blocklist in your database
     // and block all requests from this IP address in the future at a web server/firewall level.
-    saveBotIp(botData, identification?.visitorId ?? 'N/A');
+    saveBotVisit(botData, identification?.visitorId ?? 'N/A');
     return;
   }
 

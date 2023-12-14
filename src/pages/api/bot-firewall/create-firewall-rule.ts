@@ -1,4 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+// import * as dotenv from 'dotenv';
+// dotenv.config();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
@@ -24,6 +26,38 @@ async function getCustomRulesetId() {
   });
 
   return customRuleset.id;
+}
+
+// (async () => {
+//   const ruleSetId = await getCustomRulesetId();
+//   const ruleSet = (await getRuleset(ruleSetId)).result;
+//   const rule = getRule('88493f7f061544908f3bebf2aa3e2e6d', ruleSet);
+//   console.log(rule);
+// })();
+
+export function getRule(ruleId: string, ruleset: any) {
+  return ruleset.rules.find((item: any) => {
+    return item.id === ruleId;
+  });
+}
+
+export async function getRuleset(rulesetId: string) {
+  const apiToken = process.env.CLOUDFLARE_API_TOKEN ?? '';
+  const zoneId = process.env.CLOUDFLARE_ZONE_ID ?? '';
+
+  const url = `https://api.cloudflare.com/client/v4/zones/${zoneId}/rulesets/${rulesetId}`;
+
+  const options = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiToken}` },
+  };
+
+  try {
+    const ruleset = await (await fetch(url, options)).json();
+    return ruleset;
+  } catch (error) {
+    console.error('error:' + error);
+  }
 }
 
 async function getZoneRulesets() {

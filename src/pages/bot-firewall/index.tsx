@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import { USE_CASES } from '../../client/components/common/content';
 import { CustomPageProps } from '../_app';
 import { useQuery } from 'react-query';
-import { BotIp } from '../../server/botd-firewall/saveBotIp';
+import { BotIp } from '../../server/botd-firewall/saveBotVisit';
 import Button from '../../client/components/common/Button/Button';
 import styles from './botFirewall.module.scss';
 
@@ -22,11 +22,21 @@ const createFirewallRule = async (ipAddress: string) => {
   });
 };
 
+const saveBlockedIp = async (ip: string) => {
+  await fetch('/api/bot-firewall/block-bot-ip', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ ip }),
+  });
+};
+
 export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
-  const { data: botIps, refetch } = useQuery({
+  const { data: botVisits, refetch } = useQuery({
     queryKey: ['ips'],
     queryFn: (): Promise<BotIp[]> => {
-      return fetch('/api/bot-firewall/get-ips').then((res) => res.json());
+      return fetch('/api/bot-firewall/get-bot-visits').then((res) => res.json());
     },
   });
 
@@ -35,7 +45,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
 
   // })
 
-  if (!botIps) {
+  if (!botVisits) {
     return null;
   }
 
@@ -56,7 +66,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
             <th>Bot Type</th>
             <th>Action</th>
           </thead>
-          {botIps?.map((botIp) => (
+          {botVisits?.map((botIp) => (
             <tr key={botIp?.requestId}>
               <td>{formatDate(botIp?.timestamp)}</td>
               <td>{botIp?.requestId}</td>
@@ -65,7 +75,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
               <td>{botIp?.botResult}</td>
               <td>{botIp?.botType}</td>
               <td>
-                <Button size="small" onClick={() => createFirewallRule(botIp?.ip)}>
+                <Button size="small" onClick={() => saveBlockedIp(botIp?.ip)}>
                   Block this IP
                 </Button>
               </td>
