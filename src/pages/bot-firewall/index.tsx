@@ -22,30 +22,52 @@ const formatDate = (date: string) => {
 //   });
 // };
 
-const saveBlockedIp = async (ip: string) => {
-  await fetch('/api/bot-firewall/block-bot-ip', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ ip }),
-  });
-};
-
 export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
-  const { data: botVisits, refetch } = useQuery({
-    queryKey: ['ips'],
+  const { data: botVisits, refetch: refetchBotVisits } = useQuery({
+    queryKey: ['botVisits'],
     queryFn: (): Promise<BotIp[]> => {
       return fetch('/api/bot-firewall/get-bot-visits').then((res) => res.json());
     },
   });
 
-  const { mutate: blockIp, isLoading: isLoadingBlockIp } = useMutation<unknown, Error, string>({
-    mutationFn: (ip: string) => saveBlockedIp(ip),
-    onSuccess: () => {
-      // refetch();
+  const { data: blockedIps, refetch: refetchBlockedIps } = useQuery({
+    queryKey: ['blockedIps'],
+    queryFn: (): Promise<BotIp[]> => {
+      return fetch('/api/bot-firewall/get-blocked-ips').then((res) => res.json());
     },
   });
+
+  const { mutate: blockIp, isLoading: isLoadingBlockIp } = useMutation<unknown, Error, string>({
+    mutationFn: (ip: string) =>
+      fetch('/api/bot-firewall/block-bot-ip', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ip }),
+      }),
+    onSuccess: () => {
+      refetchBlockedIps();
+    },
+  });
+
+  const { mutate: unBlockIp, isLoading: isLoadingUnblockIp } = useMutation<unknown, Error, string>({
+    mutationFn: (ip: string) =>
+      fetch('/api/bot-firewall/unblock-bot-ip', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ip }),
+      }),
+    onSuccess: () => {
+      refetchBlockedIps();
+    },
+  });
+
+  const isIpBlocked = (ip: string): boolean => {
+    return Boolean(blockedIps?.find((blockedIp) => blockedIp?.ip === ip));
+  };
 
   if (!botVisits) {
     return null;
@@ -55,7 +77,15 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
     <>
       <UseCaseWrapper useCase={USE_CASES.botFirewall} embed={embed} contentSx={{ maxWidth: 'none' }}>
         <h2 className={styles.title}>Detected bot visits</h2>
-        <Button size="small" outlined onClick={() => refetch()} className={styles.reloadButton}>
+        <Button
+          size="small"
+          outlined
+          onClick={() => {
+            refetchBotVisits();
+            refetchBlockedIps();
+          }}
+          className={styles.reloadButton}
+        >
           Reload
         </Button>
         <table className={styles.ipsTable}>
@@ -77,8 +107,12 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
               <td>{botIp?.botResult}</td>
               <td>{botIp?.botType}</td>
               <td>
-                <Button size="small" onClick={() => blockIp(botIp?.ip)} disabled={isLoadingBlockIp}>
-                  Block this IP
+                <Button
+                  size="small"
+                  onClick={isIpBlocked(botIp?.ip) ? () => unBlockIp(botIp?.ip) : () => blockIp(botIp?.ip)}
+                  disabled={isLoadingBlockIp || isLoadingUnblockIp}
+                >
+                  {isIpBlocked(botIp?.ip) ? 'Unblock' : 'Block this IP'}
                 </Button>
               </td>
             </tr>

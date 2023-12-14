@@ -22,12 +22,9 @@ BlockedIpDbModel.sync({ force: false });
 export type BlockedIp = Attributes<BlockedIpAttributes>;
 
 export const saveBlockedIp = async (ip?: string) => {
-  console.log('saving blocked ip: ' + ip);
   if (!ip) {
     return;
   }
-
-  console.log('saving blocked ip: ' + ip);
 
   BlockedIpDbModel.upsert({
     ip,
@@ -35,7 +32,14 @@ export const saveBlockedIp = async (ip?: string) => {
   });
 };
 
-export const getBlockedIps = async () => {
-  const blockedIps = await BlockedIpDbModel.findAll();
-  return blockedIps;
+export const deleteBlockedIp = async (ip?: string) => {
+  if (!ip) {
+    return;
+  }
+
+  BlockedIpDbModel.destroy({
+    where: {
+      ip,
+    },
+  });
 };
