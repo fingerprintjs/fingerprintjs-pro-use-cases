@@ -2,11 +2,24 @@ import { BlockedIpDbModel } from './saveBlockedIp';
 
 export const syncCloudflareBotFirewallRule = async () => {
   const blockedIps = await BlockedIpDbModel.findAll();
-  const ruleExpression = `http.x_forwarded_for in {${blockedIps.map((ip) => `"${ip.ip}"`).join(' ')}}`;
+  /**
+   * Rule expression is limited to [4096 characters](https://developers.cloudflare.com/ruleset-engine/rules-language/expressions/#maximum-rule-expression-length).
+   * IPv6 Max length is [45 characters](https://stackoverflow.com/questions/166132/maximum-length-of-the-textual-representation-of-an-ipv6-address) plus quotes and a space is 48.
+   * "http.x_forwarded_for in {}" is 26 characters.
+   * (4096 - 26) / 48 = 84
+   * You can block 84 IP addresses in a single Cloudflare custom rule.
+   * That is sufficient for the purposes of this demonstration.
+   * If you need to, you can squeeze in more IPs by testing their actual length and also use multiple custom rules depending on your Cloudflare plan.
+   * This strategy is applicable to any Firewall solution editable using an API. The limitations will vary depending on your cloud provider.
+   */
+  const MAX_IPS_PER_RULE = 84;
+  const ipList = blockedIps
+    .slice(0, MAX_IPS_PER_RULE)
+    .map((ip) => `"${ip.ip}"`)
+    .join(' ');
+  const ruleExpression = `http.x_forwarded_for in {${ipList}}`;
 
-  console.log(ruleExpression);
-  const result = await updateFirewallRule(ruleExpression);
-  console.log(result);
+  await updateFirewallRule(ruleExpression);
 };
 
 async function updateFirewallRule(expression: string) {
