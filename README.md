@@ -63,6 +63,7 @@ Protect your checkout from the use of stolen credit cards, chargebacks, and othe
 Protect your content and build a paywall that actually works. Prevent visitors from resetting their free content quota by clearing cookies, going incognito, or using a VPN.
 
 [🗞 Paywall Live Demo](https://demo.fingerprint.com/paywall)
+[📖 Paywall Article](https://fingerprint.com/blog/how-paywalls-work-paywall-protection-tutorial/)
 
 ### Personalization
 
