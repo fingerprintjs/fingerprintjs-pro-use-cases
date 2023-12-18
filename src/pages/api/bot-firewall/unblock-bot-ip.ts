@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { deleteBlockedIp } from '../../../server/botd-firewall/saveBlockedIp';
+import { syncCloudflareBotFirewallRule } from '../../../server/botd-firewall/updateFirewallRule';
 
 export default async function blockIp(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
@@ -9,6 +10,7 @@ export default async function blockIp(req: NextApiRequest, res: NextApiResponse)
     }
 
     await deleteBlockedIp(body.ip);
+    await syncCloudflareBotFirewallRule();
     return res.send({ status: 200 });
   } else {
     return res.send({ status: 405 });

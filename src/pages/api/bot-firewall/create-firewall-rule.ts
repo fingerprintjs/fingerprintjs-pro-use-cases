@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return new Response(null, { status: 400 });
     }
 
-    await createFirewallRule(body.ipAddress);
+    await updateFirewallRule(body.ipAddress);
 
     return res.send({ status: 200 });
   } else {
@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 }
 
-async function getCustomRulesetId() {
+export async function getCustomRulesetId() {
   const rulesets: Array<any> = await getZoneRulesets();
 
   // one must deploy custom rules to the http_request_firewall_custom phase entry point ruleset https://developers.cloudflare.com/waf/custom-rules/create-api/
@@ -26,19 +26,6 @@ async function getCustomRulesetId() {
   });
 
   return customRuleset.id;
-}
-
-// (async () => {
-//   const ruleSetId = await getCustomRulesetId();
-//   const ruleSet = (await getRuleset(ruleSetId)).result;
-//   const rule = getRule('88493f7f061544908f3bebf2aa3e2e6d', ruleSet);
-//   console.log(rule);
-// })();
-
-export function getRule(ruleId: string, ruleset: any) {
-  return ruleset.rules.find((item: any) => {
-    return item.id === ruleId;
-  });
 }
 
 export async function getRuleset(rulesetId: string) {
@@ -79,11 +66,10 @@ async function getZoneRulesets() {
   }
 }
 
-async function createFirewallRule(ipAddress: string) {
+async function updateFirewallRule(ipAddress: string) {
   const apiToken = process.env.CLOUDFLARE_API_TOKEN ?? '';
   const zoneId = process.env.CLOUDFLARE_ZONE_ID ?? '';
-
-  const customRulesetId = await getCustomRulesetId();
+  const customRulesetId = process.env.CLOUDFLARE_RULESET_ID ?? '';
 
   const ruleBody = {
     description: `Firewall rule for ${ipAddress} created by Fingerprint.`,
