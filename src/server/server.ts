@@ -74,9 +74,14 @@ export function reportSuspiciousActivity(_context: any) {
   return _context;
 }
 
-export function ensurePostRequest(req: NextApiRequest, res: NextApiResponse): boolean {
+export function ensurePostRequest(req: NextApiRequest, res: NextApiResponse, expectBody = true): boolean {
   if (req.method !== 'POST') {
     res.status(405).send({ message: 'Only POST requests allowed' });
+    return false;
+  }
+
+  if (expectBody && !req.body) {
+    res.status(400).send({ message: 'Missing body' });
     return false;
   }
 
