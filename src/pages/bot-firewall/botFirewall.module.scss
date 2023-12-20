@@ -1,3 +1,9 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .title {
   color: v('dark-black');
   font-family: Inter;
@@ -13,11 +19,15 @@
 }
 
 .ipsTable {
-  margin: 0 auto;
+  margin-top: rem(24px);
 
   td,
   th {
     border: 1px solid v('gray-box-stroke');
     padding: rem(8px);
+  }
+
+  .mine {
+    background-color: lightcyan;
   }
 }

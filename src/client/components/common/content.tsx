@@ -405,11 +405,11 @@ export const USE_CASES = {
     doNotMentionResetButton: true,
     instructions: [
       <>
-        Use a locally running instance of Playwright, Cypress, or another headless browser tool to visit the
+        Use a locally running instance of Playwright, Cypress, or another headless browser tool to visit the{' '}
         <Link href={'/web-scraping'}>web scraping demo</Link>.
       </>,
       <>
-        Your headless browser will be recognized as a bot, and your IP address will be saved to the Bot IP database
+        Your headless browser will be recognized as a bot, and your IP address will be saved to the bot visit database
         displayed below.
       </>,
       <>

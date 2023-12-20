@@ -7,13 +7,23 @@ import { BotIp } from '../../server/botd-firewall/saveBotVisit';
 import Button from '../../client/components/common/Button/Button';
 import styles from './botFirewall.module.scss';
 import { BlockIpPayload } from '../api/bot-firewall/block-bot-ip';
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import classnames from 'classnames';
 
 const formatDate = (date: string) => {
   const d = new Date(date);
-  return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
+  return `${d.toLocaleDateString('en-Us', {
+    month: 'short',
+    day: 'numeric',
+  })} ${d.toLocaleTimeString('gb', { hour: '2-digit', minute: '2-digit' })}`;
 };
 
 export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
+  const { getData: getVisitorData, data: visitorData } = useVisitorData({
+    ignoreCache: true,
+    extendedResult: true,
+  });
+
   const { data: botVisits, refetch: refetchBotVisits } = useQuery({
     queryKey: ['botVisits'],
     queryFn: (): Promise<BotIp[]> => {
@@ -29,13 +39,14 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
   });
 
   const { mutate: blockIp, isLoading: isLoadingBlockIp } = useMutation({
-    mutationFn: async ({ ip, blocked, requestId }: BlockIpPayload) => {
+    mutationFn: async ({ ip, blocked }: Omit<BlockIpPayload, 'requestId'>) => {
+      const { requestId } = await getVisitorData();
       return fetch('/api/bot-firewall/block-bot-ip', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ip, blocked, requestId }),
+        body: JSON.stringify({ ip, blocked, requestId } satisfies BlockIpPayload),
       });
     },
     onSuccess: () => {
@@ -54,48 +65,56 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
   return (
     <>
       <UseCaseWrapper useCase={USE_CASES.botFirewall} embed={embed} contentSx={{ maxWidth: 'none' }}>
-        <h2 className={styles.title}>Detected bot visits</h2>
-        <Button
-          size="small"
-          outlined
-          onClick={() => {
-            refetchBotVisits();
-            refetchBlockedIps();
-          }}
-          className={styles.reloadButton}
-        >
-          Reload
-        </Button>
-        <table className={styles.ipsTable}>
-          <thead>
-            <th>Timestamp</th>
-            <th>Request ID</th>
-            <th>Visitor ID</th>
-            <th>IP</th>
-            <th>Bot Intention</th>
-            <th>Bot Type</th>
-            <th>Action</th>
-          </thead>
-          {botVisits?.map((botVisit) => (
-            <tr key={botVisit?.requestId}>
-              <td>{formatDate(botVisit?.timestamp)}</td>
-              <td>{botVisit?.requestId}</td>
-              <td>{botVisit?.visitorId}</td>
-              <td>{botVisit?.ip}</td>
-              <td>{botVisit?.botResult}</td>
-              <td>{botVisit?.botType}</td>
-              <td>
-                <Button
-                  size="small"
-                  onClick={() => blockIp({ ip: botVisit?.ip, blocked: !isIpBlocked(botVisit?.ip), requestId: '' })}
-                  disabled={isLoadingBlockIp}
-                >
-                  {isIpBlocked(botVisit?.ip) ? 'Unblock' : 'Block this IP'}
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </table>
+        <div className={styles.container}>
+          <h2 className={styles.title}>Detected bot visits</h2>
+          <Button
+            size="small"
+            outlined
+            onClick={() => {
+              refetchBotVisits();
+              refetchBlockedIps();
+            }}
+            className={styles.reloadButton}
+          >
+            Reload
+          </Button>
+          <i>Note: For the purposes of this demo,you can only block/unblock your own IP address ({visitorData?.ip})</i>
+          <table className={styles.ipsTable}>
+            <thead>
+              <th>Timestamp</th>
+              <th>Request ID</th>
+              <th>IP</th>
+              <th>Bot Type</th>
+              <th>Action</th>
+            </thead>
+            {botVisits?.map((botVisit) => {
+              const isMyIp = botVisit?.ip === visitorData?.ip;
+              return (
+                <tr key={botVisit?.requestId} className={classnames(isMyIp && styles.mine)}>
+                  <td>{formatDate(botVisit?.timestamp)}</td>
+                  <td>{botVisit?.requestId}</td>
+                  <td>{botVisit?.ip}</td>
+                  <td>
+                    {botVisit?.botResult} ({botVisit.botType})
+                  </td>
+                  <td>
+                    {isMyIp ? (
+                      <Button
+                        size="small"
+                        onClick={() => blockIp({ ip: botVisit?.ip, blocked: !isIpBlocked(botVisit?.ip) })}
+                        disabled={isLoadingBlockIp}
+                      >
+                        {isIpBlocked(botVisit?.ip) ? 'Unblock' : 'Block this IP'}
+                      </Button>
+                    ) : (
+                      <>-</>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </table>
+        </div>
       </UseCaseWrapper>
     </>
   );
