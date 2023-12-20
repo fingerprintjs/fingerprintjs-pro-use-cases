@@ -14,6 +14,13 @@ export type BlockIpPayload = {
   requestId: string;
 };
 
+export type BlockIpResponse = {
+  result: 'success' | 'error';
+  message: string;
+  ip?: string;
+  blocked?: boolean;
+};
+
 export default async function blockIp(req: NextApiRequest, res: NextApiResponse) {
   // This API route accepts only POST requests.
   if (!ensurePostRequest(req, res)) {
@@ -24,7 +31,7 @@ export default async function blockIp(req: NextApiRequest, res: NextApiResponse)
 
   const { okay, message } = await validateBlockIpRequest(requestId, ip, req);
   if (!okay) {
-    return res.status(403).json({ severity: 'error', message });
+    return res.status(403).json({ result: 'error', message } satisfies BlockIpResponse);
   }
 
   try {
@@ -34,10 +41,10 @@ export default async function blockIp(req: NextApiRequest, res: NextApiResponse)
       await deleteBlockedIp(ip);
     }
     await syncCloudflareBotFirewallRule();
-    return res.status(200).json({ message: 'OK' });
+    return res.status(200).json({ result: 'success', message: 'OK', ip, blocked } satisfies BlockIpResponse);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ severity: 'error', message: 'Internal server error.' });
+    return res.status(500).json({ result: 'error', message: 'Internal server error.' } satisfies BlockIpResponse);
   }
 }
 
@@ -85,12 +92,10 @@ const validateBlockIpRequest = async (
     return { okay: false, message: "Visitor's IP does not match blocked IP." };
   }
 
-  // Check if the visit origin matches the request origin
   if (!originIsAllowed(identification.url, req)) {
     return { okay: false, message: 'Visit origin does not match request origin.' };
   }
 
-  // Check if the visit timestamp is not old
   if (Date.now() - Number(new Date(identification.time)) > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
     return { okay: false, message: 'Old visit, potential replay attack.' };
   }

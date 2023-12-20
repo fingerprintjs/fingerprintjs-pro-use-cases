@@ -6,9 +6,10 @@ import { useMutation, useQuery } from 'react-query';
 import { BotIp } from '../../server/botd-firewall/saveBotVisit';
 import Button from '../../client/components/common/Button/Button';
 import styles from './botFirewall.module.scss';
-import { BlockIpPayload } from '../api/bot-firewall/block-bot-ip';
+import { BlockIpPayload, BlockIpResponse } from '../api/bot-firewall/block-bot-ip';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import classnames from 'classnames';
+import { enqueueSnackbar } from 'notistack';
 
 const formatDate = (date: string) => {
   const d = new Date(date);
@@ -19,18 +20,25 @@ const formatDate = (date: string) => {
 };
 
 export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
+  // Get visitor data from Fingerprint (just used for the visitor's IP address)
   const { getData: getVisitorData, data: visitorData } = useVisitorData({
     ignoreCache: true,
     extendedResult: true,
   });
 
-  const { data: botVisits, refetch: refetchBotVisits } = useQuery({
+  // Get a list of bot visits
+  const {
+    data: botVisits,
+    refetch: refetchBotVisits,
+    isLoading: isLoadingBotVisits,
+  } = useQuery({
     queryKey: ['botVisits'],
     queryFn: (): Promise<BotIp[]> => {
       return fetch('/api/bot-firewall/get-bot-visits').then((res) => res.json());
     },
   });
 
+  // Get a list of currently blocked IP addresses
   const { data: blockedIps, refetch: refetchBlockedIps } = useQuery({
     queryKey: ['blockedIps'],
     queryFn: (): Promise<BotIp[]> => {
@@ -38,19 +46,36 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
     },
   });
 
+  // Post request mutation to block/unblock IP addresses
   const { mutate: blockIp, isLoading: isLoadingBlockIp } = useMutation({
     mutationFn: async ({ ip, blocked }: Omit<BlockIpPayload, 'requestId'>) => {
       const { requestId } = await getVisitorData();
-      return fetch('/api/bot-firewall/block-bot-ip', {
+      const response = await fetch('/api/bot-firewall/block-bot-ip', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ ip, blocked, requestId } satisfies BlockIpPayload),
       });
+      if (response.ok) {
+        return await response.json();
+      } else {
+        const message = (await response.json()).message;
+        throw new Error('Failed to update firewall: ' + message ?? response.statusText);
+      }
     },
-    onSuccess: () => {
+    onSuccess: async (data: BlockIpResponse) => {
       refetchBlockedIps();
+      enqueueSnackbar(
+        <>
+          IP address <b>&nbsp;{data.ip}&nbsp;</b> was <b>&nbsp;{data.blocked ? 'blocked' : 'unblocked'}&nbsp;</b> in the
+          application firewall.{' '}
+        </>,
+        { variant: 'success', autoHideDuration: 3000 },
+      );
+    },
+    onError: (error: Error) => {
+      enqueueSnackbar(error.message, { variant: 'error', autoHideDuration: 3000 });
     },
   });
 
@@ -59,7 +84,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
   };
 
   if (!botVisits) {
-    return null;
+    return <h3>Failed to fetch bot visits.</h3>;
   }
 
   return (
@@ -75,10 +100,11 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
               refetchBlockedIps();
             }}
             className={styles.reloadButton}
+            disabled={isLoadingBotVisits}
           >
-            Reload
+            {isLoadingBotVisits ? 'Loading bots visits ⏳' : 'Reload'}
           </Button>
-          <i>Note: For the purposes of this demo,you can only block/unblock your own IP address ({visitorData?.ip})</i>
+          <i>Note: For the purposes of this demo, you can only block/unblock your own IP address ({visitorData?.ip})</i>
           <table className={styles.ipsTable}>
             <thead>
               <th>Timestamp</th>
@@ -104,7 +130,11 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
                         onClick={() => blockIp({ ip: botVisit?.ip, blocked: !isIpBlocked(botVisit?.ip) })}
                         disabled={isLoadingBlockIp}
                       >
-                        {isIpBlocked(botVisit?.ip) ? 'Unblock' : 'Block this IP'}
+                        {isLoadingBlockIp
+                          ? 'Working on it ⏳'
+                          : isIpBlocked(botVisit?.ip)
+                            ? 'Unblock'
+                            : 'Block this IP'}
                       </Button>
                     ) : (
                       <>-</>
