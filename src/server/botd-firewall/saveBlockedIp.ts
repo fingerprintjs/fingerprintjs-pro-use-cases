@@ -18,25 +18,16 @@ export const BlockedIpDbModel = sequelize.define<BlockedIpAttributes>('blocked_i
 });
 
 BlockedIpDbModel.sync({ force: false });
-
 export type BlockedIp = Attributes<BlockedIpAttributes>;
 
-export const saveBlockedIp = async (ip?: string) => {
-  if (!ip) {
-    return;
-  }
-
+export const saveBlockedIp = async (ip: string) => {
   BlockedIpDbModel.upsert({
     ip,
     timestamp: new Date().toISOString(),
   });
 };
 
-export const deleteBlockedIp = async (ip?: string) => {
-  if (!ip) {
-    return;
-  }
-
+export const deleteBlockedIp = async (ip: string) => {
   BlockedIpDbModel.destroy({
     where: {
       ip,

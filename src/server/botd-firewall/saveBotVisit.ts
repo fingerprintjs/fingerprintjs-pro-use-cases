@@ -1,6 +1,6 @@
 import { Attributes, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import { sequelize } from '../server';
-import { EventResponseBotData } from '../../pages/api/web-scraping/flights';
+import { EventResponseBotData } from '../../shared/types';
 
 interface BotIPAttributes extends Model<InferAttributes<BotIPAttributes>, InferCreationAttributes<BotIPAttributes>> {
   visitorId: string;
@@ -48,8 +48,6 @@ export const saveBotVisit = async (botData: EventResponseBotData, visitorId: str
   if (!botData) {
     return;
   }
-
-  console.log('saving');
 
   BotVisitDbModel.create({
     ip: botData.ip,

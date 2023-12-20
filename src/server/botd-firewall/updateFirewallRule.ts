@@ -33,7 +33,7 @@ async function updateFirewallRule(expression: string) {
   const customRulesetId = process.env.CLOUDFLARE_RULESET_ID ?? '';
 
   const ruleBody = {
-    description: `Fingerprint: Block IP previously used by bots`,
+    description: `Fingerprint: Block IP addresses previously used by bots`,
     expression,
     action: 'block',
   };
@@ -57,7 +57,8 @@ async function updateFirewallRule(expression: string) {
 }
 
 // You might need to call the Cloudflare API to find the custom ruleset ID, here is a helper for that.
-// Once you have the ID, you can save it in your env variables to avoid calling the API on every request.
+// Once you have the ID, you can save it in your env variables to avoid having to retrieve it for every request.
+// @ts-expect-error
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function getCustomRulesetId() {
   const zoneId = process.env.CLOUDFLARE_ZONE_ID ?? '';

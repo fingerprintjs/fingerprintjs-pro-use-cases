@@ -1,4 +1,4 @@
-import { EventResponse, FingerprintJsServerApiClient, isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { FingerprintJsServerApiClient, isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { CheckResult, CheckResultObject, checkResultType } from '../../../server/checkResult';
 import { isRequestIdFormatValid, originIsAllowed, visitIpMatchesRequestIp } from '../../../server/checks';
@@ -9,10 +9,9 @@ import { DAY_MS, FIVE_MINUTES_MS, HOUR_MS } from '../../../shared/timeUtils';
 import { AIRPORTS } from '../../web-scraping';
 import { Flight } from '../../../client/components/web-scraping/FlightCard';
 import { saveBotVisit } from '../../../server/botd-firewall/saveBotVisit';
+import { EventResponseBotData, EventResponseIdentification } from '../../../shared/types';
 
 const roundToFiveMinutes = (time: number) => Math.round(time / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
-export type EventResponseBotData = NonNullable<NonNullable<EventResponse['products']>['botd']>['data'];
-export type EventResponseIdentification = NonNullable<NonNullable<EventResponse['products']>['identification']>['data'];
 
 export type FlightQuery = {
   from: string;

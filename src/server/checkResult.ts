@@ -60,7 +60,4 @@ export const checkResultType = Object.freeze({
   CouponDoesNotExist: 'CouponDoesNotExist',
   CouponAlreadyClaimed: 'CouponAlreadyClaimed',
   AnotherCouponClaimedRecently: 'AnotherCouponClaimedRecently',
-
-  // Firewall demo
-  invalidIp: 'invalidIpAddress',
 });

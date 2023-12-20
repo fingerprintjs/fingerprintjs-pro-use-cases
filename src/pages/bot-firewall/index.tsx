@@ -60,8 +60,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
       if (response.ok) {
         return await response.json();
       } else {
-        const message = (await response.json()).message;
-        throw new Error('Failed to update firewall: ' + message ?? response.statusText);
+        throw new Error('Failed to update firewall: ' + (await response.json()).message ?? response.statusText);
       }
     },
     onSuccess: async (data: BlockIpResponse) => {
@@ -83,7 +82,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
     return Boolean(blockedIps?.find((blockedIp) => blockedIp?.ip === ip));
   };
 
-  if (!botVisits) {
+  if (!isLoadingBotVisits && !botVisits) {
     return <h3>Failed to fetch bot visits.</h3>;
   }
 

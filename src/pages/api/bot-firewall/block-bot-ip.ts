@@ -4,9 +4,9 @@ import { syncCloudflareBotFirewallRule } from '../../../server/botd-firewall/upd
 import { FingerprintJsServerApiClient, isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, BACKEND_REGION, SERVER_API_KEY } from '../../../server/const';
 import { ensurePostRequest } from '../../../server/server';
-import { EventResponseIdentification } from '../web-scraping/flights';
 import { isRequestIdFormatValid, originIsAllowed, visitIpMatchesRequestIp } from '../../../server/checks';
 import { isIP } from 'is-ip';
+import { EventResponseIdentification } from '../../../shared/types';
 
 export type BlockIpPayload = {
   ip: string;
