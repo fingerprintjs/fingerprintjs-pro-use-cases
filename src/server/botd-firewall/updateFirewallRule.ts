@@ -13,42 +13,47 @@ import { BlockedIpDbModel } from './saveBlockedIp';
  * This strategy is applicable to any Firewall solution editable using an API. The limitations will vary depending on your cloud provider.
  */
 const MAX_IPS_PER_RULE = 84;
-const MAX_IPS = MAX_IPS_PER_RULE * 5; // 420
+const MAX_RULES = 5;
+const MAX_IPS = MAX_IPS_PER_RULE * MAX_RULES; // 420
 
-export const syncCloudflareBotFirewallRule = async () => {
+export const getFirewallRules = async (): Promise<CloudflareRule[]> => {
+  // Get the list of blocked IPs from the database
   const blockedIps = await BlockedIpDbModel.findAll({
     order: [['timestamp', 'DESC']],
     limit: MAX_IPS,
   });
 
-  // Split the list of blocked IPs into chunks of MAX_IPS_PER_RULE length.
+  // Split the list of blocked IPs into chunks of MAX_IPS_PER_RULE length
   const chunks = chunk(blockedIps, MAX_IPS_PER_RULE);
+
+  // Build the rule expression for each chunk
   const ruleExpressions = chunks.map((chunk) => {
     const ipList = chunk.map((ip) => `"${ip.ip}"`).join(' ');
     return `http.x_forwarded_for in {${ipList}}`;
   });
 
-  await updateFirewallRuleset(ruleExpressions);
+  // Build a rule from each rule expression
+  const rules = ruleExpressions.map((expression, index) => ({
+    action: 'block',
+    description: `Block Bot IP addresses #${index + 1}`,
+    expression,
+  }));
+
+  return rules;
 };
 
-async function updateFirewallRuleset(ruleExpressions: string[]) {
+type CloudflareRule = {
+  action: string;
+  description: string;
+  expression: string;
+};
+
+export async function updateFirewallRuleset(rules: CloudflareRule[]) {
   const apiToken = process.env.CLOUDFLARE_API_TOKEN ?? '';
   const zoneId = process.env.CLOUDFLARE_ZONE_ID ?? '';
   // You can get your Cloudflare API token, and zone ID from your Cloudflare dashboard.
   // But you might need to call the API to find the custom ruleset ID. See getCustomRulesetId() below.
   const customRulesetId = process.env.CLOUDFLARE_RULESET_ID ?? '';
-
-  const rulesetPayload = {
-    description: 'Custom ruleset for blocking Fingerprint-detected bot IPs',
-    kind: 'root',
-    name: 'default',
-    phase: 'http_request_firewall_custom',
-    rules: ruleExpressions.map((expression, index) => ({
-      action: 'block',
-      description: `Block Bot IP addresses #${index + 1}`,
-      expression,
-    })),
-  };
 
   const url = `https://api.cloudflare.com/client/v4/zones/${zoneId}/rulesets/${customRulesetId}`;
   const options = {
@@ -57,14 +62,21 @@ async function updateFirewallRuleset(ruleExpressions: string[]) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiToken}`,
     },
-    body: JSON.stringify(rulesetPayload),
+    body: JSON.stringify({
+      description: 'Custom ruleset for blocking Fingerprint-detected bot IPs',
+      kind: 'root',
+      name: 'default',
+      phase: 'http_request_firewall_custom',
+      rules,
+    }),
   };
 
-  try {
-    const blockAction = await (await fetch(url, options)).json();
-    return blockAction.result;
-  } catch (error) {
-    console.error('error:' + error);
+  const response = await fetch(url, options);
+  if (response.ok) {
+    return await response.json();
+  } else {
+    console.log(response.statusText, await response.json());
+    throw new Error('Updating firewall ruleset failed', { cause: response.statusText });
   }
 }
 
