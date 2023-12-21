@@ -16,19 +16,21 @@ const MAX_IPS_PER_RULE = 84;
 const MAX_RULES = 5;
 const MAX_IPS = MAX_IPS_PER_RULE * MAX_RULES; // 420
 
-export const getFirewallRules = async (): Promise<CloudflareRule[]> => {
-  // Get the list of blocked IPs from the database
+export const getBlockedIps = async (): Promise<string[]> => {
   const blockedIps = await BlockedIpDbModel.findAll({
     order: [['timestamp', 'DESC']],
     limit: MAX_IPS,
   });
+  return blockedIps.map((ip) => ip.ip);
+};
 
+export const buildFirewallRules = async (blockedIps: string[]): Promise<CloudflareRule[]> => {
   // Split the list of blocked IPs into chunks of MAX_IPS_PER_RULE length
   const chunks = chunk(blockedIps, MAX_IPS_PER_RULE);
 
   // Build the rule expression for each chunk
   const ruleExpressions = chunks.map((chunk) => {
-    const ipList = chunk.map((ip) => `"${ip.ip}"`).join(' ');
+    const ipList = chunk.map((ip) => `"${ip}"`).join(' ');
     return `http.x_forwarded_for in {${ipList}}`;
   });
 
