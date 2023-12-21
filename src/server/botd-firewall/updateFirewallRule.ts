@@ -1,3 +1,4 @@
+import { chunk } from '../../shared/utils';
 import { BlockedIpDbModel } from './saveBlockedIp';
 
 /**
@@ -6,46 +7,57 @@ import { BlockedIpDbModel } from './saveBlockedIp';
  * "http.x_forwarded_for in {}" is 26 characters.
  * (4096 - 26) / 48 = 84
  * You can block 84 IP addresses in a single Cloudflare custom rule.
+ * 5 custom rules on a free Cloudflare plan gets you 420 IP addresses you can block at any given time.
  * That is sufficient for the purposes of this demonstration.
- * If you need to, you can squeeze in more IPs by testing their actual length and also use multiple custom rules depending on your Cloudflare plan.
+ * If you need to, you can squeeze in more IPs by testing their actual length and also using a higher Cloudflare plan with more custom rules.
  * This strategy is applicable to any Firewall solution editable using an API. The limitations will vary depending on your cloud provider.
  */
 const MAX_IPS_PER_RULE = 84;
+const MAX_IPS = MAX_IPS_PER_RULE * 5; // 420
 
 export const syncCloudflareBotFirewallRule = async () => {
   const blockedIps = await BlockedIpDbModel.findAll({
     order: [['timestamp', 'DESC']],
-    limit: MAX_IPS_PER_RULE,
+    limit: MAX_IPS,
   });
 
-  const ipList = blockedIps.map((ip) => `"${ip.ip}"`).join(' ');
-  const ruleExpression = `http.x_forwarded_for in {${ipList}}`;
+  // Split the list of blocked IPs into chunks of MAX_IPS_PER_RULE length.
+  const chunks = chunk(blockedIps, MAX_IPS_PER_RULE);
+  const ruleExpressions = chunks.map((chunk) => {
+    const ipList = chunk.map((ip) => `"${ip.ip}"`).join(' ');
+    return `http.x_forwarded_for in {${ipList}}`;
+  });
 
-  await updateFirewallRule(ruleExpression);
+  await updateFirewallRuleset(ruleExpressions);
 };
 
-async function updateFirewallRule(expression: string) {
+async function updateFirewallRuleset(ruleExpressions: string[]) {
   const apiToken = process.env.CLOUDFLARE_API_TOKEN ?? '';
   const zoneId = process.env.CLOUDFLARE_ZONE_ID ?? '';
-  const ruleId = process.env.CLOUDFLARE_BLOCK_IP_RULE ?? '';
-  // You can get your Cloudflare API token, zone ID and rule ID from your Cloudflare dashboard.
+  // You can get your Cloudflare API token, and zone ID from your Cloudflare dashboard.
   // But you might need to call the API to find the custom ruleset ID. See getCustomRulesetId() below.
   const customRulesetId = process.env.CLOUDFLARE_RULESET_ID ?? '';
 
-  const ruleBody = {
-    description: `Fingerprint: Block IP addresses previously used by bots`,
-    expression,
-    action: 'block',
+  const rulesetPayload = {
+    description: 'Custom ruleset for blocking Fingerprint-detected bot IPs',
+    kind: 'root',
+    name: 'default',
+    phase: 'http_request_firewall_custom',
+    rules: ruleExpressions.map((expression, index) => ({
+      action: 'block',
+      description: `Block Bot IP addresses #${index + 1}`,
+      expression,
+    })),
   };
 
-  const url = `https://api.cloudflare.com/client/v4/zones/${zoneId}/rulesets/${customRulesetId}/rules/${ruleId}`;
+  const url = `https://api.cloudflare.com/client/v4/zones/${zoneId}/rulesets/${customRulesetId}`;
   const options = {
-    method: 'PATCH',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiToken}`,
     },
-    body: JSON.stringify(ruleBody),
+    body: JSON.stringify(rulesetPayload),
   };
 
   try {
