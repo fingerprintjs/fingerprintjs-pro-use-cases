@@ -24,9 +24,12 @@ export const getBlockedIps = async (): Promise<string[]> => {
   return blockedIps.map((ip) => ip.ip);
 };
 
-export const buildFirewallRules = async (blockedIps: string[]): Promise<CloudflareRule[]> => {
+export const buildFirewallRules = async (
+  blockedIps: string[],
+  maxIpsPerRule = MAX_IPS_PER_RULE,
+): Promise<CloudflareRule[]> => {
   // Split the list of blocked IPs into chunks of MAX_IPS_PER_RULE length
-  const chunks = chunk(blockedIps, MAX_IPS_PER_RULE);
+  const chunks = chunk(blockedIps, maxIpsPerRule);
 
   // Build the rule expression for each chunk
   const ruleExpressions = chunks.map((chunk) => {
