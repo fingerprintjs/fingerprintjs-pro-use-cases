@@ -49,7 +49,7 @@ export default async function blockIp(req: NextApiRequest, res: NextApiResponse)
     // Construct updated firewall rules from the blocked IP database and apply them to your Cloudflare application
     const blockedIps = await getBlockedIps();
     const newRules = await buildFirewallRules(blockedIps);
-    console.log(JSON.stringify(await updateCloudflareRuleset(newRules), null, 2));
+    await updateCloudflareRuleset(newRules);
 
     // Return success
     return res.status(200).json({ result: 'success', message: 'OK', ip, blocked } satisfies BlockIpResponse);
