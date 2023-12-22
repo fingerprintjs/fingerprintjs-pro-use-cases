@@ -1,0 +1,16 @@
+# I need to test this but this is the general idea
+name: Delete expired IP blocks
+
+on:
+  schedule:
+    # Every hour?
+    - cron: '0 */1 * * *'
+
+jobs:
+  delete_ips:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send DELETE request
+        run: |
+          curl -X DELETE -H "Content-Type: application/json" -d '{"key": "${{ secrets.DELETE_OLD_BLOCKED_IPS_KEY }}"}' http://staging.fingerprinthub.com/api/bot-firewall/delete-old-blocked-ips
