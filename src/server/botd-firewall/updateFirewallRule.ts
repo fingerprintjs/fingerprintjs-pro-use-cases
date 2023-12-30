@@ -1,5 +1,5 @@
 import { chunk } from '../../shared/utils';
-import { BlockedIpDbModel } from './saveBlockedIp';
+import { BlockedIpDbModel } from './blockedIpsDatabase';
 
 /**
  * Rule expression is limited to [4096 characters](https://developers.cloudflare.com/ruleset-engine/rules-language/expressions/#maximum-rule-expression-length).

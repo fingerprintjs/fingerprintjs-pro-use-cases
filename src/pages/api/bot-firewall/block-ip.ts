@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { deleteBlockedIp, saveBlockedIp } from '../../../server/botd-firewall/saveBlockedIp';
+import { deleteBlockedIp, saveBlockedIp } from '../../../server/botd-firewall/blockedIpsDatabase';
 import {
   buildFirewallRules,
   getBlockedIps,

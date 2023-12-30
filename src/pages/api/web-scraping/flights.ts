@@ -8,7 +8,7 @@ import { ensurePostRequest, messageSeverity } from '../../../server/server';
 import { DAY_MS, FIVE_MINUTES_MS, HOUR_MS } from '../../../shared/timeUtils';
 import { AIRPORTS } from '../../web-scraping';
 import { Flight } from '../../../client/components/web-scraping/FlightCard';
-import { saveBotVisit } from '../../../server/botd-firewall/saveBotVisit';
+import { saveBotVisit } from '../../../server/botd-firewall/botVisitDatabase';
 import { EventResponseBotData, EventResponseIdentification } from '../../../shared/types';
 
 const roundToFiveMinutes = (time: number) => Math.round(time / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;

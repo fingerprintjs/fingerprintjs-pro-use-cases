@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import { USE_CASES } from '../../client/components/common/content';
 import { CustomPageProps } from '../_app';
 import { useMutation, useQuery } from 'react-query';
-import { BotIp } from '../../server/botd-firewall/saveBotVisit';
+import { BotIp } from '../../server/botd-firewall/botVisitDatabase';
 import Button from '../../client/components/common/Button/Button';
 import styles from './botFirewall.module.scss';
 import { BlockIpPayload, BlockIpResponse } from '../api/bot-firewall/block-bot-ip';

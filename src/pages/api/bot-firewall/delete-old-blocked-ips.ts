@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { BlockedIpDbModel } from '../../../server/botd-firewall/saveBlockedIp';
+import { BlockedIpDbModel } from '../../../server/botd-firewall/blockedIpsDatabase';
 import { HOUR_MS } from '../../../shared/timeUtils';
 import { Op } from 'sequelize';
 import {
