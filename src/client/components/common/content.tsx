@@ -247,11 +247,11 @@ export const USE_CASES = {
       <>Try switching to incognito mode or clearing cookies to go around the paywall and read more articles.</>,
     ],
     moreResources: [
-      // {
-      //   type: 'Use case tutorial',
-      //   title: 'Paywall',
-      //   url: 'https://fingerprint.com/use-cases/paywall/',
-      // },
+      {
+        type: 'Use case tutorial',
+        title: 'Paywall',
+        url: 'https://fingerprint.com/blog/how-paywalls-work-paywall-protection-tutorial/',
+      },
     ],
   },
   personalization: {
