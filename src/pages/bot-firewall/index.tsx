@@ -110,7 +110,10 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
           >
             {isLoadingBotVisits || isLoadingVisitorData ? 'Loading ⏳' : 'Reload'}
           </Button>
-          <i>Note: For the purposes of this demo, you can only block/unblock your own IP address ({visitorData?.ip})</i>
+          <i>
+            Note: For the purposes of this demo, you can only block/unblock your own IP address ({visitorData?.ip}). The
+            block expires after one hour. The database of bot visits is cleared on every website update.
+          </i>
           <table className={styles.ipsTable}>
             <thead>
               <tr>

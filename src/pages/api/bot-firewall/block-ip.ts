@@ -1,9 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { deleteBlockedIp, getBlockedIps, saveBlockedIp } from '../../../server/botd-firewall/blockedIpsDatabase';
-import {
-  buildFirewallRules,
-  updateFirewallRuleset as updateCloudflareRuleset,
-} from '../../../server/botd-firewall/updateFirewallRule';
+import { deleteBlockedIp, saveBlockedIp } from '../../../server/botd-firewall/blockedIpsDatabase';
+import { syncFirewallRuleset } from '../../../server/botd-firewall/updateFirewallRule';
 import { FingerprintJsServerApiClient, isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, BACKEND_REGION, SERVER_API_KEY } from '../../../server/const';
 import { ensurePostRequest } from '../../../server/server';
@@ -46,9 +43,7 @@ export default async function blockIp(req: NextApiRequest, res: NextApiResponse<
     }
 
     // Construct updated firewall rules from the blocked IP database and apply them to your Cloudflare application
-    const blockedIps = await getBlockedIps();
-    const newRules = await buildFirewallRules(blockedIps);
-    await updateCloudflareRuleset(newRules);
+    await syncFirewallRuleset();
 
     // Return success
     return res.status(200).json({ result: 'success', message: 'OK', ip, blocked });

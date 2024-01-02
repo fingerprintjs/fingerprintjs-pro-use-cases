@@ -1,4 +1,5 @@
 import { chunk } from '../../shared/utils';
+import { getBlockedIps } from './blockedIpsDatabase';
 
 /**
  * Rule expression is limited to [4096 characters](https://developers.cloudflare.com/ruleset-engine/rules-language/expressions/#maximum-rule-expression-length).
@@ -75,6 +76,13 @@ export async function updateFirewallRuleset(rules: CloudflareRule[]) {
     throw new Error('Updating firewall ruleset failed', { cause: response.statusText });
   }
 }
+
+// Construct updated firewall rules from the blocked IP database and apply them to your Cloudflare application
+export const syncFirewallRuleset = async () => {
+  const blockedIps = await getBlockedIps();
+  const newRules = await buildFirewallRules(blockedIps);
+  await updateFirewallRuleset(newRules);
+};
 
 // You might need to call the Cloudflare API to find the custom ruleset ID, here is a helper for that.
 // Once you have the ID, you can save it in your env variables to avoid having to retrieve it for every request.

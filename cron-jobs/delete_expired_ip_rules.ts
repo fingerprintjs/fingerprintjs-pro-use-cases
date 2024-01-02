@@ -1,6 +1,6 @@
-import { BlockedIpDbModel, getBlockedIps } from '../src/server/botd-firewall/blockedIpsDatabase';
+import { BlockedIpDbModel } from '../src/server/botd-firewall/blockedIpsDatabase';
 import { Op } from 'sequelize';
-import { buildFirewallRules, updateFirewallRuleset } from '../src/server/botd-firewall/updateFirewallRule';
+import { syncFirewallRuleset } from '../src/server/botd-firewall/updateFirewallRule';
 import { schedule } from 'node-cron';
 import { HOUR_MS } from '../src/shared/timeUtils';
 import 'dotenv/config';
@@ -30,13 +30,14 @@ async function deleteOldIpBlocks() {
 
     console.log(`Deleted ${deletedCount} expired blocked IPs from the database.`);
 
-    if (deletedCount > 0) {
-      // Construct updated firewall rules from the blocked IP database and apply them to the Cloudflare application
-      const blockedIps = await getBlockedIps();
-      const newRules = await buildFirewallRules(blockedIps);
-      await updateFirewallRuleset(newRules);
-      console.log(`Updated Cloudflare firewall.`);
-    }
+    /**
+     * Construct updated firewall rules from the blocked IP database and apply them to the Cloudflare application.
+     * Note: We do this even if no IPs were deleted:
+     * A user might have blocked their IP but the database might have been cleared during site deployment right after,
+     * potentially leaving the IP blocked beyond the desired TTL. Safer to sync the firewall ruleset every time.
+     */
+    await syncFirewallRuleset();
+    console.log(`Updated Cloudflare firewall.`);
   } catch (error) {
     console.log(`Error deleting old blocked IPs:  ${error}`);
   }

@@ -416,7 +416,10 @@ export const USE_CASES = {
         Click <b>Block this bot IP</b> to prevent the bot from loading the page at all going forward. For demo purposes,
         you are only allowed to block your own IP.
       </>,
-      <>Try visiting the web scraping demo again (either as a bot or using your regular browser).</>,
+      <>
+        Try visiting the <Link href={'/web-scraping'}>web scraping demo</Link> again (either as a bot or using your
+        regular browser).
+      </>,
       <>Your IP address is blocked from the page completely.</>,
     ],
     moreResources: [
