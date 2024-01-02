@@ -2,7 +2,8 @@ import { Attributes, DataTypes, InferAttributes, InferCreationAttributes, Model 
 import { sequelize } from '../server';
 import { EventResponseBotData } from '../../shared/types';
 
-interface BotIPAttributes extends Model<InferAttributes<BotIPAttributes>, InferCreationAttributes<BotIPAttributes>> {
+interface BotVisitAttributes
+  extends Model<InferAttributes<BotVisitAttributes>, InferCreationAttributes<BotVisitAttributes>> {
   visitorId: string;
   requestId: string;
   ip: string;
@@ -13,7 +14,7 @@ interface BotIPAttributes extends Model<InferAttributes<BotIPAttributes>, InferC
   userAgent: string;
 }
 
-export const BotVisitDbModel = sequelize.define<BotIPAttributes>('botIp', {
+const BotVisitDbModel = sequelize.define<BotVisitAttributes>('bot_visits', {
   visitorId: {
     type: DataTypes.STRING,
   },
@@ -42,7 +43,7 @@ export const BotVisitDbModel = sequelize.define<BotIPAttributes>('botIp', {
 
 BotVisitDbModel.sync({ force: false });
 
-export type BotIp = Attributes<BotIPAttributes>;
+export type BotVisit = Attributes<BotVisitAttributes>;
 
 export const saveBotVisit = async (botData: EventResponseBotData, visitorId: string) => {
   if (!botData) {
@@ -60,3 +61,5 @@ export const saveBotVisit = async (botData: EventResponseBotData, visitorId: str
     url: botData.url ?? 'N/A',
   });
 };
+
+export const getBotVisits = async () => await BotVisitDbModel.findAll({ order: [['timestamp', 'DESC']] });

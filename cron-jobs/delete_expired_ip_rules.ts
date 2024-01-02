@@ -2,22 +2,24 @@ import { BlockedIpDbModel, getBlockedIps } from '../src/server/botd-firewall/blo
 import { Op } from 'sequelize';
 import { buildFirewallRules, updateFirewallRuleset } from '../src/server/botd-firewall/updateFirewallRule';
 import { schedule } from 'node-cron';
-
-// Read environment variables
+import { HOUR_MS } from '../src/shared/timeUtils';
 import 'dotenv/config';
 
-// In production, run this in conjunction with the production web server like:
-// yarn start:with-cron-jobs
-schedule('*/5 * * * * *', () => {
+/**
+ * In production, run this file in conjunction with the production web server like:
+ * yarn start:with-cron-jobs
+ */
+
+// Every 5 minutes
+schedule('*/5 * * * *', () => {
   deleteOldIpBlocks();
 });
 
-// const IP_BLOCK_TIME_TO_LIVE = HOUR_MS;
-const IP_BLOCK_TIME_TO_LIVE_MS = 1000 * 60;
+const IP_BLOCK_TIME_TO_LIVE_MS = HOUR_MS;
 
 async function deleteOldIpBlocks() {
   try {
-    // Remove IP blocks older than 1 hour
+    // Remove expired IP blocks
     const deletedCount = await BlockedIpDbModel.destroy({
       where: {
         timestamp: {

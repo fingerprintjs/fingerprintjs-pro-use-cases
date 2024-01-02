@@ -3,13 +3,13 @@ import { NextPage } from 'next';
 import { USE_CASES } from '../../client/components/common/content';
 import { CustomPageProps } from '../_app';
 import { useMutation, useQuery } from 'react-query';
-import { BotIp } from '../../server/botd-firewall/botVisitDatabase';
+import { BotVisit } from '../../server/botd-firewall/botVisitDatabase';
 import Button from '../../client/components/common/Button/Button';
 import styles from './botFirewall.module.scss';
 import { BlockIpPayload, BlockIpResponse } from '../api/bot-firewall/block-ip';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import classnames from 'classnames';
-import { enqueueSnackbar } from 'notistack';
+import { OptionsObject, enqueueSnackbar } from 'notistack';
 
 const formatDate = (date: string) => {
   const d = new Date(date);
@@ -17,6 +17,11 @@ const formatDate = (date: string) => {
     month: 'short',
     day: 'numeric',
   })} ${d.toLocaleTimeString('gb', { hour: '2-digit', minute: '2-digit' })}`;
+};
+
+const snackbarOptions: OptionsObject = {
+  autoHideDuration: 3000,
+  anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
 };
 
 export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
@@ -36,7 +41,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
     isLoading: isLoadingBotVisits,
   } = useQuery({
     queryKey: ['botVisits'],
-    queryFn: (): Promise<BotIp[]> => {
+    queryFn: (): Promise<BotVisit[]> => {
       return fetch('/api/bot-firewall/get-bot-visits').then((res) => res.json());
     },
   });
@@ -73,21 +78,20 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
           IP address <b>&nbsp;{data.ip}&nbsp;</b> was <b>&nbsp;{data.blocked ? 'blocked' : 'unblocked'}&nbsp;</b> in the
           application firewall.{' '}
         </>,
-        { variant: 'success', autoHideDuration: 3000 },
+        { ...snackbarOptions, variant: 'success' },
       );
     },
     onError: (error: Error) => {
-      enqueueSnackbar(error.message, { variant: 'error', autoHideDuration: 3000 });
+      enqueueSnackbar(error.message, {
+        ...snackbarOptions,
+        variant: 'error',
+      });
     },
   });
 
   const isIpBlocked = (ip: string): boolean => {
     return Boolean(blockedIps?.find((blockedIp) => blockedIp === ip));
   };
-
-  // if (!isLoadingBotVisits && !botVisits) {
-  //   return <h3>Failed to fetch bot visits.</h3>;
-  // }
 
   return (
     <>
@@ -112,8 +116,8 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
               <tr>
                 <th>Timestamp</th>
                 <th>Request ID</th>
-                <th>IP</th>
                 <th>Bot Type</th>
+                <th>IP</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -124,10 +128,10 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
                   <tr key={botVisit?.requestId} className={classnames(isMyIp && styles.mine)}>
                     <td>{formatDate(botVisit?.timestamp)}</td>
                     <td>{botVisit?.requestId}</td>
-                    <td>{botVisit?.ip}</td>
                     <td>
                       {botVisit?.botResult} ({botVisit.botType})
                     </td>
+                    <td>{botVisit?.ip}</td>
                     <td>
                       {isMyIp ? (
                         <Button

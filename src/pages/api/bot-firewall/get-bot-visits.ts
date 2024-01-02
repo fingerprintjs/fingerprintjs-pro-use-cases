@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { BotIp, BotVisitDbModel } from '../../../server/botd-firewall/botVisitDatabase';
+import { BotVisit, getBotVisits } from '../../../server/botd-firewall/botVisitDatabase';
 
-export default async function getBotVisits(req: NextApiRequest, res: NextApiResponse<BotIp[]>) {
-  const botIps = await BotVisitDbModel.findAll({ order: [['timestamp', 'DESC']] });
-  res.status(200).json(botIps);
+export default async function handler(_req: NextApiRequest, res: NextApiResponse<BotVisit[]>) {
+  res.status(200).json(await getBotVisits());
 }
