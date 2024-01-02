@@ -6,7 +6,7 @@ import { useMutation, useQuery } from 'react-query';
 import { BotIp } from '../../server/botd-firewall/botVisitDatabase';
 import Button from '../../client/components/common/Button/Button';
 import styles from './botFirewall.module.scss';
-import { BlockIpPayload, BlockIpResponse } from '../api/bot-firewall/block-bot-ip';
+import { BlockIpPayload, BlockIpResponse } from '../api/bot-firewall/block-ip';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import classnames from 'classnames';
 import { enqueueSnackbar } from 'notistack';
@@ -53,7 +53,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
   const { mutate: blockIp, isLoading: isLoadingBlockIp } = useMutation({
     mutationFn: async ({ ip, blocked }: Omit<BlockIpPayload, 'requestId'>) => {
       const { requestId } = await getVisitorData({ ignoreCache: true });
-      const response = await fetch('/api/bot-firewall/block-bot-ip', {
+      const response = await fetch('/api/bot-firewall/block-ip', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
