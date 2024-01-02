@@ -44,7 +44,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
   // Get a list of currently blocked IP addresses
   const { data: blockedIps, refetch: refetchBlockedIps } = useQuery({
     queryKey: ['blockedIps'],
-    queryFn: (): Promise<BotIp[]> => {
+    queryFn: (): Promise<string[]> => {
       return fetch('/api/bot-firewall/get-blocked-ips').then((res) => res.json());
     },
   });
@@ -82,7 +82,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
   });
 
   const isIpBlocked = (ip: string): boolean => {
-    return Boolean(blockedIps?.find((blockedIp) => blockedIp?.ip === ip));
+    return Boolean(blockedIps?.find((blockedIp) => blockedIp === ip));
   };
 
   // if (!isLoadingBotVisits && !botVisits) {

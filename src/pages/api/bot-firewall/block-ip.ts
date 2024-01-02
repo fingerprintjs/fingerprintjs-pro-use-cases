@@ -1,8 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { deleteBlockedIp, saveBlockedIp } from '../../../server/botd-firewall/blockedIpsDatabase';
+import { deleteBlockedIp, getBlockedIps, saveBlockedIp } from '../../../server/botd-firewall/blockedIpsDatabase';
 import {
   buildFirewallRules,
-  getBlockedIps,
   updateFirewallRuleset as updateCloudflareRuleset,
 } from '../../../server/botd-firewall/updateFirewallRule';
 import { FingerprintJsServerApiClient, isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';

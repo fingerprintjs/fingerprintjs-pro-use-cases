@@ -1,5 +1,4 @@
 import { chunk } from '../../shared/utils';
-import { BlockedIpDbModel } from './blockedIpsDatabase';
 
 /**
  * Rule expression is limited to [4096 characters](https://developers.cloudflare.com/ruleset-engine/rules-language/expressions/#maximum-rule-expression-length).
@@ -14,15 +13,7 @@ import { BlockedIpDbModel } from './blockedIpsDatabase';
  */
 const MAX_IPS_PER_RULE = 84;
 const MAX_RULES = 5;
-const MAX_IPS = MAX_IPS_PER_RULE * MAX_RULES; // 420
-
-export const getBlockedIps = async (): Promise<string[]> => {
-  const blockedIps = await BlockedIpDbModel.findAll({
-    order: [['timestamp', 'DESC']],
-    limit: MAX_IPS,
-  });
-  return blockedIps.map((ip) => ip.ip);
-};
+export const MAX_BLOCKED_IPS = MAX_IPS_PER_RULE * MAX_RULES; // 420
 
 export const buildFirewallRules = async (
   blockedIps: string[],

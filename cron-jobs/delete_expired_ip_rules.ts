@@ -1,10 +1,6 @@
-import { BlockedIpDbModel } from '../src/server/botd-firewall/blockedIpsDatabase';
+import { BlockedIpDbModel, getBlockedIps } from '../src/server/botd-firewall/blockedIpsDatabase';
 import { Op } from 'sequelize';
-import {
-  buildFirewallRules,
-  getBlockedIps,
-  updateFirewallRuleset,
-} from '../src/server/botd-firewall/updateFirewallRule';
+import { buildFirewallRules, updateFirewallRuleset } from '../src/server/botd-firewall/updateFirewallRule';
 import { schedule } from 'node-cron';
 
 // Read environment variables
