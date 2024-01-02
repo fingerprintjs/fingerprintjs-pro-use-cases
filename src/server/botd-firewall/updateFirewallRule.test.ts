@@ -16,7 +16,6 @@ describe('buildFirewallRules', () => {
     expect(rules).toEqual(expectedRules);
   });
 
-  // Add more test cases here...
   it('should build multiple firewall rules correctly', async () => {
     const blockedIps = [
       '68.237.223.37',
