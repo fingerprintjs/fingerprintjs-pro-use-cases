@@ -1,4 +1,4 @@
-import { buildFirewallRules } from './updateFirewallRule';
+import { buildFirewallRules } from './buildFirewallRules';
 import { describe, expect, it } from 'vitest';
 
 describe('buildFirewallRules', () => {

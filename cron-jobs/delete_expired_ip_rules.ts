@@ -1,6 +1,6 @@
 import { BlockedIpDbModel } from '../src/server/botd-firewall/blockedIpsDatabase';
 import { Op } from 'sequelize';
-import { syncFirewallRuleset } from '../src/server/botd-firewall/updateFirewallRule';
+import { syncFirewallRuleset } from '../src/server/botd-firewall/cloudflareApiHelper';
 import { schedule } from 'node-cron';
 import { HOUR_MS } from '../src/shared/timeUtils';
 import 'dotenv/config';
@@ -39,6 +39,6 @@ async function deleteOldIpBlocks() {
     await syncFirewallRuleset();
     console.log(`Updated Cloudflare firewall.`);
   } catch (error) {
-    console.log(`Error deleting old blocked IPs:  ${error}`);
+    console.log(`Error deleting old blocked IPs: ${error}`);
   }
 }

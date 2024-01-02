@@ -107,7 +107,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
               refetchBlockedIps();
             }}
             className={styles.reloadButton}
-            disabled={isLoadingBotVisits}
+            disabled={isLoadingBotVisits || isLoadingVisitorData}
           >
             {isLoadingBotVisits || isLoadingVisitorData ? 'Loading ⏳' : 'Reload'}
           </Button>

@@ -395,9 +395,13 @@ export const USE_CASES = {
         </p>
         <p>
           Fingerprint Bot Detection allows you to identify sophisticated bots and headless browsers by collecting and
-          analyzing browser signals. See our <Link href={'/web-scraping'}>Web scraping demo</Link> for an example of
-          protecting client-site content from bots. This demo goes a step further and uses Bot detection results to
-          block previously recognized bots on their next visit completely — before they even reach your web page.
+          analyzing browser signals. See our{' '}
+          <Link href={'/web-scraping'} target="_blank">
+            Web scraping demo
+          </Link>{' '}
+          for an example of protecting client-site content from bots. This demo goes a step further and uses Bot
+          detection results to block previously recognized bots on their next visit completely — before they even reach
+          your web page.
         </p>
       </>
     ),
@@ -407,7 +411,10 @@ export const USE_CASES = {
     instructions: [
       <>
         Use a locally running instance of Playwright, Cypress, or another headless browser tool to visit the{' '}
-        <Link href={'/web-scraping'}>web scraping demo</Link>.
+        <Link href={'/web-scraping'} target="_blank">
+          web scraping demo
+        </Link>
+        .
       </>,
       <>
         Your headless browser will be recognized as a bot, and your IP address will be saved to the bot visit database
@@ -418,8 +425,11 @@ export const USE_CASES = {
         you are only allowed to block your own IP.
       </>,
       <>
-        Try visiting the <Link href={'/web-scraping'}>web scraping demo</Link> again (either as a bot or using your
-        regular browser).
+        Try visiting the{' '}
+        <Link href={'/web-scraping'} target="_blank">
+          web scraping demo
+        </Link>{' '}
+        again (either as a bot or using your regular browser).
       </>,
       <>Your IP address is blocked from the page completely.</>,
     ],

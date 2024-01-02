@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { deleteBlockedIp, saveBlockedIp } from '../../../server/botd-firewall/blockedIpsDatabase';
-import { syncFirewallRuleset } from '../../../server/botd-firewall/updateFirewallRule';
+import { syncFirewallRuleset } from '../../../server/botd-firewall/cloudflareApiHelper';
 import { FingerprintJsServerApiClient, isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, BACKEND_REGION, SERVER_API_KEY } from '../../../server/const';
 import { ensurePostRequest } from '../../../server/server';
