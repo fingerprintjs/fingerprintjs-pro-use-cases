@@ -227,6 +227,7 @@ export const USE_CASES = {
     title: 'Paywall',
     titleMeta: 'Fingerprint Use Cases | Content Paywall Live Demo',
     url: '/paywall',
+    articleUrl: 'https://fingerprint.com/blog/how-paywalls-work-paywall-protection-tutorial/',
     iconSvg: PaywallIcon,
     descriptionHomepage: [
       <p key="1">
