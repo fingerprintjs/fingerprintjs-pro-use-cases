@@ -30,14 +30,14 @@ export const getBlockedIps = async (): Promise<string[]> => {
 };
 
 export const saveBlockedIp = async (ip: string) => {
-  BlockedIpDbModel.upsert({
+  return BlockedIpDbModel.upsert({
     ip,
     timestamp: new Date().toISOString(),
   });
 };
 
 export const deleteBlockedIp = async (ip: string) => {
-  BlockedIpDbModel.destroy({
+  return BlockedIpDbModel.destroy({
     where: {
       ip,
     },
