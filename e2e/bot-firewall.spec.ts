@@ -20,10 +20,13 @@ test.describe('Bot Firewall Demo', () => {
     await page.getByText('was blocked in the application firewall').waitFor();
     await page.waitForTimeout(5000);
 
-    // Try to visit web-scraping page, should be blocked by Cloudflare
-    await page.goto('https://staging.fingerprinthub.com/web-scraping');
-    await page.reload();
-    await page.getByRole('heading', { name: 'Sorry, you have been blocked' }).waitFor();
+    /**
+     * Try to visit web-scraping page, should be blocked by Cloudflare
+     * Checking the response code here as parsing the actual page if flaky for some reason
+     */
+    const responsePromise = page.waitForResponse('https://staging.fingerprinthub.com/web-scraping');
+    page.goto('https://staging.fingerprinthub.com/web-scraping');
+    expect((await responsePromise).status()).toBe(403);
 
     // Unblock IP
     await page.goto('/bot-firewall');
