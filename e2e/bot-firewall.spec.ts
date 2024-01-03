@@ -18,7 +18,7 @@ test.describe('Bot Firewall Demo', () => {
     await page.goto('/bot-firewall');
     await page.getByRole('button', { name: BOT_FIREWALL_COPY.blockIp }).first().click();
     await page.getByText('was blocked in the application firewall').waitFor();
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(10000);
 
     /**
      * Try to visit web-scraping page, should be blocked by Cloudflare
@@ -32,7 +32,7 @@ test.describe('Bot Firewall Demo', () => {
     await page.goto('/bot-firewall');
     await page.getByRole('button', { name: BOT_FIREWALL_COPY.unblockIp }).first().click();
     await page.getByText('was unblocked in the application firewall').waitFor();
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(10000);
 
     // Try to visit web-scraping page, should be allowed again
     await page.goto('https://staging.fingerprinthub.com/web-scraping');
