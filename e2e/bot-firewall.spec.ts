@@ -22,6 +22,7 @@ test.describe('Bot Firewall Demo', () => {
 
     // Try to visit web-scraping page, should be blocked by Cloudflare
     await page.goto('https://staging.fingerprinthub.com/web-scraping', { waitUntil: 'networkidle' });
+    await page.reload({ waitUntil: 'networkidle' });
     await page.getByRole('heading', { name: 'Sorry, you have been blocked' }).waitFor();
 
     // Unblock IP
