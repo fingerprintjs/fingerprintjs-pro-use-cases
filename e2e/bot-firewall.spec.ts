@@ -3,13 +3,18 @@ import { resetScenarios } from './resetHelper';
 import { TEST_IDS } from '../src/client/testIDs';
 import { BOT_FIREWALL_COPY } from '../src/client/bot-firewall/botFirewallCopy';
 
-test.describe('Bot Firewall Demo', () => {
+/**
+ * CHROME_ONLY flag tells the GitHub action to run this test only using Chrome.
+ * Since this test relies on a single common Cloudflare ruleset we need to prevent it from running in multiple browsers in parallel,
+ * they would trip over each other and fail.
+ */
+test.describe('Bot Firewall Demo CHROME_ONLY', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/coupon-fraud');
     await resetScenarios(page);
   });
 
-  test('Should display bot visit a allow blocking IP address', async ({ page, context }) => {
+  test('Should display bot visit and allow blocking/unblocking its IP address', async ({ page, context }) => {
     // Record bot visit in web-scraping page
     await page.goto('/web-scraping');
     await expect(page.getByTestId(TEST_IDS.common.alert)).toContainText('Malicious bot detected');
