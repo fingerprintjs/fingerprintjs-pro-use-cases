@@ -10,6 +10,7 @@ import { BlockIpPayload, BlockIpResponse } from '../api/bot-firewall/block-ip';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import classnames from 'classnames';
 import { OptionsObject as SnackbarOptions, enqueueSnackbar } from 'notistack';
+import { BOT_FIREWALL_COPY } from './botFirewallCopy';
 
 const formatDate = (date: string) => {
   const d = new Date(date);
@@ -146,8 +147,8 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
                           {isLoadingBlockIp
                             ? 'Working on it ⏳'
                             : isIpBlocked(botVisit?.ip)
-                              ? 'Unblock'
-                              : 'Block this IP'}
+                              ? BOT_FIREWALL_COPY.unblockIp
+                              : BOT_FIREWALL_COPY.blockIp}
                         </Button>
                       ) : (
                         <>-</>
