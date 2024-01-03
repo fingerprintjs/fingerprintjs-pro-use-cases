@@ -47,16 +47,13 @@ export const syncFirewallRuleset = async () => {
 async function getCustomRulesetId() {
   const zoneId = process.env.CLOUDFLARE_ZONE_ID ?? '';
   const apiToken = process.env.CLOUDFLARE_API_TOKEN ?? '';
-
-  const url = `https://api.cloudflare.com/client/v4/zones/${zoneId}/rulesets`;
-
-  const options = {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiToken}` },
-  };
-
   try {
-    const rulesets = await (await fetch(url, options)).json();
+    const rulesets = await (
+      await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId}/rulesets`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiToken}` },
+      })
+    ).json();
 
     const customRuleset = rulesets.result.find((item: { phase: string }) => {
       return item.phase === 'http_request_firewall_custom';

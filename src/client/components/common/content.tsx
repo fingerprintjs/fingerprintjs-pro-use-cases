@@ -28,6 +28,7 @@ export type UseCase = {
     title: string;
     url: string;
   }[];
+  hiddenInNavigation?: boolean;
 };
 
 export const USE_CASES = {
@@ -466,9 +467,14 @@ export const PLAYGROUND_METADATA: Pick<
   descriptionMeta: 'Analyze your browser with Fingerprint Pro and see all the available signals.',
 };
 
-export const USE_CASES_ARRAY = Object.values(USE_CASES);
+export const USE_CASES_ARRAY = Object.values(USE_CASES)
+  // TODO: Remove this when ready the final of bot firewall demo is ready
+  .filter((useCase) => useCase.url !== USE_CASES.botFirewall.url);
 
-export const USE_CASES_NAVIGATION = USE_CASES_ARRAY.map((useCase) => ({ title: useCase.title, url: useCase.url }));
+export const USE_CASES_NAVIGATION = USE_CASES_ARRAY.map((useCase) => ({
+  title: useCase.title,
+  url: useCase.url,
+}));
 export const PLATFORM_NAVIGATION = [PLAYGROUND_METADATA];
 
 type HomePageCard = Pick<UseCase, 'title' | 'url' | 'iconSvg' | 'descriptionHomepage'>;

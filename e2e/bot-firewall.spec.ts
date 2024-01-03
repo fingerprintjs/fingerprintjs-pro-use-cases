@@ -5,8 +5,7 @@ import { BOT_FIREWALL_COPY } from '../src/client/bot-firewall/botFirewallCopy';
 
 /**
  * CHROME_ONLY flag tells the GitHub action to run this test only using Chrome.
- * Since this test relies on a single common Cloudflare ruleset we need to prevent it from running in multiple browsers in parallel,
- * they would trip over each other and fail.
+ * This test relies on a single common Cloudflare ruleset, we we cannot run multiple instances of it at the same time.
  */
 test.describe('Bot Firewall Demo CHROME_ONLY', () => {
   test.beforeEach(async ({ page }) => {
@@ -27,12 +26,13 @@ test.describe('Bot Firewall Demo CHROME_ONLY', () => {
 
     /**
      * Try to visit web-scraping page, should be blocked by Cloudflare
-     * Checking the response code here as parsing the actual page if flaky for some reason
+     * Checking the response code here as parsing the actual page if flaky for some reason.
+     * Using a separate tab also seems to help with flakiness.
      */
-    const secondPage = await context.newPage();
-    const responsePromise = secondPage.waitForResponse('https://staging.fingerprinthub.com/web-scraping');
-    await secondPage.goto('https://staging.fingerprinthub.com/web-scraping');
-    expect((await responsePromise).status()).toBe(403);
+    const secondTab = await context.newPage();
+    await secondTab.goto('https://staging.fingerprinthub.com/web-scraping');
+    await secondTab.reload();
+    await secondTab.getByRole('heading', { name: 'Sorry, you have been blocked' }).waitFor();
 
     // Unblock IP
     await page.goto('/bot-firewall');
@@ -41,8 +41,8 @@ test.describe('Bot Firewall Demo CHROME_ONLY', () => {
     await page.waitForTimeout(3000);
 
     // Try to visit web-scraping page, should be allowed again
-    await secondPage.goto('https://staging.fingerprinthub.com/web-scraping');
-    await secondPage.reload();
-    await expect(secondPage.getByTestId(TEST_IDS.common.alert)).toContainText('Malicious bot detected');
+    await secondTab.goto('https://staging.fingerprinthub.com/web-scraping');
+    await secondTab.reload();
+    await expect(secondTab.getByTestId(TEST_IDS.common.alert)).toContainText('Malicious bot detected');
   });
 });
