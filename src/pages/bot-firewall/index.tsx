@@ -10,7 +10,7 @@ import { BlockIpPayload, BlockIpResponse } from '../api/bot-firewall/block-ip';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import classnames from 'classnames';
 import { OptionsObject as SnackbarOptions, enqueueSnackbar } from 'notistack';
-import { BOT_FIREWALL_COPY } from './botFirewallCopy';
+import { BOT_FIREWALL_COPY } from '../../client/bot-firewall/botFirewallCopy';
 
 const formatDate = (date: string) => {
   const d = new Date(date);

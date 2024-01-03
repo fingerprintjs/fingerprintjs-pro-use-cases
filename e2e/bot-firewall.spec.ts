@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { resetScenarios } from './resetHelper';
 import { TEST_IDS } from '../src/client/testIDs';
-import { BOT_FIREWALL_COPY } from '../src/pages/bot-firewall/botFirewallCopy';
+import { BOT_FIREWALL_COPY } from '../src/client/bot-firewall/botFirewallCopy';
 
 test.describe('Bot Firewall Demo', () => {
   test.beforeEach(async ({ page }) => {
