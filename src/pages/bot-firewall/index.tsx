@@ -7,7 +7,7 @@ import { BotVisit } from '../../server/botd-firewall/botVisitDatabase';
 import Button from '../../client/components/common/Button/Button';
 import styles from './botFirewall.module.scss';
 import { BlockIpPayload, BlockIpResponse } from '../api/bot-firewall/block-ip';
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { VisitorQueryContext, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import classnames from 'classnames';
 import { OptionsObject as SnackbarOptions, enqueueSnackbar } from 'notistack';
 import { BOT_FIREWALL_COPY } from '../../client/bot-firewall/botFirewallCopy';
@@ -25,17 +25,7 @@ const snackbarOptions: SnackbarOptions = {
   anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
 };
 
-export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
-  // Get visitor data from Fingerprint (just used for the visitor's IP address)
-  const {
-    getData: getVisitorData,
-    data: visitorData,
-    isLoading: isLoadingVisitorData,
-  } = useVisitorData({
-    extendedResult: true,
-  });
-
-  // Get a list of bot visits
+const useBotVisits = () => {
   const {
     data: botVisits,
     refetch: refetchBotVisits,
@@ -46,16 +36,27 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
       return fetch('/api/bot-firewall/get-bot-visits').then((res) => res.json());
     },
   });
+  return { botVisits, refetchBotVisits, isLoadingBotVisits };
+};
 
-  // Get a list of currently blocked IP addresses
-  const { data: blockedIps, refetch: refetchBlockedIps } = useQuery({
+const useBlockedIps = () => {
+  const {
+    data: blockedIps,
+    refetch: refetchBlockedIps,
+    isLoading: isLoadingBlockedIps,
+  } = useQuery({
     queryKey: ['get blocked IPs'],
     queryFn: (): Promise<string[]> => {
       return fetch('/api/bot-firewall/get-blocked-ips').then((res) => res.json());
     },
   });
+  return { blockedIps, refetchBlockedIps, isLoadingBlockedIps };
+};
 
-  // Post request mutation to block/unblock IP addresses
+const useBlockUnblockIpAddress = (
+  getVisitorData: VisitorQueryContext<true>['getData'],
+  refetchBlockedIps: () => void,
+) => {
   const { mutate: blockIp, isLoading: isLoadingBlockIp } = useMutation({
     mutationKey: ['block IP'],
     mutationFn: async ({ ip, blocked }: Omit<BlockIpPayload, 'requestId'>) => {
@@ -91,6 +92,30 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
     },
   });
 
+  return { blockIp, isLoadingBlockIp };
+};
+
+export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
+  // Get visitor data from Fingerprint (just used for the visitor's IP address)
+  const {
+    getData: getVisitorData,
+    data: visitorData,
+    isLoading: isLoadingVisitorData,
+  } = useVisitorData({
+    extendedResult: true,
+  });
+
+  // Get a list of bot visits
+  const { botVisits, refetchBotVisits, isLoadingBotVisits } = useBotVisits();
+
+  // Get a list of currently blocked IP addresses
+  const { blockedIps, refetchBlockedIps, isLoadingBlockedIps } = useBlockedIps();
+
+  // Post request mutation to block/unblock IP addresses
+  const { blockIp, isLoadingBlockIp } = useBlockUnblockIpAddress(getVisitorData, refetchBlockedIps);
+
+  const isLoading = isLoadingVisitorData || isLoadingBotVisits || isLoadingBlockedIps;
+
   const isIpBlocked = (ip: string): boolean => {
     return Boolean(blockedIps?.find((blockedIp) => blockedIp === ip));
   };
@@ -108,9 +133,9 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
               refetchBlockedIps();
             }}
             className={styles.reloadButton}
-            disabled={isLoadingBotVisits || isLoadingVisitorData}
+            disabled={isLoading}
           >
-            {isLoadingBotVisits || isLoadingVisitorData ? 'Loading ⏳' : 'Reload'}
+            {isLoading ? 'Loading ⏳' : 'Reload'}
           </Button>
           <i>
             Note: For the purposes of this demo, you can only block/unblock your own IP address ({visitorData?.ip}). The
