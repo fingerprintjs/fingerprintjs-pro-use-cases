@@ -39,6 +39,6 @@ async function deleteOldIpBlocks() {
     await syncFirewallRuleset();
     console.log(`Updated Cloudflare firewall.`);
   } catch (error) {
-    console.log(`Error deleting old blocked IPs: ${error}`);
+    console.error(`Error deleting old blocked IPs: ${error}`);
   }
 }
