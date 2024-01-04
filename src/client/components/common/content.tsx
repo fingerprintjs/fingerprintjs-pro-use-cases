@@ -422,8 +422,8 @@ export const USE_CASES = {
         displayed below.
       </>,
       <>
-        Click <b>Block this bot IP</b> to prevent the bot from loading the page at all going forward. For demo purposes,
-        you are only allowed to block your own IP.
+        Click <b>Block this IP</b> to prevent the bot from loading the page at all going forward. For demo purposes, you
+        are only allowed to block your own IP.
       </>,
       <>
         Try visiting the{' '}
