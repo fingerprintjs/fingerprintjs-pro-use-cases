@@ -48,7 +48,7 @@ export default async function blockIp(req: NextApiRequest, res: NextApiResponse<
     // Return success
     return res.status(200).json({ result: 'success', message: 'OK', ip, blocked });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     // Catch unexpected errors and return 500 to the client
     return res.status(500).json({ result: 'error', message: 'Internal server error.' });
   }
@@ -80,7 +80,7 @@ const validateBlockIpRequest = async (
     const eventResponse = await client.getEvent(requestId);
     identification = eventResponse.products?.identification?.data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     // Throw a specific error if the request ID is not found
     if (isEventError(error) && error.status === 404) {
       return { okay: false, message: 'Request ID not found, potential spoofing attack.' };

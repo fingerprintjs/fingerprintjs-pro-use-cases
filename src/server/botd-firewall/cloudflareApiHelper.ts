@@ -28,7 +28,7 @@ async function updateRulesetUsingCloudflareAPI(rules: CloudflareRule[]) {
   if (response.ok) {
     return await response.json();
   } else {
-    console.log(response.statusText, await response.json());
+    console.error(response.statusText, await response.json());
     throw new Error('Updating firewall ruleset failed', { cause: response.statusText });
   }
 }

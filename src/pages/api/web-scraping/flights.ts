@@ -46,7 +46,7 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
     botData = eventResponse.products?.botd?.data;
     identification = eventResponse.products?.identification?.data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     // Throw a specific error if the request ID is not found
     if (isEventError(error) && error.status === 404) {
       sendForbiddenResponse(

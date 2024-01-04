@@ -95,7 +95,7 @@ export default function LoanRisk({ embed }: CustomPageProps) {
       const fpData = await getData();
 
       if (!fpData) {
-        console.log("Visitor data couldn't be fetched");
+        console.error("Visitor data couldn't be fetched");
         return;
       }
 

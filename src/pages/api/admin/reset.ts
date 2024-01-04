@@ -122,7 +122,7 @@ const tryToDestroy = async (callback: () => Promise<any>) => {
   try {
     return await callback();
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return 0;
   }
 };

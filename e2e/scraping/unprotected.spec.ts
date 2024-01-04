@@ -16,7 +16,6 @@ test.describe('Scraping flights', () => {
     await page.waitForTimeout(3000);
 
     const flightCards = await page.getByTestId(TEST_ID.card).all();
-    console.log('Found flight cards: ', flightCards.length);
     expect(flightCards.length > 0).toBe(true);
 
     const flightData = [];
@@ -33,6 +32,5 @@ test.describe('Scraping flights', () => {
 
     expect(flightData.length > 0).toBe(true);
     writeFileSync('./e2e/output/flightData.json', JSON.stringify(flightData, null, 2));
-    console.log("Scraped flight data saved to 'e2e/output/flightData.json'");
   });
 });

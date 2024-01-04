@@ -6,7 +6,7 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
     const blockedIps = await getBotVisits();
     res.status(200).json(blockedIps);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.statusMessage = `Something went wrong ${error}`;
     return res.status(500).end();
   }

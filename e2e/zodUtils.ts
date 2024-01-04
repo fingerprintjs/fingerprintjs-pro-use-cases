@@ -36,7 +36,7 @@ export function isAgentResponse(obj: unknown): boolean {
     agentResponseSchema.parse(obj);
     return true;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return false;
   }
 }
@@ -102,7 +102,7 @@ export function isServerResponse(obj: unknown): boolean {
     serverResponseSchema.parse(obj);
     return true;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return false;
   }
 }
