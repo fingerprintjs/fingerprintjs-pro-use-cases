@@ -84,10 +84,8 @@ const validateBlockIpRequest = async (
     // Throw a specific error if the request ID is not found
     if (isEventError(error) && error.status === 404) {
       return { okay: false, message: 'Request ID not found, potential spoofing attack.' };
-    } else {
-      // Handle other errors
-      return { okay: false, message: String(error) };
     }
+    return { okay: false, message: String(error) };
   }
 
   if (!identification) {

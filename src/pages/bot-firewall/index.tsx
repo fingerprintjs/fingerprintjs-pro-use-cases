@@ -68,11 +68,10 @@ const useBlockUnblockIpAddress = (
         },
         body: JSON.stringify({ ip, blocked, requestId } satisfies BlockIpPayload),
       });
-      if (response.ok) {
-        return await response.json();
-      } else {
+      if (!response.ok) {
         throw new Error('Failed to update firewall: ' + (await response.json()).message ?? response.statusText);
       }
+      return await response.json();
     },
     onSuccess: async (data: BlockIpResponse) => {
       refetchBlockedIps();

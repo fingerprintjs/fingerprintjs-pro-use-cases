@@ -25,12 +25,12 @@ async function updateRulesetUsingCloudflareAPI(rules: CloudflareRule[]) {
   };
 
   const response = await fetch(url, options);
-  if (response.ok) {
-    return await response.json();
-  } else {
+  if (!response.ok) {
     console.error(response.statusText, await response.json());
     throw new Error('Updating firewall ruleset failed', { cause: response.statusText });
   }
+
+  return await response.json();
 }
 
 // Construct updated firewall rules from the blocked IP database and apply them to your Cloudflare application
