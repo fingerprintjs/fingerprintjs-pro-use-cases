@@ -22,6 +22,7 @@ export type CloudflareRule = {
 };
 
 export const buildFirewallRules = async (
+  // Already assumed to be unique IP addresses due to how out database is set up
   blockedIps: string[],
   maxIpsPerRule = MAX_IPS_PER_RULE,
 ): Promise<CloudflareRule[]> => {
