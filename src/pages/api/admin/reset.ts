@@ -25,6 +25,8 @@ import {
 import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { isVisitorsError } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { deleteBlockedIp } from '../../../server/botd-firewall/blockedIpsDatabase';
+import { syncFirewallRuleset } from '../../../server/botd-firewall/cloudflareApiHelper';
 
 export type ResetResponse = {
   message: string;
@@ -50,7 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     checkConfidenceScore,
     checkIpAddressIntegrity,
     checkOriginsIntegrity,
-    deleteVisitorIdData,
+    deleteVisitorData,
   ]);
 }
 
@@ -78,7 +80,7 @@ async function tryToReset(req: NextApiRequest, res: NextApiResponse, ruleChecks:
   }
 }
 
-const deleteVisitorIdData: RuleCheck = async (eventResponse) => {
+const deleteVisitorData: RuleCheck = async (eventResponse) => {
   if (isVisitorsError(eventResponse)) {
     return;
   }
@@ -103,8 +105,14 @@ const deleteVisitorIdData: RuleCheck = async (eventResponse) => {
   const deletedLoanRequests = await tryToDestroy(() => LoanRequestDbModel.destroy(options));
   const deletedPaywallData = await tryToDestroy(() => ArticleViewDbModel.destroy(options));
 
+  const deletedBlockedIps = await tryToDestroy(async () => {
+    const deletedIpCount = await deleteBlockedIp(eventResponse.products?.identification?.data?.ip ?? '');
+    await syncFirewallRuleset();
+    return deletedIpCount;
+  });
+
   return new CheckResult(
-    `Deleted ${loginAttemptsRowsRemoved} rows for Credential Stuffing problem. Deleted ${paymentAttemptsRowsRemoved} rows for Payment Fraud problem. Deleted ${deletedPersonalizationCount} entries related to personalization.  Deleted ${deletedLoanRequests} loan request entries. Deleted ${deletedPaywallData} rows for the Paywall problem. Deleted ${couponsRemoved} rows for the Coupon fraud problem.`,
+    `Deleted ${loginAttemptsRowsRemoved} rows for Credential Stuffing problem. Deleted ${paymentAttemptsRowsRemoved} rows for Payment Fraud problem. Deleted ${deletedPersonalizationCount} entries related to personalization.  Deleted ${deletedLoanRequests} loan request entries. Deleted ${deletedPaywallData} rows for the Paywall problem. Deleted ${couponsRemoved} rows for the Coupon fraud problem. Deleted ${deletedBlockedIps} blocked IPs for the Bot Firewall demo.`,
     messageSeverity.Success,
     checkResultType.Passed,
   );
@@ -114,7 +122,7 @@ const tryToDestroy = async (callback: () => Promise<any>) => {
   try {
     return await callback();
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return 0;
   }
 };

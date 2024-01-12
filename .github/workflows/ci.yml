@@ -5,8 +5,13 @@ on:
   pull_request:
     branches: [main]
 env:
-  # Playwright headless browsers running in CI get low confidence scores, causing flaky tests. Lower the confidence score threshold for CI testing.
+  # Playwright headless browsers running in CI get low confidence scores, causing flaky e2e tests. Lower the confidence score threshold for CI testing.
   MIN_CONFIDENCE_SCORE: 0
+  # Staging Cloudflare credentials and IDs for e2e tests
+  CLOUDFLARE_API_TOKEN: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
+  CLOUDFLARE_ZONE_ID: '${{ secrets.CLOUDFLARE_ZONE_ID }}'
+  CLOUDFLARE_RULESET_ID: '${{ secrets.CLOUDFLARE_RULESET_ID }}'
+
 jobs:
   lint:
     name: Lint
@@ -111,7 +116,12 @@ jobs:
         run: yarn build
 
       - name: Run Playwright tests
-        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+        run: npx playwright test --grep-invert CHROME_ONLY --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+
+      # Some tests are only run on Chrome, marked with CHROME_ONLY in their name
+      - name: Run Chrome-only Playwright tests
+        run: npx playwright test --grep CHROME_ONLY --project='chromium'
+        if: matrix.shardIndex == 1
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v3

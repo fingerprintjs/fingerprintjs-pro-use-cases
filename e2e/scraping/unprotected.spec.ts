@@ -11,13 +11,11 @@ const scrapeText = async (parent: Locator, testId: string) => {
 
 test.describe('Scraping flights', () => {
   test('is possible with Bot detection off', async ({ page }) => {
-    await page.goto('/web-scraping?disableBotDetection=1');
-    await page.waitForLoadState('networkidle');
+    await page.goto('/web-scraping?disableBotDetection=1', { waitUntil: 'networkidle' });
     // Artificial wait necessary to prevent flakiness
     await page.waitForTimeout(3000);
 
     const flightCards = await page.getByTestId(TEST_ID.card).all();
-    console.log('Found flight cards: ', flightCards.length);
     expect(flightCards.length > 0).toBe(true);
 
     const flightData = [];
@@ -34,6 +32,5 @@ test.describe('Scraping flights', () => {
 
     expect(flightData.length > 0).toBe(true);
     writeFileSync('./e2e/output/flightData.json', JSON.stringify(flightData, null, 2));
-    console.log("Scraped flight data saved to 'e2e/output/flightData.json'");
   });
 });

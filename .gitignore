@@ -56,3 +56,6 @@ tsconfig.tsbuildinfo
 
 # MacOS Finder
 .DS_Store
+
+# Local experiments
+.scratchpad/*

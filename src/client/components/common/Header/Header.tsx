@@ -80,11 +80,11 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                     darkMode,
                     leftColumns: [
                       {
-                        list: USE_CASES_NAVIGATION.slice(0, 3),
+                        list: USE_CASES_NAVIGATION.slice(0, 4),
                         cardBackground: true,
                       },
                       {
-                        list: USE_CASES_NAVIGATION.slice(3),
+                        list: USE_CASES_NAVIGATION.slice(4),
                         cardBackground: true,
                       },
                     ],
