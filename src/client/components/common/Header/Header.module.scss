@@ -272,7 +272,7 @@
     column-gap: rem(2px);
 
     padding: rem(4px) rem(6px);
-    background-color: #e8e8e8;
+    background-color: v('gray-box-stroke');
     border-radius: rem(4px);
 
     @include jb-mono($size: 14px, $weight: 500, $lh: 16px, $color: #89898a);

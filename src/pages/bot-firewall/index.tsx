@@ -8,7 +8,6 @@ import Button from '../../client/components/common/Button/Button';
 import styles from './botFirewall.module.scss';
 import { BlockIpPayload, BlockIpResponse } from '../api/bot-firewall/block-ip';
 import { VisitorQueryContext, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import classnames from 'classnames';
 import { OptionsObject as SnackbarOptions, enqueueSnackbar } from 'notistack';
 import { BOT_FIREWALL_COPY } from '../../client/bot-firewall/botFirewallCopy';
 
@@ -154,7 +153,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
               {botVisits?.map((botVisit) => {
                 const isMyIp = botVisit?.ip === visitorData?.ip;
                 return (
-                  <tr key={botVisit?.requestId} className={classnames(isMyIp && styles.mine)}>
+                  <tr key={botVisit?.requestId}>
                     <td>{formatDate(botVisit?.timestamp)}</td>
                     <td>{botVisit?.requestId}</td>
                     <td>
@@ -163,19 +162,21 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
                     <td>{botVisit?.ip}</td>
                     <td>
                       {isMyIp ? (
-                        <Button
-                          size="small"
+                        <button
                           onClick={() => blockIp({ ip: botVisit?.ip, blocked: !isIpBlocked(botVisit?.ip) })}
                           disabled={isLoadingBlockIp}
+                          className={isIpBlocked(botVisit?.ip) ? styles.unblockIpButton : styles.blockIpButton}
                         >
                           {isLoadingBlockIp
                             ? 'Working on it ⏳'
                             : isIpBlocked(botVisit?.ip)
                               ? BOT_FIREWALL_COPY.unblockIp
                               : BOT_FIREWALL_COPY.blockIp}
-                        </Button>
+                        </button>
                       ) : (
-                        <>-</>
+                        <button disabled={true} className={styles.notYourIpButton}>
+                          N/A{' '}
+                        </button>
                       )}
                     </td>
                   </tr>

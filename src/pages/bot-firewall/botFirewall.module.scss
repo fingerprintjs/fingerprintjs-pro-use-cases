@@ -20,15 +20,84 @@
 
 .ipsTable {
   margin-top: rem(24px);
+  border-radius: 18px;
+  border: 1px solid v('gray-box-stroke');
+  border-spacing: 0;
 
-  td,
-  th {
-    border: 1px solid v('gray-box-stroke');
-    padding: rem(8px);
+  thead {
+    background-color: v('light-gray-background');
   }
 
-  .mine {
-    background-color: v('soft-orange-background');
+  th {
+    padding: rem(20px) rem(16px);
+    color: v('dark-black');
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 100%;
+    letter-spacing: 0.42px;
+    text-transform: capitalize;
+    text-align: left;
+    border: none;
+    border-collapse: collapse;
+    border-bottom: 1px solid v('gray-box-stroke');
+
+    &:first-child {
+      border-top-left-radius: rem(18px);
+    }
+
+    &:last-child {
+      border-top-right-radius: rem(18px);
+    }
+  }
+
+  tr:nth-child(even) {
+    background-color: v('light-gray-background');
+  }
+
+  td {
+    padding: rem(24px) rem(16px);
+
+    color: v('dark-gray');
+    font-size: 14px;
+    line-height: 100%; /* 14px */
+    letter-spacing: 0.42px;
+    text-transform: capitalize;
+  }
+
+  button {
+    font-size: 14px;
     font-weight: 600;
+    line-height: 145%;
+    padding: 8px 16px;
+
+    border-radius: 4px;
+    border: 0px;
+    border: 1px solid transparent;
+  }
+
+  .blockIpButton {
+    background-color: #fff0ee;
+
+    &:hover {
+      cursor: pointer;
+      border: 1px solid v('orange-gradient');
+    }
+    color: v('orange-gradient');
+  }
+
+  .unblockIpButton {
+    background: v('success-background');
+
+    &:hover {
+      cursor: pointer;
+      border: 1px solid v('success-text');
+    }
+    color: v('success-text');
+  }
+
+  .notYourIpButton {
+    background: v('light-gray-background');
+    color: v('dark-gray');
+    border: 1px solid v('gray-box-stroke');
   }
 }
