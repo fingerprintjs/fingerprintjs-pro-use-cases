@@ -16,7 +16,7 @@ import WaveIcon from '../../client/img/wave.svg';
 import ChevronIcon from '../../client/img/chevronBlack.svg';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 
 const DEFAULT_DISPLAYED_VISITS = 10;
 const DISPLAYED_VISITS_INCREMENT = 10;
@@ -103,6 +103,45 @@ const useBlockUnblockIpAddress = (
   return { blockIp, isLoadingBlockIp };
 };
 
+type BotVisitActionProps = {
+  ip: string;
+  isBlockedNow: boolean;
+  isVisitorsIp: boolean;
+  blockIp: (payload: Omit<BlockIpPayload, 'requestId'>) => void;
+  isLoadingBlockIp: boolean;
+};
+
+const BotVisitAction: FunctionComponent<BotVisitActionProps> = ({
+  ip,
+  isBlockedNow,
+  isVisitorsIp,
+  blockIp,
+  isLoadingBlockIp,
+}) => {
+  if (isVisitorsIp) {
+    return (
+      <button
+        onClick={() => blockIp({ ip, blocked: !isBlockedNow })}
+        disabled={isLoadingBlockIp}
+        className={isBlockedNow ? styles.unblockIpButton : styles.blockIpButton}
+      >
+        {isLoadingBlockIp ? 'Working on it ⏳' : isBlockedNow ? BOT_FIREWALL_COPY.unblockIp : BOT_FIREWALL_COPY.blockIp}
+      </button>
+    );
+  }
+  return (
+    <Tooltip
+      title={'You can only block your own IP in this demo, please see instructions above.'}
+      enterTouchDelay={400}
+      arrow
+    >
+      <button disabled={true} className={styles.notYourIpButton}>
+        N/A <Image src={InfoIcon} alt="You can only block your own IP in this demo, please see instructions above." />
+      </button>
+    </Tooltip>
+  );
+};
+
 export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
   // Get visitor data from Fingerprint (just used for the visitor's IP address)
   const {
@@ -185,7 +224,6 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
             </thead>
             <tbody>
               {botVisits?.slice(0, displayedVisits).map((botVisit) => {
-                const isMyIp = botVisit?.ip === visitorData?.ip;
                 return (
                   <tr key={botVisit?.requestId}>
                     <td>{formatDate(botVisit?.timestamp)}</td>
@@ -195,39 +233,55 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
                     </td>
                     <td>{botVisit?.ip}</td>
                     <td>
-                      {isMyIp ? (
-                        <button
-                          onClick={() => blockIp({ ip: botVisit?.ip, blocked: !isIpBlocked(botVisit?.ip) })}
-                          disabled={isLoadingBlockIp}
-                          className={isIpBlocked(botVisit?.ip) ? styles.unblockIpButton : styles.blockIpButton}
-                        >
-                          {isLoadingBlockIp
-                            ? 'Working on it ⏳'
-                            : isIpBlocked(botVisit?.ip)
-                              ? BOT_FIREWALL_COPY.unblockIp
-                              : BOT_FIREWALL_COPY.blockIp}
-                        </button>
-                      ) : (
-                        <Tooltip
-                          title={'You can only block your own IP in this demo, please see instructions above.'}
-                          enterTouchDelay={400}
-                          arrow
-                        >
-                          <button disabled={true} className={styles.notYourIpButton}>
-                            N/A{' '}
-                            <Image
-                              src={InfoIcon}
-                              alt="You can only block your own IP in this demo, please see instructions above."
-                            />
-                          </button>
-                        </Tooltip>
-                      )}
+                      <BotVisitAction
+                        ip={botVisit?.ip}
+                        isBlockedNow={isIpBlocked(botVisit?.ip)}
+                        blockIp={blockIp}
+                        isLoadingBlockIp={isLoadingBlockIp}
+                        isVisitorsIp={botVisit?.ip === visitorData?.ip}
+                      />
                     </td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
+
+          <div className={styles.cards}>
+            {botVisits?.slice(0, displayedVisits).map((botVisit) => {
+              return (
+                <div key={botVisit.requestId} className={styles.card}>
+                  <table>
+                    <tr>
+                      <td>Timestamp</td>
+                      <td>{formatDate(botVisit?.timestamp)}</td>
+                    </tr>
+                    <tr>
+                      <td>Request ID</td>
+                      <td>{botVisit?.requestId}</td>
+                    </tr>
+                    <tr>
+                      <td>Bot Type</td>
+                      <td>
+                        {botVisit?.botResult} ({botVisit.botType})
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>IP Address</td>
+                      <td>{botVisit?.ip}</td>
+                    </tr>
+                  </table>
+                  <BotVisitAction
+                    ip={botVisit?.ip}
+                    isBlockedNow={isIpBlocked(botVisit?.ip)}
+                    blockIp={blockIp}
+                    isLoadingBlockIp={isLoadingBlockIp}
+                    isVisitorsIp={botVisit?.ip === visitorData?.ip}
+                  />
+                </div>
+              );
+            })}
+          </div>
           <Button
             size="medium"
             className={styles.loadMore}

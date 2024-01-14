@@ -11,7 +11,7 @@
   width: 100%;
   margin-bottom: rem(24px);
 
-  @include media('<=phoneLandscape') {
+  @include media('<=tabletWide') {
     flex-direction: column;
   }
 }
@@ -39,7 +39,14 @@
   margin-left: auto;
 }
 
+/** 
+ * Desktop (table) layout
+ */
 .botVisitsTable {
+  // Hide on small screens
+  @include media('<=tabletWide') {
+    display: none;
+  }
   margin-top: rem(24px);
   border-radius: 8px;
   border: 1px solid v('gray-box-stroke');
@@ -87,7 +94,59 @@
     letter-spacing: 0.42px;
     text-transform: capitalize;
   }
+}
 
+/**
+ * Cards (mobile) layout
+ */
+.cards {
+  // Hide on big screens
+  @include media('>tabletWide') {
+    display: none;
+  }
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(288px, 1fr));
+  gap: rem(24px);
+  margin-top: rem(24px);
+}
+
+.card {
+  border: 1px solid v('gray-box-stroke');
+  border-radius: rem(6px);
+  padding-top: rem(4px);
+  display: flex;
+  flex-direction: column;
+
+  table td {
+    padding-top: rem(12px);
+    padding-bottom: rem(12px);
+    color: v('dark-black');
+    font-size: 14px;
+    line-height: 100%; /* 14px */
+    letter-spacing: 0.42px;
+    text-transform: capitalize;
+
+    &:first-child {
+      font-weight: 500;
+      padding-left: rem(12px);
+    }
+
+    &:last-child {
+      padding-right: rem(12px);
+      padding-left: rem(8px);
+      color: v('dark-gray');
+    }
+  }
+
+  button {
+    margin: rem(12px);
+    justify-content: center;
+  }
+}
+
+.card,
+.botVisitsTable {
   button {
     font-size: 14px;
     font-weight: 600;
