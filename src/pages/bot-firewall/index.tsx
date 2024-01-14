@@ -142,6 +142,18 @@ const BotVisitAction: FunctionComponent<BotVisitActionProps> = ({
   );
 };
 
+const BotTypeInfo: FunctionComponent = () => (
+  <Tooltip
+    title={
+      'Search engine crawlers and monitoring tools are registered as "good" bots, while headless browsers and automation tools are "bad".'
+    }
+    enterTouchDelay={400}
+    arrow
+  >
+    <Image src={InfoIcon} alt="" />
+  </Tooltip>
+);
+
 export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
   // Get visitor data from Fingerprint (just used for the visitor's IP address)
   const {
@@ -199,6 +211,8 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
               </div>
             </div>
           </div>
+
+          {/* Only displayed on large screens */}
           <table className={styles.botVisitsTable}>
             <thead>
               <tr>
@@ -207,16 +221,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
                 </th>
                 <th>Request ID</th>
                 <th>
-                  Bot Type{' '}
-                  <Tooltip
-                    title={
-                      'Search engine crawlers and monitoring tools are registered as "good" bots, while headless browsers and automation tools are "bad".'
-                    }
-                    enterTouchDelay={400}
-                    arrow
-                  >
-                    <Image src={InfoIcon} alt="" />
-                  </Tooltip>
+                  Bot Type <BotTypeInfo />
                 </th>
                 <th>IP</th>
                 <th>Action</th>
@@ -247,30 +252,28 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
             </tbody>
           </table>
 
+          {/* Only displated on small screens */}
           <div className={styles.cards}>
             {botVisits?.slice(0, displayedVisits).map((botVisit) => {
               return (
                 <div key={botVisit.requestId} className={styles.card}>
-                  <table>
-                    <tr>
-                      <td>Timestamp</td>
-                      <td>{formatDate(botVisit?.timestamp)}</td>
-                    </tr>
-                    <tr>
-                      <td>Request ID</td>
-                      <td>{botVisit?.requestId}</td>
-                    </tr>
-                    <tr>
-                      <td>Bot Type</td>
-                      <td>
-                        {botVisit?.botResult} ({botVisit.botType})
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>IP Address</td>
-                      <td>{botVisit?.ip}</td>
-                    </tr>
-                  </table>
+                  <div className={styles.cardContent}>
+                    <div>Timestamp</div>
+                    <div>{formatDate(botVisit?.timestamp)}</div>
+
+                    <div>Request ID</div>
+                    <div>{botVisit?.requestId}</div>
+
+                    <div>
+                      Bot Type <BotTypeInfo />
+                    </div>
+                    <div>
+                      {botVisit?.botResult} ({botVisit.botType})
+                    </div>
+
+                    <div>IP Address</div>
+                    <div>{botVisit?.ip}</div>
+                  </div>
                   <BotVisitAction
                     ip={botVisit?.ip}
                     isBlockedNow={isIpBlocked(botVisit?.ip)}

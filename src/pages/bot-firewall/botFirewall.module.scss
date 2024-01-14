@@ -23,7 +23,10 @@
   font-style: normal;
   font-weight: 600;
   line-height: 130%;
-  white-space: nowrap;
+
+  @include media('>tabletWide') {
+    white-space: nowrap;
+  }
 }
 
 .instructionsPrompt {
@@ -109,6 +112,10 @@
   grid-template-columns: repeat(auto-fit, minmax(288px, 1fr));
   gap: rem(24px);
   margin-top: rem(24px);
+
+  @include media('<=phoneSmall') {
+    grid-template-columns: auto;
+  }
 }
 
 .card {
@@ -118,7 +125,23 @@
   display: flex;
   flex-direction: column;
 
-  table td {
+  button {
+    margin: rem(12px);
+    justify-content: center;
+  }
+}
+
+.cardContent {
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 8px;
+  padding: 12px;
+
+  @include media('<=phoneSmall') {
+    grid-template-columns: auto;
+  }
+
+  div {
     padding-top: rem(12px);
     padding-bottom: rem(12px);
     color: v('dark-black');
@@ -126,22 +149,17 @@
     line-height: 100%; /* 14px */
     letter-spacing: 0.42px;
     text-transform: capitalize;
-
-    &:first-child {
-      font-weight: 500;
-      padding-left: rem(12px);
-    }
-
-    &:last-child {
-      padding-right: rem(12px);
-      padding-left: rem(8px);
-      color: v('dark-gray');
-    }
+    white-space: nowrap;
   }
 
-  button {
-    margin: rem(12px);
-    justify-content: center;
+  // Label
+  div:nth-child(odd) {
+    font-weight: 500;
+  }
+
+  // Value
+  div:nth-child(even) {
+    color: v('dark-gray');
   }
 }
 
