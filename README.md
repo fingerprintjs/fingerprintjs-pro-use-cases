@@ -79,6 +79,12 @@ Protect the content on your website from theft by reliably detecting even sophis
 [🦾 Content Scraping Live Demo](https://demo.fingerprint.com/web-scraping)
 [📖 Content Scraping Article](https://fingerprint.com/blog/preventing-content-scraping/)
 
+### Bot-detection-powered Firewall
+
+Integrate Fingerprint Bot Detection with your Web Application Firewall and dynamically block IP addresses linked to past bot visits.
+
+[🦾 Bot Firewall Live Demo](https://demo.fingerprint.com/bot-firewall)
+
 ## Documentation and Support
 
 To dive deeper into Fingerprint Pro, see our [Documentation](https://dev.fingerprint.com/docs). For questions or suggestions specific to this repository, you can [create an issue](https://github.com/fingerprintjs/fingerprintjs-pro-use-cases/issues/new). For general questions and community vibes, visit our [Discord server](https://discord.gg/39EpE2neBg). If you require private support, you can email us at [oss-support@fingerprint.com](mailto:oss-support@fingerprint.com).
