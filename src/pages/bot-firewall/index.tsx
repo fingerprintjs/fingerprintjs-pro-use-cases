@@ -13,6 +13,7 @@ import { BOT_FIREWALL_COPY } from '../../client/bot-firewall/botFirewallCopy';
 import { Tooltip } from '@mui/material';
 import InfoIcon from '../../client/img/InfoIcon.svg';
 import WaveIcon from '../../client/img/wave.svg';
+import ChevronIcon from '../../client/img/chevronBlack.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -162,9 +163,22 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
           <table className={styles.ipsTable}>
             <thead>
               <tr>
-                <th>Timestamp</th>
+                <th>
+                  Timestamp <Image src={ChevronIcon} alt="" />
+                </th>
                 <th>Request ID</th>
-                <th>Bot Type</th>
+                <th>
+                  Bot Type{' '}
+                  <Tooltip
+                    title={
+                      'Search engine crawlers and monitoring tools are registered as "good" bots, while headless browsers and automation tools are "bad".'
+                    }
+                    enterTouchDelay={400}
+                    arrow
+                  >
+                    <Image src={InfoIcon} alt="" />
+                  </Tooltip>
+                </th>
                 <th>IP</th>
                 <th>Action</th>
               </tr>
@@ -214,11 +228,11 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
               })}
             </tbody>
           </table>
-
           <Button
             size="medium"
             className={styles.loadMore}
             onClick={() => setDisplayedVisits(displayedVisits + DISPLAYED_VISITS_INCREMENT)}
+            disabled={!botVisits || displayedVisits >= botVisits.length}
           >
             Show older bot visits
           </Button>
