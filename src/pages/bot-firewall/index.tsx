@@ -85,10 +85,10 @@ const useBlockUnblockIpAddress = (
     onSuccess: async (data: BlockIpResponse) => {
       refetchBlockedIps();
       enqueueSnackbar(
-        <>
+        <div>
           IP address <b>&nbsp;{data.ip}&nbsp;</b> was <b>&nbsp;{data.blocked ? 'blocked' : 'unblocked'}&nbsp;</b> in the
           application firewall.{' '}
-        </>,
+        </div>,
         { ...snackbarOptions, variant: 'success' },
       );
     },
