@@ -39,7 +39,7 @@
   margin-left: auto;
 }
 
-.ipsTable {
+.botVisitsTable {
   margin-top: rem(24px);
   border-radius: 8px;
   border: 1px solid v('gray-box-stroke');
@@ -63,6 +63,7 @@
     border: none;
     border-collapse: collapse;
     border-bottom: 1px solid v('gray-box-stroke');
+    white-space: nowrap;
 
     &:first-child {
       border-top-left-radius: rem(8px);

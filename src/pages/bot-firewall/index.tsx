@@ -160,7 +160,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
               </div>
             </div>
           </div>
-          <table className={styles.ipsTable}>
+          <table className={styles.botVisitsTable}>
             <thead>
               <tr>
                 <th>
