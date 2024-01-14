@@ -28,8 +28,8 @@
 
 .instructionsPrompt {
   padding: rem(16px);
+  align-items: center;
   display: flex;
-  flex-direction: column;
   gap: 8px;
   font-size: 12px;
   line-height: 145%;
@@ -127,4 +127,8 @@
     color: v('dark-gray');
     border: 1px solid v('gray-box-stroke');
   }
+}
+
+.loadMore {
+  margin: rem(24px) auto 0 auto;
 }

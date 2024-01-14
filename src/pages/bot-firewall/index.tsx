@@ -15,6 +15,10 @@ import InfoIcon from '../../client/img/InfoIcon.svg';
 import WaveIcon from '../../client/img/wave.svg';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
+
+const DEFAULT_DISPLAYED_VISITS = 10;
+const DISPLAYED_VISITS_INCREMENT = 10;
 
 const formatDate = (date: string) => {
   const d = new Date(date);
@@ -117,6 +121,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
   // Post request mutation to block/unblock IP addresses
   const { blockIp, isLoadingBlockIp } = useBlockUnblockIpAddress(getVisitorData, refetchBlockedIps);
 
+  const [displayedVisits, setDisplayedVisits] = useState(DEFAULT_DISPLAYED_VISITS);
   const isLoading = isLoadingVisitorData || isLoadingBotVisits || isLoadingBlockedIps;
 
   const isIpBlocked = (ip: string): boolean => {
@@ -144,7 +149,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
               className={styles.reloadButton}
               disabled={isLoading}
             >
-              {isLoading ? 'Loading ⏳' : 'Reload'}
+              {isLoading ? 'Loading ⏳' : 'Reload bot visits'}
             </Button>
             <div className={styles.instructionsPrompt}>
               <Image src={WaveIcon} alt="" />
@@ -165,7 +170,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
               </tr>
             </thead>
             <tbody>
-              {botVisits?.map((botVisit) => {
+              {botVisits?.slice(0, displayedVisits).map((botVisit) => {
                 const isMyIp = botVisit?.ip === visitorData?.ip;
                 return (
                   <tr key={botVisit?.requestId}>
@@ -209,6 +214,14 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
               })}
             </tbody>
           </table>
+
+          <Button
+            size="medium"
+            className={styles.loadMore}
+            onClick={() => setDisplayedVisits(displayedVisits + DISPLAYED_VISITS_INCREMENT)}
+          >
+            Show older bot visits
+          </Button>
         </div>
       </UseCaseWrapper>
     </>
