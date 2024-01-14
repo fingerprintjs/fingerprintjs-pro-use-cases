@@ -20,6 +20,7 @@ import { FunctionComponent, useState } from 'react';
 
 const DEFAULT_DISPLAYED_VISITS = 10;
 const DISPLAYED_VISITS_INCREMENT = 10;
+const BOT_VISITS_FETCH_LIMIT = 200;
 
 const formatDate = (date: string) => {
   const d = new Date(date);
@@ -42,7 +43,7 @@ const useBotVisits = () => {
   } = useQuery({
     queryKey: ['get bot visits'],
     queryFn: (): Promise<BotVisit[]> => {
-      return fetch('/api/bot-firewall/get-bot-visits').then((res) => res.json());
+      return fetch(`/api/bot-firewall/get-bot-visits?limit=${BOT_VISITS_FETCH_LIMIT}`).then((res) => res.json());
     },
   });
   return { botVisits, refetchBotVisits, isLoadingBotVisits };
@@ -135,9 +136,9 @@ const BotVisitAction: FunctionComponent<BotVisitActionProps> = ({
       enterTouchDelay={400}
       arrow
     >
-      <button disabled={true} className={styles.notYourIpButton}>
+      <div className={styles.notYourIpButton}>
         N/A <Image src={InfoIcon} alt="You can only block your own IP in this demo, please see instructions above." />
-      </button>
+      </div>
     </Tooltip>
   );
 };

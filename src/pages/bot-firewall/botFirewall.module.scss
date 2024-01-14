@@ -6,13 +6,15 @@
 .header {
   display: flex;
   gap: rem(32px);
-  justify-content: start;
-  align-items: start;
+  justify-content: flex-start;
+  align-items: flex-start;
   width: 100%;
-  margin-bottom: rem(24px);
+  margin-bottom: rem(56px);
 
   @include media('<=tabletWide') {
     flex-direction: column;
+    margin-bottom: rem(16px);
+    gap: rem(16px);
   }
 }
 
@@ -27,6 +29,10 @@
   @include media('>tabletWide') {
     white-space: nowrap;
   }
+
+  @include media('<=phoneLandscape') {
+    font-size: 16px;
+  }
 }
 
 .instructionsPrompt {
@@ -40,6 +46,11 @@
   border: 1px solid v('gray-box-stroke');
   border-radius: 8px;
   margin-left: auto;
+
+  @include media('<=tabletWide') {
+    // width: 100%;
+    margin-left: 0;
+  }
 }
 
 /** 
@@ -50,7 +61,6 @@
   @include media('<=tabletWide') {
     display: none;
   }
-  margin-top: rem(24px);
   border-radius: 8px;
   border: 1px solid v('gray-box-stroke');
   border-spacing: 0;
@@ -96,6 +106,10 @@
     line-height: 100%; /* 14px */
     letter-spacing: 0.42px;
     text-transform: capitalize;
+
+    .notYourIpButton {
+      width: fit-content;
+    }
   }
 }
 
@@ -110,8 +124,7 @@
 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(288px, 1fr));
-  gap: rem(24px);
-  margin-top: rem(24px);
+  gap: rem(12px);
 
   @include media('<=phoneSmall') {
     grid-template-columns: auto;
@@ -125,7 +138,8 @@
   display: flex;
   flex-direction: column;
 
-  button {
+  button,
+  .notYourIpButton {
     margin: rem(12px);
     justify-content: center;
   }
@@ -163,50 +177,59 @@
   }
 }
 
-.card,
-.botVisitsTable {
-  button {
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 145%;
-    padding: 8px 16px;
+.blockIpButton,
+.unblockIpButton,
+.notYourIpButton {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 145%;
+  padding: 8px 16px;
 
-    border-radius: 4px;
-    border: 0px;
-    border: 1px solid transparent;
+  border-radius: 4px;
+  border: 0px;
+  border: 1px solid transparent;
 
-    display: flex;
-    align-items: center;
-    gap: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.blockIpButton {
+  background-color: #fff0ee;
+
+  &:hover {
+    cursor: pointer;
+    border: 1px solid v('orange-gradient');
   }
+  color: v('orange-gradient');
+}
 
-  .blockIpButton {
-    background-color: #fff0ee;
+.unblockIpButton {
+  background: v('success-background');
 
-    &:hover {
-      cursor: pointer;
-      border: 1px solid v('orange-gradient');
-    }
-    color: v('orange-gradient');
+  &:hover {
+    cursor: pointer;
+    border: 1px solid v('success-text');
   }
+  color: v('success-text');
+}
 
-  .unblockIpButton {
-    background: v('success-background');
-
-    &:hover {
-      cursor: pointer;
-      border: 1px solid v('success-text');
-    }
-    color: v('success-text');
-  }
-
-  .notYourIpButton {
-    background: v('light-gray-background');
-    color: v('dark-gray');
-    border: 1px solid v('gray-box-stroke');
-  }
+.notYourIpButton {
+  background: v('light-gray-background');
+  color: v('dark-gray');
+  border: 1px solid v('gray-box-stroke');
+  display: flex;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  cursor: default;
 }
 
 .loadMore {
   margin: rem(24px) auto 0 auto;
+
+  @include media('<=phoneLandscape') {
+    margin: rem(16px) auto 0 auto;
+  }
 }
