@@ -14,6 +14,8 @@ import { RestartHint } from './RestartHint';
 import { SEO } from '../seo';
 import { TEST_IDS } from '../../../testIDs';
 
+export const INSTRUCTION_ANCHOR_ID = 'INSTRUCTION_ANCHOR';
+
 type UseCaseWrapperProps = {
   useCase: Partial<UseCase>;
   children: React.ReactNode;
@@ -21,6 +23,7 @@ type UseCaseWrapperProps = {
   returnUrl?: string;
   contentSx?: React.CSSProperties;
   embed?: boolean;
+  instructionsNote?: string;
 };
 
 export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
@@ -29,6 +32,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   contentSx,
   useCase,
   embed,
+  instructionsNote,
 }) => {
   const { title, description, articleUrl, instructions, moreResources, doNotMentionResetButton } = useCase ?? {};
   const learnMoreRef = useRef<ElementRef<'h3'>>(null);
@@ -75,7 +79,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
           )}
         </div>
         {instructions && instructions.length > 0 && (
-          <div className={styles.howToUse}>
+          <div className={styles.howToUse} id={INSTRUCTION_ANCHOR_ID}>
             <div>
               <h2>How to use this demo</h2>
               <ol>
@@ -94,6 +98,12 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
                   </li>
                 )}
               </ol>
+              {instructionsNote && (
+                <div className={styles.note}>
+                  <div>NOTE</div>
+                  <div>{instructionsNote}</div>
+                </div>
+              )}
             </div>
             <div>
               {moreResourcesPresent && (

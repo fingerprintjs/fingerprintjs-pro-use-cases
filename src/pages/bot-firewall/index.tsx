@@ -1,4 +1,4 @@
-import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
+import { INSTRUCTION_ANCHOR_ID, UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { NextPage } from 'next';
 import { USE_CASES } from '../../client/components/common/content';
 import { CustomPageProps } from '../_app';
@@ -10,6 +10,11 @@ import { BlockIpPayload, BlockIpResponse } from '../api/bot-firewall/block-ip';
 import { VisitorQueryContext, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { OptionsObject as SnackbarOptions, enqueueSnackbar } from 'notistack';
 import { BOT_FIREWALL_COPY } from '../../client/bot-firewall/botFirewallCopy';
+import { Tooltip } from '@mui/material';
+import InfoIcon from '../../client/img/InfoIcon.svg';
+import WaveIcon from '../../client/img/wave.svg';
+import Image from 'next/image';
+import Link from 'next/link';
 
 const formatDate = (date: string) => {
   const d = new Date(date);
@@ -120,25 +125,35 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
 
   return (
     <>
-      <UseCaseWrapper useCase={USE_CASES.botFirewall} embed={embed} contentSx={{ maxWidth: 'none' }}>
+      <UseCaseWrapper
+        useCase={USE_CASES.botFirewall}
+        embed={embed}
+        contentSx={{ maxWidth: 'none' }}
+        instructionsNote={`For the purposes of this demo, you can only block/unblock your own IP address (${visitorData?.ip}). The block expires after one hour. The database of bot visits is cleared on every website update.`}
+      >
         <div className={styles.container}>
-          <h2 className={styles.title}>Detected bot visits</h2>
-          <Button
-            size="small"
-            outlined
-            onClick={() => {
-              refetchBotVisits();
-              refetchBlockedIps();
-            }}
-            className={styles.reloadButton}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Loading ⏳' : 'Reload'}
-          </Button>
-          <i>
-            Note: For the purposes of this demo, you can only block/unblock your own IP address ({visitorData?.ip}). The
-            block expires after one hour. The database of bot visits is cleared on every website update.
-          </i>
+          <div className={styles.header}>
+            <h2 className={styles.title}>Detected bot visits</h2>
+            <Button
+              size="small"
+              outlined
+              onClick={() => {
+                refetchBotVisits();
+                refetchBlockedIps();
+              }}
+              className={styles.reloadButton}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Loading ⏳' : 'Reload'}
+            </Button>
+            <div className={styles.instructionsPrompt}>
+              <Image src={WaveIcon} alt="" />
+              <div>
+                We recommend reading the <Link href={`#${INSTRUCTION_ANCHOR_ID}`}>instructions</Link> before trying the
+                demo!
+              </div>
+            </div>
+          </div>
           <table className={styles.ipsTable}>
             <thead>
               <tr>
@@ -174,9 +189,19 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
                               : BOT_FIREWALL_COPY.blockIp}
                         </button>
                       ) : (
-                        <button disabled={true} className={styles.notYourIpButton}>
-                          N/A{' '}
-                        </button>
+                        <Tooltip
+                          title={'You can only block your own IP in this demo, please see instructions above.'}
+                          enterTouchDelay={400}
+                          arrow
+                        >
+                          <button disabled={true} className={styles.notYourIpButton}>
+                            N/A{' '}
+                            <Image
+                              src={InfoIcon}
+                              alt="You can only block your own IP in this demo, please see instructions above."
+                            />
+                          </button>
+                        </Tooltip>
                       )}
                     </td>
                   </tr>

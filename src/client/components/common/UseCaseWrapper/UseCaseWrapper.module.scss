@@ -139,6 +139,32 @@ h1.title {
   }
 }
 
+.note {
+  display: flex;
+  gap: rem(12px);
+  border-top: 0.5px solid v('orange-gradient');
+  padding-top: rem(24px);
+  padding-bottom: rem(16px);
+  margin-top: rem(32px);
+
+  @include media('<=phoneLandscape') {
+    flex-direction: column;
+  }
+
+  :first-child {
+    font-size: 12px;
+    line-height: 145%;
+    letter-spacing: 0.36px;
+    color: v('orange-gradient');
+  }
+
+  :last-child {
+    color: v('dark-gray');
+    font-size: 14px;
+    letter-spacing: 0.42px;
+  }
+}
+
 .contentWrapper {
   position: relative;
   padding: 0px rem(20px);
