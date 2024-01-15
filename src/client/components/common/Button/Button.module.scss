@@ -93,8 +93,7 @@
     border: 1px solid v('success-text');
 
     &:hover {
-      background-color: v('success-background');
-      color: v('success-text');
+      background-color: #132d15;
     }
   }
 
@@ -104,8 +103,7 @@
     border: 1px solid v('error-text');
 
     &:hover {
-      background-color: v('error-background');
-      color: v('error-text');
+      background-color: #5c0d0d;
     }
   }
 
