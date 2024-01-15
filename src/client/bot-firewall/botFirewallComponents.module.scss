@@ -78,8 +78,8 @@
 }
 
 /** 
- * Desktop (table) layout
- */
+   * Desktop (table) layout
+   */
 .botVisitsTable {
   // Hide on small screens
   @include media('<=920px') {
@@ -144,8 +144,8 @@
 }
 
 /**
- * Cards (mobile) layout
- */
+   * Cards (mobile) layout
+   */
 .cards {
   // Hide on big screens
   @include media('>920px') {
@@ -191,7 +191,7 @@
     padding-bottom: rem(12px);
     color: v('dark-black');
     font-size: rem(14px);
-    line-height: 100%; /* 14px */
+    line-height: 100%;
     letter-spacing: 0.42px;
     text-transform: capitalize;
     white-space: nowrap;

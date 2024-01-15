@@ -5,24 +5,21 @@ import { CustomPageProps } from '../_app';
 import { useMutation, useQuery } from 'react-query';
 import { BotVisit } from '../../server/botd-firewall/botVisitDatabase';
 import Button from '../../client/components/common/Button/Button';
-import styles from './botFirewall.module.scss';
+import styles from '../../client/bot-firewall/botFirewallComponents.module.scss';
 import { BlockIpPayload, BlockIpResponse } from '../api/bot-firewall/block-ip';
 import { VisitorQueryContext, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { OptionsObject as SnackbarOptions, enqueueSnackbar } from 'notistack';
-import { BOT_FIREWALL_COPY } from '../../client/bot-firewall/botFirewallCopy';
-import { Tooltip } from '@mui/material';
-import InfoIcon from '../../client/img/InfoIcon.svg';
-import WaveIcon from '../../client/img/wave.svg';
 import ChevronIcon from '../../client/img/chevronBlack.svg';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FunctionComponent, PropsWithChildren, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { BotTypeInfo, BotVisitAction, InstructionPrompt } from '../../client/bot-firewall/botFirewallComponents';
 
 const DEFAULT_DISPLAYED_VISITS = 10;
 const DISPLAYED_VISITS_INCREMENT = 10;
 const BOT_VISITS_FETCH_LIMIT = 200;
 
+/** Format date */
 const formatDate = (date: string) => {
   const d = new Date(date);
   return `${d.toLocaleDateString('en-Us', {
@@ -36,6 +33,7 @@ const snackbarOptions: SnackbarOptions = {
   anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
 };
 
+/** Query to retrieve all bot visits */
 const useBotVisits = () => {
   const {
     data: botVisits,
@@ -50,6 +48,7 @@ const useBotVisits = () => {
   return { botVisits, refetchBotVisits, isLoadingBotVisits };
 };
 
+/** Query to retrieve blocked IP addresses */
 const useBlockedIps = () => {
   const {
     data: blockedIps,
@@ -64,6 +63,7 @@ const useBlockedIps = () => {
   return { blockedIps, refetchBlockedIps, isLoadingBlockedIps };
 };
 
+/** Mutation (POST request) to block/unblock an IP */
 const useBlockUnblockIpAddress = (
   getVisitorData: VisitorQueryContext<true>['getData'],
   refetchBlockedIps: () => void,
@@ -105,81 +105,9 @@ const useBlockUnblockIpAddress = (
   return { blockIp, isLoadingBlockIp };
 };
 
-type BotVisitActionProps = {
-  ip: string;
-  isBlockedNow: boolean;
-  isVisitorsIp: boolean;
-  blockIp: (payload: Omit<BlockIpPayload, 'requestId'>) => void;
-  isLoadingBlockIp: boolean;
-};
-
-const BotVisitAction: FunctionComponent<BotVisitActionProps> = ({
-  ip,
-  isBlockedNow,
-  isVisitorsIp,
-  blockIp,
-  isLoadingBlockIp,
-}) => {
-  if (isVisitorsIp) {
-    return (
-      <Button
-        onClick={() => blockIp({ ip, blocked: !isBlockedNow })}
-        disabled={isLoadingBlockIp}
-        size="medium"
-        style={{ minWidth: '150px' }}
-        variant={isBlockedNow ? 'danger' : 'green'}
-      >
-        {isLoadingBlockIp ? 'Working on it ⏳' : isBlockedNow ? BOT_FIREWALL_COPY.unblockIp : BOT_FIREWALL_COPY.blockIp}
-      </Button>
-    );
-  }
-  return (
-    <Tooltip
-      title={'You can only block your own IP in this demo, please see instructions above.'}
-      enterTouchDelay={400}
-      arrow
-    >
-      <div className={styles.notYourIpButton}>
-        N/A <Image src={InfoIcon} alt="You can only block your own IP in this demo, please see instructions above." />
-      </div>
-    </Tooltip>
-  );
-};
-
-const BotTypeInfo: FunctionComponent = () => (
-  <Tooltip
-    title={
-      'Search engine crawlers and monitoring tools are registered as "good" bots, while headless browsers and automation tools are "bad".'
-    }
-    enterTouchDelay={400}
-    arrow
-  >
-    <Image src={InfoIcon} alt="" />
-  </Tooltip>
-);
-
-const InstructionPrompt: FunctionComponent<PropsWithChildren> = ({ children }) => (
-  <div className={styles.instructionsPrompt}>
-    <motion.div
-      initial={{ rotate: 0 }}
-      whileInView={{ rotate: [30, -30, 30, -30, 30, -30, 30, -30, 30, -30, 0] }}
-      transition={{ duration: 1.5 }}
-      viewport={{ once: true }}
-    >
-      <Image src={WaveIcon} alt="" />
-    </motion.div>
-    <motion.div
-      // reveals content from left to right
-      initial={{ clipPath: 'polygon(0 0, 0 0, 0 100%, 0% 100%)' }}
-      whileInView={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }}
-      viewport={{ once: true }}
-      transition={{ duration: 1.5 }}
-    >
-      {children}
-    </motion.div>
-  </div>
-);
-
+/**
+ * Bot Firewall Page Component
+ */
 export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
   // Get visitor data from Fingerprint (just used for the visitor's IP address)
   const {
@@ -235,7 +163,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
             </InstructionPrompt>
           </div>
 
-          {/* Only displayed on large screens */}
+          {/* Display bot visits as a **TABLE** only on large screens */}
           <table className={styles.botVisitsTable}>
             <thead>
               <tr>
@@ -275,7 +203,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
             </tbody>
           </table>
 
-          {/* Only displated on small screens */}
+          {/* Display bot visits as **CARDS** only on large screens */}
           <div className={styles.cards}>
             {botVisits?.slice(0, displayedVisits).map((botVisit) => {
               return (
@@ -308,6 +236,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
               );
             })}
           </div>
+          {/* Load older bot visits button */}
           <Button
             size="medium"
             className={styles.loadMore}
