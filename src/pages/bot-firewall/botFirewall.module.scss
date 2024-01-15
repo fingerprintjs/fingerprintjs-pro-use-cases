@@ -70,17 +70,11 @@
 
 .loadMore {
   margin: rem(24px) auto 0 auto;
-  white-space: wrap;
+  white-space: normal;
 
   @include media('<=phoneLandscape') {
     margin: rem(16px) auto 0 auto;
   }
-}
-
-.wrapAndBreakTableCell {
-  white-space: wrap;
-  word-break: break-all;
-  min-width: 150px;
 }
 
 /** 
@@ -140,6 +134,12 @@
     .notYourIpButton {
       width: fit-content;
     }
+  }
+
+  .wrapAndBreakTableCell {
+    white-space: normal;
+    word-break: break-all;
+    min-width: 150px;
   }
 }
 
@@ -205,7 +205,7 @@
   // Value
   div:nth-child(even) {
     color: v('dark-gray');
-    white-space: wrap;
+    white-space: normal;
     word-break: break-all;
   }
 }

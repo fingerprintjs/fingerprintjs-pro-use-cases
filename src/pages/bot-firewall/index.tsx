@@ -126,6 +126,7 @@ const BotVisitAction: FunctionComponent<BotVisitActionProps> = ({
         onClick={() => blockIp({ ip, blocked: !isBlockedNow })}
         disabled={isLoadingBlockIp}
         size="medium"
+        style={{ minWidth: '150px' }}
         variant={isBlockedNow ? 'danger' : 'green'}
       >
         {isLoadingBlockIp ? 'Working on it ⏳' : isBlockedNow ? BOT_FIREWALL_COPY.unblockIp : BOT_FIREWALL_COPY.blockIp}
@@ -245,7 +246,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
                 <th>
                   Bot Type <BotTypeInfo />
                 </th>
-                <th>IP</th>
+                <th>IP Address</th>
                 <th>Action</th>
               </tr>
             </thead>
