@@ -122,13 +122,14 @@ const BotVisitAction: FunctionComponent<BotVisitActionProps> = ({
 }) => {
   if (isVisitorsIp) {
     return (
-      <button
+      <Button
         onClick={() => blockIp({ ip, blocked: !isBlockedNow })}
         disabled={isLoadingBlockIp}
-        className={isBlockedNow ? styles.unblockIpButton : styles.blockIpButton}
+        size="medium"
+        variant={isBlockedNow ? 'green' : 'primary'}
       >
         {isLoadingBlockIp ? 'Working on it ⏳' : isBlockedNow ? BOT_FIREWALL_COPY.unblockIp : BOT_FIREWALL_COPY.blockIp}
-      </button>
+      </Button>
     );
   }
   return (
@@ -309,6 +310,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
           <Button
             size="medium"
             className={styles.loadMore}
+            outlined
             onClick={() => setDisplayedVisits(displayedVisits + DISPLAYED_VISITS_INCREMENT)}
             disabled={!botVisits || displayedVisits >= botVisits.length}
           >

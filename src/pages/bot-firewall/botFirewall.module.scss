@@ -48,8 +48,31 @@
   margin-left: auto;
 
   @include media('<=tabletWide') {
-    // width: 100%;
     margin-left: 0;
+  }
+}
+
+.notYourIpButton {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 145%;
+  gap: 4px;
+  background: v('light-gray-background');
+  color: v('dark-gray');
+  border: 1px solid v('gray-box-stroke');
+  display: flex;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  cursor: default;
+}
+
+.loadMore {
+  margin: rem(24px) auto 0 auto;
+
+  @include media('<=phoneLandscape') {
+    margin: rem(16px) auto 0 auto;
   }
 }
 
@@ -174,62 +197,5 @@
   // Value
   div:nth-child(even) {
     color: v('dark-gray');
-  }
-}
-
-.blockIpButton,
-.unblockIpButton,
-.notYourIpButton {
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 145%;
-  padding: 8px 16px;
-
-  border-radius: 4px;
-  border: 0px;
-  border: 1px solid transparent;
-
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.blockIpButton {
-  background-color: #fff0ee;
-
-  &:hover {
-    cursor: pointer;
-    border: 1px solid v('orange-gradient');
-  }
-  color: v('orange-gradient');
-}
-
-.unblockIpButton {
-  background: v('success-background');
-
-  &:hover {
-    cursor: pointer;
-    border: 1px solid v('success-text');
-  }
-  color: v('success-text');
-}
-
-.notYourIpButton {
-  background: v('light-gray-background');
-  color: v('dark-gray');
-  border: 1px solid v('gray-box-stroke');
-  display: flex;
-  padding: 8px 16px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 4px;
-  cursor: default;
-}
-
-.loadMore {
-  margin: rem(24px) auto 0 auto;
-
-  @include media('<=phoneLandscape') {
-    margin: rem(16px) auto 0 auto;
   }
 }
