@@ -7,6 +7,7 @@ import PaymentFraudIcon from '../../img/paymentFraudIcon.svg';
 import PaywallIcon from '../../img/paywallIcon.svg';
 import PersonalizationIcon from '../../img/personalizationIcon.svg';
 import ScrapingIcon from '../../img/scrapingIcon.svg';
+import FirewallIcon from '../../img/firewallIcon.svg';
 import { ReactNode } from 'react';
 import { RestartHint, RestartHintProps } from './UseCaseWrapper/RestartHint';
 
@@ -374,11 +375,11 @@ export const USE_CASES = {
     ],
   },
   botFirewall: {
-    title: 'Bot-Detection-powered Firewall',
+    title: 'Bot Firewall',
     titleMeta: 'Fingerprint Use Cases | Bot-Detection-powered Firewall',
     url: '/bot-firewall',
     articleUrl: 'https://fingerprint.com/blog/bot-detection-powered-firewall/',
-    iconSvg: ScrapingIcon,
+    iconSvg: FirewallIcon,
     descriptionHomepage: [
       <p key="1">
         Integrate Fingerprint Bot Detection with your Web Application Firewall and dynamically block IP addresses linked
@@ -400,8 +401,8 @@ export const USE_CASES = {
           <Link href={'/web-scraping'} target="_blank">
             Web scraping demo
           </Link>{' '}
-          for an example of protecting client-site content from bots. This demo goes a step further and uses Bot
-          detection results to block previously recognized bots on their next visit completely — before they even reach
+          for an example of protecting client-site content from bots. This demo goes a step further. It uses Bot
+          Detection results to block previously recognized bots on their next visit completely — before they even reach
           your web page.
         </p>
       </>

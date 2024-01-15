@@ -88,13 +88,24 @@
   }
 
   &.green {
-    color: v('success-text');
-    background-color: v('success-background');
+    color: v('white');
+    background-color: v('success-text');
     border: 1px solid v('success-text');
 
     &:hover {
-      background-color: adjust-color(c('success-background'), $saturation: -20%, $lightness: -6%);
-      border-color: adjust-color(c('success-text'), $saturation: -30%, $lightness: -6%);
+      background-color: v('success-background');
+      color: v('success-text');
+    }
+  }
+
+  &.danger {
+    color: v('white');
+    background-color: v('error-text');
+    border: 1px solid v('error-text');
+
+    &:hover {
+      background-color: v('error-background');
+      color: v('error-text');
     }
   }
 

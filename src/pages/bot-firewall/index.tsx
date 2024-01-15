@@ -126,7 +126,7 @@ const BotVisitAction: FunctionComponent<BotVisitActionProps> = ({
         onClick={() => blockIp({ ip, blocked: !isBlockedNow })}
         disabled={isLoadingBlockIp}
         size="medium"
-        variant={isBlockedNow ? 'green' : 'primary'}
+        variant={isBlockedNow ? 'danger' : 'green'}
       >
         {isLoadingBlockIp ? 'Working on it ⏳' : isBlockedNow ? BOT_FIREWALL_COPY.unblockIp : BOT_FIREWALL_COPY.blockIp}
       </Button>
