@@ -78,8 +78,8 @@
 }
 
 /** 
-   * Desktop (table) layout
-   */
+ * Desktop (table) layout
+ */
 .botVisitsTable {
   // Hide on small screens
   @include media('<=920px') {
@@ -144,8 +144,8 @@
 }
 
 /**
-   * Cards (mobile) layout
-   */
+ * Cards (mobile) layout
+ */
 .cards {
   // Hide on big screens
   @include media('>920px') {

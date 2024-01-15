@@ -203,7 +203,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
             </tbody>
           </table>
 
-          {/* Display bot visits as **CARDS** only on large screens */}
+          {/* Display bot visits as **CARDS** only on small screens */}
           <div className={styles.cards}>
             {botVisits?.slice(0, displayedVisits).map((botVisit) => {
               return (
