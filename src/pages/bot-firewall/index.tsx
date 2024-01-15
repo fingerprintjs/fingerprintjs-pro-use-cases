@@ -258,7 +258,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
                     <td>
                       {botVisit?.botResult} ({botVisit.botType})
                     </td>
-                    <td>{botVisit?.ip}</td>
+                    <td className={styles.wrapAndBreakTableCell}>{botVisit?.ip}</td>
                     <td>
                       <BotVisitAction
                         ip={botVisit?.ip}

@@ -70,10 +70,17 @@
 
 .loadMore {
   margin: rem(24px) auto 0 auto;
+  white-space: wrap;
 
   @include media('<=phoneLandscape') {
     margin: rem(16px) auto 0 auto;
   }
+}
+
+.wrapAndBreakTableCell {
+  white-space: wrap;
+  word-break: break-all;
+  min-width: 150px;
 }
 
 /** 
@@ -81,7 +88,7 @@
  */
 .botVisitsTable {
   // Hide on small screens
-  @include media('<=tabletWide') {
+  @include media('<=920px') {
     display: none;
   }
   border-radius: 8px;
@@ -141,7 +148,7 @@
  */
 .cards {
   // Hide on big screens
-  @include media('>tabletWide') {
+  @include media('>920px') {
     display: none;
   }
 
@@ -160,6 +167,7 @@
   padding-top: rem(4px);
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 
   button,
   .notYourIpButton {
@@ -197,5 +205,7 @@
   // Value
   div:nth-child(even) {
     color: v('dark-gray');
+    white-space: wrap;
+    word-break: break-all;
   }
 }
