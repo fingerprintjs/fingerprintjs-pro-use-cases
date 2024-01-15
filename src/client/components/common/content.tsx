@@ -378,7 +378,8 @@ export const USE_CASES = {
     title: 'Bot Firewall',
     titleMeta: 'Fingerprint Use Cases | Bot-Detection-powered Firewall',
     url: '/bot-firewall',
-    articleUrl: 'https://fingerprint.com/blog/bot-detection-powered-firewall/',
+    // TO-DO: Write article
+    // articleUrl: 'https://fingerprint.com/blog/bot-detection-powered-firewall/',
     iconSvg: FirewallIcon,
     descriptionHomepage: [
       <p key="1">
