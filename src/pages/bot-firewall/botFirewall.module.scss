@@ -21,7 +21,7 @@
 .title {
   color: v('dark-black');
   font-family: Inter;
-  font-size: 28px;
+  font-size: rem(28px);
   font-style: normal;
   font-weight: 600;
   line-height: 130%;
@@ -31,7 +31,7 @@
   }
 
   @include media('<=phoneLandscape') {
-    font-size: 16px;
+    font-size: rem(16px);
   }
 }
 
@@ -39,8 +39,8 @@
   padding: rem(16px);
   align-items: center;
   display: flex;
-  gap: 8px;
-  font-size: 12px;
+  gap: rem(8px);
+  font-size: rem(12px);
   line-height: 145%;
   letter-spacing: 0.36px;
   border: 1px solid v('gray-box-stroke');
@@ -53,7 +53,7 @@
 }
 
 .notYourIpButton {
-  font-size: 14px;
+  font-size: rem(14px);
   font-weight: 600;
   line-height: 145%;
   gap: 4px;
@@ -61,7 +61,7 @@
   color: v('dark-gray');
   border: 1px solid v('gray-box-stroke');
   display: flex;
-  padding: 8px 16px;
+  padding: rem(8px) rem(16px);
   justify-content: center;
   align-items: center;
   border-radius: 4px;
@@ -98,7 +98,7 @@
   th {
     padding: rem(20px) rem(16px);
     color: v('dark-black');
-    font-size: 14px;
+    font-size: rem(14px);
     font-weight: 500;
     line-height: 100%;
     letter-spacing: 0.42px;
@@ -126,8 +126,8 @@
     padding: rem(24px) rem(16px);
 
     color: v('dark-gray');
-    font-size: 14px;
-    line-height: 100%; /* 14px */
+    font-size: rem(14px);
+    line-height: 100%;
     letter-spacing: 0.42px;
     text-transform: capitalize;
 
@@ -179,8 +179,8 @@
 .cardContent {
   display: grid;
   grid-template-columns: auto auto;
-  column-gap: 8px;
-  padding: 12px;
+  column-gap: rem(8px);
+  padding: rem(12px);
 
   @include media('<=phoneSmall') {
     grid-template-columns: auto;
@@ -190,7 +190,7 @@
     padding-top: rem(12px);
     padding-bottom: rem(12px);
     color: v('dark-black');
-    font-size: 14px;
+    font-size: rem(14px);
     line-height: 100%; /* 14px */
     letter-spacing: 0.42px;
     text-transform: capitalize;

@@ -132,9 +132,8 @@ h1.title {
       align-items: center;
     }
 
-    @include media('<=phoneLandscape') {
-      white-space: normal;
-      width: 100%;
+    @include media('<=tabletWide') {
+      display: none;
     }
   }
 }
@@ -152,7 +151,7 @@ h1.title {
   }
 
   :first-child {
-    font-size: 12px;
+    font-size: rem(12px);
     line-height: 145%;
     letter-spacing: 0.36px;
     color: v('orange-gradient');
@@ -160,7 +159,7 @@ h1.title {
 
   :last-child {
     color: v('dark-gray');
-    font-size: 14px;
+    font-size: rem(14px);
     letter-spacing: 0.42px;
   }
 }

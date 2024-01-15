@@ -14,7 +14,7 @@ import { RestartHint } from './RestartHint';
 import { SEO } from '../seo';
 import { TEST_IDS } from '../../../testIDs';
 
-export const INSTRUCTION_ANCHOR_ID = 'INSTRUCTION_ANCHOR';
+export const INSTRUCTION_ANCHOR_ID = 'instructions';
 
 type UseCaseWrapperProps = {
   useCase: Partial<UseCase>;
