@@ -14,6 +14,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { BotTypeInfo, BotVisitAction, InstructionPrompt } from '../../client/bot-firewall/botFirewallComponents';
+import { wait } from '../../shared/timeUtils';
 
 const DEFAULT_DISPLAYED_VISITS = 10;
 const DISPLAYED_VISITS_INCREMENT = 10;
@@ -38,14 +39,14 @@ const useBotVisits = () => {
   const {
     data: botVisits,
     refetch: refetchBotVisits,
-    isLoading: isLoadingBotVisits,
+    isFetching: isFetchingBotVisits,
   } = useQuery({
     queryKey: ['get bot visits'],
     queryFn: (): Promise<BotVisit[]> => {
       return fetch(`/api/bot-firewall/get-bot-visits?limit=${BOT_VISITS_FETCH_LIMIT}`).then((res) => res.json());
     },
   });
-  return { botVisits, refetchBotVisits, isLoadingBotVisits };
+  return { botVisits, refetchBotVisits, isFetchingBotVisits };
 };
 
 /** Query to retrieve blocked IP addresses */
@@ -53,14 +54,14 @@ const useBlockedIps = () => {
   const {
     data: blockedIps,
     refetch: refetchBlockedIps,
-    isLoading: isLoadingBlockedIps,
+    isFetching: isFetchingBlockedIps,
   } = useQuery({
     queryKey: ['get blocked IPs'],
     queryFn: (): Promise<string[]> => {
       return fetch('/api/bot-firewall/get-blocked-ips').then((res) => res.json());
     },
   });
-  return { blockedIps, refetchBlockedIps, isLoadingBlockedIps };
+  return { blockedIps, refetchBlockedIps, isFetchingBlockedIps };
 };
 
 /** Mutation (POST request) to block/unblock an IP */
@@ -119,16 +120,19 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
   });
 
   // Get a list of bot visits
-  const { botVisits, refetchBotVisits, isLoadingBotVisits } = useBotVisits();
+  const { botVisits, refetchBotVisits, isFetchingBotVisits: isLoadingBotVisits } = useBotVisits();
 
   // Get a list of currently blocked IP addresses
-  const { blockedIps, refetchBlockedIps, isLoadingBlockedIps } = useBlockedIps();
+  const { blockedIps, refetchBlockedIps, isFetchingBlockedIps: isLoadingBlockedIps } = useBlockedIps();
 
   // Post request mutation to block/unblock IP addresses
   const { blockIp, isLoadingBlockIp } = useBlockUnblockIpAddress(getVisitorData, refetchBlockedIps);
 
   const [displayedVisits, setDisplayedVisits] = useState(DEFAULT_DISPLAYED_VISITS);
-  const isLoading = isLoadingVisitorData || isLoadingBotVisits || isLoadingBlockedIps;
+
+  // Loading bot visits is usually really fast, use a minimum loading time to prevent UI flashing
+  const [isArtificiallyLoading, setIsArtificiallyLoading] = useState(false);
+  const isLoading = isLoadingVisitorData || isLoadingBotVisits || isLoadingBlockedIps || isArtificiallyLoading;
 
   const isIpBlocked = (ip: string): boolean => {
     return Boolean(blockedIps?.find((blockedIp) => blockedIp === ip));
@@ -148,9 +152,11 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
             <Button
               size="small"
               outlined
-              onClick={() => {
-                refetchBotVisits();
-                refetchBlockedIps();
+              onClick={async () => {
+                // Loading bot visits is usually really fast, use a minimum loading time to prevent UI flashing
+                setIsArtificiallyLoading(true);
+                await Promise.all([refetchBotVisits(), refetchBlockedIps(), wait(500)]);
+                setIsArtificiallyLoading(false);
               }}
               className={styles.reloadButton}
               disabled={isLoading}
