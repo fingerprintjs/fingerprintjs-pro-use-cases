@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-key */
-
 import { FunctionComponent, ReactNode, useMemo } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import {
@@ -103,7 +101,7 @@ function Playground() {
   const GREEN = hasDarkMode ? green[900] : lightGreen[50];
   const GRAY = hasDarkMode ? blueGrey[900] : blueGrey[50];
 
-  const baseSignals: TableCellData[][] = [
+  const identificationSignals: TableCellData[][] = [
     [
       {
         content: [
@@ -127,7 +125,7 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/understanding-your-confidence-score">
+          <DocsLink href="https://dev.fingerprint.com/docs/understanding-your-confidence-score" key="confidence">
             Confidence <br />
             Score
           </DocsLink>,
@@ -140,7 +138,7 @@ function Playground() {
     ],
   ];
 
-  const smartSignalsProPlus: TableCellData[][] = [
+  const smartSignals: TableCellData[][] = [
     [
       {
         content: (
@@ -179,7 +177,9 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#browser-bot-detection">Bot</DocsLink>,
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#browser-bot-detection" key="bot">
+            Bot
+          </DocsLink>,
         ],
       },
       {
@@ -192,7 +192,9 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#vpn-detection">VPN</DocsLink>,
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#vpn-detection" key="vpn">
+            VPN
+          </DocsLink>,
         ],
       },
       {
@@ -203,7 +205,10 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#browser-tamper-detection">
+          <DocsLink
+            href="https://dev.fingerprint.com/docs/smart-signals-overview#browser-tamper-detection"
+            key="tamper"
+          >
             Browser Tampering
           </DocsLink>,
         ],
@@ -246,13 +251,13 @@ function Playground() {
         },
       },
     ],
-  ];
-
-  const smartSignalsEnterprise: TableCellData[][] = [
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#ip-blocklist-matching">
+          <DocsLink
+            href="https://dev.fingerprint.com/docs/smart-signals-overview#ip-blocklist-matching"
+            key="blocklist"
+          >
             IP Blocklist
           </DocsLink>,
         ],
@@ -272,17 +277,20 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#raw-device-attributes">
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#raw-device-attributes" key="raw">
             Raw device attributes
           </DocsLink>,
         ],
       },
       { content: 'Applicable only to browsers. See the JSON below.', cellStyle: { backgroundColor: GRAY } },
     ],
+  ];
+
+  const mobileSmartSignals: TableCellData[][] = [
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#frida-detection">
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#frida-detection" key="frida">
             App is instrumented by Frida
           </DocsLink>,
         ],
@@ -292,7 +300,7 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#factory-reset-detection">
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#factory-reset-detection" key="reset">
             Factory Reset Timestamp
           </DocsLink>,
         ],
@@ -302,7 +310,10 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#geolocation-spoofing-detection">
+          <DocsLink
+            href="https://dev.fingerprint.com/docs/smart-signals-overview#geolocation-spoofing-detection"
+            key="spoof"
+          >
             Location spoofing
           </DocsLink>,
         ],
@@ -312,7 +323,7 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#cloned-app-detection">
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#cloned-app-detection" key="cloned">
             Cloned App
           </DocsLink>,
         ],
@@ -322,7 +333,10 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#android-emulator-detection">
+          <DocsLink
+            href="https://dev.fingerprint.com/docs/smart-signals-overview#android-emulator-detection"
+            key="emulator"
+          >
             Emulator
           </DocsLink>,
         ],
@@ -332,7 +346,10 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#android-tamper-detection">
+          <DocsLink
+            href="https://dev.fingerprint.com/docs/smart-signals-overview#android-tamper-detection"
+            key="tamper"
+          >
             Rooted device
           </DocsLink>,
         ],
@@ -343,7 +360,7 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#factory-reset-detection">
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#factory-reset-detection" key="reset">
             Jailbroken device
           </DocsLink>,
         ],
@@ -354,42 +371,36 @@ function Playground() {
 
   return (
     <div>
-      <Typography variant="h2" textAlign={'center'}>
-        Welcome, your visitor ID is{' '}
-        <Box sx={{ display: 'inline', color: (t) => t.palette.primary.main, fontWeight: 'bold' }}>
-          {agentResponse?.visitorId}
-        </Box>
-        .
-      </Typography>
+      <h2 className={styles.title}>
+        Welcome, your visitor ID is <span className={styles.visitorId}>{agentResponse?.visitorId}</span>.
+      </h2>
 
-      <RefreshButton loading={isLoadingAgentResponse || isLoadingServerResponse} getAgentData={getAgentData} />
+      <RefreshButton
+        loading={isLoadingAgentResponse || isLoadingServerResponse}
+        getAgentData={getAgentData}
+        className={styles.reloadButton}
+      />
 
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: {
-            sm: 'minmax(0, 500px)',
-            lg: 'repeat(3, minmax(0, 400px))',
-          },
-          justifyContent: 'center',
-          gap: 3,
-        }}
-      >
-        <Box>
-          <Typography variant="h3">Base signals (Pro plan)</Typography>
-          <MyTable data={baseSignals} />
-        </Box>
-        <Box>
-          <Typography variant="h3">Smart signals (Pro Plus plan)</Typography>
-          <MyTable data={smartSignalsProPlus} />
-        </Box>
-        <Box>
-          <Typography variant="h3">Smart signals (Enterprise plan)</Typography>
-          <MyTable data={smartSignalsEnterprise} />
-        </Box>
-      </Box>
+      <div className={styles.tablesContainer}>
+        <div>
+          <h3 className={styles.tableTitle}>Identification</h3>
+          <MyTable data={identificationSignals} />
+        </div>
+        <div>
+          <h3 className={styles.tableTitle}>Smart signals</h3>
+          <MyTable data={smartSignals} />
+        </div>
+        <div>
+          <h3 className={styles.tableTitle}>Mobile Smart signals</h3>
+          <MyTable data={mobileSmartSignals} />
+        </div>
+      </div>
 
-      <RefreshButton loading={isLoadingAgentResponse || isLoadingServerResponse} getAgentData={getAgentData} />
+      <RefreshButton
+        loading={isLoadingAgentResponse || isLoadingServerResponse}
+        getAgentData={getAgentData}
+        className={styles.reloadButton}
+      />
 
       <Box
         sx={{ display: 'grid', gridTemplateColumns: { xs: 'minmax(0,1fr)', lg: 'repeat(2, minmax(0, 1fr))' }, gap: 3 }}

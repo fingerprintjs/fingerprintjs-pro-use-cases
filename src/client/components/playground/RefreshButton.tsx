@@ -1,28 +1,23 @@
-import { Button, CircularProgress } from '@mui/material';
 import { FunctionComponent } from 'react';
 import { PLAYGROUND_TAG } from './playgroundTags';
+import Button from '../common/Button/Button';
 
-const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: () => void }> = ({
+const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: () => void; className?: string }> = ({
   loading,
   getAgentData,
+  className,
 }) => {
   return (
     <Button
       color="primary"
-      variant="outlined"
-      sx={{ mr: 'auto', ml: 'auto', mt: (t) => t.spacing(4), mb: (t) => t.spacing(8), display: 'flex' }}
+      outlined
+      size="medium"
       onClick={() => getAgentData()}
       disabled={loading}
       data-testid={PLAYGROUND_TAG.refreshButton}
+      className={className}
     >
-      {loading ? (
-        <>
-          Loading...
-          <CircularProgress size={'1rem'} thickness={5} sx={{ ml: (t) => t.spacing(2) }} />
-        </>
-      ) : (
-        <>Analyze my browser again</>
-      )}
+      {loading ? <>Loading... ⏳</> : <>Analyze my browser again</>}
     </Button>
   );
 };
