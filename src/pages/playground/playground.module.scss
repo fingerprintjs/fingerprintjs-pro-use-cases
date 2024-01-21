@@ -28,6 +28,16 @@
   letter-spacing: -0.25px;
 }
 
+.runningIntelligence {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+
+  h2 {
+    text-align: center;
+  }
+}
+
 .visitorId {
   color: v('orange-gradient');
   font-weight: 600;
@@ -39,7 +49,11 @@
 
 .reloadButton {
   margin: 32px auto 64px auto;
-  display: block;
+  display: flex;
+  gap: 4px;
+
+  align-items: center;
+  justify-content: center;
 }
 
 .tablesContainer {
@@ -47,17 +61,27 @@
   grid-template-columns: repeat(3, minmax(0, 400px));
   justify-content: center;
   gap: 24px;
-
   @include media('<=1200px') {
     grid-template-columns: minmax(0, 500px);
   }
 }
 
-.tableTitle {
+.tableTitle,
+.jsonTitle {
   margin: 1.25rem 0px 1rem;
-  font-size: rem(20px);
+  font-size: rem(18px);
   font-weight: 500;
   font-family: Inter;
   font-weight: 400;
   letter-spacing: -0.25px;
+}
+
+.jsonContainer {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+
+  @include media('<=1200px') {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

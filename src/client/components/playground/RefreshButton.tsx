@@ -1,6 +1,7 @@
 import { FunctionComponent } from 'react';
 import { PLAYGROUND_TAG } from './playgroundTags';
 import Button from '../common/Button/Button';
+import { Spinner } from '../common/Spinner/Spinner';
 
 const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: () => void; className?: string }> = ({
   loading,
@@ -17,7 +18,13 @@ const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: () => v
       data-testid={PLAYGROUND_TAG.refreshButton}
       className={className}
     >
-      {loading ? <>Loading... ⏳</> : <>Analyze my browser again</>}
+      {loading ? (
+        <div style={{ display: 'flex' }}>
+          <div>Loading...</div> <Spinner sx={{ marginLeft: '10px' }} />
+        </div>
+      ) : (
+        <>Analyze my browser again</>
+      )}
     </Button>
   );
 };

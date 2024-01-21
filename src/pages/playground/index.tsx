@@ -1,18 +1,6 @@
 import { FunctionComponent, ReactNode, useMemo } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Alert,
-  Box,
-  CircularProgress,
-  Stack,
-  Typography,
-} from '@mui/material';
 import { CodeSnippet } from '../../client/components/CodeSnippet';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
 import { green, red } from '@mui/material/colors';
 import { lightGreen } from '@mui/material/colors';
 import { blueGrey } from '@mui/material/colors';
@@ -34,6 +22,8 @@ import Link from 'next/link';
 import externalLinkArrow from '../../client/img/externalLinkArrow.svg';
 import Image from 'next/image';
 import styles from './playground.module.scss';
+import { Spinner } from '../../client/components/common/Spinner/Spinner';
+import Alert from '../../client/components/common/Alert/Alert';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',
@@ -85,12 +75,10 @@ function Playground() {
 
   if (!cachedEvent) {
     return (
-      <Stack alignItems={'center'} gap={5}>
-        <CircularProgress />
-        <Typography variant="h2" textAlign={'center'}>
-          Running device intelligence...
-        </Typography>
-      </Stack>
+      <div className={styles.runningIntelligence}>
+        <Spinner />
+        <h2>Running device intelligence...</h2>
+      </div>
     );
   }
 
@@ -402,48 +390,26 @@ function Playground() {
         className={styles.reloadButton}
       />
 
-      <Box
-        sx={{ display: 'grid', gridTemplateColumns: { xs: 'minmax(0,1fr)', lg: 'repeat(2, minmax(0, 1fr))' }, gap: 3 }}
-      >
-        <Box>
-          <Accordion defaultExpanded elevation={3}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="agent-response-content"
-              id="agent-response-header"
-            >
-              <Typography width={'100%'}>JavaScript Agent Response</Typography>
-              {isLoadingAgentResponse && (
-                <CircularProgress size={'1.2rem'} thickness={5} sx={{ mr: (t) => t.spacing(2) }} />
-              )}
-            </AccordionSummary>
-            <AccordionDetails>
-              <CodeSnippet language="json" dataTestId={PLAYGROUND_TAG.agentResponseJSON}>
-                {JSON.stringify(agentResponse, null, 2)}
-              </CodeSnippet>
-            </AccordionDetails>
-          </Accordion>
-        </Box>
-        <Box>
-          <Accordion defaultExpanded elevation={3}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="server-event-content"
-              id="server-event-header"
-            >
-              <Typography width={'100%'}>Server API Response</Typography>
-              {isLoadingServerResponse && (
-                <CircularProgress size={'1.2rem'} thickness={5} sx={{ mr: (t) => t.spacing(2) }} />
-              )}
-            </AccordionSummary>
-            <AccordionDetails>
-              <CodeSnippet language="json" dataTestId={PLAYGROUND_TAG.serverResponseJSON}>
-                {JSON.stringify(usedIdentificationEvent, null, 2)}
-              </CodeSnippet>
-            </AccordionDetails>
-          </Accordion>
-        </Box>
-      </Box>
+      <div className={styles.jsonContainer}>
+        <div>
+          <h4 className={styles.jsonTitle}>
+            JavaScript Agent Response {isLoadingAgentResponse && <Spinner sx={{ marginLeft: '10px' }} />}
+          </h4>
+
+          <CodeSnippet language="json" dataTestId={PLAYGROUND_TAG.agentResponseJSON}>
+            {JSON.stringify(agentResponse, null, 2)}
+          </CodeSnippet>
+        </div>
+        <div>
+          <h4 className={styles.jsonTitle}>
+            Server API Response {isLoadingServerResponse && <Spinner sx={{ marginLeft: '10px' }} />}
+          </h4>
+
+          <CodeSnippet language="json" dataTestId={PLAYGROUND_TAG.serverResponseJSON}>
+            {JSON.stringify(usedIdentificationEvent, null, 2)}
+          </CodeSnippet>
+        </div>
+      </div>
     </div>
   );
 }
