@@ -76,7 +76,7 @@ function Playground() {
   if (!cachedEvent) {
     return (
       <div className={styles.runningIntelligence}>
-        <Spinner />
+        <Spinner size="40px" thickness={3} />
         <h2>Running device intelligence...</h2>
       </div>
     );

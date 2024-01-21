@@ -32,9 +32,15 @@
   display: flex;
   flex-direction: column;
   gap: 40px;
+  align-items: center;
 
   h2 {
+    color: v('dark-black');
+    font-family: Inter;
+    font-size: rem(24px);
+    font-weight: 400;
     text-align: center;
+    letter-spacing: -0.25px;
   }
 }
 
