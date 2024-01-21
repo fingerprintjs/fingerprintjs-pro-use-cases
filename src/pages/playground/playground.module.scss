@@ -76,6 +76,11 @@
   letter-spacing: -0.25px;
 }
 
+.jsonTitle {
+  display: flex;
+  align-items: center;
+}
+
 .jsonContainer {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
