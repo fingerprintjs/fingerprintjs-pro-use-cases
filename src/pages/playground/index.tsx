@@ -392,18 +392,14 @@ function Playground() {
 
       <div className={styles.jsonContainer}>
         <div>
-          <h4 className={styles.jsonTitle}>
-            JavaScript Agent Response {isLoadingAgentResponse && <Spinner sx={{ marginLeft: '10px' }} />}
-          </h4>
+          <h4 className={styles.jsonTitle}>JavaScript Agent Response {isLoadingAgentResponse && <Spinner />}</h4>
 
           <CodeSnippet language="json" dataTestId={PLAYGROUND_TAG.agentResponseJSON}>
             {JSON.stringify(agentResponse, null, 2)}
           </CodeSnippet>
         </div>
         <div>
-          <h4 className={styles.jsonTitle}>
-            Server API Response {isLoadingServerResponse && <Spinner sx={{ marginLeft: '10px' }} />}
-          </h4>
+          <h4 className={styles.jsonTitle}>Server API Response {isLoadingServerResponse && <Spinner />}</h4>
 
           <CodeSnippet language="json" dataTestId={PLAYGROUND_TAG.serverResponseJSON}>
             {JSON.stringify(usedIdentificationEvent, null, 2)}
