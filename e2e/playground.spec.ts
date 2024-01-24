@@ -31,9 +31,9 @@ test.describe('Playground page page', () => {
     await page.getByText('Welcome, your visitor ID is').waitFor();
     await page.getByTestId(PLAYGROUND_TAG.refreshButton).first().waitFor();
 
-    await page.getByText('Base signals (Pro plan)', { exact: true }).waitFor();
-    await page.getByText('Smart signals (Pro Plus plan)', { exact: true }).waitFor();
-    await page.getByText('Smart signals (Enterprise plan)', { exact: true }).waitFor();
+    await page.getByText('Identification', { exact: true }).waitFor();
+    await page.getByText('Smart signals', { exact: true }).waitFor();
+    await page.getByText('Mobile Smart signals', { exact: true }).waitFor();
 
     await page.getByText('JavaScript Agent Response', { exact: true }).waitFor();
     await page.getByText('Server API Response', { exact: true }).waitFor();
