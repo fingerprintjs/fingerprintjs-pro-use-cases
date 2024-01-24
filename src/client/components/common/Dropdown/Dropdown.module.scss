@@ -68,8 +68,8 @@
   @include transition(background);
 
   @include media('>desktopHeader') {
-    border-top: 1px solid #e8e8e8;
-    border-left: 1px solid #e8e8e8;
+    border-top: 1px solid v('gray-box-stroke');
+    border-left: 1px solid v('gray-box-stroke');
 
     &:hover {
       background: #ffffff;
@@ -313,7 +313,7 @@
 }
 
 .bottomRow {
-  border-top: 1px solid #e8e8e8;
+  border-top: 1px solid v('gray-box-stroke');
   padding: rem(2px) rem(32px);
   display: flex;
   justify-content: flex-start;

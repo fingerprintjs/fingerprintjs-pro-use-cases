@@ -116,12 +116,12 @@
 .tippy-box[data-theme~='grey'] .tippy-content {
   @include inter($size: 16px, $weight: 400, $lh: 160%, $color: #434344);
   padding: rem(8px) rem(10px);
-  background: #e8e8e8;
+  background: v('gray-box-stroke');
   border-radius: rem(4px);
   box-shadow: unset;
 }
 .tippy-box[data-theme~='grey'] .tippy-arrow {
-  color: #e8e8e8;
+  color: v('gray-box-stroke');
   box-shadow: unset;
 }
 

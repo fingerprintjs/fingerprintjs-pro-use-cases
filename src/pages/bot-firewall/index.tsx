@@ -1,17 +1,26 @@
-import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
+import { INSTRUCTION_ANCHOR_ID, UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { NextPage } from 'next';
 import { USE_CASES } from '../../client/components/common/content';
 import { CustomPageProps } from '../_app';
 import { useMutation, useQuery } from 'react-query';
 import { BotVisit } from '../../server/botd-firewall/botVisitDatabase';
 import Button from '../../client/components/common/Button/Button';
-import styles from './botFirewall.module.scss';
+import styles from '../../client/bot-firewall/botFirewallComponents.module.scss';
 import { BlockIpPayload, BlockIpResponse } from '../api/bot-firewall/block-ip';
 import { VisitorQueryContext, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import classnames from 'classnames';
 import { OptionsObject as SnackbarOptions, enqueueSnackbar } from 'notistack';
-import { BOT_FIREWALL_COPY } from '../../client/bot-firewall/botFirewallCopy';
+import ChevronIcon from '../../client/img/chevronBlack.svg';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
+import { BotTypeInfo, BotVisitAction, InstructionPrompt } from '../../client/bot-firewall/botFirewallComponents';
+import { wait } from '../../shared/timeUtils';
 
+const DEFAULT_DISPLAYED_VISITS = 10;
+const DISPLAYED_VISITS_INCREMENT = 10;
+const BOT_VISITS_FETCH_LIMIT = 200;
+
+/** Format date */
 const formatDate = (date: string) => {
   const d = new Date(date);
   return `${d.toLocaleDateString('en-Us', {
@@ -25,34 +34,37 @@ const snackbarOptions: SnackbarOptions = {
   anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
 };
 
+/** Query to retrieve all bot visits */
 const useBotVisits = () => {
   const {
     data: botVisits,
     refetch: refetchBotVisits,
-    isLoading: isLoadingBotVisits,
+    isFetching: isFetchingBotVisits,
   } = useQuery({
     queryKey: ['get bot visits'],
     queryFn: (): Promise<BotVisit[]> => {
-      return fetch('/api/bot-firewall/get-bot-visits').then((res) => res.json());
+      return fetch(`/api/bot-firewall/get-bot-visits?limit=${BOT_VISITS_FETCH_LIMIT}`).then((res) => res.json());
     },
   });
-  return { botVisits, refetchBotVisits, isLoadingBotVisits };
+  return { botVisits, refetchBotVisits, isFetchingBotVisits };
 };
 
+/** Query to retrieve blocked IP addresses */
 const useBlockedIps = () => {
   const {
     data: blockedIps,
     refetch: refetchBlockedIps,
-    isLoading: isLoadingBlockedIps,
+    isFetching: isFetchingBlockedIps,
   } = useQuery({
     queryKey: ['get blocked IPs'],
     queryFn: (): Promise<string[]> => {
       return fetch('/api/bot-firewall/get-blocked-ips').then((res) => res.json());
     },
   });
-  return { blockedIps, refetchBlockedIps, isLoadingBlockedIps };
+  return { blockedIps, refetchBlockedIps, isFetchingBlockedIps };
 };
 
+/** Mutation (POST request) to block/unblock an IP */
 const useBlockUnblockIpAddress = (
   getVisitorData: VisitorQueryContext<true>['getData'],
   refetchBlockedIps: () => void,
@@ -76,10 +88,10 @@ const useBlockUnblockIpAddress = (
     onSuccess: async (data: BlockIpResponse) => {
       refetchBlockedIps();
       enqueueSnackbar(
-        <>
+        <div>
           IP address <b>&nbsp;{data.ip}&nbsp;</b> was <b>&nbsp;{data.blocked ? 'blocked' : 'unblocked'}&nbsp;</b> in the
           application firewall.{' '}
-        </>,
+        </div>,
         { ...snackbarOptions, variant: 'success' },
       );
     },
@@ -94,6 +106,9 @@ const useBlockUnblockIpAddress = (
   return { blockIp, isLoadingBlockIp };
 };
 
+/**
+ * Bot Firewall Page Component
+ */
 export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
   // Get visitor data from Fingerprint (just used for the visitor's IP address)
   const {
@@ -105,15 +120,19 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
   });
 
   // Get a list of bot visits
-  const { botVisits, refetchBotVisits, isLoadingBotVisits } = useBotVisits();
+  const { botVisits, refetchBotVisits, isFetchingBotVisits: isLoadingBotVisits } = useBotVisits();
 
   // Get a list of currently blocked IP addresses
-  const { blockedIps, refetchBlockedIps, isLoadingBlockedIps } = useBlockedIps();
+  const { blockedIps, refetchBlockedIps, isFetchingBlockedIps: isLoadingBlockedIps } = useBlockedIps();
 
   // Post request mutation to block/unblock IP addresses
   const { blockIp, isLoadingBlockIp } = useBlockUnblockIpAddress(getVisitorData, refetchBlockedIps);
 
-  const isLoading = isLoadingVisitorData || isLoadingBotVisits || isLoadingBlockedIps;
+  const [displayedVisits, setDisplayedVisits] = useState(DEFAULT_DISPLAYED_VISITS);
+
+  // Loading bot visits is usually really fast, use a minimum loading time to prevent UI flashing
+  const [isArtificiallyLoading, setIsArtificiallyLoading] = useState(false);
+  const isLoading = isLoadingVisitorData || isLoadingBotVisits || isLoadingBlockedIps || isArtificiallyLoading;
 
   const isIpBlocked = (ip: string): boolean => {
     return Boolean(blockedIps?.find((blockedIp) => blockedIp === ip));
@@ -121,68 +140,118 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
 
   return (
     <>
-      <UseCaseWrapper useCase={USE_CASES.botFirewall} embed={embed} contentSx={{ maxWidth: 'none' }}>
+      <UseCaseWrapper
+        useCase={USE_CASES.botFirewall}
+        embed={embed}
+        contentSx={{ maxWidth: 'none' }}
+        instructionsNote={`For the purposes of this demo, you can only block/unblock your own IP address (${visitorData?.ip}). The block expires after one hour. The database of bot visits is cleared on every website update.`}
+      >
         <div className={styles.container}>
-          <h2 className={styles.title}>Detected bot visits</h2>
-          <Button
-            size="small"
-            outlined
-            onClick={() => {
-              refetchBotVisits();
-              refetchBlockedIps();
-            }}
-            className={styles.reloadButton}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Loading ⏳' : 'Reload'}
-          </Button>
-          <i>
-            Note: For the purposes of this demo, you can only block/unblock your own IP address ({visitorData?.ip}). The
-            block expires after one hour. The database of bot visits is cleared on every website update.
-          </i>
-          <table className={styles.ipsTable}>
+          <div className={styles.header}>
+            <h2 className={styles.title}>Detected bot visits</h2>
+            <Button
+              size="small"
+              outlined
+              onClick={async () => {
+                // Loading bot visits is usually really fast, use a minimum loading time to prevent UI flashing
+                setIsArtificiallyLoading(true);
+                await Promise.all([refetchBotVisits(), refetchBlockedIps(), wait(500)]);
+                setIsArtificiallyLoading(false);
+              }}
+              className={styles.reloadButton}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Loading ⏳' : 'Reload bot visits'}
+            </Button>
+            <InstructionPrompt>
+              We recommend reading the <Link href={`#${INSTRUCTION_ANCHOR_ID}`}>instructions</Link> before trying the
+              demo!
+            </InstructionPrompt>
+          </div>
+
+          {/* Display bot visits as a **TABLE** only on large screens */}
+          <table className={styles.botVisitsTable}>
             <thead>
               <tr>
-                <th>Timestamp</th>
+                <th>
+                  Timestamp <Image src={ChevronIcon} alt="" />
+                </th>
                 <th>Request ID</th>
-                <th>Bot Type</th>
-                <th>IP</th>
+                <th>
+                  Bot Type <BotTypeInfo />
+                </th>
+                <th>IP Address</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {botVisits?.map((botVisit) => {
-                const isMyIp = botVisit?.ip === visitorData?.ip;
+              {botVisits?.slice(0, displayedVisits).map((botVisit) => {
                 return (
-                  <tr key={botVisit?.requestId} className={classnames(isMyIp && styles.mine)}>
+                  <tr key={botVisit?.requestId}>
                     <td>{formatDate(botVisit?.timestamp)}</td>
                     <td>{botVisit?.requestId}</td>
                     <td>
                       {botVisit?.botResult} ({botVisit.botType})
                     </td>
-                    <td>{botVisit?.ip}</td>
+                    <td className={styles.wrapAndBreakTableCell}>{botVisit?.ip}</td>
                     <td>
-                      {isMyIp ? (
-                        <Button
-                          size="small"
-                          onClick={() => blockIp({ ip: botVisit?.ip, blocked: !isIpBlocked(botVisit?.ip) })}
-                          disabled={isLoadingBlockIp}
-                        >
-                          {isLoadingBlockIp
-                            ? 'Working on it ⏳'
-                            : isIpBlocked(botVisit?.ip)
-                              ? BOT_FIREWALL_COPY.unblockIp
-                              : BOT_FIREWALL_COPY.blockIp}
-                        </Button>
-                      ) : (
-                        <>-</>
-                      )}
+                      <BotVisitAction
+                        ip={botVisit?.ip}
+                        isBlockedNow={isIpBlocked(botVisit?.ip)}
+                        blockIp={blockIp}
+                        isLoadingBlockIp={isLoadingBlockIp}
+                        isVisitorsIp={botVisit?.ip === visitorData?.ip}
+                      />
                     </td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
+
+          {/* Display bot visits as **CARDS** only on small screens */}
+          <div className={styles.cards}>
+            {botVisits?.slice(0, displayedVisits).map((botVisit) => {
+              return (
+                <div key={botVisit.requestId} className={styles.card}>
+                  <div className={styles.cardContent}>
+                    <div>Timestamp</div>
+                    <div>{formatDate(botVisit?.timestamp)}</div>
+
+                    <div>Request ID</div>
+                    <div>{botVisit?.requestId}</div>
+
+                    <div>
+                      Bot Type <BotTypeInfo />
+                    </div>
+                    <div>
+                      {botVisit?.botResult} ({botVisit.botType})
+                    </div>
+
+                    <div>IP Address</div>
+                    <div>{botVisit?.ip}</div>
+                  </div>
+                  <BotVisitAction
+                    ip={botVisit?.ip}
+                    isBlockedNow={isIpBlocked(botVisit?.ip)}
+                    blockIp={blockIp}
+                    isLoadingBlockIp={isLoadingBlockIp}
+                    isVisitorsIp={botVisit?.ip === visitorData?.ip}
+                  />
+                </div>
+              );
+            })}
+          </div>
+          {/* Load older bot visits button */}
+          <Button
+            size="medium"
+            className={styles.loadMore}
+            outlined
+            onClick={() => setDisplayedVisits(displayedVisits + DISPLAYED_VISITS_INCREMENT)}
+            disabled={!botVisits || displayedVisits >= botVisits.length}
+          >
+            Show older bot visits
+          </Button>
         </div>
       </UseCaseWrapper>
     </>
