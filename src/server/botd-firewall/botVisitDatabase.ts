@@ -1,4 +1,4 @@
-import { Attributes, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
+import { Attributes, DataTypes, FindOptions, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import { sequelize } from '../server';
 import { EventResponseBotData } from '../../shared/types';
 
@@ -62,4 +62,12 @@ export const saveBotVisit = async (botData: EventResponseBotData, visitorId: str
   });
 };
 
-export const getBotVisits = async () => await BotVisitDbModel.findAll({ order: [['timestamp', 'DESC']] });
+export const getBotVisits = async (limit?: number) => {
+  const options: FindOptions = {
+    order: [['timestamp', 'DESC']],
+  };
+  if (limit) {
+    options.limit = limit;
+  }
+  return await BotVisitDbModel.findAll(options);
+};

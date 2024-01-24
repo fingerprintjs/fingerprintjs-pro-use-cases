@@ -87,6 +87,26 @@
     border: none;
   }
 
+  &.green {
+    color: v('white');
+    background-color: v('success-text');
+    border: 1px solid v('success-text');
+
+    &:hover {
+      background-color: #132d15;
+    }
+  }
+
+  &.danger {
+    color: v('white');
+    background-color: v('error-text');
+    border: 1px solid v('error-text');
+
+    &:hover {
+      background-color: #5c0d0d;
+    }
+  }
+
   &.large {
     padding: rem(15px) rem(23px);
   }

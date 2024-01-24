@@ -20,6 +20,11 @@ div#__next {
   width: 100%;
 }
 
+/* Make scrolling to anchor links smooth */
+html {
+  scroll-behavior: smooth;
+}
+
 /* Avoid Chrome to see Safari hack */
 @supports (-webkit-touch-callout: none) {
   body {
