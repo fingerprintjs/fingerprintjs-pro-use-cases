@@ -1,6 +1,5 @@
 import '../styles/global-styles.scss';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ThemeProvider } from '../client/theme-provider';
 import Head from 'next/head';
 import { SnackbarProvider } from 'notistack';
 import { SnackbarAction } from '../client/components/snackbar-action';
@@ -44,29 +43,27 @@ export type CustomPageProps = { embed?: boolean };
 function CustomApp({ Component, pageProps }: AppProps<CustomPageProps>) {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <SnackbarProvider
-          action={(snackbarId) => <SnackbarAction snackbarId={snackbarId} />}
-          maxSnack={3}
-          autoHideDuration={5000}
-          anchorOrigin={{
-            horizontal: 'left',
-            vertical: 'bottom',
-          }}
-        >
-          <FpjsProvider loadOptions={FP_LOAD_OPTIONS}>
-            <Head>
-              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-              <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-              <title>Fingerprint Pro Use Cases</title>
-            </Head>
-            <DeploymentUtils />
-            <Layout embed={Boolean(pageProps.embed)}>
-              <Component {...pageProps} />
-            </Layout>
-          </FpjsProvider>
-        </SnackbarProvider>
-      </ThemeProvider>
+      <SnackbarProvider
+        action={(snackbarId) => <SnackbarAction snackbarId={snackbarId} />}
+        maxSnack={3}
+        autoHideDuration={5000}
+        anchorOrigin={{
+          horizontal: 'left',
+          vertical: 'bottom',
+        }}
+      >
+        <FpjsProvider loadOptions={FP_LOAD_OPTIONS}>
+          <Head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+            <title>Fingerprint Pro Use Cases</title>
+          </Head>
+          <DeploymentUtils />
+          <Layout embed={Boolean(pageProps.embed)}>
+            <Component {...pageProps} />
+          </Layout>
+        </FpjsProvider>
+      </SnackbarProvider>
     </QueryClientProvider>
   );
 }
