@@ -192,6 +192,16 @@ h1.title {
     }
   }
 
+  .browserContent {
+    padding: rem(64px) rem(56px);
+    margin: 0px auto;
+    border-radius: rem(12px);
+
+    @include media('<=tabletWide') {
+      padding: rem(24px) rem(16px) rem(32px) rem(16px);
+    }
+  }
+
   .content {
     border: 1px solid v('gray-box-stroke');
     border-radius: rem(12px);

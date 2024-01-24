@@ -125,7 +125,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
 
   return (
     <>
-      <UseCaseWrapper useCase={USE_CASES.webScraping} embed={embed} contentSx={{ maxWidth: 'none' }}>
+      <UseCaseWrapper useCase={USE_CASES.webScraping} embed={embed}>
         <h2 className={styles.searchTitle}>Search for today&apos;s flights</h2>
         <form
           onSubmit={(event) => {

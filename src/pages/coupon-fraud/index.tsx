@@ -84,7 +84,7 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
   ];
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.couponFraud} embed={embed} contentSx={{ maxWidth: 'none' }}>
+    <UseCaseWrapper useCase={USE_CASES.couponFraud} embed={embed}>
       <div className={classNames(styles.wrapper, formStyles.wrapper)}>
         <Cart items={cartItems} discount={discount} taxPerItem={TAXES}></Cart>
         <div className={styles.innerWrapper}>

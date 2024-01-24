@@ -447,7 +447,7 @@ export default function PlaygroundPage({ embed }: CustomPageProps) {
         doNotMentionResetButton: true,
       }}
       hideGithubLink={true}
-      contentSx={{ boxShadow: 'none', maxWidth: '1248px', minHeight: '60vh' }}
+      // contentSx={{ boxShadow: 'none', maxWidth: '1248px', minHeight: '60vh' }}
       embed={embed}
     >
       <Playground />

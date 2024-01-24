@@ -102,7 +102,7 @@ export default function Index({ embed }: CustomPageProps) {
           <Button onClick={() => setDidAcknowledge(true)}>Okay, I understand</Button>
         </DialogActions>
       </Dialog>
-      <UseCaseWrapper useCase={USE_CASES.personalization} embed={embed} contentSx={{ maxWidth: 'none' }}>
+      <UseCaseWrapper useCase={USE_CASES.personalization} embed={embed}>
         <div className={styles.twoColumnContainer}>
           <div className={styles.leftColumn}>
             <div className={styles.search}>
