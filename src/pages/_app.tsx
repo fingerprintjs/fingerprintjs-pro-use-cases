@@ -1,4 +1,3 @@
-import '../styles/globals.css';
 import '../styles/global-styles.scss';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider } from '../client/theme-provider';
