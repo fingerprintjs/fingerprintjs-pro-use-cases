@@ -33,6 +33,7 @@ h1.title {
     font-weight: 500;
     line-height: 100%;
     letter-spacing: -0.16px;
+    color: v('orange-gradient');
 
     img {
       display: inline;
@@ -118,6 +119,7 @@ h1.title {
 
     a {
       text-decoration: underline;
+      color: v('orange-gradient');
     }
   }
 
