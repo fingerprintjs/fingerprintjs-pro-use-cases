@@ -7,7 +7,7 @@ module.exports = {
     'next/core-web-vitals',
     'prettier',
   ],
-  plugins: ['react-hooks', 'prettier'],
+  plugins: ['react-hooks', 'prettier', 'jsx-a11y'],
   rules: {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
