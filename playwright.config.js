@@ -53,7 +53,7 @@ export default defineConfig({
         command: `yarn start`,
         url: LOCALHOST_URL,
         timeout: 120 * 1000,
-        // Don't `yarn start` (reuse existing server) if you are running locally
+        // Don't `yarn start` (reuse existing server instead) if you are running locally
         reuseExistingServer: !IS_CI,
       },
 
