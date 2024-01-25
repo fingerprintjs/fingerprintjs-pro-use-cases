@@ -44,7 +44,7 @@ export default function Article({ embed }: CustomPageProps) {
   const relatedArticles = ARTICLES.filter((article) => article.id !== articleId).slice(0, 4);
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.paywall} embed={embed} contentSx={{ maxWidth: 'none', padding: 0 }}>
+    <UseCaseWrapper useCase={USE_CASES.paywall}>
       <div className={styles.articleContainer}>
         <div className={styles.buckButton} data-testid={TEST_IDS.paywall.goBack}>
           <Link href={returnUrl}>

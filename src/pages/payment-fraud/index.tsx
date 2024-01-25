@@ -69,7 +69,7 @@ export default function Index({ embed }: CustomPageProps) {
   }
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.paymentFraud} contentSx={{ maxWidth: 'none' }} embed={embed}>
+    <UseCaseWrapper useCase={USE_CASES.paymentFraud} embed={embed}>
       <div className={formStyles.wrapper}>
         <form onSubmit={handleSubmit} className={classNames(formStyles.useCaseForm, styles.paymentForm)}>
           <label>Card Number</label>

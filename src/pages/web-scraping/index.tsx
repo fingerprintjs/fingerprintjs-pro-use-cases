@@ -1,4 +1,3 @@
-import { CircularProgress } from '@mui/material';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import FlightCard, { Flight } from '../../client/components/web-scraping/FlightCard';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
@@ -15,6 +14,7 @@ import Image from 'next/image';
 import styles from './webScraping.module.scss';
 import Button from '../../client/components/common/Button/Button';
 import Alert from '../../client/components/common/Alert/Alert';
+import { Spinner } from '../../client/components/common/Spinner/Spinner';
 
 // Make URL query object available as props to the page on first render
 // to read `from`, `to` params and a `disableBotDetection` param for testing and demo purposes
@@ -125,7 +125,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
 
   return (
     <>
-      <UseCaseWrapper useCase={USE_CASES.webScraping} embed={embed} contentSx={{ maxWidth: 'none' }}>
+      <UseCaseWrapper useCase={USE_CASES.webScraping} embed={embed}>
         <h2 className={styles.searchTitle}>Search for today&apos;s flights</h2>
         <form
           onSubmit={(event) => {
@@ -179,7 +179,7 @@ const Results = ({ data, isFetching, error }: UseQueryResult<FlightQueryResult, 
   if (isFetching) {
     return (
       <div className={styles.loaderContainer}>
-        <CircularProgress />
+        <Spinner size={40} thickness={4} />
       </div>
     );
   }

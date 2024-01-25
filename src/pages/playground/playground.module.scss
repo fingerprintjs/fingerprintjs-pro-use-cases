@@ -33,6 +33,7 @@
   flex-direction: column;
   gap: 40px;
   align-items: center;
+  min-height: 60vh;
 
   h2 {
     color: v('dark-black');
@@ -54,7 +55,7 @@
 }
 
 .reloadButton {
-  margin: 32px auto 64px auto;
+  margin: rem(32px) auto rem(64px) auto;
 }
 
 .tablesContainer {

@@ -143,7 +143,6 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
       <UseCaseWrapper
         useCase={USE_CASES.botFirewall}
         embed={embed}
-        contentSx={{ maxWidth: 'none' }}
         instructionsNote={`For the purposes of this demo, you can only block/unblock your own IP address (${visitorData?.ip}). The block expires after one hour. The database of bot visits is cleared on every website update.`}
       >
         <div className={styles.container}>

@@ -4,7 +4,7 @@ import styles from './UseCaseWrapper.module.scss';
 import Button from '../Button/Button';
 import Lightbulb from './lightbulb.svg';
 import Image from 'next/image';
-import { Paper, Tooltip } from '@mui/material';
+import { Tooltip } from '@mui/material';
 import { UseCase } from '../content';
 import ExternalLinkIcon from '../../../img/externalLinkArrow.svg';
 import RestartIcon from '../../../img/restart.svg';
@@ -21,7 +21,6 @@ type UseCaseWrapperProps = {
   children: React.ReactNode;
   hideGithubLink?: boolean;
   returnUrl?: string;
-  contentSx?: React.CSSProperties;
   embed?: boolean;
   instructionsNote?: string;
 };
@@ -29,7 +28,6 @@ type UseCaseWrapperProps = {
 export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   children,
   hideGithubLink: hideSrcListItem = false,
-  contentSx,
   useCase,
   embed,
   instructionsNote,
@@ -130,21 +128,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
             <div />
             <div />
           </div>
-          <Paper
-            elevation={0}
-            sx={{
-              padding: {
-                xs: '24px 16px 32px 16px',
-                md: '64px 56px',
-              },
-              maxWidth: '600px',
-              margin: '0px auto',
-              borderRadius: '12px',
-              ...contentSx,
-            }}
-          >
-            {children}
-          </Paper>
+          <div className={styles.browserContent}>{children}</div>
         </Container>
       </div>
 

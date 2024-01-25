@@ -33,6 +33,7 @@ h1.title {
     font-weight: 500;
     line-height: 100%;
     letter-spacing: -0.16px;
+    color: v('orange-gradient');
 
     img {
       display: inline;
@@ -118,6 +119,7 @@ h1.title {
 
     a {
       text-decoration: underline;
+      color: v('orange-gradient');
     }
   }
 
@@ -189,6 +191,16 @@ h1.title {
       background-color: v('gray-box-stroke');
       height: rem(12px);
       width: rem(12px);
+    }
+  }
+
+  .browserContent {
+    padding: rem(64px) rem(56px);
+    margin: 0px auto;
+    border-radius: rem(12px);
+
+    @include media('<=tabletWide') {
+      padding: rem(24px) rem(16px) rem(32px) rem(16px);
     }
   }
 

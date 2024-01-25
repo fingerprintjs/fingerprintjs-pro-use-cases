@@ -110,7 +110,7 @@ export default function LoanRisk({ embed }: CustomPageProps) {
   const isLoading = isVisitorDataLoading || loanRequestMutation.isLoading;
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.loanRisk} embed={embed} contentSx={{ maxWidth: 'none' }}>
+    <UseCaseWrapper useCase={USE_CASES.loanRisk} embed={embed}>
       <div className={classNames(formStyles.wrapper, styles.formWrapper)}>
         <form onSubmit={handleSubmit} className={formStyles.useCaseForm}>
           <div className={styles.nameWrapper}>

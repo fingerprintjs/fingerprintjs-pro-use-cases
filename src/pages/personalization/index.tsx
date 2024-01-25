@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDebounce, useSessionStorage } from 'react-use';
 import { useSearchHistory } from '../../client/api/personalization/use-search-history';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import { CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { useProducts } from '../../client/api/personalization/use-products';
 import { usePersonalizationNotification } from '../../client/hooks/personalization/use-personalization-notification';
 import { useSnackbar } from 'notistack';
@@ -19,6 +19,7 @@ import { Cart, CartProduct } from '../../client/components/common/Cart/Cart';
 import { Search, SearchHistory } from '../../client/components/personalization/searchComponents';
 import { ProductCard } from '../../client/components/personalization/productCard';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { Spinner } from '../../client/components/common/Spinner/Spinner';
 
 export default function Index({ embed }: CustomPageProps) {
   const { enqueueSnackbar } = useSnackbar();
@@ -102,7 +103,7 @@ export default function Index({ embed }: CustomPageProps) {
           <Button onClick={() => setDidAcknowledge(true)}>Okay, I understand</Button>
         </DialogActions>
       </Dialog>
-      <UseCaseWrapper useCase={USE_CASES.personalization} embed={embed} contentSx={{ maxWidth: 'none' }}>
+      <UseCaseWrapper useCase={USE_CASES.personalization} embed={embed}>
         <div className={styles.twoColumnContainer}>
           <div className={styles.leftColumn}>
             <div className={styles.search}>
@@ -114,9 +115,11 @@ export default function Index({ embed }: CustomPageProps) {
             </div>
             <div className={styles.products}>
               {isLoading ? (
-                <CircularProgress
+                <Spinner
+                  size={36}
+                  thickness={4}
                   sx={{
-                    marginLeft: (theme) => theme.spacing(3),
+                    marginLeft: '24px',
                   }}
                 />
               ) : (
