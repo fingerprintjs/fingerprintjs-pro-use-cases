@@ -7,7 +7,7 @@ import 'dotenv/config';
 
 const IS_CI = Boolean(process.env.CI);
 const PORT = process.env.PORT || 3000;
-export const PRODUCTION_E2E_TEST_BASE_URL = process.env.PRODUCTION_TEST_BASE_URL;
+export const PRODUCTION_E2E_TEST_BASE_URL = process.env.PRODUCTION_E2E_TEST_BASE_URL;
 const LOCALHOST_URL = `http://localhost:${PORT}`;
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -47,13 +47,15 @@ export default defineConfig({
   /* In CI/GitHub action, run the production server before running tests
    * (assumes `yarn build` was called before)
    */
-  webServer: {
-    command: `yarn start`,
-    url: LOCALHOST_URL,
-    timeout: 120 * 1000,
-    // Don't `yarn start` if you are running locally or running against the production URL
-    reuseExistingServer: !IS_CI || PRODUCTION_E2E_TEST_BASE_URL,
-  },
+  webServer: PRODUCTION_E2E_TEST_BASE_URL
+    ? undefined
+    : {
+        command: `yarn start`,
+        url: LOCALHOST_URL,
+        timeout: 120 * 1000,
+        // Don't `yarn start` (reuse existing server) if you are running locally
+        reuseExistingServer: !IS_CI,
+      },
 
   /* Configure projects for major browsers */
   projects: [
