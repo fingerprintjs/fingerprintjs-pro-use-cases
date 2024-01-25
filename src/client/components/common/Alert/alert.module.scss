@@ -14,6 +14,11 @@
     align-self: start;
   }
 
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
   @include media('<=phoneLandscape') {
     padding: rem(8px) rem(12px);
     font-size: 12px;

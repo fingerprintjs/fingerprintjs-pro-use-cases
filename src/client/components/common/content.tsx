@@ -378,8 +378,7 @@ export const USE_CASES = {
     title: 'Bot Firewall',
     titleMeta: 'Fingerprint Use Cases | Bot-Detection-powered Firewall',
     url: '/bot-firewall',
-    // TO-DO: Write article
-    // articleUrl: 'https://fingerprint.com/blog/bot-detection-powered-firewall/',
+    articleUrl: 'https://fingerprint.com/blog/bot-detection-powered-application-firewall/',
     iconSvg: FirewallIcon,
     descriptionHomepage: [
       <p key="1">
@@ -417,7 +416,14 @@ export const USE_CASES = {
         <Link href={'/web-scraping'} target="_blank">
           web scraping demo
         </Link>
-        .
+        . See the{' '}
+        <Link
+          href={`https://fingerprint.com/blog/bot-detection-powered-application-firewall#explore-the-bot-firewall-demo`}
+          target="_blank"
+        >
+          demo tutorial
+        </Link>{' '}
+        for an example.
       </>,
       <>
         Your headless browser will be recognized as a bot, and your IP address will be saved to the bot visit database
