@@ -14,14 +14,14 @@ const getServerResponse = async (page: Page) => {
   return JSON.parse(serverResponse);
 };
 
-const clickRefreshButton = async (page: Page) => {
+export const clickPlaygroundRefreshButton = async (page: Page) => {
   await page.getByTestId(PLAYGROUND_TAG.refreshButton).first().click();
   await page.waitForLoadState('networkidle');
   // Artificial wait necessary to make sure you get the updated response every time
   await page.waitForTimeout(3000);
 };
 
-test.describe('Playground page page', () => {
+test.describe('Playground page', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/playground');
   });
@@ -63,7 +63,7 @@ test.describe('Playground page page', () => {
 
   test('Reload button updates agent response', async ({ page }) => {
     const { requestId: oldRequestId } = await getAgentResponse(page);
-    await clickRefreshButton(page);
+    await clickPlaygroundRefreshButton(page);
     const { requestId } = await getAgentResponse(page);
 
     expect(oldRequestId).toHaveLength(20);
@@ -73,7 +73,7 @@ test.describe('Playground page page', () => {
 
   test('Reload button updates server response', async ({ page }) => {
     const oldRequestId = (await getServerResponse(page)).products.botd.data.requestId;
-    await clickRefreshButton(page);
+    await clickPlaygroundRefreshButton(page);
     const requestId = (await getServerResponse(page)).products.botd.data.requestId;
 
     expect(oldRequestId).toHaveLength(20);
