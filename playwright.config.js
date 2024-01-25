@@ -5,9 +5,10 @@ import { defineConfig, devices } from '@playwright/test';
  */
 import 'dotenv/config';
 
-const IS_CI = !!process.env.CI;
+const IS_CI = Boolean(process.env.CI);
 const PORT = process.env.PORT || 3000;
-const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
+export const PRODUCTION_E2E_TEST_BASE_URL = process.env.PRODUCTION_TEST_BASE_URL;
+const LOCALHOST_URL = `http://localhost:${PORT}`;
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
@@ -37,7 +38,7 @@ export default defineConfig({
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.WEBSITE_URL || 'http://localhost:3000',
+    baseURL: PRODUCTION_E2E_TEST_BASE_URL ?? LOCALHOST_URL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -48,9 +49,10 @@ export default defineConfig({
    */
   webServer: {
     command: `yarn start`,
-    url: BASE_URL,
+    url: LOCALHOST_URL,
     timeout: 120 * 1000,
-    reuseExistingServer: !IS_CI,
+    // Don't `yarn start` if you are running locally or running against the production URL
+    reuseExistingServer: !IS_CI || PRODUCTION_E2E_TEST_BASE_URL,
   },
 
   /* Configure projects for major browsers */
