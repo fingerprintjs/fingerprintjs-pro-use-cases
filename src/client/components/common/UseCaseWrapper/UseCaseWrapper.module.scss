@@ -15,6 +15,11 @@ h1.title {
 .description {
   max-width: rem(640px);
   margin-bottom: rem(24px);
+
+  a {
+    color: v('orange-gradient');
+    text-decoration: underline;
+  }
 }
 
 .externalLinks {
@@ -147,6 +152,7 @@ h1.title {
   padding-top: rem(24px);
   padding-bottom: rem(16px);
   margin-top: rem(32px);
+  align-items: center;
 
   @include media('<=phoneLandscape') {
     flex-direction: column;
@@ -163,6 +169,11 @@ h1.title {
     color: v('dark-gray');
     font-size: rem(14px);
     letter-spacing: 0.42px;
+
+    a {
+      color: v('orange-gradient');
+      text-decoration: underline;
+    }
   }
 }
 

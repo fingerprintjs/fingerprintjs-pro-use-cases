@@ -26,8 +26,13 @@
   font-weight: 600;
   line-height: 130%;
 
-  @include media('>tabletWide') {
-    white-space: nowrap;
+  a {
+    text-decoration: underline;
+    text-decoration-color: v('gray-box-stroke');
+
+    &:hover {
+      text-decoration-color: v('orange-gradient');
+    }
   }
 
   @include media('<=phoneLandscape') {
@@ -46,6 +51,11 @@
   border: 1px solid v('gray-box-stroke');
   border-radius: 8px;
   margin-left: auto;
+
+  a {
+    color: v('orange-gradient');
+    text-decoration: underline;
+  }
 
   @include media('<=tabletWide') {
     margin-left: 0;

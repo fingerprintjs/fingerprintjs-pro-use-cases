@@ -96,10 +96,10 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
                   </li>
                 )}
               </ol>
-              {instructionsNote && (
+              {(instructionsNote || useCase.instructionsNote) && (
                 <div className={styles.note}>
                   <div>NOTE</div>
-                  <div>{instructionsNote}</div>
+                  <div>{instructionsNote ?? useCase.instructionsNote}</div>
                 </div>
               )}
             </div>
