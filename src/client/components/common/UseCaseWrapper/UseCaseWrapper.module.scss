@@ -152,7 +152,6 @@ h1.title {
   padding-top: rem(24px);
   padding-bottom: rem(16px);
   margin-top: rem(32px);
-  align-items: center;
 
   @include media('<=phoneLandscape') {
     flex-direction: column;
@@ -163,6 +162,7 @@ h1.title {
     line-height: 145%;
     letter-spacing: 0.36px;
     color: v('orange-gradient');
+    padding-top: 2px;
   }
 
   :last-child {
