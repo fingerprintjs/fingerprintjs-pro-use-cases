@@ -1,3 +1,5 @@
 .spinner {
-  color: v('orange-gradient');
+  & {
+    color: v('orange-gradient');
+  }
 }

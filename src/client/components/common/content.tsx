@@ -23,6 +23,7 @@ export type UseCase = {
   articleUrl?: string;
   doNotMentionResetButton?: boolean;
   instructions: readonly (ReactNode | ((props: RestartHintProps) => ReactNode))[];
+  instructionsNote?: ReactNode;
   iconSvg?: any | undefined;
   moreResources?: readonly {
     type: 'Use case tutorial' | 'Case study' | 'Industry' | 'Article' | 'Use case';
@@ -361,6 +362,12 @@ export const USE_CASES = {
         in the URL.
       </>,
     ],
+    instructionsNote: (
+      <>
+        You can see the detected bot visits and block bot IP addresses in the{' '}
+        <Link href={'/bot-firewall'}>Bot Firewall</Link> demo.
+      </>
+    ),
     moreResources: [
       {
         url: 'https://fingerprint.com/blog/preventing-content-scraping/',

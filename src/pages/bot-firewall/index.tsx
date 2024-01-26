@@ -239,7 +239,12 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
       >
         <div className={styles.container}>
           <div className={styles.header}>
-            <h2 className={styles.title}>Detected bot visits</h2>
+            <h2 className={styles.title}>
+              Bots detected on{' '}
+              <Link href="/web-scraping" target="_blank">
+                Web scraping demo
+              </Link>
+            </h2>
             <Button
               size="small"
               outlined

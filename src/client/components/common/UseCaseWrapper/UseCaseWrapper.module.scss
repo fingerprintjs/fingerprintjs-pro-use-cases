@@ -15,6 +15,11 @@ h1.title {
 .description {
   max-width: rem(640px);
   margin-bottom: rem(24px);
+
+  a {
+    color: v('orange-gradient');
+    text-decoration: underline;
+  }
 }
 
 .externalLinks {
@@ -157,12 +162,18 @@ h1.title {
     line-height: 145%;
     letter-spacing: 0.36px;
     color: v('orange-gradient');
+    padding-top: 2px;
   }
 
   :last-child {
     color: v('dark-gray');
     font-size: rem(14px);
     letter-spacing: 0.42px;
+
+    a {
+      color: v('orange-gradient');
+      text-decoration: underline;
+    }
   }
 }
 
