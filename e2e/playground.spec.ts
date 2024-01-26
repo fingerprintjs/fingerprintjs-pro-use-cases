@@ -14,7 +14,7 @@ const getServerResponse = async (page: Page) => {
   return JSON.parse(serverResponse);
 };
 
-export const clickPlaygroundRefreshButton = async (page: Page) => {
+const clickPlaygroundRefreshButton = async (page: Page) => {
   await page.getByTestId(PLAYGROUND_TAG.refreshButton).first().click();
   await page.waitForLoadState('networkidle');
   // Artificial wait necessary to make sure you get the updated response every time
@@ -79,5 +79,21 @@ test.describe('Playground page', () => {
     expect(oldRequestId).toHaveLength(20);
     expect(requestId).toHaveLength(20);
     expect(requestId).not.toEqual(oldRequestId);
+  });
+});
+
+test.describe('Proxy integration', () => {
+  test('Proxy integration works on Playground, no network errors', async ({ page }) => {
+    // If any network request fails, fails the test
+    // This captures proxy integration failures that would otherwise go unnoticed thanks to default endpoint fallbacks
+    page.on('requestfailed', (request) => {
+      console.error(request.url(), request.failure()?.errorText);
+      // This fails the test
+      expect(request.failure()).toBeUndefined();
+    });
+
+    await page.goto('/playground');
+    await clickPlaygroundRefreshButton(page);
+    await page.waitForLoadState('networkidle');
   });
 });
