@@ -86,7 +86,13 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
       <div className={classNames(styles.wrapper, formStyles.wrapper)}>
         <Cart items={cartItems} discount={discount} taxPerItem={TAXES}></Cart>
         <div className={styles.innerWrapper}>
-          <form className={classNames(formStyles.useCaseForm, styles.couponFraudForm)}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              claimCoupon({ couponCode });
+            }}
+            className={classNames(formStyles.useCaseForm, styles.couponFraudForm)}
+          >
             <p>Do you have a coupon? Apply to get a discount!</p>
             <div className={styles.couponInputContainer}>
               <input
@@ -96,15 +102,7 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
                 required
                 data-testid={TEST_IDS.couponFraud.couponCode}
               />
-              <Button
-                disabled={isLoading}
-                onClick={(e) => {
-                  e.preventDefault();
-                  claimCoupon({ couponCode });
-                }}
-                size="medium"
-                data-testid={TEST_IDS.couponFraud.submitCoupon}
-              >
+              <Button disabled={isLoading} size="medium" data-testid={TEST_IDS.couponFraud.submitCoupon}>
                 {isLoading ? 'Processing...' : 'Apply'}
               </Button>
             </div>
