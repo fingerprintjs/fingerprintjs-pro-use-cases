@@ -32,9 +32,9 @@ export default async function blockIp(req: NextApiRequest, res: NextApiResponse<
 
   // Validate block/unblock request
   const { ip, blocked, requestId } = req.body as BlockIpPayload;
-  const validatioResult = await validateBlockIpRequest(requestId, ip, req);
-  if (!validatioResult.okay) {
-    return res.status(403).json({ severity: 'error', message: validatioResult.error });
+  const validationResult = await isValidBlockIpRequest(requestId, ip, req);
+  if (!validationResult.okay) {
+    return res.status(403).json({ severity: 'error', message: validationResult.error });
   }
 
   try {
@@ -59,11 +59,7 @@ export default async function blockIp(req: NextApiRequest, res: NextApiResponse<
 
 // For this demo, we want to only enable visitors to block their own IP, not other people's IPs, to not interfere with their demo experience.
 // In the actual scenario, only your authenticated admins could block bot IPs (or they would be blocked automatically) so this check would not be necessary.
-const validateBlockIpRequest = async (
-  requestId: string,
-  ip: string,
-  req: NextApiRequest,
-): Promise<ValidationResult> => {
+const isValidBlockIpRequest = async (requestId: string, ip: string, req: NextApiRequest): Promise<ValidationResult> => {
   // Validate IP address
   if (!isIP(ip)) {
     return { okay: false, error: 'Invalid IP address.' };
