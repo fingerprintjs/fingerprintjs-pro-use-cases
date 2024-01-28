@@ -35,14 +35,14 @@ export default async function claimCouponHandler(req: NextApiRequest, res: NextA
 
   const { couponCode, requestId } = req.body as CouponClaimPayload;
 
-  // Get and validate the full Fingerprint Identification result
+  // Get the full Identification result from Fingerprint Server API and validate its authenticity
   const fingerprintResult = await getAndValidateFingerprintResult(requestId, req);
   if (!fingerprintResult.okay) {
     res.status(403).send({ severity: 'error', message: fingerprintResult.error });
     return;
   }
 
-  // Get visitorId
+  // Get visitorId from the Server API Identification event
   const visitorId = fingerprintResult.data.products?.identification?.data?.visitorId;
   if (!visitorId) {
     res.status(403).send({ severity: 'error', message: 'Visitor ID not found.' });
