@@ -18,17 +18,24 @@ export function areVisitorIdAndRequestIdValid(visitorId: string, requestId: stri
   return isRequestIdFormatValid(requestId) && isVisitorIdFormatValid(visitorId);
 }
 
+/**
+ * @deprecated Use getAndValidateFingerprintResult() for new use cases
+ */
 export type RequestCallback = (req: NextApiRequest, res: NextApiResponse, visitorData: EventResponse) => void;
 
+/**
+ * @deprecated Use getAndValidateFingerprintResult() for new use cases
+ */
 export type RuleCheck = (
   eventResponse: EventResponse,
   req: NextApiRequest,
   ...args: any
 ) => (CheckResult | undefined) | Promise<CheckResult | undefined>;
 
+/**
+ * @deprecated Use getAndValidateFingerprintResult() for new use cases
+ */
 export const checkFreshIdentificationRequest: RuleCheck = (eventResponse) => {
-  // The Server API must contain information about this specific identification request.
-  // If not, the request might have been tampered with and we don't trust this identification attempt.
   const timestamp = eventResponse?.products?.identification?.data?.timestamp;
   if (!eventResponse || !timestamp) {
     return new CheckResult(
@@ -38,8 +45,6 @@ export const checkFreshIdentificationRequest: RuleCheck = (eventResponse) => {
     );
   }
 
-  // An attacker might have acquired a valid requestId and visitorId via phishing.
-  // It's recommended to check freshness of the identification request to prevent replay attacks.
   const requestTimestampDiff = new Date().getTime() - timestamp;
 
   if (requestTimestampDiff > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
@@ -51,9 +56,9 @@ export const checkFreshIdentificationRequest: RuleCheck = (eventResponse) => {
   }
 };
 
-// The Confidence Score reflects the system's degree of certainty that the visitor identifier is correct.
-// If it's lower than the certain threshold we recommend using an additional way of verification, e.g. 2FA or email.
-// More info: https://dev.fingerprint.com/docs/understanding-your-confidence-score
+/**
+ * @deprecated Use getAndValidateFingerprintResult() for new use cases
+ */
 export const checkConfidenceScore: RuleCheck = (eventResponse) => {
   const confidenceScore = eventResponse?.products?.identification?.data?.confidence.score;
   if (!confidenceScore || confidenceScore < MIN_CONFIDENCE_SCORE) {
@@ -65,13 +70,28 @@ export const checkConfidenceScore: RuleCheck = (eventResponse) => {
   }
 };
 
-// Checks if the authentication request comes from the same IP address as the identification request.
+/**
+ * @deprecated Use getAndValidateFingerprintResult() for new use cases
+ */
 export const checkIpAddressIntegrity: RuleCheck = (eventResponse, request) => {
   if (!visitIpMatchesRequestIp(eventResponse.products?.identification?.data?.ip, request)) {
     return new CheckResult(
       'IP mismatch. An attacker might have tried to phish the victim.',
       messageSeverity.Error,
       checkResultType.IpMismatch,
+    );
+  }
+};
+
+/**
+ * @deprecated Use getAndValidateFingerprintResult() for new use cases
+ */
+export const checkOriginsIntegrity: RuleCheck = (eventResponse, request) => {
+  if (!originIsAllowed(eventResponse.products?.identification?.data?.url, request)) {
+    return new CheckResult(
+      'Origin mismatch. An attacker might have tried to phish the victim.',
+      messageSeverity.Error,
+      checkResultType.ForeignOrigin,
     );
   }
 };
@@ -102,19 +122,6 @@ export function visitIpMatchesRequestIp(visitIp = '', request: NextApiRequest) {
   return requestIp === visitIp;
 }
 
-// Checks if the authentication request comes from a known origin and
-// if the authentication request's origin corresponds to the origin/URL provided by the Fingerprint Pro Server API.
-// Additionally, one should set Request Filtering settings in the dashboard: https://dev.fingerprint.com/docs/request-filtering
-export const checkOriginsIntegrity: RuleCheck = (eventResponse, request) => {
-  if (!originIsAllowed(eventResponse.products?.identification?.data?.url, request)) {
-    return new CheckResult(
-      'Origin mismatch. An attacker might have tried to phish the victim.',
-      messageSeverity.Error,
-      checkResultType.ForeignOrigin,
-    );
-  }
-};
-
 export function originIsAllowed(url = '', request: NextApiRequest) {
   // This check is skipped on purpose in the Stackblitz and localhost environments.
   if (process.env.NODE_ENV === 'development') {
@@ -129,15 +136,23 @@ export function originIsAllowed(url = '', request: NextApiRequest) {
   );
 }
 
+/**
+ * Retrieves the full Identification event from the Server API and validates its authenticity.
+ */
 export const getAndValidateFingerprintResult = async (
   requestId: string,
   req: NextApiRequest,
 ): Promise<ValidationDataResult<EventResponse>> => {
-  console.log(requestId);
+  // Request ID must match the expected format
   if (!isRequestIdFormatValid(requestId)) {
     return { okay: false, error: 'Invalid request ID format.' };
   }
 
+  /**
+   * The Server API must contain information about this specific identification request.
+   * If not, the request might have been tampered with and we don't trust this identification attempt.
+   * The Server API also allows you to access all available [Smart Signals](https://dev.fingerprint.com/docs/smart-signals-overview)
+   */
   let identificationEvent: EventResponse;
   try {
     const client = new FingerprintJsServerApiClient({ region: BACKEND_REGION, apiKey: SERVER_API_KEY });
@@ -152,26 +167,42 @@ export const getAndValidateFingerprintResult = async (
     return { okay: false, error: String(error) };
   }
 
+  // Identification event must contain identification data
   const identification = identificationEvent.products?.identification?.data;
   if (!identification) {
     return { okay: false, error: 'Identification data not found, potential spoofing attack.' };
   }
 
+  // The client request must come from the same IP address as the identification request.
   if (!visitIpMatchesRequestIp(identification?.ip, req)) {
     return { okay: false, error: 'Identification IP does not match request IP, potential spoofing attack.' };
   }
 
+  /**
+   * The client request must come from an expected origin (usually your website)
+   * and its origin must match the identification request origin
+   */
   if (!originIsAllowed(identification.url, req)) {
     return { okay: false, error: 'Visit origin does not match request origin, potential spoofing attack.' };
   }
 
+  /**
+   * The Confidence Score reflects the system's degree of certainty that the visitor identifier is correct.
+   * If it's lower than the certain threshold we recommend using an additional way of verification, e.g. 2FA or email.
+   * More info: https://dev.fingerprint.com/docs/understanding-your-confidence-score
+   */
   if (identification.confidence.score < MIN_CONFIDENCE_SCORE) {
     return { okay: false, error: 'Identification confidence score too low, potential spoofing attack.' };
   }
 
+  /**
+   * An attacker might have acquired a valid requestId and visitorId via phishing.
+   * It's recommended to check freshness of the identification request to prevent replay attacks.
+   */
   if (Date.now() - Number(new Date(identification.time)) > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
     return { okay: false, error: 'Old identification request, potential replay attack.' };
   }
 
+  // All checks passed, we can trust this identification event
   return { okay: true, data: identificationEvent };
 };
