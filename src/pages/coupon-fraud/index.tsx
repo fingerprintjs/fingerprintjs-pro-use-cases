@@ -1,7 +1,5 @@
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import { useCallback, useEffect, useState } from 'react';
-
-import { useRequestCouponClaim } from '../../client/api/coupon-fraud/use-coupon-claim';
+import { useState } from 'react';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
 import { CustomPageProps } from '../_app';
@@ -15,50 +13,50 @@ import Button from '../../client/components/common/Button/Button';
 import { Cart } from '../../client/components/common/Cart/Cart';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
+import { useMutation } from 'react-query';
+import { CouponClaimPayload, CouponClaimResponse } from '../api/coupon-fraud/claim';
 
 const AIRMAX_PRICE = 356.02;
 const ALLSTAR_PRICE = 102.5;
 const TAXES = 6;
 
 export default function CouponFraudUseCase({ embed }: CustomPageProps) {
-  const { getData } = useVisitorData(
+  const { getData: getVisitorData } = useVisitorData(
     {
       ignoreCache: true,
     },
     { immediate: false },
   );
 
-  const couponClaimMutation = useRequestCouponClaim();
+  const {
+    mutate: claimCoupon,
+    isLoading,
+    data: claimResponse,
+  } = useMutation({
+    mutationKey: ['request coupon claim'],
+    mutationFn: async ({ couponCode }: Omit<CouponClaimPayload, 'requestId'>) => {
+      const { requestId } = await getVisitorData({ ignoreCache: true });
+      const response = await fetch('/api/coupon-fraud/claim', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ couponCode, requestId } satisfies CouponClaimPayload),
+      });
+      return await response.json();
+    },
+    onSuccess: (data: CouponClaimResponse) => {
+      if (data.severity === 'success') {
+        setDiscount(30);
+      }
+    },
+  });
 
   const [airMaxCount, setAirMaxCount] = useState(1);
   const [allStarCount, setAllStarCount] = useState(1);
 
   const [couponCode, setCouponCode] = useState('');
   const [discount, setDiscount] = useState(0);
-  const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
-
-  const handleSubmit = useCallback(
-    async (event: React.FormEvent) => {
-      event.preventDefault();
-      setIsWaitingForResponse(true);
-      const fpData = await getData();
-
-      if (fpData) {
-        await couponClaimMutation.mutateAsync({
-          fpData: fpData,
-          body: { couponCode },
-        });
-        setIsWaitingForResponse(false);
-      }
-    },
-    [couponClaimMutation, couponCode, getData],
-  );
-
-  useEffect(() => {
-    if (couponClaimMutation?.data?.severity === 'success') {
-      setDiscount(30);
-    }
-  }, [couponClaimMutation]);
 
   const cartItems = [
     {
@@ -88,7 +86,7 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
       <div className={classNames(styles.wrapper, formStyles.wrapper)}>
         <Cart items={cartItems} discount={discount} taxPerItem={TAXES}></Cart>
         <div className={styles.innerWrapper}>
-          <form onSubmit={handleSubmit} className={classNames(formStyles.useCaseForm, styles.couponFraudForm)}>
+          <form className={classNames(formStyles.useCaseForm, styles.couponFraudForm)}>
             <p>Do you have a coupon? Apply to get a discount!</p>
             <div className={styles.couponInputContainer}>
               <input
@@ -99,17 +97,20 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
                 data-testid={TEST_IDS.couponFraud.couponCode}
               />
               <Button
-                disabled={isWaitingForResponse}
-                type="submit"
+                disabled={isLoading}
+                onClick={(e) => {
+                  e.preventDefault();
+                  claimCoupon({ couponCode });
+                }}
                 size="medium"
                 data-testid={TEST_IDS.couponFraud.submitCoupon}
               >
-                {isWaitingForResponse ? 'Processing...' : 'Apply'}
+                {isLoading ? 'Processing...' : 'Apply'}
               </Button>
             </div>
-            {couponClaimMutation.data?.message && !couponClaimMutation.isLoading && (
+            {claimResponse?.message && !isLoading && (
               <div>
-                <Alert severity={couponClaimMutation.data.severity}>{couponClaimMutation.data.message}</Alert>
+                <Alert severity={claimResponse.severity}>{claimResponse.message}</Alert>
               </div>
             )}
           </form>

@@ -1,8 +1,15 @@
-import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { EventResponse, FingerprintJsServerApiClient, isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { CheckResult, checkResultType } from './checkResult';
-import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, IPv4_REGEX, MIN_CONFIDENCE_SCORE } from './const';
+import {
+  ALLOWED_REQUEST_TIMESTAMP_DIFF_MS,
+  BACKEND_REGION,
+  IPv4_REGEX,
+  MIN_CONFIDENCE_SCORE,
+  SERVER_API_KEY,
+} from './const';
 import { messageSeverity, ourOrigins } from './server';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { ValidationDataResult } from '../shared/types';
 
 // Validates format of visitorId and requestId.
 export const isVisitorIdFormatValid = (visitorId: string) => /^[a-zA-Z0-9]{20}$/.test(visitorId);
@@ -121,3 +128,50 @@ export function originIsAllowed(url = '', request: NextApiRequest) {
     ourOrigins.includes(request.headers['origin'])
   );
 }
+
+export const getAndValidateFingerprintResult = async (
+  requestId: string,
+  req: NextApiRequest,
+): Promise<ValidationDataResult<EventResponse>> => {
+  console.log(requestId);
+  if (!isRequestIdFormatValid(requestId)) {
+    return { okay: false, error: 'Invalid request ID format.' };
+  }
+
+  let identificationEvent: EventResponse;
+  try {
+    const client = new FingerprintJsServerApiClient({ region: BACKEND_REGION, apiKey: SERVER_API_KEY });
+    const eventResponse = await client.getEvent(requestId);
+    identificationEvent = eventResponse;
+  } catch (error) {
+    console.error(error);
+    // Throw a specific error if the request ID is not found
+    if (isEventError(error) && error.status === 404) {
+      return { okay: false, error: 'Request ID not found, potential spoofing attack.' };
+    }
+    return { okay: false, error: String(error) };
+  }
+
+  const identification = identificationEvent.products?.identification?.data;
+  if (!identification) {
+    return { okay: false, error: 'Identification data not found, potential spoofing attack.' };
+  }
+
+  if (!visitIpMatchesRequestIp(identification?.ip, req)) {
+    return { okay: false, error: 'Identification IP does not match request IP, potential spoofing attack.' };
+  }
+
+  if (!originIsAllowed(identification.url, req)) {
+    return { okay: false, error: 'Visit origin does not match request origin, potential spoofing attack.' };
+  }
+
+  if (identification.confidence.score < MIN_CONFIDENCE_SCORE) {
+    return { okay: false, error: 'Identification confidence score too low, potential spoofing attack.' };
+  }
+
+  if (Date.now() - Number(new Date(identification.time)) > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
+    return { okay: false, error: 'Old identification request, potential replay attack.' };
+  }
+
+  return { okay: true, data: identificationEvent };
+};

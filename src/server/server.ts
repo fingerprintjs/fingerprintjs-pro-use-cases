@@ -4,6 +4,7 @@ import { fingerprintJsApiClient } from './fingerprint-api';
 import { CheckResult, checkResultType } from './checkResult';
 import { sendForbiddenResponse } from './response';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { ValidationResult } from '../shared/types';
 
 // Provision the database.
 // In the Stackblitz environment, this db is stored locally in your browser.
@@ -74,14 +75,10 @@ export function reportSuspiciousActivity(_context: any) {
   return _context;
 }
 
-export function ensurePostRequest(req: NextApiRequest, res: NextApiResponse, expectBody = true): boolean {
-  if (req.method !== 'POST') {
-    res.status(405).send({ message: 'Only POST requests allowed' });
-    return false;
-  }
-
-  if (expectBody && !req.body) {
-    res.status(400).send({ message: 'Missing body' });
+export function ensurePostRequest(req: NextApiRequest, res: NextApiResponse): boolean {
+  const validation = isValidPostRequest(req);
+  if (!validation.okay) {
+    res.status(405).send({ message: validation.error });
     return false;
   }
 
@@ -96,3 +93,13 @@ export function ensureGetRequest(req: NextApiRequest, res: NextApiResponse): boo
 
   return true;
 }
+
+export const isValidPostRequest = (req: NextApiRequest): ValidationResult => {
+  if (req.method !== 'POST') {
+    return { okay: false, error: 'Only POST requests allowed' };
+  }
+  if (!req.body) {
+    return { okay: false, error: 'Missing body' };
+  }
+  return { okay: true };
+};

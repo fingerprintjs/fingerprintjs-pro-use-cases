@@ -1,10 +1,8 @@
-import { messageSeverity } from '../../../server/server';
+import { Severity, isValidPostRequest } from '../../../server/server';
 import { Op } from 'sequelize';
-import { couponEndpoint } from '../../../server/coupon-fraud/coupon-endpoint';
 import { COUPON_CODES, CouponClaimDbModel, CouponCodeString } from '../../../server/coupon-fraud/database';
-import { CheckResult, checkResultType } from '../../../server/checkResult';
-import { sendOkResponse } from '../../../server/response';
-import { RuleCheck } from '../../../server/checks';
+import { getAndValidateFingerprintResult } from '../../../server/checks';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 export const COUPON_FRAUD_COPY = {
   doesNotExist: 'Provided coupon code does not exist.',
@@ -13,11 +11,63 @@ export const COUPON_FRAUD_COPY = {
   success: 'Coupon claimed',
 } as const;
 
-async function checkVisitorClaimedRecently(visitorId: string) {
+export type CouponClaimPayload = {
+  couponCode: string;
+  requestId: string;
+};
+
+export type CouponClaimResponse = {
+  message: string;
+  severity: Severity;
+};
+
+const isCouponCode = (couponCode: string): couponCode is CouponCodeString => {
+  return COUPON_CODES.includes(couponCode as CouponCodeString);
+};
+
+export default async function claimCouponHandler(req: NextApiRequest, res: NextApiResponse<CouponClaimResponse>) {
+  // This API route accepts only POST requests.
+  const reqValidation = isValidPostRequest(req);
+  if (!reqValidation.okay) {
+    res.status(405).send({ severity: 'error', message: reqValidation.error });
+    return;
+  }
+
+  const { couponCode, requestId } = req.body as CouponClaimPayload;
+
+  // Get and validate the full Fingerprint Identification result
+  const fingerprintResult = await getAndValidateFingerprintResult(requestId, req);
+  if (!fingerprintResult.okay) {
+    res.status(403).send({ severity: 'error', message: fingerprintResult.error });
+    return;
+  }
+
+  // Get visitorId
+  const visitorId = fingerprintResult.data.products?.identification?.data?.visitorId;
+  if (!visitorId) {
+    res.status(403).send({ severity: 'error', message: 'Visitor ID not found.' });
+    return;
+  }
+
+  // Check if Coupon exists
+  if (!isCouponCode(couponCode)) {
+    res.status(403).send({ severity: 'error', message: COUPON_FRAUD_COPY.doesNotExist });
+    return;
+  }
+
+  // Check if visitor used this coupon before
+  const usedBefore = await CouponClaimDbModel.findOne({
+    where: { visitorId, couponCode },
+  });
+  if (usedBefore) {
+    res.status(403).send({ severity: 'error', message: COUPON_FRAUD_COPY.usedBefore });
+    return;
+  }
+
+  // Check if visitor claimed another coupon recently
   const oneHourBefore = new Date();
   oneHourBefore.setHours(oneHourBefore.getHours() - 1);
-
-  return await CouponClaimDbModel.findOne({
+  const usedAnotherCouponRecently = await CouponClaimDbModel.findOne({
     where: {
       visitorId,
       timestamp: {
@@ -25,84 +75,16 @@ async function checkVisitorClaimedRecently(visitorId: string) {
       },
     },
   });
-}
+  if (usedAnotherCouponRecently) {
+    res.status(403).send({ severity: 'error', message: COUPON_FRAUD_COPY.usedAnotherCouponRecently });
+    return;
+  }
 
-async function getVisitorClaim(visitorId: string, couponCode: string) {
-  return await CouponClaimDbModel.findOne({
-    where: { visitorId, couponCode },
-  });
-}
-
-/**
- * Checks if a coupon exists with the given coupon code.
- */
-export function checkCoupon(code: CouponCodeString) {
-  return COUPON_CODES.includes(code);
-}
-
-/**
- * Claim coupon on behalf of the visitor.
- */
-export async function claimCoupon(visitorId: string, couponCode: CouponCodeString) {
-  const claim = await CouponClaimDbModel.create({
+  // If all checks passed, claim coupon
+  await CouponClaimDbModel.create({
     couponCode,
     visitorId,
     timestamp: new Date(),
   });
-  await claim.save();
-
-  return claim;
+  res.status(200).send({ severity: 'success', message: COUPON_FRAUD_COPY.success });
 }
-
-const checkIfCouponExists: RuleCheck = async (_visitorData, _req, couponCode: CouponCodeString) => {
-  const coupon = await checkCoupon(couponCode);
-
-  // Check if the coupon exists.
-  if (!coupon) {
-    return new CheckResult(COUPON_FRAUD_COPY.doesNotExist, messageSeverity.Error, checkResultType.CouponDoesNotExist);
-  }
-};
-
-const checkIfCouponWasClaimed: RuleCheck = async (eventResponse, _req, couponCode) => {
-  const visitorId = eventResponse.products?.identification?.data?.visitorId;
-  if (!visitorId) {
-    return new CheckResult('Could not find visitor ID', messageSeverity.Error, checkResultType.RequestIdMismatch);
-  }
-
-  const wasCouponClaimedByVisitor = await getVisitorClaim(visitorId, couponCode);
-
-  // Check if the visitor claimed this coupon before.
-  if (wasCouponClaimedByVisitor) {
-    return new CheckResult(COUPON_FRAUD_COPY.usedBefore, messageSeverity.Error, checkResultType.CouponAlreadyClaimed);
-  }
-};
-
-const checkIfClaimedAnotherCouponRecently: RuleCheck = async (eventData) => {
-  const visitorId = eventData.products?.identification?.data?.visitorId;
-  if (!visitorId) {
-    return new CheckResult('Could not find visitor ID', messageSeverity.Error, checkResultType.RequestIdMismatch);
-  }
-
-  const visitorClaimedAnotherCouponRecently = await checkVisitorClaimedRecently(visitorId);
-
-  if (visitorClaimedAnotherCouponRecently) {
-    return new CheckResult(
-      COUPON_FRAUD_COPY.usedAnotherCouponRecently,
-      messageSeverity.Error,
-      checkResultType.AnotherCouponClaimedRecently,
-    );
-  }
-};
-
-export default couponEndpoint(
-  async (req, res, validateCouponResult) => {
-    if (validateCouponResult && validateCouponResult.visitorId && validateCouponResult.couponCode) {
-      await claimCoupon(validateCouponResult.visitorId, validateCouponResult.couponCode);
-    }
-
-    const result = new CheckResult(COUPON_FRAUD_COPY.success, messageSeverity.Success, checkResultType.Passed);
-
-    return sendOkResponse(res, result);
-  },
-  [checkIfCouponExists, checkIfCouponWasClaimed, checkIfClaimedAnotherCouponRecently],
-);
