@@ -8,6 +8,7 @@ export const TEST_IDS = {
       cartItemCount: 'cartItemCount',
       cartItemPrice: 'cartItemPrice',
       cartSubTotal: 'cartSubTotal',
+      discount: 'discount',
     },
     alert: 'alert',
   },
