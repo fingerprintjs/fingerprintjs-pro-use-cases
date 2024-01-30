@@ -8,10 +8,8 @@ import Image from 'next/image';
 import { TEST_IDS } from '../client/testIDs';
 import { Fragment } from 'react';
 import { SEO } from '../client/components/common/seo';
-import { useRouter } from 'next/router';
 
 export default function Index() {
-  const router = useRouter();
   return (
     <>
       <SEO
@@ -35,7 +33,7 @@ export default function Index() {
       </Container>
       <div className={styles.useCaseGrid}>
         {HOMEPAGE_CARDS.map((card) => (
-          <div className={styles.useCaseCard} key={card.url} onClick={() => router.push(card.url)}>
+          <div className={styles.useCaseCard} key={card.url}>
             <div>
               <Image src={card.iconSvg} alt="" className={styles.useCaseIcon} />
               <Link className={styles.useCaseTitle} data-testid={TEST_IDS.homepageCard.useCaseTitle} href={card.url}>
