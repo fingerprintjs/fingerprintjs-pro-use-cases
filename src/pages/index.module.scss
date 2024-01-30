@@ -67,7 +67,7 @@
   overflow: hidden;
   color: unset;
   cursor: pointer;
-  // You need this for the useCaseTitle pseudo element below
+  // We need this for the useCaseTitle pseudo element below
   position: relative;
 
   @include shadowMedium();
@@ -113,7 +113,7 @@
     }
   }
 
-  .useCaseTitle .Card-Primary-Action::before .useCaseDescription {
+  .useCaseDescription {
     color: v('dark-gray');
     font-size: rem(16px);
     font-style: normal;
