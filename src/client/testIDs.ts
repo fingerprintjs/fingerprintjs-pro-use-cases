@@ -18,6 +18,8 @@ export const TEST_IDS = {
   },
   homepageCard: {
     useCaseTitle: 'useCaseTitle',
+    useCaseDescription: 'useCaseDescription',
+    useCaseIcon: 'useCaseIcon',
   },
   loanRisk: {
     monthlyInstallmentValue: 'monthlyInstallmentValue',
