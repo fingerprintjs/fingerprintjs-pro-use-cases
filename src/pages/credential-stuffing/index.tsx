@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
-import Alert from '../../client/components/common/Alert/Alert';
+import { Alert } from '../../client/components/common/Alert/Alert';
 import Button from '../../client/components/common/Button/Button';
 import styles from './credentialStuffing.module.scss';
 import formStyles from '../../styles/forms.module.scss';

@@ -44,3 +44,32 @@
   background: v('warning-background');
   color: v('warning-text');
 }
+
+.info {
+  background: v('info-background');
+  color: v('info-text');
+}
+
+.infoBorder {
+  border: 1px solid v('gray-box-stroke');
+}
+
+.successBorder {
+  border: 1px solid v('success-text');
+}
+
+.errorBorder {
+  border: 1px solid v('error-text');
+}
+
+.warningBorder {
+  border: 1px solid v('warning-text');
+}
+
+.snackbar {
+  display: flex;
+  padding: 12px;
+  align-items: center;
+  gap: 12px;
+  border-radius: 6px;
+}

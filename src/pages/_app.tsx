@@ -11,6 +11,22 @@ import DeploymentUtils from '../client/DeploymentUtils';
 import Footer from '../client/components/common/Footer/Footer';
 import styles from '../styles/layout.module.scss';
 import { PUBLIC_API_KEY, SCRIPT_URL_PATTERN, ENDPOINT, FRONTEND_REGION, CUSTOM_TLS_ENDPOINT } from '../server/const';
+// import { ALERT_ICON_MAP } from '../client/components/common/Alert/Alert';
+
+import { MaterialDesignContent } from 'notistack';
+import { styled } from '@mui/material';
+import { CustomSnackbar } from '../client/components/common/Alert/Alert';
+
+// const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => ({
+//   '&.notistack-MuiContent-success': {
+//     backgroundColor: '#edf7ed',
+//     color: '#1e4620',
+//     boxShadow: 'none',
+//   },
+//   '&.notistack-MuiContent-error': {
+//     backgroundColor: '#970C0C',
+//   },
+// }));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,11 +62,23 @@ function CustomApp({ Component, pageProps }: AppProps<CustomPageProps>) {
       <SnackbarProvider
         action={(snackbarId) => <SnackbarAction snackbarId={snackbarId} />}
         maxSnack={3}
+        // iconVariant={ALERT_ICON_MAP}
         autoHideDuration={5000}
         anchorOrigin={{
           horizontal: 'left',
           vertical: 'bottom',
         }}
+        Components={{
+          default: CustomSnackbar,
+          success: CustomSnackbar,
+          error: CustomSnackbar,
+          warning: CustomSnackbar,
+          info: CustomSnackbar,
+        }}
+        // Components={{
+        //   success: StyledMaterialDesignContent,
+        //   error: StyledMaterialDesignContent,
+        // }}
       >
         <FpjsProvider loadOptions={FP_LOAD_OPTIONS}>
           <Head>

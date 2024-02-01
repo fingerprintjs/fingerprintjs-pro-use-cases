@@ -23,7 +23,7 @@ import externalLinkArrow from '../../client/img/externalLinkArrow.svg';
 import Image from 'next/image';
 import styles from './playground.module.scss';
 import { Spinner } from '../../client/components/common/Spinner/Spinner';
-import Alert from '../../client/components/common/Alert/Alert';
+import { Alert } from '../../client/components/common/Alert/Alert';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',

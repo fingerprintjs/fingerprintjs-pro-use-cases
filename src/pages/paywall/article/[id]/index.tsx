@@ -7,7 +7,7 @@ import BackArrow from '../../../../client/img/arrowLeft.svg';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from '../../paywall.module.scss';
-import Alert from '../../../../client/components/common/Alert/Alert';
+import { Alert } from '../../../../client/components/common/Alert/Alert';
 import { ARTICLES } from '../../../../server/paywall/articles';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useQuery } from 'react-query';
