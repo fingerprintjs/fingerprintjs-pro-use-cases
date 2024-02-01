@@ -8,8 +8,10 @@ import styles from './alert.module.scss';
 import Image from 'next/image';
 import classNames from 'classnames';
 import { TEST_IDS } from '../../../testIDs';
-import { SnackbarContent, CustomContentProps, VariantType } from 'notistack';
+import { SnackbarContent, CustomContentProps, VariantType, useSnackbar, SnackbarKey } from 'notistack';
 import React from 'react';
+import Button from '../Button/Button';
+import { CrossIconSvg } from '../../../img/crossIconSvg';
 
 type AlertProps = {
   severity: Severity;
@@ -23,14 +25,6 @@ const STYLES_MAP: Record<VariantType, keyof typeof styles> = {
   success: styles.success,
   default: styles.info,
   info: styles.info,
-};
-
-const BORDER_MAP: Record<VariantType, string> = {
-  error: styles.errorBorder,
-  warning: styles.warningBorder,
-  success: styles.successBorder,
-  default: styles.infoBorder,
-  info: styles.infoBorder,
 };
 
 export const ALERT_ICON_MAP: Record<VariantType, any> = {
@@ -70,16 +64,40 @@ export const CustomSnackbar = React.forwardRef<HTMLDivElement, CustomSnackbarPro
   } = props;
 
   return (
-    <SnackbarContent
+    <div
       ref={ref}
       role="alert"
-      className={classNames(styles.snackbar, STYLES_MAP[variant], BORDER_MAP[variant], className)}
+      className={classNames(styles.snackbar, styles.withBorder, STYLES_MAP[variant], className)}
       {...other}
     >
-      <div className={styles.iconWrapper}>{ALERT_ICON_MAP[variant]}</div>
-      {message}
-    </SnackbarContent>
+      <div className={styles.snackbarContent}>
+        <div className={styles.iconWrapper}>{ALERT_ICON_MAP[variant]}</div>
+        {message}
+      </div>
+      <div className={styles.snackbarActions}>{typeof action === 'function' ? action(id) : action}</div>
+    </div>
   );
 });
 
 CustomSnackbar.displayName = 'CustomSnackbar';
+
+export function CloseSnackbarButton({ snackbarId }: { snackbarId: SnackbarKey }) {
+  const { closeSnackbar } = useSnackbar();
+
+  return (
+    <>
+      <div className={styles.closeIcon}>
+        <CrossIconSvg onClick={() => closeSnackbar(snackbarId)} />
+      </div>
+      <Button
+        onClick={() => closeSnackbar(snackbarId)}
+        className={styles.closeButton}
+        variant="ghost"
+        outlined
+        size="small"
+      >
+        CLOSE
+      </Button>
+    </>
+  );
+}

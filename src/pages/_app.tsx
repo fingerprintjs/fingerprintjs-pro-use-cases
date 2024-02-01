@@ -2,7 +2,6 @@ import '../styles/global-styles.scss';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Head from 'next/head';
 import { SnackbarProvider } from 'notistack';
-import { SnackbarAction } from '../client/components/snackbar-action';
 import { FpjsProvider, FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
 import { AppProps } from 'next/app';
 import Header from '../client/components/common/Header/Header';
@@ -11,22 +10,8 @@ import DeploymentUtils from '../client/DeploymentUtils';
 import Footer from '../client/components/common/Footer/Footer';
 import styles from '../styles/layout.module.scss';
 import { PUBLIC_API_KEY, SCRIPT_URL_PATTERN, ENDPOINT, FRONTEND_REGION, CUSTOM_TLS_ENDPOINT } from '../server/const';
-// import { ALERT_ICON_MAP } from '../client/components/common/Alert/Alert';
 
-import { MaterialDesignContent } from 'notistack';
-import { styled } from '@mui/material';
-import { CustomSnackbar } from '../client/components/common/Alert/Alert';
-
-// const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => ({
-//   '&.notistack-MuiContent-success': {
-//     backgroundColor: '#edf7ed',
-//     color: '#1e4620',
-//     boxShadow: 'none',
-//   },
-//   '&.notistack-MuiContent-error': {
-//     backgroundColor: '#970C0C',
-//   },
-// }));
+import { CloseSnackbarButton, CustomSnackbar } from '../client/components/common/Alert/Alert';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -60,8 +45,8 @@ function CustomApp({ Component, pageProps }: AppProps<CustomPageProps>) {
   return (
     <QueryClientProvider client={queryClient}>
       <SnackbarProvider
-        action={(snackbarId) => <SnackbarAction snackbarId={snackbarId} />}
-        maxSnack={3}
+        action={(snackbarId) => <CloseSnackbarButton snackbarId={snackbarId} />}
+        maxSnack={4}
         // iconVariant={ALERT_ICON_MAP}
         autoHideDuration={5000}
         anchorOrigin={{
@@ -75,10 +60,6 @@ function CustomApp({ Component, pageProps }: AppProps<CustomPageProps>) {
           warning: CustomSnackbar,
           info: CustomSnackbar,
         }}
-        // Components={{
-        //   success: StyledMaterialDesignContent,
-        //   error: StyledMaterialDesignContent,
-        // }}
       >
         <FpjsProvider loadOptions={FP_LOAD_OPTIONS}>
           <Head>

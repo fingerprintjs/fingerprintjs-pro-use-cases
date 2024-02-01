@@ -6,10 +6,17 @@ import { HOMEPAGE_CARDS } from '../client/components/common/content';
 import LinkArrow from '../client/img/externalLinkArrow.svg';
 import Image from 'next/image';
 import { TEST_IDS } from '../client/testIDs';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { SEO } from '../client/components/common/seo';
+import { enqueueSnackbar } from 'notistack';
 
 export default function Index() {
+  useEffect(() => {
+    enqueueSnackbar({ message: 'Success Success Success Success Success', persist: true, variant: 'success' });
+    enqueueSnackbar({ message: 'Error Error Error Error Error', persist: true, variant: 'error' });
+    enqueueSnackbar({ message: 'Warning Warning Warning Warning Warning', persist: true, variant: 'warning' });
+    enqueueSnackbar({ message: 'Info Info Info Info Info', persist: true, variant: 'info' });
+  });
   return (
     <>
       <SEO
