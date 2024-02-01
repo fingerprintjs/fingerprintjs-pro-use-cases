@@ -70,7 +70,7 @@
   display: flex;
   flex-direction: row;
   padding: 12px;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
   flex-wrap: nowrap;
   border-radius: 6px;
@@ -87,8 +87,8 @@
 
 .snackbarContent {
   display: flex;
-  flex-wrap: nowrap;
   flex-direction: row;
+  align-items: flex-start;
   gap: 12px;
 
   .iconWrapper {
@@ -101,9 +101,10 @@
 }
 
 .snackbarActions {
-  margin-left: auto;
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  margin-left: auto;
+  align-self: flex-start;
   gap: 12px;
 }
 
@@ -120,6 +121,10 @@
   cursor: pointer;
   padding: 0px 3px;
   margin-left: auto;
+  // height matching action button to keep the snackbar height consistent
+  min-height: 37px;
+  display: flex;
+  align-items: center;
 
   @include media('<=phone') {
     display: none;

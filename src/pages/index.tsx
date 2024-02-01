@@ -15,6 +15,27 @@ import Button from '../client/components/common/Button/Button';
 export default function Index() {
   useEffect(() => {
     enqueueSnackbar({
+      message: 'Lorem ipsum harem plaj fkewo fjeiow  jfiorew fjewokfewo',
+      // 'Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success',
+      persist: true,
+      variant: 'success',
+      action: (snackbarId) => (
+        <>
+          <Button
+            variant="green"
+            size="small"
+            onClick={() => {
+              window.alert('Coppied');
+            }}
+          >
+            COPY LINK
+          </Button>
+          <CloseSnackbarButton snackbarId={snackbarId} />
+        </>
+      ),
+    });
+    enqueueSnackbar({
+      // message: 'Lorem ipsum harem plaj fkewo fjeiow  jfiorew fjewokfewo',
       message:
         'Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success',
       persist: true,
@@ -34,7 +55,7 @@ export default function Index() {
         </>
       ),
     });
-    enqueueSnackbar({ message: 'Error Error Error Error Error', persist: true, variant: 'error' });
+    // enqueueSnackbar({ message: 'Error Error Error Error Error', persist: true, variant: 'error' });
     enqueueSnackbar({ message: 'Warning Warning Warning Warning Warning', persist: true, variant: 'warning' });
     enqueueSnackbar({
       message: 'Info Info Info Info Info Info Info Info Info Info Info Info Info Info Info',

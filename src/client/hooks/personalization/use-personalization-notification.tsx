@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
 import { SnackbarKey, useSnackbar } from 'notistack';
-import Button from '@mui/material/Button';
 import { useCopyToClipboard } from 'react-use';
+import Button from '../../components/common/Button/Button';
+import { CloseSnackbarButton } from '../../components/common/Alert/Alert';
 
 export function usePersonalizationNotification() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -26,18 +27,16 @@ export function usePersonalizationNotification() {
         action: (snackbarId) => (
           <>
             <Button
-              color="inherit"
+              variant="green"
+              size="small"
               onClick={() => {
                 copyToClipboard(window.location.href);
-
                 showLinkCopiedSnackbar(snackbarId);
               }}
             >
-              Copy link
+              COPY LINK
             </Button>
-            <Button color="inherit" onClick={() => closeSnackbar(snackbarId)}>
-              Close
-            </Button>
+            <CloseSnackbarButton snackbarId={snackbarId} />
           </>
         ),
       });
