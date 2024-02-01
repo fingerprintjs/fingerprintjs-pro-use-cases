@@ -70,10 +70,14 @@
   display: flex;
   flex-direction: row;
   padding: 12px;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   flex-wrap: nowrap;
   border-radius: 6px;
+  font-size: 14px;
+  line-height: 160%;
+  letter-spacing: 0.14px;
+  font-weight: 500;
 
   @include media('<=phone') {
     flex-direction: column;
@@ -86,18 +90,27 @@
   flex-wrap: nowrap;
   flex-direction: row;
   gap: 12px;
+
+  .iconWrapper {
+    display: flex;
+  }
+
+  .message {
+    align-self: center;
+  }
 }
 
 .snackbarActions {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .closeButton {
   color: inherit;
   margin-left: auto;
-
   text-transform: capitalize !important;
-
   @include media('>=phone') {
     display: none;
   }
@@ -105,7 +118,7 @@
 
 .closeIcon {
   cursor: pointer;
-  padding: 3px;
+  padding: 0px 3px;
   margin-left: auto;
 
   @include media('<=phone') {

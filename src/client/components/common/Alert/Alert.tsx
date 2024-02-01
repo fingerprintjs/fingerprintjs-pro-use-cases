@@ -8,7 +8,7 @@ import styles from './alert.module.scss';
 import Image from 'next/image';
 import classNames from 'classnames';
 import { TEST_IDS } from '../../../testIDs';
-import { SnackbarContent, CustomContentProps, VariantType, useSnackbar, SnackbarKey } from 'notistack';
+import { CustomContentProps, VariantType, useSnackbar, SnackbarKey } from 'notistack';
 import React from 'react';
 import Button from '../Button/Button';
 import { CrossIconSvg } from '../../../img/crossIconSvg';
@@ -32,7 +32,7 @@ export const ALERT_ICON_MAP: Record<VariantType, any> = {
   warning: <Image src={WarningIcon} alt="" />,
   success: <Image src={SuccessIcon} alt="" />,
   default: <Image src={InfoIcon} alt="" />,
-  info: <Image src={InfoIcon} alt="" />,
+  info: <Image src={InfoIcon} alt="" width={24} height={24} style={{ padding: '2px' }} />,
 };
 
 export const Alert: FunctionComponent<AlertProps> = ({ severity, children, className, dataTestId }) => {
@@ -72,7 +72,7 @@ export const CustomSnackbar = React.forwardRef<HTMLDivElement, CustomSnackbarPro
     >
       <div className={styles.snackbarContent}>
         <div className={styles.iconWrapper}>{ALERT_ICON_MAP[variant]}</div>
-        {message}
+        <div className={styles.message}>{message}</div>
       </div>
       <div className={styles.snackbarActions}>{typeof action === 'function' ? action(id) : action}</div>
     </div>
