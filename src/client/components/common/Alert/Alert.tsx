@@ -8,7 +8,7 @@ import styles from './alert.module.scss';
 import Image from 'next/image';
 import classNames from 'classnames';
 import { TEST_IDS } from '../../../testIDs';
-import { CustomContentProps, VariantType, useSnackbar, SnackbarKey } from 'notistack';
+import { VariantType, useSnackbar, SnackbarKey } from 'notistack';
 import React from 'react';
 import Button from '../Button/Button';
 import { CrossIconSvg } from '../../../img/crossIconSvg';
@@ -47,10 +47,6 @@ export const Alert: FunctionComponent<AlertProps> = ({ severity, children, class
     </div>
   );
 };
-
-interface CustomSnackbarProps extends CustomContentProps {
-  //   allowDownload: boolean;
-}
 
 export const CustomSnackbar = React.forwardRef<HTMLDivElement, CustomSnackbarProps>((props, ref) => {
   const {
