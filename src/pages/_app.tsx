@@ -47,7 +47,6 @@ function CustomApp({ Component, pageProps }: AppProps<CustomPageProps>) {
       <SnackbarProvider
         action={(snackbarId) => <CloseSnackbarButton snackbarId={snackbarId} />}
         maxSnack={4}
-        // iconVariant={ALERT_ICON_MAP}
         autoHideDuration={5000}
         anchorOrigin={{
           horizontal: 'left',

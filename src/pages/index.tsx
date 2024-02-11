@@ -1,68 +1,14 @@
 import Link from 'next/link';
-
 import styles from './index.module.scss';
 import Container from '../client/components/common/Container';
 import { HOMEPAGE_CARDS } from '../client/components/common/content';
 import LinkArrow from '../client/img/externalLinkArrow.svg';
 import Image from 'next/image';
 import { TEST_IDS } from '../client/testIDs';
-import { Fragment, useEffect } from 'react';
+import { Fragment } from 'react';
 import { SEO } from '../client/components/common/seo';
-import { enqueueSnackbar } from 'notistack';
-import { CloseSnackbarButton } from '../client/components/common/Alert/Alert';
-import Button from '../client/components/common/Button/Button';
 
 export default function Index() {
-  useEffect(() => {
-    enqueueSnackbar({
-      message: 'Lorem ipsum harem plaj fkewo fjeiow  jfiorew fjewokfewo',
-      // 'Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success',
-      persist: true,
-      variant: 'success',
-      action: (snackbarId) => (
-        <>
-          <Button
-            variant="green"
-            size="small"
-            onClick={() => {
-              window.alert('Coppied');
-            }}
-          >
-            COPY LINK
-          </Button>
-          <CloseSnackbarButton snackbarId={snackbarId} />
-        </>
-      ),
-    });
-    enqueueSnackbar({
-      // message: 'Lorem ipsum harem plaj fkewo fjeiow  jfiorew fjewokfewo',
-      message:
-        'Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success Success',
-      persist: true,
-      variant: 'success',
-      action: (snackbarId) => (
-        <>
-          <Button
-            variant="green"
-            size="small"
-            onClick={() => {
-              window.alert('Coppied');
-            }}
-          >
-            COPY LINK
-          </Button>
-          <CloseSnackbarButton snackbarId={snackbarId} />
-        </>
-      ),
-    });
-    // enqueueSnackbar({ message: 'Error Error Error Error Error', persist: true, variant: 'error' });
-    enqueueSnackbar({ message: 'Warning Warning Warning Warning Warning', persist: true, variant: 'warning' });
-    enqueueSnackbar({
-      message: 'Info Info Info Info Info Info Info Info Info Info Info Info Info Info Info',
-      persist: true,
-      variant: 'info',
-    });
-  });
   return (
     <>
       <SEO
