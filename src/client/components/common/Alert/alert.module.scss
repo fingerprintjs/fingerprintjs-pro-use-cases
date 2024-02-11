@@ -121,7 +121,7 @@
   cursor: pointer;
   padding: 0px 3px;
   margin-left: auto;
-  // height matching action button to keep the snackbar height consistent
+  // height matching action button (even if it's not there) to keep the snackbar height consistent and everything aligned
   min-height: 37px;
   display: flex;
   align-items: center;
