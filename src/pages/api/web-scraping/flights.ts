@@ -1,15 +1,11 @@
-import { FingerprintJsServerApiClient, isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { CheckResult, CheckResultObject, checkResultType } from '../../../server/checkResult';
-import { isRequestIdFormatValid, originIsAllowed, visitIpMatchesRequestIp } from '../../../server/checks';
-import { ALLOWED_REQUEST_TIMESTAMP_DIFF_MS, BACKEND_REGION, SERVER_API_KEY } from '../../../server/const';
-import { sendErrorResponse, sendForbiddenResponse, sendOkResponse } from '../../../server/response';
-import { ensurePostRequest, messageSeverity } from '../../../server/server';
+import { Severity } from '../../../server/checkResult';
+import { getAndValidateFingerprintResult } from '../../../server/checks';
+import { isValidPostRequest } from '../../../server/server';
 import { DAY_MS, FIVE_MINUTES_MS, HOUR_MS } from '../../../shared/timeUtils';
 import { AIRPORTS } from '../../web-scraping';
 import { Flight } from '../../../client/components/web-scraping/FlightCard';
 import { saveBotVisit } from '../../../server/botd-firewall/botVisitDatabase';
-import { EventResponseBotData, EventResponseIdentification } from '../../../shared/types';
 
 const roundToFiveMinutes = (time: number) => Math.round(time / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
 
@@ -20,132 +16,68 @@ export type FlightQuery = {
   disableBotDetection: boolean;
 };
 
-export default async function getFlights(req: NextApiRequest, res: NextApiResponse<CheckResultObject<Flight[]>>) {
+export type FlightsResponse = {
+  message: string;
+  severity: Severity;
+  data?: Flight[];
+};
+
+export default async function getFlights(req: NextApiRequest, res: NextApiResponse<FlightsResponse>) {
   // This API route accepts only POST requests.
-  if (!ensurePostRequest(req, res)) {
+  const reqValidation = isValidPostRequest(req);
+  if (!reqValidation.okay) {
+    res.status(405).send({ severity: 'error', message: reqValidation.error });
     return;
   }
 
   const { from, to, requestId, disableBotDetection } = req.body as FlightQuery;
 
-  // Validate request ID format
-  if (!isRequestIdFormatValid(requestId)) {
-    sendForbiddenResponse(
-      res,
-      new CheckResult('Invalid request ID.', messageSeverity.Error, checkResultType.RequestIdMismatch),
-    );
+  // Get the full Identification and Bot Detection result from Fingerprint Server API and validate its authenticity
+  const fingerprintResult = await getAndValidateFingerprintResult(requestId, req);
+  if (!fingerprintResult.okay) {
+    res.status(403).send({ severity: 'error', message: fingerprintResult.error });
     return;
   }
 
-  // Retrieve analysis event from the Server API using the request ID
-  let botData: EventResponseBotData;
-  let identification: EventResponseIdentification;
-  try {
-    const client = new FingerprintJsServerApiClient({ region: BACKEND_REGION, apiKey: SERVER_API_KEY });
-    const eventResponse = await client.getEvent(requestId);
-    botData = eventResponse.products?.botd?.data;
-    identification = eventResponse.products?.identification?.data;
-  } catch (error) {
-    console.error(error);
-    // Throw a specific error if the request ID is not found
-    if (isEventError(error) && error.status === 404) {
-      sendForbiddenResponse(
-        res,
-        new CheckResult(
-          'Request ID not found, potential spoofing attack.',
-          messageSeverity.Error,
-          checkResultType.RequestIdMismatch,
-        ),
-      );
-    } else {
-      // Handle other errors
-      sendErrorResponse(res, new CheckResult(String(error), messageSeverity.Error, checkResultType.ServerError));
-    }
-  }
+  const identification = fingerprintResult.data.products?.identification?.data;
+  const botData = fingerprintResult.data.products?.botd?.data;
 
+  // Backdoor for demo and testing purposes
+  // If bot detection is disabled, just send the result
   if (!botData || disableBotDetection) {
-    sendOkResponse(
-      res,
-      new CheckResult(
-        'Bot detection is disabled, access allowed.',
-        messageSeverity.Success,
-        checkResultType.Passed,
-        getFlightResults(from, to),
-      ),
-    );
+    res
+      .status(200)
+      .send({ severity: 'success', message: 'Bot detection is disabled.', data: getFlightResults(from, to) });
     return;
   }
 
+  // If a bot is detected, return an error
   if (botData.bot?.result === 'bad') {
-    sendForbiddenResponse(
-      res,
-      new CheckResult(
-        '🤖 Malicious bot detected, access denied.',
-        messageSeverity.Error,
-        checkResultType.MaliciousBotDetected,
-      ),
-    );
+    res.status(403).send({
+      severity: 'error',
+      message: '🤖 Malicious bot detected, access denied.',
+    });
     // Optionally, here you could also save the bot's IP address to a blocklist in your database
     // and block all requests from this IP address in the future at a web server/firewall level.
     saveBotVisit(botData, identification?.visitorId ?? 'N/A');
     return;
   }
 
+  // Check for unexpected bot detection value, just in case
   if (!['notDetected', 'good'].includes(botData.bot?.result)) {
-    sendErrorResponse(
-      res,
-      new CheckResult(
-        'Server error, unexpected bot detection value.',
-        messageSeverity.Error,
-        checkResultType.ServerError,
-      ),
-    );
-    return;
-  }
-
-  // We know bot is 'notDetected' or 'good', but
-  // we must verify the authenticity of the botDetection result
-  // Check if the visit IP matches the request IP
-  if (!visitIpMatchesRequestIp(botData.ip, req)) {
-    sendForbiddenResponse(
-      res,
-      new CheckResult('Visit IP does not match request IP.', messageSeverity.Error, checkResultType.IpMismatch),
-    );
-    return;
-  }
-
-  // Check if the visit origin matches the request origin
-  if (!originIsAllowed(botData.url, req)) {
-    sendForbiddenResponse(
-      res,
-      new CheckResult(
-        'Visit origin does not match request origin or is not allowed.',
-        messageSeverity.Error,
-        checkResultType.ForeignOrigin,
-      ),
-    );
-    return;
-  }
-
-  // Check if the visit timestamp is not old
-  if (Date.now() - Number(new Date(botData.time)) > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
-    sendForbiddenResponse(
-      res,
-      new CheckResult('Old visit, potential replay attack.', messageSeverity.Error, checkResultType.OldTimestamp),
-    );
+    res.status(500).send({
+      severity: 'error',
+      message: 'Server error, unexpected bot detection value.',
+    });
     return;
   }
 
   // All checks passed, allow access
-  sendOkResponse(
-    res,
-    new CheckResult(
-      'No malicious bot nor spoofing detected, access allowed.',
-      messageSeverity.Success,
-      checkResultType.Passed,
-      getFlightResults(from, to),
-    ),
-  );
+  res.status(200).send({
+    severity: 'success',
+    message: 'No malicious bot nor spoofing detected, access allowed.',
+    data: getFlightResults(from, to),
+  });
 }
 
 /**

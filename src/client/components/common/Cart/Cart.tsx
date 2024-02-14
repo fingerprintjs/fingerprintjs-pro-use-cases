@@ -81,7 +81,7 @@ export const Cart: FunctionComponent<CartProps> = ({ items, discount, taxPerItem
           <span>{format$(taxesApplied)}</span>
         </div>
         {discount > 0 && (
-          <div className={classNames(styles.item, styles.discount)}>
+          <div className={classNames(styles.item, styles.discount)} data-testid={TEST_IDS.common.cart.discount}>
             <span>Coupon Discount {discount}%</span>
             <span>-{format$(discountApplied)}</span>
           </div>
