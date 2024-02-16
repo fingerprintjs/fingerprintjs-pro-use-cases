@@ -345,6 +345,8 @@ export const USE_CASES = {
       <>Use a normal browser and search for flights.</>,
       <>
         Now, try scrape the results using an automation tool like Selenium, Puppeteer, Playwright, Cypress, or similar.
+        Note that the bot IP will be collected and displayed in the <Link href={'/bot-firewall'}>Bot Firewall</Link>{' '}
+        demo.
       </>,
       <>
         You will only see an error message if the request is coming from a bot. Try it using our{' '}
