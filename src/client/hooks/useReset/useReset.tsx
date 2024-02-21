@@ -20,8 +20,8 @@ export const useReset = ({ onError, onSuccess }: UseResetParams) => {
   const resetMutation = useMutation<ResetResponse>(
     'resetMutation',
     async () => {
-      const { visitorId, requestId } = await getData();
-      const body: ResetRequest = { visitorId, requestId };
+      const { requestId } = await getData();
+      const body: ResetRequest = { requestId };
 
       return fetch('/api/admin/reset', {
         method: 'POST',
@@ -46,7 +46,18 @@ export const useReset = ({ onError, onSuccess }: UseResetParams) => {
         ((data) => {
           enqueueSnackbar(
             <div data-testid={TEST_IDS.reset.resetSuccess}>
-              <p>Scenarios reset successfully!</p> <p>{data.message}</p>
+              <p>
+                <b>Scenarios reset successfully!</b>
+              </p>{' '}
+              <ul>
+                <li>Deleted {data.result?.deletedCouponsClaims} coupon claims.</li>
+                <li>Deleted {data.result?.deletedLoginAttempts} login attempts.</li>
+                <li>Deleted {data.result?.deletedLoanRequests} loan requests.</li>
+                <li>Deleted {data.result?.deletedPaymentAttempts} payment attempts.</li>
+                <li>Deleted {data.result?.deletedArticleViews} article views.</li>
+                <li>Deleted {data.result?.deletedPersonalizationRecords} personalization records.</li>
+                <li>Deleted {data.result?.deletedBlockedIps} blocked IPs.</li>
+              </ul>
             </div>,
             {
               variant: 'success',

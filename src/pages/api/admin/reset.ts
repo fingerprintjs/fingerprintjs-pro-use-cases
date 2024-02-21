@@ -1,9 +1,4 @@
-import {
-  Severity,
-  ensureValidRequestIdAndVisitorId,
-  getIdentificationEvent,
-  messageSeverity,
-} from '../../../server/server';
+import { Severity, isValidPostRequest } from '../../../server/server';
 import { LoginAttemptDbModel } from '../credential-stuffing/authenticate';
 import { PaymentAttemptDbModel } from '../payment-fraud/place-order';
 import {
@@ -14,111 +9,82 @@ import {
 import { LoanRequestDbModel } from '../../../server/loan-risk/database';
 import { ArticleViewDbModel } from '../../../server/paywall/database';
 import { CouponClaimDbModel } from '../../../server/coupon-fraud/database';
-import { CheckResult, checkResultType } from '../../../server/checkResult';
-import {
-  RuleCheck,
-  checkConfidenceScore,
-  checkFreshIdentificationRequest,
-  checkIpAddressIntegrity,
-  checkOriginsIntegrity,
-} from '../../../server/checks';
-import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
+import { getAndValidateFingerprintResult } from '../../../server/checks';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { isVisitorsError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { deleteBlockedIp } from '../../../server/botd-firewall/blockedIpsDatabase';
 import { syncFirewallRuleset } from '../../../server/botd-firewall/cloudflareApiHelper';
 
 export type ResetResponse = {
   message: string;
   severity?: Severity;
-  type?: string;
+  result?: ResetResult;
 };
 
 export type ResetRequest = {
-  visitorId: string;
   requestId: string;
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResetResponse>) {
   // This API route accepts only POST requests.
-  if (req.method !== 'POST') {
-    res.status(405).send({ message: 'Only POST requests allowed' });
+  const reqValidation = isValidPostRequest(req);
+  if (!reqValidation.okay) {
+    res.status(405).send({ severity: 'error', message: reqValidation.error });
     return;
   }
-  res.setHeader('Content-Type', 'application/json');
 
-  return await tryToReset(req, res, [
-    checkFreshIdentificationRequest,
-    checkConfidenceScore,
-    checkIpAddressIntegrity,
-    checkOriginsIntegrity,
-    deleteVisitorData,
-  ]);
+  const { requestId } = req.body as ResetRequest;
+
+  // Get the full Identification result from Fingerprint Server API and validate its authenticity
+  const fingerprintResult = await getAndValidateFingerprintResult(requestId, req);
+  if (!fingerprintResult.okay) {
+    res.status(403).send({ severity: 'error', message: fingerprintResult.error });
+    return;
+  }
+
+  const visitorId = fingerprintResult.data.products?.identification?.data?.visitorId;
+  const ip = fingerprintResult.data.products?.identification?.data?.ip;
+  if (!visitorId) {
+    res.status(403).send({ severity: 'error', message: 'Visitor ID not found.' });
+    return;
+  }
+
+  const deleteResult = await deleteVisitorData(visitorId, ip ?? '');
+
+  res.status(200).json({
+    message: 'Visitor data deleted successfully.',
+    severity: 'success',
+    result: deleteResult,
+  });
 }
 
-async function tryToReset(req: NextApiRequest, res: NextApiResponse, ruleChecks: RuleCheck[]) {
-  // Get requestId and visitorId from the client.
-  const { visitorId, requestId } = req.body as ResetRequest;
-
-  if (!ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId)) {
-    return;
-  }
-
-  const eventResponse = await getIdentificationEvent(requestId);
-
-  for (const ruleCheck of ruleChecks) {
-    const result = await ruleCheck(eventResponse, req);
-
-    if (result) {
-      switch (result.type) {
-        case checkResultType.Passed:
-          return sendOkResponse(res, result);
-        default:
-          return sendForbiddenResponse(res, result);
-      }
-    }
-  }
-}
-
-const deleteVisitorData: RuleCheck = async (eventResponse) => {
-  if (isVisitorsError(eventResponse)) {
-    return;
-  }
-
+const deleteVisitorData = async (visitorId: string, ip: string) => {
   const options = {
-    where: { visitorId: eventResponse.products?.identification?.data?.visitorId },
+    where: { visitorId },
   };
 
-  const loginAttemptsRowsRemoved = await tryToDestroy(() => LoginAttemptDbModel.destroy(options));
-
-  const paymentAttemptsRowsRemoved = await tryToDestroy(() => PaymentAttemptDbModel.destroy(options));
-
-  const couponsRemoved = await tryToDestroy(() => CouponClaimDbModel.destroy(options));
-
-  const deletedCartItemsCount = await tryToDestroy(() => UserCartItemDbModel.destroy(options));
-  const deletedUserPreferencesCount = await tryToDestroy(() => UserPreferencesDbModel.destroy(options));
-  const deletedUserSearchHistoryCount = await tryToDestroy(() => UserSearchHistoryDbModel.destroy(options));
-
-  const deletedPersonalizationCount =
-    deletedCartItemsCount + deletedUserPreferencesCount + deletedUserSearchHistoryCount;
-
-  const deletedLoanRequests = await tryToDestroy(() => LoanRequestDbModel.destroy(options));
-  const deletedPaywallData = await tryToDestroy(() => ArticleViewDbModel.destroy(options));
-
-  const deletedBlockedIps = await tryToDestroy(async () => {
-    const deletedIpCount = await deleteBlockedIp(eventResponse.products?.identification?.data?.ip ?? '');
-    await syncFirewallRuleset();
-    return deletedIpCount;
-  });
-
-  return new CheckResult(
-    `Deleted ${loginAttemptsRowsRemoved} rows for Credential Stuffing problem. Deleted ${paymentAttemptsRowsRemoved} rows for Payment Fraud problem. Deleted ${deletedPersonalizationCount} entries related to personalization.  Deleted ${deletedLoanRequests} loan request entries. Deleted ${deletedPaywallData} rows for the Paywall problem. Deleted ${couponsRemoved} rows for the Coupon fraud problem. Deleted ${deletedBlockedIps} blocked IPs for the Bot Firewall demo.`,
-    messageSeverity.Success,
-    checkResultType.Passed,
-  );
+  return {
+    deletedLoginAttempts: await tryToDestroy(() => LoginAttemptDbModel.destroy(options)),
+    deletedPaymentAttempts: await tryToDestroy(() => PaymentAttemptDbModel.destroy(options)),
+    deletedCouponsClaims: await tryToDestroy(() => CouponClaimDbModel.destroy(options)),
+    deletedPersonalizationRecords: await tryToDestroy(async () => {
+      const deletedCartItemsCount = await UserCartItemDbModel.destroy(options);
+      const deletedUserPreferencesCount = await UserPreferencesDbModel.destroy(options);
+      const deletedUserSearchHistoryCount = await UserSearchHistoryDbModel.destroy(options);
+      return deletedCartItemsCount + deletedUserPreferencesCount + deletedUserSearchHistoryCount;
+    }),
+    deletedLoanRequests: await tryToDestroy(() => LoanRequestDbModel.destroy(options)),
+    deletedArticleViews: await tryToDestroy(() => ArticleViewDbModel.destroy(options)),
+    deletedBlockedIps: await tryToDestroy(async () => {
+      const deletedIpCount = await deleteBlockedIp(ip);
+      await syncFirewallRuleset();
+      return deletedIpCount;
+    }),
+  };
 };
 
-const tryToDestroy = async (callback: () => Promise<any>) => {
+type ResetResult = Awaited<ReturnType<typeof deleteVisitorData>>;
+
+const tryToDestroy = async (callback: () => Promise<number>) => {
   try {
     return await callback();
   } catch (err) {
