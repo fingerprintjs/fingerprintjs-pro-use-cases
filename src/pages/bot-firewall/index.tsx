@@ -92,8 +92,8 @@ const useBlockUnblockIpAddress = (
       refetchBlockedIps();
       enqueueSnackbar(
         <div>
-          IP address <b>&nbsp;{data.ip}&nbsp;</b> was <b>&nbsp;{data.blocked ? 'blocked' : 'unblocked'}&nbsp;</b> in the
-          application firewall.{' '}
+          IP address <b>&nbsp;{data.data?.ip}&nbsp;</b> was{' '}
+          <b>&nbsp;{data.data?.blocked ? 'blocked' : 'unblocked'}&nbsp;</b> in the application firewall.{' '}
         </div>,
         { ...snackbarOptions, variant: 'success', persist: true },
       );

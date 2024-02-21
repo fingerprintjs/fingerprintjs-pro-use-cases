@@ -5,9 +5,10 @@ import { defineConfig, devices } from '@playwright/test';
  */
 import 'dotenv/config';
 
-const IS_CI = !!process.env.CI;
+const IS_CI = Boolean(process.env.CI);
 const PORT = process.env.PORT || 3000;
-const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
+export const PRODUCTION_E2E_TEST_BASE_URL = process.env.PRODUCTION_E2E_TEST_BASE_URL;
+const LOCALHOST_URL = `http://localhost:${PORT}`;
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
@@ -37,7 +38,7 @@ export default defineConfig({
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.WEBSITE_URL || 'http://localhost:3000',
+    baseURL: PRODUCTION_E2E_TEST_BASE_URL ?? LOCALHOST_URL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -46,12 +47,15 @@ export default defineConfig({
   /* In CI/GitHub action, run the production server before running tests
    * (assumes `yarn build` was called before)
    */
-  webServer: {
-    command: `yarn start`,
-    url: BASE_URL,
-    timeout: 120 * 1000,
-    reuseExistingServer: !IS_CI,
-  },
+  webServer: PRODUCTION_E2E_TEST_BASE_URL
+    ? undefined
+    : {
+        command: `yarn start`,
+        url: LOCALHOST_URL,
+        timeout: 120 * 1000,
+        // Don't `yarn start` (reuse existing server instead) if you are running locally
+        reuseExistingServer: !IS_CI,
+      },
 
   /* Configure projects for major browsers */
   projects: [

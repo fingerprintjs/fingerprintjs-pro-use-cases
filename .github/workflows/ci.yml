@@ -17,7 +17,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # This takes 20s but does not seem necessary for our current setup,
       # as ubuntu-latest already has a reasonable version of Node
@@ -29,7 +29,7 @@ jobs:
       #     cache: 'yarn'
 
       - name: 'Cache'
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: node_modules
           key: nodemodules-${{ hashFiles('yarn.lock') }}
@@ -44,10 +44,10 @@ jobs:
     name: Unit tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: 'Cache'
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: node_modules
           key: nodemodules-${{ hashFiles('yarn.lock') }}
@@ -68,10 +68,10 @@ jobs:
         shardIndex: [1, 2, 3]
         shardTotal: [3]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Cache node modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: node_modules
           key: nodemodules-${{ hashFiles('yarn.lock') }}
@@ -85,7 +85,7 @@ jobs:
         run: echo "PLAYWRIGHT_VERSION=$(node -e "process.stdout.write(require('@playwright/test/package.json').version)")" >> $GITHUB_ENV
 
       - name: Cache Playwright browser binaries
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: playwright-cache
         with:
           path: |
@@ -103,7 +103,7 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
 
       - name: Cache Next build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/.next/cache
           # Generate a new cache whenever packages or source files change.
@@ -124,9 +124,9 @@ jobs:
         if: matrix.shardIndex == 1
 
       - name: Upload Playwright report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.shardIndex }}
           path: playwright-report/
           retention-days: 30

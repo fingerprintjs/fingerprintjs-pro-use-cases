@@ -1,6 +1,8 @@
+import { SCRIPT_URL_PATTERN } from './../src/server/const';
 import { Page, expect, test } from '@playwright/test';
 import { PLAYGROUND_TAG } from '../src/client/components/playground/playgroundTags';
 import { isAgentResponse, isServerResponse } from './zodUtils';
+import { ENDPOINT } from '../src/server/const';
 
 const getAgentResponse = async (page: Page) => {
   const agentResponse =
@@ -14,14 +16,14 @@ const getServerResponse = async (page: Page) => {
   return JSON.parse(serverResponse);
 };
 
-const clickRefreshButton = async (page: Page) => {
+const clickPlaygroundRefreshButton = async (page: Page) => {
   await page.getByTestId(PLAYGROUND_TAG.refreshButton).first().click();
   await page.waitForLoadState('networkidle');
   // Artificial wait necessary to make sure you get the updated response every time
   await page.waitForTimeout(3000);
 };
 
-test.describe('Playground page page', () => {
+test.describe('Playground page', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/playground');
   });
@@ -63,7 +65,7 @@ test.describe('Playground page page', () => {
 
   test('Reload button updates agent response', async ({ page }) => {
     const { requestId: oldRequestId } = await getAgentResponse(page);
-    await clickRefreshButton(page);
+    await clickPlaygroundRefreshButton(page);
     const { requestId } = await getAgentResponse(page);
 
     expect(oldRequestId).toHaveLength(20);
@@ -73,11 +75,34 @@ test.describe('Playground page page', () => {
 
   test('Reload button updates server response', async ({ page }) => {
     const oldRequestId = (await getServerResponse(page)).products.botd.data.requestId;
-    await clickRefreshButton(page);
+    await clickPlaygroundRefreshButton(page);
     const requestId = (await getServerResponse(page)).products.botd.data.requestId;
 
     expect(oldRequestId).toHaveLength(20);
     expect(requestId).toHaveLength(20);
     expect(requestId).not.toEqual(oldRequestId);
+  });
+});
+
+test.describe('Proxy integration', () => {
+  test('Proxy integration works on Playground, no network errors', async ({ page }) => {
+    // If any JS agent network request fails, fails the test
+    // This captures proxy integration failures that would otherwise go unnoticed thanks to default endpoint fallbacks
+    const endpointOrigin = new URL(ENDPOINT).origin;
+    const scriptUrlPatternOrigin = new URL(SCRIPT_URL_PATTERN).origin;
+
+    page.on('requestfailed', (request) => {
+      console.error(request.url(), request.failure()?.errorText);
+      const requestOrigin = new URL(request.url()).origin;
+
+      if (requestOrigin === endpointOrigin || requestOrigin === scriptUrlPatternOrigin) {
+        // This fails the test
+        expect(request.failure()).toBeUndefined();
+      }
+    });
+
+    await page.goto('/playground');
+    await clickPlaygroundRefreshButton(page);
+    await page.waitForLoadState('networkidle');
   });
 });

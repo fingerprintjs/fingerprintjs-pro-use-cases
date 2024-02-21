@@ -2,6 +2,11 @@ import { expect, test } from '@playwright/test';
 import { resetScenarios } from './resetHelper';
 import { TEST_IDS } from '../src/client/testIDs';
 import { BOT_FIREWALL_COPY } from '../src/client/bot-firewall/botFirewallCopy';
+import { PRODUCTION_E2E_TEST_BASE_URL } from '../playwright.config';
+
+const WEB_SCRAPING_URL = PRODUCTION_E2E_TEST_BASE_URL
+  ? `${PRODUCTION_E2E_TEST_BASE_URL}/web-scraping`
+  : 'https://staging.fingerprinthub.com/web-scraping';
 
 /**
  * CHROME_ONLY flag tells the GitHub action to run this test only using Chrome.
@@ -30,7 +35,7 @@ test.describe('Bot Firewall Demo CHROME_ONLY', () => {
      * Using a separate tab also seems to help with flakiness.
      */
     const secondTab = await context.newPage();
-    await secondTab.goto('https://staging.fingerprinthub.com/web-scraping');
+    await secondTab.goto(WEB_SCRAPING_URL);
     await secondTab.reload();
     await secondTab.getByRole('heading', { name: 'Sorry, you have been blocked' }).waitFor();
 
@@ -41,7 +46,7 @@ test.describe('Bot Firewall Demo CHROME_ONLY', () => {
     await page.waitForTimeout(3000);
 
     // Try to visit web-scraping page, should be allowed again
-    await secondTab.goto('https://staging.fingerprinthub.com/web-scraping');
+    await secondTab.goto(WEB_SCRAPING_URL);
     await secondTab.reload();
     await expect(secondTab.getByTestId(TEST_IDS.common.alert)).toContainText('Malicious bot detected');
   });
