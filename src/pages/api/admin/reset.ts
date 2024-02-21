@@ -41,8 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return;
   }
 
-  const visitorId = fingerprintResult.data.products?.identification?.data?.visitorId;
-  const ip = fingerprintResult.data.products?.identification?.data?.ip;
+  const { visitorId, ip } = fingerprintResult.data.products?.identification?.data ?? {};
   if (!visitorId) {
     res.status(403).send({ severity: 'error', message: 'Visitor ID not found.' });
     return;
