@@ -35,6 +35,9 @@ export const ALERT_ICON_MAP: Record<VariantType, any> = {
   info: <Image src={InfoIcon} alt="" width={24} height={24} style={{ padding: '2px' }} />,
 };
 
+/**
+ * Static on-page alert/notification
+ */
 export const Alert: FunctionComponent<AlertProps> = ({ severity, children, className, dataTestId }) => {
   return (
     <div
@@ -48,6 +51,9 @@ export const Alert: FunctionComponent<AlertProps> = ({ severity, children, class
   );
 };
 
+/**
+ * Custom `notistack` snackbar/popup (visually similar to the static alert above, but a separate component)
+ */
 export const CustomSnackbar = React.forwardRef<HTMLDivElement, CustomContentProps>((props, ref) => {
   const {
     // You have access to notistack props and options 👇🏼
