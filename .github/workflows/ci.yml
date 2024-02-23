@@ -30,7 +30,7 @@ jobs:
           restore-keys: nodemodules-
 
       - name: Install packages
-        run: pnpm --frozen-lockfile --prefer-offline
+        run: pnpm install --frozen-lockfile --prefer-offline
 
       - name: Lint
         run: pnpm lint
@@ -48,7 +48,7 @@ jobs:
           restore-keys: nodemodules-
 
       - name: Install packages
-        run: pnpm --frozen-lockfile --prefer-offline
+        run: pnpm install --frozen-lockfile --prefer-offline
 
       - name: Run unit tests
         run: pnpm test
