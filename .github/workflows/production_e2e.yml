@@ -16,7 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
+      - name: 'Install pnpm'
+        uses: pnpm/action-setup@ebcfd6995dade4b0104ac774445cef8b3b4635b0
+        with:
+          version: 8
       - name: Cache node modules
         uses: actions/cache@v4
         with:
