@@ -21,12 +21,12 @@ jobs:
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: nodemodules-${{ hashFiles('yarn.lock') }}
+          key: nodemodules-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: nodemodules-
 
       - name: Install node modules
         ## E2E tests might have other dependencies besides Playwright, like Zod for example
-        run: yarn install --prefer-offline --frozen-lockfile
+        run: pnpm install --prefer-offline --frozen-lockfile
 
       - name: Get installed Playwright version (used in cache key)
         id: playwright-version
@@ -46,7 +46,7 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
       - name: Run Playwright tests on Chrome
-        run: yarn test:e2e:chrome
+        run: pnpm test:e2e:chrome
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4

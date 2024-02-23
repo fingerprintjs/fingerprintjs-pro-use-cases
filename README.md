@@ -23,8 +23,8 @@ You can learn more about these use cases on our [website](https://fingerprint.co
 
 ## How to run
 
-1. `yarn install`
-2. `yarn dev`
+1. `pnpm install`
+2. `pnpm dev`
 
 Alternatively, you can use [Stackblitz](https://stackblitz.com/edit/nextjs-dmv5c7) to run the project in your Chromium-based browser.
 

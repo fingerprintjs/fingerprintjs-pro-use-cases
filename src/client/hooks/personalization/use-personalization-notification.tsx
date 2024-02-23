@@ -41,7 +41,7 @@ export function usePersonalizationNotification() {
         ),
       });
     },
-    [closeSnackbar, copyToClipboard, enqueueSnackbar, showLinkCopiedSnackbar],
+    [copyToClipboard, enqueueSnackbar, showLinkCopiedSnackbar],
   );
 
   return {
