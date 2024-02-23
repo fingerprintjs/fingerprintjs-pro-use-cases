@@ -16,7 +16,7 @@ import { useState } from 'react';
 import { BotTypeInfo, BotVisitAction, InstructionPrompt } from '../../client/bot-firewall/botFirewallComponents';
 import { wait } from '../../shared/timeUtils';
 import { Spinner } from '../../client/components/common/Spinner/Spinner';
-import Alert from '../../client/components/common/Alert/Alert';
+import { Alert } from '../../client/components/common/Alert/Alert';
 
 const DEFAULT_DISPLAYED_VISITS = 10;
 const DISPLAYED_VISITS_INCREMENT = 10;

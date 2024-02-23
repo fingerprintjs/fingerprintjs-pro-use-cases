@@ -61,7 +61,7 @@ export default function Index({ embed }: CustomPageProps) {
       !userWelcomed &&
       (searchHistoryQuery.data?.data?.length || hasDarkMode || cartQuery.data?.data?.length)
     ) {
-      enqueueSnackbar('Welcome back! We applied your dark mode preference and synced your cart and search terms.', {
+      enqueueSnackbar('Welcome back! We synced your cart and search terms.', {
         variant: 'info',
         className: 'WelcomeBack',
       });

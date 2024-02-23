@@ -8,7 +8,7 @@ import formStyles from '../../styles/forms.module.scss';
 import classNames from 'classnames';
 import AirMax from './shoeAirMax.svg';
 import AllStar from './shoeAllStar.svg';
-import Alert from '../../client/components/common/Alert/Alert';
+import { Alert } from '../../client/components/common/Alert/Alert';
 import Button from '../../client/components/common/Button/Button';
 import { Cart } from '../../client/components/common/Cart/Cart';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';

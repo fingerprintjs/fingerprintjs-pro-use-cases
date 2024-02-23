@@ -6,7 +6,7 @@ import Button from '../../client/components/common/Button/Button';
 
 import styles from './paymentFraud.module.scss';
 import formStyles from '../../styles/forms.module.scss';
-import Alert from '../../client/components/common/Alert/Alert';
+import { Alert } from '../../client/components/common/Alert/Alert';
 import { CustomPageProps } from '../_app';
 import classNames from 'classnames';
 import { Severity } from '../../server/checkResult';

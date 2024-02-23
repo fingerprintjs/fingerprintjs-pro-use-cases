@@ -12,7 +12,7 @@ import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
 import { CustomPageProps } from '../_app';
 import Button from '../../client/components/common/Button/Button';
-import Alert from '../../client/components/common/Alert/Alert';
+import { Alert } from '../../client/components/common/Alert/Alert';
 import formStyles from '../../styles/forms.module.scss';
 import { Slider } from '../../client/components/common/Slider/Slider';
 import { NumberInputWithUnits } from '../../client/components/common/InputNumberWithUnits/InputNumberWithUnits';

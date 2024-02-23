@@ -13,7 +13,7 @@ import ArrowIcon from '../../client/img/arrowRight.svg';
 import Image from 'next/image';
 import styles from './webScraping.module.scss';
 import Button from '../../client/components/common/Button/Button';
-import Alert from '../../client/components/common/Alert/Alert';
+import { Alert } from '../../client/components/common/Alert/Alert';
 import { Spinner } from '../../client/components/common/Spinner/Spinner';
 
 // Make URL query object available as props to the page on first render
