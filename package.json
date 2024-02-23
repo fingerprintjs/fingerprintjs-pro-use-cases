@@ -57,7 +57,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@playwright/test": "^1.40.1",
+    "@playwright/test": "^1.41.2",
     "@types/leaflet": "^1.9.8",
     "@types/node": "^18.19.18",
     "@types/node-cron": "^3.0.11",
@@ -78,6 +78,6 @@
     "sass": "^1.71.1",
     "tsx": "^4.7.1",
     "typescript": "^4.9.5",
-    "vitest": "^0.28.3"
+    "vitest": "^0.28.5"
   }
 }
