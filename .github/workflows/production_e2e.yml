@@ -45,7 +45,7 @@ jobs:
           key: ${{ runner.os }}-playwright-chrome-${{ env.PLAYWRIGHT_VERSION }}
 
       - name: Install Chromium browser binary if cache missed
-        run: npx playwright install --with-deps chromium
+        run: pnpm dlx playwright install --with-deps chromium
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
       - name: Run Playwright tests on Chrome
