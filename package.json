@@ -57,7 +57,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@playwright/test": "^1.41.2",
+    "@playwright/test": "^1.40.1",
     "@types/leaflet": "^1.9.8",
     "@types/node": "^18.19.18",
     "@types/node-cron": "^3.0.11",
