@@ -18,7 +18,6 @@ const getServerResponse = async (page: Page) => {
 
 const clickPlaygroundRefreshButton = async (page: Page) => {
   await page.getByTestId(PLAYGROUND_TAG.refreshButton).first().click();
-  await page.waitForLoadState('networkidle');
   // Artificial wait necessary to make sure you get the updated response every time
   await page.waitForTimeout(3000);
 };
@@ -103,6 +102,5 @@ test.describe('Proxy integration', () => {
 
     await page.goto('/playground');
     await clickPlaygroundRefreshButton(page);
-    await page.waitForLoadState('networkidle');
   });
 });
