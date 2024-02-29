@@ -39,6 +39,8 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
     return;
   }
 
+  console.log(JSON.stringify(fingerprintResult.data, null, 2));
+
   const identification = fingerprintResult.data.products?.identification?.data;
   const botData = fingerprintResult.data.products?.botd?.data;
 
