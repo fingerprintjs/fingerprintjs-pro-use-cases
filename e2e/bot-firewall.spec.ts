@@ -43,7 +43,8 @@ test.describe('Bot Firewall Demo CHROME_ONLY', () => {
     await page.goto('/bot-firewall');
     await page.getByRole('button', { name: BOT_FIREWALL_COPY.unblockIp }).first().click();
     await page.getByText('was unblocked in the application firewall').waitFor();
-    await page.waitForTimeout(3000);
+    // Give Cloudflare some time to change the firewall rule
+    await page.waitForTimeout(15000);
 
     // Try to visit web-scraping page, should be allowed again
     await secondTab.goto(WEB_SCRAPING_URL);
