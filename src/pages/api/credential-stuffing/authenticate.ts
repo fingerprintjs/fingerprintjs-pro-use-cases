@@ -118,10 +118,8 @@ const checkUnsuccessfulIdentifications: RuleCheck = async (eventResponse) => {
       timestamp: {
         [Op.gt]: new Date().getTime() - 24 * 60 * 1000,
       },
-      loginAttemptResult: {
-        [Op.not]: checkResultType.Passed,
-        [Op.not]: checkResultType.TooManyLoginAttempts,
-        [Op.not]: checkResultType.Challenged,
+      [Op.not]: {
+        loginAttemptResult: [checkResultType.Passed, checkResultType.Challenged, checkResultType.TooManyLoginAttempts],
       },
     },
   });
@@ -135,6 +133,8 @@ const checkUnsuccessfulIdentifications: RuleCheck = async (eventResponse) => {
       checkResultType.TooManyLoginAttempts,
     );
   }
+
+  return undefined;
 };
 
 const checkCredentialsAndKnownVisitorIds: RuleCheck = async (eventResponse, request) => {

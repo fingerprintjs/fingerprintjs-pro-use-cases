@@ -5,7 +5,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   try {
     const limit = Number(req.query.limit);
     const botVisits = await getBotVisits(limit);
-    res.status(200).json(botVisits);
+    return res.status(200).json(botVisits);
   } catch (error) {
     console.error(error);
     res.statusMessage = `Something went wrong ${error}`;

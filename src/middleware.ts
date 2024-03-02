@@ -11,4 +11,5 @@ export function middleware(request: NextRequest) {
     newURL.search = request.nextUrl.search;
     return Response.redirect(newURL, 301);
   }
+  return undefined;
 }
