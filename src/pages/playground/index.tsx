@@ -31,6 +31,9 @@ const PLAYGROUND_COPY = {
   mobileOnly: 'Applicable only to iOS and Android devices',
 } as const;
 
+// Nothing magic about `8` here, each customer must define their own use-case specific threshold
+const SUSPECT_SCORE_RED_THRESHOLD = 8;
+
 const DocsLink: FunctionComponent<{ children: ReactNode; href: string; style?: React.CSSProperties }> = ({
   children,
   href,
@@ -259,6 +262,42 @@ function Playground() {
             usedIdentificationEvent?.products?.tor?.data?.result
               ? RED
               : GREEN,
+        },
+      },
+    ],
+    [
+      {
+        content: [
+          <DocsLink
+            href="https://dev.fingerprint.com/docs/smart-signals-overview#high-activity-device"
+            key="high-activity"
+          >
+            High-Activity Device
+          </DocsLink>,
+        ],
+      },
+      {
+        content: usedIdentificationEvent?.products?.highActivity?.data?.result === true ? 'Yes 🔥' : 'Not detected',
+        cellStyle: {
+          backgroundColor: usedIdentificationEvent?.products?.highActivity?.data?.result === true ? RED : GREEN,
+        },
+      },
+    ],
+    [
+      {
+        content: [
+          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#suspect-score" key="suspect-score">
+            Suspect Score
+          </DocsLink>,
+        ],
+      },
+      {
+        // @ts-expect-error suspectScore not yet available in Node SDK, TODO: remove this once it's available
+        content: usedIdentificationEvent?.products?.suspectScore?.data?.result,
+        cellStyle: {
+          backgroundColor:
+            // @ts-expect-error suspectScore not yet available in Node SDK, TODO: remove this once it's available
+            usedIdentificationEvent?.products?.suspectScore?.data?.result > SUSPECT_SCORE_RED_THRESHOLD ? RED : GREEN,
         },
       },
     ],
