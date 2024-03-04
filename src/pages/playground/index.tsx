@@ -269,8 +269,8 @@ function Playground() {
       {
         content: [
           <DocsLink
-            href="https://dev.fingerprint.com/docs/smart-signals-overview#high-activity-device"
-            key="high-activity"
+            href='https://dev.fingerprint.com/docs/smart-signals-overview#high-activity-device'
+            key='high-activity'
           >
             High-Activity Device
           </DocsLink>,
@@ -286,7 +286,7 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#suspect-score" key="suspect-score">
+          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#suspect-score' key='suspect-score'>
             Suspect Score
           </DocsLink>,
         ],
@@ -304,7 +304,7 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#raw-device-attributes" key="raw">
+          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#raw-device-attributes' key='raw'>
             Raw device attributes
           </DocsLink>,
         ],
