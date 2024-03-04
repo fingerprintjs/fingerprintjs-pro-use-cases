@@ -1,6 +1,11 @@
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
-  extends: ['next/core-web-vitals', '@fingerprintjs/eslint-config-dx-team', 'plugin:prettier/recommended'],
+  extends: [
+    'next/core-web-vitals',
+    '@fingerprintjs/eslint-config-dx-team',
+    // necessary to pickup project-specific overrides in prettierrc.js
+    'plugin:prettier/recommended',
+  ],
   plugins: ['react-hooks', 'jsx-a11y'],
   rules: {
     'react-hooks/rules-of-hooks': 'error',

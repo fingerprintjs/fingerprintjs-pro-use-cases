@@ -84,6 +84,7 @@ Protect the content on your website from theft by reliably detecting even sophis
 Integrate Fingerprint Bot Detection with your Web Application Firewall and dynamically block IP addresses linked to past bot visits.
 
 [🔥🧱 Bot Firewall Live Demo](https://demo.fingerprint.com/bot-firewall)
+[📖 Bot Firewall Article](https://fingerprint.com/blog/bot-detection-powered-application-firewall/)
 
 ## Documentation and Support
 
