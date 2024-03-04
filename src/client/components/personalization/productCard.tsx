@@ -72,7 +72,7 @@ export const ProductCard: FunctionComponent<{ product: Product }> = ({ product }
       <Image
         src={product.image}
         alt={product.name}
-        sizes="100vw"
+        sizes='100vw'
         width={250}
         height={172}
         className={styles.productCardImage}
@@ -96,13 +96,13 @@ export const ProductCard: FunctionComponent<{ product: Product }> = ({ product }
             {cartItem ? (
               <ItemCounter count={cartItem.count} addItem={addToCart} removeItem={removeFromCart} />
             ) : (
-              <Button size="small" onClick={addToCart} data-testid={TEST_IDS.personalization.addToCart}>
+              <Button size='small' onClick={addToCart} data-testid={TEST_IDS.personalization.addToCart}>
                 {addCartItemMutation.isLoading ? 'Adding...' : 'Add to cart'}
               </Button>
             )}
 
-            <Button size="small" outlined disabled className={styles.addToFavorites}>
-              <Image src={HeartIcon} alt="Add to favorites" />
+            <Button size='small' outlined disabled className={styles.addToFavorites}>
+              <Image src={HeartIcon} alt='Add to favorites' />
             </Button>
           </div>
         </div>

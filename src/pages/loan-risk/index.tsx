@@ -116,8 +116,8 @@ export default function LoanRisk({ embed }: CustomPageProps) {
           <div className={styles.nameWrapper}>
             <label>Name</label>
             <input
-              type="text"
-              name="firstName"
+              type='text'
+              name='firstName'
               value={firstName}
               onChange={(event) => setFirstName(event.target.value)}
               required
@@ -125,8 +125,8 @@ export default function LoanRisk({ embed }: CustomPageProps) {
             />
             <label>Surname</label>
             <input
-              type="text"
-              name="lastName"
+              type='text'
+              name='lastName'
               value={lastName}
               onChange={(event) => setLastName(event.target.value)}
               required
@@ -136,31 +136,31 @@ export default function LoanRisk({ embed }: CustomPageProps) {
           <div className={styles.loanWrapper}>
             <div className={styles.sliders}>
               <SliderField
-                name="loanValue"
-                prefix="$"
+                name='loanValue'
+                prefix='$'
                 min={loanValueValidation.min}
                 max={loanValueValidation.max}
-                label="How much money do you need?"
+                label='How much money do you need?'
                 value={loanValue}
                 onChange={setLoanValue}
                 dataTestId={TEST_IDS.loanRisk.loanValue}
               />
               <SliderField
-                name="monthlyIncome"
-                prefix="$"
+                name='monthlyIncome'
+                prefix='$'
                 min={monthlyIncomeValidation.min}
                 max={monthlyIncomeValidation.max}
-                label="How much do you make per month?"
+                label='How much do you make per month?'
                 value={monthlyIncome}
                 onChange={setMonthlyIncome}
                 dataTestId={TEST_IDS.loanRisk.monthlyIncome}
               />
               <SliderField
-                name="loanDuration"
-                suffix="Months"
+                name='loanDuration'
+                suffix='Months'
                 min={loanDurationValidation.min}
                 max={loanDurationValidation.max}
-                label="Loan term (months)"
+                label='Loan term (months)'
                 value={loanDuration}
                 onChange={setLoanDuration}
                 dataTestId={TEST_IDS.loanRisk.loanTerm}
@@ -176,7 +176,7 @@ export default function LoanRisk({ embed }: CustomPageProps) {
               <Alert severity={loanRequestMutation.data.severity}>{loanRequestMutation.data.message}</Alert>
             )}
             <Button
-              type="submit"
+              type='submit'
               disabled={isLoading}
               className={styles.requestLoanButton}
               data-testid={TEST_IDS.loanRisk.submitApplication}

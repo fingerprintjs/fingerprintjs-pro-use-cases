@@ -29,7 +29,7 @@ export const BotVisitAction: FunctionComponent<BotVisitActionProps> = ({
       <Button
         onClick={() => blockIp({ ip, blocked: !isBlockedNow })}
         disabled={isLoadingBlockIp}
-        size="medium"
+        size='medium'
         style={{ minWidth: '150px' }}
         variant={isBlockedNow ? 'danger' : 'green'}
       >
@@ -44,7 +44,7 @@ export const BotVisitAction: FunctionComponent<BotVisitActionProps> = ({
       arrow
     >
       <div className={styles.notYourIpButton}>
-        N/A <Image src={InfoIcon} alt="You can only block your own IP in this demo, please see instructions above." />
+        N/A <Image src={InfoIcon} alt='You can only block your own IP in this demo, please see instructions above.' />
       </div>
     </Tooltip>
   );
@@ -58,7 +58,7 @@ export const BotTypeInfo: FunctionComponent = () => (
     enterTouchDelay={400}
     arrow
   >
-    <Image src={InfoIcon} alt="" />
+    <Image src={InfoIcon} alt='' />
   </Tooltip>
 );
 
@@ -70,7 +70,7 @@ export const InstructionPrompt: FunctionComponent<PropsWithChildren> = ({ childr
       transition={{ duration: 1.5 }}
       viewport={{ once: true }}
     >
-      <Image src={WaveIcon} alt="" />
+      <Image src={WaveIcon} alt='' />
     </motion.div>
     <motion.div
       // reveals content from left to right

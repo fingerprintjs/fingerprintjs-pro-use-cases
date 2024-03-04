@@ -74,9 +74,9 @@ export default function Index({ embed }: CustomPageProps) {
         <form onSubmit={handleSubmit} className={classNames(formStyles.useCaseForm, styles.paymentForm)}>
           <label>Card Number</label>
           <input
-            type="text"
-            name="cardNumber"
-            placeholder="Card Number"
+            type='text'
+            name='cardNumber'
+            placeholder='Card Number'
             defaultValue={cardNumber}
             onChange={(e) => setCardNumber(e.target.value)}
             required
@@ -87,8 +87,8 @@ export default function Index({ embed }: CustomPageProps) {
             <div>
               <label>Expiration</label>
               <input
-                type="text"
-                placeholder="Expiration"
+                type='text'
+                placeholder='Expiration'
                 defaultValue={cardExpiration}
                 onChange={(e) => setCardExpiration(e.target.value)}
                 required
@@ -99,8 +99,8 @@ export default function Index({ embed }: CustomPageProps) {
             <div>
               <label>CVV</label>
               <input
-                type="text"
-                placeholder="CVV"
+                type='text'
+                placeholder='CVV'
                 defaultValue={cardCvv}
                 onChange={(e) => setCardCvv(e.target.value)}
                 required
@@ -114,8 +114,8 @@ export default function Index({ embed }: CustomPageProps) {
           <div className={styles.checkboxes}>
             <label className={formStyles.checkboxLabel}>
               <input
-                type="checkbox"
-                name="applyChargeback"
+                type='checkbox'
+                name='applyChargeback'
                 onChange={(event) => setApplyChargeback(event.target.checked)}
                 data-testid={TEST_IDS.paymentFraud.askForChargeback}
               />
@@ -124,8 +124,8 @@ export default function Index({ embed }: CustomPageProps) {
 
             <label className={formStyles.checkboxLabel}>
               <input
-                type="checkbox"
-                name="usingStolenCard"
+                type='checkbox'
+                name='usingStolenCard'
                 onChange={(event) => {
                   setUsingStolenCard(event.target.checked);
                 }}
@@ -138,8 +138,8 @@ export default function Index({ embed }: CustomPageProps) {
           {httpResponseStatus ? <Alert severity={severity ?? 'warning'}>{orderStatusMessage}</Alert> : null}
           <Button
             disabled={isWaitingForResponse}
-            size="large"
-            type="submit"
+            size='large'
+            type='submit'
             data-testid={TEST_IDS.paymentFraud.submitPayment}
           >
             {isWaitingForResponse ? 'Hold on, doing magic...' : 'Place Order'}

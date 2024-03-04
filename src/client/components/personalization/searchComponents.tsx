@@ -12,11 +12,11 @@ export const Search: FunctionComponent<SearchProps> = ({ search, setSearch }) =>
   return (
     <div>
       <div className={styles.searchBox}>
-        <Image src={SearchIcon} alt="Search" className={styles.searchIcon} />
+        <Image src={SearchIcon} alt='Search' className={styles.searchIcon} />
         <input
-          type="text"
+          type='text'
           className={styles.searchInput}
-          placeholder="Search for your favorite coffee"
+          placeholder='Search for your favorite coffee'
           onChange={(e) => setSearch(e.target.value)}
           value={search}
           data-testid={TEST_IDS.personalization.search}

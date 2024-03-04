@@ -40,11 +40,11 @@ export const USE_CASES = {
     url: '/coupon-fraud',
     iconSvg: CouponFraudIcon,
     descriptionHomepage: [
-      <p key="1">
+      <p key='1'>
         Safeguard campaign funds from abuse by implementing Fingerprint to identify bad faith users who repeatedly use
         coupon codes
       </p>,
-      <p key="2">
+      <p key='2'>
         Accurately identify coupon fraud by signed-in customers or guests to ensure your marketing campaign yields its
         full potential.
       </p>,
@@ -99,11 +99,11 @@ export const USE_CASES = {
     ],
     iconSvg: CredentialStuffingIcon,
     descriptionHomepage: [
-      <p key="1">
+      <p key='1'>
         Protect your users against credential stuffing using Fingerprint’s unique visitor ID provided for each user that
         visits your site.
       </p>,
-      <p key="2">
+      <p key='2'>
         Fingerprint's accurate identification prevents fraudsters from unauthorized account access, minimizing
         disruption for legitimate users.
       </p>,
@@ -142,10 +142,10 @@ export const USE_CASES = {
     articleUrl: 'https://fingerprint.com/blog/detect-repeat-applications-loan-risk/',
     iconSvg: LoanRiskIcon,
     descriptionHomepage: [
-      <p key="1">
+      <p key='1'>
         Validate loan applications against prior submissions by users, whether they are anonymous or authenticated.
       </p>,
-      <p key="2">
+      <p key='2'>
         Use Fingerprint to check for consistency between applications and ignore submissions from previously rejected
         applicants.
       </p>,
@@ -182,7 +182,7 @@ export const USE_CASES = {
     articleUrl: 'https://fingerprint.com/blog/reducing-payment-fraud-with-reliable-visitor-identification/',
     iconSvg: PaymentFraudIcon,
     descriptionHomepage: [
-      <p key="1">
+      <p key='1'>
         Identify anonymous visitors behind every transaction. Use Fingerprint’s Identification to recognize repeated
         card testing activity and link it to specific users. Protect your users and your business against various forms
         of payment fraud.
@@ -233,11 +233,11 @@ export const USE_CASES = {
     articleUrl: 'https://fingerprint.com/blog/how-paywalls-work-paywall-protection-tutorial/',
     iconSvg: PaywallIcon,
     descriptionHomepage: [
-      <p key="1">
+      <p key='1'>
         Accurately identify returning users to provide limited access to your content and ensure users aren’t able to
         exceed their predetermined limits.
       </p>,
-      <p key="2">
+      <p key='2'>
         Your content limit for each user will work even if the user clears cookies or browses in incognito mode.
       </p>,
     ],
@@ -265,10 +265,10 @@ export const USE_CASES = {
     articleUrl: 'https://fingerprint.com/blog/providing-personalization-to-anonymous-users/',
     iconSvg: PersonalizationIcon,
     descriptionHomepage: [
-      <p key="1">
+      <p key='1'>
         Improve user experience and boost sales by personalizing your website with Fingerprint device intelligence.
       </p>,
-      <p key="2">
+      <p key='2'>
         Provide your visitors with their search history, interface customization, or a persistent shopping cart without
         having to rely on cookies or logins.
       </p>,
@@ -311,11 +311,11 @@ export const USE_CASES = {
     articleUrl: 'https://fingerprint.com/blog/preventing-content-scraping/',
     iconSvg: ScrapingIcon,
     descriptionHomepage: [
-      <p key="1">
+      <p key='1'>
         Web scraping extracts data using automated scripts. Data that is valuable to competitors can be stolen, directly
         impacting your business.
       </p>,
-      <p key="2">
+      <p key='2'>
         Fingerprint Smart Signal bot detection offers advanced protection without compromising user experience or
         relying on IP-based solutions.
       </p>,
@@ -330,7 +330,7 @@ export const USE_CASES = {
         <p>
           Use the demo below to see how Fingerprint’s bot detection identifies and blocks malicious bots, and prevents
           unauthorized data extraction. Here, the flights API endpoint on this page is protected by the Fingerprint{' '}
-          <a href="https://dev.fingerprint.com/docs/bot-detection-quick-start-guide" target={'_blank'}>
+          <a href='https://dev.fingerprint.com/docs/bot-detection-quick-start-guide' target={'_blank'}>
             {' '}
             Bot Detection Smart Signal
           </a>
@@ -350,7 +350,7 @@ export const USE_CASES = {
       </>,
       <>
         You will only see an error message if the request is coming from a bot. Try it using our{' '}
-        <a href="https://botd-demo.fpjs.sh/" target="_blank">
+        <a href='https://botd-demo.fpjs.sh/' target='_blank'>
           online bot playground
         </a>
         .
@@ -390,11 +390,11 @@ export const USE_CASES = {
     articleUrl: 'https://fingerprint.com/blog/bot-detection-powered-application-firewall/',
     iconSvg: FirewallIcon,
     descriptionHomepage: [
-      <p key="1">
+      <p key='1'>
         Integrate Fingerprint Bot Detection with your Web Application Firewall and dynamically block IP addresses linked
         to past bot visits.
       </p>,
-      <p key="2">
+      <p key='2'>
         Block previously recognized bots on their next visit completely — before they even reach your web page.
       </p>,
     ],
@@ -407,7 +407,7 @@ export const USE_CASES = {
         <p>
           Fingerprint Bot Detection allows you to identify sophisticated bots and headless browsers by collecting and
           analyzing browser signals. See our{' '}
-          <Link href={'/web-scraping'} target="_blank">
+          <Link href={'/web-scraping'} target='_blank'>
             Web scraping demo
           </Link>{' '}
           for an example of protecting client-site content from bots. This demo goes a step further. It uses Bot
@@ -422,13 +422,13 @@ export const USE_CASES = {
     instructions: [
       <>
         Use a locally running instance of Playwright, Cypress, or another headless browser tool to visit the{' '}
-        <Link href={'/web-scraping'} target="_blank">
+        <Link href={'/web-scraping'} target='_blank'>
           web scraping demo
         </Link>
         . See the{' '}
         <Link
           href={`https://fingerprint.com/blog/bot-detection-powered-application-firewall#explore-the-bot-firewall-demo`}
-          target="_blank"
+          target='_blank'
         >
           demo tutorial
         </Link>{' '}
@@ -444,7 +444,7 @@ export const USE_CASES = {
       </>,
       <>
         Try visiting the{' '}
-        <Link href={'/web-scraping'} target="_blank">
+        <Link href={'/web-scraping'} target='_blank'>
           web scraping demo
         </Link>{' '}
         again (either as a bot or using your regular browser).
@@ -474,8 +474,8 @@ export const PLAYGROUND_METADATA: Pick<
   url: '/playground',
   iconSvg: SmartSignalsIcon,
   descriptionHomepage: [
-    <p key="1">Analyze your own browser with Fingerprint’s identification and Smart Signals.</p>,
-    <p key="2">
+    <p key='1'>Analyze your own browser with Fingerprint’s identification and Smart Signals.</p>,
+    <p key='2'>
       Test and examine Fingerprint’s signals including IP geolocation, browser bot detection, incognito mode detection,
       VPN detection, browser tampering detection, IP blocklist matching, and more.
     </p>,

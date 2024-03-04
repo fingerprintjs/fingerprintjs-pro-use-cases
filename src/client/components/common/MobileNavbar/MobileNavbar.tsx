@@ -23,16 +23,16 @@ export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbar
           <Button
             className={classNames(styles.resetButton, isResetLoading && styles.loading)}
             onClick={() => mutate()}
-            variant="primary"
+            variant='primary'
             outlined
             disabled={isResetLoading}
             size={'medium'}
-            title="Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action."
-            buttonId="click_top_nav_restart"
+            title='Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action.'
+            buttonId='click_top_nav_restart'
             data-testid={TEST_IDS.reset.resetButton}
           >
             Restart
-            <Image src={Restart} alt="Restart button" />
+            <Image src={Restart} alt='Restart button' />
           </Button>
         </div>
         <div className={classNames(styles.links, styles.top)}>
@@ -40,19 +40,19 @@ export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbar
             href={URL.contactSales}
             variant={darkMode ? 'dark' : 'primary'}
             outlined
-            size="medium"
+            size='medium'
             openNewTab
-            buttonId="click_top_nav_contact_sales"
+            buttonId='click_top_nav_contact_sales'
           >
             Contact sales
           </Button>
           <Button
-            variant="primary"
-            size="medium"
+            variant='primary'
+            size='medium'
             href={URL.signupUrl}
             className={styles.signupButton}
             openNewTab
-            buttonId="click_top_nav_get_started"
+            buttonId='click_top_nav_get_started'
           >
             Get started
           </Button>
@@ -61,7 +61,7 @@ export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbar
         <div className={classNames(styles.links, styles.main)}>
           <div className={styles.container}>
             <DropdownMenu
-              name="Use cases"
+              name='Use cases'
               darkMode={darkMode}
               dropdownProps={{
                 darkMode,
@@ -81,7 +81,7 @@ export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbar
 
             <DropdownMenu
               darkMode={darkMode}
-              name="Platform"
+              name='Platform'
               className={styles.desktopOnly}
               dropdownProps={{
                 darkMode,

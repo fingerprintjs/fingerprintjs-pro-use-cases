@@ -141,13 +141,13 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
     return Boolean(blockedIps?.find((blockedIp) => blockedIp === ip));
   };
 
-  let content = <Spinner size="40px" thickness={3} />;
+  let content = <Spinner size='40px' thickness={3} />;
   if (botVisitsQueryStatus === 'error') {
-    content = <Alert severity="error">Error fetching bot visits.</Alert>;
+    content = <Alert severity='error'>Error fetching bot visits.</Alert>;
   }
   if (botVisitsQueryStatus === 'success' && botVisits?.length === 0) {
     content = (
-      <Alert severity="success">No bot visits detected yet. See the instructions above to generate some!</Alert>
+      <Alert severity='success'>No bot visits detected yet. See the instructions above to generate some!</Alert>
     );
   }
   if (botVisitsQueryStatus === 'success' && botVisits && botVisits.length > 0) {
@@ -158,7 +158,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
           <thead>
             <tr>
               <th>
-                Timestamp <Image src={ChevronIcon} alt="" />
+                Timestamp <Image src={ChevronIcon} alt='' />
               </th>
               <th>Request ID</th>
               <th>
@@ -241,12 +241,12 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
           <div className={styles.header}>
             <h2 className={styles.title}>
               Bots detected on{' '}
-              <Link href="/web-scraping" target="_blank">
+              <Link href='/web-scraping' target='_blank'>
                 Web scraping demo
               </Link>
             </h2>
             <Button
-              size="small"
+              size='small'
               outlined
               onClick={async () => {
                 // Loading bot visits is usually really fast, use a minimum loading time to prevent UI flashing
@@ -269,7 +269,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
           {/* Display load older bot visits button if necessary */}
           {botVisits && botVisits?.length > DEFAULT_DISPLAYED_VISITS ? (
             <Button
-              size="medium"
+              size='medium'
               className={styles.loadMore}
               outlined
               onClick={() => setDisplayedVisits(displayedVisits + DISPLAYED_VISITS_INCREMENT)}

@@ -27,8 +27,8 @@ export function usePersonalizationNotification() {
         action: (snackbarId) => (
           <>
             <Button
-              variant="green"
-              size="small"
+              variant='green'
+              size='small'
               onClick={() => {
                 copyToClipboard(window.location.href);
                 showLinkCopiedSnackbar(snackbarId);

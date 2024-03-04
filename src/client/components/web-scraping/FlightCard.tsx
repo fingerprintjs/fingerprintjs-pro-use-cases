@@ -56,13 +56,13 @@ const SingleFlight: FunctionComponent<SingleFlightProps> = ({
       <div className={styles.generalFlightInfo}>
         <div className={styles.labelDateContainer}>
           <div className={styles.flightLabel}>
-            <Image src={label === 'Departure' ? DepartureIcon : ArrivalIcon} alt="" />
+            <Image src={label === 'Departure' ? DepartureIcon : ArrivalIcon} alt='' />
             {label}
           </div>
           <div>{formatDate(departureTime)}</div>
         </div>
         <div className={styles.airline}>
-          <Image src={AirCanada} alt="" />
+          <Image src={AirCanada} alt='' />
           <span data-testid={TEST_ID.airline}>{airline}</span>
         </div>
       </div>
@@ -129,7 +129,7 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
           departureTime={flight.departureTime}
           arrivalTime={flight.arrivalTime}
           airline={flight.airline}
-          label="Departure"
+          label='Departure'
         />
         <SingleFlight
           fromCity={flight.toCity}
@@ -139,7 +139,7 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
           departureTime={flight.returnDepartureTime}
           arrivalTime={flight.returnArrivalTime}
           airline={flight.airline}
-          label="Arrival"
+          label='Arrival'
         />
       </div>
       <div className={styles.checkoutContainer}>
@@ -164,9 +164,9 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
         <div className={styles.line}></div>
         <div className={styles.actions}>
           <div className={styles.favorite}>
-            <Image src={StarIcon} alt="Save to favorites" />
+            <Image src={StarIcon} alt='Save to favorites' />
           </div>
-          <Button size="small" variant="primary" disabled outlined>
+          <Button size='small' variant='primary' disabled outlined>
             Buy
           </Button>
         </div>

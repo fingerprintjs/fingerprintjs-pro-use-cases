@@ -48,18 +48,18 @@ export default function Dropdown({
             {isLocalLink(bottomLinkUrl) ? (
               <Link href={bottomLinkUrl} className={styles.bottomLink} onClick={closeDropdown}>
                 <span>{bottomLinkText}</span>
-                <Image src={ArrowSVG} className={styles.arrow} alt="" />
+                <Image src={ArrowSVG} className={styles.arrow} alt='' />
               </Link>
             ) : (
               <a
                 href={bottomLinkUrl}
                 className={styles.bottomLink}
-                target="_blank"
-                rel="noreferrer"
+                target='_blank'
+                rel='noreferrer'
                 onClick={closeDropdown}
               >
                 <span>{bottomLinkText}</span>
-                <Image src={ArrowSVG} className={styles.arrow} alt="" />
+                <Image src={ArrowSVG} className={styles.arrow} alt='' />
               </a>
             )}
           </div>
@@ -82,8 +82,8 @@ export default function Dropdown({
                     key={`${index}-${url}`}
                     href={url}
                     className={styles.link}
-                    target="_blank"
-                    rel="noreferrer"
+                    target='_blank'
+                    rel='noreferrer'
                     onClick={closeDropdown}
                   >
                     <li className={styles.rightSectionRow}>
@@ -101,18 +101,18 @@ export default function Dropdown({
             {isLocalLink(bottomLinkUrlRight) ? (
               <Link href={bottomLinkUrlRight} className={styles.bottomLink} onClick={closeDropdown}>
                 <span>{bottomLinkTextRight}</span>
-                <Image src={ArrowSVG} className={styles.arrow} alt="" />
+                <Image src={ArrowSVG} className={styles.arrow} alt='' />
               </Link>
             ) : (
               <a
                 href={bottomLinkUrlRight}
                 className={styles.bottomLink}
-                target="_blank"
-                rel="noreferrer"
+                target='_blank'
+                rel='noreferrer'
                 onClick={closeDropdown}
               >
                 <span>{bottomLinkTextRight}</span>
-                <Image src={ArrowSVG} className={styles.arrow} alt="" />
+                <Image src={ArrowSVG} className={styles.arrow} alt='' />
               </a>
             )}
           </div>
@@ -147,8 +147,8 @@ function Column({ title, list, cardBackground, closeDropdown }: ColumnProps & { 
                 <a
                   href={url}
                   className={styles.columnLink}
-                  target="_blank"
-                  rel="noreferrer"
+                  target='_blank'
+                  rel='noreferrer'
                   onClick={() => closeDropdown()}
                 >
                   <li className={classNames(styles.row, { [styles.background]: cardBackground })}>

@@ -20,11 +20,11 @@ export const Byline = ({ article, includeReadingTime }: { article: ArticleData; 
   <div className={styles.byline}>
     <Image src={article.author.avatar} className={styles.authorImage} alt={`Picture of ${article.author.name}`} />
     <div>{article.author.name}</div>
-    <Image src={BylineDot} alt="" />
+    <Image src={BylineDot} alt='' />
     <div>{article.date}</div>
     {includeReadingTime && (
       <>
-        <Image src={BylineDot} alt="" />
+        <Image src={BylineDot} alt='' />
         <div>{calculateReadingTime(article.content)}</div>
       </>
     )}
@@ -49,7 +49,7 @@ export const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article, embe
       onClick={() => router.push(link)}
       data-testid={TEST_IDS.paywall.articleCard}
     >
-      <Image src={article.image} alt="" className={styles.articleCardImage} sizes="100vw" />
+      <Image src={article.image} alt='' className={styles.articleCardImage} sizes='100vw' />
       <div className={styles.articleCardContent}>
         <Byline article={article} />
         <a href={link} key={article.id} className={styles.articleCardTitle}>

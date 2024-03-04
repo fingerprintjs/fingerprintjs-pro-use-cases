@@ -48,22 +48,22 @@ export default function Article({ embed }: CustomPageProps) {
       <div className={styles.articleContainer}>
         <div className={styles.buckButton} data-testid={TEST_IDS.paywall.goBack}>
           <Link href={returnUrl}>
-            <Image src={BackArrow} alt="" className={styles.backArrow} />
+            <Image src={BackArrow} alt='' className={styles.backArrow} />
             Back to articles
           </Link>
         </div>
-        {!articleData && <ArticleSkeleton animation="wave" />}
+        {!articleData && <ArticleSkeleton animation='wave' />}
         {articleData && articleData.message && articleData.severity !== 'success' && (
           <Alert severity={articleData.severity}>{articleData.message}</Alert>
         )}
         {articleData && articleData.severity === 'success' && remainingViews !== undefined && (
-          <Alert severity="warning">
+          <Alert severity='warning'>
             {remainingViews > 0 ? PAYWALL_COPY.nArticlesRemaining(remainingViews) : PAYWALL_COPY.lastArticle}
           </Alert>
         )}
         {article && (
           <div className={styles.article} data-testid={TEST_IDS.paywall.articleContent}>
-            <Image src={article.image} alt={article.title} sizes="100vw" className={styles.articleImage} />
+            <Image src={article.image} alt={article.title} sizes='100vw' className={styles.articleImage} />
             <Byline article={article} includeReadingTime />
             <h2 className={styles.articleTitle}>{article.title}</h2>
             <div className={styles.articleContent}>

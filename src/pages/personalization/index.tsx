@@ -90,7 +90,7 @@ export default function Index({ embed }: CustomPageProps) {
       <Dialog open={!didAcknowledge}>
         <DialogTitle>Heads up!</DialogTitle>
         <DialogContent>
-          <DialogContentText whiteSpace="pre-line">
+          <DialogContentText whiteSpace='pre-line'>
             Fingerprint Pro technology cannot be used to circumvent GDPR and other regulations and must fully comply
             with the laws in the jurisdiction. You should not implement personalization elements across incognito mode
             and normal mode because it violates the users expectations and will lead to a bad experience.
@@ -139,7 +139,7 @@ export default function Index({ embed }: CustomPageProps) {
             <div className={styles.cartContainer}>
               <div className={styles.cartContainerTop}>
                 <div className={styles.cartIconContainer}>
-                  <Image src={CartIcon} alt="Cart" />
+                  <Image src={CartIcon} alt='Cart' />
                   {itemCount > 0 && <div className={styles.cartCountBadge}>{itemCount}</div>}
                 </div>
                 <div className={styles.cartStatus}>

@@ -14,7 +14,7 @@ export interface headerBarProps {
 
 export default function HeaderBar({ children, linkUrl, arrowText, backgroundColor }: headerBarProps) {
   return linkUrl ? (
-    <Container style={{ backgroundColor: backgroundColor ?? '#20265a' }} className={styles.container} size="large">
+    <Container style={{ backgroundColor: backgroundColor ?? '#20265a' }} className={styles.container} size='large'>
       <div className={styles.headerBar}>
         {isLocalLink(linkUrl) ? (
           <Link className={styles.link} href={linkUrl}>
@@ -22,7 +22,7 @@ export default function HeaderBar({ children, linkUrl, arrowText, backgroundColo
             {arrowText && <div className={styles.arrow}>{arrowText} →</div>}
           </Link>
         ) : (
-          <a className={styles.link} href={linkUrl} target="_blank" rel="noreferrer">
+          <a className={styles.link} href={linkUrl} target='_blank' rel='noreferrer'>
             <div className={styles.text}>{children}</div>
             {arrowText && <div className={styles.arrow}>{arrowText} →</div>}
           </a>

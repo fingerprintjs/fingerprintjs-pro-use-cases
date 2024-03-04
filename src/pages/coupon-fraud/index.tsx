@@ -96,13 +96,13 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
             <p>Do you have a coupon? Apply to get a discount!</p>
             <div className={styles.couponInputContainer}>
               <input
-                type="text"
-                placeholder="Enter a coupon"
+                type='text'
+                placeholder='Enter a coupon'
                 onChange={(e) => setCouponCode(e.target.value)}
                 required
                 data-testid={TEST_IDS.couponFraud.couponCode}
               />
-              <Button disabled={isLoading} size="medium" data-testid={TEST_IDS.couponFraud.submitCoupon}>
+              <Button disabled={isLoading} size='medium' data-testid={TEST_IDS.couponFraud.submitCoupon}>
                 {isLoading ? 'Processing...' : 'Apply'}
               </Button>
             </div>
@@ -113,7 +113,7 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
             )}
           </form>
         </div>
-        <Button variant="white" type="button" size="small" disabled={true} className={styles.confirmOrderButton}>
+        <Button variant='white' type='button' size='small' disabled={true} className={styles.confirmOrderButton}>
           Confirm order
         </Button>
       </div>

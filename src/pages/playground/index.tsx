@@ -37,9 +37,9 @@ const DocsLink: FunctionComponent<{ children: ReactNode; href: string; style?: R
   style,
 }) => {
   return (
-    <Link href={href} target="_blank" className={styles.docsLink} style={style}>
+    <Link href={href} target='_blank' className={styles.docsLink} style={style}>
       {children}
-      <Image src={externalLinkArrow} alt="" />
+      <Image src={externalLinkArrow} alt='' />
     </Link>
   );
 };
@@ -76,7 +76,7 @@ function Playground() {
   if (!cachedEvent) {
     return (
       <div className={styles.runningIntelligence}>
-        <Spinner size="40px" thickness={3} />
+        <Spinner size='40px' thickness={3} />
         <h2>Running device intelligence...</h2>
       </div>
     );
@@ -94,7 +94,7 @@ function Playground() {
       {
         content: [
           'Visitor ID',
-          <Info key="info">A unique and stable identifier for your browser or mobile device.</Info>,
+          <Info key='info'>A unique and stable identifier for your browser or mobile device.</Info>,
         ],
       },
       { content: agentResponse?.visitorId },
@@ -104,7 +104,7 @@ function Playground() {
     [{ content: 'IP Address' }, { content: <FormatIpAddress ipAddress={agentResponse?.ip} /> }],
     [
       {
-        content: <DocsLink href="https://dev.fingerprint.com/docs/useful-timestamps#definitions">Last seen</DocsLink>,
+        content: <DocsLink href='https://dev.fingerprint.com/docs/useful-timestamps#definitions'>Last seen</DocsLink>,
       },
       {
         content: agentResponse?.lastSeenAt.global ? timeAgoLabel(agentResponse?.lastSeenAt.global) : 'Unknown',
@@ -113,7 +113,7 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/understanding-your-confidence-score" key="confidence">
+          <DocsLink href='https://dev.fingerprint.com/docs/understanding-your-confidence-score' key='confidence'>
             Confidence <br />
             Score
           </DocsLink>,
@@ -130,7 +130,7 @@ function Playground() {
     [
       {
         content: (
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#ip-geolocation">Geolocation</DocsLink>
+          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#ip-geolocation'>Geolocation</DocsLink>
         ),
       },
       {
@@ -139,7 +139,7 @@ function Playground() {
             <div>{locationName}</div>
             {latitude && longitude && (
               <div>
-                <Map key={[latitude, longitude].toString()} position={[latitude, longitude]} height="80px" />
+                <Map key={[latitude, longitude].toString()} position={[latitude, longitude]} height='80px' />
               </div>
             )}
           </>
@@ -150,7 +150,7 @@ function Playground() {
     [
       {
         content: (
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#incognito-detection">
+          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#incognito-detection'>
             Incognito Mode
           </DocsLink>
         ),
@@ -165,13 +165,13 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#browser-bot-detection" key="bot">
+          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#browser-bot-detection' key='bot'>
             Bot
           </DocsLink>,
         ],
       },
       {
-        content: <BotDetectionResult key="botDetectionResult" event={usedIdentificationEvent} />,
+        content: <BotDetectionResult key='botDetectionResult' event={usedIdentificationEvent} />,
         cellStyle: {
           backgroundColor: usedIdentificationEvent?.products?.botd?.data?.bot?.result === 'bad' ? RED : GREEN,
         },
@@ -180,7 +180,7 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#vpn-detection" key="vpn">
+          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#vpn-detection' key='vpn'>
             VPN
           </DocsLink>,
         ],
@@ -194,8 +194,8 @@ function Playground() {
       {
         content: [
           <DocsLink
-            href="https://dev.fingerprint.com/docs/smart-signals-overview#browser-tamper-detection"
-            key="tamper"
+            href='https://dev.fingerprint.com/docs/smart-signals-overview#browser-tamper-detection'
+            key='tamper'
           >
             Browser Tampering
           </DocsLink>,
@@ -211,7 +211,7 @@ function Playground() {
     [
       {
         content: (
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#virtual-machine-detection">
+          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#virtual-machine-detection'>
             Virtual Machine
           </DocsLink>
         ),
@@ -226,7 +226,7 @@ function Playground() {
     [
       {
         content: (
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#privacy-aware-settings">
+          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#privacy-aware-settings'>
             Privacy Settings
           </DocsLink>
         ),
@@ -243,8 +243,8 @@ function Playground() {
       {
         content: [
           <DocsLink
-            href="https://dev.fingerprint.com/docs/smart-signals-overview#ip-blocklist-matching"
-            key="blocklist"
+            href='https://dev.fingerprint.com/docs/smart-signals-overview#ip-blocklist-matching'
+            key='blocklist'
           >
             IP Blocklist
           </DocsLink>,
@@ -265,7 +265,7 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#raw-device-attributes" key="raw">
+          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#raw-device-attributes' key='raw'>
             Raw device attributes
           </DocsLink>,
         ],
@@ -278,7 +278,7 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#frida-detection" key="frida">
+          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#frida-detection' key='frida'>
             App is instrumented by Frida
           </DocsLink>,
         ],
@@ -288,7 +288,7 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#factory-reset-detection" key="reset">
+          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#factory-reset-detection' key='reset'>
             Factory Reset Timestamp
           </DocsLink>,
         ],
@@ -299,8 +299,8 @@ function Playground() {
       {
         content: [
           <DocsLink
-            href="https://dev.fingerprint.com/docs/smart-signals-overview#geolocation-spoofing-detection"
-            key="spoof"
+            href='https://dev.fingerprint.com/docs/smart-signals-overview#geolocation-spoofing-detection'
+            key='spoof'
           >
             Location spoofing
           </DocsLink>,
@@ -311,7 +311,7 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#cloned-app-detection" key="cloned">
+          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#cloned-app-detection' key='cloned'>
             Cloned App
           </DocsLink>,
         ],
@@ -322,8 +322,8 @@ function Playground() {
       {
         content: [
           <DocsLink
-            href="https://dev.fingerprint.com/docs/smart-signals-overview#android-emulator-detection"
-            key="emulator"
+            href='https://dev.fingerprint.com/docs/smart-signals-overview#android-emulator-detection'
+            key='emulator'
           >
             Emulator
           </DocsLink>,
@@ -335,8 +335,8 @@ function Playground() {
       {
         content: [
           <DocsLink
-            href="https://dev.fingerprint.com/docs/smart-signals-overview#android-tamper-detection"
-            key="tamper"
+            href='https://dev.fingerprint.com/docs/smart-signals-overview#android-tamper-detection'
+            key='tamper'
           >
             Rooted device
           </DocsLink>,
@@ -348,7 +348,7 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href="https://dev.fingerprint.com/docs/smart-signals-overview#factory-reset-detection" key="reset">
+          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#factory-reset-detection' key='reset'>
             Jailbroken device
           </DocsLink>,
         ],
@@ -394,14 +394,14 @@ function Playground() {
         <div>
           <h4 className={styles.jsonTitle}>JavaScript Agent Response {isLoadingAgentResponse && <Spinner />}</h4>
 
-          <CodeSnippet language="json" dataTestId={PLAYGROUND_TAG.agentResponseJSON}>
+          <CodeSnippet language='json' dataTestId={PLAYGROUND_TAG.agentResponseJSON}>
             {JSON.stringify(agentResponse, null, 2)}
           </CodeSnippet>
         </div>
         <div>
           <h4 className={styles.jsonTitle}>Server API Response {isLoadingServerResponse && <Spinner />}</h4>
 
-          <CodeSnippet language="json" dataTestId={PLAYGROUND_TAG.serverResponseJSON}>
+          <CodeSnippet language='json' dataTestId={PLAYGROUND_TAG.serverResponseJSON}>
             {JSON.stringify(usedIdentificationEvent, null, 2)}
           </CodeSnippet>
         </div>

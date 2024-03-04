@@ -44,7 +44,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
     <>
       <SEO title={useCase.titleMeta ?? ''} description={useCase.descriptionMeta ?? ''} path={useCase.url} />
       {embed && shouldDisplayResetButton && (
-        <Tooltip title="Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action.">
+        <Tooltip title='Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action.'>
           <div
             className={classNames([
               styles.floatyResetButton,
@@ -55,24 +55,24 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
             data-testid={TEST_IDS.reset.resetButton}
           >
             <div className={styles.resetTitle}>Restart</div>
-            <Image src={RestartIcon} alt="Reset scenario" />
+            <Image src={RestartIcon} alt='Reset scenario' />
           </div>
         </Tooltip>
       )}
-      <Container size="large">
+      <Container size='large'>
         <h1 className={styles.title}>{title}</h1>
         <div className={styles.description}>{description}</div>
         <div className={styles.externalLinks}>
           {!hideSrcListItem && (
-            <a href="https://github.com/fingerprintjs/fingerprintjs-pro-use-cases" target="_blank" rel="noreferrer">
+            <a href='https://github.com/fingerprintjs/fingerprintjs-pro-use-cases' target='_blank' rel='noreferrer'>
               See on GitHub
-              <Image src={ExternalLinkIcon} alt="" />
+              <Image src={ExternalLinkIcon} alt='' />
             </a>
           )}
           {articleUrl && (
-            <a href={articleUrl} target="_blank" rel="noreferrer">
+            <a href={articleUrl} target='_blank' rel='noreferrer'>
               See technical tutorial
-              <Image src={ExternalLinkIcon} alt="" />
+              <Image src={ExternalLinkIcon} alt='' />
             </a>
           )}
         </div>
@@ -107,12 +107,12 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
               {moreResourcesPresent && (
                 <Button
                   onClick={() => learnMoreRef?.current?.scrollIntoView({ behavior: 'smooth' })}
-                  size="large"
+                  size='large'
                   outlined
                   openNewTab
                   className={styles.resourcesButton}
                 >
-                  <Image src={Lightbulb} alt="Lightbulb" />
+                  <Image src={Lightbulb} alt='Lightbulb' />
                   See related resources
                 </Button>
               )}
@@ -122,7 +122,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
       </Container>
       <div className={styles.contentWrapper}>
         <div className={styles.backgroundRectangle} />
-        <Container size="large" className={styles.content}>
+        <Container size='large' className={styles.content}>
           <div className={styles.browserBar}>
             <div />
             <div />
@@ -133,13 +133,13 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
       </div>
 
       {moreResourcesPresent ? (
-        <Container size="large" className={styles.learnMore}>
+        <Container size='large' className={styles.learnMore}>
           <h3 className={styles.learnMoreTitle} ref={learnMoreRef}>
             Learn more
           </h3>
           <div className={styles.cardsContainer}>
             {moreResources?.map((resource, index) => (
-              <a key={index} href={resource.url} target="_blank" rel="noreferrer" className={styles.card}>
+              <a key={index} href={resource.url} target='_blank' rel='noreferrer' className={styles.card}>
                 <div className={styles.type}>{resource.type}</div>
                 <div className={styles.title}>{resource.title}</div>
               </a>
