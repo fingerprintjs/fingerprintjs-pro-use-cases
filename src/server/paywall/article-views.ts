@@ -90,4 +90,5 @@ export const checkCountOfViewedArticles: RuleCheck = async (eventResponse, req) 
   if (!existingView && count >= ARTICLE_VIEW_LIMIT) {
     return new CheckResult(PAYWALL_COPY.limitReached, messageSeverity.Error, checkResultType.ArticleViewLimitExceeded);
   }
+  return undefined;
 };

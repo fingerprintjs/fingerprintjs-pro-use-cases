@@ -28,11 +28,11 @@ const STYLES_MAP: Record<VariantType, keyof typeof styles> = {
 };
 
 export const ALERT_ICON_MAP: Record<VariantType, any> = {
-  error: <Image src={ErrorIcon} alt="" />,
-  warning: <Image src={WarningIcon} alt="" />,
-  success: <Image src={SuccessIcon} alt="" />,
-  default: <Image src={InfoIcon} alt="" />,
-  info: <Image src={InfoIcon} alt="" width={24} height={24} style={{ padding: '2px' }} />,
+  error: <Image src={ErrorIcon} alt='' />,
+  warning: <Image src={WarningIcon} alt='' />,
+  success: <Image src={SuccessIcon} alt='' />,
+  default: <Image src={InfoIcon} alt='' />,
+  info: <Image src={InfoIcon} alt='' width={24} height={24} style={{ padding: '2px' }} />,
 };
 
 /**
@@ -68,7 +68,7 @@ export const CustomSnackbar = React.forwardRef<HTMLDivElement, CustomContentProp
   return (
     <div
       ref={ref}
-      role="alert"
+      role='alert'
       className={classNames(styles.snackbar, styles.withBorder, STYLES_MAP[variant], className)}
       {...other}
     >
@@ -94,9 +94,9 @@ export function CloseSnackbarButton({ snackbarId }: { snackbarId: SnackbarKey })
       <Button
         onClick={() => closeSnackbar(snackbarId)}
         className={styles.closeButton}
-        variant="ghost"
+        variant='ghost'
         outlined
-        size="small"
+        size='small'
       >
         CLOSE
       </Button>

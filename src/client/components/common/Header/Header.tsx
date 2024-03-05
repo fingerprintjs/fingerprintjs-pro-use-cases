@@ -62,19 +62,19 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
       )}
       <header className={classNames(styles.header, { [styles.darkHeader]: darkMode })}>
         <div className={styles.nav}>
-          <Container size="large" className={styles.root}>
+          <Container size='large' className={styles.root}>
             <nav className={styles.navMain}>
               <div className={styles.navLeft}>
-                <Link href="/" className={styles.link} title="Logo">
+                <Link href='/' className={styles.link} title='Logo'>
                   {darkMode ? (
-                    <Image src={LogoDarkSvg} className={styles.logo} alt="Fingerprint logo" />
+                    <Image src={LogoDarkSvg} className={styles.logo} alt='Fingerprint logo' />
                   ) : (
-                    <Image src={LogoSvg} className={styles.logo} alt="Fingerprint logo" />
+                    <Image src={LogoSvg} className={styles.logo} alt='Fingerprint logo' />
                   )}
                 </Link>
                 <DropdownMenu
                   darkMode={darkMode}
-                  name="Use cases"
+                  name='Use cases'
                   className={styles.desktopOnly}
                   dropdownProps={{
                     darkMode,
@@ -93,7 +93,7 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
 
                 <DropdownMenu
                   darkMode={darkMode}
-                  name="Platform"
+                  name='Platform'
                   className={styles.desktopOnly}
                   dropdownProps={{
                     darkMode,
@@ -113,36 +113,36 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                       className={classNames(styles.desktopOnly, styles.resetButton, isResetLoading && styles.loading)}
                       onClick={() => mutate()}
                       disabled={isResetLoading}
-                      id="click_top_nav_restart"
+                      id='click_top_nav_restart'
                       data-testid={TEST_IDS.reset.resetButton}
                     >
                       Restart
-                      <Image src={Restart} alt="Restart button" />
+                      <Image src={Restart} alt='Restart button' />
                     </button>
                   </Tooltip>
                 )}
                 <Button
                   href={URL.contactSales}
-                  size="medium"
+                  size='medium'
                   outlined
                   openNewTab
                   className={styles.button}
-                  buttonId="click_top_nav_contact_sales"
+                  buttonId='click_top_nav_contact_sales'
                 >
                   Contact sales
                 </Button>
                 <Button
-                  variant="primary"
-                  size="medium"
+                  variant='primary'
+                  size='medium'
                   className={styles.signupButton}
                   href={URL.signupUrl}
                   openNewTab
-                  buttonId="click_top_nav_get_started"
+                  buttonId='click_top_nav_get_started'
                 >
                   Get started
                 </Button>
                 <button
-                  aria-label="Mobile Menu"
+                  aria-label='Mobile Menu'
                   className={classNames(styles.mobileToggler, { [styles.isOpen]: isMobileMenuOpen })}
                   onClick={handleToggleMobileMenu}
                 >

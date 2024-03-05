@@ -31,7 +31,7 @@ const Map: FunctionComponent<MapProps> = (props) => {
       doubleClickZoom={false}
       attributionControl={false}
     >
-      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
       <Marker position={props.position} icon={DefaultIcon} interactive={false} />
     </MapContainer>
   );

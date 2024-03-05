@@ -11,7 +11,7 @@ const scrapeText = async (parent: Locator, testId: string) => {
 
 test.describe('Scraping flights', () => {
   test('is possible with Bot detection off', async ({ page }) => {
-    await page.goto('/web-scraping?disableBotDetection=1', { waitUntil: 'networkidle' });
+    await page.goto('/web-scraping?disableBotDetection=1');
     // Artificial wait necessary to prevent flakiness
     await page.waitForTimeout(3000);
 

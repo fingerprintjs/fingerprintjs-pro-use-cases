@@ -10,7 +10,7 @@ export type TableCellData = {
 const MyTable: FunctionComponent<{ data: TableCellData[][] }> = ({ data }) => {
   return (
     <TableContainer component={Paper} sx={{ mb: (t) => t.spacing(3) }} elevation={3}>
-      <Table size="small">
+      <Table size='small'>
         <TableBody>
           {data.map((row, i) => (
             <TableRow key={i}>

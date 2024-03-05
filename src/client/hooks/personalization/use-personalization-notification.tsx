@@ -27,8 +27,8 @@ export function usePersonalizationNotification() {
         action: (snackbarId) => (
           <>
             <Button
-              variant="green"
-              size="small"
+              variant='green'
+              size='small'
               onClick={() => {
                 copyToClipboard(window.location.href);
                 showLinkCopiedSnackbar(snackbarId);
@@ -41,7 +41,7 @@ export function usePersonalizationNotification() {
         ),
       });
     },
-    [closeSnackbar, copyToClipboard, enqueueSnackbar, showLinkCopiedSnackbar],
+    [copyToClipboard, enqueueSnackbar, showLinkCopiedSnackbar],
   );
 
   return {

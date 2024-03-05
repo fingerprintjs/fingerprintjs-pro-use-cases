@@ -145,7 +145,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
                 ))}
               </Select>
             </div>
-            <Image src={ArrowIcon} alt="" className={styles.arrowIcon} />
+            <Image src={ArrowIcon} alt='' className={styles.arrowIcon} />
             <div>
               <div className={styles.locationLabel}>To</div>
               <Select value={toCode} onValueChange={(value: string) => setToCode(value)} fullWidth>
@@ -157,9 +157,9 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
               </Select>
             </div>
             <Button
-              type="submit"
-              size="medium"
-              variant="primary"
+              type='submit'
+              size='medium'
+              variant='primary'
               className={styles.searchButton}
               disabled={!toCode || !fromCode || isFetching}
             >
@@ -185,12 +185,16 @@ const Results = ({ data, isFetching, error }: UseQueryResult<FlightQueryResult, 
   }
 
   if (error) {
-    return <Alert severity="error">{error.message}</Alert>;
+    return <Alert severity='error'>{error.message}</Alert>;
   }
+
   if (message && severity !== 'success') {
     return <Alert severity={severity ?? 'warning'}>{message}</Alert>;
   }
-  if (!flights) return null;
+
+  if (!flights) {
+    return null;
+  }
   return (
     <div className={styles.flightCardsContainer}>
       {flights.map((flight) => (

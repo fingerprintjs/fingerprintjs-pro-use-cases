@@ -18,16 +18,16 @@ export const Select = React.forwardRef<
       >
         <RadixSelect.Value placeholder={props.placeholder} />
         <RadixSelect.Icon className={styles.SelectIcon}>
-          <Image src={ChevronIcon} alt="" />
+          <Image src={ChevronIcon} alt='' />
         </RadixSelect.Icon>
       </RadixSelect.Trigger>
       <RadixSelect.Portal>
-        <RadixSelect.Content className={styles.SelectContent} position="popper" style={{ zIndex: 1 }}>
-          <ScrollArea.Root className={styles.ScrollAreaRoot} type="auto">
+        <RadixSelect.Content className={styles.SelectContent} position='popper' style={{ zIndex: 1 }}>
+          <ScrollArea.Root className={styles.ScrollAreaRoot} type='auto'>
             <RadixSelect.Viewport className={styles.SelectViewport} asChild>
               <ScrollArea.Viewport className={styles.ScrollAreaViewport}>{children}</ScrollArea.Viewport>
             </RadixSelect.Viewport>
-            <ScrollArea.Scrollbar className={styles.ScrollAreaScrollbar} orientation="vertical">
+            <ScrollArea.Scrollbar className={styles.ScrollAreaScrollbar} orientation='vertical'>
               <ScrollArea.Thumb className={styles.ScrollAreaThumb} />
             </ScrollArea.Scrollbar>
           </ScrollArea.Root>

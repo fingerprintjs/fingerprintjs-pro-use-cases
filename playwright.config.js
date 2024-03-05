@@ -45,15 +45,15 @@ export default defineConfig({
   },
 
   /* In CI/GitHub action, run the production server before running tests
-   * (assumes `yarn build` was called before)
+   * (assumes `pnpm build` was called before)
    */
   webServer: PRODUCTION_E2E_TEST_BASE_URL
     ? undefined
     : {
-        command: `yarn start`,
+        command: `pnpm start`,
         url: LOCALHOST_URL,
         timeout: 120 * 1000,
-        // Don't `yarn start` (reuse existing server instead) if you are running locally
+        // Don't `pnpm start` (reuse existing server instead) if you are running locally
         reuseExistingServer: !IS_CI,
       },
 
@@ -61,17 +61,17 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { ...devices['Desktop Chrome'], screenshot: { mode: 'only-on-failure' } },
     },
 
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: { ...devices['Desktop Firefox'], screenshot: { mode: 'only-on-failure' } },
     },
 
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      use: { ...devices['Desktop Safari'], screenshot: { mode: 'only-on-failure' } },
     },
 
     /* Test against mobile viewports. */

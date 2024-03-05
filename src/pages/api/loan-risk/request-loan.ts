@@ -61,6 +61,7 @@ const checkPreviousLoanRequests: RuleCheck = async (eventResponse, req) => {
       );
     }
   }
+  return undefined;
 };
 
 export default loanRiskEndpoint(

@@ -12,11 +12,11 @@ export default function Index() {
   return (
     <>
       <SEO
-        title="Fingerprint Use Cases | Discover Device Intelligence Use Cases"
+        title='Fingerprint Use Cases | Discover Device Intelligence Use Cases'
         description={`Explore an extensive range of use cases supported by Fingerprint, and learn how to successfully implement it for your 
         business with practical guidance and a comprehensive demo.`}
       />
-      <Container size="large" className={styles.hero}>
+      <Container size='large' className={styles.hero}>
         <h1 className={styles.title}>Fingerprint use cases</h1>
         <div className={styles.intro}>
           <p>
@@ -36,7 +36,7 @@ export default function Index() {
             <div>
               <Image
                 src={card.iconSvg}
-                alt=""
+                alt=''
                 className={styles.useCaseIcon}
                 data-testid={TEST_IDS.homepageCard.useCaseIcon}
               />
@@ -50,7 +50,7 @@ export default function Index() {
             <div>
               <span className={styles.viewPrompt}>
                 See use case demo
-                <Image src={LinkArrow} alt="" />
+                <Image src={LinkArrow} alt='' />
               </span>
             </div>
           </div>

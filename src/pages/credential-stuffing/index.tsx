@@ -69,9 +69,9 @@ export default function Index() {
         <form onSubmit={handleSubmit} className={classNames(formStyles.useCaseForm, styles.credentialStuffingForm)}>
           <label>Username</label>
           <input
-            type="text"
-            name="username"
-            placeholder="Username"
+            type='text'
+            name='username'
+            placeholder='Username'
             defaultValue={userName}
             onChange={(e) => setUserName(e.target.value)}
             required
@@ -79,15 +79,15 @@ export default function Index() {
 
           <label>Password</label>
           <input
-            name="password"
-            placeholder="Password"
+            name='password'
+            placeholder='Password'
             className={styles.password}
             type={showPassword ? 'text' : 'password'}
             defaultValue={password}
             data-testid={TEST_IDS.credentialStuffing.password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button className={styles.showHideIcon} type="button" onClick={() => setShowPassword(!showPassword)}>
+          <button className={styles.showHideIcon} type='button' onClick={() => setShowPassword(!showPassword)}>
             <Image src={showPassword ? shownIcon : hiddenIcon} alt={showPassword ? 'Hide password' : 'Show password'} />
           </button>
 
@@ -96,7 +96,7 @@ export default function Index() {
               {authMessage}
             </Alert>
           ) : null}
-          <Button disabled={isWaitingForResponse} type="submit" data-testid={TEST_IDS.credentialStuffing.login}>
+          <Button disabled={isWaitingForResponse} type='submit' data-testid={TEST_IDS.credentialStuffing.login}>
             {isWaitingForResponse ? 'Hold on, doing magic...' : 'Log In'}
           </Button>
         </form>

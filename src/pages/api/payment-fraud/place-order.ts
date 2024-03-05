@@ -133,6 +133,8 @@ const checkVisitorIdForStolenCard: RuleCheck = async (eventResponse) => {
   if (stolenCardUsedCount.count > 0) {
     return new CheckResult(PAYMENT_FRAUD_COPY.stolenCard, messageSeverity.Error, checkResultType.PaidWithStolenCard);
   }
+
+  return undefined;
 };
 
 const checkForCardCracking: RuleCheck = async (eventResponse) => {
@@ -158,6 +160,8 @@ const checkForCardCracking: RuleCheck = async (eventResponse) => {
       checkResultType.TooManyUnsuccessfulPayments,
     );
   }
+
+  return undefined;
 };
 
 const checkVisitorIdForChargebacks: RuleCheck = async (eventResponse) => {
@@ -181,6 +185,8 @@ const checkVisitorIdForChargebacks: RuleCheck = async (eventResponse) => {
       checkResultType.TooManyChargebacks,
     );
   }
+
+  return undefined;
 };
 
 const processPayment: RuleCheck = async (_eventResponse, request) => {

@@ -7,9 +7,7 @@ const PERS_ID = TEST_IDS.personalization;
 
 test.describe('Personalization', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/personalization', {
-      waitUntil: 'networkidle',
-    });
+    await page.goto('/personalization');
     await page.getByText('Okay, I understand').click();
     await resetScenarios(page);
   });

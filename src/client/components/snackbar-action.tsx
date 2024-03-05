@@ -5,7 +5,7 @@ export function SnackbarAction({ snackbarId }: { snackbarId: SnackbarKey }) {
   const { closeSnackbar } = useSnackbar();
 
   return (
-    <Button onClick={() => closeSnackbar(snackbarId)} color="inherit">
+    <Button onClick={() => closeSnackbar(snackbarId)} color='inherit'>
       Close
     </Button>
   );

@@ -12,9 +12,9 @@ const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: () => v
 }) => {
   return (
     <Button
-      color="primary"
+      color='primary'
       outlined
-      size="medium"
+      size='medium'
       onClick={() => getAgentData()}
       disabled={loading}
       data-testid={PLAYGROUND_TAG.refreshButton}

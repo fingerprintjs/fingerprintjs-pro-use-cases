@@ -23,7 +23,7 @@ export const NumberInputWithUnits: FC<NumberInputWithUnitsProps> = ({
       {prefix && <div>{prefix}</div>}
       <input
         className={styles.input}
-        type="number"
+        type='number'
         value={value}
         name={name}
         onChange={(event) => onChange?.(Number(event.target.value))}

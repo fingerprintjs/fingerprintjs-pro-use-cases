@@ -8,12 +8,8 @@
   </a>
 </p>
 <p align="center">
-  <a href="https://opensource.org/licenses/MIT">
-    <img src="https://img.shields.io/:license-mit-blue.svg" alt="MIT license">
-  </a>
-  <a href="https://discord.gg/39EpE2neBg">
-    <img src="https://img.shields.io/discord/852099967190433792?style=logo&label=Discord&logo=Discord&logoColor=white" alt="Discord server">
-  </a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/:license-mit-blue.svg" alt="MIT license"></a>
+<a href="https://discord.gg/39EpE2neBg"><img src="https://img.shields.io/discord/852099967190433792?style=logo&label=Discord&logo=Discord&logoColor=white" alt="Discord server"></a>
 </p>
 
 # Fingerprint Pro Use Cases
@@ -23,8 +19,8 @@ You can learn more about these use cases on our [website](https://fingerprint.co
 
 ## How to run
 
-1. `yarn install`
-2. `yarn dev`
+1. `pnpm install`
+2. `pnpm dev`
 
 Alternatively, you can use [Stackblitz](https://stackblitz.com/edit/nextjs-dmv5c7) to run the project in your Chromium-based browser.
 
@@ -84,6 +80,7 @@ Protect the content on your website from theft by reliably detecting even sophis
 Integrate Fingerprint Bot Detection with your Web Application Firewall and dynamically block IP addresses linked to past bot visits.
 
 [🔥🧱 Bot Firewall Live Demo](https://demo.fingerprint.com/bot-firewall)
+[📖 Bot Firewall Article](https://fingerprint.com/blog/bot-detection-powered-application-firewall/)
 
 ## Documentation and Support
 

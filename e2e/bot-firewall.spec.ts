@@ -19,6 +19,7 @@ test.describe('Bot Firewall Demo CHROME_ONLY', () => {
   });
 
   test('Should display bot visit and allow blocking/unblocking its IP address', async ({ page, context }) => {
+    test.setTimeout(60000);
     // Record bot visit in web-scraping page
     await page.goto('/web-scraping');
     await expect(page.getByTestId(TEST_IDS.common.alert)).toContainText('Malicious bot detected');
@@ -43,11 +44,12 @@ test.describe('Bot Firewall Demo CHROME_ONLY', () => {
     await page.goto('/bot-firewall');
     await page.getByRole('button', { name: BOT_FIREWALL_COPY.unblockIp }).first().click();
     await page.getByText('was unblocked in the application firewall').waitFor();
-    await page.waitForTimeout(3000);
+    // Give Cloudflare some time to change the firewall rule
+    await page.waitForTimeout(20000);
 
     // Try to visit web-scraping page, should be allowed again
     await secondTab.goto(WEB_SCRAPING_URL);
     await secondTab.reload();
-    await expect(secondTab.getByTestId(TEST_IDS.common.alert)).toContainText('Malicious bot detected');
+    await expect(secondTab.getByRole('heading', { name: 'Web Scraping Prevention' })).toBeVisible();
   });
 });

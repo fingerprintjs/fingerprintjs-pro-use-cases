@@ -54,6 +54,8 @@ export const checkFreshIdentificationRequest: RuleCheck = (eventResponse) => {
       checkResultType.OldTimestamp,
     );
   }
+
+  return undefined;
 };
 
 /**
@@ -68,6 +70,8 @@ export const checkConfidenceScore: RuleCheck = (eventResponse) => {
       checkResultType.LowConfidenceScore,
     );
   }
+
+  return undefined;
 };
 
 /**
@@ -81,6 +85,8 @@ export const checkIpAddressIntegrity: RuleCheck = (eventResponse, request) => {
       checkResultType.IpMismatch,
     );
   }
+
+  return undefined;
 };
 
 /**
@@ -94,6 +100,8 @@ export const checkOriginsIntegrity: RuleCheck = (eventResponse, request) => {
       checkResultType.ForeignOrigin,
     );
   }
+
+  return undefined;
 };
 
 export function visitIpMatchesRequestIp(visitIp = '', request: NextApiRequest) {

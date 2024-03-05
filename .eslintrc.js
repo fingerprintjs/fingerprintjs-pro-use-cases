@@ -1,22 +1,17 @@
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
   extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended',
     'next/core-web-vitals',
-    'prettier',
+    '@fingerprintjs/eslint-config-dx-team',
+    // necessary to pickup project-specific overrides in prettierrc.js
+    'plugin:prettier/recommended',
   ],
-  plugins: ['react-hooks', 'prettier', 'jsx-a11y'],
+  plugins: ['react-hooks', 'jsx-a11y'],
   rules: {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
-    'prettier/prettier': 'error',
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'react/no-unescaped-entities': 'off',
-  },
-  env: {
-    es6: true,
   },
 };
