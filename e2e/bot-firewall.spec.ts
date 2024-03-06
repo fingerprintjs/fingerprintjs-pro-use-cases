@@ -8,6 +8,8 @@ const WEB_SCRAPING_URL = PRODUCTION_E2E_TEST_BASE_URL
   ? `${PRODUCTION_E2E_TEST_BASE_URL}/web-scraping`
   : 'https://staging.fingerprinthub.com/web-scraping';
 
+const CLOUDFLARE_WAIT_MS = 20000;
+
 /**
  * CHROME_ONLY flag tells the GitHub action to run this test only using Chrome.
  * This test relies on a single common Cloudflare ruleset, we we cannot run multiple instances of it at the same time.
@@ -28,7 +30,8 @@ test.describe('Bot Firewall Demo CHROME_ONLY', () => {
     await page.goto('/bot-firewall');
     await page.getByRole('button', { name: BOT_FIREWALL_COPY.blockIp }).first().click();
     await page.getByText('was blocked in the application firewall').waitFor();
-    await page.waitForTimeout(3000);
+    // Give Cloudflare some time to change the firewall rule
+    await page.waitForTimeout(CLOUDFLARE_WAIT_MS);
 
     /**
      * Try to visit web-scraping page, should be blocked by Cloudflare
@@ -45,7 +48,7 @@ test.describe('Bot Firewall Demo CHROME_ONLY', () => {
     await page.getByRole('button', { name: BOT_FIREWALL_COPY.unblockIp }).first().click();
     await page.getByText('was unblocked in the application firewall').waitFor();
     // Give Cloudflare some time to change the firewall rule
-    await page.waitForTimeout(20000);
+    await page.waitForTimeout(CLOUDFLARE_WAIT_MS);
 
     // Try to visit web-scraping page, should be allowed again
     await secondTab.goto(WEB_SCRAPING_URL);
