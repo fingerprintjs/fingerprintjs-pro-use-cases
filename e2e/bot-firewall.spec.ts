@@ -12,7 +12,7 @@ const CLOUDFLARE_WAIT_MS = 20000;
 
 /**
  * CHROME_ONLY flag tells the GitHub action to run this test only using Chrome.
- * This test relies on a single common Cloudflare ruleset, we we cannot run multiple instances of it at the same time.
+ * This test relies on a single common Cloudflare ruleset, we cannot run multiple instances of it at the same time.
  */
 test.describe('Bot Firewall Demo CHROME_ONLY', () => {
   test.beforeEach(async ({ page }) => {
