@@ -11,9 +11,11 @@ const WEB_SCRAPING_URL = PRODUCTION_E2E_TEST_BASE_URL
 const CLOUDFLARE_WAIT_MS = 20000;
 
 /**
- * CHROME_ONLY flag tells the GitHub action to run this test only using Chrome.
+ * Only run this test in Chrome
  * This test relies on a single common Cloudflare ruleset, we cannot run multiple instances of it at the same time.
  */
+test.skip(({ browserName }) => browserName !== 'chromium', 'Chrome-only');
+
 test.describe('Bot Firewall Demo CHROME_ONLY', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/coupon-fraud');
