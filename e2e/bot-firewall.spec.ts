@@ -9,12 +9,14 @@ const WEB_SCRAPING_URL = PRODUCTION_E2E_TEST_BASE_URL
   : 'https://staging.fingerprinthub.com/web-scraping';
 
 const CLOUDFLARE_WAIT_MS = 20000;
+const TEST_TIMEOUT_MS = 45000 + 2 * CLOUDFLARE_WAIT_MS;
 
 /**
  * Only run this test in Chrome
  * This test relies on a single common Cloudflare ruleset, we cannot run multiple instances of it at the same time.
  */
 test.skip(({ browserName }) => browserName !== 'chromium', 'Chrome-only');
+test.setTimeout(TEST_TIMEOUT_MS);
 
 test.describe('Bot Firewall Demo CHROME_ONLY', () => {
   test.beforeEach(async ({ page }) => {
@@ -23,7 +25,6 @@ test.describe('Bot Firewall Demo CHROME_ONLY', () => {
   });
 
   test('Should display bot visit and allow blocking/unblocking its IP address', async ({ page, context }) => {
-    test.setTimeout(60000);
     // Record bot visit in web-scraping page
     await page.goto('/web-scraping');
     await expect(page.getByTestId(TEST_IDS.common.alert)).toContainText('Malicious bot detected');
