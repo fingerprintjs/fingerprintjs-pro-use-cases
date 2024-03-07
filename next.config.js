@@ -12,6 +12,13 @@ module.exports = {
     includePaths: [path.join(__dirname, 'src/styles')],
     prependData: `@import "common.scss";`,
   },
+  experimental: {
+    /**
+     * Needed because https://github.com/sequelize/sequelize/issues/16589
+     */
+    serverComponentsExternalPackages: ['sequelize', 'sqlite3', '@sequelize/core'],
+  },
+  output: 'standalone',
   async headers() {
     return [
       {
