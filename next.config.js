@@ -15,6 +15,7 @@ module.exports = {
   experimental: {
     /**
      * Needed because https://github.com/sequelize/sequelize/issues/16589
+     * But it still doesn't work
      */
     serverComponentsExternalPackages: ['sequelize', 'sqlite3', '@sequelize/core'],
   },

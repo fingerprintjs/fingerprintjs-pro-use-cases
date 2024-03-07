@@ -1,4 +1,6 @@
-FROM node:18-alpine AS base
+## This file is copied almost exactly from https://github.com/vercel/next.js/tree/canary/examples/with-docker
+
+FROM node:20-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -14,6 +16,10 @@ RUN \
   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
   else echo "Lockfile not found." && exit 1; \
   fi
+
+# Install sqlite3 to prevent "Error: Please install sqlite3 package manually"
+# But it still doesn't work
+RUN apk add --no-cache sqlite
 
 
 # Rebuild the source code only when needed
