@@ -23,7 +23,7 @@ export function usePlaygroundSignals() {
   } = useQuery<EventResponse | undefined>(
     [requestId],
     () =>
-      fetch(`/api/event/${agentResponse?.requestId}`).then((res) => {
+      fetch(`/api/event/${agentResponse?.requestId}`, { method: 'POST' }).then((res) => {
         if (res.status !== 200) {
           throw new Error(`${res.statusText}`);
         }

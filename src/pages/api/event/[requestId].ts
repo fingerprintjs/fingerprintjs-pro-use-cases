@@ -1,8 +1,21 @@
 import { isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fingerprintJsApiClient } from '../../../server/fingerprint-api';
+import { ourOrigins } from '../../../server/server';
 
 export default async function getFingerprintEvent(req: NextApiRequest, res: NextApiResponse) {
+  /**
+   * In production, it's a good idea to validate the origin of the request,
+   * since this endpoint exposes the underlying authenticated Fingerprint Server API endpoint.
+   * It's just an extra precaution, you should primarily be using [Request filtering](https://dev.fingerprint.com/docs/request-filtering)
+   * to protect your Public API key from unauthorized usage.
+   */
+  const origin = req.headers['origin'] as string;
+  if (process.env.NODE_ENV === 'production' && !ourOrigins.includes(origin)) {
+    res.status(403).send({ message: `Origin ${origin} is not allowed to call this endpoint` });
+    return;
+  }
+
   const { requestId } = req.query as { requestId: string };
   return await tryGetFingerprintEvent(res, requestId);
 }
