@@ -4,7 +4,7 @@ module.exports = {
     'next/core-web-vitals',
     '@fingerprintjs/eslint-config-dx-team',
     // necessary to pickup project-specific overrides in prettierrc.js
-    'plugin:prettier/recommended',
+    'prettier',
   ],
   plugins: ['react-hooks', 'jsx-a11y'],
   rules: {
