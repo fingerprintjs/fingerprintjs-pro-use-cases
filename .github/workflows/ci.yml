@@ -18,44 +18,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: 'Install pnpm'
-        uses: pnpm/action-setup@ebcfd6995dade4b0104ac774445cef8b3b4635b0
-        with:
-          version: 8
       - name: 'Cache'
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: nodemodules-${{ hashFiles('pnpm-lock.yaml') }}
+          key: nodemodules-${{ hashFiles('yarn.lock') }}
           restore-keys: nodemodules-
 
       - name: Install packages
-        run: pnpm install --frozen-lockfile --prefer-offline
+        run: yarn install --frozen-lockfile --prefer-offline
 
       - name: Lint
-        run: pnpm lint
+        run: yarn lint
   unit-tests:
     name: Unit tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: 'Install pnpm'
-        uses: pnpm/action-setup@ebcfd6995dade4b0104ac774445cef8b3b4635b0
-        with:
-          version: 8
 
       - name: 'Cache'
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: nodemodules-${{ hashFiles('pnpm-lock.yaml') }}
+          key: nodemodules-${{ hashFiles('yarn.lock') }}
           restore-keys: nodemodules-
 
       - name: Install packages
-        run: pnpm install --frozen-lockfile --prefer-offline
+        run: yarn install --frozen-lockfile --prefer-offline
 
       - name: Run unit tests
-        run: pnpm test
+        run: yarn test
   e2e:
     name: Playwright e2e tests
     timeout-minutes: 60
@@ -67,20 +59,16 @@ jobs:
         shardTotal: [3]
     steps:
       - uses: actions/checkout@v4
-      - name: 'Install pnpm'
-        uses: pnpm/action-setup@ebcfd6995dade4b0104ac774445cef8b3b4635b0
-        with:
-          version: 8
 
       - name: Cache node modules
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: nodemodules-${{ hashFiles('pnpm-lock.yaml') }}
+          key: nodemodules-${{ hashFiles('yarn.lock') }}
           restore-keys: nodemodules-
 
       - name: Install node modules
-        run: pnpm install --prefer-offline --frozen-lockfile
+        run: yarn install --prefer-offline --frozen-lockfile
 
       - name: Get installed Playwright version (used in cache key)
         id: playwright-version
@@ -95,13 +83,13 @@ jobs:
           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
 
       - name: Install Playwright browsers binaries if cache missed
-        run: pnpm playwright install --with-deps
+        run: yarn playwright install --with-deps
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
       # Ubuntu needs extra stuff to run webkit tests, alternative is using a Playwright docker container but
       # that is slower in CI.
       - name: If browser binaries cache hit, install just webkit dependencies
-        run: pnpm playwright install-deps webkit
+        run: yarn playwright install-deps webkit
         if: steps.playwright-cache.outputs.cache-hit == 'true'
 
       - name: Cache Next build
@@ -109,20 +97,20 @@ jobs:
         with:
           path: ${{ github.workspace }}/.next/cache
           # Generate a new cache whenever packages or source files change.
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('src/*') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('yarn.lock') }}-${{ hashFiles('src/*') }}
           # If source files changed but packages didn't, rebuild from a prior cache.
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}-
+            ${{ runner.os }}-nextjs-${{ hashFiles('yarn.lock') }}-
 
       - name: Build website
-        run: pnpm build
+        run: yarn build
 
       - name: Run Playwright tests
-        run: pnpm playwright test --grep-invert CHROME_ONLY --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+        run: yarn playwright test --grep-invert CHROME_ONLY --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
 
       # Some tests are only run on Chrome, marked with CHROME_ONLY in their name
       - name: Run Chrome-only Playwright tests
-        run: pnpm playwright test --grep CHROME_ONLY --project='chromium'
+        run: yarn playwright test --grep CHROME_ONLY --project='chromium'
         if: matrix.shardIndex == 1
 
       - name: Upload Playwright report
