@@ -62,6 +62,7 @@ test.describe('Bot Firewall Demo CHROME_ONLY', () => {
 
 /**
  * Asserts the visibility of a given element by repeatedly reloading the page and waiting for the element to become visible.
+ * This is useful for testing non-SPA pages where updates require a page reload.
  *
  * @param {Page} page - The page object to interact with.
  * @param {Locator} locator - The locator for the element to be checked for visibility.
@@ -79,10 +80,9 @@ const assertElementWhileRepeatedlyReloadingPage = async (
     const isVisible = await locator.isVisible();
     if (isVisible) {
       break;
-    } else {
-      await page.waitForTimeout(waitBetweenAttempts);
-      await page.reload();
     }
+    await page.waitForTimeout(waitBetweenAttempts);
+    await page.reload();
   }
   await expect(locator).toBeVisible();
 };
