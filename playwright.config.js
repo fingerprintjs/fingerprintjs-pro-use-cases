@@ -45,15 +45,15 @@ export default defineConfig({
   },
 
   /* In CI/GitHub action, run the production server before running tests
-   * (assumes `pnpm build` was called before)
+   * (assumes `yarn build` was called before)
    */
   webServer: PRODUCTION_E2E_TEST_BASE_URL
     ? undefined
     : {
-        command: `pnpm start`,
+        command: `yarn start`,
         url: LOCALHOST_URL,
         timeout: 120 * 1000,
-        // Don't `pnpm start` (reuse existing server instead) if you are running locally
+        // Don't `yarn start` (reuse existing server instead) if you are running locally
         reuseExistingServer: !IS_CI,
       },
 
