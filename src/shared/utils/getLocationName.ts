@@ -1,17 +1,17 @@
-import { FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
+import { EventResponseIpInfoV4Geolocation } from '../types';
 
 export const UNKNOWN_LOCATION = 'Unknown';
-export function getLocationName(ipLocation?: FingerprintJSPro.IpLocation) {
+export function getLocationName(ipLocation?: EventResponseIpInfoV4Geolocation) {
   const addressParts: string[] = [];
   if (!ipLocation) {
     return UNKNOWN_LOCATION;
   }
   const { city, country, subdivisions } = ipLocation;
-  if (city) {
+  if (city?.name) {
     addressParts.push(city.name);
   }
 
-  if (subdivisions && subdivisions.length > 0) {
+  if (subdivisions?.[0]?.name) {
     addressParts.push(subdivisions[0].name);
   }
 
