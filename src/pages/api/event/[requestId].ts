@@ -3,6 +3,9 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { fingerprintJsApiClient } from '../../../server/fingerprint-api';
 import { ourOrigins } from '../../../server/server';
 
+// Also allow our documentation to use the endpoint
+const allowedOrigins = [...ourOrigins, 'https://dev.fingerprint.com'];
+
 export default async function getFingerprintEvent(req: NextApiRequest, res: NextApiResponse) {
   /**
    * In production, it's a good idea to validate the origin of the request,
@@ -11,7 +14,7 @@ export default async function getFingerprintEvent(req: NextApiRequest, res: Next
    * to protect your Public API key from unauthorized usage.
    */
   const origin = req.headers['origin'] as string;
-  if (process.env.NODE_ENV === 'production' && !ourOrigins.includes(origin)) {
+  if (process.env.NODE_ENV === 'production' && !allowedOrigins.includes(origin)) {
     res.status(403).send({ message: `Origin ${origin} is not allowed to call this endpoint` });
     return;
   }
