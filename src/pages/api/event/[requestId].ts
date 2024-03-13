@@ -10,6 +10,7 @@ const allowedOrigins = [...ourOrigins, 'https://dev.fingerprint.com'];
 // We need to set up CORS for that  https://github.com/expressjs/cors#configuration-options
 const cors = Cors({
   methods: ['POST', 'GET', 'HEAD'],
+  origin: allowedOrigins,
 });
 
 // Helper method to wait for a middleware to execute before continuing
