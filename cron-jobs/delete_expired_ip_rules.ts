@@ -7,7 +7,7 @@ import 'dotenv/config';
 
 /**
  * In production, run this file in conjunction with the production web server like:
- * pnpm start:with-cron-jobs
+ * yarn start:with-cron-jobs
  */
 
 // Every 5 minutes
