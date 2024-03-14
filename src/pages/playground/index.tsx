@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useMemo } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { CodeSnippet } from '../../client/components/CodeSnippet';
 import { green, red } from '@mui/material/colors';
@@ -64,10 +64,6 @@ function Playground() {
 
   const hasDarkMode = false;
 
-  const locationName = useMemo<string>(() => {
-    return getLocationName(agentResponse?.ipLocation);
-  }, [agentResponse]);
-
   if (agentError) {
     return <Alert severity={'error'}>JavaScript Agent Error: {agentError.message}.</Alert>;
   }
@@ -86,7 +82,8 @@ function Playground() {
   }
 
   const usedIdentificationEvent = identificationEvent ?? cachedEvent;
-  const { latitude, longitude } = agentResponse?.ipLocation ?? {};
+  const ipLocation = usedIdentificationEvent?.products?.ipInfo?.data?.v4?.geolocation;
+  const { latitude, longitude } = ipLocation ?? {};
 
   const RED = hasDarkMode ? red[900] : red[100];
   const GREEN = hasDarkMode ? green[900] : lightGreen[50];
@@ -139,7 +136,7 @@ function Playground() {
       {
         content: (
           <>
-            <div>{locationName}</div>
+            <div>{getLocationName(ipLocation)}</div>
             {latitude && longitude && (
               <div>
                 <Map key={[latitude, longitude].toString()} position={[latitude, longitude]} height='80px' />
@@ -159,9 +156,9 @@ function Playground() {
         ),
       },
       {
-        content: agentResponse?.incognito ? 'You are incognito 🕶' : 'Not detected',
+        content: usedIdentificationEvent.products?.incognito?.data?.result ? 'You are incognito 🕶' : 'Not detected',
         cellStyle: {
-          backgroundColor: agentResponse?.incognito ? RED : GREEN,
+          backgroundColor: usedIdentificationEvent.products?.incognito?.data?.result ? RED : GREEN,
         },
       },
     ],
