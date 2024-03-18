@@ -2,8 +2,36 @@ import { isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fingerprintJsApiClient } from '../../../server/fingerprint-api';
 import { ourOrigins } from '../../../server/server';
+import Cors from 'cors';
+
+// Also allow our documentation to use the endpoint
+const allowedOrigins = [...ourOrigins, 'https://dev.fingerprint.com'];
+
+// We need to set up CORS for that  https://github.com/expressjs/cors#configuration-options
+const cors = Cors({
+  methods: ['POST', 'HEAD'],
+  origin: allowedOrigins,
+});
+
+// Helper method to wait for a middleware to execute before continuing
+// And to throw an error when an error happens in a middleware
+// https://github.com/vercel/next.js/blob/canary/examples/api-routes-cors/pages/api/cors.ts
+function runMiddleware(req: NextApiRequest, res: NextApiResponse, fn: Function) {
+  return new Promise((resolve, reject) => {
+    fn(req, res, (result: any) => {
+      if (result instanceof Error) {
+        return reject(result);
+      }
+
+      return resolve(result);
+    });
+  });
+}
 
 export default async function getFingerprintEvent(req: NextApiRequest, res: NextApiResponse) {
+  // Run the CORS middleware
+  await runMiddleware(req, res, cors);
+
   /**
    * In production, it's a good idea to validate the origin of the request,
    * since this endpoint exposes the underlying authenticated Fingerprint Server API endpoint.
@@ -11,7 +39,7 @@ export default async function getFingerprintEvent(req: NextApiRequest, res: Next
    * to protect your Public API key from unauthorized usage.
    */
   const origin = req.headers['origin'] as string;
-  if (process.env.NODE_ENV === 'production' && !ourOrigins.includes(origin)) {
+  if (process.env.NODE_ENV === 'production' && !allowedOrigins.includes(origin)) {
     res.status(403).send({ message: `Origin ${origin} is not allowed to call this endpoint` });
     return;
   }
