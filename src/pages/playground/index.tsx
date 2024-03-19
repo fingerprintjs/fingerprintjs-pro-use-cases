@@ -386,7 +386,7 @@ function Playground() {
         content: [
           <DocsLink
             href='https://dev.fingerprint.com/docs/smart-signals-overview#jailbroken-device-detection'
-            key='reset'
+            key='jailbroken'
           >
             Jailbroken device
           </DocsLink>,
