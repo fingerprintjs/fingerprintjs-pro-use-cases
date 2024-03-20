@@ -150,7 +150,7 @@ function Playground() {
     [
       {
         content: (
-          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#incognito-detection'>
+          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#browser-incognito-detection'>
             Incognito Mode
           </DocsLink>
         ),
@@ -226,7 +226,7 @@ function Playground() {
     [
       {
         content: (
-          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#privacy-aware-settings'>
+          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#privacy-focused-settings'>
             Privacy Settings
           </DocsLink>
         ),
@@ -384,7 +384,10 @@ function Playground() {
     [
       {
         content: [
-          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#factory-reset-detection' key='reset'>
+          <DocsLink
+            href='https://dev.fingerprint.com/docs/smart-signals-overview#jailbroken-device-detection'
+            key='jailbroken'
+          >
             Jailbroken device
           </DocsLink>,
         ],
