@@ -70,4 +70,8 @@ export const TEST_IDS = {
     login: 'login',
     password: 'password',
   },
+  smsFraud: {
+    phoneNumber: 'phoneNumber',
+    submit: 'submit',
+  },
 } as const;
