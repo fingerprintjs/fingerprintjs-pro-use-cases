@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
 import { useMutation } from 'react-query';
-import { SendSMSResponse } from '../api/sms-fraud/verify-number';
+import { SendSMSPayload, SendSMSResponse } from '../api/sms-fraud/verify-number';
 import { Alert } from '../../client/components/common/Alert/Alert';
 
 export default function Index() {
@@ -37,9 +37,10 @@ export default function Index() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          phoneNumber,
+          phone: phoneNumber,
           requestId,
-        }),
+          email,
+        } satisfies SendSMSPayload),
       });
       if (response.status < 500) {
         return await response.json();
