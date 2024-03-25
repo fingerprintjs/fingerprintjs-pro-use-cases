@@ -7,14 +7,14 @@ import Image from 'next/image';
 import Button from '../common/Button/Button';
 import StarIcon from '../../img/star.svg';
 import { TEST_IDS } from '../../testIDs';
-import { HOUR_MS, MINUTE_MS } from '../../../shared/timeUtils';
+import { ONE_HOUR_MS, ONE_MINUTE_MS } from '../../../shared/timeUtils';
 
 const TEST_ID = TEST_IDS.webScraping;
 
 // convert time in milliseconds to hours and minutes
 const formatDurationTime = (time: number) => {
-  const hours = Math.floor(time / HOUR_MS);
-  const minutes = (time % HOUR_MS) / MINUTE_MS;
+  const hours = Math.floor(time / ONE_HOUR_MS);
+  const minutes = (time % ONE_HOUR_MS) / ONE_MINUTE_MS;
   return `${hours}h ${minutes > 0 ? `${minutes}m` : ''}`;
 };
 
