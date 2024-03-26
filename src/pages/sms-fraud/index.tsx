@@ -30,7 +30,8 @@ export default function Index() {
   const {
     mutate: sendVerificationSms,
     data: sendSmsResponse,
-    isLoading,
+    error: sendSmsError,
+    isLoading: isLoadingSendSms,
   } = useMutation<SendSMSResponse, Error>({
     mutationKey: ['sendSms'],
     mutationFn: async () => {
@@ -62,6 +63,7 @@ export default function Index() {
   const {
     mutate: submitCode,
     data: submitCodeResponse,
+    error: submitCodeError,
     isLoading: isLoadingSubmitCode,
   } = useMutation<SubmitCodeResponse, Error>({
     mutationKey: ['submitCode'],
@@ -120,6 +122,11 @@ export default function Index() {
             onChange={(e) => setPhoneNumber(e.target.value)}
           />
 
+          {sendSmsError ? (
+            <Alert severity='error' className={styles.alert}>
+              {sendSmsError.message}
+            </Alert>
+          ) : null}
           {sendSmsResponse ? (
             <Alert severity={sendSmsResponse.severity} className={styles.alert}>
               {sendSmsResponse.message}
@@ -127,8 +134,8 @@ export default function Index() {
           ) : null}
 
           {sendSmsResponse?.data?.remainingAttempts === 0 ? null : (
-            <Button disabled={isLoading} type='submit' data-testid={TEST_IDS.smsFraud.submit}>
-              {isLoading
+            <Button disabled={isLoadingSendSms} type='submit' data-testid={TEST_IDS.smsFraud.submit}>
+              {isLoadingSendSms
                 ? `Sending code to ${phoneNumber}`
                 : sendSmsResponse
                   ? 'Resend Verification SMS'
@@ -156,12 +163,17 @@ export default function Index() {
               data-testid={TEST_IDS.smsFraud.code}
               onChange={(e) => setCode(e.target.value)}
             />
+            {submitCodeError ? (
+              <Alert severity='error' className={styles.alert}>
+                {submitCodeError.message}
+              </Alert>
+            ) : null}
             {submitCodeResponse ? (
               <Alert severity={submitCodeResponse.severity} className={styles.alert}>
                 {submitCodeResponse.message}
               </Alert>
             ) : null}
-            <Button disabled={isLoading} type='submit' data-testid={TEST_IDS.smsFraud.submit} outlined={true}>
+            <Button disabled={isLoadingSendSms} type='submit' data-testid={TEST_IDS.smsFraud.submit} outlined={true}>
               {isLoadingSubmitCode ? 'Verifying...' : 'Verify'}
             </Button>
           </form>
