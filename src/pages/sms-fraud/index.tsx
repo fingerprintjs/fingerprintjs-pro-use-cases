@@ -13,26 +13,26 @@ import { Alert } from '../../client/components/common/Alert/Alert';
 import styles from './smsVerificationFraud.module.scss';
 import { SubmitCodePayload, SubmitCodeResponse } from '../api/sms-fraud/submit-code';
 
-export default function Index() {
-  const { getData } = useVisitorData(
+// type PhoneNumberFormProps = {
+//   phoneNumber: string;
+//   setPhoneNumber: (phoneNumber: string) => void;
+// };
+
+// const PhoneNumberForm: FunctionComponent<PhoneNumberFormProps> = ({ phoneNumber, setPhoneNumber }) => {
+
+const useVisitorDataOnDemand = () => {
+  return useVisitorData(
     { ignoreCache: true },
     {
       immediate: false,
     },
   );
+};
 
-  // Default mocked user data
-  const [email, setEmail] = useState('user@company.com');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [code, setCode] = useState('');
-  const [smsSent, setSmsSent] = useState(false);
-
-  const {
-    mutate: sendVerificationSms,
-    data: sendSmsResponse,
-    error: sendSmsError,
-    isLoading: isLoadingSendSms,
-  } = useMutation<SendSMSResponse, Error>({
+const useSendVerificationSms = (phoneNumber: string, email: string) => {
+  const { getData } = useVisitorDataOnDemand();
+  const [anySmsSent, setAnySmsSent] = useState(false);
+  const mutation = useMutation<SendSMSResponse, Error>({
     mutationKey: ['sendSms'],
     mutationFn: async () => {
       const { requestId } = await getData();
@@ -55,17 +55,20 @@ export default function Index() {
     },
     onSuccess: (data: SendSMSResponse) => {
       if (data.severity === 'success') {
-        setSmsSent(true);
+        setAnySmsSent(true);
       }
     },
   });
 
-  const {
-    mutate: submitCode,
-    data: submitCodeResponse,
-    error: submitCodeError,
-    isLoading: isLoadingSubmitCode,
-  } = useMutation<SubmitCodeResponse, Error>({
+  return {
+    ...mutation,
+    anySmsSent,
+  };
+};
+
+const useSubmitCode = (phoneNumber: string, code: string) => {
+  const { getData } = useVisitorDataOnDemand();
+  return useMutation<SubmitCodeResponse, Error>({
     mutationKey: ['submitCode'],
     mutationFn: async () => {
       const { requestId } = await getData();
@@ -83,10 +86,32 @@ export default function Index() {
       if (response.status < 500) {
         return await response.json();
       } else {
-        throw new Error('Failed to submit verification code: ' + response.statusText);
+        throw new Error('Failed to submit code: ' + response.statusText);
       }
     },
   });
+};
+
+export default function Index() {
+  // Default mocked user data
+  const [email, setEmail] = useState('user@company.com');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [code, setCode] = useState('');
+
+  const {
+    mutate: sendVerificationSms,
+    data: sendSmsResponse,
+    error: sendSmsError,
+    isLoading: isLoadingSendSms,
+    anySmsSent,
+  } = useSendVerificationSms(phoneNumber, email);
+
+  const {
+    mutate: submitCode,
+    data: submitCodeResponse,
+    error: submitCodeError,
+    isLoading: isLoadingSubmitCode,
+  } = useSubmitCode(phoneNumber, code);
 
   return (
     <UseCaseWrapper useCase={USE_CASES.smsFraud}>
@@ -143,7 +168,7 @@ export default function Index() {
             </Button>
           )}
         </form>
-        {smsSent && (
+        {anySmsSent && (
           <form
             className={classNames(formStyles.useCaseForm, styles.codeForm)}
             onSubmit={(e) => {
