@@ -6,10 +6,11 @@ import { SmsVerificationModel } from '../../../server/sms-fraud/database';
 import { ONE_SECOND_MS, readableMilliseconds } from '../../../shared/timeUtils';
 import { Op } from 'sequelize';
 import { pluralize } from '../../../shared/utils';
+import Twilio from 'twilio';
 
 export type SendSMSPayload = {
   requestId: string;
-  phone: string;
+  phoneNumber: string;
   email: string;
   disableBotDetection?: boolean;
 };
@@ -30,6 +31,29 @@ const ATTEMPT_TIMEOUTS_MAP: Record<number, { timeout: number }> = {
 const MAX_ATTEMPTS = Object.keys(ATTEMPT_TIMEOUTS_MAP).length + 1;
 
 const generateRandomSixDigitCode = () => Math.floor(100000 + Math.random() * 900000);
+const sendSms = async (phone: string, body: string) => {
+  const authToken = process.env.TWILIO_TOKEN;
+  const accountSid = process.env.TWILIO_ACCOUNT_SID;
+
+  if (!authToken) {
+    throw new Error('Twilio token not found.');
+  }
+
+  if (!accountSid) {
+    throw new Error('Twilio account SID not found.');
+  }
+
+  const client = Twilio(accountSid, authToken);
+
+  const message = await client.messages.create({
+    body,
+    // My Twilio number
+    from: '+16269863835',
+    to: phone,
+  });
+
+  console.log('Message sent: ', message.sid);
+};
 
 export default async function sendVerificationSMS(req: NextApiRequest, res: NextApiResponse<SendSMSResponse>) {
   // This API route accepts only POST requests.
@@ -39,7 +63,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
     return;
   }
 
-  const { phone, email, requestId, disableBotDetection } = req.body as SendSMSPayload;
+  const { phoneNumber: phone, email, requestId, disableBotDetection } = req.body as SendSMSPayload;
 
   // Get the full Identification and Bot Detection result from Fingerprint Server API and validate its authenticity
   const fingerprintResult = await getAndValidateFingerprintResult(requestId, req);
@@ -113,17 +137,28 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
     }
   }
 
+  const verificationCode = generateRandomSixDigitCode();
   /**
    * If this is the visitor's first request, or the cool-down period has passed,
    * send the SMS verification code and save the request to the database
    */
   await SmsVerificationModel.create({
     visitorId: identification.visitorId,
-    phone,
+    phoneNumber: phone,
     email,
     timestamp: new Date(),
-    code: generateRandomSixDigitCode(),
+    code: verificationCode,
   });
+
+  // Send the SMS verification code
+  try {
+    await sendSms(phone, `Your verification code for demo.fingerprint.com/sms-fraud is ${verificationCode}.`);
+  } catch (error) {
+    res
+      .status(500)
+      .send({ severity: 'error', message: `An error occurred while sending the verification SMS message: ${error}` });
+    return;
+  }
 
   res.status(200).send({
     severity: 'success',

@@ -497,7 +497,7 @@ export const USE_CASES = {
   smsFraud: {
     title: 'SMS Fraud Protection',
     titleMeta: 'Fingerprint Use Cases | SMS Verification Fraud Protection',
-    url: '/sms-verification-fraud',
+    url: '/sms-fraud',
     articleUrl: 'https://fingerprint.com/blog/sms-verification-fraud-protection/',
     // TODO: Update icon
     iconSvg: PersonalizationIcon,
@@ -508,13 +508,13 @@ export const USE_CASES = {
     description: (
       <>
         <p>
-          Malicious actors can use the SMS verification step of your application’s login page to send thousands of
-          fraudulent verification messages to premium-rate phone numbers they control. SMS pumping can lead to
-          substantial financial losses for your business.
+          Malicious actors can use your application's SMS verification step to send thousands of fraudulent verification
+          messages to premium-rate phone numbers they control. SMS pumping can lead to substantial financial losses for
+          your business.
         </p>
         <p>
-          Protect yourself by associating every SMS verification request with a browser fingerprint and limiting the
-          number of verification requests from a single browser.
+          Stop bots and suspicious browsers from requesting verification codes. Link every verification test message to
+          a browser fingerprint and limit the number of verification requests from a single browser.
         </p>
       </>
     ),
@@ -523,22 +523,22 @@ export const USE_CASES = {
     instructions: [
       <>
         Fill out the form below. You can use your real phone number for the complete experience (we will only use it for
-        this demo).
+        this demo and forget it).
       </>,
       <>
-        Click <b>Create account</b>. An SMS message with a one-time password will be sent to your phone.
+        Click <b>Send code via SMS</b>. An SMS message with a one-time password will be sent to your phone.
       </>,
       <>
-        Try requesting another message by clicking <b>Resend code</b> or submitting the form again.
+        Try requesting another message by clicking <b>Resend verification SMS</b>.
       </>,
       <>
-        You will only be able to get your second message after 1 minute, and your third message after 5 minutes, and
-        then no more. You are limited to 3 messages per browser per day.
+        You will only be able to get your second message after 30 seconds, your third message a minute, and then no
+        more. You are limited to 3 messages per browser per day.
       </>,
       <>Try creating an account using a different email and phone number.</>,
       <>
         Try opening this page in incognito mode, turning on a VPN, using a Tor Browser or a browser automation tool like
-        Playwright to create an account.
+        Playwright to send more verification messages.
       </>,
     ],
     moreResources: [

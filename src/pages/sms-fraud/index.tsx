@@ -41,7 +41,7 @@ export default function Index() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          phone: phoneNumber,
+          phoneNumber: phoneNumber,
           requestId,
           email,
         } satisfies SendSMSPayload),
@@ -129,10 +129,10 @@ export default function Index() {
           {sendSmsResponse?.data?.remainingAttempts === 0 ? null : (
             <Button disabled={isLoading} type='submit' data-testid={TEST_IDS.smsFraud.submit}>
               {isLoading
-                ? `Sending Verification SMS...`
+                ? `Sending code to ${phoneNumber}`
                 : sendSmsResponse
                   ? 'Resend Verification SMS'
-                  : 'Send Verification SMS'}
+                  : 'Send code via SMS'}
             </Button>
           )}
         </form>

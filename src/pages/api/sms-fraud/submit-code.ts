@@ -44,7 +44,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   const latestSmsVerificationRequest = await SmsVerificationModel.findOne({
     where: {
       visitorId: identification?.visitorId,
-      phone: phoneNumber,
+      phoneNumber: phoneNumber,
       timestamp: {
         [Op.gte]: new Date(new Date().setHours(0, 0, 0, 0)),
       },
@@ -60,7 +60,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
 
   // If the code is incorrect, return an error
   if (latestSmsVerificationRequest.code !== code) {
-    res.status(403).send({ severity: 'error', message: 'The code is incorrect, please try again' });
+    res.status(403).send({ severity: 'error', message: 'The code is incorrect, please try again.' });
     return;
   }
 
