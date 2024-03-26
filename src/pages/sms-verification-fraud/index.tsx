@@ -8,8 +8,10 @@ import classNames from 'classnames';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
 import { useMutation } from 'react-query';
-import { SendSMSPayload, SendSMSResponse } from '../api/sms-fraud/verify-number';
+import { SendSMSPayload, SendSMSResponse } from '../api/sms-fraud/send-verification-sms';
 import { Alert } from '../../client/components/common/Alert/Alert';
+import styles from './smsVerificationFraud.module.scss';
+import { SubmitCodePayload, SubmitCodeResponse } from '../api/sms-fraud/submit-code';
 
 export default function Index() {
   const { getData } = useVisitorData(
@@ -22,6 +24,8 @@ export default function Index() {
   // Default mocked user data
   const [email, setEmail] = useState('user@company.com');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [code, setCode] = useState('');
+  const [smsSent, setSmsSent] = useState(false);
 
   const {
     mutate: sendVerificationSms,
@@ -31,7 +35,7 @@ export default function Index() {
     mutationKey: ['sendSms'],
     mutationFn: async () => {
       const { requestId } = await getData();
-      const response = await fetch(`/api/sms-fraud/verify-number`, {
+      const response = await fetch(`/api/sms-fraud/send-verification-sms`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,6 +52,38 @@ export default function Index() {
         throw new Error('Failed to send verification SMS: ' + response.statusText);
       }
     },
+    onSuccess: (data: SendSMSResponse) => {
+      if (data.severity === 'success') {
+        setSmsSent(true);
+      }
+    },
+  });
+
+  const {
+    mutate: submitCode,
+    data: submitCodeResponse,
+    isLoading: isLoadingSubmitCode,
+  } = useMutation<SubmitCodeResponse, Error>({
+    mutationKey: ['submitCode'],
+    mutationFn: async () => {
+      const { requestId } = await getData();
+      const response = await fetch(`/api/sms-fraud/submit-code`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          code: Number(code),
+          phoneNumber,
+          requestId,
+        } satisfies SubmitCodePayload),
+      });
+      if (response.status < 500) {
+        return await response.json();
+      } else {
+        throw new Error('Failed to submit verification code: ' + response.statusText);
+      }
+    },
   });
 
   return (
@@ -58,20 +94,20 @@ export default function Index() {
             event.preventDefault();
             sendVerificationSms();
           }}
-          className={classNames(formStyles.useCaseForm)}
+          className={classNames(formStyles.useCaseForm, styles.form)}
         >
           <label>Email</label>
           <input
             type='text'
             name='email'
             placeholder='Email'
-            defaultValue={email}
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
 
           <label>Phone number</label>
-          <span className={formStyles.description}>Use a international format without spaces like +441112223333</span>
+          <span className={formStyles.description}>Use a international format without spaces like +441112223333.</span>
           <input
             type='tel'
             name='phone'
@@ -79,16 +115,57 @@ export default function Index() {
             required
             // Use international phone number format
             pattern='[+][0-9]{1,3}[0-9]{9}'
-            defaultValue={phoneNumber}
+            value={phoneNumber}
             data-testid={TEST_IDS.smsFraud.phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
           />
 
-          {sendSmsResponse ? <Alert severity={sendSmsResponse.severity}>{sendSmsResponse.message}</Alert> : null}
-          <Button disabled={isLoading} type='submit' data-testid={TEST_IDS.smsFraud.submit}>
-            {isLoading ? `Sending verification SMS...` : 'Create account'}
-          </Button>
+          {sendSmsResponse ? (
+            <Alert severity={sendSmsResponse.severity} className={styles.alert}>
+              {sendSmsResponse.message}
+            </Alert>
+          ) : null}
+
+          {sendSmsResponse?.data?.remainingAttempts === 0 ? null : (
+            <Button disabled={isLoading} type='submit' data-testid={TEST_IDS.smsFraud.submit}>
+              {isLoading
+                ? `Sending Verification SMS...`
+                : sendSmsResponse
+                  ? 'Resend Verification SMS'
+                  : 'Send Verification SMS'}
+            </Button>
+          )}
         </form>
+        {smsSent && (
+          <form
+            className={classNames(formStyles.useCaseForm, styles.codeForm)}
+            onSubmit={(e) => {
+              e.preventDefault();
+              submitCode();
+            }}
+          >
+            <label>Verification code</label>
+            <span className={formStyles.description}>Enter the 6-digit code from the SMS message.</span>
+            <input
+              type='text'
+              name='code'
+              placeholder='Code'
+              required
+              value={code}
+              pattern='[0-9]{6}'
+              data-testid={TEST_IDS.smsFraud.code}
+              onChange={(e) => setCode(e.target.value)}
+            />
+            {submitCodeResponse ? (
+              <Alert severity={submitCodeResponse.severity} className={styles.alert}>
+                {submitCodeResponse.message}
+              </Alert>
+            ) : null}
+            <Button disabled={isLoading} type='submit' data-testid={TEST_IDS.smsFraud.submit} outlined={true}>
+              {isLoadingSubmitCode ? 'Verifying...' : 'Verify'}
+            </Button>
+          </form>
+        )}
       </div>
     </UseCaseWrapper>
   );

@@ -17,7 +17,9 @@ export type SendSMSPayload = {
 export type SendSMSResponse = {
   message: string;
   severity: Severity;
-  data?: {};
+  data?: {
+    remainingAttempts?: number;
+  };
 };
 
 const ATTEMPT_TIMEOUTS_MAP: Record<number, { timeout: number }> = {
@@ -26,6 +28,8 @@ const ATTEMPT_TIMEOUTS_MAP: Record<number, { timeout: number }> = {
 };
 
 const MAX_ATTEMPTS = Object.keys(ATTEMPT_TIMEOUTS_MAP).length + 1;
+
+const generateRandomSixDigitCode = () => Math.floor(100000 + Math.random() * 900000);
 
 export default async function sendVerificationSMS(req: NextApiRequest, res: NextApiResponse<SendSMSResponse>) {
   // This API route accepts only POST requests.
@@ -87,7 +91,10 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   if (requestsToday >= MAX_ATTEMPTS) {
     res.status(403).send({
       severity: 'error',
-      message: `You have already sent ${pluralize(MAX_ATTEMPTS, 'verification code')} today. Please try again tomorrow.`,
+      message: `You have already sent ${pluralize(MAX_ATTEMPTS, 'verification code')} today. Please try again tomorrow or contact our support team.`,
+      data: {
+        remainingAttempts: 0,
+      },
     });
     return;
   }
@@ -115,10 +122,11 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
     phone,
     email,
     timestamp: new Date(),
+    code: generateRandomSixDigitCode(),
   });
 
   res.status(200).send({
     severity: 'success',
-    message: `A verification SMS message was sent to ${phone}.`,
+    message: `We sent a verification SMS message to ${phone}.`,
   });
 }

@@ -23,9 +23,8 @@ export const readableMilliseconds = (milliseconds: number) => {
   if (minutes > 0) {
     result += `${minutes % 60}minute${minutes > 1 ? 's' : ''} `;
   }
-  if (seconds > 0) {
-    result += `${seconds % 60} second${seconds > 1 ? 's' : ''}`;
-  }
+
+  result += `${seconds % 60} second${seconds > 1 ? 's' : ''}`;
 
   return result;
 };

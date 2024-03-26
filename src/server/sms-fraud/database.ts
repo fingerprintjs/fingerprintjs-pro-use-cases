@@ -7,6 +7,7 @@ interface SmsVerificationAttributes
   phone: string;
   email: string;
   timestamp: Date;
+  code: number;
 }
 
 export const SmsVerificationModel = sequelize.define<SmsVerificationAttributes>('sms-verification', {
@@ -21,6 +22,9 @@ export const SmsVerificationModel = sequelize.define<SmsVerificationAttributes>(
   },
   timestamp: {
     type: DataTypes.DATE,
+  },
+  code: {
+    type: DataTypes.INTEGER,
   },
 });
 

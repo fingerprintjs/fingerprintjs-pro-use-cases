@@ -72,6 +72,7 @@ export const TEST_IDS = {
   },
   smsFraud: {
     phoneNumber: 'phoneNumber',
+    code: 'code',
     submit: 'submit',
   },
 } as const;
