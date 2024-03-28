@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
@@ -13,12 +13,78 @@ import { Alert } from '../../client/components/common/Alert/Alert';
 import styles from './smsVerificationFraud.module.scss';
 import { SubmitCodePayload, SubmitCodeResponse } from '../api/sms-fraud/submit-code';
 
-// type PhoneNumberFormProps = {
-//   phoneNumber: string;
-//   setPhoneNumber: (phoneNumber: string) => void;
-// };
+type PhoneNumberFormProps = {
+  phoneNumber: string;
+  setPhoneNumber: (phoneNumber: string) => void;
+  disableBotDetection?: boolean;
+  onSuccess: () => void;
+};
 
-// const PhoneNumberForm: FunctionComponent<PhoneNumberFormProps> = ({ phoneNumber, setPhoneNumber }) => {
+const PhoneNumberForm: FunctionComponent<PhoneNumberFormProps> = ({ phoneNumber, setPhoneNumber, onSuccess }) => {
+  const [email, setEmail] = useState('user@company.com');
+
+  const {
+    mutate: sendVerificationSms,
+    data: sendSmsResponse,
+    error: sendSmsError,
+    isLoading: isLoadingSendSms,
+  } = useSendVerificationSms({ onSuccess, disableBotDetection: true });
+
+  return (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        sendVerificationSms({ email, phoneNumber });
+      }}
+      className={classNames(formStyles.useCaseForm, styles.form)}
+    >
+      <label>Email</label>
+      <input
+        type='text'
+        name='email'
+        placeholder='Email'
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+
+      <label>Phone number</label>
+      <span className={formStyles.description}>Use a international format without spaces like +441112223333.</span>
+      <input
+        type='tel'
+        name='phone'
+        placeholder='Phone'
+        required
+        // Use international phone number format
+        pattern='[+][0-9]{1,3}[0-9]{9}'
+        value={phoneNumber}
+        data-testid={TEST_IDS.smsFraud.phoneNumber}
+        onChange={(e) => setPhoneNumber(e.target.value)}
+      />
+
+      {sendSmsError ? (
+        <Alert severity='error' className={styles.alert}>
+          {sendSmsError.message}
+        </Alert>
+      ) : null}
+      {sendSmsResponse ? (
+        <Alert severity={sendSmsResponse.severity} className={styles.alert}>
+          {sendSmsResponse.message}
+        </Alert>
+      ) : null}
+
+      {sendSmsResponse?.data?.remainingAttempts === 0 ? null : (
+        <Button disabled={isLoadingSendSms} type='submit' data-testid={TEST_IDS.smsFraud.submit}>
+          {isLoadingSendSms
+            ? `Sending code to ${phoneNumber}`
+            : sendSmsResponse
+              ? 'Resend Verification SMS'
+              : 'Send code via SMS'}
+        </Button>
+      )}
+    </form>
+  );
+};
 
 const useVisitorDataOnDemand = () => {
   return useVisitorData(
@@ -29,12 +95,17 @@ const useVisitorDataOnDemand = () => {
   );
 };
 
-const useSendVerificationSms = (phoneNumber: string, email: string) => {
+const useSendVerificationSms = ({
+  onSuccess,
+  disableBotDetection = false,
+}: {
+  onSuccess: () => void;
+  disableBotDetection: boolean;
+}) => {
   const { getData } = useVisitorDataOnDemand();
-  const [anySmsSent, setAnySmsSent] = useState(false);
-  const mutation = useMutation<SendSMSResponse, Error>({
-    mutationKey: ['sendSms'],
-    mutationFn: async () => {
+  return useMutation<SendSMSResponse, Error, { phoneNumber: string; email: string }>({
+    mutationKey: 'sendSms',
+    mutationFn: async ({ phoneNumber, email }) => {
       const { requestId } = await getData();
       const response = await fetch(`/api/sms-fraud/send-verification-sms`, {
         method: 'POST',
@@ -42,9 +113,10 @@ const useSendVerificationSms = (phoneNumber: string, email: string) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          phoneNumber: phoneNumber,
+          phoneNumber,
           requestId,
           email,
+          disableBotDetection,
         } satisfies SendSMSPayload),
       });
       if (response.status < 500) {
@@ -55,22 +127,17 @@ const useSendVerificationSms = (phoneNumber: string, email: string) => {
     },
     onSuccess: (data: SendSMSResponse) => {
       if (data.severity === 'success') {
-        setAnySmsSent(true);
+        onSuccess();
       }
     },
   });
-
-  return {
-    ...mutation,
-    anySmsSent,
-  };
 };
 
-const useSubmitCode = (phoneNumber: string, code: string) => {
+const useSubmitCode = () => {
   const { getData } = useVisitorDataOnDemand();
-  return useMutation<SubmitCodeResponse, Error>({
+  return useMutation<SubmitCodeResponse, Error, { phoneNumber: string; code: string }>({
     mutationKey: ['submitCode'],
-    mutationFn: async () => {
+    mutationFn: async ({ code, phoneNumber }) => {
       const { requestId } = await getData();
       const response = await fetch(`/api/sms-fraud/submit-code`, {
         method: 'POST',
@@ -92,88 +159,35 @@ const useSubmitCode = (phoneNumber: string, code: string) => {
   });
 };
 
+type FormStep = 'Send SMS' | 'Submit code' | 'Account created';
+
 export default function Index() {
   // Default mocked user data
-  const [email, setEmail] = useState('user@company.com');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [code, setCode] = useState('');
-
-  const {
-    mutate: sendVerificationSms,
-    data: sendSmsResponse,
-    error: sendSmsError,
-    isLoading: isLoadingSendSms,
-    anySmsSent,
-  } = useSendVerificationSms(phoneNumber, email);
+  const [formStep, setFormStep] = useState<FormStep>('Send SMS');
 
   const {
     mutate: submitCode,
     data: submitCodeResponse,
     error: submitCodeError,
     isLoading: isLoadingSubmitCode,
-  } = useSubmitCode(phoneNumber, code);
+  } = useSubmitCode();
 
   return (
     <UseCaseWrapper useCase={USE_CASES.smsFraud}>
       <div className={formStyles.wrapper}>
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            sendVerificationSms();
-          }}
-          className={classNames(formStyles.useCaseForm, styles.form)}
-        >
-          <label>Email</label>
-          <input
-            type='text'
-            name='email'
-            placeholder='Email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-
-          <label>Phone number</label>
-          <span className={formStyles.description}>Use a international format without spaces like +441112223333.</span>
-          <input
-            type='tel'
-            name='phone'
-            placeholder='Phone'
-            required
-            // Use international phone number format
-            pattern='[+][0-9]{1,3}[0-9]{9}'
-            value={phoneNumber}
-            data-testid={TEST_IDS.smsFraud.phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-          />
-
-          {sendSmsError ? (
-            <Alert severity='error' className={styles.alert}>
-              {sendSmsError.message}
-            </Alert>
-          ) : null}
-          {sendSmsResponse ? (
-            <Alert severity={sendSmsResponse.severity} className={styles.alert}>
-              {sendSmsResponse.message}
-            </Alert>
-          ) : null}
-
-          {sendSmsResponse?.data?.remainingAttempts === 0 ? null : (
-            <Button disabled={isLoadingSendSms} type='submit' data-testid={TEST_IDS.smsFraud.submit}>
-              {isLoadingSendSms
-                ? `Sending code to ${phoneNumber}`
-                : sendSmsResponse
-                  ? 'Resend Verification SMS'
-                  : 'Send code via SMS'}
-            </Button>
-          )}
-        </form>
-        {anySmsSent && (
+        <PhoneNumberForm
+          phoneNumber={phoneNumber}
+          setPhoneNumber={setPhoneNumber}
+          onSuccess={() => setFormStep('Submit code')}
+        />
+        {formStep === 'Submit code' && (
           <form
             className={classNames(formStyles.useCaseForm, styles.codeForm)}
             onSubmit={(e) => {
               e.preventDefault();
-              submitCode();
+              submitCode({ code, phoneNumber });
             }}
           >
             <label>Verification code</label>
@@ -198,7 +212,7 @@ export default function Index() {
                 {submitCodeResponse.message}
               </Alert>
             ) : null}
-            <Button disabled={isLoadingSendSms} type='submit' data-testid={TEST_IDS.smsFraud.submit} outlined={true}>
+            <Button disabled={isLoadingSubmitCode} type='submit' data-testid={TEST_IDS.smsFraud.submit} outlined={true}>
               {isLoadingSubmitCode ? 'Verifying...' : 'Verify'}
             </Button>
           </form>
