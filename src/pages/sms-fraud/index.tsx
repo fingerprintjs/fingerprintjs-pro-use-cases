@@ -153,7 +153,7 @@ const PhoneNumberForm: FunctionComponent<PhoneNumberFormProps> = ({
   sendMessageMutation,
 }) => {
   return (
-    <form className={classNames(formStyles.useCaseForm, styles.form)}>
+    <form className={classNames(formStyles.useCaseForm, styles.form)} onSubmit={(e) => e.preventDefault()}>
       <label>Email</label>
       <input
         type='text'
@@ -265,11 +265,14 @@ export default function Index() {
             phoneNumber={phoneNumber}
             setPhoneNumber={setPhoneNumber}
             sendMessageMutation={sendMessageMutation}
+            email={email}
+            setEmail={setEmail}
           />
         )}
         {formStep === 'Submit code' && (
           <SubmitCodeForm
             phoneNumber={phoneNumber}
+            email={email}
             submitCodeMutation={submitCodeMutation}
             sendMessageMutation={sendMessageMutation}
           />

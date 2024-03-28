@@ -34,6 +34,7 @@ const generateRandomSixDigitCode = () => Math.floor(100000 + Math.random() * 900
 const sendSms = async (phone: string, body: string) => {
   const authToken = process.env.TWILIO_TOKEN;
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
+  const fromNumber = process.env.TWILIO_FROM_NUMBER;
 
   if (!authToken) {
     throw new Error('Twilio token not found.');
@@ -43,12 +44,15 @@ const sendSms = async (phone: string, body: string) => {
     throw new Error('Twilio account SID not found.');
   }
 
+  if (!fromNumber) {
+    throw new Error('Twilio FROM number not found.');
+  }
+
   const client = Twilio(accountSid, authToken);
 
   const message = await client.messages.create({
     body,
-    // My Twilio number
-    from: '+16269863835',
+    from: fromNumber,
     to: phone,
   });
 
@@ -138,22 +142,23 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   }
 
   const verificationCode = generateRandomSixDigitCode();
-  /**
-   * If this is the visitor's first request, or the cool-down period has passed,
-   * send the SMS verification code and save the request to the database
-   */
-  await SmsVerificationModel.create({
-    visitorId: identification.visitorId,
-    phoneNumber: phone,
-    email,
-    timestamp: new Date(),
-    code: verificationCode,
-  });
 
   // Send the SMS verification code
   try {
+    /**
+     * If this is the visitor's first request, or the cool-down period has passed,
+     * send the SMS verification code and save the request to the database
+     */
     await sendSms(phone, `Your verification code for demo.fingerprint.com/sms-fraud is ${verificationCode}.`);
+    await SmsVerificationModel.create({
+      visitorId: identification.visitorId,
+      phoneNumber: phone,
+      email,
+      timestamp: new Date(),
+      code: verificationCode,
+    });
   } catch (error) {
+    console.error(error);
     res
       .status(500)
       .send({ severity: 'error', message: `An error occurred while sending the verification SMS message: ${error}` });
