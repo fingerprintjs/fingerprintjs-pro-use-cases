@@ -47,7 +47,8 @@
     "react-syntax-highlighter": "^15.5.0",
     "react-use": "^17.5.0",
     "sequelize": "^6.37.1",
-    "sharp": "^0.33.2"
+    "sharp": "^0.33.2",
+    "twilio": "^5.0.1"
   },
   "devDependencies": {
     "@fingerprintjs/eslint-config-dx-team": "^0.1.0",

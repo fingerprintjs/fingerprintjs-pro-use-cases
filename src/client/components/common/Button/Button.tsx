@@ -6,7 +6,7 @@ import Link from 'next/link';
 export const isLocalLink = (link: string) => /^\/(?!\/)/.test(link);
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'black' | 'white' | 'dark' | 'ghost' | 'green' | 'danger';
+  variant?: 'primary' | 'black' | 'white' | 'dark' | 'ghost' | 'green' | 'danger' | 'info';
   outlined?: boolean;
   size?: 'large' | 'medium' | 'small';
   href?: string;
@@ -49,6 +49,7 @@ const Button = memo(function Button({
     { [styles.ghost]: variant === 'ghost' && !outlined },
     { [styles.green]: variant === 'green' && !outlined },
     { [styles.danger]: variant === 'danger' && !outlined },
+    { [styles.info]: variant === 'info' && !outlined },
     { [styles.small]: size === 'small' },
     { [styles.medium]: size === 'medium' },
     { [styles.large]: size === 'large' },

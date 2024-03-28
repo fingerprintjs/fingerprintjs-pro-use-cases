@@ -13,6 +13,7 @@ import { getAndValidateFingerprintResult } from '../../../server/checks';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { deleteBlockedIp } from '../../../server/botd-firewall/blockedIpsDatabase';
 import { syncFirewallRuleset } from '../../../server/botd-firewall/cloudflareApiHelper';
+import { SmsVerificationModel } from '../../../server/sms-fraud/database';
 
 export type ResetResponse = {
   message: string;
@@ -78,6 +79,7 @@ const deleteVisitorData = async (visitorId: string, ip: string) => {
       await syncFirewallRuleset();
       return deletedIpCount;
     }),
+    deletedSmsVerificationRequests: await tryToDestroy(() => SmsVerificationModel.destroy(options)),
   };
 };
 

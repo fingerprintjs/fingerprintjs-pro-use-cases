@@ -9,7 +9,6 @@ import MyTable, { TableCellData } from '../../client/components/playground/MyTab
 import BotDetectionResult from '../../client/components/playground/BotDetectionResult';
 import Info from '../../client/components/playground/InfoIcon';
 import RefreshButton from '../../client/components/playground/RefreshButton';
-import { timeAgoLabel } from '../../client/components/playground/timeUtils';
 import IpBlocklistResult from '../../client/components/playground/IpBlocklistResult';
 import VpnDetectionResult from '../../client/components/playground/VpnDetectionResult';
 import { FormatIpAddress } from '../../client/components/playground/ipFormatUtils';
@@ -24,6 +23,7 @@ import Image from 'next/image';
 import styles from './playground.module.scss';
 import { Spinner } from '../../client/components/common/Spinner/Spinner';
 import { Alert } from '../../client/components/common/Alert/Alert';
+import { timeAgoLabel } from '../../shared/timeUtils';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',

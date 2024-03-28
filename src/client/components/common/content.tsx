@@ -75,6 +75,16 @@ export const USE_CASES = {
         url: 'https://fingerprint.com/case-studies/promo-abuse/',
       },
       {
+        type: 'Case study',
+        url: 'https://fingerprint.com/case-studies/contest-fraud/',
+        title: 'Contest fraud',
+      },
+      {
+        type: 'Case study',
+        url: 'https://fingerprint.com/case-studies/review-fraud/',
+        title: 'Review fraud',
+      },
+      {
         type: 'Industry',
         title: 'E-commerce',
         url: 'https://fingerprint.com/ecommerce/',
@@ -127,6 +137,11 @@ export const USE_CASES = {
         type: 'Use case tutorial',
         title: 'Credential Stuffing',
         url: 'https://fingerprint.com/blog/stop-credential-stuffing/',
+      },
+      {
+        type: 'Case study',
+        url: 'https://fingerprint.com/blog/uni-card-reduce-fraud-millions/',
+        title: 'Uni Cards',
       },
       {
         type: 'Use case',
@@ -218,6 +233,21 @@ export const USE_CASES = {
         type: 'Use case tutorial',
         title: 'Payment Fraud',
         url: 'https://fingerprint.com/blog/reducing-payment-fraud-with-reliable-visitor-identification/',
+      },
+      {
+        type: 'Case study',
+        url: 'https://fingerprint.com/blog/headout-chargeback-case-study/',
+        title: 'Headout Chargeback Fraud',
+      },
+      {
+        type: 'Case study',
+        url: 'https://fingerprint.com/blog/korsit-prevent-payment-fraud/',
+        title: 'Korsit Payment Fraud',
+      },
+      {
+        type: 'Case study',
+        url: 'https://fingerprint.com/case-studies/credit-card-fraud/',
+        title: 'Grocery Delivery Service',
       },
       {
         url: 'https://fingerprint.com/blog/omnichannel-fraud/',
@@ -461,6 +491,67 @@ export const USE_CASES = {
         url: 'https://fingerprint.com/blog/betting-bots/',
         type: 'Article',
         title: 'Betting Bots',
+      },
+    ],
+  },
+  smsFraud: {
+    title: 'SMS Fraud Protection',
+    titleMeta: 'Fingerprint Use Cases | SMS Verification Fraud Protection',
+    url: '/sms-fraud',
+    articleUrl: 'https://fingerprint.com/blog/sms-verification-fraud-protection/',
+    // TODO: Update icon
+    iconSvg: PersonalizationIcon,
+    descriptionHomepage: [
+      <p key='1'>Fraudulent authentication SMS messages can cost your business a fortune.</p>,
+      <p key='2'>Use Fingerprint device intelligence to prevent SMS pumping by bots and malicious actors.</p>,
+    ],
+    description: (
+      <>
+        <p>
+          Malicious actors can use your application's SMS verification step to send thousands of fraudulent verification
+          messages to premium-rate phone numbers they control. SMS pumping can lead to substantial financial losses for
+          your business.
+        </p>
+        <p>
+          Stop bots and suspicious browsers from requesting verification codes. Link every verification test message to
+          a browser fingerprint and limit the number of verification requests from a single browser.
+        </p>
+      </>
+    ),
+    descriptionMeta:
+      'See in real-time how Fingerprint can protect your application from SMS fraud. Try out our live demo to see Fingerprint prevent bad actors from sending themselves thousands of fraudulent messages from your application.',
+    instructions: [
+      <>
+        Fill out the form below. You can use your real phone number for the complete experience. We will only use it for
+        this demo and store it only in hashed form temporarily.
+      </>,
+      <>
+        Click <b>Send code via SMS</b>. An SMS message with a one-time password will be sent to your phone. If you left
+        the default test phone number (+1234567890), we will just simulate the SMS message on screen.
+      </>,
+      <>
+        Try requesting another message by clicking <b>Resend verification SMS</b>.
+      </>,
+      <>
+        You will only be able to get your second message after 30 seconds, your third message after a minute, and then
+        no more. You are limited to 3 messages per browser per day.
+      </>,
+      <>Try creating an account using a different email and phone number.</>,
+      <>
+        Try opening this page in incognito mode, turning on a VPN, using a Tor Browser or a browser automation tool like
+        Playwright to send yourself more verification messages.
+      </>,
+    ],
+    moreResources: [
+      {
+        type: 'Use case tutorial',
+        title: 'SMS Fraud Protection',
+        url: 'https://fingerprint.com/blog/sms-verification-fraud-protection/',
+      },
+      {
+        type: 'Case study',
+        title: 'Jumia SMS fraud',
+        url: 'https://fingerprint.com/blog/jumia-ecommerce-sms-fraud-customer-story/',
       },
     ],
   },

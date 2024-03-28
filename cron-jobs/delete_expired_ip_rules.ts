@@ -2,8 +2,8 @@ import { BlockedIpDbModel } from '../src/server/botd-firewall/blockedIpsDatabase
 import { Op } from 'sequelize';
 import { syncFirewallRuleset } from '../src/server/botd-firewall/cloudflareApiHelper';
 import { schedule } from 'node-cron';
-import { HOUR_MS } from '../src/shared/timeUtils';
 import 'dotenv/config';
+import { ONE_HOUR_MS } from '../src/shared/timeUtils';
 
 /**
  * In production, run this file in conjunction with the production web server like:
@@ -15,7 +15,7 @@ schedule('*/5 * * * *', () => {
   deleteOldIpBlocks();
 });
 
-const IP_BLOCK_TIME_TO_LIVE_MS = HOUR_MS;
+const IP_BLOCK_TIME_TO_LIVE_MS = ONE_HOUR_MS;
 
 async function deleteOldIpBlocks() {
   try {
