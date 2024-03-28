@@ -9,10 +9,11 @@ import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
 import { useMutation } from 'react-query';
 import { SendSMSPayload, SendSMSResponse } from '../api/sms-fraud/send-verification-sms';
-import { Alert } from '../../client/components/common/Alert/Alert';
+import { Alert, CloseSnackbarButton } from '../../client/components/common/Alert/Alert';
 import styles from './smsVerificationFraud.module.scss';
 import { SubmitCodePayload, SubmitCodeResponse } from '../api/sms-fraud/submit-code';
 import { enqueueSnackbar } from 'notistack';
+import { useCopyToClipboard } from 'react-use';
 
 const useVisitorDataOnDemand = () =>
   useVisitorData(
@@ -266,12 +267,27 @@ export default function Index() {
   const [email, setEmail] = useState('user@company.com');
   const [formStep, setFormStep] = useState<FormStep>('Send SMS');
 
+  const [, copyToClipboard] = useCopyToClipboard();
   const sendMessageMutation = useSendMessage({
     onSuccess: (data) => {
       setFormStep('Submit code');
       enqueueSnackbar(`📱 Simulated SMS message: Your verification code is ${data.data?.fallbackCode}`, {
-        variant: 'success',
+        variant: 'info',
         autoHideDuration: 10000,
+        action: (snackbarId) => (
+          <>
+            <Button
+              variant='info'
+              size='small'
+              onClick={() => {
+                copyToClipboard(String(data.data?.fallbackCode) || '');
+              }}
+            >
+              Copy code
+            </Button>
+            <CloseSnackbarButton snackbarId={snackbarId} />
+          </>
+        ),
       });
     },
     disableBotDetection: true,
