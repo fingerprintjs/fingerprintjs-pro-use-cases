@@ -20,18 +20,26 @@ export type SendSMSResponse = {
   severity: Severity;
   data?: {
     remainingAttempts?: number;
+    fallbackCode?: number;
   };
 };
 
+const TEST_PHONE_NUMBER = '+1234567890';
+
 const ATTEMPT_TIMEOUTS_MAP: Record<number, { timeout: number }> = {
-  1: { timeout: 10 * ONE_SECOND_MS },
-  2: { timeout: 15 * ONE_SECOND_MS },
+  1: { timeout: 30 * ONE_SECOND_MS },
+  2: { timeout: 60 * ONE_SECOND_MS },
 };
 
 const MAX_ATTEMPTS = Object.keys(ATTEMPT_TIMEOUTS_MAP).length + 1;
 
 const generateRandomSixDigitCode = () => Math.floor(100000 + Math.random() * 900000);
 const sendSms = async (phone: string, body: string) => {
+  if (phone === TEST_PHONE_NUMBER) {
+    console.log('Test phone number detected, simulated message sent: ', body);
+    return;
+  }
+
   const authToken = process.env.TWILIO_TOKEN;
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
   const fromNumber = process.env.TWILIO_FROM_NUMBER;
@@ -168,5 +176,8 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   res.status(200).send({
     severity: 'success',
     message: `We sent a verification SMS message to ${phone}.`,
+    data: {
+      fallbackCode: verificationCode,
+    },
   });
 }

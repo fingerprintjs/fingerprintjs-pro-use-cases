@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from 'react';
+import { ButtonHTMLAttributes, FunctionComponent, useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
@@ -12,6 +12,7 @@ import { SendSMSPayload, SendSMSResponse } from '../api/sms-fraud/send-verificat
 import { Alert } from '../../client/components/common/Alert/Alert';
 import styles from './smsVerificationFraud.module.scss';
 import { SubmitCodePayload, SubmitCodeResponse } from '../api/sms-fraud/submit-code';
+import { enqueueSnackbar } from 'notistack';
 
 const useVisitorDataOnDemand = () =>
   useVisitorData(
@@ -26,7 +27,7 @@ const useSendMessage = ({
   onSuccess,
   disableBotDetection = false,
 }: {
-  onSuccess?: () => void;
+  onSuccess?: (data: SendSMSResponse) => void;
   disableBotDetection?: boolean;
 }) => {
   const { getData } = useVisitorDataOnDemand();
@@ -54,14 +55,14 @@ const useSendMessage = ({
     },
     onSuccess: (data: SendSMSResponse) => {
       if (data.severity === 'success') {
-        onSuccess?.();
+        onSuccess?.(data);
       }
     },
   });
 };
 
 type SubmitCodeMutation = ReturnType<typeof useSubmitCode>;
-const useSubmitCode = ({ onSuccess }: { onSuccess?: () => void }) => {
+const useSubmitCode = (params?: { onSuccess?: () => void }) => {
   const { getData } = useVisitorDataOnDemand();
   return useMutation<SubmitCodeResponse, Error, { phoneNumber: string; code: string }>({
     mutationKey: ['submitCode'],
@@ -86,13 +87,13 @@ const useSubmitCode = ({ onSuccess }: { onSuccess?: () => void }) => {
     },
     onSuccess: (data) => {
       if (data.severity === 'success') {
-        onSuccess?.();
+        params?.onSuccess?.();
       }
     },
   });
 };
 
-type FormStep = 'Send SMS' | 'Submit code' | 'Account created';
+type FormStep = 'Send SMS' | 'Submit code';
 
 type PhoneNumberFormProps = {
   phoneNumber: string;
@@ -106,9 +107,15 @@ type SendMessageButtonProps = {
   sendMessageMutation: SendMessageMutation;
   phoneNumber: string;
   email: string;
+  type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
 };
 
-const SendMessageButton: FunctionComponent<SendMessageButtonProps> = ({ sendMessageMutation, phoneNumber, email }) => {
+const SendMessageButton: FunctionComponent<SendMessageButtonProps> = ({
+  sendMessageMutation,
+  phoneNumber,
+  email,
+  type,
+}) => {
   const {
     mutate: sendMessage,
     data: sendMessageResponse,
@@ -131,7 +138,7 @@ const SendMessageButton: FunctionComponent<SendMessageButtonProps> = ({ sendMess
 
       <Button
         disabled={isLoadingSendSms || sendMessageResponse?.data?.remainingAttempts === 0}
-        type='submit'
+        type={type}
         onClick={() => sendMessage({ email, phoneNumber })}
         data-testid={TEST_IDS.smsFraud.submit}
       >
@@ -165,7 +172,7 @@ const PhoneNumberForm: FunctionComponent<PhoneNumberFormProps> = ({
       />
 
       <label>Phone number</label>
-      <span className={formStyles.description}>Use a international format without spaces like +441112223333.</span>
+      <span className={formStyles.description}>Use a international format without spaces like +1234567890.</span>
       <input
         type='tel'
         name='phone'
@@ -178,7 +185,12 @@ const PhoneNumberForm: FunctionComponent<PhoneNumberFormProps> = ({
         onChange={(e) => setPhoneNumber(e.target.value)}
       />
 
-      <SendMessageButton sendMessageMutation={sendMessageMutation} phoneNumber={phoneNumber} email={email} />
+      <SendMessageButton
+        sendMessageMutation={sendMessageMutation}
+        phoneNumber={phoneNumber}
+        email={email}
+        type='submit'
+      />
     </form>
   );
 };
@@ -213,8 +225,12 @@ const SubmitCodeForm: FunctionComponent<SubmitCodeFormProps> = ({
         submitCode({ code, phoneNumber });
       }}
     >
-      <SendMessageButton sendMessageMutation={sendMessageMutation} phoneNumber={phoneNumber} email={email} />
-
+      <SendMessageButton
+        sendMessageMutation={sendMessageMutation}
+        phoneNumber={phoneNumber}
+        email={email}
+        type='button'
+      />
       <label>Verification code</label>
       <span className={formStyles.description}>Enter the 6-digit code from the SMS message.</span>
       <input
@@ -246,16 +262,22 @@ const SubmitCodeForm: FunctionComponent<SubmitCodeFormProps> = ({
 
 export default function Index() {
   // Default mocked user data
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('+1234567890');
   const [email, setEmail] = useState('user@company.com');
   const [formStep, setFormStep] = useState<FormStep>('Send SMS');
 
   const sendMessageMutation = useSendMessage({
-    onSuccess: () => setFormStep('Submit code'),
+    onSuccess: (data) => {
+      setFormStep('Submit code');
+      enqueueSnackbar(`📱 Simulated SMS message: Your verification code is ${data.data?.fallbackCode}`, {
+        variant: 'success',
+        autoHideDuration: 10000,
+      });
+    },
     disableBotDetection: true,
   });
 
-  const submitCodeMutation = useSubmitCode({ onSuccess: () => setFormStep('Account created') });
+  const submitCodeMutation = useSubmitCode();
 
   return (
     <UseCaseWrapper useCase={USE_CASES.smsFraud}>
@@ -277,7 +299,6 @@ export default function Index() {
             sendMessageMutation={sendMessageMutation}
           />
         )}
-        {formStep === 'Account created' && <h1>Account created!</h1>}
       </div>
     </UseCaseWrapper>
   );
