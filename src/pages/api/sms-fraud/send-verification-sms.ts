@@ -27,9 +27,8 @@ export type SendSMSResponse = {
 const TEST_PHONE_NUMBER = '+1234567890';
 
 const ATTEMPT_TIMEOUTS_MAP: Record<number, { timeout: number }> = {
-  1: { timeout: 5 * ONE_SECOND_MS },
-  2: { timeout: 5 * ONE_SECOND_MS },
-  3: { timeout: 5 * ONE_SECOND_MS },
+  1: { timeout: 30 * ONE_SECOND_MS },
+  2: { timeout: 60 * ONE_SECOND_MS },
 };
 
 const MAX_ATTEMPTS = Object.keys(ATTEMPT_TIMEOUTS_MAP).length + 1;
