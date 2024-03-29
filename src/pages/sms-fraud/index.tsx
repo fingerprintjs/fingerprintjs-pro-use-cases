@@ -14,6 +14,7 @@ import styles from './smsVerificationFraud.module.scss';
 import { SubmitCodePayload, SubmitCodeResponse } from '../api/sms-fraud/submit-code';
 import { enqueueSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
+import { BackArrow } from '../../client/components/common/BackArrow/BackArrow';
 
 const useVisitorDataOnDemand = () =>
   useVisitorData(
@@ -140,13 +141,13 @@ const SendMessageButton: FunctionComponent<SendMessageButtonProps> = ({
       <Button
         disabled={isLoadingSendSms || sendMessageResponse?.data?.remainingAttempts === 0}
         type={type}
-        onClick={() => sendMessage({ email, phoneNumber })}
+        onClick={type === 'submit' ? undefined : () => sendMessage({ email, phoneNumber })}
         data-testid={TEST_IDS.smsFraud.submit}
       >
         {isLoadingSendSms
           ? `Sending code to ${phoneNumber}`
           : sendMessageResponse
-            ? 'Resend Verification SMS'
+            ? 'Resend code via SMS'
             : 'Send code via SMS'}
       </Button>
     </>
@@ -161,7 +162,14 @@ const PhoneNumberForm: FunctionComponent<PhoneNumberFormProps> = ({
   sendMessageMutation,
 }) => {
   return (
-    <form className={classNames(formStyles.useCaseForm, styles.form)} onSubmit={(e) => e.preventDefault()}>
+    <form
+      className={classNames(formStyles.useCaseForm, styles.form)}
+      onSubmit={(e) => {
+        e.preventDefault();
+        sendMessageMutation.mutate({ phoneNumber, email });
+      }}
+    >
+      <h3 className={styles.formHeadline}>Create an account</h3>
       <label>Email</label>
       <input
         type='text'
@@ -308,12 +316,15 @@ export default function Index() {
           />
         )}
         {formStep === 'Submit code' && (
-          <SubmitCodeForm
-            phoneNumber={phoneNumber}
-            email={email}
-            submitCodeMutation={submitCodeMutation}
-            sendMessageMutation={sendMessageMutation}
-          />
+          <>
+            <BackArrow as='button' label='Back' onClick={() => setFormStep('Send SMS')} />
+            <SubmitCodeForm
+              phoneNumber={phoneNumber}
+              email={email}
+              submitCodeMutation={submitCodeMutation}
+              sendMessageMutation={sendMessageMutation}
+            />
+          </>
         )}
       </div>
     </UseCaseWrapper>

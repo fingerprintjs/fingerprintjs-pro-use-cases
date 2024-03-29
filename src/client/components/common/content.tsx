@@ -526,8 +526,8 @@ export const USE_CASES = {
         this demo and store it only in hashed form temporarily.
       </>,
       <>
-        Click <b>Send code via SMS</b>. An SMS message with a one-time password will be sent to your phone. If you left
-        the default test phone number (+1234567890), we will just simulate the SMS message on screen.
+        Click <b>Send code via SMS</b>. An SMS message with a one-time password will be sent to your phone. If you used
+        the default test phone number (<code>+1234567890</code>), we will just simulate the SMS message on screen.
       </>,
       <>
         Try requesting another message by clicking <b>Resend verification SMS</b>.

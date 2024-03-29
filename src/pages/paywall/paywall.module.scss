@@ -8,19 +8,6 @@
   }
 }
 
-.backArrow {
-  vertical-align: baseline;
-  margin-right: rem(4px);
-}
-
-.buckButton {
-  margin-bottom: rem(24px);
-
-  @include media('<=phoneLandscape') {
-    margin-bottom: rem(16px);
-  }
-}
-
 .articleImage {
   margin: rem(40px) 0;
   width: 100%;

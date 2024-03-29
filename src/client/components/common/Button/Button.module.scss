@@ -119,7 +119,13 @@
 
   &.large {
     padding: rem(15px) rem(23px);
+
+    @include media('<phoneLandscape') {
+      padding: rem(9px) rem(19px);
+      font-size: rem(14px);
+    }
   }
+
   &.medium {
     padding: rem(9px) rem(19px);
     font-size: rem(14px);
