@@ -31,6 +31,10 @@ const ATTEMPT_TIMEOUTS_MAP: Record<number, { timeout: number }> = {
   2: { timeout: 60 * ONE_SECOND_MS },
 };
 
+// To avoid saying "Wait 0 seconds to send another message"
+const TIMEOUT_TOLERANCE_MS = ONE_SECOND_MS;
+const millisecondsToSeconds = (milliseconds: number) => Math.floor(milliseconds / 1000);
+
 const MAX_ATTEMPTS = Object.keys(ATTEMPT_TIMEOUTS_MAP).length + 1;
 
 const generateRandomSixDigitCode = () => Math.floor(100000 + Math.random() * 900000);
@@ -140,7 +144,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   if (requestsToday > 0) {
     const lastRequestTimeAgoMs = new Date().getTime() - smsVerificationRequests[0].timestamp.getTime();
     const timeOut = ATTEMPT_TIMEOUTS_MAP[requestsToday].timeout;
-    if (lastRequestTimeAgoMs < timeOut) {
+    if (millisecondsToSeconds(lastRequestTimeAgoMs) < millisecondsToSeconds(timeOut - TIMEOUT_TOLERANCE_MS)) {
       const waitFor = timeOut - lastRequestTimeAgoMs;
       res.status(403).send({
         severity: 'error',
