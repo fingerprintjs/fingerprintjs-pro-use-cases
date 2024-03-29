@@ -101,12 +101,13 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
     return;
   }
 
-  // If a Tor browser is detected, return an error
+  // If usage of Tor network is detected, return an error
   const torData = fingerprintResult.data.products?.tor?.data;
   if (torData?.result === true) {
     res.status(403).send({
       severity: 'error',
-      message: 'Tor browser detected, SMS message was not sent. Please use a different browser to create an account.',
+      message:
+        'Tor network IP detected, SMS message was not sent. Please use a different browser to create an account.',
     });
     return;
   }

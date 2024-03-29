@@ -538,8 +538,11 @@ export const USE_CASES = {
       </>,
       <>Try creating an account using a different email and phone number.</>,
       <>
-        Try opening this page in incognito mode, turning on a VPN, using a Tor Browser or a browser automation tool like
-        Playwright to send yourself more verification messages.
+        Try opening this page in incognito mode, or turning on a VPN. The daily request limit will still be enforced.
+      </>,
+      <>
+        Try creating another account using Tor or a browser automation tool like Playwright. You will blocked right
+        away.
       </>,
     ],
     moreResources: [
