@@ -298,7 +298,7 @@ export default function Index() {
         ),
       });
     },
-    disableBotDetection: true,
+    disableBotDetection: false,
   });
 
   const submitCodeMutation = useSubmitCode();
