@@ -513,7 +513,7 @@ export const USE_CASES = {
           your business.
         </p>
         <p>
-          Stop bots and suspicious browsers from requesting verification codes. Link every verification test message to
+          Stop bots and suspicious browsers from requesting verification codes. Link every verification text message to
           a browser fingerprint and limit the number of verification requests from a single browser.
         </p>
       </>

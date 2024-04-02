@@ -130,7 +130,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
       const waitFor = timeOut - lastRequestTimeAgoMs;
       res.status(403).send({
         severity: 'error',
-        message: `You have already sent ${pluralize(requestsToday, 'verification code')}. Please wait ${readableMilliseconds(waitFor)} to send another one.`,
+        message: `You have already sent ${pluralize(requestsToday, 'verification code')}. Max allowed is ${MAX_ATTEMPTS}. Please wait ${readableMilliseconds(waitFor)} to send another one.`,
       });
       return;
     }
@@ -162,7 +162,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
 
   res.status(200).send({
     severity: 'success',
-    message: `We sent a verification SMS message to ${phone}.`,
+    message: `We sent a verification SMS message to ${phone}. You have ${pluralize(MAX_ATTEMPTS - requestsToday - 1, 'message')} left.`,
     data: {
       fallbackCode: verificationCode,
     },
