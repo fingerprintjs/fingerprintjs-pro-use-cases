@@ -82,7 +82,10 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   const { phoneNumber: phone, email, requestId, disableBotDetection } = req.body as SendSMSPayload;
 
   // Get the full Identification and Bot Detection result from Fingerprint Server API and validate its authenticity
-  const fingerprintResult = await getAndValidateFingerprintResult(requestId, req);
+  const fingerprintResult = await getAndValidateFingerprintResult(requestId, req, {
+    blockBots: !disableBotDetection,
+    blockTor: true,
+  });
   if (!fingerprintResult.okay) {
     res.status(403).send({ severity: 'error', message: fingerprintResult.error });
     return;
@@ -92,27 +95,6 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   const identification = fingerprintResult.data.products?.identification?.data;
   if (!identification) {
     res.status(403).send({ severity: 'error', message: 'Identification data not found.' });
-    return;
-  }
-
-  // If a bot is detected, return an error
-  const botData = fingerprintResult.data.products?.botd?.data;
-  if (!disableBotDetection && botData?.bot?.result === 'bad') {
-    res.status(403).send({
-      severity: 'error',
-      message: '🤖 Malicious bot detected, SMS message was not sent.',
-    });
-    return;
-  }
-
-  // If usage of Tor network is detected, return an error
-  const torData = fingerprintResult.data.products?.tor?.data;
-  if (torData?.result === true) {
-    res.status(403).send({
-      severity: 'error',
-      message:
-        'Tor network IP detected, SMS message was not sent. Please use a different browser to create an account.',
-    });
     return;
   }
 
