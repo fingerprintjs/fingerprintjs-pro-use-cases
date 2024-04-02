@@ -7,6 +7,7 @@ import { ONE_SECOND_MS, readableMilliseconds } from '../../../shared/timeUtils';
 import { Op } from 'sequelize';
 import { pluralize } from '../../../shared/utils';
 import Twilio from 'twilio';
+import { hashString } from '../../../server/server-utils';
 
 export type SendSMSPayload = {
   requestId: string;
@@ -30,12 +31,11 @@ const ATTEMPT_TIMEOUTS_MAP: Record<number, { timeout: number }> = {
   1: { timeout: 30 * ONE_SECOND_MS },
   2: { timeout: 60 * ONE_SECOND_MS },
 };
+const MAX_ATTEMPTS = Object.keys(ATTEMPT_TIMEOUTS_MAP).length + 1;
 
 // To avoid saying "Wait 0 seconds to send another message"
 const TIMEOUT_TOLERANCE_MS = ONE_SECOND_MS;
 const millisecondsToSeconds = (milliseconds: number) => Math.floor(milliseconds / 1000);
-
-const MAX_ATTEMPTS = Object.keys(ATTEMPT_TIMEOUTS_MAP).length + 1;
 
 const generateRandomSixDigitCode = () => Math.floor(100000 + Math.random() * 900000);
 const sendSms = async (phone: string, body: string) => {
@@ -165,7 +165,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
     await sendSms(phone, `Your verification code for demo.fingerprint.com/sms-fraud is ${verificationCode}.`);
     await SmsVerificationModel.create({
       visitorId: identification.visitorId,
-      phoneNumber: phone,
+      phoneNumberHash: hashString(phone),
       email,
       timestamp: new Date(),
       code: verificationCode,

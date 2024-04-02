@@ -4,6 +4,7 @@ import { getAndValidateFingerprintResult } from '../../../server/checks';
 import { isValidPostRequest } from '../../../server/server';
 import { SmsVerificationModel } from '../../../server/sms-fraud/database';
 import { Op } from 'sequelize';
+import { hashString } from '../../../server/server-utils';
 
 export type SubmitCodePayload = {
   requestId: string;
@@ -44,7 +45,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   const latestSmsVerificationRequest = await SmsVerificationModel.findOne({
     where: {
       visitorId: identification?.visitorId,
-      phoneNumber: phoneNumber,
+      phoneNumberHash: hashString(phoneNumber),
       timestamp: {
         [Op.gte]: new Date(new Date().setHours(0, 0, 0, 0)),
       },

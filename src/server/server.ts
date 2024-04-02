@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
 import { areVisitorIdAndRequestIdValid } from './checks';
-import { fingerprintJsApiClient } from './fingerprint-api';
+import { fingerprintServerApiClient } from './fingerprint-server-api';
 import { CheckResult, checkResultType } from './checkResult';
 import { sendForbiddenResponse } from './response';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -66,7 +66,7 @@ export async function getIdentificationEvent(requestId?: string) {
   }
 
   // Use Fingerprint Node SDK get the identification event from the Server API.
-  return fingerprintJsApiClient.getEvent(requestId);
+  return fingerprintServerApiClient.getEvent(requestId);
 }
 
 // Report suspicious user activity according to internal processes here.

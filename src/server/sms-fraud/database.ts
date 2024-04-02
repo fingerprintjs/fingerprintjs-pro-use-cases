@@ -4,7 +4,7 @@ import { Attributes, DataTypes, InferAttributes, InferCreationAttributes, Model 
 interface SmsVerificationAttributes
   extends Model<InferAttributes<SmsVerificationAttributes>, InferCreationAttributes<SmsVerificationAttributes>> {
   visitorId: string;
-  phoneNumber: string;
+  phoneNumberHash: string;
   email: string;
   timestamp: Date;
   code: number;
@@ -14,7 +14,7 @@ export const SmsVerificationModel = sequelize.define<SmsVerificationAttributes>(
   visitorId: {
     type: DataTypes.STRING,
   },
-  phoneNumber: {
+  phoneNumberHash: {
     type: DataTypes.STRING,
   },
   email: {

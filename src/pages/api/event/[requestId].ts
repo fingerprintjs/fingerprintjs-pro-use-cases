@@ -1,6 +1,6 @@
 import { isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { fingerprintJsApiClient } from '../../../server/fingerprint-api';
+import { fingerprintServerApiClient } from '../../../server/fingerprint-server-api';
 import { ourOrigins } from '../../../server/server';
 import Cors from 'cors';
 
@@ -58,7 +58,7 @@ async function tryGetFingerprintEvent(
   retryDelay: number = 3000,
 ) {
   try {
-    const eventResponse = await fingerprintJsApiClient.getEvent(requestId);
+    const eventResponse = await fingerprintServerApiClient.getEvent(requestId);
     res.status(200).json(eventResponse);
   } catch (error) {
     // Retry only Not Found (404) requests.
