@@ -15,6 +15,7 @@ import { SubmitCodePayload, SubmitCodeResponse } from '../api/sms-fraud/submit-c
 import { enqueueSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
 import { BackArrow } from '../../client/components/common/BackArrow/BackArrow';
+import { GetServerSideProps, NextPage } from 'next';
 
 const useVisitorDataOnDemand = () =>
   useVisitorData(
@@ -269,7 +270,22 @@ const SubmitCodeForm: FunctionComponent<SubmitCodeFormProps> = ({
   );
 };
 
-export default function Index() {
+type QueryAsProps = {
+  disableBotDetection: boolean;
+};
+
+// Make URL query object available as props to the page on first render
+// to read the `disableBotDetection` param for testing and demo purposes
+export const getServerSideProps: GetServerSideProps<QueryAsProps> = async ({ query }) => {
+  const { disableBotDetection } = query;
+  return {
+    props: {
+      disableBotDetection: disableBotDetection === '1' || disableBotDetection === 'true',
+    },
+  };
+};
+
+const SmsFraudUseCase: NextPage<QueryAsProps> = ({ disableBotDetection }) => {
   // Default mocked user data
   const [phoneNumber, setPhoneNumber] = useState('+1234567890');
   const [email, setEmail] = useState('user@company.com');
@@ -298,7 +314,7 @@ export default function Index() {
         ),
       });
     },
-    disableBotDetection: false,
+    disableBotDetection,
   });
 
   const submitCodeMutation = useSubmitCode();
@@ -329,4 +345,6 @@ export default function Index() {
       </div>
     </UseCaseWrapper>
   );
-}
+};
+
+export default SmsFraudUseCase;
