@@ -65,12 +65,12 @@ export default defineConfig({
     },
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'], screenshot: { mode: 'only-on-failure' }, permissions: ['clipboard-read'] },
+      use: { ...devices['Desktop Firefox'], screenshot: { mode: 'only-on-failure' } },
     },
 
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'], screenshot: { mode: 'only-on-failure' }, permissions: ['clipboard-read'] },
+      use: { ...devices['Desktop Safari'], screenshot: { mode: 'only-on-failure' } },
     },
 
     /* Test against mobile viewports. */
