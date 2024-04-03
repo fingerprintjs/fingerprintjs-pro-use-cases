@@ -71,8 +71,13 @@ export const TEST_IDS = {
     password: 'password',
   },
   smsFraud: {
-    phoneNumber: 'phoneNumber',
-    code: 'code',
-    submit: 'submit',
+    phoneNumberInput: 'phoneNumberInput',
+    sendMessage: 'sendMessage',
+    codeInput: 'codeInput',
+    sendCode: 'sendCode',
   },
 } as const;
+
+export const TEST_ATTRIBUTES = {
+  severity: 'data-test-severity',
+};

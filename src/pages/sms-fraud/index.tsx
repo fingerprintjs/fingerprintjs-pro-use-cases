@@ -143,7 +143,7 @@ const SendMessageButton: FunctionComponent<SendMessageButtonProps> = ({
         disabled={isLoadingSendSms || sendMessageResponse?.data?.remainingAttempts === 0}
         type={type}
         onClick={type === 'submit' ? undefined : () => sendMessage({ email, phoneNumber })}
-        data-testid={TEST_IDS.smsFraud.submit}
+        data-testid={TEST_IDS.smsFraud.sendMessage}
       >
         {isLoadingSendSms
           ? `Sending code to ${phoneNumber}`
@@ -191,7 +191,7 @@ const PhoneNumberForm: FunctionComponent<PhoneNumberFormProps> = ({
         // Use international phone number format
         pattern='[+][0-9]{1,3}[0-9]{9}'
         value={phoneNumber}
-        data-testid={TEST_IDS.smsFraud.phoneNumber}
+        data-testid={TEST_IDS.smsFraud.phoneNumberInput}
         onChange={(e) => setPhoneNumber(e.target.value)}
       />
 
@@ -250,7 +250,7 @@ const SubmitCodeForm: FunctionComponent<SubmitCodeFormProps> = ({
         required
         value={code}
         pattern='[0-9]{6}'
-        data-testid={TEST_IDS.smsFraud.code}
+        data-testid={TEST_IDS.smsFraud.codeInput}
         onChange={(e) => setCode(e.target.value)}
       />
       {submitCodeError ? (
@@ -263,7 +263,7 @@ const SubmitCodeForm: FunctionComponent<SubmitCodeFormProps> = ({
           {submitCodeResponse.message}
         </Alert>
       ) : null}
-      <Button disabled={isLoadingSubmitCode} type='submit' data-testid={TEST_IDS.smsFraud.submit} outlined={true}>
+      <Button disabled={isLoadingSubmitCode} type='submit' data-testid={TEST_IDS.smsFraud.sendCode} outlined={true}>
         {isLoadingSubmitCode ? 'Verifying...' : 'Verify'}
       </Button>
     </form>
