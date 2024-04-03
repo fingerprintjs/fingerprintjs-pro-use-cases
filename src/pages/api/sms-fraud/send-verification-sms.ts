@@ -8,6 +8,7 @@ import { Op } from 'sequelize';
 import { pluralize } from '../../../shared/utils';
 import Twilio from 'twilio';
 import { hashString } from '../../../server/server-utils';
+import { SMS_FRAUD_COPY } from '../../../server/sms-fraud/smsFraudCopy';
 
 export type SendSMSPayload = {
   requestId: string;
@@ -25,7 +26,7 @@ export type SendSMSResponse = {
   };
 };
 
-const TEST_PHONE_NUMBER = '+1234567890';
+export const TEST_PHONE_NUMBER = '+1234567890';
 
 // const ATTEMPT_TIMEOUTS_MAP: Record<number, { timeout: number }> = {
 //   1: { timeout: 30 * ONE_SECOND_MS },
@@ -144,7 +145,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
       const waitFor = timeOut - lastRequestTimeAgoMs;
       res.status(403).send({
         severity: 'error',
-        message: `You have already sent ${pluralize(requestsToday, 'verification code')}. Max allowed is ${MAX_ATTEMPTS}. Please wait ${readableMilliseconds(waitFor)} to send another one.`,
+        message: `${SMS_FRAUD_COPY.needToWait(requestsToday)} Max allowed is ${MAX_ATTEMPTS}. Please wait ${readableMilliseconds(waitFor)} to send another one.`,
       });
       return;
     }
@@ -191,7 +192,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
 
   res.status(200).send({
     severity: 'success',
-    message: `We sent a verification SMS message to ${phone}. You have ${pluralize(MAX_ATTEMPTS - requestsToday - 1, 'message')} left.`,
+    message: SMS_FRAUD_COPY.messageSent(phone, MAX_ATTEMPTS - requestsToday - 1),
     data: {
       fallbackCode: verificationCode,
     },
