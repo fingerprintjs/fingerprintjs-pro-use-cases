@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { resetScenarios } from './resetHelper';
+import { resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
 import { PAYWALL_COPY } from '../src/server/paywall/paywallCopy';
 

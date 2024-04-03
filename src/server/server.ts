@@ -25,7 +25,7 @@ export const ourOrigins = [
   'https://staging.fingerprinthub.com',
 ];
 
-export type Severity = 'success' | 'warning' | 'error';
+export type Severity = 'success' | 'warning' | 'error' | 'info';
 
 export const messageSeverity = Object.freeze({
   Success: 'success',
