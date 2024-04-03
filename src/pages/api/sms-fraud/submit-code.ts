@@ -5,6 +5,7 @@ import { isValidPostRequest } from '../../../server/server';
 import { SmsVerificationModel } from '../../../server/sms-fraud/database';
 import { Op } from 'sequelize';
 import { hashString } from '../../../server/server-utils';
+import { SMS_FRAUD_COPY } from '../../../server/sms-fraud/smsFraudCopy';
 
 export type SubmitCodePayload = {
   requestId: string;
@@ -61,10 +62,10 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
 
   // If the code is incorrect, return an error
   if (latestSmsVerificationRequest.code !== code) {
-    res.status(403).send({ severity: 'error', message: 'The code is incorrect, please try again.' });
+    res.status(403).send({ severity: 'error', message: SMS_FRAUD_COPY.incorrectCode });
     return;
   }
 
   // If the code is correct, return a success message
-  res.status(200).send({ severity: 'success', message: 'The code is correct, welcome to your new account.' });
+  res.status(200).send({ severity: 'success', message: SMS_FRAUD_COPY.accountCreated });
 }

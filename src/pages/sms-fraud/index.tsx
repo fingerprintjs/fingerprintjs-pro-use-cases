@@ -303,6 +303,7 @@ const SmsFraudUseCase: NextPage<QueryAsProps> = ({ disableBotDetection }) => {
             <Button
               variant='info'
               size='small'
+              data-testid={TEST_IDS.smsFraud.copyCodeButton}
               onClick={() => {
                 copyToClipboard(String(data.data?.fallbackCode) || '');
               }}

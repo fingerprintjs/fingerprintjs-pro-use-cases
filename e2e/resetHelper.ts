@@ -5,4 +5,5 @@ import { TEST_IDS } from '../src/client/testIDs';
 export async function resetScenarios(page: Page) {
   await page.getByTestId(TEST_IDS.reset.resetButton).click();
   await page.getByTestId(TEST_IDS.reset.resetSuccess).waitFor({ timeout: 10000 });
+  await page.getByTestId(TEST_IDS.common.closeSnackbar).first().click();
 }

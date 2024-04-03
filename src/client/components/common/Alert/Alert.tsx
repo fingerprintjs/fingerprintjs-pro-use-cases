@@ -65,11 +65,17 @@ export const CustomSnackbar = React.forwardRef<HTMLDivElement, CustomContentProp
     ...other
   } = props;
 
+  const testAttributes = {
+    [TEST_ATTRIBUTES.id]: TEST_IDS.common.snackBar,
+    [TEST_ATTRIBUTES.severity]: variant,
+  };
+
   return (
     <div
       ref={ref}
       role='alert'
       className={classNames(styles.snackbar, styles.withBorder, STYLES_MAP[variant], className)}
+      {...testAttributes}
       {...other}
     >
       <div className={styles.snackbarContent}>
@@ -89,10 +95,11 @@ export function CloseSnackbarButton({ snackbarId }: { snackbarId: SnackbarKey })
   return (
     <>
       <div className={styles.closeIcon}>
-        <CrossIconSvg onClick={() => closeSnackbar(snackbarId)} />
+        <CrossIconSvg data-testid={TEST_IDS.common.closeSnackbar} onClick={() => closeSnackbar(snackbarId)} />
       </div>
       <Button
         onClick={() => closeSnackbar(snackbarId)}
+        data-testid={TEST_IDS.common.closeSnackbar}
         className={styles.closeButton}
         variant='ghost'
         outlined

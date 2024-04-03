@@ -11,6 +11,8 @@ export const TEST_IDS = {
       discount: 'discount',
     },
     alert: 'alert',
+    snackBar: 'snackBar',
+    closeSnackbar: 'closeSnackbar',
   },
   reset: {
     resetButton: 'resetButton',
@@ -75,9 +77,11 @@ export const TEST_IDS = {
     sendMessage: 'sendMessage',
     codeInput: 'codeInput',
     sendCode: 'sendCode',
+    copyCodeButton: 'copyCodeButton',
   },
 } as const;
 
 export const TEST_ATTRIBUTES = {
+  id: 'data-testid',
   severity: 'data-test-severity',
 };

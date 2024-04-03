@@ -61,17 +61,16 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'], screenshot: { mode: 'only-on-failure' } },
+      use: { ...devices['Desktop Chrome'], screenshot: { mode: 'only-on-failure' }, permissions: ['clipboard-read'] },
     },
-
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'], screenshot: { mode: 'only-on-failure' } },
+      use: { ...devices['Desktop Firefox'], screenshot: { mode: 'only-on-failure' }, permissions: ['clipboard-read'] },
     },
 
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'], screenshot: { mode: 'only-on-failure' } },
+      use: { ...devices['Desktop Safari'], screenshot: { mode: 'only-on-failure' }, permissions: ['clipboard-read'] },
     },
 
     /* Test against mobile viewports. */
