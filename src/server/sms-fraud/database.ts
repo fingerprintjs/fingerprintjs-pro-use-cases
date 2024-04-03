@@ -31,3 +31,23 @@ export const SmsVerificationModel = sequelize.define<SmsVerificationAttributes>(
 SmsVerificationModel.sync({ force: false });
 
 export type SmsVerification = Attributes<SmsVerificationAttributes>;
+
+interface RealSmsPerVisitorAttributes
+  extends Model<InferAttributes<RealSmsPerVisitorAttributes>, InferCreationAttributes<RealSmsPerVisitorAttributes>> {
+  visitorId: string;
+  realMessagesCount: number;
+}
+
+export const RealSmsPerVisitorModel = sequelize.define<RealSmsPerVisitorAttributes>('real-sms-per-visitor', {
+  visitorId: {
+    type: DataTypes.STRING,
+  },
+  realMessagesCount: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+  },
+});
+
+RealSmsPerVisitorModel.sync({ force: false });
+
+export type RealSmsPerVisitor = Attributes<RealSmsPerVisitorAttributes>;

@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { Severity } from '../../../server/checkResult';
 import { getAndValidateFingerprintResult } from '../../../server/checks';
 import { isValidPostRequest } from '../../../server/server';
-import { SmsVerificationModel } from '../../../server/sms-fraud/database';
+import { RealSmsPerVisitorModel, SmsVerificationModel } from '../../../server/sms-fraud/database';
 import { ONE_SECOND_MS, readableMilliseconds } from '../../../shared/timeUtils';
 import { Op } from 'sequelize';
 import { pluralize } from '../../../shared/utils';
@@ -27,22 +27,36 @@ export type SendSMSResponse = {
 
 const TEST_PHONE_NUMBER = '+1234567890';
 
+// const ATTEMPT_TIMEOUTS_MAP: Record<number, { timeout: number }> = {
+//   1: { timeout: 30 * ONE_SECOND_MS },
+//   2: { timeout: 60 * ONE_SECOND_MS },
+// };
 const ATTEMPT_TIMEOUTS_MAP: Record<number, { timeout: number }> = {
-  1: { timeout: 30 * ONE_SECOND_MS },
-  2: { timeout: 60 * ONE_SECOND_MS },
+  1: { timeout: 5 * ONE_SECOND_MS },
+  2: { timeout: 5 * ONE_SECOND_MS },
 };
 const MAX_ATTEMPTS = Object.keys(ATTEMPT_TIMEOUTS_MAP).length + 1;
+const REAL_SMS_LIMIT_PER_VISITOR = 6;
 
 // To avoid saying "Wait 0 seconds to send another message"
 const TIMEOUT_TOLERANCE_MS = ONE_SECOND_MS;
 const millisecondsToSeconds = (milliseconds: number) => Math.floor(milliseconds / 1000);
+const midnightToday = () => new Date(new Date().setHours(0, 0, 0, 0));
 
 const generateRandomSixDigitCode = () => Math.floor(100000 + Math.random() * 900000);
-const sendSms = async (phone: string, body: string) => {
+const sendSms = async (phone: string, body: string, visitorId: string) => {
   if (phone === TEST_PHONE_NUMBER) {
     console.log('Test phone number detected, simulated message sent: ', body);
     return;
   }
+
+  // Track real messages count per visitor that cannot be reset
+  await RealSmsPerVisitorModel.findOrCreate({ where: { visitorId } });
+  await RealSmsPerVisitorModel.increment('realMessagesCount', {
+    where: {
+      visitorId,
+    },
+  });
 
   const authToken = process.env.TWILIO_TOKEN;
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -92,8 +106,8 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   }
 
   // If identification data is missing, return an error
-  const identification = fingerprintResult.data.products?.identification?.data;
-  if (!identification) {
+  const visitorId = fingerprintResult.data.products?.identification?.data?.visitorId;
+  if (!visitorId) {
     res.status(403).send({ severity: 'error', message: 'Identification data not found.' });
     return;
   }
@@ -101,9 +115,9 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   // Retrieve SMS verification requests made by the same browser today from the database, most recent first
   const smsVerificationRequests = await SmsVerificationModel.findAll({
     where: {
-      visitorId: identification?.visitorId,
+      visitorId,
       timestamp: {
-        [Op.gte]: new Date(new Date().setHours(0, 0, 0, 0)),
+        [Op.gte]: midnightToday(),
       },
     },
     order: [['timestamp', 'DESC']],
@@ -136,6 +150,16 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
     }
   }
 
+  // Apply a hard limit on the number of real SMS messages that cannot be reset to prevent people from abusing the demo
+  const realSmsCount = (await RealSmsPerVisitorModel.findOne({ where: { visitorId } }))?.realMessagesCount ?? 0;
+  if (phone !== TEST_PHONE_NUMBER && realSmsCount >= REAL_SMS_LIMIT_PER_VISITOR) {
+    res.status(403).send({
+      severity: 'error',
+      message: `You hit the hard demo limit of ${pluralize(REAL_SMS_LIMIT_PER_VISITOR, 'real SMS messages')} per visitor ID, thanks for testing! This cannot be reset. Please use the simulated phone number ${TEST_PHONE_NUMBER} to continue exploring the demo.`,
+    });
+    return;
+  }
+
   const verificationCode = generateRandomSixDigitCode();
 
   // Send the SMS verification code
@@ -144,9 +168,14 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
      * If this is the visitor's first request, or the cool-down period has passed,
      * send the SMS verification code and save the request to the database
      */
-    await sendSms(phone, `Your verification code for demo.fingerprint.com/sms-fraud is ${verificationCode}.`);
+    await sendSms(
+      phone,
+      `Your verification code for demo.fingerprint.com/sms-fraud is ${verificationCode}.`,
+      visitorId,
+    );
+
     await SmsVerificationModel.create({
-      visitorId: identification.visitorId,
+      visitorId: visitorId,
       phoneNumberHash: hashString(phone),
       email,
       timestamp: new Date(),
