@@ -23,7 +23,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('Sending verification SMS messages', () => {
-  test.only('cool-down periods are applied, max 3 attempts', async ({ page }) => {
+  test('cool-down periods are applied, max 3 attempts', async ({ page }) => {
     const sendButton = await page.getByTestId(TEST_ID.sendMessage);
 
     for (const attemptNumber of [1, 2]) {
