@@ -4,13 +4,12 @@ import { useMutation } from 'react-query';
 import { SubmitCodeResponse, SubmitCodePayload } from '../../../pages/api/sms-fraud/submit-code';
 import { TEST_IDS } from '../../testIDs';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import { SendMessageButton, SendMessageMutation } from './SendSMSMessageButton';
+import { SendMessageButton } from './SendSMSMessageButton';
 import { Alert } from '../common/Alert/Alert';
 import Button from '../common/Button/Button';
 import styles from './smsVerificationFraud.module.scss';
 import formStyles from '../../../styles/forms.module.scss';
-
-export type SubmitCodeMutation = ReturnType<typeof useSubmitCode>;
+import { SendMessageMutation } from '../../../pages/sms-fraud';
 
 export const useSubmitCode = (params?: { onSuccess?: () => void }) => {
   const { getData } = useVisitorData(
@@ -52,15 +51,9 @@ type SubmitCodeFormProps = {
   phoneNumber: string;
   email: string;
   sendMessageMutation: SendMessageMutation;
-  submitCodeMutation: SubmitCodeMutation;
 };
 
-export const SubmitCodeForm: FunctionComponent<SubmitCodeFormProps> = ({
-  phoneNumber,
-  email,
-  submitCodeMutation,
-  sendMessageMutation,
-}) => {
+export const SubmitCodeForm: FunctionComponent<SubmitCodeFormProps> = ({ phoneNumber, email, sendMessageMutation }) => {
   const [code, setCode] = useState('');
 
   const {
@@ -68,7 +61,7 @@ export const SubmitCodeForm: FunctionComponent<SubmitCodeFormProps> = ({
     data: submitCodeResponse,
     error: submitCodeError,
     isLoading: isLoadingSubmitCode,
-  } = submitCodeMutation;
+  } = useSubmitCode();
 
   return (
     <form

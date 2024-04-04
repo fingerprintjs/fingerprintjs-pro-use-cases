@@ -10,9 +10,11 @@ import { enqueueSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
 import { BackArrow } from '../../client/components/common/BackArrow/BackArrow';
 import { GetServerSideProps, NextPage } from 'next';
-import { useSendMessage } from '../../client/components/sms-fraud/SendSMSMessageButton';
-import { SubmitCodeForm, useSubmitCode } from '../../client/components/sms-fraud/SubmitCodeForm';
+import { SubmitCodeForm } from '../../client/components/sms-fraud/SubmitCodeForm';
 import { PhoneNumberForm } from '../../client/components/sms-fraud/PhoneNumberForm';
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useMutation } from 'react-query';
+import { SendSMSResponse, SendSMSPayload } from '../api/sms-fraud/send-verification-sms';
 
 type FormStep = 'Send SMS' | 'Submit code';
 type QueryAsProps = {
@@ -28,6 +30,49 @@ export const getServerSideProps: GetServerSideProps<QueryAsProps> = async ({ que
       disableBotDetection: disableBotDetection === '1' || disableBotDetection === 'true',
     },
   };
+};
+
+type SendMessageMutationArgs = {
+  onSuccess?: (data: SendSMSResponse) => void;
+  disableBotDetection?: boolean;
+};
+
+export type SendMessageMutation = ReturnType<typeof useSendMessage>;
+export const useSendMessage = ({ onSuccess, disableBotDetection = false }: SendMessageMutationArgs) => {
+  const { getData } = useVisitorData(
+    { ignoreCache: true },
+    {
+      immediate: false,
+    },
+  );
+  return useMutation<SendSMSResponse, Error, { phoneNumber: string; email: string }>({
+    mutationKey: 'sendSms',
+    mutationFn: async ({ phoneNumber, email }) => {
+      const { requestId } = await getData();
+      const response = await fetch(`/api/sms-fraud/send-verification-sms`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          phoneNumber,
+          requestId,
+          email,
+          disableBotDetection,
+        } satisfies SendSMSPayload),
+      });
+      if (response.status < 500) {
+        return await response.json();
+      } else {
+        throw new Error('Failed to send verification SMS: ' + response.statusText);
+      }
+    },
+    onSuccess: (data: SendSMSResponse) => {
+      if (data.severity === 'success') {
+        onSuccess?.(data);
+      }
+    },
+  });
 };
 
 const SmsFraudUseCase: NextPage<QueryAsProps> = ({ disableBotDetection }) => {
@@ -68,7 +113,6 @@ const SmsFraudUseCase: NextPage<QueryAsProps> = ({ disableBotDetection }) => {
     },
     disableBotDetection,
   });
-  const submitCodeMutation = useSubmitCode();
 
   return (
     <UseCaseWrapper useCase={USE_CASES.smsFraud}>
@@ -85,12 +129,7 @@ const SmsFraudUseCase: NextPage<QueryAsProps> = ({ disableBotDetection }) => {
         {formStep === 'Submit code' && (
           <>
             <BackArrow as='button' label='Back' onClick={() => setFormStep('Send SMS')} />
-            <SubmitCodeForm
-              phoneNumber={phoneNumber}
-              email={email}
-              submitCodeMutation={submitCodeMutation}
-              sendMessageMutation={sendMessageMutation}
-            />
+            <SubmitCodeForm phoneNumber={phoneNumber} email={email} sendMessageMutation={sendMessageMutation} />
           </>
         )}
       </div>

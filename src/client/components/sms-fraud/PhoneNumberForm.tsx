@@ -1,9 +1,10 @@
 import { FunctionComponent } from 'react';
 import { TEST_IDS } from '../../testIDs';
-import { SendMessageMutation, SendMessageButton } from './SendSMSMessageButton';
+import { SendMessageButton } from './SendSMSMessageButton';
 import classNames from 'classnames';
 import styles from './smsVerificationFraud.module.scss';
 import formStyles from '../../../styles/forms.module.scss';
+import { SendMessageMutation } from '../../../pages/sms-fraud';
 
 type PhoneNumberFormProps = {
   phoneNumber: string;

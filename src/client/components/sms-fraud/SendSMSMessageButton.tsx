@@ -1,55 +1,9 @@
 import { ButtonHTMLAttributes, FunctionComponent } from 'react';
-import { useMutation } from 'react-query';
-import { SendSMSResponse, SendSMSPayload } from '../../../pages/api/sms-fraud/send-verification-sms';
 import { TEST_IDS } from '../../testIDs';
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import styles from './smsVerificationFraud.module.scss';
 import { Alert } from '../common/Alert/Alert';
 import Button from '../common/Button/Button';
-
-export type SendMessageMutation = ReturnType<typeof useSendMessage>;
-export const useSendMessage = ({
-  onSuccess,
-  disableBotDetection = false,
-}: {
-  onSuccess?: (data: SendSMSResponse) => void;
-  disableBotDetection?: boolean;
-}) => {
-  const { getData } = useVisitorData(
-    { ignoreCache: true },
-    {
-      immediate: false,
-    },
-  );
-  return useMutation<SendSMSResponse, Error, { phoneNumber: string; email: string }>({
-    mutationKey: 'sendSms',
-    mutationFn: async ({ phoneNumber, email }) => {
-      const { requestId } = await getData();
-      const response = await fetch(`/api/sms-fraud/send-verification-sms`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          phoneNumber,
-          requestId,
-          email,
-          disableBotDetection,
-        } satisfies SendSMSPayload),
-      });
-      if (response.status < 500) {
-        return await response.json();
-      } else {
-        throw new Error('Failed to send verification SMS: ' + response.statusText);
-      }
-    },
-    onSuccess: (data: SendSMSResponse) => {
-      if (data.severity === 'success') {
-        onSuccess?.(data);
-      }
-    },
-  });
-};
+import { SendMessageMutation } from '../../../pages/sms-fraud';
 
 type SendMessageButtonProps = {
   sendMessageMutation: SendMessageMutation;
