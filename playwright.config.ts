@@ -78,10 +78,10 @@ export default defineConfig({
         },
       },
     },
-
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'], screenshot: { mode: 'only-on-failure' }, permissions: ['clipboard-read'] },
+      use: { ...devices['Desktop Safari'], screenshot: { mode: 'only-on-failure' } },
+      // Webkit cannot read the clipboard at all, skip that part of the tests for webkit
     },
 
     /* Test against mobile viewports. */

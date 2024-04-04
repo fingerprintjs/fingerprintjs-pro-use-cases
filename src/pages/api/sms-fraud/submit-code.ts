@@ -28,7 +28,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
 
   const { phoneNumber, code, requestId } = req.body as SubmitCodePayload;
 
-  // Get the full Identification and Bot Detection result from Fingerprint Server API and validate its authenticity
+  // Get the full identification result from Fingerprint Server API and validate its authenticity
   const fingerprintResult = await getAndValidateFingerprintResult(requestId, req);
   if (!fingerprintResult.okay) {
     res.status(403).send({ severity: 'error', message: fingerprintResult.error });

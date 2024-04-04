@@ -28,7 +28,7 @@ export type SendSMSResponse = {
   severity: Severity;
   data?: {
     remainingAttempts?: number;
-    fallbackCode?: number;
+    verificationCode?: number;
   };
 };
 
@@ -89,7 +89,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
 
   const { phoneNumber: phone, email, requestId, disableBotDetection } = req.body as SendSMSPayload;
 
-  // Get the full Identification and Bot Detection result from Fingerprint Server API and validate its authenticity
+  // Get the full identification Fingerprint Server API, check it authenticity and filter away Bot and Tor requests
   const fingerprintResult = await getAndValidateFingerprintResult(requestId, req, {
     blockBots: !disableBotDetection,
     blockTor: true,
@@ -156,12 +156,12 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
 
   const verificationCode = generateRandomSixDigitCode();
 
-  // Send the SMS verification code
+  /**
+   * If this is the visitor's first request, or the cool-down period has passed,
+   * send the SMS verification code and save the request to the database.
+   * The phone number is saved as a hash to preserve privacy.
+   */
   try {
-    /**
-     * If this is the visitor's first request, or the cool-down period has passed,
-     * send the SMS verification code and save the request to the database
-     */
     await sendSms(
       phone,
       `Your verification code for demo.fingerprint.com/sms-fraud is ${verificationCode}.`,
@@ -187,7 +187,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
     severity: 'success',
     message: SMS_FRAUD_COPY.messageSent({ phone, messagesLeft: MAX_SMS_ATTEMPTS - requestsToday - 1 }),
     data: {
-      fallbackCode: verificationCode,
+      verificationCode,
     },
   });
 }

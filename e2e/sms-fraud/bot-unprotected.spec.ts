@@ -12,7 +12,7 @@ import { ONE_MINUTE_MS } from '../../src/shared/timeUtils';
 
 const TEST_ID = TEST_IDS.smsFraud;
 
-// This test includes waiting for the SMS cool-down period, so it will take longer
+// This test includes waiting for the SMS cool-down period, so it will take longer unless TEST_BUILD is used
 if (!TEST_BUILD) {
   test.setTimeout(2 * ONE_MINUTE_MS);
 }

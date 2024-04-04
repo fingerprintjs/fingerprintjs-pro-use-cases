@@ -298,7 +298,7 @@ const SmsFraudUseCase: NextPage<QueryAsProps> = ({ disableBotDetection }) => {
       enqueueSnackbar(
         <>
           📱 Simulated SMS message: Your verification code is{' '}
-          <b data-testid={TEST_IDS.smsFraud.codeInsideSnackbar}>{data.data?.fallbackCode}</b>{' '}
+          <b data-testid={TEST_IDS.smsFraud.codeInsideSnackbar}>{data.data?.verificationCode}</b>{' '}
         </>,
         {
           variant: 'info',
@@ -310,7 +310,7 @@ const SmsFraudUseCase: NextPage<QueryAsProps> = ({ disableBotDetection }) => {
                 size='small'
                 data-testid={TEST_IDS.smsFraud.copyCodeButton}
                 onClick={() => {
-                  copyToClipboard(String(data.data?.fallbackCode) || '');
+                  copyToClipboard(String(data.data?.verificationCode) || '');
                 }}
               >
                 Copy code
