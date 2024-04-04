@@ -40,9 +40,26 @@ test.describe('Sending verification SMS messages', () => {
     await assertSnackbar({ page, severity: 'info', text: 'Your verification code is' });
     await page.getByTestId(TEST_IDS.smsFraud.copyCodeButton).click();
 
-    await page.getByTestId(TEST_IDS.smsFraud.codeInput).fill(await page.evaluate('navigator.clipboard.readText()'));
-    await page.getByTestId(TEST_IDS.smsFraud.sendCode).click();
+    const clipboardAvailable = await page.evaluate(() => !!navigator.clipboard && 'readText' in navigator.clipboard);
+    let code = '';
+    if (clipboardAvailable) {
+      code = await page.evaluate(() => navigator.clipboard.readText());
+    } else {
+      code = await page.evaluate(() => {
+        const textArea = document.createElement('textarea');
+        textArea.style.position = 'fixed';
+        textArea.style.top = '0';
+        textArea.style.left = '0';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        return textArea.value;
+      });
+    }
 
+    await page.getByTestId(TEST_IDS.smsFraud.codeInput).fill(code);
+    await page.getByTestId(TEST_IDS.smsFraud.sendCode).click();
     await assertAlert({ page, severity: 'success', text: SMS_FRAUD_COPY.accountCreated, index: 1 });
   });
 });

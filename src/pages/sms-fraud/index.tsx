@@ -295,25 +295,31 @@ const SmsFraudUseCase: NextPage<QueryAsProps> = ({ disableBotDetection }) => {
   const sendMessageMutation = useSendMessage({
     onSuccess: (data) => {
       setFormStep('Submit code');
-      enqueueSnackbar(`📱 Simulated SMS message: Your verification code is ${data.data?.fallbackCode}`, {
-        variant: 'info',
-        autoHideDuration: 10000,
-        action: (snackbarId) => (
-          <>
-            <Button
-              variant='info'
-              size='small'
-              data-testid={TEST_IDS.smsFraud.copyCodeButton}
-              onClick={() => {
-                copyToClipboard(String(data.data?.fallbackCode) || '');
-              }}
-            >
-              Copy code
-            </Button>
-            <CloseSnackbarButton snackbarId={snackbarId} />
-          </>
-        ),
-      });
+      enqueueSnackbar(
+        <>
+          📱 Simulated SMS message: Your verification code is{' '}
+          <b data-testid={TEST_IDS.smsFraud.codeInsideSnackbar}>{data.data?.fallbackCode}</b>{' '}
+        </>,
+        {
+          variant: 'info',
+          autoHideDuration: 10000,
+          action: (snackbarId) => (
+            <>
+              <Button
+                variant='info'
+                size='small'
+                data-testid={TEST_IDS.smsFraud.copyCodeButton}
+                onClick={() => {
+                  copyToClipboard(String(data.data?.fallbackCode) || '');
+                }}
+              >
+                Copy code
+              </Button>
+              <CloseSnackbarButton snackbarId={snackbarId} />
+            </>
+          ),
+        },
+      );
     },
     disableBotDetection,
   });

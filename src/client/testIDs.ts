@@ -78,6 +78,7 @@ export const TEST_IDS = {
     codeInput: 'codeInput',
     sendCode: 'sendCode',
     copyCodeButton: 'copyCodeButton',
+    codeInsideSnackbar: 'codeInsideSnackbar',
   },
 } as const;
 
