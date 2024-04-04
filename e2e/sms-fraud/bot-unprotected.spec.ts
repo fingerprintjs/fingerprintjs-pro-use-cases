@@ -46,11 +46,9 @@ test.describe('Submitting verification code', () => {
       (await page.getByTestId(TEST_IDS.smsFraud.codeInsideSnackbar).textContent()) ?? 'Code not found in snackbar';
 
     // Reading from clipboard is not available in Safari
-    console.log('browserName', browserName);
     const clipboardAvailable = browserName !== 'webkit';
     if (clipboardAvailable) {
       const codeInClipboard = await page.evaluate(() => navigator.clipboard.readText());
-      console.log('Code in clipboard: ', codeInClipboard);
       expect(codeInClipboard).toEqual(code);
     }
 

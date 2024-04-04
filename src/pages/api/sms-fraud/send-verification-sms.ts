@@ -129,7 +129,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   if (requestsToday >= MAX_ATTEMPTS) {
     res.status(403).send({
       severity: 'error',
-      message: `You have already sent ${pluralize(MAX_ATTEMPTS, 'verification code')} today. Please try again tomorrow or contact our support team.`,
+      message: SMS_FRAUD_COPY.blockedForToday({ requestsToday }),
       data: {
         remainingAttempts: 0,
       },
@@ -145,7 +145,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
       const waitFor = timeOut - lastRequestTimeAgoMs;
       res.status(403).send({
         severity: 'error',
-        message: `${SMS_FRAUD_COPY.needToWait(requestsToday)} Max allowed is ${MAX_ATTEMPTS}. Please wait ${readableMilliseconds(waitFor)} to send another one.`,
+        message: `${SMS_FRAUD_COPY.needToWait({ requestsToday })} Max allowed is ${MAX_ATTEMPTS}. Please wait ${readableMilliseconds(waitFor)} to send another one.`,
       });
       return;
     }
@@ -192,7 +192,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
 
   res.status(200).send({
     severity: 'success',
-    message: SMS_FRAUD_COPY.messageSent(phone, MAX_ATTEMPTS - requestsToday - 1),
+    message: SMS_FRAUD_COPY.messageSent({ phone, messagesLeft: MAX_ATTEMPTS - requestsToday - 1 }),
     data: {
       fallbackCode: verificationCode,
     },
