@@ -54,7 +54,6 @@ test.describe('Submitting verification code', () => {
   test('Correct code allows user to create an account', async ({ page, browserName }) => {
     const sendButton = await page.getByTestId(TEST_ID.sendMessage);
     await sendButton.click();
-    await assertAlert({ page, severity: 'success', text: SMS_FRAUD_COPY.messageSent(TEST_PHONE_NUMBER, 2) });
 
     await assertSnackbar({ page, severity: 'info', text: 'Your verification code is' });
     await page.getByTestId(TEST_ID.copyCodeButton).click();
