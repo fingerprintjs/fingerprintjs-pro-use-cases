@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { TEST_ATTRIBUTES, TEST_IDS } from '../../src/client/testIDs';
+import { TEST_IDS } from '../../src/client/testIDs';
 import { SMS_FRAUD_COPY } from '../../src/server/sms-fraud/smsFraudCopy';
 import { TEST_PHONE_NUMBER } from '../../src/pages/api/sms-fraud/send-verification-sms';
 import { assertAlert, assertSnackbar, resetScenarios } from '../e2eTestUtils';
@@ -32,7 +32,7 @@ test.describe('Sending verification SMS messages', () => {
     await assertAlert({ page, severity: 'error', text: SMS_FRAUD_COPY.needToWait(2) });
   });
 
-  test.only('allows user to create an account with the correct code', async ({ page }) => {
+  test('allows user to create an account with the correct code', async ({ page }) => {
     const sendButton = await page.getByTestId(TEST_ID.sendMessage);
     await sendButton.click();
     await assertAlert({ page, severity: 'success', text: SMS_FRAUD_COPY.messageSent(TEST_PHONE_NUMBER, 2) });
