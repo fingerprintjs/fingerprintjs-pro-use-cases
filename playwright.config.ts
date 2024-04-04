@@ -65,12 +65,23 @@ export default defineConfig({
     },
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'], screenshot: { mode: 'only-on-failure' } },
+      use: {
+        ...devices['Desktop Firefox'],
+        screenshot: { mode: 'only-on-failure' },
+        // Firefox is extra secure, so you need to enable clipboard read permission like this
+        // https://github.com/microsoft/playwright/issues/13037#issuecomment-1739856724
+        launchOptions: {
+          firefoxUserPrefs: {
+            'dom.events.asyncClipboard.readText': true,
+            'dom.events.testing.asyncClipboard': true,
+          },
+        },
+      },
     },
 
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'], screenshot: { mode: 'only-on-failure' } },
+      use: { ...devices['Desktop Safari'], screenshot: { mode: 'only-on-failure' }, permissions: ['clipboard-read'] },
     },
 
     /* Test against mobile viewports. */
