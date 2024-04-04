@@ -32,7 +32,7 @@ test.describe('Sending verification SMS messages', () => {
     await assertAlert({ page, severity: 'error', text: SMS_FRAUD_COPY.needToWait(2) });
   });
 
-  test('allows user to create an account with the correct code', async ({ page }) => {
+  test.only('allows user to create an account with the correct code', async ({ page }) => {
     const sendButton = await page.getByTestId(TEST_ID.sendMessage);
     await sendButton.click();
     await assertAlert({ page, severity: 'success', text: SMS_FRAUD_COPY.messageSent(TEST_PHONE_NUMBER, 2) });
@@ -40,22 +40,16 @@ test.describe('Sending verification SMS messages', () => {
     await assertSnackbar({ page, severity: 'info', text: 'Your verification code is' });
     await page.getByTestId(TEST_IDS.smsFraud.copyCodeButton).click();
 
-    const clipboardAvailable = await page.evaluate(() => !!navigator.clipboard && 'readText' in navigator.clipboard);
-    let code = '';
+    const code =
+      (await page.getByTestId(TEST_IDS.smsFraud.codeInsideSnackbar).textContent()) ?? 'Code not found in snackbar';
+
+    const clipboardAvailable = await page.evaluate(
+      () => Boolean(navigator.clipboard) && 'readText' in navigator.clipboard,
+    );
     if (clipboardAvailable) {
-      code = await page.evaluate(() => navigator.clipboard.readText());
-    } else {
-      code = await page.evaluate(() => {
-        const textArea = document.createElement('textarea');
-        textArea.style.position = 'fixed';
-        textArea.style.top = '0';
-        textArea.style.left = '0';
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        document.execCommand('copy');
-        return textArea.value;
-      });
+      const codeInClipboard = await page.evaluate(() => navigator.clipboard.readText());
+      console.log('Code in clipboard: ', codeInClipboard);
+      expect(codeInClipboard).toEqual(code);
     }
 
     await page.getByTestId(TEST_IDS.smsFraud.codeInput).fill(code);
