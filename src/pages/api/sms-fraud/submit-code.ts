@@ -5,7 +5,7 @@ import { isValidPostRequest } from '../../../server/server';
 import { SmsVerificationModel } from '../../../server/sms-fraud/database';
 import { Op } from 'sequelize';
 import { hashString } from '../../../server/server-utils';
-import { SMS_FRAUD_COPY } from '../../../server/sms-fraud/smsFraudCopy';
+import { SMS_FRAUD_COPY } from '../../../server/sms-fraud/smsFraudConst';
 
 export type SubmitCodePayload = {
   requestId: string;

@@ -8,7 +8,13 @@ import { Op } from 'sequelize';
 import { pluralize } from '../../../shared/utils';
 import Twilio from 'twilio';
 import { hashString } from '../../../server/server-utils';
-import { SMS_FRAUD_COPY } from '../../../server/sms-fraud/smsFraudCopy';
+import {
+  SMS_ATTEMPT_TIMEOUT_MAP,
+  MAX_SMS_ATTEMPTS,
+  REAL_SMS_LIMIT_PER_VISITOR,
+  SMS_FRAUD_COPY,
+  TEST_PHONE_NUMBER,
+} from '../../../server/sms-fraud/smsFraudConst';
 
 export type SendSMSPayload = {
   requestId: string;
@@ -25,19 +31,6 @@ export type SendSMSResponse = {
     fallbackCode?: number;
   };
 };
-
-export const TEST_PHONE_NUMBER = '+1234567890';
-
-// const ATTEMPT_TIMEOUTS_MAP: Record<number, { timeout: number }> = {
-//   1: { timeout: 30 * ONE_SECOND_MS },
-//   2: { timeout: 60 * ONE_SECOND_MS },
-// };
-const ATTEMPT_TIMEOUTS_MAP: Record<number, { timeout: number }> = {
-  1: { timeout: 5 * ONE_SECOND_MS },
-  2: { timeout: 5 * ONE_SECOND_MS },
-};
-const MAX_ATTEMPTS = Object.keys(ATTEMPT_TIMEOUTS_MAP).length + 1;
-const REAL_SMS_LIMIT_PER_VISITOR = 6;
 
 // To avoid saying "Wait 0 seconds to send another message"
 const TIMEOUT_TOLERANCE_MS = ONE_SECOND_MS;
@@ -126,7 +119,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   const requestsToday = smsVerificationRequests.length;
 
   // If there have been too many requests, shut the visitor down for the day
-  if (requestsToday >= MAX_ATTEMPTS) {
+  if (requestsToday >= MAX_SMS_ATTEMPTS) {
     res.status(403).send({
       severity: 'error',
       message: SMS_FRAUD_COPY.blockedForToday({ requestsToday }),
@@ -140,12 +133,12 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   // If the visitor already sent some requests recently, apply the appropriate cool-down period
   if (requestsToday > 0) {
     const lastRequestTimeAgoMs = new Date().getTime() - smsVerificationRequests[0].timestamp.getTime();
-    const timeOut = ATTEMPT_TIMEOUTS_MAP[requestsToday].timeout;
+    const timeOut = SMS_ATTEMPT_TIMEOUT_MAP[requestsToday].timeout;
     if (millisecondsToSeconds(lastRequestTimeAgoMs) < millisecondsToSeconds(timeOut - TIMEOUT_TOLERANCE_MS)) {
       const waitFor = timeOut - lastRequestTimeAgoMs;
       res.status(403).send({
         severity: 'error',
-        message: `${SMS_FRAUD_COPY.needToWait({ requestsToday })} Max allowed is ${MAX_ATTEMPTS}. Please wait ${readableMilliseconds(waitFor)} to send another one.`,
+        message: `${SMS_FRAUD_COPY.needToWait({ requestsToday })} Max allowed is ${MAX_SMS_ATTEMPTS}. Please wait ${readableMilliseconds(waitFor)} to send another one.`,
       });
       return;
     }
@@ -192,7 +185,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
 
   res.status(200).send({
     severity: 'success',
-    message: SMS_FRAUD_COPY.messageSent({ phone, messagesLeft: MAX_ATTEMPTS - requestsToday - 1 }),
+    message: SMS_FRAUD_COPY.messageSent({ phone, messagesLeft: MAX_SMS_ATTEMPTS - requestsToday - 1 }),
     data: {
       fallbackCode: verificationCode,
     },
