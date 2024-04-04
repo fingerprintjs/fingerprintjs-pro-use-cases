@@ -57,10 +57,9 @@ test.describe('Submitting verification code', () => {
     await assertAlert({ page, severity: 'success', text: SMS_FRAUD_COPY.messageSent(TEST_PHONE_NUMBER, 2) });
 
     await assertSnackbar({ page, severity: 'info', text: 'Your verification code is' });
-    await page.getByTestId(TEST_IDS.smsFraud.copyCodeButton).click();
+    await page.getByTestId(TEST_ID.copyCodeButton).click();
 
-    const code =
-      (await page.getByTestId(TEST_IDS.smsFraud.codeInsideSnackbar).textContent()) ?? 'Code not found in snackbar';
+    const code = (await page.getByTestId(TEST_ID.codeInsideSnackbar).textContent()) ?? 'Code not found in snackbar';
 
     // Reading from clipboard is not available in Safari
     const clipboardAvailable = browserName !== 'webkit';
@@ -69,8 +68,8 @@ test.describe('Submitting verification code', () => {
       expect(codeInClipboard).toEqual(code);
     }
 
-    await page.getByTestId(TEST_IDS.smsFraud.codeInput).fill(code);
-    await page.getByTestId(TEST_IDS.smsFraud.sendCode).click();
+    await page.getByTestId(TEST_ID.codeInput).fill(code);
+    await page.getByTestId(TEST_ID.sendCode).click();
     await assertAlert({ page, severity: 'success', text: SMS_FRAUD_COPY.accountCreated, index: 1 });
   });
 
@@ -79,8 +78,8 @@ test.describe('Submitting verification code', () => {
     await sendButton.click();
     const incorrectCode = '123456';
 
-    await page.getByTestId(TEST_IDS.smsFraud.codeInput).fill(incorrectCode);
-    await page.getByTestId(TEST_IDS.smsFraud.sendCode).click();
+    await page.getByTestId(TEST_ID.codeInput).fill(incorrectCode);
+    await page.getByTestId(TEST_ID.sendCode).click();
     await assertAlert({ page, severity: 'error', text: SMS_FRAUD_COPY.incorrectCode, index: 1 });
   });
 });
