@@ -32,7 +32,7 @@ test.describe('Sending verification SMS messages', () => {
     await assertAlert({ page, severity: 'error', text: SMS_FRAUD_COPY.needToWait(2) });
   });
 
-  test('allows user to create an account with the correct code', async ({ page }) => {
+  test('allows user to create an account with the correct code', async ({ page, browserName }) => {
     const sendButton = await page.getByTestId(TEST_ID.sendMessage);
     await sendButton.click();
     await assertAlert({ page, severity: 'success', text: SMS_FRAUD_COPY.messageSent(TEST_PHONE_NUMBER, 2) });
@@ -43,9 +43,8 @@ test.describe('Sending verification SMS messages', () => {
     const code =
       (await page.getByTestId(TEST_IDS.smsFraud.codeInsideSnackbar).textContent()) ?? 'Code not found in snackbar';
 
-    const clipboardAvailable = await page.evaluate(
-      () => Boolean(navigator.clipboard) && 'readText' in navigator.clipboard,
-    );
+    // Reading from clipboard is not available in Safari
+    const clipboardAvailable = browserName !== 'webkit';
     if (clipboardAvailable) {
       const codeInClipboard = await page.evaluate(() => navigator.clipboard.readText());
       console.log('Code in clipboard: ', codeInClipboard);
