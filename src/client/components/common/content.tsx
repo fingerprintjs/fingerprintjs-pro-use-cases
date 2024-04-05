@@ -498,7 +498,8 @@ export const USE_CASES = {
     title: 'SMS Fraud Protection',
     titleMeta: 'Fingerprint Use Cases | SMS Verification Fraud Protection',
     url: '/sms-fraud',
-    articleUrl: 'https://fingerprint.com/blog/sms-verification-fraud-protection/',
+    // TODO: Add article once it is ready
+    // articleUrl: 'https://fingerprint.com/blog/sms-verification-fraud-protection/',
     // TODO: Update icon
     iconSvg: PersonalizationIcon,
     descriptionHomepage: [
