@@ -496,7 +496,7 @@ export const USE_CASES = {
   },
   smsFraud: {
     title: 'SMS Fraud Protection',
-    titleMeta: 'Fingerprint Use Cases | SMS Verification Fraud Protection',
+    titleMeta: 'Fingerprint Use Cases | SMS Pumping Fraud Protection',
     url: '/sms-fraud',
     // TODO: Add article once it is ready
     // articleUrl: 'https://fingerprint.com/blog/sms-verification-fraud-protection/',
@@ -520,7 +520,7 @@ export const USE_CASES = {
       </>
     ),
     descriptionMeta:
-      'See in real-time how Fingerprint can protect your application from SMS fraud. Try out our live demo to see Fingerprint prevent bad actors from sending themselves thousands of fraudulent messages from your application.',
+      'See in real-time how Fingerprint can protect your application from SMS pumping. Try out our live demo to see Fingerprint prevent bad actors from sending themselves thousands of fraudulent text messages from your application.',
     instructions: [
       <>
         Fill out the form below. You can use your real phone number for the complete experience. We will only use it for
