@@ -8,6 +8,7 @@ import PaywallIcon from '../../img/paywallIcon.svg';
 import PersonalizationIcon from '../../img/personalizationIcon.svg';
 import ScrapingIcon from '../../img/scrapingIcon.svg';
 import FirewallIcon from '../../img/firewallIcon.svg';
+import SmsIcon from '../../img/smsIcon.svg';
 import { ReactNode } from 'react';
 import { RestartHint, RestartHintProps } from './UseCaseWrapper/RestartHint';
 import { TEST_PHONE_NUMBER } from '../../../server/sms-fraud/smsFraudConst';
@@ -499,10 +500,8 @@ export const USE_CASES = {
     title: 'SMS Fraud Protection',
     titleMeta: 'Fingerprint Use Cases | SMS Pumping Fraud Protection',
     url: '/sms-fraud',
-    // TODO: Add article once it is ready
-    // articleUrl: 'https://fingerprint.com/blog/sms-verification-fraud-protection/',
-    // TODO: Update icon
-    iconSvg: PersonalizationIcon,
+    // articleUrl: 'https://fingerprint.com/blog/what-is-sms-fraud-prevention-tutorial/',
+    iconSvg: SmsIcon,
     descriptionHomepage: [
       <p key='1'>Fraudulent authentication SMS messages can cost your business a fortune.</p>,
       <p key='2'>Use Fingerprint device intelligence to prevent SMS pumping by bots and malicious actors.</p>,
