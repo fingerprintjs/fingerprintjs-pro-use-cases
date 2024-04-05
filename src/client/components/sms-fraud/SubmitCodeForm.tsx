@@ -33,11 +33,10 @@ export const useSubmitCode = (params?: { onSuccess?: () => void }) => {
           requestId,
         } satisfies SubmitCodePayload),
       });
-      if (response.status < 500) {
-        return await response.json();
-      } else {
+      if (response.status >= 500) {
         throw new Error('Failed to submit code: ' + response.statusText);
       }
+      return await response.json();
     },
     onSuccess: (data) => {
       if (data.severity === 'success') {
@@ -89,16 +88,16 @@ export const SubmitCodeForm: FunctionComponent<SubmitCodeFormProps> = ({ phoneNu
         data-testid={TEST_IDS.smsFraud.codeInput}
         onChange={(e) => setCode(e.target.value)}
       />
-      {submitCodeError ? (
+      {submitCodeError && (
         <Alert severity='error' className={styles.alert}>
           {submitCodeError.message}
         </Alert>
-      ) : null}
-      {submitCodeResponse ? (
+      )}
+      {submitCodeResponse && (
         <Alert severity={submitCodeResponse.severity} className={styles.alert}>
           {submitCodeResponse.message}
         </Alert>
-      ) : null}
+      )}
       <Button disabled={isLoadingSubmitCode} type='submit' data-testid={TEST_IDS.smsFraud.sendCode} outlined={true}>
         {isLoadingSubmitCode ? 'Verifying...' : 'Verify'}
       </Button>

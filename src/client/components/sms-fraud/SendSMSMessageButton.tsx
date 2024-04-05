@@ -27,17 +27,16 @@ export const SendMessageButton: FunctionComponent<SendMessageButtonProps> = ({
 
   return (
     <>
-      {sendMessageError ? (
+      {sendMessageError && (
         <Alert severity='error' className={styles.alert}>
           {sendMessageError.message}
         </Alert>
-      ) : null}
-      {sendMessageResponse ? (
+      )}
+      {sendMessageResponse && (
         <Alert severity={sendMessageResponse.severity} className={styles.alert}>
           {sendMessageResponse.message}
         </Alert>
-      ) : null}
-
+      )}
       <Button
         disabled={isLoadingSendSms || sendMessageResponse?.data?.remainingAttempts === 0}
         type={type}
