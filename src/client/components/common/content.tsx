@@ -10,6 +10,7 @@ import ScrapingIcon from '../../img/scrapingIcon.svg';
 import FirewallIcon from '../../img/firewallIcon.svg';
 import { ReactNode } from 'react';
 import { RestartHint, RestartHintProps } from './UseCaseWrapper/RestartHint';
+import { TEST_PHONE_NUMBER } from '../../../server/sms-fraud/smsFraudConst';
 
 export const PRODUCTION_URL = 'https://demo.fingerprint.com';
 
@@ -528,7 +529,8 @@ export const USE_CASES = {
       </>,
       <>
         Click <b>Send code via SMS</b>. An SMS message with a one-time password will be sent to your phone. If you used
-        the default test phone number (<code>+1234567890</code>), we will just simulate the SMS message on screen.
+        the default test phone number (<code>{TEST_PHONE_NUMBER}</code>), we will just simulate the SMS message on
+        screen.
       </>,
       <>
         Try requesting another message by clicking <b>Resend verification SMS</b>.

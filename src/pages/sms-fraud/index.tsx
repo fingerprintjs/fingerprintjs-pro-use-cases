@@ -15,6 +15,7 @@ import { PhoneNumberForm } from '../../client/components/sms-fraud/PhoneNumberFo
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useMutation } from 'react-query';
 import { SendSMSResponse, SendSMSPayload } from '../api/sms-fraud/send-verification-sms';
+import { TEST_PHONE_NUMBER } from '../../server/sms-fraud/smsFraudConst';
 
 type FormStep = 'Send SMS' | 'Submit code';
 type QueryAsProps = {
@@ -77,7 +78,7 @@ export const useSendMessage = ({ onSuccess, disableBotDetection = false }: SendM
 
 const SmsFraudUseCase: NextPage<QueryAsProps> = ({ disableBotDetection }) => {
   // Default mocked user data
-  const [phoneNumber, setPhoneNumber] = useState('+1234567890');
+  const [phoneNumber, setPhoneNumber] = useState(TEST_PHONE_NUMBER);
   const [email, setEmail] = useState('user@company.com');
   const [formStep, setFormStep] = useState<FormStep>('Send SMS');
 
