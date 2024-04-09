@@ -14,8 +14,8 @@ import { Cart } from '../../client/components/common/Cart/Cart';
 import { FpjsProvider, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
 import { useMutation } from 'react-query';
-import { CouponClaimPayload, CouponClaimResponse } from '../../pages/api/coupon-fraud/claim';
 import { FP_LOAD_OPTIONS } from '../../pages/_app';
+import { ActivateRegionalPricingPayload, ActivateRegionalPricingResponse } from './api/activate-ppp/route';
 
 const COURSE_PRICE = 100;
 const TAXES = 15;
@@ -29,23 +29,23 @@ function LocationSpoofingUseCase() {
   );
 
   const {
-    mutate: claimCoupon,
+    mutate: activateRegionalPricing,
     isLoading,
-    data: claimResponse,
+    data: activateResponse,
   } = useMutation({
-    mutationKey: ['request coupon claim'],
-    mutationFn: async ({ couponCode }: Omit<CouponClaimPayload, 'requestId'>) => {
+    mutationKey: ['activate-regional-pricing'],
+    mutationFn: async () => {
       const { requestId } = await getVisitorData({ ignoreCache: true });
-      const response = await fetch('/api/coupon-fraud/claim', {
+      const response = await fetch('/location-spoofing/api/activate-ppp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ couponCode, requestId } satisfies CouponClaimPayload),
+        body: JSON.stringify({ requestId } satisfies ActivateRegionalPricingPayload),
       });
       return await response.json();
     },
-    onSuccess: (data: CouponClaimResponse) => {
+    onSuccess: (data: ActivateRegionalPricingResponse) => {
       if (data.severity === 'success') {
         setDiscount(30);
       }
@@ -54,7 +54,6 @@ function LocationSpoofingUseCase() {
 
   const [airMaxCount, setAirMaxCount] = useState(1);
 
-  const [couponCode, setCouponCode] = useState('');
   const [discount, setDiscount] = useState(0);
 
   const cartItems = [
@@ -77,26 +76,19 @@ function LocationSpoofingUseCase() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            claimCoupon({ couponCode });
+            activateRegionalPricing();
           }}
           className={classNames(formStyles.useCaseForm, styles.couponFraudForm)}
         >
-          <p>Do you have a coupon? Apply to get a discount!</p>
+          <p>To help facilitate global learning, we are offering purchasing power parity pricing.</p>
           <div className={styles.couponInputContainer}>
-            <input
-              type='text'
-              placeholder='Enter a coupon'
-              onChange={(e) => setCouponCode(e.target.value)}
-              required
-              data-testid={TEST_IDS.couponFraud.couponCode}
-            />
             <Button disabled={isLoading} size='medium' data-testid={TEST_IDS.couponFraud.submitCoupon}>
-              {isLoading ? 'Processing...' : 'Apply'}
+              {isLoading ? 'Verifying location...' : 'Activating regional pricing'}
             </Button>
           </div>
-          {claimResponse?.message && !isLoading && (
+          {activateResponse?.message && !isLoading && (
             <div>
-              <Alert severity={claimResponse.severity}>{claimResponse.message}</Alert>
+              <Alert severity={activateResponse.severity}>{activateResponse.message}</Alert>
             </div>
           )}
         </form>

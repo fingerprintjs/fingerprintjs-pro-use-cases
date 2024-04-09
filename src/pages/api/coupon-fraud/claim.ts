@@ -1,7 +1,7 @@
-import { Severity, isValidPostRequest } from '../../../server/server';
+import { isValidPostRequest } from '../../../server/server';
 import { Op } from 'sequelize';
 import { COUPON_CODES, CouponClaimDbModel, CouponCodeString } from '../../../server/coupon-fraud/database';
-import { getAndValidateFingerprintResult } from '../../../server/checks';
+import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export const COUPON_FRAUD_COPY = {

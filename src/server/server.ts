@@ -15,18 +15,6 @@ export const sequelize = new Sequelize('database', '', '', {
   logging: false,
 });
 
-// Demo origins.
-// It is recommended to use production origins instead.
-export const ourOrigins = [
-  'https://fingerprinthub.com',
-  'https://demo.fingerprint.com',
-  'https://localhost:3000',
-  'http://localhost:3000',
-  'https://staging.fingerprinthub.com',
-];
-
-export type Severity = 'success' | 'warning' | 'error';
-
 export const messageSeverity = Object.freeze({
   Success: 'success',
   Warning: 'warning',

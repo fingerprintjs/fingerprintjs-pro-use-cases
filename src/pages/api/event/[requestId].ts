@@ -1,11 +1,11 @@
 import { isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fingerprintJsApiClient } from '../../../server/fingerprint-api';
-import { ourOrigins } from '../../../server/server';
 import Cors from 'cors';
+import { OUR_ORIGINS } from '../../../server/checks';
 
 // Also allow our documentation to use the endpoint
-const allowedOrigins = [...ourOrigins, 'https://dev.fingerprint.com'];
+const allowedOrigins = [...OUR_ORIGINS, 'https://dev.fingerprint.com'];
 
 // We need to set up CORS for that  https://github.com/expressjs/cors#configuration-options
 const cors = Cors({

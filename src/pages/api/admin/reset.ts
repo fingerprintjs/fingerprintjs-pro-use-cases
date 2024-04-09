@@ -1,4 +1,4 @@
-import { Severity, isValidPostRequest } from '../../../server/server';
+import { isValidPostRequest } from '../../../server/server';
 import { LoginAttemptDbModel } from '../credential-stuffing/authenticate';
 import { PaymentAttemptDbModel } from '../payment-fraud/place-order';
 import {
@@ -9,7 +9,7 @@ import {
 import { LoanRequestDbModel } from '../../../server/loan-risk/database';
 import { ArticleViewDbModel } from '../../../server/paywall/database';
 import { CouponClaimDbModel } from '../../../server/coupon-fraud/database';
-import { getAndValidateFingerprintResult } from '../../../server/checks';
+import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { deleteBlockedIp } from '../../../server/botd-firewall/blockedIpsDatabase';
 import { syncFirewallRuleset } from '../../../server/botd-firewall/cloudflareApiHelper';

@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Severity } from '../../../server/checkResult';
-import { getAndValidateFingerprintResult } from '../../../server/checks';
+import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
 import { isValidPostRequest } from '../../../server/server';
 import { DAY_MS, FIVE_MINUTES_MS, HOUR_MS } from '../../../shared/timeUtils';
 import { AIRPORTS } from '../../web-scraping';

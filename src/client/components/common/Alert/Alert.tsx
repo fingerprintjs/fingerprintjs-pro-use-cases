@@ -1,5 +1,4 @@
 import { FunctionComponent, PropsWithChildren } from 'react';
-import { Severity } from '../../../../server/checkResult';
 import SuccessIcon from './sucess.svg';
 import ErrorIcon from './error.svg';
 import WarningIcon from './warning.svg';
@@ -12,6 +11,7 @@ import { CustomContentProps, VariantType, useSnackbar, SnackbarKey } from 'notis
 import React from 'react';
 import Button from '../Button/Button';
 import { CrossIconSvg } from '../../../img/crossIconSvg';
+import { Severity } from '../../../../server/checks';
 
 type AlertProps = {
   severity: Severity;
