@@ -1,3 +1,5 @@
+'use client';
+
 import { ElementRef, FunctionComponent, useRef, useState } from 'react';
 import Container from '../Container';
 import styles from './UseCaseWrapper.module.scss';

@@ -464,6 +464,53 @@ export const USE_CASES = {
       },
     ],
   },
+  locationSpoofing: {
+    title: 'Location Spoofing Prevention',
+    titleMeta: 'Fingerprint Use Cases | VPN Detection and Location spoofing prevention',
+    url: '/location-spoofing',
+    // articleUrl: 'https://fingerprint.com/blog/bot-detection-powered-application-firewall/',
+    iconSvg: FirewallIcon,
+    descriptionHomepage: [
+      <p key='1'>
+        Use Fingerprint VPN detection to detect visitors trying to spoof their location. Deploy location-based pricing
+        or content restrictions with confidence.
+      </p>,
+      <p key='2'>
+        Use Sealed client results to protect your Fingerprint integration from tampering and reverse-engineering.
+      </p>,
+    ],
+    description: (
+      <>
+        <p>
+          Many web applications need to apply content restrictions or regional discounts based on the visitors
+          geographical location. But tech-savvy users can simply turn on a VPN to appear to be somewhere else.
+        </p>
+        <p>
+          Fingerprint VPN detection allows you to detect if a visitor is using a VPN and spoofing their location. You
+          can prevent these visitors and other suspicious browsers from applying purchase-power-parity discounts or
+          accessing geographically restricted content.
+        </p>
+      </>
+    ),
+    descriptionMeta:
+      'Use Fingerprint VPN detection to detect visitors trying to spoof their location. Deploy location-based pricing or content restrictions with confidence.',
+    doNotMentionResetButton: true,
+    instructions: [
+      <>
+        Click "Apply regional discount" in the checkout form below. Assuming your VPN is off, the discount will be
+        applied.
+      </>,
+      <>Turn on your VPN and pick an exit node different from your true location.</>,
+      <>Try applying the discount again. Your VPN usage will be detected.</>,
+    ],
+    moreResources: [
+      {
+        url: 'https://fingerprint.com/blog/vpn-detection/',
+        type: 'Use case tutorial',
+        title: 'VPN Detection and Location spoofing prevention',
+      },
+    ],
+  },
 } as const satisfies Record<string, UseCase>;
 
 export const PLAYGROUND_METADATA: Pick<
