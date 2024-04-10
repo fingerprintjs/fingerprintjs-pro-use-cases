@@ -14,7 +14,6 @@ import { Cart } from '../../client/components/common/Cart/Cart';
 import { FpjsProvider, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
 import { useMutation } from 'react-query';
-import { FP_LOAD_OPTIONS } from '../../pages/_app';
 import { ActivateRegionalPricingPayload, ActivateRegionalPricingResponse } from './api/activate-ppp/route';
 
 const COURSE_PRICE = 100;
@@ -35,13 +34,13 @@ function LocationSpoofingUseCase() {
   } = useMutation({
     mutationKey: ['activate-regional-pricing'],
     mutationFn: async () => {
-      const { requestId } = await getVisitorData({ ignoreCache: true });
+      const { requestId, sealedResult } = await getVisitorData({ ignoreCache: true });
       const response = await fetch('/location-spoofing/api/activate-ppp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ requestId } satisfies ActivateRegionalPricingPayload),
+        body: JSON.stringify({ requestId, sealedResult } satisfies ActivateRegionalPricingPayload),
       });
       return await response.json();
     },
@@ -102,7 +101,11 @@ function LocationSpoofingUseCase() {
 
 export default function Page() {
   return (
-    <FpjsProvider loadOptions={FP_LOAD_OPTIONS}>
+    <FpjsProvider
+      loadOptions={{
+        apiKey: 'XkSle8LOYBYgKZco5978',
+      }}
+    >
       <UseCaseWrapper useCase={USE_CASES.locationSpoofing}>
         <LocationSpoofingUseCase />
       </UseCaseWrapper>

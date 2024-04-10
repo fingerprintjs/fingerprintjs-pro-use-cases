@@ -15,10 +15,10 @@ export type ActivateRegionalPricingResponse = {
 };
 
 export async function POST(request: Request): Promise<NextResponse<ActivateRegionalPricingResponse>> {
-  const { requestId } = (await request.json()) as ActivateRegionalPricingPayload;
+  const { requestId, sealedResult } = (await request.json()) as ActivateRegionalPricingPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
-  const fingerprintResult = await getAndValidateFingerprintResult(requestId, request);
+  const fingerprintResult = await getAndValidateFingerprintResult(requestId, request, sealedResult);
   if (!fingerprintResult.okay) {
     return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });
   }

@@ -10,6 +10,7 @@ import {
 
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ValidationDataResult } from '../shared/types';
+import { decryptSealedResult } from './decryptSealedResult';
 
 // Demo origins.
 // It is recommended to use production origins instead.
@@ -160,34 +161,59 @@ export function originIsAllowed(url = '', request: NextApiRequest | Request) {
 }
 
 /**
- * Retrieves the full Identification event from the Server API and validates its authenticity.
+ * Retrieves the full Identification event validates its authenticity.
+ * - If your account has [Sealed Results](https://dev.fingerprint.com/docs/sealed-client-results) turned on, you can pass
+ *   the `sealedResult` parameter to the function and it will decrypt the result locally using your decryption key
+ *   instead of calling Server API (this is generally faster and simpler than Server API).
+ * - If `sealedResult` is not provided or something goes wrong during decryption, the function falls back to using Server API.
  */
 export const getAndValidateFingerprintResult = async (
   requestId: string,
   req: NextApiRequest | Request,
+  sealedResult?: string,
 ): Promise<ValidationDataResult<EventResponse>> => {
-  // Request ID must match the expected format
-  if (!isRequestIdFormatValid(requestId)) {
-    return { okay: false, error: 'Invalid request ID format.' };
+  let identificationEvent: EventResponse | undefined;
+
+  /**
+   * If a sealed result was provided, try to decrypt it.
+   * Fall back to Server API if sealed result is not available.
+   * If your account doesn't have Sealed Results turned on you can ignore/skip this step in your implementation.
+   **/
+  if (sealedResult) {
+    console.log(`Sealed result provided, trying to decrypt...`, sealedResult);
+    try {
+      identificationEvent = await decryptSealedResult(sealedResult);
+      if (identificationEvent.products?.identification?.data?.requestId !== requestId) {
+        return {
+          okay: false,
+          error: 'Sealed result request ID does not match provided request ID, potential spoofing attack',
+        };
+      }
+    } catch (error) {
+      console.error(
+        `Decrypting sealed result failed on ${error}. Falling back to Server API to get the identification event`,
+      );
+    }
   }
 
   /**
+   * If `sealedResult` was not provided or unsealing failed, use Server API to get the identification event.
    * The Server API must contain information about this specific identification request.
    * If not, the request might have been tampered with and we don't trust this identification attempt.
    * The Server API also allows you to access all available [Smart Signals](https://dev.fingerprint.com/docs/smart-signals-overview)
    */
-  let identificationEvent: EventResponse;
-  try {
-    const client = new FingerprintJsServerApiClient({ region: BACKEND_REGION, apiKey: SERVER_API_KEY });
-    const eventResponse = await client.getEvent(requestId);
-    identificationEvent = eventResponse;
-  } catch (error) {
-    console.error(error);
-    // Throw a specific error if the request ID is not found
-    if (isEventError(error) && error.status === 404) {
-      return { okay: false, error: 'Request ID not found, potential spoofing attack.' };
+  if (!identificationEvent) {
+    try {
+      const client = new FingerprintJsServerApiClient({ region: BACKEND_REGION, apiKey: SERVER_API_KEY });
+      identificationEvent = await client.getEvent(requestId);
+    } catch (error) {
+      console.error(error);
+      // Throw a specific error if the request ID is not found
+      if (isEventError(error) && error.status === 404) {
+        return { okay: false, error: 'Request ID not found, potential spoofing attack.' };
+      }
+      return { okay: false, error: String(error) };
     }
-    return { okay: false, error: String(error) };
   }
 
   // Identification event must contain identification data
