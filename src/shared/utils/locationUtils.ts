@@ -1,3 +1,4 @@
+import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { EventResponseIpInfoV4Geolocation } from '../types';
 
 export const UNKNOWN_LOCATION = 'Unknown';
@@ -25,3 +26,20 @@ export function getLocationName(ipLocation?: EventResponseIpInfoV4Geolocation) {
 
   return addressParts.join(', ');
 }
+
+export const getIpLocation = (eventResponse: EventResponse): EventResponseIpInfoV4Geolocation => {
+  const ipLocation =
+    eventResponse?.products?.ipInfo?.data?.v6?.geolocation ?? eventResponse?.products?.ipInfo?.data?.v4?.geolocation;
+  return ipLocation;
+};
+
+export const getFlagEmoji = (countryCode?: string) => {
+  if (!countryCode) {
+    return '';
+  }
+  const codePoints = countryCode
+    .toUpperCase()
+    .split('')
+    .map((char) => 127397 + char.charCodeAt(0));
+  return String.fromCodePoint(...codePoints);
+};

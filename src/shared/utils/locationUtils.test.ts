@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getLocationName, UNKNOWN_LOCATION } from './getLocationName';
+import { getFlagEmoji, getLocationName, UNKNOWN_LOCATION } from './locationUtils';
 
 describe('getLocationName test', () => {
   it('Should return Unknown in case of undefined ipLocation', () => {
@@ -45,5 +45,25 @@ describe('getLocationName test', () => {
         ],
       }),
     ).toBe('Columbus, Ohio, United States');
+  });
+});
+
+describe('getFlagEmoji test', () => {
+  const testCases = {
+    SK: '🇸🇰',
+    CZ: '🇨🇿',
+    US: '🇺🇸',
+    CA: '🇨🇦',
+    GB: '🇬🇧',
+    DE: '🇩🇪',
+    FR: '🇫🇷',
+    JP: '🇯🇵',
+    BR: '🇧🇷',
+    IN: '🇮🇳',
+  };
+  Object.entries(testCases).forEach(([key, value]) => {
+    it(`Should return ${value} for ${key}`, () => {
+      expect(getFlagEmoji(key)).toBe(value);
+    });
   });
 });

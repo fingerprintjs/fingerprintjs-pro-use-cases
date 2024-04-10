@@ -15,24 +15,23 @@ import { FpjsProvider, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-r
 import { TEST_IDS } from '../../client/testIDs';
 import { useMutation } from 'react-query';
 import { ActivateRegionalPricingPayload, ActivateRegionalPricingResponse } from './api/activate-ppp/route';
+import { useUnsealedResult } from '../../client/hooks/useUnsealedResult';
+import { getFlagEmoji, getIpLocation } from '../../shared/utils/locationUtils';
 
 const COURSE_PRICE = 100;
 const TAXES = 15;
 
 function LocationSpoofingUseCase() {
-  const { getData: getVisitorData } = useVisitorData(
-    {
-      ignoreCache: true,
-    },
-    { immediate: false },
-  );
+  const { getData: getVisitorData, data: visitorData } = useVisitorData({
+    ignoreCache: true,
+  });
+  const { data: unsealedVisitorData } = useUnsealedResult(visitorData?.sealedResult);
 
   const {
     mutate: activateRegionalPricing,
     isLoading,
     data: activateResponse,
   } = useMutation({
-    mutationKey: ['activate-regional-pricing'],
     mutationFn: async () => {
       const { requestId, sealedResult } = await getVisitorData({ ignoreCache: true });
       const response = await fetch('/location-spoofing/api/activate-ppp', {
@@ -79,7 +78,15 @@ function LocationSpoofingUseCase() {
           }}
           className={classNames(formStyles.useCaseForm, styles.couponFraudForm)}
         >
-          <p>To help facilitate global learning, we are offering purchasing power parity pricing.</p>
+          <p>
+            {unsealedVisitorData && (
+              <>
+                We noticed you are from {getFlagEmoji(getIpLocation(unsealedVisitorData)?.country?.code)}{' '}
+                {getIpLocation(unsealedVisitorData)?.country?.name}! 👋{' '}
+              </>
+            )}
+            To help facilitate global learning, we are offering purchasing power parity pricing.
+          </p>
           <div className={styles.couponInputContainer}>
             <Button disabled={isLoading} size='medium' data-testid={TEST_IDS.couponFraud.submitCoupon}>
               {isLoading ? 'Verifying location...' : 'Activating regional pricing'}
