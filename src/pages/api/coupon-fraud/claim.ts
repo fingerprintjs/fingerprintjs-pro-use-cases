@@ -36,7 +36,7 @@ export default async function claimCouponHandler(req: NextApiRequest, res: NextA
   const { couponCode, requestId } = req.body as CouponClaimPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
-  const fingerprintResult = await getAndValidateFingerprintResult(requestId, req);
+  const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
   if (!fingerprintResult.okay) {
     res.status(403).send({ severity: 'error', message: fingerprintResult.error });
     return;

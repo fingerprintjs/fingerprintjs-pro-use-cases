@@ -103,7 +103,7 @@ export default function Page() {
   return (
     <FpjsProvider
       loadOptions={{
-        apiKey: 'XkSle8LOYBYgKZco5978',
+        apiKey: '2lFEzpuyfqkfQ9KJgiqv',
       }}
     >
       <UseCaseWrapper useCase={USE_CASES.locationSpoofing}>

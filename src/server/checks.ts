@@ -1,4 +1,9 @@
-import { EventResponse, FingerprintJsServerApiClient, isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import {
+  EventResponse,
+  FingerprintJsServerApiClient,
+  Region,
+  isEventError,
+} from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { CheckResult, checkResultType } from './checkResult';
 import {
   ALLOWED_REQUEST_TIMESTAMP_DIFF_MS,
@@ -167,11 +172,22 @@ export function originIsAllowed(url = '', request: NextApiRequest | Request) {
  *   instead of calling Server API (this is generally faster and simpler than Server API).
  * - If `sealedResult` is not provided or something goes wrong during decryption, the function falls back to using Server API.
  */
-export const getAndValidateFingerprintResult = async (
-  requestId: string,
-  req: NextApiRequest | Request,
-  sealedResult?: string,
-): Promise<ValidationDataResult<EventResponse>> => {
+
+type GetFingerprintResultArgs = {
+  requestId: string;
+  req: NextApiRequest | Request;
+  sealedResult?: string;
+  serverApiKey?: string;
+  region?: Region;
+};
+
+export const getAndValidateFingerprintResult = async ({
+  requestId,
+  req,
+  sealedResult,
+  serverApiKey: apiKey = SERVER_API_KEY,
+  region = BACKEND_REGION,
+}: GetFingerprintResultArgs): Promise<ValidationDataResult<EventResponse>> => {
   let identificationEvent: EventResponse | undefined;
 
   /**
@@ -196,6 +212,8 @@ export const getAndValidateFingerprintResult = async (
     }
   }
 
+  console.log('unsealed result', JSON.stringify(identificationEvent, null, 2));
+
   /**
    * If `sealedResult` was not provided or unsealing failed, use Server API to get the identification event.
    * The Server API must contain information about this specific identification request.
@@ -204,7 +222,7 @@ export const getAndValidateFingerprintResult = async (
    */
   if (!identificationEvent) {
     try {
-      const client = new FingerprintJsServerApiClient({ region: BACKEND_REGION, apiKey: SERVER_API_KEY });
+      const client = new FingerprintJsServerApiClient({ region, apiKey });
       identificationEvent = await client.getEvent(requestId);
     } catch (error) {
       console.error(error);

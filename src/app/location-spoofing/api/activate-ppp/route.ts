@@ -14,11 +14,11 @@ export type ActivateRegionalPricingResponse = {
   };
 };
 
-export async function POST(request: Request): Promise<NextResponse<ActivateRegionalPricingResponse>> {
-  const { requestId, sealedResult } = (await request.json()) as ActivateRegionalPricingPayload;
+export async function POST(req: Request): Promise<NextResponse<ActivateRegionalPricingResponse>> {
+  const { requestId, sealedResult } = (await req.json()) as ActivateRegionalPricingPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
-  const fingerprintResult = await getAndValidateFingerprintResult(requestId, request, sealedResult);
+  const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req, sealedResult });
   if (!fingerprintResult.okay) {
     return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });
   }

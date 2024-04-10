@@ -32,7 +32,7 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
   const { from, to, requestId, disableBotDetection } = req.body as FlightQuery;
 
   // Get the full Identification and Bot Detection result from Fingerprint Server API and validate its authenticity
-  const fingerprintResult = await getAndValidateFingerprintResult(requestId, req);
+  const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
   if (!fingerprintResult.okay) {
     res.status(403).send({ severity: 'error', message: fingerprintResult.error });
     return;

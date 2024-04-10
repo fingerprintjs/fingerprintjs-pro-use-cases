@@ -35,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const { requestId } = req.body as ResetRequest;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
-  const fingerprintResult = await getAndValidateFingerprintResult(requestId, req);
+  const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
   if (!fingerprintResult.okay) {
     res.status(403).send({ severity: 'error', message: fingerprintResult.error });
     return;
