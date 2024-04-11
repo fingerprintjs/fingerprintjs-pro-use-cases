@@ -19,7 +19,7 @@ import { useUnsealedResult } from '../../client/hooks/useUnsealedResult';
 import { getFlagEmoji, getIpLocation } from '../../shared/utils/locationUtils';
 
 const COURSE_PRICE = 100;
-const TAXES = 15;
+const TAXES = 0;
 
 function LocationSpoofingUseCase() {
   const { getData: getVisitorData, data: visitorData } = useVisitorData({

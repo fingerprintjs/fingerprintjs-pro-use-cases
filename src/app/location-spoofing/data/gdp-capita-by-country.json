@@ -1,1332 +1,218 @@
 [
-  {
-    "countryCode": "ABW",
-    "countryName": "Aruba",
-    "gdpPerCapita": 48750.31601
-  },
-  {
-    "countryCode": "AFE",
-    "countryName": "Africa Eastern and Southern",
-    "gdpPerCapita": 4184.836016
-  },
-  {
-    "countryCode": "AFG",
-    "countryName": "Afghanistan",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "AFW",
-    "countryName": "Africa Western and Central",
-    "gdpPerCapita": 4802.946164
-  },
-  {
-    "countryCode": "AGO",
-    "countryName": "Angola",
-    "gdpPerCapita": 6976.006469
-  },
-  {
-    "countryCode": "ALB",
-    "countryName": "Albania",
-    "gdpPerCapita": 19496.21485
-  },
-  {
-    "countryCode": "AND",
-    "countryName": "Andorra",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "ARB",
-    "countryName": "Arab World",
-    "gdpPerCapita": 16968.74935
-  },
-  {
-    "countryCode": "ARE",
-    "countryName": "United Arab Emirates",
-    "gdpPerCapita": 88488.98461
-  },
-  {
-    "countryCode": "ARG",
-    "countryName": "Argentina",
-    "gdpPerCapita": 26530.32312
-  },
-  {
-    "countryCode": "ARM",
-    "countryName": "Armenia",
-    "gdpPerCapita": 18965.72757
-  },
-  {
-    "countryCode": "ASM",
-    "countryName": "American Samoa",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "ATG",
-    "countryName": "Antigua and Barbuda",
-    "gdpPerCapita": 26365.46898
-  },
-  {
-    "countryCode": "AUS",
-    "countryName": "Australia",
-    "gdpPerCapita": 65388.21596
-  },
-  {
-    "countryCode": "AUT",
-    "countryName": "Austria",
-    "gdpPerCapita": 70975.72063
-  },
-  {
-    "countryCode": "AZE",
-    "countryName": "Azerbaijan",
-    "gdpPerCapita": 17828.60839
-  },
-  {
-    "countryCode": "BDI",
-    "countryName": "Burundi",
-    "gdpPerCapita": 836.4645675
-  },
-  {
-    "countryCode": "BEL",
-    "countryName": "Belgium",
-    "gdpPerCapita": 68253.33207
-  },
-  {
-    "countryCode": "BEN",
-    "countryName": "Benin",
-    "gdpPerCapita": 4057.451755
-  },
-  {
-    "countryCode": "BFA",
-    "countryName": "Burkina Faso",
-    "gdpPerCapita": 2549.934982
-  },
-  {
-    "countryCode": "BGD",
-    "countryName": "Bangladesh",
-    "gdpPerCapita": 7397.545737
-  },
-  {
-    "countryCode": "BGR",
-    "countryName": "Bulgaria",
-    "gdpPerCapita": 35469.87165
-  },
-  {
-    "countryCode": "BHR",
-    "countryName": "Bahrain",
-    "gdpPerCapita": 61248.18013
-  },
-  {
-    "countryCode": "BHS",
-    "countryName": "Bahamas, The",
-    "gdpPerCapita": 40942.77672
-  },
-  {
-    "countryCode": "BIH",
-    "countryName": "Bosnia and Herzegovina",
-    "gdpPerCapita": 20950.19985
-  },
-  {
-    "countryCode": "BLR",
-    "countryName": "Belarus",
-    "gdpPerCapita": 22550.64044
-  },
-  {
-    "countryCode": "BLZ",
-    "countryName": "Belize",
-    "gdpPerCapita": 11189.86408
-  },
-  {
-    "countryCode": "BMU",
-    "countryName": "Bermuda",
-    "gdpPerCapita": 95868.78026
-  },
-  {
-    "countryCode": "BOL",
-    "countryName": "Bolivia",
-    "gdpPerCapita": 9737.676068
-  },
-  {
-    "countryCode": "BRA",
-    "countryName": "Brazil",
-    "gdpPerCapita": 17827.64105
-  },
-  {
-    "countryCode": "BRB",
-    "countryName": "Barbados",
-    "gdpPerCapita": 18210.1343
-  },
-  {
-    "countryCode": "BRN",
-    "countryName": "Brunei Darussalam",
-    "gdpPerCapita": 69297.93271
-  },
-  {
-    "countryCode": "BTN",
-    "countryName": "Bhutan",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "BWA",
-    "countryName": "Botswana",
-    "gdpPerCapita": 18329.84926
-  },
-  {
-    "countryCode": "CAF",
-    "countryName": "Central African Republic",
-    "gdpPerCapita": 973.2462704
-  },
-  {
-    "countryCode": "CAN",
-    "countryName": "Canada",
-    "gdpPerCapita": 61380.19839
-  },
-  {
-    "countryCode": "CEB",
-    "countryName": "Central Europe and the Baltics",
-    "gdpPerCapita": 45181.6902
-  },
-  {
-    "countryCode": "CHE",
-    "countryName": "Switzerland",
-    "gdpPerCapita": 90746.45328
-  },
-  {
-    "countryCode": "CHI",
-    "countryName": "Channel Islands",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "CHL",
-    "countryName": "Chile",
-    "gdpPerCapita": 31436.57725
-  },
-  {
-    "countryCode": "CHN",
-    "countryName": "China",
-    "gdpPerCapita": 21482.56218
-  },
-  {
-    "countryCode": "CIV",
-    "countryName": "Cote d'Ivoire",
-    "gdpPerCapita": 6540.462355
-  },
-  {
-    "countryCode": "CMR",
-    "countryName": "Cameroon",
-    "gdpPerCapita": 4398.048919
-  },
-  {
-    "countryCode": "COD",
-    "countryName": "Congo, Dem. Rep.",
-    "gdpPerCapita": 1337.834149
-  },
-  {
-    "countryCode": "COG",
-    "countryName": "Congo, Rep.",
-    "gdpPerCapita": 4335.055001
-  },
-  {
-    "countryCode": "COL",
-    "countryName": "Colombia",
-    "gdpPerCapita": 20951.54073
-  },
-  {
-    "countryCode": "COM",
-    "countryName": "Comoros",
-    "gdpPerCapita": 3833.738563
-  },
-  {
-    "countryCode": "CPV",
-    "countryName": "Cabo Verde",
-    "gdpPerCapita": 8715.995684
-  },
-  {
-    "countryCode": "CRI",
-    "countryName": "Costa Rica",
-    "gdpPerCapita": 26181.13829
-  },
-  {
-    "countryCode": "CSS",
-    "countryName": "Caribbean small states",
-    "gdpPerCapita": 21260.86832
-  },
-  {
-    "countryCode": "CUB",
-    "countryName": "Cuba",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "CUW",
-    "countryName": "Curacao",
-    "gdpPerCapita": 27302.21764
-  },
-  {
-    "countryCode": "CYM",
-    "countryName": "Cayman Islands",
-    "gdpPerCapita": 84279.61998
-  },
-  {
-    "countryCode": "CYP",
-    "countryName": "Cyprus",
-    "gdpPerCapita": 53785.74609
-  },
-  {
-    "countryCode": "CZE",
-    "countryName": "Czechia",
-    "gdpPerCapita": 51695.18166
-  },
-  {
-    "countryCode": "DEU",
-    "countryName": "Germany",
-    "gdpPerCapita": 66616.02225
-  },
-  {
-    "countryCode": "DJI",
-    "countryName": "Djibouti",
-    "gdpPerCapita": 5893.238371
-  },
-  {
-    "countryCode": "DMA",
-    "countryName": "Dominica",
-    "gdpPerCapita": 13540.22461
-  },
-  {
-    "countryCode": "DNK",
-    "countryName": "Denmark",
-    "gdpPerCapita": 77953.67866
-  },
-  {
-    "countryCode": "DOM",
-    "countryName": "Dominican Republic",
-    "gdpPerCapita": 22841.0898
-  },
-  {
-    "countryCode": "DZA",
-    "countryName": "Algeria",
-    "gdpPerCapita": 13226.78957
-  },
-  {
-    "countryCode": "EAP",
-    "countryName": "East Asia & Pacific (excluding high income)",
-    "gdpPerCapita": 18830.13012
-  },
-  {
-    "countryCode": "EAR",
-    "countryName": "Early-demographic dividend",
-    "gdpPerCapita": 11689.68262
-  },
-  {
-    "countryCode": "EAS",
-    "countryName": "East Asia & Pacific",
-    "gdpPerCapita": 22542.99402
-  },
-  {
-    "countryCode": "ECA",
-    "countryName": "Europe & Central Asia (excluding high income)",
-    "gdpPerCapita": 27910.1257
-  },
-  {
-    "countryCode": "ECS",
-    "countryName": "Europe & Central Asia",
-    "gdpPerCapita": 45502.90385
-  },
-  {
-    "countryCode": "ECU",
-    "countryName": "Ecuador",
-    "gdpPerCapita": 12826.36135
-  },
-  {
-    "countryCode": "EGY",
-    "countryName": "Egypt, Arab Rep.",
-    "gdpPerCapita": 15095.99005
-  },
-  {
-    "countryCode": "EMU",
-    "countryName": "Euro area",
-    "gdpPerCapita": 59457.34087
-  },
-  {
-    "countryCode": "ERI",
-    "countryName": "Eritrea",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "ESP",
-    "countryName": "Spain",
-    "gdpPerCapita": 48685.49631
-  },
-  {
-    "countryCode": "EST",
-    "countryName": "Estonia",
-    "gdpPerCapita": 48168.3971
-  },
-  {
-    "countryCode": "ETH",
-    "countryName": "Ethiopia",
-    "gdpPerCapita": 2812.513134
-  },
-  {
-    "countryCode": "EUU",
-    "countryName": "European Union",
-    "gdpPerCapita": 57285.54689
-  },
-  {
-    "countryCode": "FCS",
-    "countryName": "Fragile and conflict affected situations",
-    "gdpPerCapita": 4956.318264
-  },
-  {
-    "countryCode": "FIN",
-    "countryName": "Finland",
-    "gdpPerCapita": 62823.03529
-  },
-  {
-    "countryCode": "FJI",
-    "countryName": "Fiji",
-    "gdpPerCapita": 14632.21006
-  },
-  {
-    "countryCode": "FRA",
-    "countryName": "France",
-    "gdpPerCapita": 57594.03402
-  },
-  {
-    "countryCode": "FRO",
-    "countryName": "Faroe Islands",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "FSM",
-    "countryName": "Micronesia, Fed. Sts.",
-    "gdpPerCapita": 3854.877001
-  },
-  {
-    "countryCode": "GAB",
-    "countryName": "Gabon",
-    "gdpPerCapita": 16464.97432
-  },
-  {
-    "countryCode": "GBR",
-    "countryName": "United Kingdom",
-    "gdpPerCapita": 57460.50575
-  },
-  {
-    "countryCode": "GEO",
-    "countryName": "Georgia",
-    "gdpPerCapita": 20172.07646
-  },
-  {
-    "countryCode": "GHA",
-    "countryName": "Ghana",
-    "gdpPerCapita": 6473.089846
-  },
-  {
-    "countryCode": "GIB",
-    "countryName": "Gibraltar",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "GIN",
-    "countryName": "Guinea",
-    "gdpPerCapita": 3188.075104
-  },
-  {
-    "countryCode": "GMB",
-    "countryName": "Gambia, The",
-    "gdpPerCapita": 2496.495435
-  },
-  {
-    "countryCode": "GNB",
-    "countryName": "Guinea-Bissau",
-    "gdpPerCapita": 2191.164859
-  },
-  {
-    "countryCode": "GNQ",
-    "countryName": "Equatorial Guinea",
-    "gdpPerCapita": 17620.74097
-  },
-  {
-    "countryCode": "GRC",
-    "countryName": "Greece",
-    "gdpPerCapita": 38922.47423
-  },
-  {
-    "countryCode": "GRD",
-    "countryName": "Grenada",
-    "gdpPerCapita": 17082.89267
-  },
-  {
-    "countryCode": "GRL",
-    "countryName": "Greenland",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "GTM",
-    "countryName": "Guatemala",
-    "gdpPerCapita": 10821.75545
-  },
-  {
-    "countryCode": "GUM",
-    "countryName": "Guam",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "GUY",
-    "countryName": "Guyana",
-    "gdpPerCapita": 42089.90036
-  },
-  {
-    "countryCode": "HIC",
-    "countryName": "High income",
-    "gdpPerCapita": 62326.08087
-  },
-  {
-    "countryCode": "HKG",
-    "countryName": "Hong Kong SAR, China",
-    "gdpPerCapita": 69072.31048
-  },
-  {
-    "countryCode": "HND",
-    "countryName": "Honduras",
-    "gdpPerCapita": 6743.330064
-  },
-  {
-    "countryCode": "HPC",
-    "countryName": "Heavily indebted poor countries (HIPC)",
-    "gdpPerCapita": 3045.953859
-  },
-  {
-    "countryCode": "HRV",
-    "countryName": "Croatia",
-    "gdpPerCapita": 42171.1848
-  },
-  {
-    "countryCode": "HTI",
-    "countryName": "Haiti",
-    "gdpPerCapita": 3306.170824
-  },
-  {
-    "countryCode": "HUN",
-    "countryName": "Hungary",
-    "gdpPerCapita": 43659.45077
-  },
-  {
-    "countryCode": "IBD",
-    "countryName": "IBRD only",
-    "gdpPerCapita": 17117.69301
-  },
-  {
-    "countryCode": "IBT",
-    "countryName": "IDA & IBRD total",
-    "gdpPerCapita": 13727.71943
-  },
-  {
-    "countryCode": "IDA",
-    "countryName": "IDA total",
-    "gdpPerCapita": 4683.895743
-  },
-  {
-    "countryCode": "IDB",
-    "countryName": "IDA blend",
-    "gdpPerCapita": 6087.55498
-  },
-  {
-    "countryCode": "IDN",
-    "countryName": "Indonesia",
-    "gdpPerCapita": 14657.78234
-  },
-  {
-    "countryCode": "IDX",
-    "countryName": "IDA only",
-    "gdpPerCapita": 4007.488788
-  },
-  {
-    "countryCode": "IMN",
-    "countryName": "Isle of Man",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "IND",
-    "countryName": "India",
-    "gdpPerCapita": 8400.382848
-  },
-  {
-    "countryCode": "INX",
-    "countryName": "Not classified",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "IRL",
-    "countryName": "Ireland",
-    "gdpPerCapita": 133822.7587
-  },
-  {
-    "countryCode": "IRN",
-    "countryName": "Iran, Islamic Rep.",
-    "gdpPerCapita": 18261.84846
-  },
-  {
-    "countryCode": "IRQ",
-    "countryName": "Iraq",
-    "gdpPerCapita": 10865.42008
-  },
-  {
-    "countryCode": "ISL",
-    "countryName": "Iceland",
-    "gdpPerCapita": 71840.12649
-  },
-  {
-    "countryCode": "ISR",
-    "countryName": "Israel",
-    "gdpPerCapita": 52133.60932
-  },
-  {
-    "countryCode": "ITA",
-    "countryName": "Italy",
-    "gdpPerCapita": 55442.07843
-  },
-  {
-    "countryCode": "JAM",
-    "countryName": "Jamaica",
-    "gdpPerCapita": 11938.90097
-  },
-  {
-    "countryCode": "JOR",
-    "countryName": "Jordan",
-    "gdpPerCapita": 11209.89768
-  },
-  {
-    "countryCode": "JPN",
-    "countryName": "Japan",
-    "gdpPerCapita": 46850.08439
-  },
-  {
-    "countryCode": "KAZ",
-    "countryName": "Kazakhstan",
-    "gdpPerCapita": 30820.08578
-  },
-  {
-    "countryCode": "KEN",
-    "countryName": "Kenya",
-    "gdpPerCapita": 5765.819497
-  },
-  {
-    "countryCode": "KGZ",
-    "countryName": "Kyrgyz Republic",
-    "gdpPerCapita": 5988.60618
-  },
-  {
-    "countryCode": "KHM",
-    "countryName": "Cambodia",
-    "gdpPerCapita": 5355.171908
-  },
-  {
-    "countryCode": "KIR",
-    "countryName": "Kiribati",
-    "gdpPerCapita": 2365.509923
-  },
-  {
-    "countryCode": "KNA",
-    "countryName": "St. Kitts and Nevis",
-    "gdpPerCapita": 33981.8396
-  },
-  {
-    "countryCode": "KOR",
-    "countryName": "Korea, Rep.",
-    "gdpPerCapita": 51666.37504
-  },
-  {
-    "countryCode": "KWT",
-    "countryName": "Kuwait",
-    "gdpPerCapita": 58349.21141
-  },
-  {
-    "countryCode": "LAC",
-    "countryName": "Latin America & Caribbean (excluding high income)",
-    "gdpPerCapita": 18808.4262
-  },
-  {
-    "countryCode": "LAO",
-    "countryName": "Lao PDR",
-    "gdpPerCapita": 9387.374412
-  },
-  {
-    "countryCode": "LBN",
-    "countryName": "Lebanon",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "LBR",
-    "countryName": "Liberia",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "LBY",
-    "countryName": "Libya",
-    "gdpPerCapita": 23382.73241
-  },
-  {
-    "countryCode": "LCA",
-    "countryName": "St. Lucia",
-    "gdpPerCapita": 17835.69754
-  },
-  {
-    "countryCode": "LCN",
-    "countryName": "Latin America & Caribbean",
-    "gdpPerCapita": 19704.37125
-  },
-  {
-    "countryCode": "LDC",
-    "countryName": "Least developed countries: UN classification",
-    "gdpPerCapita": 3687.825855
-  },
-  {
-    "countryCode": "LIC",
-    "countryName": "Low income",
-    "gdpPerCapita": 2255.912834
-  },
-  {
-    "countryCode": "LIE",
-    "countryName": "Liechtenstein",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "LKA",
-    "countryName": "Sri Lanka",
-    "gdpPerCapita": 14410.18802
-  },
-  {
-    "countryCode": "LMC",
-    "countryName": "Lower middle income",
-    "gdpPerCapita": 8430.469072
-  },
-  {
-    "countryCode": "LMY",
-    "countryName": "Low & middle income",
-    "gdpPerCapita": 13255.22018
-  },
-  {
-    "countryCode": "LSO",
-    "countryName": "Lesotho",
-    "gdpPerCapita": 2646.175924
-  },
-  {
-    "countryCode": "LTE",
-    "countryName": "Late-demographic dividend",
-    "gdpPerCapita": 22834.10126
-  },
-  {
-    "countryCode": "LTU",
-    "countryName": "Lithuania",
-    "gdpPerCapita": 50968.93939
-  },
-  {
-    "countryCode": "LUX",
-    "countryName": "Luxembourg",
-    "gdpPerCapita": 146457.0205
-  },
-  {
-    "countryCode": "LVA",
-    "countryName": "Latvia",
-    "gdpPerCapita": 41624.65676
-  },
-  {
-    "countryCode": "MAC",
-    "countryName": "Macao SAR, China",
-    "gdpPerCapita": 61230.96247
-  },
-  {
-    "countryCode": "MAF",
-    "countryName": "St. Martin (French part)",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "MAR",
-    "countryName": "Morocco",
-    "gdpPerCapita": 9547.664063
-  },
-  {
-    "countryCode": "MCO",
-    "countryName": "Monaco",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "MDA",
-    "countryName": "Moldova",
-    "gdpPerCapita": 15719.23249
-  },
-  {
-    "countryCode": "MDG",
-    "countryName": "Madagascar",
-    "gdpPerCapita": 1774.656304
-  },
-  {
-    "countryCode": "MDV",
-    "countryName": "Maldives",
-    "gdpPerCapita": 25124.60945
-  },
-  {
-    "countryCode": "MEA",
-    "countryName": "Middle East & North Africa",
-    "gdpPerCapita": 19806.50588
-  },
-  {
-    "countryCode": "MEX",
-    "countryName": "Mexico",
-    "gdpPerCapita": 23900.37992
-  },
-  {
-    "countryCode": "MHL",
-    "countryName": "Marshall Islands",
-    "gdpPerCapita": 7092.027364
-  },
-  {
-    "countryCode": "MIC",
-    "countryName": "Middle income",
-    "gdpPerCapita": 14558.32635
-  },
-  {
-    "countryCode": "MKD",
-    "countryName": "North Macedonia",
-    "gdpPerCapita": 21304.46201
-  },
-  {
-    "countryCode": "MLI",
-    "countryName": "Mali",
-    "gdpPerCapita": 2518.947283
-  },
-  {
-    "countryCode": "MLT",
-    "countryName": "Malta",
-    "gdpPerCapita": 58546.92442
-  },
-  {
-    "countryCode": "MMR",
-    "countryName": "Myanmar",
-    "gdpPerCapita": 5019.739732
-  },
-  {
-    "countryCode": "MNA",
-    "countryName": "Middle East & North Africa (excluding high income)",
-    "gdpPerCapita": 12816.65512
-  },
-  {
-    "countryCode": "MNE",
-    "countryName": "Montenegro",
-    "gdpPerCapita": 28324.56869
-  },
-  {
-    "countryCode": "MNG",
-    "countryName": "Mongolia",
-    "gdpPerCapita": 14260.30965
-  },
-  {
-    "countryCode": "MNP",
-    "countryName": "Northern Mariana Islands",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "MOZ",
-    "countryName": "Mozambique",
-    "gdpPerCapita": 1477.3494
-  },
-  {
-    "countryCode": "MRT",
-    "countryName": "Mauritania",
-    "gdpPerCapita": 6295.780998
-  },
-  {
-    "countryCode": "MUS",
-    "countryName": "Mauritius",
-    "gdpPerCapita": 26979.05322
-  },
-  {
-    "countryCode": "MWI",
-    "countryName": "Malawi",
-    "gdpPerCapita": 1732.604111
-  },
-  {
-    "countryCode": "MYS",
-    "countryName": "Malaysia",
-    "gdpPerCapita": 33525.30125
-  },
-  {
-    "countryCode": "NAC",
-    "countryName": "North America",
-    "gdpPerCapita": 74769.64045
-  },
-  {
-    "countryCode": "NAM",
-    "countryName": "Namibia",
-    "gdpPerCapita": 11531.30052
-  },
-  {
-    "countryCode": "NCL",
-    "countryName": "New Caledonia",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "NER",
-    "countryName": "Niger",
-    "gdpPerCapita": 1505.542648
-  },
-  {
-    "countryCode": "NGA",
-    "countryName": "Nigeria",
-    "gdpPerCapita": 5862.23507
-  },
-  {
-    "countryCode": "NIC",
-    "countryName": "Nicaragua",
-    "gdpPerCapita": 6877.070832
-  },
-  {
-    "countryCode": "NLD",
-    "countryName": "Netherlands",
-    "gdpPerCapita": 74541.79924
-  },
-  {
-    "countryCode": "NOR",
-    "countryName": "Norway",
-    "gdpPerCapita": 121259.24
-  },
-  {
-    "countryCode": "NPL",
-    "countryName": "Nepal",
-    "gdpPerCapita": 4726.606504
-  },
-  {
-    "countryCode": "NRU",
-    "countryName": "Nauru",
-    "gdpPerCapita": 13021.39887
-  },
-  {
-    "countryCode": "NZL",
-    "countryName": "New Zealand",
-    "gdpPerCapita": 52547.01177
-  },
-  {
-    "countryCode": "OED",
-    "countryName": "OECD members",
-    "gdpPerCapita": 55671.85774
-  },
-  {
-    "countryCode": "OMN",
-    "countryName": "Oman",
-    "gdpPerCapita": 41738.16078
-  },
-  {
-    "countryCode": "OSS",
-    "countryName": "Other small states",
-    "gdpPerCapita": 26601.85791
-  },
-  {
-    "countryCode": "PAK",
-    "countryName": "Pakistan",
-    "gdpPerCapita": 6351.002523
-  },
-  {
-    "countryCode": "PAN",
-    "countryName": "Panama",
-    "gdpPerCapita": 39292.68751
-  },
-  {
-    "countryCode": "PER",
-    "countryName": "Peru",
-    "gdpPerCapita": 15052.5031
-  },
-  {
-    "countryCode": "PHL",
-    "countryName": "Philippines",
-    "gdpPerCapita": 10136.55271
-  },
-  {
-    "countryCode": "PLW",
-    "countryName": "Palau",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "PNG",
-    "countryName": "Papua New Guinea",
-    "gdpPerCapita": 4432.789618
-  },
-  {
-    "countryCode": "POL",
-    "countryName": "Poland",
-    "gdpPerCapita": 46609.60626
-  },
-  {
-    "countryCode": "PRE",
-    "countryName": "Pre-demographic dividend",
-    "gdpPerCapita": 4005.046273
-  },
-  {
-    "countryCode": "PRI",
-    "countryName": "Puerto Rico",
-    "gdpPerCapita": 40510.99243
-  },
-  {
-    "countryCode": "PRK",
-    "countryName": "Korea, Dem. People's Rep.",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "PRT",
-    "countryName": "Portugal",
-    "gdpPerCapita": 44484.29744
-  },
-  {
-    "countryCode": "PRY",
-    "countryName": "Paraguay",
-    "gdpPerCapita": 15982.60444
-  },
-  {
-    "countryCode": "PSE",
-    "countryName": "West Bank and Gaza",
-    "gdpPerCapita": 6759.021598
-  },
-  {
-    "countryCode": "PSS",
-    "countryName": "Pacific island small states",
-    "gdpPerCapita": 7742.124107
-  },
-  {
-    "countryCode": "PST",
-    "countryName": "Post-demographic dividend",
-    "gdpPerCapita": 60837.20809
-  },
-  {
-    "countryCode": "PYF",
-    "countryName": "French Polynesia",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "QAT",
-    "countryName": "Qatar",
-    "gdpPerCapita": 114049.228
-  },
-  {
-    "countryCode": "ROU",
-    "countryName": "Romania",
-    "gdpPerCapita": 43239.64299
-  },
-  {
-    "countryCode": "RUS",
-    "countryName": "Russian Federation",
-    "gdpPerCapita": 34637.76172
-  },
-  {
-    "countryCode": "RWA",
-    "countryName": "Rwanda",
-    "gdpPerCapita": 2793.185021
-  },
-  {
-    "countryCode": "SAS",
-    "countryName": "South Asia",
-    "gdpPerCapita": 7937.050741
-  },
-  {
-    "countryCode": "SAU",
-    "countryName": "Saudi Arabia",
-    "gdpPerCapita": 59279.89005
-  },
-  {
-    "countryCode": "SDN",
-    "countryName": "Sudan",
-    "gdpPerCapita": 4217.421875
-  },
-  {
-    "countryCode": "SEN",
-    "countryName": "Senegal",
-    "gdpPerCapita": 4210.359279
-  },
-  {
-    "countryCode": "SGP",
-    "countryName": "Singapore",
-    "gdpPerCapita": 127606.8148
-  },
-  {
-    "countryCode": "SLB",
-    "countryName": "Solomon Islands",
-    "gdpPerCapita": 2654.970328
-  },
-  {
-    "countryCode": "SLE",
-    "countryName": "Sierra Leone",
-    "gdpPerCapita": 1930.900727
-  },
-  {
-    "countryCode": "SLV",
-    "countryName": "El Salvador",
-    "gdpPerCapita": 11098.09839
-  },
-  {
-    "countryCode": "SMR",
-    "countryName": "San Marino",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "SOM",
-    "countryName": "Somalia",
-    "gdpPerCapita": 1710.962281
-  },
-  {
-    "countryCode": "SRB",
-    "countryName": "Serbia",
-    "gdpPerCapita": 25061.84798
-  },
-  {
-    "countryCode": "SSA",
-    "countryName": "Sub-Saharan Africa (excluding high income)",
-    "gdpPerCapita": 4432.190448
-  },
-  {
-    "countryCode": "SSD",
-    "countryName": "South Sudan",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "SSF",
-    "countryName": "Sub-Saharan Africa",
-    "gdpPerCapita": 4434.699139
-  },
-  {
-    "countryCode": "SST",
-    "countryName": "Small states",
-    "gdpPerCapita": 24530.24986
-  },
-  {
-    "countryCode": "STP",
-    "countryName": "Sao Tome and Principe",
-    "gdpPerCapita": 4061.808081
-  },
-  {
-    "countryCode": "SUR",
-    "countryName": "Suriname",
-    "gdpPerCapita": 17773.48396
-  },
-  {
-    "countryCode": "SVK",
-    "countryName": "Slovak Republic",
-    "gdpPerCapita": 41013.38981
-  },
-  {
-    "countryCode": "SVN",
-    "countryName": "Slovenia",
-    "gdpPerCapita": 51281.85751
-  },
-  {
-    "countryCode": "SWE",
-    "countryName": "Sweden",
-    "gdpPerCapita": 68178.03037
-  },
-  {
-    "countryCode": "SWZ",
-    "countryName": "Eswatini",
-    "gdpPerCapita": 10699.54236
-  },
-  {
-    "countryCode": "SXM",
-    "countryName": "Sint Maarten (Dutch part)",
-    "gdpPerCapita": 49540.86453
-  },
-  {
-    "countryCode": "SYC",
-    "countryName": "Seychelles",
-    "gdpPerCapita": 29771.74661
-  },
-  {
-    "countryCode": "SYR",
-    "countryName": "Syrian Arab Republic",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "TCA",
-    "countryName": "Turks and Caicos Islands",
-    "gdpPerCapita": 24471.51787
-  },
-  {
-    "countryCode": "TCD",
-    "countryName": "Chad",
-    "gdpPerCapita": 1668.575526
-  },
-  {
-    "countryCode": "TEA",
-    "countryName": "East Asia & Pacific (IDA & IBRD countries)",
-    "gdpPerCapita": 19039.58867
-  },
-  {
-    "countryCode": "TEC",
-    "countryName": "Europe & Central Asia (IDA & IBRD countries)",
-    "gdpPerCapita": 30175.91741
-  },
-  {
-    "countryCode": "TGO",
-    "countryName": "Togo",
-    "gdpPerCapita": 2601.750009
-  },
-  {
-    "countryCode": "THA",
-    "countryName": "Thailand",
-    "gdpPerCapita": 20679.11948
-  },
-  {
-    "countryCode": "TJK",
-    "countryName": "Tajikistan",
-    "gdpPerCapita": 4886.743992
-  },
-  {
-    "countryCode": "TKM",
-    "countryName": "Turkmenistan",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "TLA",
-    "countryName": "Latin America & the Caribbean (IDA & IBRD countries)",
-    "gdpPerCapita": 19611.98528
-  },
-  {
-    "countryCode": "TLS",
-    "countryName": "Timor-Leste",
-    "gdpPerCapita": 4657.382251
-  },
-  {
-    "countryCode": "TMN",
-    "countryName": "Middle East & North Africa (IDA & IBRD countries)",
-    "gdpPerCapita": 12891.03238
-  },
-  {
-    "countryCode": "TON",
-    "countryName": "Tonga",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "TSA",
-    "countryName": "South Asia (IDA & IBRD)",
-    "gdpPerCapita": 7937.050741
-  },
-  {
-    "countryCode": "TSS",
-    "countryName": "Sub-Saharan Africa (IDA & IBRD countries)",
-    "gdpPerCapita": 4434.699139
-  },
-  {
-    "countryCode": "TTO",
-    "countryName": "Trinidad and Tobago",
-    "gdpPerCapita": 27515.52642
-  },
-  {
-    "countryCode": "TUN",
-    "countryName": "Tunisia",
-    "gdpPerCapita": 12483.63069
-  },
-  {
-    "countryCode": "TUR",
-    "countryName": "Turkiye",
-    "gdpPerCapita": 38355.15397
-  },
-  {
-    "countryCode": "TUV",
-    "countryName": "Tuvalu",
-    "gdpPerCapita": 5423.048668
-  },
-  {
-    "countryCode": "TZA",
-    "countryName": "Tanzania",
-    "gdpPerCapita": 3099.17334
-  },
-  {
-    "countryCode": "UGA",
-    "countryName": "Uganda",
-    "gdpPerCapita": 2693.108305
-  },
-  {
-    "countryCode": "UKR",
-    "countryName": "Ukraine",
-    "gdpPerCapita": 12675.43652
-  },
-  {
-    "countryCode": "UMC",
-    "countryName": "Upper middle income",
-    "gdpPerCapita": 21568.198
-  },
-  {
-    "countryCode": "URY",
-    "countryName": "Uruguay",
-    "gdpPerCapita": 28851.54016
-  },
-  {
-    "countryCode": "USA",
-    "countryName": "United States",
-    "gdpPerCapita": 76329.58227
-  },
-  {
-    "countryCode": "UZB",
-    "countryName": "Uzbekistan",
-    "gdpPerCapita": 9535.669691
-  },
-  {
-    "countryCode": "VCT",
-    "countryName": "St. Vincent and the Grenadines",
-    "gdpPerCapita": 17212.4297
-  },
-  {
-    "countryCode": "VEN",
-    "countryName": "Venezuela, RB",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "VGB",
-    "countryName": "British Virgin Islands",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "VIR",
-    "countryName": "Virgin Islands (U.S.)",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "VNM",
-    "countryName": "Viet Nam",
-    "gdpPerCapita": 13461.00897
-  },
-  {
-    "countryCode": "VUT",
-    "countryName": "Vanuatu",
-    "gdpPerCapita": 3290.569371
-  },
-  {
-    "countryCode": "WLD",
-    "countryName": "World",
-    "gdpPerCapita": 20945.6713
-  },
-  {
-    "countryCode": "WSM",
-    "countryName": "Samoa",
-    "gdpPerCapita": 6089.558852
-  },
-  {
-    "countryCode": "XKX",
-    "countryName": "Kosovo",
-    "gdpPerCapita": 14971.15206
-  },
-  {
-    "countryCode": "YEM",
-    "countryName": "Yemen, Rep.",
-    "gdpPerCapita": ""
-  },
-  {
-    "countryCode": "ZAF",
-    "countryName": "South Africa",
-    "gdpPerCapita": 15920.42541
-  },
-  {
-    "countryCode": "ZMB",
-    "countryName": "Zambia",
-    "gdpPerCapita": 3975.600639
-  },
-  {
-    "countryCode": "ZWE",
-    "countryName": "Zimbabwe",
-    "gdpPerCapita": 2607.927678
-  }
+  { "countryCode": "AW", "countryName": "Aruba", "gdpPerCapita": 48750.31601 },
+  { "countryCode": "AF", "countryName": "Afghanistan", "gdpPerCapita": null },
+  { "countryCode": "AO", "countryName": "Angola", "gdpPerCapita": 6976.006469 },
+  { "countryCode": "AL", "countryName": "Albania", "gdpPerCapita": 19496.21485 },
+  { "countryCode": "AD", "countryName": "Andorra", "gdpPerCapita": null },
+  { "countryCode": "AE", "countryName": "United Arab Emirates", "gdpPerCapita": 88488.98461 },
+  { "countryCode": "AR", "countryName": "Argentina", "gdpPerCapita": 26530.32312 },
+  { "countryCode": "AM", "countryName": "Armenia", "gdpPerCapita": 18965.72757 },
+  { "countryCode": "AS", "countryName": "American Samoa", "gdpPerCapita": null },
+  { "countryCode": "AG", "countryName": "Antigua and Barbuda", "gdpPerCapita": 26365.46898 },
+  { "countryCode": "AU", "countryName": "Australia", "gdpPerCapita": 65388.21596 },
+  { "countryCode": "AT", "countryName": "Austria", "gdpPerCapita": 70975.72063 },
+  { "countryCode": "AZ", "countryName": "Azerbaijan", "gdpPerCapita": 17828.60839 },
+  { "countryCode": "BI", "countryName": "Burundi", "gdpPerCapita": 836.4645675 },
+  { "countryCode": "BE", "countryName": "Belgium", "gdpPerCapita": 68253.33207 },
+  { "countryCode": "BJ", "countryName": "Benin", "gdpPerCapita": 4057.451755 },
+  { "countryCode": "BF", "countryName": "Burkina Faso", "gdpPerCapita": 2549.934982 },
+  { "countryCode": "BD", "countryName": "Bangladesh", "gdpPerCapita": 7397.545737 },
+  { "countryCode": "BG", "countryName": "Bulgaria", "gdpPerCapita": 35469.87165 },
+  { "countryCode": "BH", "countryName": "Bahrain", "gdpPerCapita": 61248.18013 },
+  { "countryCode": "BS", "countryName": "Bahamas, The", "gdpPerCapita": 40942.77672 },
+  { "countryCode": "BA", "countryName": "Bosnia and Herzegovina", "gdpPerCapita": 20950.19985 },
+  { "countryCode": "BY", "countryName": "Belarus", "gdpPerCapita": 22550.64044 },
+  { "countryCode": "BZ", "countryName": "Belize", "gdpPerCapita": 11189.86408 },
+  { "countryCode": "BM", "countryName": "Bermuda", "gdpPerCapita": 95868.78026 },
+  { "countryCode": "BO", "countryName": "Bolivia", "gdpPerCapita": 9737.676068 },
+  { "countryCode": "BR", "countryName": "Brazil", "gdpPerCapita": 17827.64105 },
+  { "countryCode": "BB", "countryName": "Barbados", "gdpPerCapita": 18210.1343 },
+  { "countryCode": "BN", "countryName": "Brunei Darussalam", "gdpPerCapita": 69297.93271 },
+  { "countryCode": "BT", "countryName": "Bhutan", "gdpPerCapita": null },
+  { "countryCode": "BW", "countryName": "Botswana", "gdpPerCapita": 18329.84926 },
+  { "countryCode": "CF", "countryName": "Central African Republic", "gdpPerCapita": 973.2462704 },
+  { "countryCode": "CA", "countryName": "Canada", "gdpPerCapita": 61380.19839 },
+  { "countryCode": "CH", "countryName": "Switzerland", "gdpPerCapita": 90746.45328 },
+  { "countryCode": "CL", "countryName": "Chile", "gdpPerCapita": 31436.57725 },
+  { "countryCode": "CN", "countryName": "China", "gdpPerCapita": 21482.56218 },
+  { "countryCode": "CI", "countryName": "Cote d'Ivoire", "gdpPerCapita": 6540.462355 },
+  { "countryCode": "CM", "countryName": "Cameroon", "gdpPerCapita": 4398.048919 },
+  { "countryCode": "CD", "countryName": "Congo, Dem. Rep.", "gdpPerCapita": 1337.834149 },
+  { "countryCode": "CG", "countryName": "Congo, Rep.", "gdpPerCapita": 4335.055001 },
+  { "countryCode": "CO", "countryName": "Colombia", "gdpPerCapita": 20951.54073 },
+  { "countryCode": "KM", "countryName": "Comoros", "gdpPerCapita": 3833.738563 },
+  { "countryCode": "CV", "countryName": "Cabo Verde", "gdpPerCapita": 8715.995684 },
+  { "countryCode": "CR", "countryName": "Costa Rica", "gdpPerCapita": 26181.13829 },
+  { "countryCode": "CU", "countryName": "Cuba", "gdpPerCapita": null },
+  { "countryCode": "CW", "countryName": "Curacao", "gdpPerCapita": 27302.21764 },
+  { "countryCode": "KY", "countryName": "Cayman Islands", "gdpPerCapita": 84279.61998 },
+  { "countryCode": "CY", "countryName": "Cyprus", "gdpPerCapita": 53785.74609 },
+  { "countryCode": "CZ", "countryName": "Czechia", "gdpPerCapita": 51695.18166 },
+  { "countryCode": "DE", "countryName": "Germany", "gdpPerCapita": 66616.02225 },
+  { "countryCode": "DJ", "countryName": "Djibouti", "gdpPerCapita": 5893.238371 },
+  { "countryCode": "DM", "countryName": "Dominica", "gdpPerCapita": 13540.22461 },
+  { "countryCode": "DK", "countryName": "Denmark", "gdpPerCapita": 77953.67866 },
+  { "countryCode": "DO", "countryName": "Dominican Republic", "gdpPerCapita": 22841.0898 },
+  { "countryCode": "DZ", "countryName": "Algeria", "gdpPerCapita": 13226.78957 },
+  { "countryCode": "EC", "countryName": "Ecuador", "gdpPerCapita": 12826.36135 },
+  { "countryCode": "EG", "countryName": "Egypt, Arab Rep.", "gdpPerCapita": 15095.99005 },
+  { "countryCode": "ER", "countryName": "Eritrea", "gdpPerCapita": null },
+  { "countryCode": "ES", "countryName": "Spain", "gdpPerCapita": 48685.49631 },
+  { "countryCode": "EE", "countryName": "Estonia", "gdpPerCapita": 48168.3971 },
+  { "countryCode": "ET", "countryName": "Ethiopia", "gdpPerCapita": 2812.513134 },
+  { "countryCode": "FI", "countryName": "Finland", "gdpPerCapita": 62823.03529 },
+  { "countryCode": "FJ", "countryName": "Fiji", "gdpPerCapita": 14632.21006 },
+  { "countryCode": "FR", "countryName": "France", "gdpPerCapita": 57594.03402 },
+  { "countryCode": "FO", "countryName": "Faroe Islands", "gdpPerCapita": null },
+  { "countryCode": "FM", "countryName": "Micronesia, Fed. Sts.", "gdpPerCapita": 3854.877001 },
+  { "countryCode": "GA", "countryName": "Gabon", "gdpPerCapita": 16464.97432 },
+  { "countryCode": "GB", "countryName": "United Kingdom", "gdpPerCapita": 57460.50575 },
+  { "countryCode": "GE", "countryName": "Georgia", "gdpPerCapita": 20172.07646 },
+  { "countryCode": "GH", "countryName": "Ghana", "gdpPerCapita": 6473.089846 },
+  { "countryCode": "GI", "countryName": "Gibraltar", "gdpPerCapita": null },
+  { "countryCode": "GN", "countryName": "Guinea", "gdpPerCapita": 3188.075104 },
+  { "countryCode": "GM", "countryName": "Gambia, The", "gdpPerCapita": 2496.495435 },
+  { "countryCode": "GW", "countryName": "Guinea-Bissau", "gdpPerCapita": 2191.164859 },
+  { "countryCode": "GQ", "countryName": "Equatorial Guinea", "gdpPerCapita": 17620.74097 },
+  { "countryCode": "GR", "countryName": "Greece", "gdpPerCapita": 38922.47423 },
+  { "countryCode": "GD", "countryName": "Grenada", "gdpPerCapita": 17082.89267 },
+  { "countryCode": "GL", "countryName": "Greenland", "gdpPerCapita": null },
+  { "countryCode": "GT", "countryName": "Guatemala", "gdpPerCapita": 10821.75545 },
+  { "countryCode": "GU", "countryName": "Guam", "gdpPerCapita": null },
+  { "countryCode": "GY", "countryName": "Guyana", "gdpPerCapita": 42089.90036 },
+  { "countryCode": "HK", "countryName": "Hong Kong SAR, China", "gdpPerCapita": 69072.31048 },
+  { "countryCode": "HN", "countryName": "Honduras", "gdpPerCapita": 6743.330064 },
+  { "countryCode": "HR", "countryName": "Croatia", "gdpPerCapita": 42171.1848 },
+  { "countryCode": "HT", "countryName": "Haiti", "gdpPerCapita": 3306.170824 },
+  { "countryCode": "HU", "countryName": "Hungary", "gdpPerCapita": 43659.45077 },
+  { "countryCode": "ID", "countryName": "Indonesia", "gdpPerCapita": 14657.78234 },
+  { "countryCode": "IM", "countryName": "Isle of Man", "gdpPerCapita": null },
+  { "countryCode": "IN", "countryName": "India", "gdpPerCapita": 8400.382848 },
+  { "countryCode": "IE", "countryName": "Ireland", "gdpPerCapita": 133822.7587 },
+  { "countryCode": "IR", "countryName": "Iran, Islamic Rep.", "gdpPerCapita": 18261.84846 },
+  { "countryCode": "IQ", "countryName": "Iraq", "gdpPerCapita": 10865.42008 },
+  { "countryCode": "IS", "countryName": "Iceland", "gdpPerCapita": 71840.12649 },
+  { "countryCode": "IL", "countryName": "Israel", "gdpPerCapita": 52133.60932 },
+  { "countryCode": "IT", "countryName": "Italy", "gdpPerCapita": 55442.07843 },
+  { "countryCode": "JM", "countryName": "Jamaica", "gdpPerCapita": 11938.90097 },
+  { "countryCode": "JO", "countryName": "Jordan", "gdpPerCapita": 11209.89768 },
+  { "countryCode": "JP", "countryName": "Japan", "gdpPerCapita": 46850.08439 },
+  { "countryCode": "KZ", "countryName": "Kazakhstan", "gdpPerCapita": 30820.08578 },
+  { "countryCode": "KE", "countryName": "Kenya", "gdpPerCapita": 5765.819497 },
+  { "countryCode": "KG", "countryName": "Kyrgyz Republic", "gdpPerCapita": 5988.60618 },
+  { "countryCode": "KH", "countryName": "Cambodia", "gdpPerCapita": 5355.171908 },
+  { "countryCode": "KI", "countryName": "Kiribati", "gdpPerCapita": 2365.509923 },
+  { "countryCode": "KN", "countryName": "St. Kitts and Nevis", "gdpPerCapita": 33981.8396 },
+  { "countryCode": "KR", "countryName": "Korea, Rep.", "gdpPerCapita": 51666.37504 },
+  { "countryCode": "KW", "countryName": "Kuwait", "gdpPerCapita": 58349.21141 },
+  { "countryCode": "LA", "countryName": "Lao PDR", "gdpPerCapita": 9387.374412 },
+  { "countryCode": "LB", "countryName": "Lebanon", "gdpPerCapita": null },
+  { "countryCode": "LR", "countryName": "Liberia", "gdpPerCapita": null },
+  { "countryCode": "LY", "countryName": "Libya", "gdpPerCapita": 23382.73241 },
+  { "countryCode": "LC", "countryName": "St. Lucia", "gdpPerCapita": 17835.69754 },
+  { "countryCode": "LI", "countryName": "Liechtenstein", "gdpPerCapita": null },
+  { "countryCode": "LK", "countryName": "Sri Lanka", "gdpPerCapita": 14410.18802 },
+  { "countryCode": "LS", "countryName": "Lesotho", "gdpPerCapita": 2646.175924 },
+  { "countryCode": "LT", "countryName": "Lithuania", "gdpPerCapita": 50968.93939 },
+  { "countryCode": "LU", "countryName": "Luxembourg", "gdpPerCapita": 146457.0205 },
+  { "countryCode": "LV", "countryName": "Latvia", "gdpPerCapita": 41624.65676 },
+  { "countryCode": "MO", "countryName": "Macao SAR, China", "gdpPerCapita": 61230.96247 },
+  { "countryCode": "MF", "countryName": "St. Martin (French part)", "gdpPerCapita": null },
+  { "countryCode": "MA", "countryName": "Morocco", "gdpPerCapita": 9547.664063 },
+  { "countryCode": "MC", "countryName": "Monaco", "gdpPerCapita": null },
+  { "countryCode": "MD", "countryName": "Moldova", "gdpPerCapita": 15719.23249 },
+  { "countryCode": "MG", "countryName": "Madagascar", "gdpPerCapita": 1774.656304 },
+  { "countryCode": "MV", "countryName": "Maldives", "gdpPerCapita": 25124.60945 },
+  { "countryCode": "MX", "countryName": "Mexico", "gdpPerCapita": 23900.37992 },
+  { "countryCode": "MH", "countryName": "Marshall Islands", "gdpPerCapita": 7092.027364 },
+  { "countryCode": "MK", "countryName": "North Macedonia", "gdpPerCapita": 21304.46201 },
+  { "countryCode": "ML", "countryName": "Mali", "gdpPerCapita": 2518.947283 },
+  { "countryCode": "MT", "countryName": "Malta", "gdpPerCapita": 58546.92442 },
+  { "countryCode": "MM", "countryName": "Myanmar", "gdpPerCapita": 5019.739732 },
+  { "countryCode": "ME", "countryName": "Montenegro", "gdpPerCapita": 28324.56869 },
+  { "countryCode": "MN", "countryName": "Mongolia", "gdpPerCapita": 14260.30965 },
+  { "countryCode": "MP", "countryName": "Northern Mariana Islands", "gdpPerCapita": null },
+  { "countryCode": "MZ", "countryName": "Mozambique", "gdpPerCapita": 1477.3494 },
+  { "countryCode": "MR", "countryName": "Mauritania", "gdpPerCapita": 6295.780998 },
+  { "countryCode": "MU", "countryName": "Mauritius", "gdpPerCapita": 26979.05322 },
+  { "countryCode": "MW", "countryName": "Malawi", "gdpPerCapita": 1732.604111 },
+  { "countryCode": "MY", "countryName": "Malaysia", "gdpPerCapita": 33525.30125 },
+  { "countryCode": "NA", "countryName": "Namibia", "gdpPerCapita": 11531.30052 },
+  { "countryCode": "NC", "countryName": "New Caledonia", "gdpPerCapita": null },
+  { "countryCode": "NE", "countryName": "Niger", "gdpPerCapita": 1505.542648 },
+  { "countryCode": "NG", "countryName": "Nigeria", "gdpPerCapita": 5862.23507 },
+  { "countryCode": "NI", "countryName": "Nicaragua", "gdpPerCapita": 6877.070832 },
+  { "countryCode": "NL", "countryName": "Netherlands", "gdpPerCapita": 74541.79924 },
+  { "countryCode": "NO", "countryName": "Norway", "gdpPerCapita": 121259.24 },
+  { "countryCode": "NP", "countryName": "Nepal", "gdpPerCapita": 4726.606504 },
+  { "countryCode": "NR", "countryName": "Nauru", "gdpPerCapita": 13021.39887 },
+  { "countryCode": "NZ", "countryName": "New Zealand", "gdpPerCapita": 52547.01177 },
+  { "countryCode": "OM", "countryName": "Oman", "gdpPerCapita": 41738.16078 },
+  { "countryCode": "PK", "countryName": "Pakistan", "gdpPerCapita": 6351.002523 },
+  { "countryCode": "PA", "countryName": "Panama", "gdpPerCapita": 39292.68751 },
+  { "countryCode": "PE", "countryName": "Peru", "gdpPerCapita": 15052.5031 },
+  { "countryCode": "PH", "countryName": "Philippines", "gdpPerCapita": 10136.55271 },
+  { "countryCode": "PW", "countryName": "Palau", "gdpPerCapita": null },
+  { "countryCode": "PG", "countryName": "Papua New Guinea", "gdpPerCapita": 4432.789618 },
+  { "countryCode": "PL", "countryName": "Poland", "gdpPerCapita": 46609.60626 },
+  { "countryCode": "PR", "countryName": "Puerto Rico", "gdpPerCapita": 40510.99243 },
+  { "countryCode": "KP", "countryName": "Korea, Dem. People's Rep.", "gdpPerCapita": null },
+  { "countryCode": "PT", "countryName": "Portugal", "gdpPerCapita": 44484.29744 },
+  { "countryCode": "PY", "countryName": "Paraguay", "gdpPerCapita": 15982.60444 },
+  { "countryCode": "PS", "countryName": "West Bank and Gaza", "gdpPerCapita": 6759.021598 },
+  { "countryCode": "PF", "countryName": "French Polynesia", "gdpPerCapita": null },
+  { "countryCode": "QA", "countryName": "Qatar", "gdpPerCapita": 114049.228 },
+  { "countryCode": "RO", "countryName": "Romania", "gdpPerCapita": 43239.64299 },
+  { "countryCode": "RU", "countryName": "Russian Federation", "gdpPerCapita": 34637.76172 },
+  { "countryCode": "RW", "countryName": "Rwanda", "gdpPerCapita": 2793.185021 },
+  { "countryCode": "SA", "countryName": "Saudi Arabia", "gdpPerCapita": 59279.89005 },
+  { "countryCode": "SD", "countryName": "Sudan", "gdpPerCapita": 4217.421875 },
+  { "countryCode": "SN", "countryName": "Senegal", "gdpPerCapita": 4210.359279 },
+  { "countryCode": "SG", "countryName": "Singapore", "gdpPerCapita": 127606.8148 },
+  { "countryCode": "SB", "countryName": "Solomon Islands", "gdpPerCapita": 2654.970328 },
+  { "countryCode": "SL", "countryName": "Sierra Leone", "gdpPerCapita": 1930.900727 },
+  { "countryCode": "SV", "countryName": "El Salvador", "gdpPerCapita": 11098.09839 },
+  { "countryCode": "SM", "countryName": "San Marino", "gdpPerCapita": null },
+  { "countryCode": "SO", "countryName": "Somalia", "gdpPerCapita": 1710.962281 },
+  { "countryCode": "RS", "countryName": "Serbia", "gdpPerCapita": 25061.84798 },
+  { "countryCode": "SS", "countryName": "South Sudan", "gdpPerCapita": null },
+  { "countryCode": "ST", "countryName": "Sao Tome and Principe", "gdpPerCapita": 4061.808081 },
+  { "countryCode": "SR", "countryName": "Suriname", "gdpPerCapita": 17773.48396 },
+  { "countryCode": "SK", "countryName": "Slovak Republic", "gdpPerCapita": 41013.38981 },
+  { "countryCode": "SI", "countryName": "Slovenia", "gdpPerCapita": 51281.85751 },
+  { "countryCode": "SE", "countryName": "Sweden", "gdpPerCapita": 68178.03037 },
+  { "countryCode": "SZ", "countryName": "Eswatini", "gdpPerCapita": 10699.54236 },
+  { "countryCode": "SX", "countryName": "Sint Maarten (Dutch part)", "gdpPerCapita": 49540.86453 },
+  { "countryCode": "SC", "countryName": "Seychelles", "gdpPerCapita": 29771.74661 },
+  { "countryCode": "SY", "countryName": "Syrian Arab Republic", "gdpPerCapita": null },
+  { "countryCode": "TC", "countryName": "Turks and Caicos Islands", "gdpPerCapita": 24471.51787 },
+  { "countryCode": "TD", "countryName": "Chad", "gdpPerCapita": 1668.575526 },
+  { "countryCode": "TG", "countryName": "Togo", "gdpPerCapita": 2601.750009 },
+  { "countryCode": "TH", "countryName": "Thailand", "gdpPerCapita": 20679.11948 },
+  { "countryCode": "TJ", "countryName": "Tajikistan", "gdpPerCapita": 4886.743992 },
+  { "countryCode": "TM", "countryName": "Turkmenistan", "gdpPerCapita": null },
+  { "countryCode": "TL", "countryName": "Timor-Leste", "gdpPerCapita": 4657.382251 },
+  { "countryCode": "TO", "countryName": "Tonga", "gdpPerCapita": null },
+  { "countryCode": "TT", "countryName": "Trinidad and Tobago", "gdpPerCapita": 27515.52642 },
+  { "countryCode": "TN", "countryName": "Tunisia", "gdpPerCapita": 12483.63069 },
+  { "countryCode": "TR", "countryName": "Turkiye", "gdpPerCapita": 38355.15397 },
+  { "countryCode": "TV", "countryName": "Tuvalu", "gdpPerCapita": 5423.048668 },
+  { "countryCode": "TZ", "countryName": "Tanzania", "gdpPerCapita": 3099.17334 },
+  { "countryCode": "UG", "countryName": "Uganda", "gdpPerCapita": 2693.108305 },
+  { "countryCode": "UA", "countryName": "Ukraine", "gdpPerCapita": 12675.43652 },
+  { "countryCode": "UY", "countryName": "Uruguay", "gdpPerCapita": 28851.54016 },
+  { "countryCode": "US", "countryName": "United States", "gdpPerCapita": 76329.58227 },
+  { "countryCode": "UZ", "countryName": "Uzbekistan", "gdpPerCapita": 9535.669691 },
+  { "countryCode": "VC", "countryName": "St. Vincent and the Grenadines", "gdpPerCapita": 17212.4297 },
+  { "countryCode": "VE", "countryName": "Venezuela, RB", "gdpPerCapita": null },
+  { "countryCode": "VG", "countryName": "British Virgin Islands", "gdpPerCapita": null },
+  { "countryCode": "VI", "countryName": "Virgin Islands (U.S.)", "gdpPerCapita": null },
+  { "countryCode": "VN", "countryName": "Viet Nam", "gdpPerCapita": 13461.00897 },
+  { "countryCode": "VU", "countryName": "Vanuatu", "gdpPerCapita": 3290.569371 },
+  { "countryCode": "WS", "countryName": "Samoa", "gdpPerCapita": 6089.558852 },
+  { "countryCode": "XK", "countryName": "Kosovo", "gdpPerCapita": 14971.15206 },
+  { "countryCode": "YE", "countryName": "Yemen, Rep.", "gdpPerCapita": null },
+  { "countryCode": "ZA", "countryName": "South Africa", "gdpPerCapita": 15920.42541 },
+  { "countryCode": "ZM", "countryName": "Zambia", "gdpPerCapita": 3975.600639 },
+  { "countryCode": "ZW", "countryName": "Zimbabwe", "gdpPerCapita": 2607.927678 }
 ]

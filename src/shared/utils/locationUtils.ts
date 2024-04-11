@@ -33,6 +33,7 @@ export const getIpLocation = (eventResponse: EventResponse): EventResponseIpInfo
   return ipLocation;
 };
 
+// Courtesy of https://dev.to/jorik/country-code-to-flag-emoji-a21
 export const getFlagEmoji = (countryCode?: string) => {
   if (!countryCode) {
     return '';
