@@ -1,18 +1,18 @@
 import { NextResponse } from 'next/server';
-import { Severity, getAndValidateFingerprintResult } from '../../../../server/checks';
+import { getAndValidateFingerprintResult } from '../../../../server/checks';
+import { getRegionalDiscount } from '../../data/getDiscountByCountry';
 
 export type ActivateRegionalPricingPayload = {
   requestId: string;
   sealedResult?: string;
 };
 
-export type ActivateRegionalPricingResponse = {
-  severity: Severity;
-  message: string;
-  data?: {
-    discount: number;
-  };
-};
+export type ActivateRegionalPricingResponse =
+  | { severity: 'success'; message: string; data: { discount: number } }
+  | {
+      severity: 'warning' | 'error';
+      message: string;
+    };
 
 const SEALED_RESULTS_SERVER_API_KEY = process.env.SEALED_RESULTS_SERVER_API_KEY;
 
@@ -64,11 +64,11 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
     );
   }
 
-  const discount = 45;
+  const discount = getRegionalDiscount(country.code);
 
   return NextResponse.json({
     severity: 'success',
     message: `Yay! We have applied a regional discount of ${discount}%. With this discount your purchase will be restricted to ${country.name}.`,
-    data: { discount: 45 },
+    data: { discount },
   });
 }
