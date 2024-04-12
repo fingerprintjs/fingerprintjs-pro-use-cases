@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { Severity } from '../../../server/checkResult';
 import { getAndValidateFingerprintResult } from '../../../server/checks';
 import { isValidPostRequest } from '../../../server/server';
-import { RealSmsPerVisitorModel, SmsVerificationModel } from '../../../server/sms-fraud/database';
+import { RealSmsPerVisitorModel, SmsVerificationDatabaseModel } from '../../../server/sms-fraud/database';
 import { ONE_SECOND_MS, readableMilliseconds } from '../../../shared/timeUtils';
 import { Op } from 'sequelize';
 import { pluralize } from '../../../shared/utils';
@@ -107,7 +107,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   }
 
   // Retrieve SMS verification requests made by the same browser today from the database, most recent first
-  const smsVerificationRequests = await SmsVerificationModel.findAll({
+  const smsVerificationRequests = await SmsVerificationDatabaseModel.findAll({
     where: {
       visitorId,
       timestamp: {
@@ -168,7 +168,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
       visitorId,
     );
 
-    await SmsVerificationModel.create({
+    await SmsVerificationDatabaseModel.create({
       visitorId: visitorId,
       phoneNumberHash: hashString(phone),
       email,

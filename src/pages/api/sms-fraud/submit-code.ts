@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { Severity } from '../../../server/checkResult';
 import { getAndValidateFingerprintResult } from '../../../server/checks';
 import { isValidPostRequest } from '../../../server/server';
-import { SmsVerificationModel } from '../../../server/sms-fraud/database';
+import { SmsVerificationDatabaseModel } from '../../../server/sms-fraud/database';
 import { Op } from 'sequelize';
 import { hashString } from '../../../server/server-utils';
 import { SMS_FRAUD_COPY } from '../../../server/sms-fraud/smsFraudConst';
@@ -43,7 +43,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   }
 
   // Retrieve SMS verification requests made by this browser to this phone number
-  const latestSmsVerificationRequest = await SmsVerificationModel.findOne({
+  const latestSmsVerificationRequest = await SmsVerificationDatabaseModel.findOne({
     where: {
       visitorId: identification?.visitorId,
       phoneNumberHash: hashString(phoneNumber),

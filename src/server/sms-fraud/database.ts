@@ -10,7 +10,7 @@ interface SmsVerificationAttributes
   code: number;
 }
 
-export const SmsVerificationModel = sequelize.define<SmsVerificationAttributes>('sms-verification', {
+export const SmsVerificationDatabaseModel = sequelize.define<SmsVerificationAttributes>('sms-verification', {
   visitorId: {
     type: DataTypes.STRING,
   },
@@ -28,7 +28,7 @@ export const SmsVerificationModel = sequelize.define<SmsVerificationAttributes>(
   },
 });
 
-SmsVerificationModel.sync({ force: false });
+SmsVerificationDatabaseModel.sync({ force: false });
 
 export type SmsVerification = Attributes<SmsVerificationAttributes>;
 
