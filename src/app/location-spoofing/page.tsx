@@ -53,8 +53,7 @@ function LocationSpoofingUseCase() {
     },
   });
 
-  const [airMaxCount, setAirMaxCount] = useState(1);
-
+  const [courseCount, setCourseCount] = useState(1);
   const [discount, setDiscount] = useState(0);
 
   const cartItems = [
@@ -64,9 +63,9 @@ function LocationSpoofingUseCase() {
       subheadline: 'Fingerprint Inc.',
       price: COURSE_PRICE,
       image: AirMax,
-      count: airMaxCount,
-      increaseCount: () => setAirMaxCount(airMaxCount + 1),
-      decreaseCount: () => setAirMaxCount(Math.max(1, airMaxCount - 1)),
+      count: courseCount,
+      increaseCount: () => setCourseCount(courseCount + 1),
+      decreaseCount: () => setCourseCount(Math.max(1, courseCount - 1)),
     },
   ];
 
