@@ -497,17 +497,17 @@ export const USE_CASES = {
     doNotMentionResetButton: true,
     instructions: [
       <>
-        Click "Apply regional discount" in the checkout form below. Assuming your VPN is off, the discount will be
-        applied.
+        Click "Activate regional pricing" in the checkout form below. Assuming your VPN is off, you will get a
+        location-based discount.
       </>,
       <>Turn on your VPN and pick an exit node different from your true location.</>,
-      <>Try applying the discount again. Your VPN usage will be detected.</>,
+      <>Try activating the discount again. You will not get the discount while using a VPN.</>,
     ],
     moreResources: [
       {
         url: 'https://fingerprint.com/blog/vpn-detection/',
         type: 'Use case tutorial',
-        title: 'VPN Detection and Location spoofing prevention',
+        title: 'VPN Detection',
       },
     ],
   },
