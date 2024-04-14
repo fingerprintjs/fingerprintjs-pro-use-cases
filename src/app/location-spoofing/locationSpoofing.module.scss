@@ -1,0 +1,66 @@
+div.wrapper {
+  max-width: 660px;
+  padding: rem(32px) rem(20px) rem(24px) rem(20px);
+  display: flex;
+  flex-direction: column;
+  gap: rem(24px);
+
+  @include media('<=phoneLandscape') {
+    padding: rem(12px);
+  }
+}
+
+.innerWrapper {
+  border: 1px solid v('gray-box-stroke');
+  border-radius: rem(6px);
+  padding: rem(16px);
+  margin-top: rem(32px);
+
+  @include media('<=phone') {
+    margin-top: rem(16px);
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: rem(16px);
+  }
+}
+
+.regionalPricingForm {
+  p {
+    color: v('dark-black');
+    font-size: rem(16px);
+    line-height: 145%;
+    margin: 0px;
+  }
+
+  .regionaPricingContainer {
+    display: flex;
+    gap: rem(8px);
+    justify-content: center;
+    padding: rem(12px) 0px;
+
+    @include media('<=phone') {
+      flex-direction: column;
+
+      button[type='submit'] {
+        width: 100%;
+        padding: rem(12px);
+      }
+    }
+  }
+}
+
+.confirmOrderButton {
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+  border: none;
+
+  color: v('dark-gray');
+  font-size: rem(16px);
+  font-weight: 600;
+  line-height: 150%;
+}

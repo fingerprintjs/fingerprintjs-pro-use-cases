@@ -4,7 +4,7 @@ import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/Us
 import { useState } from 'react';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
-import styles from '../../pages/coupon-fraud/couponFraud.module.scss';
+import styles from './locationSpoofing.module.scss';
 import formStyles from '../../styles/forms.module.scss';
 import classNames from 'classnames';
 import { Alert } from '../../client/components/common/Alert/Alert';
@@ -87,7 +87,7 @@ function LocationSpoofingUseCase() {
             e.preventDefault();
             activateRegionalPricing();
           }}
-          className={classNames(formStyles.useCaseForm, styles.couponFraudForm)}
+          className={classNames(formStyles.useCaseForm, styles.regionalPricingForm)}
         >
           <p>
             {unsealedVisitorData && (
@@ -98,19 +98,19 @@ function LocationSpoofingUseCase() {
             )}
             We are offering purchasing power parity pricing.
           </p>
-          <div className={styles.couponInputContainer}>
-            <Button disabled={isLoading} size='medium' data-testid={TEST_IDS.couponFraud.submitCoupon}>
-              {isLoading
-                ? 'Verifying location...'
-                : `Activate ${potentialDiscount ? potentialDiscount + '% off with ' : ''} regional pricing`}
-            </Button>
-          </div>
           {Boolean(activateError) && <Alert severity='error'>{String(activateError)}</Alert>}
           {activateResponse?.message && !isLoading && (
             <div>
               <Alert severity={activateResponse.severity}>{activateResponse.message}</Alert>
             </div>
           )}
+          <div className={styles.regionaPricingContainer}>
+            <Button disabled={isLoading} size='medium' data-testid={TEST_IDS.couponFraud.submitCoupon} type='submit'>
+              {isLoading
+                ? 'Verifying location...'
+                : `Activate ${potentialDiscount ? potentialDiscount + '% off with ' : ''} regional pricing`}
+            </Button>
+          </div>
         </form>
       </div>
       <Button variant='white' type='button' size='small' disabled={true} className={styles.confirmOrderButton}>

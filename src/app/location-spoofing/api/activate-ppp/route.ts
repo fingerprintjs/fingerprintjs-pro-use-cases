@@ -68,7 +68,7 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
 
   return NextResponse.json({
     severity: 'success',
-    message: `Yay! We have applied a regional discount of ${discount}%. With this discount your purchase will be restricted to ${country.name}.`,
+    message: `Success! We have applied a regional discount of ${discount}%. With this discount your purchase will be restricted to ${country.name}.`,
     data: { discount },
   });
 }
