@@ -7,7 +7,6 @@ import { USE_CASES } from '../../client/components/common/content';
 import styles from '../../pages/coupon-fraud/couponFraud.module.scss';
 import formStyles from '../../styles/forms.module.scss';
 import classNames from 'classnames';
-import AirMax from '../../pages/coupon-fraud/shoeAirMax.svg';
 import { Alert } from '../../client/components/common/Alert/Alert';
 import Button from '../../client/components/common/Button/Button';
 import { Cart } from '../../client/components/common/Cart/Cart';
@@ -18,6 +17,7 @@ import { ActivateRegionalPricingPayload, ActivateRegionalPricingResponse } from 
 import { useUnsealedResult } from '../../client/hooks/useUnsealedResult';
 import { getFlagEmoji, getIpLocation } from '../../shared/utils/locationUtils';
 import { getRegionalDiscount } from './data/getDiscountByCountry';
+import courseLogo from './fingerprintLogoLowOpacitySquareBordered.svg';
 
 const COURSE_PRICE = 100;
 const TAXES = 15;
@@ -71,7 +71,7 @@ function LocationSpoofingUseCase() {
       name: 'Fight Online Fraud Course',
       subheadline: 'Fingerprint Inc.',
       price: COURSE_PRICE,
-      image: AirMax,
+      image: courseLogo,
       count: courseCount,
       increaseCount: () => setCourseCount(courseCount + 1),
       decreaseCount: () => setCourseCount(Math.max(1, courseCount - 1)),
