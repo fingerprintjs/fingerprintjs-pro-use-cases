@@ -8,6 +8,7 @@ import PaywallIcon from '../../img/paywallIcon.svg';
 import PersonalizationIcon from '../../img/personalizationIcon.svg';
 import ScrapingIcon from '../../img/scrapingIcon.svg';
 import FirewallIcon from '../../img/firewallIcon.svg';
+import LocationSpoofingIcon from '../../img/locationSpoofing.svg';
 import { ReactNode } from 'react';
 import { RestartHint, RestartHintProps } from './UseCaseWrapper/RestartHint';
 
@@ -469,7 +470,7 @@ export const USE_CASES = {
     titleMeta: 'Fingerprint Use Cases | VPN Detection and Location spoofing prevention',
     url: '/location-spoofing',
     // articleUrl: 'https://fingerprint.com/blog/bot-detection-powered-application-firewall/',
-    iconSvg: FirewallIcon,
+    iconSvg: LocationSpoofingIcon,
     descriptionHomepage: [
       <p key='1'>
         Use Fingerprint VPN detection to detect visitors trying to spoof their location. Deploy location-based pricing
@@ -503,6 +504,14 @@ export const USE_CASES = {
       <>Turn on your VPN and pick an exit node different from your true location.</>,
       <>Try activating the discount again. You will not get the discount while using a VPN.</>,
     ],
+    instructionsNote: (
+      <>
+        This use case demo uses{' '}
+        <Link href='https://dev.fingerprint.com/docs/sealed-client-results'>Sealed client results</Link> to process the
+        identification data. This provides lower latency and stronger tampering protection compared to only using the
+        Server API. See the technical tutorial for more details.
+      </>
+    ),
     moreResources: [
       {
         url: 'https://fingerprint.com/blog/vpn-detection/',
