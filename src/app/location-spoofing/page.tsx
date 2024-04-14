@@ -20,7 +20,7 @@ import { getFlagEmoji, getIpLocation } from '../../shared/utils/locationUtils';
 import { getRegionalDiscount } from './data/getDiscountByCountry';
 
 const COURSE_PRICE = 100;
-const TAXES = 0;
+const TAXES = 15;
 const FALLBACK_DISCOUNT = 20;
 
 function LocationSpoofingUseCase() {
@@ -96,7 +96,7 @@ function LocationSpoofingUseCase() {
                 {getIpLocation(unsealedVisitorData)?.country?.name}! 👋{' '}
               </>
             )}
-            To help facilitate global learning, we are offering purchasing power parity pricing.
+            We are offering purchasing power parity pricing.
           </p>
           <div className={styles.couponInputContainer}>
             <Button disabled={isLoading} size='medium' data-testid={TEST_IDS.couponFraud.submitCoupon}>
