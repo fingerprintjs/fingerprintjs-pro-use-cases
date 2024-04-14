@@ -1,5 +1,3 @@
-'use client';
-
 import '../styles/global-styles.scss';
 import Head from 'next/head';
 import { FpjsProvider, FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
@@ -9,7 +7,7 @@ import { PUBLIC_API_KEY, SCRIPT_URL_PATTERN, ENDPOINT, FRONTEND_REGION, CUSTOM_T
 import Providers from '../Providers';
 import { Layout } from '../Layout';
 
-export const FP_LOAD_OPTIONS: FingerprintJSPro.LoadOptions = {
+const FP_LOAD_OPTIONS: FingerprintJSPro.LoadOptions = {
   apiKey: PUBLIC_API_KEY,
   scriptUrlPattern: [SCRIPT_URL_PATTERN, FingerprintJSPro.defaultScriptUrlPattern],
   endpoint: [ENDPOINT, FingerprintJSPro.defaultEndpoint],

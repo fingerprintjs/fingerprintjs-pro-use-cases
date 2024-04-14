@@ -11,7 +11,8 @@ type SeoProps = {
 };
 
 /**
- * Generates [Metadata object](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadata-fields) for Next `app` directory
+ * Generates Metadata object for Next `app` directory
+ * https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadata-fields
  */
 export const generateMetadata = ({ title, description, image, path }: SeoProps): Metadata => {
   const metaImage = image ?? `${PRODUCTION_URL}/fingerprintDefaultMetaImage.png`;

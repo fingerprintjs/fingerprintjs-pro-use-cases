@@ -469,7 +469,7 @@ export const USE_CASES = {
     title: 'Location Spoofing Prevention',
     titleMeta: 'Fingerprint Use Cases | VPN Detection and Location spoofing prevention',
     url: '/location-spoofing',
-    // articleUrl: 'https://fingerprint.com/blog/bot-detection-powered-application-firewall/',
+    // articleUrl: 'TODO',
     iconSvg: LocationSpoofingIcon,
     descriptionHomepage: [
       <p key='1'>
