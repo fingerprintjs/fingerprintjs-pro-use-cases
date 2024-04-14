@@ -22,11 +22,7 @@ const COURSE_PRICE = 100;
 const TAXES = 0;
 
 function LocationSpoofingUseCase() {
-  const {
-    getData: getVisitorData,
-    data: visitorData,
-    error,
-  } = useVisitorData({
+  const { getData: getVisitorData, data: visitorData } = useVisitorData({
     ignoreCache: true,
   });
   const { data: unsealedVisitorData } = useUnsealedResult(visitorData?.sealedResult);
@@ -35,6 +31,7 @@ function LocationSpoofingUseCase() {
     mutate: activateRegionalPricing,
     isLoading,
     data: activateResponse,
+    error: activateError,
   } = useMutation({
     mutationFn: async () => {
       const { requestId, sealedResult } = await getVisitorData({ ignoreCache: true });
@@ -45,11 +42,6 @@ function LocationSpoofingUseCase() {
         },
         body: JSON.stringify({ requestId, sealedResult } satisfies ActivateRegionalPricingPayload),
       });
-      if (!response.ok || error) {
-        throw new Error(
-          'Failed to activate regional pricing: ' + (await response.json()).message ?? response.statusText,
-        );
-      }
       return await response.json();
     },
     onSuccess: (data: ActivateRegionalPricingResponse) => {
@@ -103,6 +95,7 @@ function LocationSpoofingUseCase() {
               {isLoading ? 'Verifying location...' : 'Activating regional pricing'}
             </Button>
           </div>
+          {Boolean(activateError) && <Alert severity='error'>{String(activateError)}</Alert>}
           {activateResponse?.message && !isLoading && (
             <div>
               <Alert severity={activateResponse.severity}>{activateResponse.message}</Alert>
