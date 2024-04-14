@@ -28,9 +28,9 @@ export function getLocationName(ipLocation?: EventResponseIpInfoV4Geolocation) {
 }
 
 export const getIpLocation = (eventResponse: EventResponse): EventResponseIpInfoV4Geolocation => {
-  const ipLocation =
-    eventResponse?.products?.ipInfo?.data?.v6?.geolocation ?? eventResponse?.products?.ipInfo?.data?.v4?.geolocation;
-  return ipLocation;
+  return (
+    eventResponse?.products?.ipInfo?.data?.v6?.geolocation ?? eventResponse?.products?.ipInfo?.data?.v4?.geolocation
+  );
 };
 
 // Courtesy of https://dev.to/jorik/country-code-to-flag-emoji-a21

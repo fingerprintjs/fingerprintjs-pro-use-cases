@@ -17,15 +17,23 @@ import { useMutation } from 'react-query';
 import { ActivateRegionalPricingPayload, ActivateRegionalPricingResponse } from './api/activate-ppp/route';
 import { useUnsealedResult } from '../../client/hooks/useUnsealedResult';
 import { getFlagEmoji, getIpLocation } from '../../shared/utils/locationUtils';
+import { getRegionalDiscount } from './data/getDiscountByCountry';
 
 const COURSE_PRICE = 100;
 const TAXES = 0;
+const FALLBACK_DISCOUNT = 20;
 
 function LocationSpoofingUseCase() {
   const { getData: getVisitorData, data: visitorData } = useVisitorData({
     ignoreCache: true,
   });
   const { data: unsealedVisitorData } = useUnsealedResult(visitorData?.sealedResult);
+  let country;
+  let potentialDiscount;
+  if (unsealedVisitorData) {
+    country = getIpLocation(unsealedVisitorData)?.country;
+    potentialDiscount = country?.code ? getRegionalDiscount(country.code) : FALLBACK_DISCOUNT;
+  }
 
   const {
     mutate: activateRegionalPricing,
@@ -33,6 +41,7 @@ function LocationSpoofingUseCase() {
     data: activateResponse,
     error: activateError,
   } = useMutation({
+    mutationKey: ['activate regional pricing'],
     mutationFn: async () => {
       const { requestId, sealedResult } = await getVisitorData({ ignoreCache: true });
       const response = await fetch('/location-spoofing/api/activate-ppp', {
@@ -91,7 +100,9 @@ function LocationSpoofingUseCase() {
           </p>
           <div className={styles.couponInputContainer}>
             <Button disabled={isLoading} size='medium' data-testid={TEST_IDS.couponFraud.submitCoupon}>
-              {isLoading ? 'Verifying location...' : 'Activating regional pricing'}
+              {isLoading
+                ? 'Verifying location...'
+                : `Activate ${potentialDiscount ? potentialDiscount + '% off with ' : ''} regional pricing`}
             </Button>
           </div>
           {Boolean(activateError) && <Alert severity='error'>{String(activateError)}</Alert>}
