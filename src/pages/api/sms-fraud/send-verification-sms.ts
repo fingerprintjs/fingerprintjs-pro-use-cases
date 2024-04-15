@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Severity } from '../../../server/checkResult';
-import { getAndValidateFingerprintResult } from '../../../server/checks';
+import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
 import { isValidPostRequest } from '../../../server/server';
 import { RealSmsPerVisitorModel, SmsVerificationDatabaseModel } from '../../../server/sms-fraud/database';
 import { ONE_SECOND_MS, readableMilliseconds } from '../../../shared/timeUtils';
@@ -90,9 +89,13 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   const { phoneNumber: phone, email, requestId, disableBotDetection } = req.body as SendSMSPayload;
 
   // Get the full identification Fingerprint Server API, check it authenticity and filter away Bot and Tor requests
-  const fingerprintResult = await getAndValidateFingerprintResult(requestId, req, {
-    blockBots: !disableBotDetection,
-    blockTor: true,
+  const fingerprintResult = await getAndValidateFingerprintResult({
+    requestId,
+    req,
+    options: {
+      blockBots: !disableBotDetection,
+      blockTor: true,
+    },
   });
   if (!fingerprintResult.okay) {
     res.status(403).send({ severity: 'error', message: fingerprintResult.error });
