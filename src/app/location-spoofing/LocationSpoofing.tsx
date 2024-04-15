@@ -80,7 +80,7 @@ const LocationSpoofingUseCase: FunctionComponent = () => {
 
   return (
     <div className={classNames(styles.wrapper, formStyles.wrapper)}>
-      <Cart items={cartItems} discount={discount} taxPerItem={TAXES}></Cart>
+      <Cart items={cartItems} discount={discount} taxPerItem={TAXES} discountLabel='Regional discount'></Cart>
       <div className={styles.innerWrapper}>
         <form
           onSubmit={(e) => {
