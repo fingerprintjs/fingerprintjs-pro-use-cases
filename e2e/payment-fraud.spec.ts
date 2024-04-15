@@ -1,5 +1,5 @@
 import { Page, test } from '@playwright/test';
-import { resetScenarios } from './resetHelper';
+import { resetScenarios } from './e2eTestUtils';
 import { PAYMENT_FRAUD_COPY } from '../src/pages/api/payment-fraud/place-order';
 import { TEST_IDS } from '../src/client/testIDs';
 

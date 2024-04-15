@@ -179,6 +179,10 @@ type GetFingerprintResultArgs = {
   sealedResult?: string;
   serverApiKey?: string;
   region?: Region;
+  options?: {
+    blockTor: boolean;
+    blockBots: boolean;
+  };
 };
 
 export const getAndValidateFingerprintResult = async ({
@@ -187,6 +191,7 @@ export const getAndValidateFingerprintResult = async ({
   sealedResult,
   serverApiKey: apiKey = SERVER_API_KEY,
   region = BACKEND_REGION,
+  options,
 }: GetFingerprintResultArgs): Promise<ValidationDataResult<EventResponse>> => {
   let identificationEvent: EventResponse | undefined;
 
@@ -254,20 +259,35 @@ export const getAndValidateFingerprintResult = async ({
   }
 
   /**
-   * The Confidence Score reflects the system's degree of certainty that the visitor identifier is correct.
-   * If it's lower than the certain threshold we recommend using an additional way of verification, e.g. 2FA or email.
-   * More info: https://dev.fingerprint.com/docs/understanding-your-confidence-score
-   */
-  if (identification.confidence.score < MIN_CONFIDENCE_SCORE) {
-    return { okay: false, error: 'Identification confidence score too low, potential spoofing attack.' };
-  }
-
-  /**
    * An attacker might have acquired a valid requestId and visitorId via phishing.
    * It's recommended to check freshness of the identification request to prevent replay attacks.
    */
   if (Date.now() - Number(new Date(identification.time)) > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
     return { okay: false, error: 'Old identification request, potential replay attack.' };
+  }
+
+  /**
+   * You can prevent Tor network users from performing sensitive actions in your application.
+   */
+  if (options?.blockTor && identificationEvent.products?.tor?.data?.result === true) {
+    return { okay: false, error: 'Tor network detected, please use a regular browser instead.' };
+  }
+
+  /**
+   * You can prevent bots from performing sensitive actions in your application.
+   */
+  if (options?.blockBots && identificationEvent.products?.botd?.data?.bot?.result === 'bad') {
+    return { okay: false, error: '🤖 Malicious bot detected, the attempted action was denied.' };
+  }
+
+  /**
+   * The Confidence Score reflects the system's degree of certainty that the visitor identifier is correct.
+   * If it's lower than the certain threshold we recommend using an additional way of verification, e.g. 2FA or email.
+   * This is context-sensitive and less reliable than the binary checks above, that's why it is checked last.
+   * More info: https://dev.fingerprint.com/docs/understanding-your-confidence-score
+   */
+  if (identification.confidence.score < MIN_CONFIDENCE_SCORE) {
+    return { okay: false, error: 'Identification confidence score too low, potential spoofing attack.' };
   }
 
   // All checks passed, we can trust this identification event

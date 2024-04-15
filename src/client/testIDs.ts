@@ -11,6 +11,8 @@ export const TEST_IDS = {
       discount: 'discount',
     },
     alert: 'alert',
+    snackBar: 'snackBar',
+    closeSnackbar: 'closeSnackbar',
   },
   reset: {
     resetButton: 'resetButton',
@@ -70,4 +72,17 @@ export const TEST_IDS = {
     login: 'login',
     password: 'password',
   },
+  smsFraud: {
+    phoneNumberInput: 'phoneNumberInput',
+    sendMessage: 'sendMessage',
+    codeInput: 'codeInput',
+    sendCode: 'sendCode',
+    copyCodeButton: 'copyCodeButton',
+    codeInsideSnackbar: 'codeInsideSnackbar',
+  },
 } as const;
+
+export const TEST_ATTRIBUTES = {
+  id: 'data-testid',
+  severity: 'data-test-severity',
+};

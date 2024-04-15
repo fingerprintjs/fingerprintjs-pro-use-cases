@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
 import { isValidPostRequest } from '../../../server/server';
-import { DAY_MS, FIVE_MINUTES_MS, HOUR_MS } from '../../../shared/timeUtils';
+import { ONE_DAY_MS, FIVE_MINUTES_MS, ONE_HOUR_MS } from '../../../shared/timeUtils';
 import { AIRPORTS } from '../../web-scraping';
 import { Flight } from '../../../client/components/web-scraping/FlightCard';
 import { saveBotVisit } from '../../../server/botd-firewall/botVisitDatabase';
@@ -91,9 +91,9 @@ function getFlightResults(fromCode: string, toCode: string): Flight[] {
   const airlines = ['United', 'Delta', 'American', 'Southwest', 'Alaska', 'JetBlue'];
   for (const airline of airlines.slice(0, 2 + Math.floor(Math.random() * 4))) {
     const now = Date.now();
-    const departureTime = roundToFiveMinutes(now + Math.random() * DAY_MS);
-    const arrivalTime = roundToFiveMinutes(departureTime + 3 * HOUR_MS + Math.random() * (DAY_MS / 2));
-    const tripLength = roundToFiveMinutes(3 * DAY_MS + Math.random() * DAY_MS);
+    const departureTime = roundToFiveMinutes(now + Math.random() * ONE_DAY_MS);
+    const arrivalTime = roundToFiveMinutes(departureTime + 3 * ONE_HOUR_MS + Math.random() * (ONE_DAY_MS / 2));
+    const tripLength = roundToFiveMinutes(3 * ONE_DAY_MS + Math.random() * ONE_DAY_MS);
     const returnDepartureTime = departureTime + tripLength;
     const returnArrivalTime = arrivalTime + tripLength;
     const price = 50 + Math.floor(Math.random() * 400) * 2;

@@ -41,7 +41,9 @@ form.useCaseForm {
   }
 
   input[type='text'],
-  input[type='password'] {
+  input[type='number'],
+  input[type='password'],
+  input[type='tel'] {
     padding: rem(16px) rem(12px);
     border-radius: rem(6px);
     border: 1px solid v('gray-box-stroke');
@@ -83,5 +85,10 @@ form.useCaseForm {
     width: 100%;
     border-top: 1px solid v('gray-box-stroke');
     margin: 0;
+  }
+
+  .description {
+    color: v('dark-gray');
+    font-size: rem(14px);
   }
 }

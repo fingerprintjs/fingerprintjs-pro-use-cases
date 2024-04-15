@@ -1,5 +1,5 @@
 import { Page, expect, test } from '@playwright/test';
-import { resetScenarios } from './resetHelper';
+import { resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
 import { LOAN_RISK_COPY } from '../src/pages/api/loan-risk/request-loan';
 

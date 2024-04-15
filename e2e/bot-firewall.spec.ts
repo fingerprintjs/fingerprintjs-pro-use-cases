@@ -1,5 +1,5 @@
 import { Locator, Page, expect, test } from '@playwright/test';
-import { resetScenarios } from './resetHelper';
+import { resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
 import { BOT_FIREWALL_COPY } from '../src/client/bot-firewall/botFirewallCopy';
 import { PRODUCTION_E2E_TEST_BASE_URL } from '../playwright.config';
