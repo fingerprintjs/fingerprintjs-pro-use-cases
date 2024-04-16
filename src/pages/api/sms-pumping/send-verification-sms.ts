@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
 import { isValidPostRequest } from '../../../server/server';
-import { RealSmsPerVisitorModel, SmsVerificationDatabaseModel } from '../../../server/sms-fraud/database';
+import { RealSmsPerVisitorModel, SmsVerificationDatabaseModel } from '../../../server/sms-pumping/database';
 import { ONE_SECOND_MS, readableMilliseconds } from '../../../shared/timeUtils';
 import { Op } from 'sequelize';
 import { pluralize } from '../../../shared/utils';
@@ -13,7 +13,7 @@ import {
   REAL_SMS_LIMIT_PER_VISITOR,
   SMS_FRAUD_COPY,
   TEST_PHONE_NUMBER,
-} from '../../../server/sms-fraud/smsFraudConst';
+} from '../../../server/sms-pumping/smsPumpingConst';
 
 export type SendSMSPayload = {
   requestId: string;
@@ -167,7 +167,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   try {
     await sendSms(
       phone,
-      `Your verification code for demo.fingerprint.com/sms-fraud is ${verificationCode}.`,
+      `Your verification code for demo.fingerprint.com/sms-pumping is ${verificationCode}.`,
       visitorId,
     );
 

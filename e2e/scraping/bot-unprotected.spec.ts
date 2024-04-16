@@ -18,7 +18,7 @@ test.describe('Scraping flights', () => {
     const flightCards = await page.getByTestId(TEST_ID.card).all();
     expect(flightCards.length > 0).toBe(true);
 
-    const flightData = [];
+    const flightData: Record<string, string | null>[] = [];
     for (const flightCard of flightCards) {
       flightData.push({
         price: await scrapeText(flightCard, TEST_ID.price),

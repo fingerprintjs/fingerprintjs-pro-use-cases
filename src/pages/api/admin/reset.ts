@@ -13,7 +13,7 @@ import { Severity, getAndValidateFingerprintResult } from '../../../server/check
 import { NextApiRequest, NextApiResponse } from 'next';
 import { deleteBlockedIp } from '../../../server/botd-firewall/blockedIpsDatabase';
 import { syncFirewallRuleset } from '../../../server/botd-firewall/cloudflareApiHelper';
-import { SmsVerificationDatabaseModel } from '../../../server/sms-fraud/database';
+import { SmsVerificationDatabaseModel } from '../../../server/sms-pumping/database';
 
 export type ResetResponse = {
   message: string;

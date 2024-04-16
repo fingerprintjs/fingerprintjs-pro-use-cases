@@ -10,12 +10,12 @@ import { enqueueSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
 import { BackArrow } from '../../client/components/common/BackArrow/BackArrow';
 import { GetServerSideProps, NextPage } from 'next';
-import { SubmitCodeForm } from '../../client/components/sms-fraud/SubmitCodeForm';
-import { PhoneNumberForm } from '../../client/components/sms-fraud/PhoneNumberForm';
+import { SubmitCodeForm } from '../../client/components/sms-pumping/SubmitCodeForm';
+import { PhoneNumberForm } from '../../client/components/sms-pumping/PhoneNumberForm';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useMutation } from 'react-query';
-import { SendSMSResponse, SendSMSPayload } from '../api/sms-fraud/send-verification-sms';
-import { TEST_PHONE_NUMBER } from '../../server/sms-fraud/smsFraudConst';
+import { SendSMSResponse, SendSMSPayload } from '../api/sms-pumping/send-verification-sms';
+import { TEST_PHONE_NUMBER } from '../../server/sms-pumping/smsPumpingConst';
 
 type FormStep = 'Send SMS' | 'Submit code';
 type QueryAsProps = {
@@ -50,7 +50,7 @@ export const useSendMessage = ({ onSuccess, disableBotDetection = false }: SendM
     mutationKey: 'sendSms',
     mutationFn: async ({ phoneNumber, email }) => {
       const { requestId } = await getData();
-      const response = await fetch(`/api/sms-fraud/send-verification-sms`, {
+      const response = await fetch(`/api/sms-pumping/send-verification-sms`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ const SmsFraudUseCase: NextPage<QueryAsProps> = ({ disableBotDetection }) => {
   });
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.smsFraud}>
+    <UseCaseWrapper useCase={USE_CASES.smsPumping}>
       <div className={formStyles.wrapper}>
         {formStep === 'Send SMS' && (
           <PhoneNumberForm
