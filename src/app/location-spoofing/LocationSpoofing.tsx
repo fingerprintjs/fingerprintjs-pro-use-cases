@@ -2,7 +2,6 @@
 
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { FunctionComponent, useState } from 'react';
-import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
 import styles from './locationSpoofing.module.scss';
 import formStyles from '../../styles/forms.module.scss';
@@ -10,7 +9,7 @@ import classNames from 'classnames';
 import { Alert } from '../../client/components/common/Alert/Alert';
 import Button from '../../client/components/common/Button/Button';
 import { Cart } from '../../client/components/common/Cart/Cart';
-import { FpjsProvider, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { FingerprintJSPro, FpjsProvider, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
 import { useMutation } from 'react-query';
 import { ActivateRegionalPricingPayload, ActivateRegionalPricingResponse } from './api/activate-ppp/route';
@@ -18,6 +17,7 @@ import { useUnsealedResult } from '../../client/hooks/useUnsealedResult';
 import { getFlagEmoji, getIpLocation } from '../../shared/utils/locationUtils';
 import { getRegionalDiscount } from './data/getDiscountByCountry';
 import courseLogo from './fingerprintLogoLowOpacitySquareBordered.svg';
+import { ENV } from '../../env';
 
 const COURSE_PRICE = 100;
 const TAXES = 15;
@@ -124,7 +124,9 @@ export const LocationSpoofingUseCaseWrapped: FunctionComponent = () => {
   return (
     <FpjsProvider
       loadOptions={{
-        apiKey: '2lFEzpuyfqkfQ9KJgiqv',
+        apiKey: ENV.NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY,
+        scriptUrlPattern: [ENV.NEXT_PUBLIC_SEALED_RESULTS_SCRIPT_URL, FingerprintJSPro.defaultScriptUrlPattern],
+        endpoint: [ENV.NEXT_PUBLIC_SEALED_RESULTS_ENDPOINT, FingerprintJSPro.defaultEndpoint],
       }}
     >
       <UseCaseWrapper useCase={USE_CASES.locationSpoofing}>

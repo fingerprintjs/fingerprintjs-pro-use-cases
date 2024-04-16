@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult } from '../../../../server/checks';
 import { getRegionalDiscount } from '../../data/getDiscountByCountry';
+import { ENV } from '../../../../env';
 
 export type ActivateRegionalPricingPayload = {
   requestId: string;
@@ -14,8 +15,6 @@ export type ActivateRegionalPricingResponse =
       message: string;
     };
 
-const SEALED_RESULTS_SERVER_API_KEY = process.env.SEALED_RESULTS_SERVER_API_KEY;
-
 export async function POST(req: Request): Promise<NextResponse<ActivateRegionalPricingResponse>> {
   const { requestId, sealedResult } = (await req.json()) as ActivateRegionalPricingPayload;
 
@@ -24,7 +23,7 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
     requestId,
     req,
     sealedResult,
-    serverApiKey: SEALED_RESULTS_SERVER_API_KEY,
+    serverApiKey: ENV.SEALED_RESULTS_SERVER_API_KEY,
   });
   if (!fingerprintResult.okay) {
     return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });
@@ -58,7 +57,7 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
     return NextResponse.json(
       {
         severity: 'error',
-        message: `It seems you are using a VPN. Please turn it off before activating regional pricing. ${reason}`,
+        message: `It seems you are using a VPN. Please turn it off and use a regular local internet connection before activating regional pricing. ${reason}`,
       },
       { status: 403 },
     );

@@ -1,7 +1,8 @@
 import { DecryptionAlgorithm, unsealEventsResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { ENV } from '../env';
 
 export const decryptSealedResult = async (sealedResult: string) => {
-  const decryptionKey = process.env.SEALED_RESULTS_DECRYPTION_KEY;
+  const decryptionKey = ENV.SEALED_RESULTS_DECRYPTION_KEY;
   if (!decryptionKey) {
     throw new Error('Missing SEALED_RESULTS_DECRYPTION_KEY env variable');
   }
