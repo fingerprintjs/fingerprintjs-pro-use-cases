@@ -2,10 +2,10 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { Severity } from '../../../server/checkResult';
 import { getAndValidateFingerprintResult } from '../../../server/checks';
 import { isValidPostRequest } from '../../../server/server';
-import { SmsVerificationDatabaseModel } from '../../../server/sms-fraud/database';
+import { SmsVerificationDatabaseModel } from '../../../server/sms-pumping/database';
 import { Op } from 'sequelize';
 import { hashString } from '../../../server/server-utils';
-import { SMS_FRAUD_COPY } from '../../../server/sms-fraud/smsFraudConst';
+import { SMS_FRAUD_COPY } from '../../../server/sms-pumping/smsPumpingConst';
 
 export type SubmitCodePayload = {
   requestId: string;

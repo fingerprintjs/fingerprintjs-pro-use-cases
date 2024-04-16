@@ -11,7 +11,7 @@ import FirewallIcon from '../../img/firewallIcon.svg';
 import SmsIcon from '../../img/smsIcon.svg';
 import { ReactNode } from 'react';
 import { RestartHint, RestartHintProps } from './UseCaseWrapper/RestartHint';
-import { TEST_PHONE_NUMBER } from '../../../server/sms-fraud/smsFraudConst';
+import { TEST_PHONE_NUMBER } from '../../../server/sms-pumping/smsPumpingConst';
 
 export const PRODUCTION_URL = 'https://demo.fingerprint.com';
 
@@ -496,11 +496,11 @@ export const USE_CASES = {
       },
     ],
   },
-  smsFraud: {
-    title: 'SMS Fraud Protection',
+  smsPumping: {
+    title: 'SMS Pumping Fraud Protection',
     titleMeta: 'Fingerprint Use Cases | SMS Pumping Fraud Protection',
-    url: '/sms-fraud',
-    // articleUrl: 'https://fingerprint.com/blog/what-is-sms-fraud-prevention-tutorial/',
+    url: '/sms-pumping',
+    articleUrl: 'https://fingerprint.com/blog/what-is-sms-fraud-prevention-tutorial/',
     iconSvg: SmsIcon,
     descriptionHomepage: [
       <p key='1'>Fraudulent authentication SMS messages can cost your business a fortune.</p>,
@@ -532,7 +532,7 @@ export const USE_CASES = {
         screen.
       </>,
       <>
-        Try requesting another message by clicking <b>Resend verification SMS</b>.
+        Try requesting another message by clicking <b>Resend code via SMS</b>.
       </>,
       <>
         You will only be able to get your second message after 30 seconds, your third message after a minute, and then
@@ -550,8 +550,8 @@ export const USE_CASES = {
     moreResources: [
       {
         type: 'Use case tutorial',
-        title: 'SMS Fraud Protection',
-        url: 'https://fingerprint.com/blog/sms-verification-fraud-protection/',
+        title: 'SMS Pumping Fraud',
+        url: 'https://fingerprint.com/blog/what-is-sms-fraud-prevention-tutorial/',
       },
       {
         type: 'Case study',

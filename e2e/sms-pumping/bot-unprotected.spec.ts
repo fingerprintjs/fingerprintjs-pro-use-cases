@@ -6,9 +6,10 @@ import {
   SMS_FRAUD_COPY,
   TEST_BUILD,
   TEST_PHONE_NUMBER,
-} from '../../src/server/sms-fraud/smsFraudConst';
+} from '../../src/server/sms-pumping/smsPumpingConst';
 import { assertAlert, assertSnackbar, resetScenarios } from '../e2eTestUtils';
 import { ONE_MINUTE_MS } from '../../src/shared/timeUtils';
+import { USE_CASES } from '../../src/client/components/common/content';
 
 const TEST_ID = TEST_IDS.smsFraud;
 
@@ -18,7 +19,7 @@ if (!TEST_BUILD) {
 }
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/sms-fraud?disableBotDetection=1');
+  await page.goto(`${USE_CASES.smsPumping.url}?disableBotDetection=1`);
   await resetScenarios(page);
 });
 
