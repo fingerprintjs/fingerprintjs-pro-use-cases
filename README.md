@@ -82,11 +82,11 @@ Integrate Fingerprint Bot Detection with your Web Application Firewall and dynam
 [🔥🧱 Bot Firewall Live Demo](https://demo.fingerprint.com/bot-firewall)
 [📖 Bot Firewall Article](https://fingerprint.com/blog/bot-detection-powered-application-firewall/)
 
-### SMS Fraud Protection
+### SMS Pumping Fraud Protection
 
 Prevent financial losses from SMS pumping. Link every verification text message to a browser fingerprint and limit the number of verification requests from a single browser.
 
-[📱 SMS Fraud Protection Live Demo](https://demo.fingerprint.com/sms-pumping)
+[📱 SMS Pumping Protection Live Demo](https://demo.fingerprint.com/sms-pumping)
 
 ## Documentation and Support
 
