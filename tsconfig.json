@@ -2,7 +2,11 @@
   "extends": "@fingerprintjs/tsconfig-dx-team/tsconfig.json",
   "compilerOptions": {
     "target": "ES6",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
@@ -12,16 +16,24 @@
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "plugins": [
       {
-        "name": "next",
-      },
+        "name": "next"
+      }
     ],
     "exactOptionalPropertyTypes": false,
     "allowJs": false,
-    "strictNullChecks": true,
+    "strictNullChecks": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/env.ts"],
-  "exclude": ["node_modules"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/env.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
