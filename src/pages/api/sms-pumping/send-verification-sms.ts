@@ -52,12 +52,17 @@ const sendSms = async (phone: string, body: string, visitorId: string) => {
     },
   });
 
-  const authToken = process.env.TWILIO_TOKEN;
+  const apiKeySid = process.env.TWILIO_API_KEY_SID;
+  const apiKeySecret = process.env.TWILIO_API_KEY_SECRET;
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
   const fromNumber = process.env.TWILIO_FROM_NUMBER;
 
-  if (!authToken) {
-    throw new Error('Twilio token not found.');
+  if (!apiKeySid) {
+    throw new Error('Twilio API key SID not found.');
+  }
+
+  if (!apiKeySecret) {
+    throw new Error('Twilio API key secret not found.');
   }
 
   if (!accountSid) {
@@ -68,7 +73,7 @@ const sendSms = async (phone: string, body: string, visitorId: string) => {
     throw new Error('Twilio FROM number not found.');
   }
 
-  const client = Twilio(accountSid, authToken);
+  const client = Twilio(apiKeySid, apiKeySecret, { accountSid });
 
   const message = await client.messages.create({
     body,
