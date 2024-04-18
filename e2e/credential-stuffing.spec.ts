@@ -1,7 +1,7 @@
 import { Page, test } from '@playwright/test';
 import { resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
-import { CREDENTIAL_STUFFING_COPY } from '../src/pages/api/credential-stuffing/authenticate';
+import { CREDENTIAL_STUFFING_COPY } from '../src/server/credentialStuffing/copy';
 
 const submitForm = async (page: Page) => {
   // Waits for the button to be clickable out of the box

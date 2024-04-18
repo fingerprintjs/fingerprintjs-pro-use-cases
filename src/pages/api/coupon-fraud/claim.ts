@@ -3,13 +3,7 @@ import { Op } from 'sequelize';
 import { COUPON_CODES, CouponClaimDbModel, CouponCodeString } from '../../../server/coupon-fraud/database';
 import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-export const COUPON_FRAUD_COPY = {
-  doesNotExist: 'Provided coupon code does not exist.',
-  usedBefore: 'The visitor used this coupon before.',
-  usedAnotherCouponRecently: 'The visitor claimed another coupon recently.',
-  success: 'Coupon claimed',
-} as const;
+import { COUPON_FRAUD_COPY } from '../../../server/coupon-fraud/copy';
 
 export type CouponClaimPayload = {
   couponCode: string;

@@ -10,7 +10,7 @@ import { z } from 'zod';
  **/
 export const ENV = createEnv({
   /*
-   * Serverside Environment variables, not available on the client.
+   * Server-side Environment variables, not available on the client.
    * Will throw error if you access these variables on the client.
    *
    * Some default values are defined here to provide users with a "git-clone-and-it-just-works" experience when trying the demo,
@@ -22,6 +22,9 @@ export const ENV = createEnv({
     // MIN_CONFIDENCE_SCORE: z.number().min(0.0).max(1.0).optional(),
     // TEST_BUILD: z.boolean().optional(),
     // Bot Firewall use case variables
+    SERVER_API_KEY: z.string().min(1).default('fMUtVoWHKddpfOheQww2'),
+    MIN_CONFIDENCE_SCORE: z.coerce.number().min(0.0).max(1.0).default(0.85),
+
     CLOUDFLARE_API_TOKEN: z.string().min(1),
     CLOUDFLARE_ZONE_ID: z.string().min(1),
     CLOUDFLARE_RULESET_ID: z.string().min(1),
@@ -32,10 +35,17 @@ export const ENV = createEnv({
   },
   /*
    * Environment variables available on the client (and server).
-   *
    * 💡 You'll get type errors if these are not prefixed with NEXT_PUBLIC_.
    */
   client: {
+    // Main Fingerprint configuration
+    NEXT_PUBLIC_API_KEY: z.string().min(1).default('lwIgYR2dpSJfW830B24h'),
+    NEXT_PUBLIC_REGION: z.enum(['eu', 'us', 'ap']).default('us'),
+    NEXT_PUBLIC_SCRIPT_URL_PATTERN: z
+      .string()
+      .min(1)
+      .default('https://metrics.fingerprinthub.com/web/v<version>/<apiKey>/loader_v<loaderVersion>.js'),
+    NEXT_PUBLIC_ENDPOINT: z.string().min(1).default('https://metrics.fingerprinthub.com'),
     // Location spoofing demo feat. Sealed client results
     NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY: z.string().min(1).default('2lFEzpuyfqkfQ9KJgiqv'),
     NEXT_PUBLIC_SEALED_RESULTS_SCRIPT_URL: z
@@ -55,7 +65,16 @@ export const ENV = createEnv({
    * 💡 You'll get type errors if not all variables from `server` & `client` are included here.
    */
   runtimeEnv: {
-    // MIN_CONFIDENCE_SCORE: process.env.MIN_CONFIDENCE_SCORE,
+    // Main Fingerprint workspace values (used for most use cases)
+    NEXT_PUBLIC_API_KEY: process.env.NEXT_PUBLIC_API_KEY,
+    NEXT_PUBLIC_SCRIPT_URL_PATTERN: process.env.NEXT_PUBLIC_SCRIPT_URL_PATTERN,
+    NEXT_PUBLIC_ENDPOINT: process.env.NEXT_PUBLIC_ENDPOINT,
+    NEXT_PUBLIC_REGION: process.env.NEXT_PUBLIC_REGION,
+    SERVER_API_KEY: process.env.SERVER_API_KEY,
+
+    // E2E tests and build variables
+    MIN_CONFIDENCE_SCORE: process.env.MIN_CONFIDENCE_SCORE,
+
     // TEST_BUILD: process.env.TEST_BUILD,
     CLOUDFLARE_API_TOKEN: process.env.CLOUDFLARE_API_TOKEN,
     CLOUDFLARE_ZONE_ID: process.env.CLOUDFLARE_ZONE_ID,

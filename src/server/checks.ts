@@ -5,17 +5,14 @@ import {
   isEventError,
 } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { CheckResult, checkResultType } from './checkResult';
-import {
-  ALLOWED_REQUEST_TIMESTAMP_DIFF_MS,
-  BACKEND_REGION,
-  IPv4_REGEX,
-  MIN_CONFIDENCE_SCORE,
-  SERVER_API_KEY,
-} from './const';
-
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ValidationDataResult } from '../shared/types';
 import { decryptSealedResult } from './decryptSealedResult';
+import { ENV } from '../env';
+import { getServerRegion } from './fingerprint-server-api';
+
+export const IPv4_REGEX = /^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.){3}(25[0-5]|(2[0-4]|1\d|[1-9]|)\d)$/;
+export const ALLOWED_REQUEST_TIMESTAMP_DIFF_MS = 4000;
 
 // Demo origins.
 // It is recommended to use production origins instead.
@@ -77,7 +74,7 @@ export const checkFreshIdentificationRequest: RuleCheck = (eventResponse) => {
  */
 export const checkConfidenceScore: RuleCheck = (eventResponse) => {
   const confidenceScore = eventResponse?.products?.identification?.data?.confidence.score;
-  if (!confidenceScore || confidenceScore < MIN_CONFIDENCE_SCORE) {
+  if (!confidenceScore || confidenceScore < ENV.MIN_CONFIDENCE_SCORE) {
     return new CheckResult(
       "Low confidence score, we'd rather verify you with the second factor,",
       'error',
@@ -189,8 +186,8 @@ export const getAndValidateFingerprintResult = async ({
   requestId,
   req,
   sealedResult,
-  serverApiKey: apiKey = SERVER_API_KEY,
-  region = BACKEND_REGION,
+  serverApiKey: apiKey = ENV.SERVER_API_KEY,
+  region = getServerRegion(ENV.NEXT_PUBLIC_REGION),
   options,
 }: GetFingerprintResultArgs): Promise<ValidationDataResult<EventResponse>> => {
   let identificationEvent: EventResponse | undefined;
@@ -286,7 +283,7 @@ export const getAndValidateFingerprintResult = async ({
    * This is context-sensitive and less reliable than the binary checks above, that's why it is checked last.
    * More info: https://dev.fingerprint.com/docs/understanding-your-confidence-score
    */
-  if (identification.confidence.score < MIN_CONFIDENCE_SCORE) {
+  if (identification.confidence.score < ENV.MIN_CONFIDENCE_SCORE) {
     return { okay: false, error: 'Identification confidence score too low, potential spoofing attack.' };
   }
 

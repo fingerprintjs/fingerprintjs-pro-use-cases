@@ -3,16 +3,15 @@ import Head from 'next/head';
 import { FpjsProvider, FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
 import { AppProps } from 'next/app';
 import DeploymentUtils from '../client/DeploymentUtils';
-import { PUBLIC_API_KEY, SCRIPT_URL_PATTERN, ENDPOINT, FRONTEND_REGION, CUSTOM_TLS_ENDPOINT } from '../server/const';
 import Providers from '../Providers';
 import { Layout } from '../Layout';
+import { ENV } from '../env';
 
 const FP_LOAD_OPTIONS: FingerprintJSPro.LoadOptions = {
-  apiKey: PUBLIC_API_KEY,
-  scriptUrlPattern: [SCRIPT_URL_PATTERN, FingerprintJSPro.defaultScriptUrlPattern],
-  endpoint: [ENDPOINT, FingerprintJSPro.defaultEndpoint],
-  region: FRONTEND_REGION,
-  tlsEndpoint: CUSTOM_TLS_ENDPOINT,
+  apiKey: ENV.NEXT_PUBLIC_API_KEY,
+  scriptUrlPattern: [ENV.NEXT_PUBLIC_SCRIPT_URL_PATTERN, FingerprintJSPro.defaultScriptUrlPattern],
+  endpoint: [ENV.NEXT_PUBLIC_ENDPOINT, FingerprintJSPro.defaultEndpoint],
+  region: ENV.NEXT_PUBLIC_REGION,
 };
 
 export type CustomPageProps = { embed?: boolean };

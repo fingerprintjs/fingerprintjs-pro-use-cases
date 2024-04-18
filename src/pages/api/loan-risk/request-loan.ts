@@ -5,13 +5,7 @@ import { messageSeverity } from '../../../server/server';
 import { calculateLoanValues } from '../../../server/loan-risk/calculate-loan-values';
 import { CheckResult, checkResultType } from '../../../server/checkResult';
 import { RuleCheck } from '../../../server/checks';
-
-export const LOAN_RISK_COPY = {
-  approved: 'Congratulations, your loan has been approved!',
-  incomeLow: 'Sorry, your monthly income is too low for this loan.',
-  inconsistentApplicationChallenged:
-    'We are unable to approve your loan automatically since you had requested a loan with a different income or personal details before. We need to verify provided information manually this time. Please, reach out to our agent.',
-} as const;
+import { LOAN_RISK_COPY } from '../../../server/loan-risk/copy';
 
 /**
  * Validates previous loan requests sent by a given user.

@@ -1,8 +1,17 @@
-import { SCRIPT_URL_PATTERN } from './../src/server/const';
 import { Page, expect, test } from '@playwright/test';
 import { PLAYGROUND_TAG } from '../src/client/components/playground/playgroundTags';
 import { isAgentResponse, isServerResponse } from './zodUtils';
-import { ENDPOINT } from '../src/server/const';
+
+/**
+ * Due tu current ESM/CommonJS hell, Playwright cannot import ESM-only packages like `t3-env`.
+ * We have to access environment variables for Playwright tests manually 😔.
+ * https://github.com/microsoft/playwright/issues/23662
+ * These should match '/src/env.ts'
+ */
+const endpointOrigin = new URL(process.env.NEXT_PUBLIC_ENDPOINT ?? 'https://metrics.fingerprinthub.com').origin;
+const scriptUrlPatternOrigin = new URL(
+  process.env.NEXT_PUBLIC_SCRIPT_URL_PATTERN ?? 'https://metrics.fingerprinthub.com',
+).origin;
 
 const getAgentResponse = async (page: Page) => {
   const agentResponse =
@@ -87,9 +96,6 @@ test.describe('Proxy integration', () => {
   test('Proxy integration works on Playground, no network errors', async ({ page }) => {
     // If any JS agent network request fails, fails the test
     // This captures proxy integration failures that would otherwise go unnoticed thanks to default endpoint fallbacks
-    const endpointOrigin = new URL(ENDPOINT).origin;
-    const scriptUrlPatternOrigin = new URL(SCRIPT_URL_PATTERN).origin;
-
     page.on('requestfailed', (request) => {
       console.error(request.url(), request.failure()?.errorText);
       const requestOrigin = new URL(request.url()).origin;
