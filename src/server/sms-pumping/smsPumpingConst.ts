@@ -1,10 +1,11 @@
+import { TEST_BUILD } from '../../envShared';
 import { ONE_SECOND_MS } from '../../shared/timeUtils';
 import { pluralize } from '../../shared/utils';
 
 export const TEST_PHONE_NUMBER = '+1234567890';
 
 // Use smaller timeouts for test builds to speed up e2e tests
-export const TEST_BUILD = Boolean(process.env.TEST_BUILD);
+
 export const SMS_ATTEMPT_TIMEOUT_MAP: Record<number, { timeout: number }> = TEST_BUILD
   ? {
       1: { timeout: 5 * ONE_SECOND_MS },

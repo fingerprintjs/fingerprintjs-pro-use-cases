@@ -18,20 +18,29 @@ export const ENV = createEnv({
    * DO NOT expose your server-side secrets in your source code!
    */
   server: {
-    // E2E tests and build variables
-    // MIN_CONFIDENCE_SCORE: z.number().min(0.0).max(1.0).optional(),
-    // TEST_BUILD: z.boolean().optional(),
-    // Bot Firewall use case variables
+    // Main Fingerprint configuration
     SERVER_API_KEY: z.string().min(1).default('fMUtVoWHKddpfOheQww2'),
+    // Lower confidence score limit for e2e tests
     MIN_CONFIDENCE_SCORE: z.coerce.number().min(0.0).max(1.0).default(0.85),
 
-    CLOUDFLARE_API_TOKEN: z.string().min(1),
-    CLOUDFLARE_ZONE_ID: z.string().min(1),
-    CLOUDFLARE_RULESET_ID: z.string().min(1),
+    // Credential stuffing demo
+    KNOWN_VISITOR_IDS: z.string().min(1).default('').optional(),
+
+    // Bot firewall use case Cloudflare settings
+    CLOUDFLARE_API_TOKEN: z.string().min(1).optional(),
+    CLOUDFLARE_ZONE_ID: z.string().min(1).optional(),
+    CLOUDFLARE_RULESET_ID: z.string().min(1).optional(),
+
+    // SMS Pumping use case
+    TWILIO_API_KEY_SID: z.string().min(1).optional(),
+    TWILIO_API_KEY_SECRET: z.string().min(1).optional(),
+    TWILIO_ACCOUNT_SID: z.string().min(1).optional(),
+    TWILIO_FROM_NUMBER: z.string().min(1).optional(),
 
     // Location spoofing demo feat. Sealed client results
     SEALED_RESULTS_DECRYPTION_KEY: z.string().min(1).default('nAEUm/yALfMwWGWzUEXjXplocr8ouYjAhEJgRnBNRwA='),
     SEALED_RESULTS_SERVER_API_KEY: z.string().min(1).default('cRg3axMS26qfkjcS7OFh'),
+    HASH_SALT: z.string().min(1).default('defaultSalt'),
   },
   /*
    * Environment variables available on the client (and server).
@@ -46,7 +55,8 @@ export const ENV = createEnv({
       .min(1)
       .default('https://metrics.fingerprinthub.com/web/v<version>/<apiKey>/loader_v<loaderVersion>.js'),
     NEXT_PUBLIC_ENDPOINT: z.string().min(1).default('https://metrics.fingerprinthub.com'),
-    // Location spoofing demo feat. Sealed client results
+
+    // Fingerprint configuration for Location spoofing demo feat. Sealed client results
     NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY: z.string().min(1).default('2lFEzpuyfqkfQ9KJgiqv'),
     NEXT_PUBLIC_SEALED_RESULTS_SCRIPT_URL: z
       .string()
@@ -65,20 +75,29 @@ export const ENV = createEnv({
    * 💡 You'll get type errors if not all variables from `server` & `client` are included here.
    */
   runtimeEnv: {
-    // Main Fingerprint workspace values (used for most use cases)
+    // Main Fingerprint configuration values (used for most use cases)
     NEXT_PUBLIC_API_KEY: process.env.NEXT_PUBLIC_API_KEY,
     NEXT_PUBLIC_SCRIPT_URL_PATTERN: process.env.NEXT_PUBLIC_SCRIPT_URL_PATTERN,
     NEXT_PUBLIC_ENDPOINT: process.env.NEXT_PUBLIC_ENDPOINT,
     NEXT_PUBLIC_REGION: process.env.NEXT_PUBLIC_REGION,
     SERVER_API_KEY: process.env.SERVER_API_KEY,
 
-    // E2E tests and build variables
+    // E2E tests
     MIN_CONFIDENCE_SCORE: process.env.MIN_CONFIDENCE_SCORE,
 
-    // TEST_BUILD: process.env.TEST_BUILD,
+    // Credential stuffing demo
+    KNOWN_VISITOR_IDS: process.env.KNOWN_VISITOR_IDS,
+
+    // Bot firewall use case Cloudflare settings
     CLOUDFLARE_API_TOKEN: process.env.CLOUDFLARE_API_TOKEN,
     CLOUDFLARE_ZONE_ID: process.env.CLOUDFLARE_ZONE_ID,
     CLOUDFLARE_RULESET_ID: process.env.CLOUDFLARE_RULESET_ID,
+
+    // SMS Pumping use case
+    TWILIO_API_KEY_SID: process.env.TWILIO_API_KEY_SID,
+    TWILIO_API_KEY_SECRET: process.env.TWILIO_API_KEY_SECRET,
+    TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
+    TWILIO_FROM_NUMBER: process.env.TWILIO_FROM_NUMBER,
 
     // Location spoofing demo feat. Sealed client results
     SEALED_RESULTS_DECRYPTION_KEY: process.env.SEALED_RESULTS_DECRYPTION_KEY,
@@ -86,5 +105,6 @@ export const ENV = createEnv({
     NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY: process.env.NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY,
     NEXT_PUBLIC_SEALED_RESULTS_SCRIPT_URL: process.env.NEXT_PUBLIC_SEALED_RESULTS_SCRIPT_URL,
     NEXT_PUBLIC_SEALED_RESULTS_ENDPOINT: process.env.NEXT_PUBLIC_SEALED_RESULTS_ENDPOINT,
+    HASH_SALT: process.env.HASH_SALT,
   },
 });

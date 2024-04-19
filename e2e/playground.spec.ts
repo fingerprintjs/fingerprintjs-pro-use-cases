@@ -2,17 +2,6 @@ import { Page, expect, test } from '@playwright/test';
 import { PLAYGROUND_TAG } from '../src/client/components/playground/playgroundTags';
 import { isAgentResponse, isServerResponse } from './zodUtils';
 
-/**
- * Due tu current ESM/CommonJS hell, Playwright cannot import ESM-only packages like `t3-env`.
- * We have to access environment variables for Playwright tests manually 😔.
- * https://github.com/microsoft/playwright/issues/23662
- * These should match '/src/env.ts'
- */
-const endpointOrigin = new URL(process.env.NEXT_PUBLIC_ENDPOINT ?? 'https://metrics.fingerprinthub.com').origin;
-const scriptUrlPatternOrigin = new URL(
-  process.env.NEXT_PUBLIC_SCRIPT_URL_PATTERN ?? 'https://metrics.fingerprinthub.com',
-).origin;
-
 const getAgentResponse = async (page: Page) => {
   const agentResponse =
     (await (await page.getByTestId(PLAYGROUND_TAG.agentResponseJSON)).textContent()) ?? 'Agent response not found';
@@ -100,7 +89,7 @@ test.describe('Proxy integration', () => {
       console.error(request.url(), request.failure()?.errorText);
       const requestOrigin = new URL(request.url()).origin;
 
-      if (requestOrigin === endpointOrigin || requestOrigin === scriptUrlPatternOrigin) {
+      if (requestOrigin === 'https://metrics.fingerprinthub.com') {
         // This fails the test
         expect(request.failure()).toBeUndefined();
       }

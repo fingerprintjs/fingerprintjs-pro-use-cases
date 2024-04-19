@@ -10,6 +10,7 @@ import { ValidationDataResult } from '../shared/types';
 import { decryptSealedResult } from './decryptSealedResult';
 import { ENV } from '../env';
 import { getServerRegion } from './fingerprint-server-api';
+import { IS_DEVELOPMENT } from '../envShared';
 
 export const IPv4_REGEX = /^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.){3}(25[0-5]|(2[0-4]|1\d|[1-9]|)\d)$/;
 export const ALLOWED_REQUEST_TIMESTAMP_DIFF_MS = 4000;
@@ -125,7 +126,7 @@ const getHeader = (request: Request | NextApiRequest, header: string) => {
 
 export function visitIpMatchesRequestIp(visitIp = '', request: NextApiRequest | Request) {
   // This check is skipped on purpose in the Stackblitz and localhost environments.
-  if (process.env.NODE_ENV === 'development') {
+  if (IS_DEVELOPMENT) {
     return true;
   }
 
@@ -151,7 +152,7 @@ export function visitIpMatchesRequestIp(visitIp = '', request: NextApiRequest | 
 
 export function originIsAllowed(url = '', request: NextApiRequest | Request) {
   // This check is skipped on purpose in the Stackblitz and localhost environments.
-  if (process.env.NODE_ENV === 'development') {
+  if (IS_DEVELOPMENT) {
     return true;
   }
 

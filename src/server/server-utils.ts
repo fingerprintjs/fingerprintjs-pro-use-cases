@@ -1,8 +1,8 @@
 import Crypto from 'crypto';
+import { ENV } from '../env';
 
 export function hashString(phoneNumber: string) {
-  const salt = process.env.HASH_SALT || '';
   const hash = Crypto.createHash('sha256');
-  hash.update(phoneNumber + salt);
+  hash.update(phoneNumber + ENV.HASH_SALT);
   return hash.digest('hex');
 }
