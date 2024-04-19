@@ -107,4 +107,12 @@ export const env = createEnv({
     NEXT_PUBLIC_SEALED_RESULTS_ENDPOINT: process.env.NEXT_PUBLIC_SEALED_RESULTS_ENDPOINT,
     HASH_SALT: process.env.HASH_SALT,
   },
+  isServer:
+    // Comprehensive server check
+    // https://github.com/t3-oss/t3-env/issues/154
+    typeof window === 'undefined' ||
+    'Deno' in window ||
+    globalThis.process?.env?.['NODE_ENV'] === 'test' ||
+    !!globalThis.process?.env?.['JEST_WORKER_ID'] ||
+    !!globalThis.process?.env?.['VITEST_WORKER_ID'],
 });
