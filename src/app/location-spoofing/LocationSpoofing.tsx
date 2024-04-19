@@ -17,7 +17,7 @@ import { useUnsealedResult } from '../../client/hooks/useUnsealedResult';
 import { getFlagEmoji, getIpLocation } from '../../shared/utils/locationUtils';
 import { getRegionalDiscount } from './data/getDiscountByCountry';
 import courseLogo from './fingerprintLogoLowOpacitySquareBordered.svg';
-import { ENV } from '../../env';
+import { env } from '../../env';
 
 const COURSE_PRICE = 100;
 const TAXES = 15;
@@ -124,9 +124,9 @@ export const LocationSpoofingUseCaseWrapped: FunctionComponent = () => {
   return (
     <FpjsProvider
       loadOptions={{
-        apiKey: ENV.NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY,
-        scriptUrlPattern: [ENV.NEXT_PUBLIC_SEALED_RESULTS_SCRIPT_URL, FingerprintJSPro.defaultScriptUrlPattern],
-        endpoint: [ENV.NEXT_PUBLIC_SEALED_RESULTS_ENDPOINT, FingerprintJSPro.defaultEndpoint],
+        apiKey: env.NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY,
+        scriptUrlPattern: [env.NEXT_PUBLIC_SEALED_RESULTS_SCRIPT_URL, FingerprintJSPro.defaultScriptUrlPattern],
+        endpoint: [env.NEXT_PUBLIC_SEALED_RESULTS_ENDPOINT, FingerprintJSPro.defaultEndpoint],
       }}
     >
       <UseCaseWrapper useCase={USE_CASES.locationSpoofing}>

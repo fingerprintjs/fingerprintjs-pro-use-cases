@@ -8,7 +8,7 @@ import { CheckResult, checkResultType } from './checkResult';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ValidationDataResult } from '../shared/types';
 import { decryptSealedResult } from './decryptSealedResult';
-import { ENV } from '../env';
+import { env } from '../env';
 import { getServerRegion } from './fingerprint-server-api';
 import { IS_DEVELOPMENT } from '../envShared';
 
@@ -75,7 +75,7 @@ export const checkFreshIdentificationRequest: RuleCheck = (eventResponse) => {
  */
 export const checkConfidenceScore: RuleCheck = (eventResponse) => {
   const confidenceScore = eventResponse?.products?.identification?.data?.confidence.score;
-  if (!confidenceScore || confidenceScore < ENV.MIN_CONFIDENCE_SCORE) {
+  if (!confidenceScore || confidenceScore < env.MIN_CONFIDENCE_SCORE) {
     return new CheckResult(
       "Low confidence score, we'd rather verify you with the second factor,",
       'error',
@@ -187,8 +187,8 @@ export const getAndValidateFingerprintResult = async ({
   requestId,
   req,
   sealedResult,
-  serverApiKey: apiKey = ENV.SERVER_API_KEY,
-  region = getServerRegion(ENV.NEXT_PUBLIC_REGION),
+  serverApiKey: apiKey = env.SERVER_API_KEY,
+  region = getServerRegion(env.NEXT_PUBLIC_REGION),
   options,
 }: GetFingerprintResultArgs): Promise<ValidationDataResult<EventResponse>> => {
   let identificationEvent: EventResponse | undefined;
@@ -284,7 +284,7 @@ export const getAndValidateFingerprintResult = async ({
    * This is context-sensitive and less reliable than the binary checks above, that's why it is checked last.
    * More info: https://dev.fingerprint.com/docs/understanding-your-confidence-score
    */
-  if (identification.confidence.score < ENV.MIN_CONFIDENCE_SCORE) {
+  if (identification.confidence.score < env.MIN_CONFIDENCE_SCORE) {
     return { okay: false, error: 'Identification confidence score too low, potential spoofing attack.' };
   }
 

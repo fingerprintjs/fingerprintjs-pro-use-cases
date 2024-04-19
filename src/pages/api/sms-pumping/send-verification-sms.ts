@@ -14,7 +14,7 @@ import {
   SMS_FRAUD_COPY,
   TEST_PHONE_NUMBER,
 } from '../../../server/sms-pumping/smsPumpingConst';
-import { ENV } from '../../../env';
+import { env } from '../../../env';
 
 export type SendSMSPayload = {
   requestId: string;
@@ -52,10 +52,10 @@ const sendSms = async (phone: string, body: string, visitorId: string) => {
     },
   });
 
-  const apiKeySid = ENV.TWILIO_API_KEY_SID;
-  const apiKeySecret = ENV.TWILIO_API_KEY_SECRET;
-  const accountSid = ENV.TWILIO_ACCOUNT_SID;
-  const fromNumber = ENV.TWILIO_FROM_NUMBER;
+  const apiKeySid = env.TWILIO_API_KEY_SID;
+  const apiKeySecret = env.TWILIO_API_KEY_SECRET;
+  const accountSid = env.TWILIO_ACCOUNT_SID;
+  const fromNumber = env.TWILIO_FROM_NUMBER;
 
   if (!apiKeySid) {
     throw new Error('Twilio API key SID not found.');

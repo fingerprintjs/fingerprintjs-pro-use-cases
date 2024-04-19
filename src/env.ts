@@ -8,7 +8,7 @@ import { z } from 'zod';
  * - If a required environment variable is missing, it will throw an error at build time instead of runtime
  * - Plus other useful features like Zod validation and transformations, defaults, server vs client checks....
  **/
-export const ENV = createEnv({
+export const env = createEnv({
   /*
    * Server-side Environment variables, not available on the client.
    * Will throw error if you access these variables on the client.

@@ -1,13 +1,13 @@
-import { ENV } from '../../env';
+import { env } from '../../env';
 import { getBlockedIps } from './blockedIpsDatabase';
 import { CloudflareRule, buildFirewallRules } from './buildFirewallRules';
 
 async function updateRulesetUsingCloudflareAPI(rules: CloudflareRule[]) {
-  const apiToken = ENV.CLOUDFLARE_API_TOKEN;
-  const zoneId = ENV.CLOUDFLARE_ZONE_ID;
+  const apiToken = env.CLOUDFLARE_API_TOKEN;
+  const zoneId = env.CLOUDFLARE_ZONE_ID;
   // You can get your Cloudflare API token, and zone ID from your Cloudflare dashboard.
   // But you might need to call the API to find the custom ruleset ID. See getCustomRulesetId() below.
-  const customRulesetId = ENV.CLOUDFLARE_RULESET_ID;
+  const customRulesetId = env.CLOUDFLARE_RULESET_ID;
 
   if (!apiToken) {
     throw new Error('No Cloudflare API token provided');
@@ -56,8 +56,8 @@ export const syncFirewallRuleset = async () => {
 // @ts-expect-error
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function getCustomRulesetId() {
-  const zoneId = ENV.CLOUDFLARE_ZONE_ID;
-  const apiToken = ENV.CLOUDFLARE_API_TOKEN;
+  const zoneId = env.CLOUDFLARE_ZONE_ID;
+  const apiToken = env.CLOUDFLARE_API_TOKEN;
   if (!zoneId) {
     throw new Error('No Cloudflare zone ID provided');
   }

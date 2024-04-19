@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult } from '../../../../server/checks';
 import { getRegionalDiscount } from '../../data/getDiscountByCountry';
-import { ENV } from '../../../../env';
+import { env } from '../../../../env';
 
 export type ActivateRegionalPricingPayload = {
   requestId: string;
@@ -23,7 +23,7 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
     requestId,
     req,
     sealedResult,
-    serverApiKey: ENV.SEALED_RESULTS_SERVER_API_KEY,
+    serverApiKey: env.SEALED_RESULTS_SERVER_API_KEY,
   });
   if (!fingerprintResult.okay) {
     return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });

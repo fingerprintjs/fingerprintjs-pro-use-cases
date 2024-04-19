@@ -18,7 +18,7 @@ import {
 import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { CREDENTIAL_STUFFING_COPY } from '../../../server/credentialStuffing/copy';
-import { ENV } from '../../../env';
+import { env } from '../../../env';
 
 // Mocked user with leaked credentials associated with visitorIds.
 const mockedUser = {
@@ -47,7 +47,7 @@ LoginAttemptDbModel.sync({ force: false });
 
 function getKnownVisitorIds() {
   const defaultVisitorIds = ['bXbwuhCBRB9lLTK692vw', 'ABvLgKyH3fAr6uAjn0vq', 'BNvLgKyHefAr9iOjn0ul'];
-  const visitorIdsFromEnv = ENV.KNOWN_VISITOR_IDS?.split(',');
+  const visitorIdsFromEnv = env.KNOWN_VISITOR_IDS?.split(',');
 
   console.info(`Extracted ${visitorIdsFromEnv?.length ?? 0} visitorIds from env.`);
 
