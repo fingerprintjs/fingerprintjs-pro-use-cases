@@ -80,6 +80,10 @@ export const TEST_IDS = {
     copyCodeButton: 'copyCodeButton',
     codeInsideSnackbar: 'codeInsideSnackbar',
   },
+  locationSpoofing: {
+    callout: 'callout',
+    activateRegionalPricing: 'activateRegionalPricing',
+  },
 } as const;
 
 export const TEST_ATTRIBUTES = {

@@ -10,7 +10,6 @@ import { Alert } from '../../client/components/common/Alert/Alert';
 import Button from '../../client/components/common/Button/Button';
 import { Cart } from '../../client/components/common/Cart/Cart';
 import { FingerprintJSPro, FpjsProvider, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import { TEST_IDS } from '../../client/testIDs';
 import { useMutation } from 'react-query';
 import { ActivateRegionalPricingPayload, ActivateRegionalPricingResponse } from './api/activate-ppp/route';
 import { useUnsealedResult } from '../../client/hooks/useUnsealedResult';
@@ -18,6 +17,8 @@ import { getFlagEmoji, getIpLocation } from '../../shared/utils/locationUtils';
 import { getRegionalDiscount } from './data/getDiscountByCountry';
 import courseLogo from './fingerprintLogoLowOpacitySquareBordered.svg';
 import { env } from '../../env';
+import { TEST_IDS } from '../../client/testIDs';
+import { LOCATION_SPOOFING_COPY } from './copy';
 
 const COURSE_PRICE = 100;
 const TAXES = 15;
@@ -80,7 +81,12 @@ const LocationSpoofingUseCase: FunctionComponent = () => {
 
   return (
     <div className={classNames(styles.wrapper, formStyles.wrapper)}>
-      <Cart items={cartItems} discount={discount} taxPerItem={TAXES} discountLabel='Regional discount'></Cart>
+      <Cart
+        items={cartItems}
+        discount={discount}
+        taxPerItem={TAXES}
+        discountLabel={LOCATION_SPOOFING_COPY.discountName}
+      ></Cart>
       <div className={styles.innerWrapper}>
         <form
           onSubmit={(e) => {
@@ -89,10 +95,11 @@ const LocationSpoofingUseCase: FunctionComponent = () => {
           }}
           className={classNames(formStyles.useCaseForm, styles.regionalPricingForm)}
         >
-          <p>
+          <p data-testid={TEST_IDS.locationSpoofing.callout}>
             {unsealedVisitorData && (
               <>
-                We noticed you are from {getFlagEmoji(getIpLocation(unsealedVisitorData)?.country?.code)}{' '}
+                {LOCATION_SPOOFING_COPY.personalizedButton}{' '}
+                {getFlagEmoji(getIpLocation(unsealedVisitorData)?.country?.code)}{' '}
                 {getIpLocation(unsealedVisitorData)?.country?.name}! 👋{' '}
               </>
             )}
@@ -105,7 +112,12 @@ const LocationSpoofingUseCase: FunctionComponent = () => {
             </div>
           )}
           <div className={styles.regionaPricingContainer}>
-            <Button disabled={isLoading} size='medium' data-testid={TEST_IDS.couponFraud.submitCoupon} type='submit'>
+            <Button
+              disabled={isLoading}
+              size='medium'
+              data-testid={TEST_IDS.locationSpoofing.activateRegionalPricing}
+              type='submit'
+            >
               {isLoading
                 ? 'Verifying location...'
                 : `Activate ${potentialDiscount ? potentialDiscount + '% off with ' : ''} regional pricing`}

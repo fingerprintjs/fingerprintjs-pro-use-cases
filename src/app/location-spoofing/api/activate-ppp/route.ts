@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult } from '../../../../server/checks';
 import { getRegionalDiscount } from '../../data/getDiscountByCountry';
 import { env } from '../../../../env';
+import { LOCATION_SPOOFING_COPY } from '../../copy';
 
 export type ActivateRegionalPricingPayload = {
   requestId: string;
@@ -67,7 +68,7 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
 
   return NextResponse.json({
     severity: 'success',
-    message: `Success! We have applied a regional discount of ${discount}%. With this discount your purchase will be restricted to ${country.name}.`,
+    message: LOCATION_SPOOFING_COPY.success({ discount, country: country.name }),
     data: { discount },
   });
 }
