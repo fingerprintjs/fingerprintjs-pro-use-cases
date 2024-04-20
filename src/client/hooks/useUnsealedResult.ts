@@ -5,10 +5,14 @@ export const useUnsealedResult = (sealedResult?: string) => {
   return useQuery<EventResponse>({
     queryKey: ['event', sealedResult],
     queryFn: async () => {
-      return fetch('/api/decrypt', {
+      const response = await fetch('/api/decrypt', {
         method: 'POST',
         body: JSON.stringify({ sealedResult }),
-      }).then((res) => res.json());
+      });
+      if (response.status !== 200) {
+        throw new Error('Failed to unseal result: ' + response.statusText);
+      }
+      return await response.json();
     },
     enabled: Boolean(sealedResult),
   });
