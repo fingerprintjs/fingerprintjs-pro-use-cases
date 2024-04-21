@@ -3,8 +3,6 @@ import { TEST_IDS } from '../src/client/testIDs';
 import { LOCATION_SPOOFING_COPY } from '../src/app/location-spoofing/copy';
 import { assertAlert } from './e2eTestUtils';
 
-// test.use({ proxy: { server: 'localhost:4000' } });
-
 const getActivateButton = (page: Page) => page.getByTestId(TEST_IDS.locationSpoofing.activateRegionalPricing);
 
 test.describe('Location spoofing demo', () => {
@@ -14,7 +12,7 @@ test.describe('Location spoofing demo', () => {
 
   test('should personalize UI copy based on user location', async ({ page }) => {
     await expect(page.getByTestId(TEST_IDS.locationSpoofing.callout)).toContainText(
-      LOCATION_SPOOFING_COPY.personalizedButton,
+      LOCATION_SPOOFING_COPY.personalizedCallout,
     );
 
     const button = await page.getByTestId(TEST_IDS.locationSpoofing.activateRegionalPricing);

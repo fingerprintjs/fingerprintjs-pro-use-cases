@@ -215,8 +215,6 @@ export const getAndValidateFingerprintResult = async ({
     }
   }
 
-  console.log('unsealed result', JSON.stringify(identificationEvent, null, 2));
-
   /**
    * If `sealedResult` was not provided or unsealing failed, use Server API to get the identification event.
    * The Server API must contain information about this specific identification request.

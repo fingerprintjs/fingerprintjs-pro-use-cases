@@ -579,13 +579,13 @@ export const USE_CASES = {
     description: (
       <>
         <p>
-          Many web applications need to apply content restrictions or regional discounts based on the visitors
+          Many web applications need to apply content restrictions or regional discounts based on the visitor's
           geographical location. But tech-savvy users can simply turn on a VPN to appear to be somewhere else.
         </p>
         <p>
-          Fingerprint VPN detection allows you to detect if a visitor is using a VPN and spoofing their location. You
-          can prevent these visitors and other suspicious browsers from applying purchase-power-parity discounts or
-          accessing geographically restricted content.
+          Fingerprint VPN detection allows you to detect if a visitor is using a virtual private network and spoofing
+          their location. You can prevent these visitors and other suspicious browsers from applying
+          purchase-power-parity discounts or accessing geographically restricted content.
         </p>
       </>
     ),
@@ -594,7 +594,7 @@ export const USE_CASES = {
     doNotMentionResetButton: true,
     instructions: [
       <>
-        Click "Activate regional pricing" in the checkout form below. Assuming your VPN is off, you will get a
+        Click <b>Activate regional pricing</b> in the checkout form below. Assuming your VPN is off, you will get a
         location-based discount.
       </>,
       <>Turn on your VPN and pick an exit node different from your true location.</>,

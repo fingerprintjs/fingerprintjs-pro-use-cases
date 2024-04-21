@@ -98,7 +98,7 @@ const LocationSpoofingUseCase: FunctionComponent = () => {
           <p data-testid={TEST_IDS.locationSpoofing.callout}>
             {unsealedVisitorData && (
               <>
-                {LOCATION_SPOOFING_COPY.personalizedButton}{' '}
+                {LOCATION_SPOOFING_COPY.personalizedCallout}{' '}
                 {getFlagEmoji(getIpLocation(unsealedVisitorData)?.country?.code)}{' '}
                 {getIpLocation(unsealedVisitorData)?.country?.name}! 👋{' '}
               </>
