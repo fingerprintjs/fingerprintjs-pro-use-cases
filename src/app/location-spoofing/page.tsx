@@ -4,6 +4,6 @@ import { LocationSpoofingUseCaseWrapped } from './LocationSpoofing';
 
 export const metadata = generateUseCaseMetadata(USE_CASES.locationSpoofing);
 
-export default function LocationSpoofinPage() {
+export default function LocationSpoofingPage() {
   return <LocationSpoofingUseCaseWrapped />;
 }
