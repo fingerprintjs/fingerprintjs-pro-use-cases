@@ -15,13 +15,13 @@ async function waitForBlockedLoanSubmit(page: Page) {
   await page.getByText(LOAN_RISK_COPY.inconsistentApplicationChallenged).waitFor();
 }
 
-test.describe('Loan risk', () => {
-  test.beforeEach(async ({ page }) => {
-    await blockGoogleTagManager(page);
-    await page.goto('/loan-risk');
-    await resetScenarios(page);
-  });
+test.beforeEach(async ({ page }) => {
+  await blockGoogleTagManager(page);
+  await page.goto('/loan-risk');
+  await resetScenarios(page);
+});
 
+test.describe('Loan risk', () => {
   test('should correctly calculate loan and approve it on first submit', async ({ page }) => {
     await page.getByTestId(TEST_IDS.loanRisk.loanValue).fill('2000');
     await page.getByTestId(TEST_IDS.loanRisk.monthlyIncome).fill('20000');

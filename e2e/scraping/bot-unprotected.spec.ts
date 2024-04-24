@@ -1,6 +1,7 @@
 import { Locator, expect, test } from '@playwright/test';
 import { writeFileSync } from 'fs';
 import { TEST_IDS } from '../../src/client/testIDs';
+import { blockGoogleTagManager } from '../e2eTestUtils';
 
 const TEST_ID = TEST_IDS.webScraping;
 
@@ -8,6 +9,10 @@ const scrapeText = async (parent: Locator, testId: string) => {
   const element = await parent.getByTestId(testId).first();
   return element ? await element.textContent() : null;
 };
+
+test.beforeEach(async ({ page }) => {
+  await blockGoogleTagManager(page);
+});
 
 test.describe('Scraping flights', () => {
   test('is possible with Bot detection off', async ({ page }) => {

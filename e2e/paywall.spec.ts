@@ -3,13 +3,13 @@ import { assertAlert, blockGoogleTagManager, resetScenarios } from './e2eTestUti
 import { TEST_IDS } from '../src/client/testIDs';
 import { PAYWALL_COPY } from '../src/server/paywall/paywallCopy';
 
-test.describe('Paywall', () => {
-  test.beforeEach(async ({ page }) => {
-    await blockGoogleTagManager(page);
-    await page.goto('/paywall');
-    await resetScenarios(page);
-  });
+test.beforeEach(async ({ page }) => {
+  await blockGoogleTagManager(page);
+  await page.goto('/paywall');
+  await resetScenarios(page);
+});
 
+test.describe('Paywall', () => {
   test('Should show two articles, then show a paywall', async ({ page }) => {
     const articles = await page.getByTestId(TEST_IDS.paywall.articleCard);
 

@@ -5,14 +5,14 @@ import { TEST_IDS } from '../src/client/testIDs';
 const CART_ID = TEST_IDS.common.cart;
 const PERS_ID = TEST_IDS.personalization;
 
-test.describe('Personalization', () => {
-  test.beforeEach(async ({ page }) => {
-    await blockGoogleTagManager(page);
-    await page.goto('/personalization');
-    await page.getByText('Okay, I understand').click();
-    await resetScenarios(page);
-  });
+test.beforeEach(async ({ page }) => {
+  await blockGoogleTagManager(page);
+  await page.goto('/personalization');
+  await page.getByText('Okay, I understand').click();
+  await resetScenarios(page);
+});
 
+test.describe('Personalization', () => {
   test('should add and remove items from cart', async ({ page }) => {
     const products = page.getByTestId(PERS_ID.coffeeProduct);
     const cartItems = page.getByTestId(CART_ID.cartItem);

@@ -11,13 +11,13 @@ const submitCoupon = async (page: Page) => {
   await page.getByTestId(TEST_IDS.couponFraud.submitCoupon).click();
 };
 
-test.describe('Coupon fraud', () => {
-  test.beforeEach(async ({ page }) => {
-    await blockGoogleTagManager(page);
-    await page.goto('/coupon-fraud');
-    await resetScenarios(page);
-  });
+test.beforeEach(async ({ page }) => {
+  await blockGoogleTagManager(page);
+  await page.goto('/coupon-fraud');
+  await resetScenarios(page);
+});
 
+test.describe('Coupon fraud', () => {
   test('should not allow to claim coupon that does not exist', async ({ page }) => {
     await insertCoupon(page, 'Does not exist');
     await submitCoupon(page);

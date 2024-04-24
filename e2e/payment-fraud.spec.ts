@@ -15,13 +15,13 @@ async function waitForInvalidCardSubmit(page: Page) {
   await page.getByText(PAYMENT_FRAUD_COPY.incorrectCardDetails).waitFor();
 }
 
-test.describe('Payment fraud', () => {
-  test.beforeEach(async ({ page }) => {
-    await blockGoogleTagManager(page);
-    await page.goto('/payment-fraud');
-    await resetScenarios(page);
-  });
+test.beforeEach(async ({ page }) => {
+  await blockGoogleTagManager(page);
+  await page.goto('/payment-fraud');
+  await resetScenarios(page);
+});
 
+test.describe('Payment fraud', () => {
   test('should pass payment with prefilled details', async ({ page }) => {
     await waitForSuccessfulSubmit(page);
   });

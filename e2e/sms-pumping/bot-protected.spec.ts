@@ -1,9 +1,13 @@
 import { test } from '@playwright/test';
 import { TEST_IDS } from '../../src/client/testIDs';
-import { assertAlert } from '../e2eTestUtils';
+import { assertAlert, blockGoogleTagManager } from '../e2eTestUtils';
 
 // TODO Remove once fixed
 test.skip(({ browserName }) => browserName == 'firefox', 'This test currently fails in Github CI on Firefox');
+
+test.beforeEach(async ({ page }) => {
+  await blockGoogleTagManager(page);
+});
 
 test.describe('Sending verification SMS messages', () => {
   test('is not possible as a bot with Bot detection on', async ({ page }) => {

@@ -18,13 +18,13 @@ test.skip(({ browserName }) => browserName !== 'chromium', 'Chrome-only');
  */
 test.setTimeout(60000);
 
-test.describe('Bot Firewall Demo CHROME_ONLY', () => {
-  test.beforeEach(async ({ page }) => {
-    await blockGoogleTagManager(page);
-    await page.goto('/coupon-fraud');
-    await resetScenarios(page);
-  });
+test.beforeEach(async ({ page }) => {
+  await blockGoogleTagManager(page);
+  await page.goto('/coupon-fraud');
+  await resetScenarios(page);
+});
 
+test.describe('Bot Firewall Demo CHROME_ONLY', () => {
   test('Should display bot visit and allow blocking/unblocking its IP address', async ({ page, context }) => {
     // Record bot visit in web-scraping page
     await page.goto('/web-scraping');

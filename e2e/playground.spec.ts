@@ -23,12 +23,12 @@ const clickPlaygroundRefreshButton = async (page: Page) => {
   await page.waitForTimeout(3000);
 };
 
-test.describe('Playground page', () => {
-  test.beforeEach(async ({ page }) => {
-    await blockGoogleTagManager(page);
-    await page.goto('/playground');
-  });
+test.beforeEach(async ({ page }) => {
+  await blockGoogleTagManager(page);
+  await page.goto('/playground');
+});
 
+test.describe('Playground page', () => {
   test('Page renders basic skeleton elements', async ({ page }) => {
     await page.getByText('Fingerprint Pro Playground', { exact: true }).waitFor();
     await page.getByText('Welcome, your visitor ID is').waitFor();
