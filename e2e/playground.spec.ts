@@ -3,6 +3,7 @@ import { Page, expect, test } from '@playwright/test';
 import { PLAYGROUND_TAG } from '../src/client/components/playground/playgroundTags';
 import { isAgentResponse, isServerResponse } from './zodUtils';
 import { ENDPOINT } from '../src/server/const';
+import { blockGoogleTagManager } from './e2eTestUtils';
 
 const getAgentResponse = async (page: Page) => {
   const agentResponse =
@@ -24,6 +25,7 @@ const clickPlaygroundRefreshButton = async (page: Page) => {
 
 test.describe('Playground page', () => {
   test.beforeEach(async ({ page }) => {
+    await blockGoogleTagManager(page);
     await page.goto('/playground');
   });
 
