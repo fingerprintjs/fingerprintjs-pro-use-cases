@@ -6,7 +6,7 @@ import { Severity } from '../src/server/server';
  *
  * When running E2E the tests against Production on demo.fingerprint.com, loading our analytics tools can slow down the tests
  * but primarily the Intercom bubble covers elements that the tests needs to click.
- * We load all of these through GTM so blocking the initial GMT request stops Intercom and other tools from interfering
+ * We load all of these through GTM so blocking the initial GTM request stops Intercom and other tools from interfering
  */
 export async function blockGoogleTagManager(page: Page) {
   await page.route('**/*', (request) => {
