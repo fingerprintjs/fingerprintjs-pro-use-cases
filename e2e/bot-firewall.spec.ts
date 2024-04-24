@@ -1,5 +1,5 @@
 import { Locator, Page, expect, test } from '@playwright/test';
-import { resetScenarios } from './e2eTestUtils';
+import { blockGoogleTagManager, resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
 import { BOT_FIREWALL_COPY } from '../src/client/bot-firewall/botFirewallCopy';
 import { PRODUCTION_E2E_TEST_BASE_URL } from '../playwright.config';
@@ -18,12 +18,13 @@ test.skip(({ browserName }) => browserName !== 'chromium', 'Chrome-only');
  */
 test.setTimeout(60000);
 
-test.describe('Bot Firewall Demo CHROME_ONLY', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/coupon-fraud');
-    await resetScenarios(page);
-  });
+test.beforeEach(async ({ page }) => {
+  await blockGoogleTagManager(page);
+  await page.goto('/coupon-fraud');
+  await resetScenarios(page);
+});
 
+test.describe('Bot Firewall Demo CHROME_ONLY', () => {
   test('Should display bot visit and allow blocking/unblocking its IP address', async ({ page, context }) => {
     // Record bot visit in web-scraping page
     await page.goto('/web-scraping');

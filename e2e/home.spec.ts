@@ -1,5 +1,10 @@
 import { expect, test } from '@playwright/test';
 import { TEST_IDS } from '../src/client/testIDs';
+import { blockGoogleTagManager } from './e2eTestUtils';
+
+test.beforeEach(async ({ page }) => {
+  await blockGoogleTagManager(page);
+});
 
 test.describe('Home page', () => {
   test('should list cards with use-cases', async ({ page }) => {
