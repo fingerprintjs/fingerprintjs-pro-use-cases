@@ -2,6 +2,19 @@ import { Page, expect } from '@playwright/test';
 import { TEST_ATTRIBUTES, TEST_IDS } from '../src/client/testIDs';
 import { Severity } from '../src/server/server';
 
+/**
+ *
+ * When running E2E the tests against Production on demo.fingerprint.com, loading our analytics tools can slow down the tests
+ * but primarily the Intercom bubble covers elements that the tests needs to click.
+ * We load all of these through GTM so blocking the initial GTM request stops Intercom and other tools from interfering
+ */
+export async function blockGoogleTagManager(page: Page) {
+  await page.route('**/*', (request) => {
+    request.request().url().includes('googletagmanager.com') ? request.abort() : request.continue();
+    return;
+  });
+}
+
 // Assumes you already are on a use case page with the Reset button present
 export async function resetScenarios(page: Page) {
   await page.getByTestId(TEST_IDS.reset.resetButton).click();

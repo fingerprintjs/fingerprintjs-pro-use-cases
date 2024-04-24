@@ -1,5 +1,5 @@
 import { Page, test } from '@playwright/test';
-import { resetScenarios } from './e2eTestUtils';
+import { blockGoogleTagManager, resetScenarios } from './e2eTestUtils';
 import { PAYMENT_FRAUD_COPY } from '../src/pages/api/payment-fraud/place-order';
 import { TEST_IDS } from '../src/client/testIDs';
 
@@ -15,12 +15,13 @@ async function waitForInvalidCardSubmit(page: Page) {
   await page.getByText(PAYMENT_FRAUD_COPY.incorrectCardDetails).waitFor();
 }
 
-test.describe('Payment fraud', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/payment-fraud');
-    await resetScenarios(page);
-  });
+test.beforeEach(async ({ page }) => {
+  await blockGoogleTagManager(page);
+  await page.goto('/payment-fraud');
+  await resetScenarios(page);
+});
 
+test.describe('Payment fraud', () => {
   test('should pass payment with prefilled details', async ({ page }) => {
     await waitForSuccessfulSubmit(page);
   });

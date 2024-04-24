@@ -1,5 +1,5 @@
 import { Page, test } from '@playwright/test';
-import { resetScenarios } from './e2eTestUtils';
+import { blockGoogleTagManager, resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
 import { CREDENTIAL_STUFFING_COPY } from '../src/pages/api/credential-stuffing/authenticate';
 
@@ -8,12 +8,13 @@ const submitForm = async (page: Page) => {
   await page.getByTestId(TEST_IDS.credentialStuffing.login).click();
 };
 
-test.describe('Credential stuffing', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/credential-stuffing');
-    await resetScenarios(page);
-  });
+test.beforeEach(async ({ page }) => {
+  await blockGoogleTagManager(page);
+  await page.goto('/credential-stuffing');
+  await resetScenarios(page);
+});
 
+test.describe('Credential stuffing', () => {
   test('should prevent login even with correct credentials', async ({ page }) => {
     await submitForm(page);
     await page.getByText(CREDENTIAL_STUFFING_COPY.differentVisitorIdUseMFA).waitFor();
