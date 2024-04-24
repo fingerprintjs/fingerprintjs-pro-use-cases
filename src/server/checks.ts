@@ -11,6 +11,7 @@ import { decryptSealedResult } from './decryptSealedResult';
 import { env } from '../env';
 import { getServerRegion } from './fingerprint-server-api';
 import { IS_DEVELOPMENT } from '../envShared';
+import { ConversationContextImpl } from 'twilio/lib/rest/conversations/v1/conversation';
 
 export const IPv4_REGEX = /^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.){3}(25[0-5]|(2[0-4]|1\d|[1-9]|)\d)$/;
 export const ALLOWED_REQUEST_TIMESTAMP_DIFF_MS = 4000;
@@ -140,7 +141,11 @@ export function visitIpMatchesRequestIp(visitIp = '', request: NextApiRequest | 
    * https://adam-p.ca/blog/2022/03/x-forwarded-for/.
    */
   const xForwardedFor = getHeader(request, 'x-forwarded-for');
+  console.log('xForwardedFor', xForwardedFor);
   const requestIp = Array.isArray(xForwardedFor) ? xForwardedFor[0] : xForwardedFor?.split(',')[0] ?? '';
+  console.log('requestIp', requestIp);
+
+  console.log('visitIp', visitIp);
 
   // IPv6 addresses are not supported yet, skip the check
   if (!IPv4_REGEX.test(requestIp)) {
