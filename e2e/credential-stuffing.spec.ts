@@ -1,5 +1,5 @@
 import { Page, test } from '@playwright/test';
-import { resetScenarios } from './resetHelper';
+import { resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
 import { CREDENTIAL_STUFFING_COPY } from '../src/pages/api/credential-stuffing/authenticate';
 

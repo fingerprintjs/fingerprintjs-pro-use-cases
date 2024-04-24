@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
 import { areVisitorIdAndRequestIdValid } from './checks';
-import { fingerprintJsApiClient } from './fingerprint-api';
+import { fingerprintServerApiClient } from './fingerprint-server-api';
 import { CheckResult, checkResultType } from './checkResult';
 import { sendForbiddenResponse } from './response';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -25,7 +25,7 @@ export const ourOrigins = [
   'https://staging.fingerprinthub.com',
 ];
 
-export type Severity = 'success' | 'warning' | 'error';
+export type Severity = 'success' | 'warning' | 'error' | 'info';
 
 export const messageSeverity = Object.freeze({
   Success: 'success',
@@ -66,7 +66,7 @@ export async function getIdentificationEvent(requestId?: string) {
   }
 
   // Use Fingerprint Node SDK get the identification event from the Server API.
-  return fingerprintJsApiClient.getEvent(requestId);
+  return fingerprintServerApiClient.getEvent(requestId);
 }
 
 // Report suspicious user activity according to internal processes here.

@@ -7,7 +7,7 @@ import InfoIcon from '../../../../client/img/InfoIcon.svg';
 import styles from './alert.module.scss';
 import Image from 'next/image';
 import classNames from 'classnames';
-import { TEST_IDS } from '../../../testIDs';
+import { TEST_ATTRIBUTES, TEST_IDS } from '../../../testIDs';
 import { CustomContentProps, VariantType, useSnackbar, SnackbarKey } from 'notistack';
 import React from 'react';
 import Button from '../Button/Button';
@@ -39,12 +39,12 @@ export const ALERT_ICON_MAP: Record<VariantType, any> = {
  * Static on-page alert/notification
  */
 export const Alert: FunctionComponent<AlertProps> = ({ severity, children, className, dataTestId }) => {
+  const testAttributes = {
+    'data-testid': classNames(TEST_IDS.common.alert, dataTestId),
+    [TEST_ATTRIBUTES.severity]: severity,
+  };
   return (
-    <div
-      className={classNames(styles.alert, STYLES_MAP[severity], className)}
-      data-testid={classNames(TEST_IDS.common.alert, dataTestId)}
-      data-test-severity={severity}
-    >
+    <div className={classNames(styles.alert, STYLES_MAP[severity], className)} {...testAttributes}>
       <div className={styles.iconWrapper}>{ALERT_ICON_MAP[severity]}</div>
       <div>{children}</div>
     </div>
@@ -65,11 +65,17 @@ export const CustomSnackbar = React.forwardRef<HTMLDivElement, CustomContentProp
     ...other
   } = props;
 
+  const testAttributes = {
+    [TEST_ATTRIBUTES.id]: TEST_IDS.common.snackBar,
+    [TEST_ATTRIBUTES.severity]: variant,
+  };
+
   return (
     <div
       ref={ref}
       role='alert'
       className={classNames(styles.snackbar, styles.withBorder, STYLES_MAP[variant], className)}
+      {...testAttributes}
       {...other}
     >
       <div className={styles.snackbarContent}>
@@ -89,10 +95,11 @@ export function CloseSnackbarButton({ snackbarId }: { snackbarId: SnackbarKey })
   return (
     <>
       <div className={styles.closeIcon}>
-        <CrossIconSvg onClick={() => closeSnackbar(snackbarId)} />
+        <CrossIconSvg data-testid={TEST_IDS.common.closeSnackbar} onClick={() => closeSnackbar(snackbarId)} />
       </div>
       <Button
         onClick={() => closeSnackbar(snackbarId)}
+        data-testid={TEST_IDS.common.closeSnackbar}
         className={styles.closeButton}
         variant='ghost'
         outlined

@@ -82,6 +82,12 @@ Integrate Fingerprint Bot Detection with your Web Application Firewall and dynam
 [🔥🧱 Bot Firewall Live Demo](https://demo.fingerprint.com/bot-firewall)
 [📖 Bot Firewall Article](https://fingerprint.com/blog/bot-detection-powered-application-firewall/)
 
+### SMS Pumping Fraud Protection
+
+Prevent financial losses from SMS pumping. Link every verification text message to a browser fingerprint and limit the number of verification requests from a single browser.
+
+[📱 SMS Pumping Protection Live Demo](https://demo.fingerprint.com/sms-pumping)
+
 ## Documentation and Support
 
 To dive deeper into Fingerprint Pro, see our [Documentation](https://dev.fingerprint.com/docs). For questions or suggestions specific to this repository, you can [create an issue](https://github.com/fingerprintjs/fingerprintjs-pro-use-cases/issues/new). For general questions and community vibes, visit our [Discord server](https://discord.gg/39EpE2neBg). If you require private support, you can email us at [oss-support@fingerprint.com](mailto:oss-support@fingerprint.com).

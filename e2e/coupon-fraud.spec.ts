@@ -1,5 +1,5 @@
 import { Page, test, expect } from '@playwright/test';
-import { resetScenarios } from './resetHelper';
+import { resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
 import { COUPON_FRAUD_COPY } from '../src/pages/api/coupon-fraud/claim';
 

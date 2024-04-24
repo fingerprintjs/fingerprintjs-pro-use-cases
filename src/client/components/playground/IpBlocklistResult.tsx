@@ -3,9 +3,6 @@ import { FunctionComponent } from 'react';
 
 const IpBlocklistResult: FunctionComponent<{ event: EventResponse | undefined }> = ({ event }) => {
   const blocklistData = event?.products?.ipBlocklist?.data;
-  if (blocklistData?.result === false) {
-    return <>Not detected</>;
-  }
   if (blocklistData?.details?.attackSource && blocklistData?.details?.emailSpam) {
     return <>Your IP is on a blocklist 🚫 (it was part of multiple attacks)</>;
   }
@@ -20,6 +17,9 @@ const IpBlocklistResult: FunctionComponent<{ event: EventResponse | undefined }>
   }
   if (event?.products?.proxy?.data?.result === true) {
     return <>Your IP is used by a public proxy provider 🔄</>;
+  }
+  if (blocklistData?.result === false) {
+    return <>Not detected</>;
   }
   return <>Unknown</>;
 };

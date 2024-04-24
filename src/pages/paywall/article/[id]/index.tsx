@@ -3,8 +3,7 @@ import { Skeleton, SkeletonTypeMap } from '@mui/material';
 import { UseCaseWrapper } from '../../../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { CustomPageProps } from '../../../_app';
 import { USE_CASES } from '../../../../client/components/common/content';
-import BackArrow from '../../../../client/img/arrowLeft.svg';
-import Link from 'next/link';
+
 import Image from 'next/image';
 import styles from '../../paywall.module.scss';
 import { Alert } from '../../../../client/components/common/Alert/Alert';
@@ -15,6 +14,7 @@ import { ArticleResponse } from '../../../api/paywall/article/[id]';
 import { TEST_IDS } from '../../../../client/testIDs';
 import { ArticleGrid, Byline } from '../../../../client/components/paywall/ArticleGrid';
 import { PAYWALL_COPY } from '../../../../server/paywall/paywallCopy';
+import { BackArrow } from '../../../../client/components/common/BackArrow/BackArrow';
 
 function ArticleSkeleton({ animation = false }: { animation?: SkeletonTypeMap['props']['animation'] }) {
   const skeletons = Array.from({ length: 4 }).map((_, index) => <Skeleton key={index} animation={animation} />);
@@ -46,12 +46,7 @@ export default function Article({ embed }: CustomPageProps) {
   return (
     <UseCaseWrapper useCase={USE_CASES.paywall}>
       <div className={styles.articleContainer}>
-        <div className={styles.buckButton} data-testid={TEST_IDS.paywall.goBack}>
-          <Link href={returnUrl}>
-            <Image src={BackArrow} alt='' className={styles.backArrow} />
-            Back to articles
-          </Link>
-        </div>
+        <BackArrow as='Link' href={returnUrl} label='Back to articles' testId={TEST_IDS.paywall.goBack} />
         {!articleData && <ArticleSkeleton animation='wave' />}
         {articleData && articleData.message && articleData.severity !== 'success' && (
           <Alert severity={articleData.severity}>{articleData.message}</Alert>

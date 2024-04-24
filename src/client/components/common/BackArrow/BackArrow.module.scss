@@ -1,0 +1,14 @@
+.backArrow {
+  vertical-align: baseline;
+  margin-right: rem(4px);
+}
+
+.buckButton {
+  margin-bottom: rem(24px);
+  cursor: pointer;
+
+  @include media('<=phoneLandscape') {
+    margin-bottom: rem(16px);
+    font-size: rem(14px);
+  }
+}
