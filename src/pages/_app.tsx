@@ -2,7 +2,6 @@ import '../styles/global-styles.scss';
 import Head from 'next/head';
 import { FpjsProvider, FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
 import { AppProps } from 'next/app';
-import DeploymentUtils from '../client/DeploymentUtils';
 import Providers from '../Providers';
 import { Layout } from '../Layout';
 import { env } from '../env';
@@ -25,7 +24,6 @@ function CustomApp({ Component, pageProps }: AppProps<CustomPageProps>) {
           <link rel='icon' type='image/x-icon' href='/favicon.ico' />
           <title>Fingerprint Pro Use Cases</title>
         </Head>
-        <DeploymentUtils />
         <Layout embed={Boolean(pageProps.embed)}>
           <Component {...pageProps} />
         </Layout>
