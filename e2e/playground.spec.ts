@@ -84,20 +84,29 @@ test.describe('Playground page', () => {
 });
 
 test.describe('Proxy integration', () => {
-  test('Proxy integration works on Playground, no network errors', async ({ page }) => {
-    // If any JS agent network request fails, fails the test
-    // This captures proxy integration failures that would otherwise go unnoticed thanks to default endpoint fallbacks
-    page.on('requestfailed', (request) => {
-      console.error(request.url(), request.failure()?.errorText);
-      const requestOrigin = new URL(request.url()).origin;
+  const proxyIntegrations = [
+    'https://metrics.fingerprinthub.com',
+    'https://demo.fingerprint.com/DBqbMN7zXxwl4Ei8',
+    process.env.NEXT_PUBLIC_ENDPOINT ?? 'NO_CUSTOM_PROXY_IN_ENV',
+  ];
 
-      if (requestOrigin === 'https://metrics.fingerprinthub.com') {
-        // This fails the test
-        expect(request.failure()).toBeUndefined();
-      }
+  /**
+   * If any JS agent network request fails, fails the test.
+   * This captures proxy integration failures that would otherwise go unnoticed thanks to default endpoint fallbacks.
+   */
+  test.only('Proxy integration works on Playground, no network errors', async ({ page }) => {
+    page.on('requestfailed', (request) => {
+      const url = request.url();
+      const failure = request.failure()?.errorText;
+
+      proxyIntegrations.forEach((proxy) => {
+        if (url.includes(proxy)) {
+          // This fails the test and prints the relevant info in test result
+          expect(url + ' ' + failure).toBeUndefined();
+        }
+      });
     });
 
-    await page.goto('/playground');
     await clickPlaygroundRefreshButton(page);
   });
 });
