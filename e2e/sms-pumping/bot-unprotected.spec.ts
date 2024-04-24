@@ -7,7 +7,7 @@ import {
   TEST_BUILD,
   TEST_PHONE_NUMBER,
 } from '../../src/server/sms-pumping/smsPumpingConst';
-import { assertAlert, assertSnackbar, resetScenarios } from '../e2eTestUtils';
+import { assertAlert, assertSnackbar, blockAds, resetScenarios } from '../e2eTestUtils';
 import { ONE_MINUTE_MS } from '../../src/shared/timeUtils';
 
 const TEST_ID = TEST_IDS.smsFraud;
@@ -18,6 +18,7 @@ if (!TEST_BUILD) {
 }
 
 test.beforeEach(async ({ page }) => {
+  await blockAds(page);
   await page.goto(`/sms-pumping?disableBotDetection=1`);
   await resetScenarios(page);
 });

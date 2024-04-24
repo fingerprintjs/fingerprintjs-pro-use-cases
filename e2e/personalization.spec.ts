@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { resetScenarios } from './e2eTestUtils';
+import { blockAds, resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
 
 const CART_ID = TEST_IDS.common.cart;
@@ -7,6 +7,7 @@ const PERS_ID = TEST_IDS.personalization;
 
 test.describe('Personalization', () => {
   test.beforeEach(async ({ page }) => {
+    await blockAds(page);
     await page.goto('/personalization');
     await page.getByText('Okay, I understand').click();
     await resetScenarios(page);

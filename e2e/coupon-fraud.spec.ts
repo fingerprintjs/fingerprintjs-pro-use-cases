@@ -1,5 +1,5 @@
 import { Page, test, expect } from '@playwright/test';
-import { resetScenarios } from './e2eTestUtils';
+import { blockAds, resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
 import { COUPON_FRAUD_COPY } from '../src/pages/api/coupon-fraud/claim';
 
@@ -13,6 +13,7 @@ const submitCoupon = async (page: Page) => {
 
 test.describe('Coupon fraud', () => {
   test.beforeEach(async ({ page }) => {
+    await blockAds(page);
     await page.goto('/coupon-fraud');
     await resetScenarios(page);
   });

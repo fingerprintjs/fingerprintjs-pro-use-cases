@@ -2,6 +2,13 @@ import { Page, expect } from '@playwright/test';
 import { TEST_ATTRIBUTES, TEST_IDS } from '../src/client/testIDs';
 import { Severity } from '../src/server/server';
 
+export async function blockAds(page: Page) {
+  await page.route('**/*', (request) => {
+    request.request().url().includes('googletagmanager.com') ? request.abort() : request.continue();
+    return;
+  });
+}
+
 // Assumes you already are on a use case page with the Reset button present
 export async function resetScenarios(page: Page) {
   await page.getByTestId(TEST_IDS.reset.resetButton).click();
