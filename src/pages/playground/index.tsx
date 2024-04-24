@@ -306,7 +306,7 @@ function Playground() {
           </DocsLink>,
         ],
       },
-      { content: 'Applicable only to browsers. See the JSON below.', cellStyle: { backgroundColor: GRAY } },
+      { content: 'See the JSON below', cellStyle: { backgroundColor: GREEN } },
     ],
   ];
 
