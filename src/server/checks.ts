@@ -11,7 +11,6 @@ import { decryptSealedResult } from './decryptSealedResult';
 import { env } from '../env';
 import { getServerRegion } from './fingerprint-server-api';
 import { IS_DEVELOPMENT } from '../envShared';
-import { ConversationContextImpl } from 'twilio/lib/rest/conversations/v1/conversation';
 
 export const IPv4_REGEX = /^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.){3}(25[0-5]|(2[0-4]|1\d|[1-9]|)\d)$/;
 export const ALLOWED_REQUEST_TIMESTAMP_DIFF_MS = 4000;
