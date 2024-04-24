@@ -1,5 +1,5 @@
 import { Page, expect, test } from '@playwright/test';
-import { blockAds, resetScenarios } from './e2eTestUtils';
+import { blockGoogleTagManager, resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
 import { LOAN_RISK_COPY } from '../src/pages/api/loan-risk/request-loan';
 
@@ -17,7 +17,7 @@ async function waitForBlockedLoanSubmit(page: Page) {
 
 test.describe('Loan risk', () => {
   test.beforeEach(async ({ page }) => {
-    await blockAds(page);
+    await blockGoogleTagManager(page);
     await page.goto('/loan-risk');
     await resetScenarios(page);
   });

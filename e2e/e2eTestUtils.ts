@@ -2,7 +2,13 @@ import { Page, expect } from '@playwright/test';
 import { TEST_ATTRIBUTES, TEST_IDS } from '../src/client/testIDs';
 import { Severity } from '../src/server/server';
 
-export async function blockAds(page: Page) {
+/**
+ *
+ * When running E2E the tests against Production on demo.fingerprint.com, loading our analytics tools can slow down the tests
+ * but primarily the Intercom bubble covers elements that the tests needs to click.
+ * We load all of these through GTM so blocking the initial GMT request stops Intercom and other tools from interfering
+ */
+export async function blockGoogleTagManager(page: Page) {
   await page.route('**/*', (request) => {
     request.request().url().includes('googletagmanager.com') ? request.abort() : request.continue();
     return;

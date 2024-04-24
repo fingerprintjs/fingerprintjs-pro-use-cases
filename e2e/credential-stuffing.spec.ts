@@ -1,5 +1,5 @@
 import { Page, test } from '@playwright/test';
-import { blockAds, resetScenarios } from './e2eTestUtils';
+import { blockGoogleTagManager, resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
 import { CREDENTIAL_STUFFING_COPY } from '../src/pages/api/credential-stuffing/authenticate';
 
@@ -10,7 +10,7 @@ const submitForm = async (page: Page) => {
 
 test.describe('Credential stuffing', () => {
   test.beforeEach(async ({ page }) => {
-    await blockAds(page);
+    await blockGoogleTagManager(page);
     await page.goto('/credential-stuffing');
     await resetScenarios(page);
   });
