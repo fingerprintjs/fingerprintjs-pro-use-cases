@@ -203,7 +203,6 @@ export const getAndValidateFingerprintResult = async ({
    * If your account doesn't have Sealed Results turned on you can ignore/skip this step in your implementation.
    **/
   if (sealedResult) {
-    console.log(`Sealed result provided, trying to decrypt...`, sealedResult);
     try {
       identificationEvent = await decryptSealedResult(sealedResult);
       if (identificationEvent.products?.identification?.data?.requestId !== requestId) {
@@ -214,7 +213,7 @@ export const getAndValidateFingerprintResult = async ({
       }
     } catch (error) {
       console.error(
-        `Decrypting sealed result failed on ${error}. Falling back to Server API to get the identification event`,
+        `Decrypting sealed result ${sealedResult.slice(0, 32)} failed on ${error}. Falling back to Server API to get the identification event`,
       );
     }
   }
