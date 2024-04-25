@@ -3,7 +3,6 @@ import { getAndValidateFingerprintResult } from '../../../../server/checks';
 import { getRegionalDiscount } from '../../data/getDiscountByCountry';
 import { env } from '../../../../env';
 import { LOCATION_SPOOFING_COPY } from '../../copy';
-import { getIpLocation } from '../../../../shared/utils/locationUtils';
 
 export type ActivateRegionalPricingPayload = {
   requestId: string;
@@ -31,7 +30,7 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
     return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });
   }
 
-  const country = getIpLocation(fingerprintResult.data)?.country;
+  const country = fingerprintResult?.data?.products?.ipInfo?.data?.v4?.geolocation?.country;
   const vpnDetection = fingerprintResult.data.products?.vpn?.data;
 
   if (!country) {
