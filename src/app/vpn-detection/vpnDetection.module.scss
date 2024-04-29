@@ -15,6 +15,7 @@ div.wrapper {
   border-radius: rem(6px);
   padding: rem(16px);
   margin-top: rem(32px);
+  background-color: v('light-gray-background');
 
   @include media('<=phone') {
     margin-top: rem(16px);
