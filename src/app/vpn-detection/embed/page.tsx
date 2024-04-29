@@ -1,6 +1,6 @@
 import { USE_CASES } from '../../../client/components/common/content';
 import { generateUseCaseMetadata } from '../../../client/components/common/seo';
-import { VpnDetectionUseCaseWrapped } from '../vpnDetection';
+import { VpnDetectionUseCaseWrapped } from '../VpnDetectionUseCase';
 
 export const metadata = generateUseCaseMetadata(USE_CASES.vpnDetection);
 
