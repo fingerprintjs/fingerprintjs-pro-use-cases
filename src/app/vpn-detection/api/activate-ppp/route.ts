@@ -3,7 +3,7 @@ import { getAndValidateFingerprintResult } from '../../../../server/checks';
 import { getRegionalDiscount } from '../../data/getDiscountByCountry';
 import { env } from '../../../../env';
 import { VPN_DETECTION_COPY } from '../../copy';
-import { getIpLocation } from '../../../../shared/utils/locationUtils';
+import { getIpLocation, getLocationName } from '../../../../shared/utils/locationUtils';
 
 export type ActivateRegionalPricingPayload = {
   requestId: string;
@@ -31,10 +31,11 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
     return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });
   }
 
-  const country = getIpLocation(fingerprintResult.data)?.country;
+  const location = getIpLocation(fingerprintResult.data);
+  const locationName = getLocationName(location, false);
   const vpnDetection = fingerprintResult.data.products?.vpn?.data;
 
-  if (!country) {
+  if (!location?.country) {
     return NextResponse.json(
       {
         severity: 'error',
@@ -47,13 +48,13 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
   if (vpnDetection?.result === true) {
     let reason = '';
     if (vpnDetection.methods?.publicVPN) {
-      reason = `Your IP address appears to be in ${country.name} but it's a known VPN IP address.`;
+      reason = `Your IP address appears to be in ${locationName} but it's a known VPN IP address.`;
     }
     if (vpnDetection.methods?.timezoneMismatch && vpnDetection.originTimezone) {
-      reason = `Your IP address appears to be in ${country.name}, but your timezone is ${vpnDetection.originTimezone}.`;
+      reason = `Your IP address appears to be in ${locationName}, but your timezone is ${vpnDetection.originTimezone}.`;
     }
     if (vpnDetection.methods?.auxiliaryMobile) {
-      reason = `Your IP address appears to be in ${country.name}, but your phone is not.`;
+      reason = `Your IP address appears to be in ${locationName}, but your phone is not.`;
     }
     return NextResponse.json(
       {
@@ -64,11 +65,11 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
     );
   }
 
-  const discount = getRegionalDiscount(country.code);
+  const discount = getRegionalDiscount(location.country.code);
 
   return NextResponse.json({
     severity: 'success',
-    message: VPN_DETECTION_COPY.success({ discount, country: country.name }),
+    message: VPN_DETECTION_COPY.success({ discount, country: location.country.name }),
     data: { discount },
   });
 }

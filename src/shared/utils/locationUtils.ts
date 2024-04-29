@@ -2,7 +2,7 @@ import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { EventResponseIpInfoV4Geolocation } from '../types';
 
 export const UNKNOWN_LOCATION = 'Unknown';
-export function getLocationName(ipLocation?: EventResponseIpInfoV4Geolocation) {
+export function getLocationName(ipLocation?: EventResponseIpInfoV4Geolocation, includeSubdivision = true) {
   const addressParts: string[] = [];
   if (!ipLocation) {
     return UNKNOWN_LOCATION;
@@ -12,7 +12,7 @@ export function getLocationName(ipLocation?: EventResponseIpInfoV4Geolocation) {
     addressParts.push(city.name);
   }
 
-  if (subdivisions?.[0]?.name) {
+  if (subdivisions?.[0]?.name && includeSubdivision) {
     addressParts.push(subdivisions[0].name);
   }
 

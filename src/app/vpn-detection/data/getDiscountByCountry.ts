@@ -5,7 +5,12 @@ export const roundToPlaces = (num: number, places: number) => {
   return Math.round(num * factor) / factor;
 };
 
-export const getRegionalDiscount = (countryCode: string) => {
+const FALLBACK_DISCOUNT = 20;
+
+export const getRegionalDiscount = (countryCode?: string) => {
+  if (!countryCode) {
+    return FALLBACK_DISCOUNT;
+  }
   const ppp = (pppByCountry as Record<string, number>)[countryCode] ?? 0.8;
   return roundToPlaces((1 - ppp) * 100, 2);
 };

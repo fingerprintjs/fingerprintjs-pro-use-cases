@@ -22,7 +22,6 @@ import { VPN_DETECTION_COPY } from './copy';
 
 const COURSE_PRICE = 100;
 const TAXES = 15;
-const FALLBACK_DISCOUNT = 20;
 
 const VpnDetectionUseCase: FunctionComponent = () => {
   const { getData: getVisitorData, data: visitorData } = useVisitorData({
@@ -30,7 +29,7 @@ const VpnDetectionUseCase: FunctionComponent = () => {
   });
   const { data: unsealedVisitorData } = useUnsealedResult(visitorData?.sealedResult);
   const visitorIpCountry = getIpLocation(unsealedVisitorData)?.country;
-  const potentialDiscount = visitorIpCountry?.code ? getRegionalDiscount(visitorIpCountry.code) : FALLBACK_DISCOUNT;
+  const potentialDiscount = getRegionalDiscount(visitorIpCountry?.code);
 
   const {
     mutate: activateRegionalPricing,
