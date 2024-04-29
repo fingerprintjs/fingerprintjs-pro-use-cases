@@ -583,9 +583,16 @@ export const USE_CASES = {
           geographical location. But tech-savvy users can simply turn on a VPN to appear to be somewhere else.
         </p>
         <p>
-          Fingerprint VPN detection allows you to detect if a visitor is using a virtual private network and spoofing
-          their location. You can prevent these visitors and other suspicious browsers from applying
-          purchase-power-parity discounts or accessing geographically restricted content.
+          Fingerprint{' '}
+          <Link
+            href='https://dev.fingerprint.com/docs/smart-signals-overview#vpn-detection-for-browsers'
+            target='_blank'
+          >
+            VPN Detection
+          </Link>{' '}
+          allows you to detect if a visitor is using a virtual private network and spoofing their location. You can
+          prevent these visitors and other suspicious browsers from applying purchase-power-parity discounts or
+          accessing geographically restricted content.
         </p>
       </>
     ),
