@@ -8,7 +8,7 @@ import PaywallIcon from '../../img/paywallIcon.svg';
 import PersonalizationIcon from '../../img/personalizationIcon.svg';
 import ScrapingIcon from '../../img/scrapingIcon.svg';
 import FirewallIcon from '../../img/firewallIcon.svg';
-import LocationSpoofingIcon from '../../img/locationSpoofing.svg';
+import VpnDetectionIcon from '../../img/vpnDetection.svg';
 import SmsIcon from '../../img/smsIcon.svg';
 import { ReactNode } from 'react';
 import { RestartHint, RestartHintProps } from './UseCaseWrapper/RestartHint';
@@ -561,12 +561,12 @@ export const USE_CASES = {
       },
     ],
   },
-  locationSpoofing: {
-    title: 'Location Spoofing Prevention',
-    titleMeta: 'Fingerprint Use Cases | VPN Detection and Location spoofing prevention',
-    url: '/location-spoofing',
+  vpnDetection: {
+    title: 'VPN Detection',
+    titleMeta: 'Fingerprint Use Cases | VPN Detection and Location Spoofing Prevention',
+    url: '/vpn-detection',
     // articleUrl: 'TODO',
-    iconSvg: LocationSpoofingIcon,
+    iconSvg: VpnDetectionIcon,
     descriptionHomepage: [
       <p key='1'>
         Use Fingerprint VPN detection to detect visitors trying to spoof their location. Deploy location-based pricing
@@ -605,14 +605,14 @@ export const USE_CASES = {
         This use case demo uses{' '}
         <Link href='https://dev.fingerprint.com/docs/sealed-client-results'>Sealed client results</Link> to process the
         identification data. This provides lower latency and stronger tampering protection compared to only using the
-        Server API. See the technical tutorial for more details.
+        Server API.
       </>
     ),
     moreResources: [
       {
-        url: 'https://fingerprint.com/blog/vpn-detection/',
-        type: 'Use case tutorial',
-        title: 'VPN Detection',
+        url: 'https://fingerprint.com/blog/vpn-detection-how-it-works/',
+        type: 'Article',
+        title: 'How VPN Detection Works',
       },
     ],
   },

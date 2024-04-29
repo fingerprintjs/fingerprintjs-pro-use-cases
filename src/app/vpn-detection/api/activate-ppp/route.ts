@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult } from '../../../../server/checks';
 import { getRegionalDiscount } from '../../data/getDiscountByCountry';
 import { env } from '../../../../env';
-import { LOCATION_SPOOFING_COPY } from '../../copy';
+import { VPN_DETECTION_COPY } from '../../copy';
 import { getIpLocation } from '../../../../shared/utils/locationUtils';
 
 export type ActivateRegionalPricingPayload = {
@@ -68,7 +68,7 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
 
   return NextResponse.json({
     severity: 'success',
-    message: LOCATION_SPOOFING_COPY.success({ discount, country: country.name }),
+    message: VPN_DETECTION_COPY.success({ discount, country: country.name }),
     data: { discount },
   });
 }

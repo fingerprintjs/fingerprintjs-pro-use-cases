@@ -1,21 +1,19 @@
 import { test, expect, Page } from '@playwright/test';
 import { TEST_IDS } from '../src/client/testIDs';
-import { LOCATION_SPOOFING_COPY } from '../src/app/location-spoofing/copy';
+import { VPN_DETECTION_COPY } from '../src/app/vpn-detection/copy';
 import { assertAlert } from './e2eTestUtils';
 
-const getActivateButton = (page: Page) => page.getByTestId(TEST_IDS.locationSpoofing.activateRegionalPricing);
+const getActivateButton = (page: Page) => page.getByTestId(TEST_IDS.vpnDetection.activateRegionalPricing);
 
-test.describe('Location spoofing demo', () => {
+test.describe('VPN Detection demo', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/location-spoofing');
+    await page.goto('/vpn-detection');
   });
 
   test('should personalize UI copy based on user location', async ({ page }) => {
-    await expect(page.getByTestId(TEST_IDS.locationSpoofing.callout)).toContainText(
-      LOCATION_SPOOFING_COPY.personalizedCallout,
-    );
+    await expect(page.getByTestId(TEST_IDS.vpnDetection.callout)).toContainText(VPN_DETECTION_COPY.personalizedCallout);
 
-    const button = await page.getByTestId(TEST_IDS.locationSpoofing.activateRegionalPricing);
+    const button = await page.getByTestId(TEST_IDS.vpnDetection.activateRegionalPricing);
     await expect(button).toContainText(/\d+% off with/);
   });
 
@@ -24,17 +22,17 @@ test.describe('Location spoofing demo', () => {
     await assertAlert({
       page,
       severity: 'success',
-      text: LOCATION_SPOOFING_COPY.success({ discount: 20, country: 'Test Country' }).substring(0, 20),
+      text: VPN_DETECTION_COPY.success({ discount: 20, country: 'Test Country' }).substring(0, 20),
     });
 
     const discountLineItem = await page.getByTestId(TEST_IDS.common.cart.discount);
-    await expect(discountLineItem).toContainText(LOCATION_SPOOFING_COPY.discountName);
+    await expect(discountLineItem).toContainText(VPN_DETECTION_COPY.discountName);
   });
 
   test('should not allow to activate regional pricing with VPN', async ({ page }) => {
     // Mock positive VPN detection result
     const vpnError = 'You are using a VPN.';
-    await page.route('/location-spoofing/api/activate-ppp', (route) =>
+    await page.route('/vpn-detection/api/activate-ppp', (route) =>
       route.fulfill({ status: 403, body: JSON.stringify({ severity: 'error', message: vpnError }) }),
     );
 
