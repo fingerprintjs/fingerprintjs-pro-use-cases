@@ -27,7 +27,7 @@ export function getLocationName(ipLocation?: EventResponseIpInfoV4Geolocation) {
   return addressParts.join(', ');
 }
 
-export const getIpLocation = (eventResponse: EventResponse): EventResponseIpInfoV4Geolocation => {
+export const getIpLocation = (eventResponse?: EventResponse): EventResponseIpInfoV4Geolocation | undefined => {
   return eventResponse?.products?.ipInfo?.data?.v4?.geolocation;
 };
 

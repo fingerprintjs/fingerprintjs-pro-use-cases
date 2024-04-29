@@ -29,12 +29,8 @@ const VpnDetectionUseCase: FunctionComponent = () => {
     ignoreCache: true,
   });
   const { data: unsealedVisitorData } = useUnsealedResult(visitorData?.sealedResult);
-  let country;
-  let potentialDiscount;
-  if (unsealedVisitorData) {
-    country = getIpLocation(unsealedVisitorData)?.country;
-    potentialDiscount = country?.code ? getRegionalDiscount(country.code) : FALLBACK_DISCOUNT;
-  }
+  const visitorIpCountry = getIpLocation(unsealedVisitorData)?.country;
+  const potentialDiscount = visitorIpCountry?.code ? getRegionalDiscount(visitorIpCountry.code) : FALLBACK_DISCOUNT;
 
   const {
     mutate: activateRegionalPricing,
@@ -96,11 +92,10 @@ const VpnDetectionUseCase: FunctionComponent = () => {
           className={classNames(formStyles.useCaseForm, styles.regionalPricingForm)}
         >
           <p data-testid={TEST_IDS.vpnDetection.callout}>
-            {unsealedVisitorData && (
+            {visitorIpCountry && (
               <>
-                {VPN_DETECTION_COPY.personalizedCallout}{' '}
-                {getFlagEmoji(getIpLocation(unsealedVisitorData)?.country?.code)}{' '}
-                {getIpLocation(unsealedVisitorData)?.country?.name}! 👋{' '}
+                {VPN_DETECTION_COPY.personalizedCallout} {getFlagEmoji(visitorIpCountry.code)} {visitorIpCountry.name}!
+                👋{' '}
               </>
             )}
             We are offering purchasing power parity pricing.
