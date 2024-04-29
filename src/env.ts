@@ -36,11 +36,11 @@ export const env = createEnv({
     TWILIO_API_KEY_SECRET: z.string().min(1).optional(),
     TWILIO_ACCOUNT_SID: z.string().min(1).optional(),
     TWILIO_FROM_NUMBER: z.string().min(1).optional(),
+    HASH_SALT: z.string().min(1).default('defaultSalt'),
 
     // VPN Detection demo feat. Sealed client results
     SEALED_RESULTS_DECRYPTION_KEY: z.string().min(1).default('nAEUm/yALfMwWGWzUEXjXplocr8ouYjAhEJgRnBNRwA='),
     SEALED_RESULTS_SERVER_API_KEY: z.string().min(1).default('cRg3axMS26qfkjcS7OFh'),
-    HASH_SALT: z.string().min(1).default('defaultSalt'),
   },
   /*
    * Environment variables available on the client (and server).
@@ -98,6 +98,7 @@ export const env = createEnv({
     TWILIO_API_KEY_SECRET: process.env.TWILIO_API_KEY_SECRET,
     TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
     TWILIO_FROM_NUMBER: process.env.TWILIO_FROM_NUMBER,
+    HASH_SALT: process.env.HASH_SALT,
 
     // VPN Detection demo feat. Sealed client results
     SEALED_RESULTS_DECRYPTION_KEY: process.env.SEALED_RESULTS_DECRYPTION_KEY,
@@ -105,7 +106,6 @@ export const env = createEnv({
     NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY: process.env.NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY,
     NEXT_PUBLIC_SEALED_RESULTS_SCRIPT_URL: process.env.NEXT_PUBLIC_SEALED_RESULTS_SCRIPT_URL,
     NEXT_PUBLIC_SEALED_RESULTS_ENDPOINT: process.env.NEXT_PUBLIC_SEALED_RESULTS_ENDPOINT,
-    HASH_SALT: process.env.HASH_SALT,
   },
   isServer:
     // Comprehensive server check

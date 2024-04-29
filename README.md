@@ -87,6 +87,7 @@ Integrate Fingerprint Bot Detection with your Web Application Firewall and dynam
 Prevent financial losses from SMS pumping. Link every verification text message to a browser fingerprint and limit the number of verification requests from a single browser.
 
 [📱 SMS Pumping Protection Live Demo](https://demo.fingerprint.com/sms-pumping)
+[📖 SMS Pumping Protection Article](https://fingerprint.com/blog/what-is-sms-fraud-prevention-tutorial/)
 
 ### VPN Detection and Location Spoofing Protection
 
