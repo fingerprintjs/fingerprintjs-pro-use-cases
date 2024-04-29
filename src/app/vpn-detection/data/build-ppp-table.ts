@@ -31,4 +31,4 @@ gdpData.forEach((country) => {
 });
 
 console.log(pppMap);
-fs.writeFileSync('./src/app/location-spoofing/data/ppp-by-country.json', JSON.stringify(pppMap));
+fs.writeFileSync('./src/app/vpn-detection/data/ppp-by-country.json', JSON.stringify(pppMap));

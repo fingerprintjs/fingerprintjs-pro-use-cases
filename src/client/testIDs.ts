@@ -80,7 +80,7 @@ export const TEST_IDS = {
     copyCodeButton: 'copyCodeButton',
     codeInsideSnackbar: 'codeInsideSnackbar',
   },
-  locationSpoofing: {
+  vpnDetection: {
     callout: 'callout',
     activateRegionalPricing: 'activateRegionalPricing',
   },

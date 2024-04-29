@@ -88,6 +88,12 @@ Prevent financial losses from SMS pumping. Link every verification text message 
 
 [📱 SMS Pumping Protection Live Demo](https://demo.fingerprint.com/sms-pumping)
 
+### VPN Detection and Location Spoofing Protection
+
+Detect when visitors are using VPN to access your application. Prevent people spoofing their location from accessing geo-restricted content or pricing.
+
+[🌍 VPN Detection Live Demo](https://demo.fingerprint.com/vpn-detection)
+
 ## Documentation and Support
 
 To dive deeper into Fingerprint Pro, see our [Documentation](https://dev.fingerprint.com/docs). For questions or suggestions specific to this repository, you can [create an issue](https://github.com/fingerprintjs/fingerprintjs-pro-use-cases/issues/new). For general questions and community vibes, visit our [Discord server](https://discord.gg/39EpE2neBg). If you require private support, you can email us at [oss-support@fingerprint.com](mailto:oss-support@fingerprint.com).

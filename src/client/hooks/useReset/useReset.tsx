@@ -80,6 +80,6 @@ export const useReset = ({ onError, onSuccess }: UseResetParams) => {
       pathname !== '/' &&
       !pathname.startsWith(PLAYGROUND_METADATA.url) &&
       !pathname.startsWith(USE_CASES.webScraping.url) &&
-      !pathname.startsWith(USE_CASES.locationSpoofing.url),
+      !pathname.startsWith(USE_CASES.vpnDetection.url),
   };
 };

@@ -3,7 +3,7 @@
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { FunctionComponent, useState } from 'react';
 import { USE_CASES } from '../../client/components/common/content';
-import styles from './locationSpoofing.module.scss';
+import styles from './vpnDetection.module.scss';
 import formStyles from '../../styles/forms.module.scss';
 import classNames from 'classnames';
 import { Alert } from '../../client/components/common/Alert/Alert';
@@ -18,23 +18,18 @@ import { getRegionalDiscount } from './data/getDiscountByCountry';
 import courseLogo from './fingerprintLogoLowOpacitySquareBordered.svg';
 import { env } from '../../env';
 import { TEST_IDS } from '../../client/testIDs';
-import { LOCATION_SPOOFING_COPY } from './copy';
+import { VPN_DETECTION_COPY } from './copy';
 
 const COURSE_PRICE = 100;
 const TAXES = 15;
-const FALLBACK_DISCOUNT = 20;
 
-const LocationSpoofingUseCase: FunctionComponent = () => {
+const VpnDetectionUseCase: FunctionComponent = () => {
   const { getData: getVisitorData, data: visitorData } = useVisitorData({
     ignoreCache: true,
   });
   const { data: unsealedVisitorData } = useUnsealedResult(visitorData?.sealedResult);
-  let country;
-  let potentialDiscount;
-  if (unsealedVisitorData) {
-    country = getIpLocation(unsealedVisitorData)?.country;
-    potentialDiscount = country?.code ? getRegionalDiscount(country.code) : FALLBACK_DISCOUNT;
-  }
+  const visitorIpCountry = getIpLocation(unsealedVisitorData)?.country;
+  const potentialDiscount = getRegionalDiscount(visitorIpCountry?.code);
 
   const {
     mutate: activateRegionalPricing,
@@ -45,7 +40,7 @@ const LocationSpoofingUseCase: FunctionComponent = () => {
     mutationKey: ['activate regional pricing'],
     mutationFn: async () => {
       const { requestId, sealedResult } = await getVisitorData({ ignoreCache: true });
-      const response = await fetch('/location-spoofing/api/activate-ppp', {
+      const response = await fetch('/vpn-detection/api/activate-ppp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +80,7 @@ const LocationSpoofingUseCase: FunctionComponent = () => {
         items={cartItems}
         discount={discount}
         taxPerItem={TAXES}
-        discountLabel={LOCATION_SPOOFING_COPY.discountName}
+        discountLabel={VPN_DETECTION_COPY.discountName}
       ></Cart>
       <div className={styles.innerWrapper}>
         <form
@@ -95,12 +90,11 @@ const LocationSpoofingUseCase: FunctionComponent = () => {
           }}
           className={classNames(formStyles.useCaseForm, styles.regionalPricingForm)}
         >
-          <p data-testid={TEST_IDS.locationSpoofing.callout}>
-            {unsealedVisitorData && (
+          <p data-testid={TEST_IDS.vpnDetection.callout}>
+            {visitorIpCountry && (
               <>
-                {LOCATION_SPOOFING_COPY.personalizedCallout}{' '}
-                {getFlagEmoji(getIpLocation(unsealedVisitorData)?.country?.code)}{' '}
-                {getIpLocation(unsealedVisitorData)?.country?.name}! 👋{' '}
+                {VPN_DETECTION_COPY.personalizedCallout} {getFlagEmoji(visitorIpCountry.code)} {visitorIpCountry.name}!
+                👋{' '}
               </>
             )}
             We are offering purchasing power parity pricing.
@@ -115,7 +109,7 @@ const LocationSpoofingUseCase: FunctionComponent = () => {
             <Button
               disabled={isLoading}
               size='medium'
-              data-testid={TEST_IDS.locationSpoofing.activateRegionalPricing}
+              data-testid={TEST_IDS.vpnDetection.activateRegionalPricing}
               type='submit'
             >
               {isLoading
@@ -132,7 +126,7 @@ const LocationSpoofingUseCase: FunctionComponent = () => {
   );
 };
 
-export const LocationSpoofingUseCaseWrapped: FunctionComponent = () => {
+export const VpnDetectionUseCaseWrapped: FunctionComponent = () => {
   return (
     <FpjsProvider
       loadOptions={{
@@ -141,8 +135,8 @@ export const LocationSpoofingUseCaseWrapped: FunctionComponent = () => {
         endpoint: [env.NEXT_PUBLIC_SEALED_RESULTS_ENDPOINT, FingerprintJSPro.defaultEndpoint],
       }}
     >
-      <UseCaseWrapper useCase={USE_CASES.locationSpoofing}>
-        <LocationSpoofingUseCase />
+      <UseCaseWrapper useCase={USE_CASES.vpnDetection}>
+        <VpnDetectionUseCase />
       </UseCaseWrapper>
     </FpjsProvider>
   );

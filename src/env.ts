@@ -37,7 +37,7 @@ export const env = createEnv({
     TWILIO_ACCOUNT_SID: z.string().min(1).optional(),
     TWILIO_FROM_NUMBER: z.string().min(1).optional(),
 
-    // Location spoofing demo feat. Sealed client results
+    // VPN Detection demo feat. Sealed client results
     SEALED_RESULTS_DECRYPTION_KEY: z.string().min(1).default('nAEUm/yALfMwWGWzUEXjXplocr8ouYjAhEJgRnBNRwA='),
     SEALED_RESULTS_SERVER_API_KEY: z.string().min(1).default('cRg3axMS26qfkjcS7OFh'),
     HASH_SALT: z.string().min(1).default('defaultSalt'),
@@ -56,7 +56,7 @@ export const env = createEnv({
       .default('https://metrics.fingerprinthub.com/web/v<version>/<apiKey>/loader_v<loaderVersion>.js'),
     NEXT_PUBLIC_ENDPOINT: z.string().min(1).default('https://metrics.fingerprinthub.com'),
 
-    // Fingerprint configuration for Location spoofing demo feat. Sealed client results
+    // Fingerprint configuration for VPN Detection demo feat. Sealed client results
     NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY: z.string().min(1).default('2lFEzpuyfqkfQ9KJgiqv'),
     NEXT_PUBLIC_SEALED_RESULTS_SCRIPT_URL: z
       .string()
@@ -99,7 +99,7 @@ export const env = createEnv({
     TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
     TWILIO_FROM_NUMBER: process.env.TWILIO_FROM_NUMBER,
 
-    // Location spoofing demo feat. Sealed client results
+    // VPN Detection demo feat. Sealed client results
     SEALED_RESULTS_DECRYPTION_KEY: process.env.SEALED_RESULTS_DECRYPTION_KEY,
     SEALED_RESULTS_SERVER_API_KEY: process.env.SEALED_RESULTS_SERVER_API_KEY,
     NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY: process.env.NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY,
