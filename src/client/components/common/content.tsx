@@ -524,12 +524,12 @@ export const USE_CASES = {
       'See in real-time how Fingerprint can protect your application from SMS pumping. Try out our live demo to see Fingerprint prevent bad actors from sending themselves thousands of fraudulent text messages from your application.',
     instructions: [
       <>
-        Fill out the form below. You can use your real phone number for the complete experience. We will only use it for
-        this demo and store it only in hashed form temporarily.
+        Fill out the form below. You can use your real phone number to have a complete experience. We will only use it
+        for this demo and temporarily store it in hashed form.
       </>,
       <>
-        Click <b>Send code via SMS</b>. An SMS message with a one-time password will be sent to your phone. If you used
-        the default test phone number (<code>{TEST_PHONE_NUMBER}</code>), we will just simulate the SMS message on
+        Click <b>Send code via SMS</b>. An SMS message with a one-time password will be sent to your phone. If you use
+        the default test phone number (<code>{TEST_PHONE_NUMBER}</code>), we will simulate the SMS message on the
         screen.
       </>,
       <>
@@ -540,11 +540,9 @@ export const USE_CASES = {
         no more. You are limited to 3 messages per browser per day.
       </>,
       <>Try creating an account using a different email and phone number.</>,
+      <>Try opening this page in incognito mode or turning on a VPN. The daily request limit will still be enforced.</>,
       <>
-        Try opening this page in incognito mode, or turning on a VPN. The daily request limit will still be enforced.
-      </>,
-      <>
-        Try creating another account using Tor or a browser automation tool like Playwright. You will blocked right
+        Try creating another account using Tor or a browser automation tool like Playwright. You will be blocked right
         away.
       </>,
     ],
