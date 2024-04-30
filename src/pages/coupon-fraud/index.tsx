@@ -84,7 +84,7 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
   return (
     <UseCaseWrapper useCase={USE_CASES.couponFraud} embed={embed}>
       <div className={classNames(styles.wrapper, formStyles.wrapper)}>
-        <Cart items={cartItems} discount={discount} taxPerItem={TAXES}></Cart>
+        <Cart items={cartItems} discount={discount} taxPerItem={TAXES} discountLabel='Coupon discount'></Cart>
         <div className={styles.innerWrapper}>
           <form
             onSubmit={(e) => {

@@ -1,11 +1,12 @@
 import { isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fingerprintServerApiClient } from '../../../server/fingerprint-server-api';
-import { ourOrigins } from '../../../server/server';
 import Cors from 'cors';
+import { OUR_ORIGINS } from '../../../server/checks';
+import { IS_PRODUCTION } from '../../../envShared';
 
 // Also allow our documentation to use the endpoint
-const allowedOrigins = [...ourOrigins, 'https://dev.fingerprint.com'];
+const allowedOrigins = [...OUR_ORIGINS, 'https://dev.fingerprint.com'];
 
 // We need to set up CORS for that  https://github.com/expressjs/cors#configuration-options
 const cors = Cors({
@@ -39,7 +40,7 @@ export default async function getFingerprintEvent(req: NextApiRequest, res: Next
    * to protect your Public API key from unauthorized usage.
    */
   const origin = req.headers['origin'] as string;
-  if (process.env.NODE_ENV === 'production' && !allowedOrigins.includes(origin)) {
+  if (IS_PRODUCTION && !allowedOrigins.includes(origin)) {
     res.status(403).send({ message: `Origin ${origin} is not allowed to call this endpoint` });
     return;
   }

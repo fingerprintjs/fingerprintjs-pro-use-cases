@@ -54,13 +54,14 @@ type CartProps = {
   items: CartProduct[];
   discount: number;
   taxPerItem: number;
+  discountLabel?: string;
 };
 
-export const Cart: FunctionComponent<CartProps> = ({ items, discount, taxPerItem }) => {
+export const Cart: FunctionComponent<CartProps> = ({ items, discount, taxPerItem, discountLabel }) => {
   const subTotal = items.reduce((acc, item) => acc + item.price * item.count, 0);
   const totalCount = items.reduce((acc, item) => acc + item.count, 0);
-  const discountApplied = (subTotal * discount) / 100;
   const taxesApplied = taxPerItem * totalCount;
+  const discountApplied = ((subTotal + taxesApplied) * discount) / 100;
   const total = subTotal + taxesApplied - discountApplied;
 
   return (
@@ -76,13 +77,17 @@ export const Cart: FunctionComponent<CartProps> = ({ items, discount, taxPerItem
             {format$(subTotal)}
           </span>
         </div>
-        <div className={styles.item}>
-          <span>Taxes</span>
-          <span>{format$(taxesApplied)}</span>
-        </div>
+        {taxesApplied !== 0 && (
+          <div className={styles.item}>
+            <span>Taxes</span>
+            <span>{format$(taxesApplied)}</span>
+          </div>
+        )}
         {discount > 0 && (
           <div className={classNames(styles.item, styles.discount)} data-testid={TEST_IDS.common.cart.discount}>
-            <span>Coupon Discount {discount}%</span>
+            <span>
+              {discountLabel ?? 'Discount'} {discount}%
+            </span>
             <span>-{format$(discountApplied)}</span>
           </div>
         )}

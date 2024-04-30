@@ -8,6 +8,7 @@ import PaywallIcon from '../../img/paywallIcon.svg';
 import PersonalizationIcon from '../../img/personalizationIcon.svg';
 import ScrapingIcon from '../../img/scrapingIcon.svg';
 import FirewallIcon from '../../img/firewallIcon.svg';
+import VpnDetectionIcon from '../../img/vpnDetection.svg';
 import SmsIcon from '../../img/smsIcon.svg';
 import { ReactNode } from 'react';
 import { RestartHint, RestartHintProps } from './UseCaseWrapper/RestartHint';
@@ -555,6 +556,68 @@ export const USE_CASES = {
         type: 'Case study',
         title: 'Jumia SMS fraud',
         url: 'https://fingerprint.com/blog/jumia-ecommerce-sms-fraud-customer-story/',
+      },
+    ],
+  },
+  vpnDetection: {
+    title: 'VPN Detection',
+    titleMeta: 'Fingerprint Use Cases | VPN Detection and Location Spoofing Prevention',
+    url: '/vpn-detection',
+    // articleUrl: 'TODO',
+    iconSvg: VpnDetectionIcon,
+    descriptionHomepage: [
+      <p key='1'>
+        Use Fingerprint VPN detection to detect visitors trying to spoof their location. Deploy location-based pricing
+        or content restrictions with confidence.
+      </p>,
+      <p key='2'>
+        Use Sealed client results to protect your Fingerprint integration from tampering and reverse-engineering.
+      </p>,
+    ],
+    description: (
+      <>
+        <p>
+          Many web applications need to apply content restrictions or regional discounts based on the visitor's
+          geographical location. But tech-savvy users can simply turn on a VPN to appear to be somewhere else.
+        </p>
+        <p>
+          Fingerprint{' '}
+          <Link
+            href='https://dev.fingerprint.com/docs/smart-signals-overview#vpn-detection-for-browsers'
+            target='_blank'
+          >
+            VPN Detection
+          </Link>{' '}
+          allows you to detect if a visitor is using a virtual private network and spoofing their location. You can
+          prevent these visitors and other suspicious browsers from applying purchase-power-parity discounts or
+          accessing geographically restricted content.
+        </p>
+      </>
+    ),
+    descriptionMeta:
+      'Use Fingerprint VPN detection to detect visitors trying to spoof their location. Deploy location-based pricing or content restrictions with confidence.',
+    doNotMentionResetButton: true,
+    instructions: [
+      <>
+        Click <b>Activate regional pricing</b> in the checkout form below. Assuming your VPN is off, you will get a
+        location-based discount.
+      </>,
+      <>Turn on your VPN and pick an exit node different from your true location.</>,
+      <>Try activating the discount again. You will not get the discount while using a VPN.</>,
+    ],
+    instructionsNote: (
+      <>
+        This use case demo uses{' '}
+        <Link href='https://dev.fingerprint.com/docs/sealed-client-results'>Sealed client results</Link> to process the
+        identification data. This provides lower latency and stronger tampering protection compared to only using the
+        Server API.
+      </>
+    ),
+    moreResources: [
+      {
+        url: 'https://fingerprint.com/blog/vpn-detection-how-it-works/',
+        type: 'Article',
+        title: 'How VPN Detection Works',
       },
     ],
   },

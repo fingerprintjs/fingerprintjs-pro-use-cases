@@ -1,11 +1,13 @@
+'use client';
+
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useMutation } from 'react-query';
 import { ResetRequest, ResetResponse } from '../../../pages/api/admin/reset';
 import { useSnackbar } from 'notistack';
 import styles from './userReset.module.scss';
-import { useRouter } from 'next/router';
 import { PLAYGROUND_METADATA, USE_CASES } from '../../components/common/content';
 import { TEST_IDS } from '../../testIDs';
+import { usePathname } from 'next/navigation';
 
 type UseResetParams = {
   onError?: () => void;
@@ -13,9 +15,9 @@ type UseResetParams = {
 };
 
 export const useReset = ({ onError, onSuccess }: UseResetParams) => {
-  const { getData } = useVisitorData({ ignoreCache: true });
+  const { getData } = useVisitorData({ ignoreCache: true }, { immediate: false });
   const { enqueueSnackbar } = useSnackbar();
-  const { asPath } = useRouter();
+  const pathname = usePathname();
 
   const resetMutation = useMutation<ResetResponse>(
     'resetMutation',
@@ -74,6 +76,10 @@ export const useReset = ({ onError, onSuccess }: UseResetParams) => {
   return {
     ...resetMutation,
     shouldDisplayResetButton:
-      asPath !== '/' && !asPath.startsWith(PLAYGROUND_METADATA.url) && !asPath.startsWith(USE_CASES.webScraping.url),
+      pathname &&
+      pathname !== '/' &&
+      !pathname.startsWith(PLAYGROUND_METADATA.url) &&
+      !pathname.startsWith(USE_CASES.webScraping.url) &&
+      !pathname.startsWith(USE_CASES.vpnDetection.url),
   };
 };

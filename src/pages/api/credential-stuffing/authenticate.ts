@@ -17,6 +17,8 @@ import {
 } from '../../../server/checks';
 import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { CREDENTIAL_STUFFING_COPY } from '../../../server/credentialStuffing/copy';
+import { env } from '../../../env';
 
 // Mocked user with leaked credentials associated with visitorIds.
 const mockedUser = {
@@ -24,13 +26,6 @@ const mockedUser = {
   password: 'password',
   knownVisitorIds: getKnownVisitorIds(),
 };
-
-export const CREDENTIAL_STUFFING_COPY = {
-  tooManyAttempts: 'You had 5 or more attempts during the last 24 hours. This login attempt was not performed.',
-  differentVisitorIdUseMFA:
-    "Provided credentials are correct but we've never seen you logging in using this device. Confirm your identity with a second factor.",
-  invalidCredentials: 'Incorrect credentials, try again.',
-} as const;
 
 // Defines db model for login attempt.
 export const LoginAttemptDbModel = sequelize.define('login-attempt', {
@@ -52,7 +47,7 @@ LoginAttemptDbModel.sync({ force: false });
 
 function getKnownVisitorIds() {
   const defaultVisitorIds = ['bXbwuhCBRB9lLTK692vw', 'ABvLgKyH3fAr6uAjn0vq', 'BNvLgKyHefAr9iOjn0ul'];
-  const visitorIdsFromEnv = process.env.KNOWN_VISITOR_IDS?.split(',');
+  const visitorIdsFromEnv = env.KNOWN_VISITOR_IDS?.split(',');
 
   console.info(`Extracted ${visitorIdsFromEnv?.length ?? 0} visitorIds from env.`);
 

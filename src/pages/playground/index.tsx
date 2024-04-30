@@ -13,7 +13,7 @@ import IpBlocklistResult from '../../client/components/playground/IpBlocklistRes
 import VpnDetectionResult from '../../client/components/playground/VpnDetectionResult';
 import { FormatIpAddress } from '../../client/components/playground/ipFormatUtils';
 import { usePlaygroundSignals } from '../../client/components/playground/usePlaygroundSignals';
-import { getLocationName } from '../../shared/utils/getLocationName';
+import { getLocationName } from '../../shared/utils/locationUtils';
 import { PLAYGROUND_TAG } from '../../client/components/playground/playgroundTags';
 import { CustomPageProps } from '../_app';
 import { PLAYGROUND_METADATA } from '../../client/components/common/content';

@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Severity } from '../../../server/checkResult';
-import { getAndValidateFingerprintResult } from '../../../server/checks';
+import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
 import { isValidPostRequest } from '../../../server/server';
 import { RealSmsPerVisitorModel, SmsVerificationDatabaseModel } from '../../../server/sms-pumping/database';
 import { ONE_SECOND_MS, readableMilliseconds } from '../../../shared/timeUtils';
@@ -15,6 +14,7 @@ import {
   SMS_FRAUD_COPY,
   TEST_PHONE_NUMBER,
 } from '../../../server/sms-pumping/smsPumpingConst';
+import { env } from '../../../env';
 
 export type SendSMSPayload = {
   requestId: string;
@@ -52,10 +52,10 @@ const sendSms = async (phone: string, body: string, visitorId: string) => {
     },
   });
 
-  const apiKeySid = process.env.TWILIO_API_KEY_SID;
-  const apiKeySecret = process.env.TWILIO_API_KEY_SECRET;
-  const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  const fromNumber = process.env.TWILIO_FROM_NUMBER;
+  const apiKeySid = env.TWILIO_API_KEY_SID;
+  const apiKeySecret = env.TWILIO_API_KEY_SECRET;
+  const accountSid = env.TWILIO_ACCOUNT_SID;
+  const fromNumber = env.TWILIO_FROM_NUMBER;
 
   if (!apiKeySid) {
     throw new Error('Twilio API key SID not found.');
@@ -95,9 +95,13 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   const { phoneNumber: phone, email, requestId, disableBotDetection } = req.body as SendSMSPayload;
 
   // Get the full identification Fingerprint Server API, check it authenticity and filter away Bot and Tor requests
-  const fingerprintResult = await getAndValidateFingerprintResult(requestId, req, {
-    blockBots: !disableBotDetection,
-    blockTor: true,
+  const fingerprintResult = await getAndValidateFingerprintResult({
+    requestId,
+    req,
+    options: {
+      blockBots: !disableBotDetection,
+      blockTor: true,
+    },
   });
   if (!fingerprintResult.okay) {
     res.status(403).send({ severity: 'error', message: fingerprintResult.error });

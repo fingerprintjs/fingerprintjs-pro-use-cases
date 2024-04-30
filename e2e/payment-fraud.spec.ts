@@ -1,7 +1,7 @@
 import { Page, test } from '@playwright/test';
 import { blockGoogleTagManager, resetScenarios } from './e2eTestUtils';
-import { PAYMENT_FRAUD_COPY } from '../src/pages/api/payment-fraud/place-order';
 import { TEST_IDS } from '../src/client/testIDs';
+import { PAYMENT_FRAUD_COPY } from '../src/server/paymentFraud/copy';
 
 const submit = (page: Page) => page.getByTestId(TEST_IDS.paymentFraud.submitPayment).click();
 

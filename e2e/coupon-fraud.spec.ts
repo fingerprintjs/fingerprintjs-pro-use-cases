@@ -1,7 +1,7 @@
 import { Page, test, expect } from '@playwright/test';
 import { blockGoogleTagManager, resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
-import { COUPON_FRAUD_COPY } from '../src/pages/api/coupon-fraud/claim';
+import { COUPON_FRAUD_COPY } from '../src/server/coupon-fraud/copy';
 
 const insertCoupon = async (page: Page, coupon: string) => {
   await page.getByTestId(TEST_IDS.couponFraud.couponCode).fill(coupon);

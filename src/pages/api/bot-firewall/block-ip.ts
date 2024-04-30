@@ -2,10 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { deleteBlockedIp, saveBlockedIp } from '../../../server/botd-firewall/blockedIpsDatabase';
 import { syncFirewallRuleset } from '../../../server/botd-firewall/cloudflareApiHelper';
 import { isValidPostRequest } from '../../../server/server';
-import { getAndValidateFingerprintResult } from '../../../server/checks';
+import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
 import { isIP } from 'is-ip';
 import { ValidationResult } from '../../../shared/types';
-import { Severity } from '../../../server/checkResult';
 
 export type BlockIpPayload = {
   ip: string;
@@ -66,5 +65,5 @@ const isValidBlockIpRequest = async (requestId: string, ip: string, req: NextApi
   }
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
-  return await getAndValidateFingerprintResult(requestId, req);
+  return await getAndValidateFingerprintResult({ requestId, req });
 };

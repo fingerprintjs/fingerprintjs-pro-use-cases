@@ -1,8 +1,6 @@
-import { SCRIPT_URL_PATTERN } from './../src/server/const';
 import { Page, expect, test } from '@playwright/test';
 import { PLAYGROUND_TAG } from '../src/client/components/playground/playgroundTags';
 import { isAgentResponse, isServerResponse } from './zodUtils';
-import { ENDPOINT } from '../src/server/const';
 import { blockGoogleTagManager } from './e2eTestUtils';
 
 const getAgentResponse = async (page: Page) => {
@@ -86,23 +84,29 @@ test.describe('Playground page', () => {
 });
 
 test.describe('Proxy integration', () => {
+  const proxyIntegrations = [
+    'https://metrics.fingerprinthub.com',
+    'https://demo.fingerprint.com/DBqbMN7zXxwl4Ei8',
+    process.env.NEXT_PUBLIC_ENDPOINT ?? 'NO_CUSTOM_PROXY_IN_ENV',
+  ];
+
+  /**
+   * If any JS agent network request fails, fail the test.
+   * This captures proxy integration failures that would otherwise go unnoticed thanks to default endpoint fallbacks.
+   */
   test('Proxy integration works on Playground, no network errors', async ({ page }) => {
-    // If any JS agent network request fails, fails the test
-    // This captures proxy integration failures that would otherwise go unnoticed thanks to default endpoint fallbacks
-    const endpointOrigin = new URL(ENDPOINT).origin;
-    const scriptUrlPatternOrigin = new URL(SCRIPT_URL_PATTERN).origin;
-
     page.on('requestfailed', (request) => {
-      console.error(request.url(), request.failure()?.errorText);
-      const requestOrigin = new URL(request.url()).origin;
+      const url = request.url();
+      const failure = request.failure()?.errorText;
 
-      if (requestOrigin === endpointOrigin || requestOrigin === scriptUrlPatternOrigin) {
-        // This fails the test
-        expect(request.failure()).toBeUndefined();
-      }
+      proxyIntegrations.forEach((proxy) => {
+        if (url.includes(proxy)) {
+          // This fails the test and prints the relevant info in test result
+          expect(url + ' ' + failure).toBeUndefined();
+        }
+      });
     });
 
-    await page.goto('/playground');
     await clickPlaygroundRefreshButton(page);
   });
 });

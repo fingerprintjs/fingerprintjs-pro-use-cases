@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Severity } from '../../../server/checkResult';
-import { getAndValidateFingerprintResult } from '../../../server/checks';
+import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
 import { isValidPostRequest } from '../../../server/server';
 import { SmsVerificationDatabaseModel } from '../../../server/sms-pumping/database';
 import { Op } from 'sequelize';
@@ -29,7 +28,7 @@ export default async function sendVerificationSMS(req: NextApiRequest, res: Next
   const { phoneNumber, code, requestId } = req.body as SubmitCodePayload;
 
   // Get the full identification result from Fingerprint Server API and validate its authenticity
-  const fingerprintResult = await getAndValidateFingerprintResult(requestId, req);
+  const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
   if (!fingerprintResult.okay) {
     res.status(403).send({ severity: 'error', message: fingerprintResult.error });
     return;

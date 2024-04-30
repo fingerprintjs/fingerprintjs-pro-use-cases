@@ -9,9 +9,9 @@ import formStyles from '../../styles/forms.module.scss';
 import { Alert } from '../../client/components/common/Alert/Alert';
 import { CustomPageProps } from '../_app';
 import classNames from 'classnames';
-import { Severity } from '../../server/checkResult';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
+import { Severity } from '../../server/checks';
 
 export default function Index({ embed }: CustomPageProps) {
   const { getData } = useVisitorData(
