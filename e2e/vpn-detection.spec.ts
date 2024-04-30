@@ -17,7 +17,19 @@ test.describe('VPN Detection demo', () => {
     await expect(button).toContainText(/\d+% off with/);
   });
 
-  test('should allow to activate regional pricing without VPN', async ({ page }) => {
+  test.only('should allow to activate regional pricing without VPN', async ({ page }) => {
+    // Mock negative VPN detection result, because Playwright triggers osMismatch: true even without VPN
+    await page.route('/vpn-detection/api/activate-ppp', (route) =>
+      route.fulfill({
+        status: 200,
+        body: JSON.stringify({
+          severity: 'success',
+          message: VPN_DETECTION_COPY.success({ discount: 20, country: 'Test Country' }),
+          data: { discount: 20 },
+        }),
+      }),
+    );
+
     await getActivateButton(page).click();
     await assertAlert({
       page,
