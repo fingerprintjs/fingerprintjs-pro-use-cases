@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 export const useUnsealedResult = (sealedResult?: string) => {
   return useQuery<EventResponse>({
     queryKey: ['event', sealedResult],
+    keepPreviousData: true,
     queryFn: async () => {
       const response = await fetch('/api/decrypt', {
         method: 'POST',
