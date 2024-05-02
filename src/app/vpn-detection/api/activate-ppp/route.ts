@@ -90,7 +90,7 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
     return NextResponse.json(
       {
         severity: 'error',
-        message: `It seems you are using a VPN. Please turn it off and use a regular local internet connection before activating regional pricing. ${reason}`,
+        message: `It looks like you are using a VPN. Please turn it off and use a regular local internet connection before activating regional pricing. ${reason}`,
       },
       { status: 403 },
     );
