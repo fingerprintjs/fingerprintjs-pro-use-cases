@@ -45,6 +45,33 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
     );
   }
 
+  const discount = getRegionalDiscount(location.country.code);
+
+  /**
+   * Handle Apple [iCloud Private Relay](https://support.apple.com/en-us/102602) edge case
+   * It triggers a positive result, but you [cannot use it to change your location](https://discussions.apple.com/thread/254619843)
+   * So we still return a successful response while acknowledging the result
+   */
+  if (
+    vpnDetection?.result === true &&
+    // @ts-expect-error Remove when Node SDK includes new osMismatch property
+    vpnDetection.methods.osMismatch === true &&
+    vpnDetection.methods?.timezoneMismatch === false &&
+    vpnDetection.methods.publicVPN === false &&
+    fingerprintResult.data.products?.ipInfo?.data?.v4?.asn?.name === 'Cloudflare'
+  ) {
+    const privateRelayNote =
+      "It looks like you are using Apple Private relay, but that's okay! Your location is still true.";
+    return NextResponse.json(
+      {
+        severity: 'success',
+        data: { discount },
+        message: `${VPN_DETECTION_COPY.success({ discount, country: location.country.name })} ${privateRelayNote}`,
+      },
+      { status: 200 },
+    );
+  }
+
   if (vpnDetection?.result === true) {
     let reason = '';
     if (vpnDetection.methods?.publicVPN) {
@@ -68,8 +95,6 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
       { status: 403 },
     );
   }
-
-  const discount = getRegionalDiscount(location.country.code);
 
   return NextResponse.json({
     severity: 'success',
