@@ -41,7 +41,7 @@ export const PhoneNumberForm: FunctionComponent<PhoneNumberFormProps> = ({
       />
 
       <label>Phone number</label>
-      <span className={formStyles.description}>Use a international format without spaces like +1234567890.</span>
+      <span className={formStyles.description}>Use an international format without spaces, like +1234567890.</span>
       <input
         type='tel'
         name='phone'

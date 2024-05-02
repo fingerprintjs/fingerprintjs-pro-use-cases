@@ -91,7 +91,7 @@ test.describe('Proxy integration', () => {
   ];
 
   /**
-   * If any JS agent network request fails, fails the test.
+   * If any JS agent network request fails, fail the test.
    * This captures proxy integration failures that would otherwise go unnoticed thanks to default endpoint fallbacks.
    */
   test('Proxy integration works on Playground, no network errors', async ({ page }) => {
