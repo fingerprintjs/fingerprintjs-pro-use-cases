@@ -58,7 +58,7 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
     vpnDetection.methods.osMismatch === true &&
     vpnDetection.methods?.timezoneMismatch === false &&
     vpnDetection.methods.publicVPN === false &&
-    fingerprintResult.data.products?.ipInfo?.data?.v4?.asn?.name === 'Cloudflare'
+    fingerprintResult.data.products?.ipInfo?.data?.v4?.asn?.name === 'CLOUDFLARENET'
   ) {
     const privateRelayNote =
       "It looks like you are using Apple Private relay, but that's okay! Your location is still true.";
