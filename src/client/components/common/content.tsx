@@ -563,7 +563,7 @@ export const USE_CASES = {
     title: 'VPN Detection',
     titleMeta: 'Fingerprint Use Cases | VPN Detection and Location Spoofing Prevention',
     url: '/vpn-detection',
-    // articleUrl: 'TODO',
+    articleUrl: 'https://fingerprint.com/blog/vpn-detection-location-spoofing-fraud-prevention/',
     iconSvg: VpnDetectionIcon,
     descriptionHomepage: [
       <p key='1'>
