@@ -12,6 +12,7 @@ import shownIcon from './iconShown.svg';
 import Image from 'next/image';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
+import { LoginPayload } from '../api/credential-stuffing/authenticate';
 
 export default function Index() {
   const { getData } = useVisitorData(
@@ -22,7 +23,7 @@ export default function Index() {
   );
 
   // Default mocked user data
-  const [userName, setUserName] = useState('user');
+  const [username, setUsername] = useState('user');
   const [password, setPassword] = useState('password');
   const [showPassword, setShowPassword] = useState(false);
 
@@ -38,8 +39,8 @@ export default function Index() {
     const fpData = await getData();
     const { requestId, visitorId } = fpData;
 
-    const loginData = {
-      userName,
+    const loginData: LoginPayload = {
+      username,
       password,
       visitorId,
       requestId,
@@ -72,8 +73,8 @@ export default function Index() {
             type='text'
             name='username'
             placeholder='Username'
-            defaultValue={userName}
-            onChange={(e) => setUserName(e.target.value)}
+            defaultValue={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
 

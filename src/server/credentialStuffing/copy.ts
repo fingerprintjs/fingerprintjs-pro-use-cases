@@ -3,4 +3,5 @@ export const CREDENTIAL_STUFFING_COPY = {
   differentVisitorIdUseMFA:
     "Provided credentials are correct but we've never seen you logging in using this device. Confirm your identity with a second factor.",
   invalidCredentials: 'Incorrect credentials, try again.',
+  success: 'We logged you in successfully.',
 } as const;
