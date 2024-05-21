@@ -48,21 +48,18 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
   const discount = getRegionalDiscount(location.country.code);
 
   /**
-   * Handle Apple [iCloud Private Relay](https://support.apple.com/en-us/102602) edge case
-   * It triggers a positive result, but you [cannot use it to change your location](https://discussions.apple.com/thread/254619843)
-   * So we still return a successful response while acknowledging the result
+   * Handle cases like Apple [iCloud Private Relay](https://support.apple.com/en-us/102602)
+   * that trigger an OS mismatch, but the user [has not changed their location](https://discussions.apple.com/thread/254619843),
+   * (timezone mismatch is false)
+   * So we still return a successful response while acknowledging the result.
    */
-  const asn = fingerprintResult.data.products?.ipInfo?.data?.v4?.asn;
   if (
-    vpnDetection?.result === true &&
     // @ts-expect-error Remove when Node SDK includes new osMismatch property
-    vpnDetection.methods.osMismatch === true &&
-    vpnDetection.methods?.timezoneMismatch === false &&
-    vpnDetection.methods.publicVPN === false &&
-    (asn?.name === 'CLOUDFLARENET' || asn?.name === 'AKAMAI-AS')
+    vpnDetection?.methods?.osMismatch === true &&
+    vpnDetection.methods.timezoneMismatch === false
   ) {
     const privateRelayNote =
-      "It looks like you are using Apple Private relay, but that's okay! Your location is still true.";
+      'It looks like you are using an IP anonymizing service (for example, Apple Private relay) without changing your location. You still get the discount!';
     return NextResponse.json(
       {
         severity: 'success',
@@ -83,10 +80,6 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
     }
     if (vpnDetection.methods?.auxiliaryMobile) {
       reason = `Your IP address appears to be in ${locationName}, but your phone is not.`;
-    }
-    // @ts-expect-error Remove when Node SDK includes new osMismatch property
-    if (vpnDetection.methods?.osMismatch) {
-      reason = `Your browser operating system does not match the system inferred from the request network signature.`;
     }
     return NextResponse.json(
       {
