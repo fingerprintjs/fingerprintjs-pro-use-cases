@@ -627,7 +627,7 @@ export const PLAYGROUND_METADATA: Pick<
   UseCase,
   'title' | 'url' | 'descriptionHomepage' | 'iconSvg' | 'titleMeta' | 'descriptionMeta'
 > = {
-  title: 'Smart Signals',
+  title: 'Playground',
   url: '/playground',
   iconSvg: SmartSignalsIcon,
   descriptionHomepage: [

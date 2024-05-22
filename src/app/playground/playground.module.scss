@@ -1,3 +1,33 @@
+.hero {
+  padding-top: rem(64px);
+  padding-bottom: rem(40px);
+
+  h1 {
+    span {
+      color: v('orange-gradient');
+    }
+    text-align: center;
+    font-family: Inter;
+    font-size: rem(44px);
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
+    letter-spacing: -1px;
+    margin: 0;
+  }
+
+  p {
+    color: v('dark-gray');
+    text-align: center;
+    font-family: Inter;
+    font-size: rem(20px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 160%;
+    margin: 8px 0 0 0;
+  }
+}
+
 .docsLink {
   color: v('dark-black');
 
