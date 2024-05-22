@@ -6,16 +6,15 @@ import { green, red } from '@mui/material/colors';
 import { lightGreen } from '@mui/material/colors';
 import { blueGrey } from '@mui/material/colors';
 import dynamic from 'next/dynamic';
-import MyTable, { TableCellData } from '../../client/components/playground/MyTable';
-import BotDetectionResult from '../../client/components/playground/BotDetectionResult';
-import Info from '../../client/components/playground/InfoIcon';
-import RefreshButton from '../../client/components/playground/RefreshButton';
-import IpBlocklistResult from '../../client/components/playground/IpBlocklistResult';
-import VpnDetectionResult from '../../client/components/playground/VpnDetectionResult';
-import { FormatIpAddress } from '../../client/components/playground/ipFormatUtils';
-import { usePlaygroundSignals } from '../../client/components/playground/usePlaygroundSignals';
+import MyTable, { TableCellData } from './components/MyTable';
+import BotDetectionResult from './components/BotDetectionResult';
+import Info from './components/InfoIcon';
+import RefreshButton from './components/RefreshButton';
+import IpBlocklistResult from './components/IpBlocklistResult';
+import VpnDetectionResult from './components/VpnDetectionResult';
+import { FormatIpAddress } from './components/ipFormatUtils';
+import { usePlaygroundSignals } from './hooks/usePlaygroundSignals';
 import { getLocationName } from '../../shared/utils/locationUtils';
-import { PLAYGROUND_TAG } from '../../client/components/playground/playgroundTags';
 import { FP_LOAD_OPTIONS } from '../../pages/_app';
 import Link from 'next/link';
 import externalLinkArrow from '../../client/img/externalLinkArrow.svg';
@@ -26,6 +25,7 @@ import { Alert } from '../../client/components/common/Alert/Alert';
 import { timeAgoLabel } from '../../shared/timeUtils';
 import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import Container from '../../client/components/common/Container';
+import { TEST_IDS } from '../../client/testIDs';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',
@@ -50,7 +50,7 @@ const DocsLink: FunctionComponent<{ children: ReactNode; href: string; style?: R
 };
 
 // Map cannot be server-side rendered
-const Map = dynamic(() => import('../../client/components/playground/Map'), { ssr: false });
+const Map = dynamic(() => import('./components/Map'), { ssr: false });
 
 function Playground() {
   const {
@@ -435,14 +435,14 @@ function Playground() {
             <div>
               <h4 className={styles.jsonTitle}>JavaScript Agent Response {isLoadingAgentResponse && <Spinner />}</h4>
 
-              <CodeSnippet language='json' dataTestId={PLAYGROUND_TAG.agentResponseJSON}>
+              <CodeSnippet language='json' dataTestId={TEST_IDS.playground.agentResponseJSON}>
                 {JSON.stringify(agentResponse, null, 2)}
               </CodeSnippet>
             </div>
             <div>
               <h4 className={styles.jsonTitle}>Server API Response {isLoadingServerResponse && <Spinner />}</h4>
 
-              <CodeSnippet language='json' dataTestId={PLAYGROUND_TAG.serverResponseJSON}>
+              <CodeSnippet language='json' dataTestId={TEST_IDS.playground.serverResponseJSON}>
                 {JSON.stringify(usedIdentificationEvent, null, 2)}
               </CodeSnippet>
             </div>

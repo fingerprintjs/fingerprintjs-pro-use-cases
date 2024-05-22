@@ -1,9 +1,9 @@
 import { FunctionComponent } from 'react';
-import { PLAYGROUND_TAG } from './playgroundTags';
-import Button from '../common/Button/Button';
-import { Spinner } from '../common/Spinner/Spinner';
+import Button from '../../../client/components/common/Button/Button';
+import { Spinner } from '../../../client/components/common/Spinner/Spinner';
 import styles from './RefreshButton.module.scss';
 import classnames from 'classnames';
+import { TEST_IDS } from '../../../client/testIDs';
 
 const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: () => void; className?: string }> = ({
   loading,
@@ -17,7 +17,7 @@ const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: () => v
       size='medium'
       onClick={() => getAgentData()}
       disabled={loading}
-      data-testid={PLAYGROUND_TAG.refreshButton}
+      data-testid={TEST_IDS.playground.refreshButton}
       className={classnames(styles.refreshButton, className)}
     >
       {loading ? (
