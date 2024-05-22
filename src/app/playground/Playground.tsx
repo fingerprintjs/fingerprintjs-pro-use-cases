@@ -1,3 +1,5 @@
+'use client';
+
 import { FunctionComponent, ReactNode } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { CodeSnippet } from '../../client/components/CodeSnippet';
@@ -15,7 +17,7 @@ import { FormatIpAddress } from '../../client/components/playground/ipFormatUtil
 import { usePlaygroundSignals } from '../../client/components/playground/usePlaygroundSignals';
 import { getLocationName } from '../../shared/utils/locationUtils';
 import { PLAYGROUND_TAG } from '../../client/components/playground/playgroundTags';
-import { CustomPageProps } from '../_app';
+import { CustomPageProps, FP_LOAD_OPTIONS } from '../../pages/_app';
 import { PLAYGROUND_METADATA } from '../../client/components/common/content';
 import Link from 'next/link';
 import externalLinkArrow from '../../client/img/externalLinkArrow.svg';
@@ -24,6 +26,7 @@ import styles from './playground.module.scss';
 import { Spinner } from '../../client/components/common/Spinner/Spinner';
 import { Alert } from '../../client/components/common/Alert/Alert';
 import { timeAgoLabel } from '../../shared/timeUtils';
+import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',
@@ -451,17 +454,19 @@ function Playground() {
 
 export default function PlaygroundPage({ embed }: CustomPageProps) {
   return (
-    <UseCaseWrapper
-      useCase={{
-        ...PLAYGROUND_METADATA,
-        title: 'Fingerprint Pro Playground',
-        description: <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>,
-        doNotMentionResetButton: true,
-      }}
-      hideGithubLink={true}
-      embed={embed}
-    >
-      <Playground />
-    </UseCaseWrapper>
+    <FpjsProvider loadOptions={FP_LOAD_OPTIONS}>
+      <UseCaseWrapper
+        useCase={{
+          ...PLAYGROUND_METADATA,
+          title: 'Fingerprint Pro Playground',
+          description: <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>,
+          doNotMentionResetButton: true,
+        }}
+        hideGithubLink={true}
+        embed={embed}
+      >
+        <Playground />
+      </UseCaseWrapper>
+    </FpjsProvider>
   );
 }
