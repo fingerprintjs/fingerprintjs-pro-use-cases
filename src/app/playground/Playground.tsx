@@ -74,15 +74,6 @@ function Playground() {
     return <Alert severity={'error'}>Server API Request {serverError.toString()}.</Alert>;
   }
 
-  if (!cachedEvent) {
-    return (
-      <div className={styles.runningIntelligence}>
-        <Spinner size='40px' thickness={3} />
-        <h2>Running device intelligence...</h2>
-      </div>
-    );
-  }
-
   const usedIdentificationEvent = identificationEvent ?? cachedEvent;
   const ipLocation = usedIdentificationEvent?.products?.ipInfo?.data?.v4?.geolocation;
   const { latitude, longitude } = ipLocation ?? {};
@@ -158,9 +149,9 @@ function Playground() {
         ),
       },
       {
-        content: usedIdentificationEvent.products?.incognito?.data?.result ? 'You are incognito 🕶' : 'Not detected',
+        content: usedIdentificationEvent?.products?.incognito?.data?.result ? 'You are incognito 🕶' : 'Not detected',
         cellStyle: {
-          backgroundColor: usedIdentificationEvent.products?.incognito?.data?.result ? RED : GREEN,
+          backgroundColor: usedIdentificationEvent?.products?.incognito?.data?.result ? RED : GREEN,
         },
       },
     ],
@@ -406,53 +397,58 @@ function Playground() {
         </h1>
         <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>
       </div>
-      <h2 className={styles.title}>
-        Welcome, your visitor ID is <span className={styles.visitorId}>{agentResponse?.visitorId}</span>.
-      </h2>
-
-      <RefreshButton
-        loading={isLoadingAgentResponse || isLoadingServerResponse}
-        getAgentData={getAgentData}
-        className={styles.reloadButton}
-      />
-
-      <div className={styles.tablesContainer}>
-        <div>
-          <h3 className={styles.tableTitle}>Identification</h3>
-          <MyTable data={identificationSignals} />
+      {agentResponse && (
+        <div className={styles.visitorIdBox}>
+          <p>Welcome, this is your visitor ID</p>
+          <h2 className={styles.visitorId}>{agentResponse?.visitorId}</h2>
         </div>
-        <div>
-          <h3 className={styles.tableTitle}>Smart signals</h3>
-          <MyTable data={smartSignals} />
+      )}
+      {!cachedEvent ? (
+        <div className={styles.runningIntelligence}>
+          <Spinner size='40px' thickness={3} />
+          <h2>Running device intelligence...</h2>
         </div>
-        <div>
-          <h3 className={styles.tableTitle}>Mobile Smart signals</h3>
-          <MyTable data={mobileSmartSignals} />
-        </div>
-      </div>
+      ) : (
+        <>
+          <div className={styles.tablesContainer}>
+            <div>
+              <h3 className={styles.tableTitle}>Identification</h3>
+              <MyTable data={identificationSignals} />
+            </div>
+            <div>
+              <h3 className={styles.tableTitle}>Smart signals</h3>
+              <MyTable data={smartSignals} />
+            </div>
+            <div>
+              <h3 className={styles.tableTitle}>Mobile Smart signals</h3>
+              <MyTable data={mobileSmartSignals} />
+            </div>
+          </div>
 
-      <RefreshButton
-        loading={isLoadingAgentResponse || isLoadingServerResponse}
-        getAgentData={getAgentData}
-        className={styles.reloadButton}
-      />
+          <RefreshButton
+            loading={isLoadingAgentResponse || isLoadingServerResponse}
+            getAgentData={getAgentData}
+            className={styles.reloadButton}
+          />
 
-      <div className={styles.jsonContainer}>
-        <div>
-          <h4 className={styles.jsonTitle}>JavaScript Agent Response {isLoadingAgentResponse && <Spinner />}</h4>
+          <div className={styles.jsonContainer}>
+            <div>
+              <h4 className={styles.jsonTitle}>JavaScript Agent Response {isLoadingAgentResponse && <Spinner />}</h4>
 
-          <CodeSnippet language='json' dataTestId={PLAYGROUND_TAG.agentResponseJSON}>
-            {JSON.stringify(agentResponse, null, 2)}
-          </CodeSnippet>
-        </div>
-        <div>
-          <h4 className={styles.jsonTitle}>Server API Response {isLoadingServerResponse && <Spinner />}</h4>
+              <CodeSnippet language='json' dataTestId={PLAYGROUND_TAG.agentResponseJSON}>
+                {JSON.stringify(agentResponse, null, 2)}
+              </CodeSnippet>
+            </div>
+            <div>
+              <h4 className={styles.jsonTitle}>Server API Response {isLoadingServerResponse && <Spinner />}</h4>
 
-          <CodeSnippet language='json' dataTestId={PLAYGROUND_TAG.serverResponseJSON}>
-            {JSON.stringify(usedIdentificationEvent, null, 2)}
-          </CodeSnippet>
-        </div>
-      </div>
+              <CodeSnippet language='json' dataTestId={PLAYGROUND_TAG.serverResponseJSON}>
+                {JSON.stringify(usedIdentificationEvent, null, 2)}
+              </CodeSnippet>
+            </div>
+          </div>
+        </>
+      )}
     </Container>
   );
 }
