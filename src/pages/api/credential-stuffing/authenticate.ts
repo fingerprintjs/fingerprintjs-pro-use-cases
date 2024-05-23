@@ -1,24 +1,22 @@
-import { DataTypes, Op } from 'sequelize';
-import {
-  ensurePostRequest,
-  ensureValidRequestIdAndVisitorId,
-  getIdentificationEvent,
-  messageSeverity,
-  reportSuspiciousActivity,
-  sequelize,
-} from '../../../server/server';
-import { CheckResult, checkResultType } from '../../../server/checkResult';
-import {
-  RuleCheck,
-  checkConfidenceScore,
-  checkFreshIdentificationRequest,
-  checkIpAddressIntegrity,
-  checkOriginsIntegrity,
-} from '../../../server/checks';
-import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
+import { Op } from 'sequelize';
+import { isValidPostRequest, sequelize } from '../../../server/server';
+import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { CREDENTIAL_STUFFING_COPY } from '../../../server/credentialStuffing/copy';
 import { env } from '../../../env';
+import { LoginAttemptDbModel, LoginAttemptResult } from '../../../server/credentialStuffing/database';
+
+export type LoginPayload = {
+  username: string;
+  password: string;
+  requestId: string;
+  visitorId: string;
+};
+
+export type LoginResponse = {
+  message: string;
+  severity: Severity;
+};
 
 // Mocked user with leaked credentials associated with visitorIds.
 const mockedUser = {
@@ -27,161 +25,90 @@ const mockedUser = {
   knownVisitorIds: getKnownVisitorIds(),
 };
 
-// Defines db model for login attempt.
-export const LoginAttemptDbModel = sequelize.define('login-attempt', {
-  visitorId: {
-    type: DataTypes.STRING,
-  },
-  userName: {
-    type: DataTypes.STRING,
-  },
-  loginAttemptResult: {
-    type: DataTypes.STRING,
-  },
-  timestamp: {
-    type: DataTypes.DATE,
-  },
-});
-
-LoginAttemptDbModel.sync({ force: false });
-
 function getKnownVisitorIds() {
   const defaultVisitorIds = ['bXbwuhCBRB9lLTK692vw', 'ABvLgKyH3fAr6uAjn0vq', 'BNvLgKyHefAr9iOjn0ul'];
   const visitorIdsFromEnv = env.KNOWN_VISITOR_IDS?.split(',');
-
   console.info(`Extracted ${visitorIdsFromEnv?.length ?? 0} visitorIds from env.`);
-
   return visitorIdsFromEnv ? [...defaultVisitorIds, ...visitorIdsFromEnv] : defaultVisitorIds;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function loginHandler(req: NextApiRequest, res: NextApiResponse) {
   // This API route accepts only POST requests.
-  if (!ensurePostRequest(req, res)) {
+  const reqValidation = isValidPostRequest(req);
+  if (!reqValidation.okay) {
+    res.status(405).send({ severity: 'error', message: reqValidation.error });
     return;
   }
 
-  res.setHeader('Content-Type', 'application/json');
+  const { requestId, username, password, visitorId: clientVisitorId } = req.body as LoginPayload;
 
-  return await tryToLogin(req, res, [
-    checkFreshIdentificationRequest,
-    checkConfidenceScore,
-    checkIpAddressIntegrity,
-    checkOriginsIntegrity,
-    checkUnsuccessfulIdentifications,
-    checkCredentialsAndKnownVisitorIds,
-  ]);
-}
-
-async function tryToLogin(req: NextApiRequest, res: NextApiResponse, ruleChecks: RuleCheck[]) {
-  // Get requestId and visitorId from the client.
-  const visitorId = req.body.visitorId;
-  const requestId = req.body.requestId;
-  const userName = req.body.userName;
-
-  if (!ensureValidRequestIdAndVisitorId(req, res, visitorId, requestId)) {
+  // Get the full Identification result from Fingerprint Server API and validate its authenticity
+  const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
+  if (!fingerprintResult.okay) {
+    logLoginAttempt(clientVisitorId, username, 'RequestIdValidationFailed');
+    res.status(403).send({ severity: 'error', message: fingerprintResult.error });
     return;
   }
 
-  // Information from the client side might have been tampered.
-  // It's best practice to validate provided information with the Server API.
-  // It is recommended to use the requestId and visitorId pair.
-  const eventResponse = await getIdentificationEvent(requestId);
-
-  for (const ruleCheck of ruleChecks) {
-    const result = await ruleCheck(eventResponse, req);
-
-    if (result) {
-      await logLoginAttempt(visitorId, userName, result.type);
-
-      switch (result.type) {
-        case checkResultType.Passed:
-        case checkResultType.Challenged:
-          return sendOkResponse(res, result);
-        default:
-          reportSuspiciousActivity(req);
-          return sendForbiddenResponse(res, result);
-      }
-    }
+  // Get visitorId from the Server API Identification event
+  const visitorId = fingerprintResult.data.products?.identification?.data?.visitorId;
+  if (!visitorId) {
+    logLoginAttempt(clientVisitorId, username, 'RequestIdValidationFailed');
+    res.status(403).send({ severity: 'error', message: 'Visitor ID not found.' });
+    return;
   }
-}
 
-const checkUnsuccessfulIdentifications: RuleCheck = async (eventResponse) => {
-  // Gets all unsuccessful attempts during the last 24 hours.
-  const visitorLoginAttemptCountQueryResult = await LoginAttemptDbModel.findAndCountAll({
+  // If the visitor ID performed 5 unsuccessful login attempts during the last 24 hours we do not perform the login.
+  const failedLoginTypes: LoginAttemptResult[] = ['IncorrectCredentials', 'RequestIdValidationFailed'];
+  const failedLoginsToday = await LoginAttemptDbModel.findAndCountAll({
     where: {
-      visitorId: eventResponse.products?.identification?.data?.visitorId,
+      visitorId,
       timestamp: {
         [Op.gt]: new Date().getTime() - 24 * 60 * 1000,
       },
-      [Op.not]: {
-        loginAttemptResult: [checkResultType.Passed, checkResultType.Challenged, checkResultType.TooManyLoginAttempts],
+      loginAttemptResult: {
+        [Op.or]: [failedLoginTypes],
       },
     },
   });
-
-  // If the visitorId performed 5 unsuccessful login attempts during the last 24 hours we do not perform the login.
-  // The count of attempts and time window might vary.
-  if (visitorLoginAttemptCountQueryResult.count >= 5) {
-    return new CheckResult(
-      CREDENTIAL_STUFFING_COPY.tooManyAttempts,
-      messageSeverity.Error,
-      checkResultType.TooManyLoginAttempts,
-    );
+  if (failedLoginsToday.count >= 5) {
+    logLoginAttempt(visitorId, username, 'TooManyLoginAttempts');
+    res.status(403).send({ severity: 'error', message: CREDENTIAL_STUFFING_COPY.tooManyAttempts });
+    return;
   }
 
-  return undefined;
-};
-
-const checkCredentialsAndKnownVisitorIds: RuleCheck = async (eventResponse, request) => {
-  // Checks if the provided credentials are correct.
-
-  if (!areCredentialsCorrect(request.body.userName, request.body.password)) {
-    return new CheckResult(
-      CREDENTIAL_STUFFING_COPY.invalidCredentials,
-      messageSeverity.Error,
-      checkResultType.IncorrectCredentials,
-    );
+  // If the provided credentials are incorrect, we return an error.
+  if (!credentialsAreCorrect(username, password)) {
+    logLoginAttempt(visitorId, username, 'IncorrectCredentials');
+    res.status(403).send({ severity: 'error', message: CREDENTIAL_STUFFING_COPY.invalidCredentials });
+    return;
   }
 
-  const visitorId = eventResponse.products?.identification?.data?.visitorId;
-  if (!visitorId) {
-    return new CheckResult(
-      'Missing visitor ID. Please try again.',
-      messageSeverity.Error,
-      checkResultType.IncorrectCredentials,
-    );
+  // If the provided credentials are correct but the user never logged in using this browser,
+  // we force the user to use multi-factor authentication (text message, email, authenticator app, etc.)
+  if (!mockedUser.knownVisitorIds.includes(visitorId)) {
+    logLoginAttempt(visitorId, username, 'UnknownBrowserEnforceMFA');
+    res.status(403).send({ severity: 'warning', message: CREDENTIAL_STUFFING_COPY.differentVisitorIdUseMFA });
+    return;
   }
 
-  if (!isLoggingInFromKnownDevice(visitorId, mockedUser.knownVisitorIds)) {
-    // If they provided valid credentials but they never logged in using this visitorId,
-    // we recommend using an additional way of verification, e.g. 2FA or email.
-    return new CheckResult(
-      CREDENTIAL_STUFFING_COPY.differentVisitorIdUseMFA,
-      messageSeverity.Warning,
-      checkResultType.Challenged,
-    );
-  }
-
-  return new CheckResult('We logged you in successfully.', messageSeverity.Success, checkResultType.Passed);
-};
+  // If the provided credentials are correct and we recognize the browser, we log the user in
+  logLoginAttempt(visitorId, username, 'Success');
+  res.status(200).send({ severity: 'success', message: CREDENTIAL_STUFFING_COPY.success });
+}
 
 // Dummy action simulating authentication.
-function areCredentialsCorrect(name: string, password: string) {
+function credentialsAreCorrect(name: string, password: string): boolean {
   return name === mockedUser.userName && password === mockedUser.password;
 }
 
-// Checks if the provided visitorId is associated with the user.
-function isLoggingInFromKnownDevice(providedVisitorId: string, knownVisitorIds: string[]) {
-  return knownVisitorIds.includes(providedVisitorId);
-}
-
 // Persists login attempt to the database.
-async function logLoginAttempt(visitorId: string, userName: string, loginAttemptResult: string) {
+async function logLoginAttempt(visitorId: string, username: string, loginAttemptResult: LoginAttemptResult) {
   await LoginAttemptDbModel.create({
     visitorId,
-    userName,
+    username,
     loginAttemptResult,
-    timestamp: new Date().getTime(),
+    timestamp: new Date(),
   });
   await sequelize.sync();
 }

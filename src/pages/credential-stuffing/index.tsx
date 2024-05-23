@@ -12,68 +12,59 @@ import shownIcon from './iconShown.svg';
 import Image from 'next/image';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
+import { LoginPayload, LoginResponse } from '../api/credential-stuffing/authenticate';
+import { useMutation } from 'react-query';
 
 export default function Index() {
-  const { getData } = useVisitorData(
+  const { getData: getVisitorData } = useVisitorData(
     { ignoreCache: true },
     {
       immediate: false,
     },
   );
 
+  const {
+    mutate: tryToLogIn,
+    isLoading,
+    data: loginResponse,
+    error: loginNetworkError,
+  } = useMutation<LoginResponse, Error, Omit<LoginPayload, 'requestId' | 'visitorId'>>({
+    mutationKey: ['login attempt'],
+    mutationFn: async ({ username, password }) => {
+      const { requestId, visitorId } = await getVisitorData({ ignoreCache: true });
+      const response = await fetch('/api/credential-stuffing/authenticate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password, visitorId, requestId } satisfies LoginPayload),
+      });
+      return await response.json();
+    },
+  });
+
   // Default mocked user data
-  const [userName, setUserName] = useState('user');
+  const [username, setUsername] = useState('user');
   const [password, setPassword] = useState('password');
   const [showPassword, setShowPassword] = useState(false);
-
-  const [authMessage, setAuthMessage] = useState();
-  const [severity, setSeverity] = useState();
-  const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
-  const [httpResponseStatus, setHttpResponseStatus] = useState<number | null>();
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setIsWaitingForResponse(true);
-
-    const fpData = await getData();
-    const { requestId, visitorId } = fpData;
-
-    const loginData = {
-      userName,
-      password,
-      visitorId,
-      requestId,
-    };
-
-    // Server-side handler for this route is located in api/credential-stuffing/authenticate.js file.
-    const response = await fetch('/api/credential-stuffing/authenticate', {
-      method: 'POST',
-      body: JSON.stringify(loginData),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    });
-
-    const responseJson = await response.json();
-    const responseStatus = response.status;
-    setAuthMessage(responseJson.message);
-    setSeverity(responseJson.severity);
-    setHttpResponseStatus(responseStatus);
-    setIsWaitingForResponse(false);
-  }
 
   return (
     <UseCaseWrapper useCase={USE_CASES.credentialStuffing}>
       <div className={formStyles.wrapper}>
-        <form onSubmit={handleSubmit} className={classNames(formStyles.useCaseForm, styles.credentialStuffingForm)}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            tryToLogIn({ username, password });
+          }}
+          className={classNames(formStyles.useCaseForm, styles.credentialStuffingForm)}
+        >
           <label>Username</label>
           <input
             type='text'
             name='username'
             placeholder='Username'
-            defaultValue={userName}
-            onChange={(e) => setUserName(e.target.value)}
+            defaultValue={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
 
@@ -90,14 +81,14 @@ export default function Index() {
           <button className={styles.showHideIcon} type='button' onClick={() => setShowPassword(!showPassword)}>
             <Image src={showPassword ? shownIcon : hiddenIcon} alt={showPassword ? 'Hide password' : 'Show password'} />
           </button>
-
-          {httpResponseStatus ? (
-            <Alert severity={severity ?? 'warning'} className={styles.alert}>
-              {authMessage}
+          {loginNetworkError && <Alert severity='error'>{loginNetworkError.message}</Alert>}
+          {loginResponse?.message && !isLoading && (
+            <Alert severity={loginResponse.severity} className={styles.alert}>
+              {loginResponse.message}
             </Alert>
-          ) : null}
-          <Button disabled={isWaitingForResponse} type='submit' data-testid={TEST_IDS.credentialStuffing.login}>
-            {isWaitingForResponse ? 'Hold on, doing magic...' : 'Log In'}
+          )}
+          <Button disabled={isLoading} type='submit' data-testid={TEST_IDS.credentialStuffing.login}>
+            {isLoading ? 'Hold on, doing magic...' : 'Log In'}
           </Button>
         </form>
       </div>
