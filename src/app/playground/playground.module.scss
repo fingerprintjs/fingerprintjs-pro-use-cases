@@ -124,7 +124,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 400px));
   justify-content: center;
-  gap: 24px;
+  gap: 16px;
   margin-top: rem(32px);
   @include media('<=1200px') {
     grid-template-columns: minmax(0, 500px);

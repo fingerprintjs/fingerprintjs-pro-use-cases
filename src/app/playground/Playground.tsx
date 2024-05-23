@@ -2,11 +2,8 @@
 
 import { FunctionComponent, ReactNode } from 'react';
 import { CodeSnippet } from '../../client/components/CodeSnippet';
-import { green, red } from '@mui/material/colors';
-import { lightGreen } from '@mui/material/colors';
-import { blueGrey } from '@mui/material/colors';
 import dynamic from 'next/dynamic';
-import MyTable, { TableCellData } from './components/MyTable';
+import SignalTable, { TableCellData } from './components/SignalTable';
 import BotDetectionResult from './components/BotDetectionResult';
 import Info from './components/InfoIcon';
 import RefreshButton from './components/RefreshButton';
@@ -26,6 +23,7 @@ import { timeAgoLabel } from '../../shared/timeUtils';
 import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import Container from '../../client/components/common/Container';
 import { TEST_IDS } from '../../client/testIDs';
+import tableStyles from './components/SignalTable.module.scss';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',
@@ -64,8 +62,6 @@ function Playground() {
     serverError,
   } = usePlaygroundSignals();
 
-  const hasDarkMode = false;
-
   if (agentError) {
     return <Alert severity={'error'}>JavaScript Agent Error: {agentError.message}.</Alert>;
   }
@@ -78,43 +74,39 @@ function Playground() {
   const ipLocation = usedIdentificationEvent?.products?.ipInfo?.data?.v4?.geolocation;
   const { latitude, longitude } = ipLocation ?? {};
 
-  const RED = hasDarkMode ? red[900] : red[100];
-  const GREEN = hasDarkMode ? green[900] : lightGreen[50];
-  const GRAY = hasDarkMode ? blueGrey[900] : blueGrey[50];
-
   const identificationSignals: TableCellData[][] = [
     [
-      {
-        content: [
-          'Visitor ID',
-          <Info key='info'>A unique and stable identifier for your browser or mobile device.</Info>,
-        ],
-      },
-      { content: agentResponse?.visitorId },
+      { content: 'Browser' },
+      { content: `${agentResponse?.browserName} ${agentResponse?.browserVersion}`, className: tableStyles.neutral },
     ],
-    [{ content: 'Browser' }, { content: `${agentResponse?.browserName} ${agentResponse?.browserVersion}` }],
-    [{ content: 'Operating System' }, { content: `${agentResponse?.os} ${agentResponse?.osVersion}` }],
-    [{ content: 'IP Address' }, { content: <FormatIpAddress ipAddress={agentResponse?.ip} /> }],
+    [
+      { content: 'Operating System' },
+      { content: `${agentResponse?.os} ${agentResponse?.osVersion}`, className: tableStyles.neutral },
+    ],
+    [
+      { content: 'IP Address' },
+      { content: <FormatIpAddress ipAddress={agentResponse?.ip} />, className: tableStyles.neutral },
+    ],
     [
       {
         content: <DocsLink href='https://dev.fingerprint.com/docs/useful-timestamps#definitions'>Last seen</DocsLink>,
       },
       {
         content: agentResponse?.lastSeenAt.global ? timeAgoLabel(agentResponse?.lastSeenAt.global) : 'Unknown',
+        className: tableStyles.neutral,
       },
     ],
     [
       {
         content: [
           <DocsLink href='https://dev.fingerprint.com/docs/understanding-your-confidence-score' key='confidence'>
-            Confidence <br />
-            Score
+            Confidence Score
           </DocsLink>,
         ],
       },
       {
         content: agentResponse?.confidence.score ? Math.trunc(agentResponse.confidence.score * 100) / 100 : 'N/A',
-        cellStyle: { backgroundColor: agentResponse && agentResponse.confidence.score >= 0.7 ? GREEN : RED },
+        className: agentResponse && agentResponse.confidence.score >= 0.7 ? tableStyles.green : tableStyles.red,
       },
     ],
   ];
@@ -137,7 +129,7 @@ function Playground() {
             )}
           </>
         ),
-        cellStyle: { paddingLeft: 0, paddingRight: 0, paddingBottom: 0 },
+        className: tableStyles.map,
       },
     ],
     [
@@ -150,9 +142,7 @@ function Playground() {
       },
       {
         content: usedIdentificationEvent?.products?.incognito?.data?.result ? 'You are incognito 🕶' : 'Not detected',
-        cellStyle: {
-          backgroundColor: usedIdentificationEvent?.products?.incognito?.data?.result ? RED : GREEN,
-        },
+        className: usedIdentificationEvent?.products?.incognito?.data?.result ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -165,9 +155,8 @@ function Playground() {
       },
       {
         content: <BotDetectionResult key='botDetectionResult' event={usedIdentificationEvent} />,
-        cellStyle: {
-          backgroundColor: usedIdentificationEvent?.products?.botd?.data?.bot?.result === 'bad' ? RED : GREEN,
-        },
+        className:
+          usedIdentificationEvent?.products?.botd?.data?.bot?.result === 'bad' ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -180,7 +169,7 @@ function Playground() {
       },
       {
         content: <VpnDetectionResult event={usedIdentificationEvent} />,
-        cellStyle: { backgroundColor: usedIdentificationEvent?.products?.vpn?.data?.result === true ? RED : GREEN },
+        className: usedIdentificationEvent?.products?.vpn?.data?.result === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -196,9 +185,8 @@ function Playground() {
       },
       {
         content: usedIdentificationEvent?.products?.tampering?.data?.result === true ? 'Yes 🖥️🔧' : 'Not detected',
-        cellStyle: {
-          backgroundColor: usedIdentificationEvent?.products?.tampering?.data?.result === true ? RED : GREEN,
-        },
+        className:
+          usedIdentificationEvent?.products?.tampering?.data?.result === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -211,9 +199,10 @@ function Playground() {
       },
       {
         content: usedIdentificationEvent?.products?.virtualMachine?.data?.result === true ? 'Yes ☁️💻' : 'Not detected',
-        cellStyle: {
-          backgroundColor: usedIdentificationEvent?.products?.virtualMachine?.data?.result === true ? RED : GREEN,
-        },
+        className:
+          usedIdentificationEvent?.products?.virtualMachine?.data?.result === true
+            ? tableStyles.red
+            : tableStyles.green,
       },
     ],
     [
@@ -227,9 +216,10 @@ function Playground() {
       {
         content:
           usedIdentificationEvent?.products?.privacySettings?.data?.result === true ? 'Yes 🙈💻' : 'Not detected',
-        cellStyle: {
-          backgroundColor: usedIdentificationEvent?.products?.privacySettings?.data?.result === true ? RED : GREEN,
-        },
+        className:
+          usedIdentificationEvent?.products?.privacySettings?.data?.result === true
+            ? tableStyles.red
+            : tableStyles.green,
       },
     ],
     [
@@ -245,14 +235,12 @@ function Playground() {
       },
       {
         content: <IpBlocklistResult event={usedIdentificationEvent} />,
-        cellStyle: {
-          backgroundColor:
-            usedIdentificationEvent?.products?.ipBlocklist?.data?.result ||
-            usedIdentificationEvent?.products?.proxy?.data?.result ||
-            usedIdentificationEvent?.products?.tor?.data?.result
-              ? RED
-              : GREEN,
-        },
+        className:
+          usedIdentificationEvent?.products?.ipBlocklist?.data?.result ||
+          usedIdentificationEvent?.products?.proxy?.data?.result ||
+          usedIdentificationEvent?.products?.tor?.data?.result
+            ? tableStyles.red
+            : tableStyles.green,
       },
     ],
     [
@@ -268,9 +256,8 @@ function Playground() {
       },
       {
         content: usedIdentificationEvent?.products?.highActivity?.data?.result === true ? 'Yes 🔥' : 'Not detected',
-        cellStyle: {
-          backgroundColor: usedIdentificationEvent?.products?.highActivity?.data?.result === true ? RED : GREEN,
-        },
+        className:
+          usedIdentificationEvent?.products?.highActivity?.data?.result === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -284,11 +271,11 @@ function Playground() {
       {
         // @ts-expect-error suspectScore not yet available in Node SDK, TODO: remove this once it's available
         content: usedIdentificationEvent?.products?.suspectScore?.data?.result,
-        cellStyle: {
-          backgroundColor:
-            // @ts-expect-error suspectScore not yet available in Node SDK, TODO: remove this once it's available
-            usedIdentificationEvent?.products?.suspectScore?.data?.result > SUSPECT_SCORE_RED_THRESHOLD ? RED : GREEN,
-        },
+        className:
+          // @ts-expect-error suspectScore not yet available in Node SDK, TODO: remove this once it's available
+          usedIdentificationEvent?.products?.suspectScore?.data?.result > SUSPECT_SCORE_RED_THRESHOLD
+            ? tableStyles.red
+            : tableStyles.green,
       },
     ],
     [
@@ -299,7 +286,7 @@ function Playground() {
           </DocsLink>,
         ],
       },
-      { content: 'See the JSON below', cellStyle: { backgroundColor: GREEN } },
+      { content: 'See the JSON below', className: tableStyles.green },
     ],
   ];
 
@@ -312,7 +299,7 @@ function Playground() {
           </DocsLink>,
         ],
       },
-      { content: PLAYGROUND_COPY.mobileOnly, cellStyle: { backgroundColor: GRAY } },
+      { content: PLAYGROUND_COPY.mobileOnly, className: tableStyles.neutral },
     ],
     [
       {
@@ -322,7 +309,7 @@ function Playground() {
           </DocsLink>,
         ],
       },
-      { content: PLAYGROUND_COPY.mobileOnly, cellStyle: { backgroundColor: GRAY } },
+      { content: PLAYGROUND_COPY.mobileOnly, className: tableStyles.neutral },
     ],
     [
       {
@@ -335,7 +322,7 @@ function Playground() {
           </DocsLink>,
         ],
       },
-      { content: PLAYGROUND_COPY.mobileOnly, cellStyle: { backgroundColor: GRAY } },
+      { content: PLAYGROUND_COPY.mobileOnly, className: tableStyles.neutral },
     ],
     [
       {
@@ -345,7 +332,7 @@ function Playground() {
           </DocsLink>,
         ],
       },
-      { content: PLAYGROUND_COPY.androidOnly, cellStyle: { backgroundColor: GRAY } },
+      { content: PLAYGROUND_COPY.androidOnly, className: tableStyles.neutral },
     ],
     [
       {
@@ -358,7 +345,7 @@ function Playground() {
           </DocsLink>,
         ],
       },
-      { content: PLAYGROUND_COPY.androidOnly, cellStyle: { backgroundColor: GRAY } },
+      { content: PLAYGROUND_COPY.androidOnly, className: tableStyles.neutral },
     ],
     [
       {
@@ -371,7 +358,7 @@ function Playground() {
           </DocsLink>,
         ],
       },
-      { content: PLAYGROUND_COPY.androidOnly, cellStyle: { backgroundColor: GRAY } },
+      { content: PLAYGROUND_COPY.androidOnly, className: tableStyles.neutral },
     ],
 
     [
@@ -385,7 +372,7 @@ function Playground() {
           </DocsLink>,
         ],
       },
-      { content: PLAYGROUND_COPY.iosOnly, cellStyle: { backgroundColor: GRAY } },
+      { content: PLAYGROUND_COPY.iosOnly, className: tableStyles.neutral },
     ],
   ];
 
@@ -413,15 +400,15 @@ function Playground() {
           <div className={styles.tablesContainer}>
             <div>
               <h3 className={styles.tableTitle}>Identification</h3>
-              <MyTable data={identificationSignals} />
+              <SignalTable data={identificationSignals} />
             </div>
             <div>
               <h3 className={styles.tableTitle}>Smart signals</h3>
-              <MyTable data={smartSignals} />
+              <SignalTable data={smartSignals} />
             </div>
             <div>
               <h3 className={styles.tableTitle}>Mobile Smart signals</h3>
-              <MyTable data={mobileSmartSignals} />
+              <SignalTable data={mobileSmartSignals} />
             </div>
           </div>
 

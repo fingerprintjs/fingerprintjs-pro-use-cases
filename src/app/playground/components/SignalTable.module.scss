@@ -1,0 +1,44 @@
+.signalTable {
+  border-radius: 8px;
+  border: 1px solid v('light-grey');
+  width: 100%;
+
+  border-collapse: separate;
+  border-spacing: 0 4px;
+  padding: 0px 4px;
+
+  td {
+    padding: rem(16px) rem(12px);
+    color: v('dark-black');
+    font-family: Inter;
+    font-size: rem(16px);
+    line-height: 160%;
+    letter-spacing: 0.16px;
+    border-radius: 4px;
+  }
+  // Labels have smaller padding
+  td:first {
+    padding: rem(12px) rem(8px);
+  }
+}
+
+td.red {
+  background-color: v('error-background');
+  border: 1px solid transparent;
+  color: ('error-text');
+}
+
+td.green {
+  background-color: v('success-background');
+  border: 1px solid transparent;
+  color: v('success-text');
+}
+
+td.neutral {
+  background-color: v('light-gray-background');
+  border: 1px solid rgba(232, 232, 232, 0.4);
+}
+
+td.map {
+  padding: 0;
+}
