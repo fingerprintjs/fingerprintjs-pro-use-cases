@@ -1,11 +1,10 @@
 'use client';
 
-import { FunctionComponent, ReactNode } from 'react';
+import { FunctionComponent } from 'react';
 import { CodeSnippet } from '../../client/components/CodeSnippet';
 import dynamic from 'next/dynamic';
 import SignalTable, { TableCellData } from './components/SignalTable';
 import BotDetectionResult from './components/BotDetectionResult';
-import Info from './components/InfoIcon';
 import RefreshButton from './components/RefreshButton';
 import IpBlocklistResult from './components/IpBlocklistResult';
 import VpnDetectionResult from './components/VpnDetectionResult';
@@ -34,15 +33,20 @@ const PLAYGROUND_COPY = {
 // Nothing magic about `8` here, each customer must define their own use-case specific threshold
 const SUSPECT_SCORE_RED_THRESHOLD = 8;
 
-const DocsLink: FunctionComponent<{ children: ReactNode; href: string; style?: React.CSSProperties }> = ({
+const DocsLink: FunctionComponent<{ children: string; href: string; style?: React.CSSProperties }> = ({
   children,
   href,
   style,
 }) => {
+  const lastWord = children.split(' ').pop();
+  const leadingWords = children.split(' ').slice(0, -1).join(' ');
   return (
     <Link href={href} target='_blank' className={styles.docsLink} style={style}>
-      {children}
-      <Image src={externalLinkArrow} alt='' />
+      {leadingWords}{' '}
+      <span style={{ whiteSpace: 'nowrap' }}>
+        {lastWord}
+        <Image src={externalLinkArrow} alt='' />
+      </span>
     </Link>
   );
 };
