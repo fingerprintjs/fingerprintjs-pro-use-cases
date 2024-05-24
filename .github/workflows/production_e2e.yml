@@ -54,3 +54,14 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+  report-status:
+    needs: e2e
+    if: always()
+    # Run always for now to test it out, later we switch to on-failure only
+    # if: ${{ needs.e2e.result == 'failure' }}
+    uses: fingerprintjs/dx-team-toolkit/.github/workflows/report-workflow-status.yml@v1
+    with:
+      notification_title: 'Production e2e tests on demo.fingerprint.com have {status_message}'
+      job_status: ${{ needs.e2e.result }}
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
