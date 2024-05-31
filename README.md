@@ -44,7 +44,7 @@ Protect your login page from repeated attempts to log in with stolen credentials
 
 Detect fraudulent loan applications submitted by previously rejected applicants. Even when they are not logged in or use a VPN/Incognito mode.
 
-[🧾 Loan Risk Live Demo](https://demo.fingerprint.com/loan-risk)
+[🧾 Loan Risk Live Demo](https://demo.fingerprint.com/loan-risk)  
 [📖 Loan Risk Article](https://fingerprint.com/blog/detect-repeat-applications-loan-risk/)
 
 ### Payment Fraud
@@ -58,7 +58,7 @@ Protect your checkout from the use of stolen credit cards, chargebacks, and othe
 
 Protect your content and build a paywall that actually works. Prevent visitors from resetting their free content quota by clearing cookies, going incognito, or using a VPN.
 
-[🗞 Paywall Live Demo](https://demo.fingerprint.com/paywall)
+[🗞 Paywall Live Demo](https://demo.fingerprint.com/paywall)  
 [📖 Paywall Article](https://fingerprint.com/blog/how-paywalls-work-paywall-protection-tutorial/)
 
 ### Personalization
@@ -72,34 +72,34 @@ Provide a tailored experience to your visitors without forcing them to create an
 
 Protect the content on your website from theft by reliably detecting even sophisticated bots and browser automation tools.
 
-[🦾 Content Scraping Live Demo](https://demo.fingerprint.com/web-scraping)
+[🦾 Content Scraping Live Demo](https://demo.fingerprint.com/web-scraping)  
 [📖 Content Scraping Article](https://fingerprint.com/blog/preventing-content-scraping/)
 
 ### Bot-detection-powered Firewall
 
 Integrate Fingerprint Bot Detection with your Web Application Firewall and dynamically block IP addresses linked to past bot visits.
 
-[🔥🧱 Bot Firewall Live Demo](https://demo.fingerprint.com/bot-firewall)
+[🔥🧱 Bot Firewall Live Demo](https://demo.fingerprint.com/bot-firewall)  
 [📖 Bot Firewall Article](https://fingerprint.com/blog/bot-detection-powered-application-firewall/)
 
 ### SMS Pumping Fraud Protection
 
 Prevent financial losses from SMS pumping. Link every verification text message to a browser fingerprint and limit the number of verification requests from a single browser.
 
-[📱 SMS Pumping Protection Live Demo](https://demo.fingerprint.com/sms-pumping)
+[📱 SMS Pumping Protection Live Demo](https://demo.fingerprint.com/sms-pumping)  
 [📖 SMS Pumping Protection Article](https://fingerprint.com/blog/what-is-sms-fraud-prevention-tutorial/)
 
 ### VPN Detection and Location Spoofing Protection
 
 Detect when visitors are using VPN to access your application. Prevent people spoofing their location from accessing geo-restricted content or pricing.
 
-[🌍 VPN Detection Live Demo](https://demo.fingerprint.com/vpn-detection)
+[🌍 VPN Detection Live Demo](https://demo.fingerprint.com/vpn-detection)  
 [📖 VPN Detection Article](https://fingerprint.com/blog/vpn-detection-location-spoofing-fraud-prevention/)
 
 ## Documentation and Support
 
 To dive deeper into Fingerprint Pro, see our [Documentation](https://dev.fingerprint.com/docs). For questions or suggestions specific to this repository, you can [create an issue](https://github.com/fingerprintjs/fingerprintjs-pro-use-cases/issues/new). For general questions and community vibes, visit our [Discord server](https://discord.gg/39EpE2neBg). If you require private support, you can email us at [oss-support@fingerprint.com](mailto:oss-support@fingerprint.com).
 
-## Licence
+## License
 
 This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for more information.

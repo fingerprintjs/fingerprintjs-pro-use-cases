@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, PropsWithChildren } from 'react';
 import classNames from 'classnames';
 import ExpandMoreSvg from '../../../img/expand-more.svg';
 import styles from './DropdownMenu.module.scss';
@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import useOnClickOutside from '../../../hooks/useOnClickOutside';
 import Image from 'next/image';
 import Dropdown, { DropdownProps } from '../Dropdown/Dropdown';
+import Link from 'next/link';
 
 export interface DropdownMenuProps {
   name: string;
@@ -15,7 +16,8 @@ export interface DropdownMenuProps {
   dropdownProps: DropdownProps;
   onLinkClick?: () => void;
 }
-export default function DropdownMenu({ name, className, darkMode, dropdownProps, onLinkClick }: DropdownMenuProps) {
+
+export function DropdownMenu({ name, className, darkMode, dropdownProps, onLinkClick }: DropdownMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   useOnClickOutside(ref, () => setIsOpen(false));
@@ -55,5 +57,15 @@ export default function DropdownMenu({ name, className, darkMode, dropdownProps,
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+type DropdownLikeLinkProps = PropsWithChildren<{ href: string; className?: string; onLinkClick?: () => void }>;
+
+export function DropdownLikeLink({ href, children, className, onLinkClick }: DropdownLikeLinkProps) {
+  return (
+    <Link href={href} className={classNames(className, styles.link)} onClick={onLinkClick}>
+      {children}
+    </Link>
   );
 }

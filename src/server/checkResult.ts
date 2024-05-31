@@ -34,7 +34,6 @@ export const checkResultType = Object.freeze({
   LowConfidenceScore: 'LowConfidenceScore',
   RequestIdMismatch: 'RequestIdMismatch',
   OldTimestamp: 'OldTimestamp',
-  TooManyLoginAttempts: 'TooManyLoginAttempts',
   ForeignOrigin: 'ForeignOrigin',
   Challenged: 'Challenged',
   IpMismatch: 'IpMismatch',
@@ -42,8 +41,6 @@ export const checkResultType = Object.freeze({
   MaliciousBotDetected: 'MaliciousBotDetected',
   GoodBotDetected: 'GoodBotDetected',
   ServerError: 'ServerError',
-  // Login specific checks.
-  IncorrectCredentials: 'IncorrectCredentials',
   // Payment specific checks.
   TooManyChargebacks: 'TooManyChargebacks',
   TooManyUnsuccessfulPayments: 'TooManyUnsuccessfulPayments',
@@ -55,9 +52,4 @@ export const checkResultType = Object.freeze({
 
   // Paywall specific checks.
   ArticleViewLimitExceeded: 'ArticleViewLimitExceeded',
-
-  // Coupon fraud specific checks
-  CouponDoesNotExist: 'CouponDoesNotExist',
-  CouponAlreadyClaimed: 'CouponAlreadyClaimed',
-  AnotherCouponClaimedRecently: 'AnotherCouponClaimedRecently',
 });
