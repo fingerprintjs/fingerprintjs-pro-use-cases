@@ -2,8 +2,8 @@ import React from 'react';
 import Button from '../Button/Button';
 import classNames from 'classnames';
 import styles from './MobileNavbar.module.scss';
-import { PLATFORM_NAVIGATION, URL, USE_CASES_NAVIGATION } from '../content';
-import DropdownMenu from '../DropdownMenu/DropdownMenu';
+import { PLAYGROUND_METADATA, URL, USE_CASES_NAVIGATION } from '../content';
+import { DropdownLikeLink, DropdownMenu } from '../DropdownMenu/DropdownMenu';
 import Image from 'next/image';
 import Restart from '../../../img/restart.svg';
 import { useReset } from '../../../hooks/useReset/useReset';
@@ -60,6 +60,12 @@ export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbar
 
         <div className={classNames(styles.links, styles.main)}>
           <div className={styles.container}>
+            <DropdownLikeLink href={'/'} onLinkClick={closeMobileMenu}>
+              Home
+            </DropdownLikeLink>
+            <DropdownLikeLink href={PLAYGROUND_METADATA.url} onLinkClick={closeMobileMenu}>
+              Playground
+            </DropdownLikeLink>
             <DropdownMenu
               name='Use cases'
               darkMode={darkMode}
@@ -75,17 +81,6 @@ export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbar
                     cardBackground: true,
                   },
                 ],
-              }}
-              onLinkClick={closeMobileMenu}
-            />
-
-            <DropdownMenu
-              darkMode={darkMode}
-              name='Platform'
-              className={styles.desktopOnly}
-              dropdownProps={{
-                darkMode,
-                leftColumns: [{ list: PLATFORM_NAVIGATION, cardBackground: true }],
               }}
               onLinkClick={closeMobileMenu}
             />

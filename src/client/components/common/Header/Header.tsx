@@ -6,11 +6,10 @@ import MobileNavbar from '../MobileNavbar/MobileNavbar';
 import Container from '../Container';
 import HeaderBar from '../HeaderBar/HeaderBar';
 import classNames from 'classnames';
-import { PLATFORM_NAVIGATION, URL, USE_CASES_NAVIGATION } from '../content';
-import DropdownMenu from '../DropdownMenu/DropdownMenu';
+import { PLAYGROUND_METADATA, URL, USE_CASES_NAVIGATION } from '../content';
+import { DropdownLikeLink, DropdownMenu } from '../DropdownMenu/DropdownMenu';
 import Image from 'next/image';
 import LogoSvg from './fpjs.svg';
-import LogoDarkSvg from './fpjsDark.svg';
 import Restart from '../../../img/restart.svg';
 
 import styles from './Header.module.scss';
@@ -27,9 +26,8 @@ interface HeaderProps {
     url?: string;
     backgroundColor?: string;
   };
-  darkMode?: boolean;
 }
-export default function Header({ notificationBar, darkMode }: HeaderProps) {
+export default function Header({ notificationBar }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -62,24 +60,24 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
           {<div dangerouslySetInnerHTML={{ __html: notificationBar.barBody ?? '' }} />}
         </HeaderBar>
       )}
-      <header className={classNames(styles.header, { [styles.darkHeader]: darkMode })}>
+      <header className={classNames(styles.header)}>
         <div className={styles.nav}>
           <Container size='large' className={styles.root}>
             <nav className={styles.navMain}>
               <div className={styles.navLeft}>
-                <Link href='/' className={styles.link} title='Logo'>
-                  {darkMode ? (
-                    <Image src={LogoDarkSvg} className={styles.logo} alt='Fingerprint logo' />
-                  ) : (
-                    <Image src={LogoSvg} className={styles.logo} alt='Fingerprint logo' />
-                  )}
+                <Link href='https://fingerprint.com' className={styles.link} title='Logo'>
+                  <Image src={LogoSvg} className={styles.logo} alt='Fingerprint logo' />
                 </Link>
+                <DropdownLikeLink href='/' className={styles.desktopOnly}>
+                  Home
+                </DropdownLikeLink>
+                <DropdownLikeLink href={PLAYGROUND_METADATA.url} className={styles.desktopOnly}>
+                  Playground
+                </DropdownLikeLink>
                 <DropdownMenu
-                  darkMode={darkMode}
                   name='Use cases'
                   className={styles.desktopOnly}
                   dropdownProps={{
-                    darkMode,
                     leftColumns: [
                       {
                         list: USE_CASES_NAVIGATION.slice(0, 5),
@@ -90,16 +88,6 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
                         cardBackground: true,
                       },
                     ],
-                  }}
-                />
-
-                <DropdownMenu
-                  darkMode={darkMode}
-                  name='Platform'
-                  className={styles.desktopOnly}
-                  dropdownProps={{
-                    darkMode,
-                    leftColumns: [{ list: PLATFORM_NAVIGATION, cardBackground: true }],
                   }}
                 />
               </div>
@@ -157,7 +145,7 @@ export default function Header({ notificationBar, darkMode }: HeaderProps) {
               </div>
             </nav>
           </Container>
-          {isMobileMenuOpen && <MobileNavbar darkMode={darkMode} closeMobileMenu={() => setIsMobileMenuOpen(false)} />}
+          {isMobileMenuOpen && <MobileNavbar closeMobileMenu={() => setIsMobileMenuOpen(false)} />}
         </div>
       </header>
     </>
