@@ -131,7 +131,7 @@ function Playground() {
           <>
             {latitude && longitude && (
               <div>
-                <Map key={[latitude, longitude].toString()} position={[latitude, longitude]} height='80px' />
+                <Map key={[latitude, longitude].toString()} position={[latitude, longitude]} height='95px' />
               </div>
             )}
           </>
@@ -277,10 +277,12 @@ function Playground() {
       },
       {
         // @ts-expect-error suspectScore not yet available in Node SDK, TODO: remove this once it's available
-        content: usedIdentificationEvent?.products?.suspectScore?.data?.result,
-        className:
-          // @ts-expect-error suspectScore not yet available in Node SDK, TODO: remove this once it's available
-          usedIdentificationEvent?.products?.suspectScore?.data?.result > SUSPECT_SCORE_RED_THRESHOLD
+        content: usedIdentificationEvent?.products?.suspectScore?.data?.result ?? 'Not available',
+        // @ts-expect-error suspectScore not yet available in Node SDK, TODO: remove this once it's available
+        className: !Boolean(usedIdentificationEvent?.products?.suspectScore)
+          ? tableStyles.neutral
+          : // @ts-expect-error suspectScore not yet available in Node SDK, TODO: remove this once it's available
+            usedIdentificationEvent?.products?.suspectScore?.data?.result > SUSPECT_SCORE_RED_THRESHOLD
             ? tableStyles.red
             : tableStyles.green,
       },
