@@ -13,8 +13,6 @@ import { usePlaygroundSignals } from './hooks/usePlaygroundSignals';
 import { getLocationName } from '../../shared/utils/locationUtils';
 import { FP_LOAD_OPTIONS } from '../../pages/_app';
 import Link from 'next/link';
-import externalLinkArrow from '../../client/img/externalLinkArrow.svg';
-import Image from 'next/image';
 import styles from './playground.module.scss';
 import { Spinner } from '../../client/components/common/Spinner/Spinner';
 import { Alert } from '../../client/components/common/Alert/Alert';
@@ -23,6 +21,7 @@ import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import Container from '../../client/components/common/Container';
 import { TEST_IDS } from '../../client/testIDs';
 import tableStyles from './components/SignalTable.module.scss';
+import { ExternalLinkArrowSvg } from '../../client/img/externalLinkArrowSvg';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',
@@ -45,7 +44,7 @@ const DocsLink: FunctionComponent<{ children: string; href: string; style?: Reac
       {leadingWords}{' '}
       <span style={{ whiteSpace: 'nowrap' }}>
         {lastWord}
-        <Image src={externalLinkArrow} alt='' />
+        <ExternalLinkArrowSvg className={styles.externalLinkArrow} />
       </span>
     </Link>
   );
@@ -119,13 +118,17 @@ function Playground() {
     [
       {
         content: (
-          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#ip-geolocation'>Geolocation</DocsLink>
+          <>
+            <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#ip-geolocation'>
+              Geolocation
+            </DocsLink>
+            <div className={styles.locationText}>{getLocationName(ipLocation)}</div>
+          </>
         ),
       },
       {
         content: (
           <>
-            <div>{getLocationName(ipLocation)}</div>
             {latitude && longitude && (
               <div>
                 <Map key={[latitude, longitude].toString()} position={[latitude, longitude]} height='80px' />

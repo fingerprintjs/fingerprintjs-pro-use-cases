@@ -1,3 +1,5 @@
+'use client';
+
 import { FunctionComponent } from 'react';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 
