@@ -1,5 +1,27 @@
-.refreshButton {
+.refreshButton.refreshButton {
   display: flex;
+  padding: rem(12px) rem(24px);
+  font-weight: 500;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 150%; /* 24px */
+
+  img {
+    transition: scale 0.2s ease;
+    margin-left: rem(8px);
+  }
+
+  &:hover {
+    img {
+      scale: 1.2;
+    }
+  }
+
+  &.loading {
+    img {
+      animation: spin 1s infinite linear;
+    }
+  }
 
   div {
     display: flex;

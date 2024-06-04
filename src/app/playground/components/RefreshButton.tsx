@@ -1,9 +1,10 @@
 import { FunctionComponent } from 'react';
 import Button from '../../../client/components/common/Button/Button';
-import { Spinner } from '../../../client/components/common/Spinner/Spinner';
 import styles from './RefreshButton.module.scss';
 import classnames from 'classnames';
 import { TEST_IDS } from '../../../client/testIDs';
+import Restart from '../../../client/img/restart.svg';
+import Image from 'next/image';
 
 const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: () => void; className?: string }> = ({
   loading,
@@ -14,19 +15,15 @@ const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: () => v
     <Button
       color='primary'
       outlined
-      size='medium'
+      size='large'
       onClick={() => getAgentData()}
       disabled={loading}
       data-testid={TEST_IDS.playground.refreshButton}
-      className={classnames(styles.refreshButton, className)}
+      className={classnames(styles.refreshButton, className, loading && styles.loading)}
     >
-      {loading ? (
-        <div>
-          <div>Loading</div> <Spinner />
-        </div>
-      ) : (
-        <>Analyze my browser again</>
-      )}
+      <>
+        Analyze my browser again <Image src={Restart} width={18} height={18} alt='Analyze my browser again' />
+      </>
     </Button>
   );
 };
