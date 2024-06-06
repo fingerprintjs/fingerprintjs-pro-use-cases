@@ -22,6 +22,7 @@ import Container from '../../client/components/common/Container';
 import { TEST_IDS } from '../../client/testIDs';
 import tableStyles from './components/SignalTable.module.scss';
 import { ExternalLinkArrowSvg } from '../../client/img/externalLinkArrowSvg';
+import { AccordionDemo } from './components/HowToUseThisPlayground';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',
@@ -426,6 +427,8 @@ function Playground() {
             getAgentData={getAgentData}
             className={styles.reloadButton}
           />
+
+          <AccordionDemo />
 
           <div className={styles.jsonContainer}>
             <div>

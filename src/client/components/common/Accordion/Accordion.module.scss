@@ -1,0 +1,89 @@
+.AccordionRoot {
+  width: 100%;
+
+  button,
+  h3 {
+    font-size: unset;
+  }
+
+  border: 1px dashed v('orange-gradient');
+}
+
+.AccordionItem {
+  border-bottom-width: 1px;
+
+  &[data-state='open'],
+  :hover {
+    background-color: v('soft-orange-background');
+  }
+}
+
+.AccordionHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: rem(20px) rem(24px);
+  cursor: pointer;
+
+  &:hover {
+    .AccordionTrigger {
+      color: v('orange-gradient');
+    }
+  }
+
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 145%; /* 23.2px */
+}
+
+.AccordionTrigger {
+  display: flex;
+  cursor: pointer;
+  flex: 1 1 0%;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+
+  &[data-state='open'],
+  :hover {
+    color: v('orange-gradient');
+  }
+
+  // border: 1px solid red;
+}
+
+.AccordionContent {
+  overflow: hidden;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+
+  div {
+    padding: 0 rem(24px) rem(32px) rem(24px);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
