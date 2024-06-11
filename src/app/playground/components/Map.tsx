@@ -30,7 +30,7 @@ const Map: FunctionComponent<MapProps> = (props) => {
   return (
     <MapContainer
       center={props.position}
-      zoom={10}
+      zoom={9}
       style={{ height: props.height ?? '200px', width: props.width ?? '100%' }}
       dragging={false}
       zoomControl={false}

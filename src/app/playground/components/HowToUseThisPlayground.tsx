@@ -7,7 +7,7 @@ import {
 
 export function AccordionDemo() {
   return (
-    <Accordion type='multiple' className='w-full'>
+    <Accordion type='multiple'>
       <AccordionItem value='item-1'>
         <AccordionTrigger>Is it accessible?</AccordionTrigger>
         <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>

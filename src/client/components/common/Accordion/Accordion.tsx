@@ -5,6 +5,7 @@ import * as AccordionPrimitive from '@radix-ui/react-accordion';
 import classnames from 'classnames';
 import styles from './Accordion.module.scss';
 import { ButtonPlusSvgThin } from '../../../img/buttonPlusSvg';
+import { ButtonMinusSvgThin } from '../../../img/buttonMinusSvg';
 
 /**
  * References
@@ -35,7 +36,8 @@ const AccordionTrigger = React.forwardRef<
     <AccordionPrimitive.Trigger ref={ref} className={classnames(styles.AccordionTrigger, className)} {...props}>
       <div>{children}</div>
       <div>
-        <ButtonPlusSvgThin />
+        <ButtonPlusSvgThin className={styles.plusButton} />
+        <ButtonMinusSvgThin className={styles.minusButton} />
       </div>
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>

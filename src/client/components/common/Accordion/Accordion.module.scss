@@ -10,7 +10,9 @@
 }
 
 .AccordionItem {
-  border-bottom-width: 1px;
+  &:not(:last-child) {
+    border-bottom: 1px dashed v('orange-gradient');
+  }
 
   &[data-state='open'],
   :hover {
@@ -22,7 +24,6 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: rem(20px) rem(24px);
   cursor: pointer;
 
   &:hover {
@@ -41,6 +42,7 @@
 .AccordionTrigger {
   display: flex;
   cursor: pointer;
+  align-items: center;
   flex: 1 1 0%;
   justify-content: space-between;
   align-items: center;
@@ -48,13 +50,30 @@
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
+  padding: rem(20px) rem(24px);
 
   &[data-state='open'],
   :hover {
     color: v('orange-gradient');
   }
 
-  // border: 1px solid red;
+  &[data-state='open'] {
+    .plusButton {
+      display: none;
+    }
+    .minusButton {
+      display: block;
+    }
+  }
+
+  &[data-state='closed'] {
+    .plusButton {
+      display: block;
+    }
+    .minusButton {
+      display: none;
+    }
+  }
 }
 
 .AccordionContent {
@@ -64,10 +83,36 @@
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
+  background-color: v('soft-orange-background');
 
   div {
     padding: 0 rem(24px) rem(32px) rem(24px);
   }
+
+  &[data-state='open'] {
+    animation: slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1);
+  }
+  &[data-state='closed'] {
+    animation: slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1);
+  }
+}
+
+/**
+ * Border-radius
+ */
+.AccordionRoot,
+.AccordionHeader,
+.AccordionTrigger,
+.AccordionContent {
+  border-radius: rem(8px);
+}
+
+.AccordionItem:first-child {
+  border-radius: rem(8px) rem(8px) 0 0;
+}
+
+.AccordionItem:last-child {
+  border-radius: 0 0 rem(8px) rem(8px);
 }
 
 @keyframes slideDown {
