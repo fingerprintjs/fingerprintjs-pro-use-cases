@@ -27,14 +27,15 @@ export function CodeSnippet({
   const hasDarkMode = false;
 
   const PRISM_CUSTOM_STYLE = {
-    backgroundColor: hasDarkMode ? undefined : '#F5F5F5',
-    padding: '12px',
-    borderRadius: '4px',
+    backgroundColor: '#FFF',
+    padding: '16px 12px',
+    borderRadius: '8px',
     fontFamily: 'Roboto Mono, monospace',
     fontSize: '14px',
     margin: '0',
     overflow: 'auto',
-    border: hasDarkMode ? '1px solid #333' : undefined,
+    border: '1px solid #D0D0D0',
+    height: '446px',
   };
   const PRISM_CODE_TAG_PROPS = { style: { color: '#c92c2c', font: 'inherit' as const } };
 

@@ -23,6 +23,7 @@ import { TEST_IDS } from '../../client/testIDs';
 import tableStyles from './components/SignalTable.module.scss';
 import { ExternalLinkArrowSvg } from '../../client/img/externalLinkArrowSvg';
 import { HowToUseThisPlayground } from './components/HowToUseThisPlayground';
+import classnames from 'classnames';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',
@@ -440,7 +441,7 @@ function Playground() {
             <h2 className={styles.sectionTitle}>How to use this demo</h2>
             <HowToUseThisPlayground />
           </Container>
-          <Container size='large' className={styles.isSection}>
+          <Container size='large' className={classnames(styles.isSection, styles.jsonSection)}>
             <div className={styles.jsonContainer}>
               <div>
                 <h4 className={styles.jsonTitle}>JavaScript Agent Response {isLoadingAgentResponse && <Spinner />}</h4>

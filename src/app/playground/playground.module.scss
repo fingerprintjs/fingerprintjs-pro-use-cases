@@ -167,13 +167,18 @@ h2.sectionTitle {
   margin-bottom: rem(16px);
 }
 
+.jsonSection {
+  background-color: v('light-gray-background');
+}
+
 .jsonTitle {
-  margin: 1.25rem 0px 1rem;
-  font-size: rem(18px);
-  font-weight: 500;
+  margin-bottom: rem(20px);
+  color: v('dark-black');
   font-family: Inter;
-  font-weight: 400;
-  letter-spacing: -0.25px;
+  font-size: rem(20px);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%; /* 28px */
 }
 
 .jsonTitle {
