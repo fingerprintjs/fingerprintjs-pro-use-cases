@@ -38,7 +38,7 @@
     "framer-motion": "^11.0.8",
     "is-ip": "^5.0.1",
     "leaflet": "^1.9.4",
-    "next": "^14.1.1",
+    "next": "^14.2.4",
     "next-usequerystate": "^1.17.0",
     "notistack": "^3.0.1",
     "prismjs": "^1.29.0",
