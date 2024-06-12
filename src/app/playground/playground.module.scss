@@ -60,6 +60,23 @@
   }
 }
 
+h2.sectionTitle {
+  color: v('dark-black');
+  font-family: Inter;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 130%;
+
+  padding-bottom: rem(32px);
+}
+
+.isSection {
+  border-top: 1px solid v('gray-box-stroke');
+  padding-top: rem(64px);
+  padding-bottom: rem(64px);
+}
+
 .docsLink {
   color: v('dark-black');
 

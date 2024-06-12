@@ -6,6 +6,7 @@ import {
   AccordionTrigger,
 } from '../../../client/components/common/Accordion/Accordion';
 import { FancyNumberedList } from '../../../client/components/common/FancyNumberedList/FancyNumberedList';
+import Link from 'next/link';
 
 type HowTo = {
   title: string;
@@ -16,9 +17,8 @@ const content: HowTo[] = [
   {
     title: 'Incognito mode',
     content: [
-      `The you will see a green box with “Not detected” displayed if you’re using a
-      normal browser.`,
-      `Open this page in incognito mode to see the box change to red with “You are incognito” displayed.`,
+      `If you’re using a normal browser, you will see a green box with “Not detected”.`,
+      `Open this page in incognito mode to see the box change to red with “You are incognito” displayed. Your visitor ID will stay the same.`,
     ],
   },
   {
@@ -39,18 +39,30 @@ const content: HowTo[] = [
       <>
         Click <b>Analyze my browser again</b>.
       </>,
-      `The browser tampering box will be red with a “Yes” to signify that tampering has been detected.`,
+      `The Browser Tampering box will be red with a “Yes” to signify that tampering has been detected.`,
+    ],
+  },
+  {
+    title: 'Bot detection',
+    content: [
+      `If you’re using a normal browser, you will see a green box with “Not detected”.`,
+      <>
+        Try opening this page using a browser automation tool like Puppeteer or our{' '}
+        <Link href='https://botd-demo.fpjs.sh/' target={'_blank'}>
+          Bot playground
+        </Link>
+        .
+      </>,
+      `The Bot detection box will be red with “You are a bot” displayed.`,
     ],
   },
   {
     title: 'IP Geolocation',
-    content: [
-      `Notice your location will be displayed by a small map icon. Try taking a trip and refreshing the browser!`,
-    ],
+    content: [`Notice your location is displayed in a small map tile. Try taking a trip and refreshing the browser!`],
   },
 ];
 
-export function AccordionDemo() {
+export function HowToUseThisPlayground() {
   return (
     <Accordion type='single' collapsible defaultValue={content[0].title}>
       {content.map(({ title, content }) => (

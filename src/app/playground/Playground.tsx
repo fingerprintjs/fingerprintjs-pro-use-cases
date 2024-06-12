@@ -22,7 +22,7 @@ import Container from '../../client/components/common/Container';
 import { TEST_IDS } from '../../client/testIDs';
 import tableStyles from './components/SignalTable.module.scss';
 import { ExternalLinkArrowSvg } from '../../client/img/externalLinkArrowSvg';
-import { AccordionDemo } from './components/HowToUseThisPlayground';
+import { HowToUseThisPlayground } from './components/HowToUseThisPlayground';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',
@@ -387,68 +387,80 @@ function Playground() {
   ];
 
   return (
-    <Container size='large'>
-      <div className={styles.hero}>
-        <h1>
-          <span>Fingerprint Pro</span> Playground
-        </h1>
-        <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>
-      </div>
-      {agentResponse && (
-        <div className={styles.visitorIdBox}>
-          <p>Welcome, this is your visitor ID</p>
-          <h2 className={styles.visitorId}>{agentResponse?.visitorId}</h2>
+    <>
+      <Container size='large'>
+        <div className={styles.hero}>
+          <h1>
+            <span>Fingerprint Pro</span> Playground
+          </h1>
+          <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>
         </div>
+      </Container>
+
+      {agentResponse && (
+        <Container size='large'>
+          <div className={styles.visitorIdBox}>
+            <p>Welcome, this is your visitor ID</p>
+            <h2 className={styles.visitorId}>{agentResponse?.visitorId}</h2>
+          </div>
+        </Container>
       )}
       {!cachedEvent ? (
-        <div className={styles.runningIntelligence}>
-          <Spinner size='40px' thickness={3} />
-          <h2>Running device intelligence...</h2>
-        </div>
+        <Container size='large'>
+          <div className={styles.runningIntelligence}>
+            <Spinner size='40px' thickness={3} />
+            <h2>Running device intelligence...</h2>
+          </div>
+        </Container>
       ) : (
         <>
-          <div className={styles.tablesContainer}>
-            <div>
-              <h3 className={styles.tableTitle}>Identification</h3>
-              <SignalTable data={identificationSignals} />
+          <Container size='large'>
+            <div className={styles.tablesContainer}>
+              <div>
+                <h3 className={styles.tableTitle}>Identification</h3>
+                <SignalTable data={identificationSignals} />
+              </div>
+              <div>
+                <h3 className={styles.tableTitle}>Smart signals</h3>
+                <SignalTable data={smartSignals} />
+              </div>
+              <div>
+                <h3 className={styles.tableTitle}>Mobile Smart signals</h3>
+                <SignalTable data={mobileSmartSignals} />
+              </div>
             </div>
-            <div>
-              <h3 className={styles.tableTitle}>Smart signals</h3>
-              <SignalTable data={smartSignals} />
+
+            <RefreshButton
+              loading={isLoadingAgentResponse || isLoadingServerResponse}
+              getAgentData={getAgentData}
+              className={styles.reloadButton}
+            />
+          </Container>
+          <Container size='large' className={styles.isSection}>
+            <h2 className={styles.sectionTitle}>How to use this demo</h2>
+            <HowToUseThisPlayground />
+          </Container>
+          <Container size='large' className={styles.isSection}>
+            <div className={styles.jsonContainer}>
+              <div>
+                <h4 className={styles.jsonTitle}>JavaScript Agent Response {isLoadingAgentResponse && <Spinner />}</h4>
+
+                <CodeSnippet language='json' dataTestId={TEST_IDS.playground.agentResponseJSON}>
+                  {JSON.stringify(agentResponse, null, 2)}
+                </CodeSnippet>
+              </div>
+              <div>
+                <h4 className={styles.jsonTitle}>Server API Response {isLoadingServerResponse && <Spinner />}</h4>
+
+                <CodeSnippet language='json' dataTestId={TEST_IDS.playground.serverResponseJSON}>
+                  {JSON.stringify(usedIdentificationEvent, null, 2)}
+                </CodeSnippet>
+              </div>
             </div>
-            <div>
-              <h3 className={styles.tableTitle}>Mobile Smart signals</h3>
-              <SignalTable data={mobileSmartSignals} />
-            </div>
-          </div>
-
-          <RefreshButton
-            loading={isLoadingAgentResponse || isLoadingServerResponse}
-            getAgentData={getAgentData}
-            className={styles.reloadButton}
-          />
-
-          <AccordionDemo />
-
-          <div className={styles.jsonContainer}>
-            <div>
-              <h4 className={styles.jsonTitle}>JavaScript Agent Response {isLoadingAgentResponse && <Spinner />}</h4>
-
-              <CodeSnippet language='json' dataTestId={TEST_IDS.playground.agentResponseJSON}>
-                {JSON.stringify(agentResponse, null, 2)}
-              </CodeSnippet>
-            </div>
-            <div>
-              <h4 className={styles.jsonTitle}>Server API Response {isLoadingServerResponse && <Spinner />}</h4>
-
-              <CodeSnippet language='json' dataTestId={TEST_IDS.playground.serverResponseJSON}>
-                {JSON.stringify(usedIdentificationEvent, null, 2)}
-              </CodeSnippet>
-            </div>
-          </div>
+          </Container>
         </>
       )}
-    </Container>
+    </>
   );
 }
 
