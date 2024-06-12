@@ -85,7 +85,7 @@
   transition-duration: 300ms;
   background-color: v('soft-orange-background');
 
-  div {
+  & > div {
     padding: 0 rem(24px) rem(32px) rem(24px);
   }
 

@@ -82,52 +82,6 @@ h1.title {
     margin-bottom: rem(20px);
   }
 
-  ol {
-    list-style-type: none;
-    counter-reset: my-counter;
-  }
-
-  ol li:before {
-    content: counter(my-counter);
-    color: v('orange-gradient');
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid v('gray-box-stroke');
-    border-radius: 50%;
-    text-align: center;
-    background-color: white;
-
-    font-family: Inter;
-    font-size: rem(12px);
-    font-style: normal;
-    font-weight: 500;
-    line-height: 155%;
-
-    width: rem(26px);
-    min-width: rem(26px);
-    height: rem(26px);
-    min-height: rem(26px);
-    margin-right: rem(12px);
-  }
-
-  ol li {
-    counter-increment: my-counter;
-    line-height: 160%;
-    margin-bottom: rem(10px);
-    // The marker and li text are two columns
-    display: flex;
-
-    code {
-      white-space: nowrap;
-    }
-
-    a {
-      text-decoration: underline;
-      color: v('orange-gradient');
-    }
-  }
-
   .resourcesButton {
     background-color: white;
     font-weight: 400;

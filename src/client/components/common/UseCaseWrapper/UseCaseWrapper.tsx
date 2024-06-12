@@ -15,6 +15,7 @@ import classNames from 'classnames';
 import { RestartHint } from './RestartHint';
 import { SEO } from '../seo';
 import { TEST_IDS } from '../../../testIDs';
+import { FancyNumberedList } from '../FancyNumberedList/FancyNumberedList';
 
 export const INSTRUCTION_ANCHOR_ID = 'instructions';
 
@@ -82,22 +83,17 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
           <div className={styles.howToUse} id={INSTRUCTION_ANCHOR_ID}>
             <div>
               <h2>How to use this demo</h2>
-              <ol>
-                {instructions?.map((item, index) => (
-                  <li key={index}>
-                    {/* The wrapper div here is necessary for styles to work. */}
-                    <div>{typeof item === 'function' ? item({ setPulseResetButton }) : item}</div>
-                  </li>
-                ))}
-                {!doNotMentionResetButton && (
-                  <li>
-                    <div>
+              <FancyNumberedList
+                items={[
+                  ...instructions?.map((item) => (typeof item === 'function' ? item({ setPulseResetButton }) : item)),
+                  !doNotMentionResetButton ? (
+                    <>
                       You can reset this scenario using the <RestartHint setPulseResetButton={setPulseResetButton} />{' '}
                       button on the top right.
-                    </div>
-                  </li>
-                )}
-              </ol>
+                    </>
+                  ) : null,
+                ]}
+              ></FancyNumberedList>
               {(instructionsNote || useCase.instructionsNote) && (
                 <div className={styles.note}>
                   <div>NOTE</div>
