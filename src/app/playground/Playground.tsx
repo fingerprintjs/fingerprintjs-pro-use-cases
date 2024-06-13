@@ -1,7 +1,7 @@
 'use client';
 
 import { FunctionComponent } from 'react';
-import { CodeSnippet } from '../../client/components/CodeSnippet';
+import { CodeSnippet } from '../../client/components/common/CodeSnippet/CodeSnippet';
 import dynamic from 'next/dynamic';
 import SignalTable, { TableCellData } from './components/SignalTable';
 import BotDetectionResult from './components/BotDetectionResult';
