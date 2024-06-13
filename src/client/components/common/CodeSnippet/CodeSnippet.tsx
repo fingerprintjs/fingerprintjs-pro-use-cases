@@ -5,6 +5,7 @@ import darkTheme from 'react-syntax-highlighter/dist/cjs/styles/prism/coldark-da
 import styles from './CodeSnippet.module.scss';
 import classnames from 'classnames';
 import { MyScrollArea } from '../ScrollArea/ScrollArea';
+import { CopyButtonSvg } from '../../../img/CopyButtonSvg';
 
 export interface CodeSnippetProps {
   language: string;
@@ -42,20 +43,27 @@ export function CodeSnippet({
   const PRISM_CODE_TAG_PROPS = { style: { color: '#c92c2c', font: 'inherit' as const } };
 
   return (
-    <MyScrollArea className={styles.scrollArea}>
-      <PrismAsyncLight
-        showLineNumbers={showLineNumbers}
-        lineNumberStyle={PRISM_LINE_NUMBER_STYLE}
-        wrapLines
-        language={language}
-        style={hasDarkMode ? darkTheme : lightTheme}
-        customStyle={PRISM_CUSTOM_STYLE}
-        codeTagProps={PRISM_CODE_TAG_PROPS}
-        className={classnames(styles.snippet, className)}
-        data-testid={dataTestId}
-      >
-        {children}
-      </PrismAsyncLight>
-    </MyScrollArea>
+    <div className={styles.snippetContainer}>
+      <div className={styles.copyButtonContainer}>
+        <button className={styles.copyButton} onClick={() => navigator.clipboard.writeText(children)}>
+          <CopyButtonSvg />
+        </button>
+      </div>
+      <MyScrollArea className={styles.scrollArea}>
+        <PrismAsyncLight
+          showLineNumbers={showLineNumbers}
+          lineNumberStyle={PRISM_LINE_NUMBER_STYLE}
+          wrapLines
+          language={language}
+          style={hasDarkMode ? darkTheme : lightTheme}
+          customStyle={PRISM_CUSTOM_STYLE}
+          codeTagProps={PRISM_CODE_TAG_PROPS}
+          className={classnames(styles.snippet, className)}
+          data-testid={dataTestId}
+        >
+          {children}
+        </PrismAsyncLight>
+      </MyScrollArea>
+    </div>
   );
 }

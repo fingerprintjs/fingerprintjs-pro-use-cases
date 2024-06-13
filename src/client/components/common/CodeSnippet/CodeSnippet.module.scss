@@ -1,5 +1,32 @@
+.snippetContainer {
+  // Necessary to position the copy button
+  position: relative;
+}
+
 .scrollArea {
   height: 450px;
   border-radius: 8px;
   border: 1px solid v('light-grey');
+}
+
+.copyButtonContainer {
+  position: absolute;
+  z-index: 1000;
+  top: 16px;
+  right: 16px;
+  border-radius: 0;
+
+  :hover {
+    background-color: v('gray-box-stroke');
+  }
+
+  .copyButton {
+    color: v('orange-gradient');
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 4px;
+  }
 }
