@@ -168,12 +168,14 @@ img {
   vertical-align: middle;
 }
 
+/** Scrollbar styles */
+/* This works on Firefox */
 body {
   scrollbar-width: thin;
   scrollbar-color: #c1c1c1 transparent;
 }
 
-// /* Works on Chrome, Edge, and Safari */
+/* This Works on Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
   width: 6px;
   height: 6px;
