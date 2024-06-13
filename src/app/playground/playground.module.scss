@@ -32,10 +32,11 @@
 }
 
 .visitorIdBox {
-  @include dashedOrangeBorder(12);
+  border: 1px dashed v('orange-gradient');
+
   background-color: v('soft-orange-background');
   padding: rem(32px) rem(20px);
-  border-radius: rem(12px) rem(12px);
+  border-radius: rem(12px) rem(12px) rem(0px) rem(0px);
   display: flex;
   flex-direction: column;
   gap: rem(8px);
@@ -75,6 +76,10 @@ h2.sectionTitle {
   border-top: 1px solid v('gray-box-stroke');
   padding-top: rem(64px);
   padding-bottom: rem(64px);
+}
+
+.learnMoreSection {
+  background-color: v('gray-background');
 }
 
 .docsLink {
@@ -147,7 +152,7 @@ h2.sectionTitle {
 
 .tablesContainer {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 400px));
+  grid-template-columns: repeat(3, minmax(0, 405px));
   justify-content: center;
   gap: 16px;
   margin-top: rem(32px);
