@@ -167,27 +167,3 @@ button {
 img {
   vertical-align: middle;
 }
-
-/** Scrollbar styles */
-/* This works on Firefox */
-body {
-  scrollbar-width: thin;
-  scrollbar-color: #c1c1c1 transparent;
-}
-
-/* This Works on Chrome, Edge, and Safari */
-*::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-  background: transparent;
-}
-
-*::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 6px;
-}
-
-*::-webkit-scrollbar-thumb {
-  background-color: #c1c1c1;
-  border-radius: 6px;
-}

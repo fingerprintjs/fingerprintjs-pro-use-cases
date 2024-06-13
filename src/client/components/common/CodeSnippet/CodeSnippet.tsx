@@ -4,6 +4,7 @@ import lightTheme from 'react-syntax-highlighter/dist/cjs/styles/prism/coy';
 import darkTheme from 'react-syntax-highlighter/dist/cjs/styles/prism/coldark-dark';
 import styles from './CodeSnippet.module.scss';
 import classnames from 'classnames';
+import { MyScrollArea } from '../ScrollArea/ScrollArea';
 
 export interface CodeSnippetProps {
   language: string;
@@ -37,20 +38,11 @@ export function CodeSnippet({
     marginBottom: '0',
     marginLeft: '0',
     marginRight: '0',
-    // lineHeight: '205%',
-    height: '446px',
   };
   const PRISM_CODE_TAG_PROPS = { style: { color: '#c92c2c', font: 'inherit' as const } };
 
   return (
-    <div
-      style={{
-        padding: '3px',
-        backgroundColor: '#FFF',
-        borderRadius: '8px',
-        border: '1px solid #D0D0D0',
-      }}
-    >
+    <MyScrollArea className={styles.scrollArea}>
       <PrismAsyncLight
         showLineNumbers={showLineNumbers}
         lineNumberStyle={PRISM_LINE_NUMBER_STYLE}
@@ -64,6 +56,6 @@ export function CodeSnippet({
       >
         {children}
       </PrismAsyncLight>
-    </div>
+    </MyScrollArea>
   );
 }
