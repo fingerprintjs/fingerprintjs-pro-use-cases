@@ -24,6 +24,7 @@ import tableStyles from './components/SignalTable.module.scss';
 import { ExternalLinkArrowSvg } from '../../client/img/externalLinkArrowSvg';
 import { HowToUseThisPlayground } from './components/HowToUseThisPlayground';
 import classnames from 'classnames';
+import { ResourceLinks } from '../../client/components/common/ResourceLinks/ResourceLinks';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',
@@ -458,6 +459,28 @@ function Playground() {
                 </CodeSnippet>
               </div>
             </div>
+          </Container>
+          <Container size='large' className={classnames(styles.isSection, styles.learnMoreSection)}>
+            <h2 className={styles.sectionTitle}>Learn more</h2>
+            <ResourceLinks
+              resources={[
+                {
+                  title: 'Quick Start Guide',
+                  url: 'https://dev.fingerprint.com/docs/quick-start-guide',
+                  type: 'Article',
+                },
+                {
+                  title: 'What is Fingerprint',
+                  url: 'https://dev.fingerprint.com/docs/what-is-fingerprint',
+                  type: 'Article',
+                },
+                {
+                  title: 'Intro to Device Intelligence Webinar',
+                  url: 'https://www.youtube.com/watch?v=YTRmWUeQWyY',
+                  type: 'Webinar',
+                },
+              ]}
+            />
           </Container>
         </>
       )}

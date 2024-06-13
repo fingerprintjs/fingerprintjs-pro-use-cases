@@ -1,0 +1,43 @@
+.cardsContainer {
+  display: grid;
+  gap: rem(20px);
+  flex-wrap: wrap;
+  grid-template-columns: repeat(auto-fit, 300px);
+}
+
+.card {
+  background-color: white;
+  color: v('dark-black');
+  padding: rem(24px) rem(16px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: rem(8px);
+  align-self: stretch;
+  border-radius: rem(6px);
+  border: 1px solid v('gray-box-stroke');
+  min-width: rem(300px);
+  @include transition((box-shadow, border));
+
+  &:hover {
+    @include shadowLarge;
+    border: 1px solid white;
+  }
+
+  .type {
+    font-size: rem(12px);
+    font-weight: 400;
+    line-height: 100%;
+    letter-spacing: 0.36px;
+    text-transform: uppercase;
+  }
+
+  .title {
+    font-size: rem(20px);
+    font-weight: 600;
+    line-height: 140%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    // white-space: nowrap;
+  }
+}

@@ -16,6 +16,7 @@ import { RestartHint } from './RestartHint';
 import { SEO } from '../seo';
 import { TEST_IDS } from '../../../testIDs';
 import { FancyNumberedList } from '../FancyNumberedList/FancyNumberedList';
+import { ResourceLinks } from '../ResourceLinks/ResourceLinks';
 
 export const INSTRUCTION_ANCHOR_ID = 'instructions';
 
@@ -42,6 +43,17 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   const [pulseResetButton, setPulseResetButton] = useState(false);
 
   const moreResourcesPresent = moreResources && moreResources.length > 0;
+
+  const howToInstructions =
+    instructions?.map((item) => (typeof item === 'function' ? item({ setPulseResetButton }) : item)) ?? [];
+  if (!doNotMentionResetButton) {
+    howToInstructions.push(
+      <div key='reset'>
+        You can reset this scenario using the <RestartHint setPulseResetButton={setPulseResetButton} /> button on the
+        top right.
+      </div>,
+    );
+  }
 
   return (
     <>
@@ -83,17 +95,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
           <div className={styles.howToUse} id={INSTRUCTION_ANCHOR_ID}>
             <div>
               <h2>How to use this demo</h2>
-              <FancyNumberedList
-                items={[
-                  ...instructions?.map((item) => (typeof item === 'function' ? item({ setPulseResetButton }) : item)),
-                  !doNotMentionResetButton ? (
-                    <>
-                      You can reset this scenario using the <RestartHint setPulseResetButton={setPulseResetButton} />{' '}
-                      button on the top right.
-                    </>
-                  ) : null,
-                ]}
-              ></FancyNumberedList>
+              <FancyNumberedList items={howToInstructions} />
               {(instructionsNote || useCase.instructionsNote) && (
                 <div className={styles.note}>
                   <div>NOTE</div>
@@ -135,14 +137,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
           <h3 className={styles.learnMoreTitle} ref={learnMoreRef}>
             Learn more
           </h3>
-          <div className={styles.cardsContainer}>
-            {moreResources?.map((resource, index) => (
-              <a key={index} href={resource.url} target='_blank' rel='noreferrer' className={styles.card}>
-                <div className={styles.type}>{resource.type}</div>
-                <div className={styles.title}>{resource.title}</div>
-              </a>
-            ))}
-          </div>
+          <ResourceLinks resources={moreResources} />
         </Container>
       ) : (
         <div className={styles.learnMorePlaceholder}></div>
