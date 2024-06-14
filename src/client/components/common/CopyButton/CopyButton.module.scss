@@ -15,4 +15,10 @@
   align-items: center;
   text-transform: uppercase;
   color: v('dark-gray');
+
+  font-size: rem(14px);
+
+  @include media('<phoneLandscape') {
+    font-size: rem(12px);
+  }
 }

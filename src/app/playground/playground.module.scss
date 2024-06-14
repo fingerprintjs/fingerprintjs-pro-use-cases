@@ -208,7 +208,11 @@ h2.sectionTitle {
 }
 
 .reloadButton {
-  margin: rem(16px) auto rem(48px) auto;
+  margin: rem(48px) auto rem(48px) auto;
+
+  @include media('<=tabletWide') {
+    margin: rem(24px) auto rem(24px) auto;
+  }
 }
 
 .tablesContainer {

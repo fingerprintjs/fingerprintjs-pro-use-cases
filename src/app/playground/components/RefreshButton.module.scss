@@ -7,6 +7,10 @@
   line-height: 150%; /* 24px */
   white-space: unset;
 
+  @include media('<=phoneLandscape') {
+    font-size: 14px;
+  }
+
   img {
     transition: scale 0.2s ease;
     margin-left: rem(8px);

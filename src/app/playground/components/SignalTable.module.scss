@@ -19,6 +19,10 @@
     @include media('<=tabletWide') {
       font-size: rem(14px);
     }
+
+    @include media('<=phoneSmall') {
+      padding: rem(12px) rem(8px);
+    }
   }
   // Labels have smaller padding
   td:first {
