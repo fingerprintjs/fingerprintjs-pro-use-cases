@@ -5,7 +5,7 @@ import darkTheme from 'react-syntax-highlighter/dist/cjs/styles/prism/coldark-da
 import styles from './CodeSnippet.module.scss';
 import classnames from 'classnames';
 import { MyScrollArea } from '../ScrollArea/ScrollArea';
-import { CopyButtonSvg } from '../../../img/CopyButtonSvg';
+import { MyCopyButton } from '../CopyButton/CopyButton';
 
 export interface CodeSnippetProps {
   language: string;
@@ -45,9 +45,7 @@ export function CodeSnippet({
   return (
     <div className={styles.snippetContainer}>
       <div className={styles.copyButtonContainer}>
-        <button className={styles.copyButton} onClick={() => navigator.clipboard.writeText(children)}>
-          <CopyButtonSvg />
-        </button>
+        <MyCopyButton contentToCopy={children} className={styles.copyButton} />
       </div>
       <MyScrollArea className={styles.scrollArea}>
         <PrismAsyncLight

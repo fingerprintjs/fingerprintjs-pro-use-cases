@@ -17,16 +17,6 @@
   border-radius: 0;
 
   :hover {
-    background-color: v('gray-box-stroke');
-  }
-
-  .copyButton {
-    color: v('orange-gradient');
-    padding: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 4px;
+    background-color: v('gray-background');
   }
 }

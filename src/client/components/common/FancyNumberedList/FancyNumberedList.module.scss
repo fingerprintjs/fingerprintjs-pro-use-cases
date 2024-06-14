@@ -8,7 +8,7 @@ ol.fancyNumberedList {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid v('gray-box-stroke');
+    border: 1px solid v('orange-gradient');
     border-radius: 50%;
     text-align: center;
     background-color: white;
@@ -19,10 +19,10 @@ ol.fancyNumberedList {
     font-weight: 500;
     line-height: 155%;
 
-    width: rem(26px);
-    min-width: rem(26px);
-    height: rem(26px);
-    min-height: rem(26px);
+    width: rem(24px);
+    min-width: rem(24px);
+    height: rem(24px);
+    min-height: rem(24px);
     margin-right: rem(12px);
   }
 
