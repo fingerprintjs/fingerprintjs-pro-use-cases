@@ -72,7 +72,7 @@ h2.sectionTitle {
   padding-bottom: rem(32px);
 }
 
-.isSection {
+.r .isSection {
   border-top: 1px solid v('gray-box-stroke');
   padding-top: rem(64px);
   padding-bottom: rem(64px);
@@ -113,6 +113,7 @@ h2.sectionTitle {
   gap: 40px;
   align-items: center;
   min-height: 60vh;
+  padding-top: rem(32px);
 
   h2 {
     color: v('dark-black');
