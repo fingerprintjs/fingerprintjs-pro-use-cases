@@ -5,6 +5,11 @@
   flex-direction: column;
   gap: rem(8px);
 
+  @include media('<=tabletWide') {
+    padding-top: rem(40px);
+    padding-bottom: rem(32px);
+  }
+
   h1 {
     span {
       color: v('orange-gradient');
@@ -40,6 +45,12 @@
   display: flex;
   flex-direction: column;
   gap: rem(8px);
+  margin-bottom: rem(32px);
+
+  @include media('<=tabletWide') {
+    padding: rem(20px);
+    margin-bottom: rem(20px);
+  }
 
   p {
     color: v('dark-black');
@@ -47,7 +58,12 @@
     font-family: Inter;
     font-size: rem(18px);
     line-height: 130%;
+    font-weight: 500;
     margin: 0;
+
+    @include media('<=tabletWide') {
+      font-size: rem(16px);
+    }
   }
 
   h2 {
@@ -58,6 +74,11 @@
     font-weight: 500;
     line-height: 130%;
     margin: 0;
+
+    @include media('<=tabletWide') {
+      font-size: rem(23px);
+      word-break: break-word;
+    }
   }
 }
 
@@ -72,15 +93,32 @@ h2.sectionTitle {
   padding-bottom: rem(32px);
 }
 
-.r .isSection {
+.isSection {
   border-top: 1px solid v('gray-box-stroke');
   padding-top: rem(64px);
   padding-bottom: rem(64px);
+
+  @include media('<=tabletWide') {
+    padding-top: rem(48px);
+    padding-bottom: rem(48px);
+  }
+}
+
+.jsonSection {
+  background-color: v('light-gray-background');
+
+  @include media('<=tabletWide') {
+    padding-top: rem(40px);
+  }
 }
 
 .learnMoreSection {
   background-color: v('gray-background');
   padding-bottom: rem(200px);
+
+  @include media('<=tabletWide') {
+    padding-bottom: rem(80px);
+  }
 }
 
 .docsLink {
@@ -156,8 +194,8 @@ h2.sectionTitle {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 405px));
   justify-content: center;
-  gap: 16px;
-  margin-top: rem(32px);
+  column-gap: rem(16px);
+  row-gap: rem(20px);
   @include media('<=1200px') {
     grid-template-columns: minmax(0, 500px);
   }
@@ -172,10 +210,10 @@ h2.sectionTitle {
   letter-spacing: 4px;
   text-transform: uppercase;
   margin-bottom: rem(16px);
-}
 
-.jsonSection {
-  background-color: v('light-gray-background');
+  @include media('<=tabletWide') {
+    margin-bottom: rem(12px);
+  }
 }
 
 .jsonTitle {

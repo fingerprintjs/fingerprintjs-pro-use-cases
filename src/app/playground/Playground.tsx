@@ -390,13 +390,11 @@ function Playground() {
 
   return (
     <>
-      <Container size='large'>
-        <div className={styles.hero}>
-          <h1>
-            <span>Fingerprint Pro</span> Playground
-          </h1>
-          <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>
-        </div>
+      <Container size='large' className={styles.hero}>
+        <h1>
+          <span>Fingerprint Pro</span> Playground
+        </h1>
+        <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>
       </Container>
 
       {agentResponse && (
@@ -431,13 +429,14 @@ function Playground() {
                 <SignalTable data={mobileSmartSignals} />
               </div>
             </div>
-
-            <RefreshButton
-              loading={isLoadingAgentResponse || isLoadingServerResponse}
-              getAgentData={getAgentData}
-              className={styles.reloadButton}
-            />
           </Container>
+
+          <RefreshButton
+            loading={isLoadingAgentResponse || isLoadingServerResponse}
+            getAgentData={getAgentData}
+            className={styles.reloadButton}
+          />
+
           <Container size='large' className={styles.isSection}>
             <h2 className={styles.sectionTitle}>How to use this demo</h2>
             <HowToUseThisPlayground />
