@@ -430,12 +430,13 @@ function Playground() {
               </div>
             </div>
           </Container>
-
-          <RefreshButton
-            loading={isLoadingAgentResponse || isLoadingServerResponse}
-            getAgentData={getAgentData}
-            className={styles.reloadButton}
-          />
+          <Container size='large'>
+            <RefreshButton
+              loading={isLoadingAgentResponse || isLoadingServerResponse}
+              getAgentData={getAgentData}
+              className={styles.reloadButton}
+            />
+          </Container>
 
           <Container size='large' className={styles.isSection}>
             <h2 className={styles.sectionTitle}>How to use this demo</h2>

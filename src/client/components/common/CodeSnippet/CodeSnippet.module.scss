@@ -21,3 +21,9 @@
     background-color: v('gray-background');
   }
 }
+
+pre.snippet.snippet {
+  @include media('<=tabletWide') {
+    font-size: rem(14px) !important;
+  }
+}

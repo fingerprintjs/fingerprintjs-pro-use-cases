@@ -18,6 +18,11 @@
   :hover {
     background-color: v('soft-orange-background');
   }
+
+  font-size: rem(16px);
+  @include media('<=tabletWide') {
+    font-size: rem(14px);
+  }
 }
 
 .AccordionHeader {
@@ -33,7 +38,7 @@
   }
 
   font-family: Inter;
-  font-size: 16px;
+
   font-style: normal;
   font-weight: 600;
   line-height: 145%; /* 23.2px */
@@ -43,7 +48,7 @@
   display: flex;
   cursor: pointer;
   align-items: center;
-  flex: 1 1 0%;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
   font-weight: 500;
@@ -51,6 +56,17 @@
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
   padding: rem(20px) rem(24px);
+  gap: 6px;
+  flex-wrap: wrap;
+
+  > div:first-child {
+    text-align: left;
+    flex: 1 1 0%;
+  }
+
+  @include media('<=tabletWide') {
+    padding: rem(20px);
+  }
 
   &[data-state='open'],
   :hover {
@@ -78,7 +94,6 @@
 
 .AccordionContent {
   overflow: hidden;
-  font-size: 0.875rem;
   line-height: 1.25rem;
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -87,6 +102,10 @@
 
   & > div {
     padding: 0 rem(24px) rem(32px) rem(24px);
+
+    @include media('<=tabletWide') {
+      padding: 0 rem(16px) rem(24px) rem(16px);
+    }
   }
 
   &[data-state='open'] {

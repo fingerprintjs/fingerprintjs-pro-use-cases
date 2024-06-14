@@ -15,6 +15,10 @@
     line-height: 160%;
     letter-spacing: 0.16px;
     border-radius: 4px;
+
+    @include media('<=tabletWide') {
+      font-size: rem(14px);
+    }
   }
   // Labels have smaller padding
   td:first {

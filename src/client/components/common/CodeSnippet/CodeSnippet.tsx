@@ -1,7 +1,6 @@
 import { CSSProperties, PropsWithChildren } from 'react';
 import { PrismAsyncLight } from 'react-syntax-highlighter';
 import lightTheme from 'react-syntax-highlighter/dist/cjs/styles/prism/coy';
-import darkTheme from 'react-syntax-highlighter/dist/cjs/styles/prism/coldark-dark';
 import styles from './CodeSnippet.module.scss';
 import classnames from 'classnames';
 import { MyScrollArea } from '../ScrollArea/ScrollArea';
@@ -28,8 +27,6 @@ export function CodeSnippet({
   children,
   dataTestId,
 }: PropsWithChildren<CodeSnippetProps>) {
-  const hasDarkMode = false;
-
   const PRISM_CUSTOM_STYLE: CSSProperties = {
     padding: '16px',
     fontFamily: 'JetBrains Mono, monospace',
@@ -53,7 +50,8 @@ export function CodeSnippet({
           lineNumberStyle={PRISM_LINE_NUMBER_STYLE}
           wrapLines
           language={language}
-          style={hasDarkMode ? darkTheme : lightTheme}
+          style={lightTheme}
+          /** Must use this to override the default style, CSS alone does not work */
           customStyle={PRISM_CUSTOM_STYLE}
           codeTagProps={PRISM_CODE_TAG_PROPS}
           className={classnames(styles.snippet, className)}

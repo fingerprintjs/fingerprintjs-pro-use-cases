@@ -22,6 +22,10 @@
     line-height: 130%;
     letter-spacing: -1px;
     margin: 0;
+
+    @include media('<=tabletWide') {
+      font-size: rem(30px);
+    }
   }
 
   p {
@@ -33,6 +37,10 @@
     font-weight: 400;
     line-height: 160%;
     margin: 0;
+
+    @include media('<=tabletWide') {
+      font-size: rem(16px);
+    }
   }
 }
 
@@ -89,8 +97,12 @@ h2.sectionTitle {
   font-style: normal;
   font-weight: 600;
   line-height: 130%;
-
   padding-bottom: rem(32px);
+
+  @include media('<=tabletWide') {
+    font-size: rem(20px);
+    padding-bottom: rem(24px);
+  }
 }
 
 .isSection {
@@ -153,6 +165,11 @@ h2.sectionTitle {
   min-height: 60vh;
   padding-top: rem(32px);
 
+  @include media('<=tabletWide') {
+    padding-top: rem(24px);
+    gap: rem(20px);
+  }
+
   h2 {
     color: v('dark-black');
     font-family: Inter;
@@ -160,6 +177,10 @@ h2.sectionTitle {
     font-weight: 400;
     text-align: center;
     letter-spacing: -0.25px;
+
+    @include media('<=tabletWide') {
+      font-size: rem(18px);
+    }
   }
 }
 
@@ -224,6 +245,11 @@ h2.sectionTitle {
   font-style: normal;
   font-weight: 500;
   line-height: 140%; /* 28px */
+
+  @include media('<=tabletWide') {
+    font-size: rem(16px);
+    margin-bottom: rem(12px);
+  }
 }
 
 .jsonTitle {

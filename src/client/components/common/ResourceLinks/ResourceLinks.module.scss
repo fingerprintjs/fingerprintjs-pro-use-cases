@@ -30,6 +30,10 @@
     line-height: 100%;
     letter-spacing: 0.36px;
     text-transform: uppercase;
+
+    @include media('<=phoneLandscape') {
+      font-size: rem(9px);
+    }
   }
 
   .title {
@@ -38,6 +42,9 @@
     line-height: 140%;
     overflow: hidden;
     text-overflow: ellipsis;
-    // white-space: nowrap;
+
+    @include media('<=phoneLandscape') {
+      font-size: rem(16px);
+    }
   }
 }

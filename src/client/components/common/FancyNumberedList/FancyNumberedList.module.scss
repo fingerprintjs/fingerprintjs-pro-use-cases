@@ -29,7 +29,10 @@ ol.fancyNumberedList {
   & li {
     counter-increment: my-counter;
     line-height: 160%;
-    margin-bottom: rem(10px);
+
+    &:not(:last-child) {
+      margin-bottom: rem(10px);
+    }
     // The marker and li text are two columns
     display: flex;
 
