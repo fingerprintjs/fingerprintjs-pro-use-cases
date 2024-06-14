@@ -25,6 +25,11 @@ import { ExternalLinkArrowSvg } from '../../client/img/externalLinkArrowSvg';
 import { HowToUseThisPlayground } from './components/HowToUseThisPlayground';
 import classnames from 'classnames';
 import { ResourceLinks } from '../../client/components/common/ResourceLinks/ResourceLinks';
+import {
+  MyCollapsible,
+  MyCollapsibleTrigger,
+  MyCollapsibleContent,
+} from '../../client/components/common/Collapsible/Collapsible';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',
@@ -416,20 +421,34 @@ function Playground() {
         <>
           <Container size='large'>
             <div className={styles.tablesContainer}>
-              <div>
-                <h3 className={styles.tableTitle}>Identification</h3>
-                <SignalTable data={identificationSignals} />
-              </div>
-              <div>
-                <h3 className={styles.tableTitle}>Smart signals</h3>
-                <SignalTable data={smartSignals} />
-              </div>
-              <div>
-                <h3 className={styles.tableTitle}>Mobile Smart signals</h3>
-                <SignalTable data={mobileSmartSignals} />
-              </div>
+              <MyCollapsible defaultOpen>
+                <h3 className={styles.tableTitle}>
+                  Identification <MyCollapsibleTrigger>⬇️</MyCollapsibleTrigger>
+                </h3>
+                <MyCollapsibleContent>
+                  <SignalTable data={identificationSignals} />
+                </MyCollapsibleContent>
+              </MyCollapsible>
+
+              <MyCollapsible defaultOpen>
+                <h3 className={styles.tableTitle}>
+                  Smart signals <MyCollapsibleTrigger>⬇️</MyCollapsibleTrigger>
+                </h3>
+                <MyCollapsibleContent>
+                  <SignalTable data={smartSignals} />
+                </MyCollapsibleContent>
+              </MyCollapsible>
+              <MyCollapsible defaultOpen>
+                <h3 className={styles.tableTitle}>
+                  Mobile Smart signals <MyCollapsibleTrigger>⬇️</MyCollapsibleTrigger>
+                </h3>
+                <MyCollapsibleContent>
+                  <SignalTable data={mobileSmartSignals} />
+                </MyCollapsibleContent>
+              </MyCollapsible>
             </div>
           </Container>
+
           <Container size='large'>
             <RefreshButton
               loading={isLoadingAgentResponse || isLoadingServerResponse}
