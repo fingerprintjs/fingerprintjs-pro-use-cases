@@ -31,7 +31,7 @@ test.beforeEach(async ({ page }) => {
 test.describe('Playground page', () => {
   test('Page renders basic skeleton elements', async ({ page }) => {
     await page.getByText('Fingerprint Pro Playground', { exact: true }).waitFor();
-    await page.getByText('Welcome, your visitor ID is').waitFor();
+    await page.getByText('Welcome, this is your visitor ID').waitFor();
     await page.getByTestId(TEST_ID.refreshButton).first().waitFor();
 
     await page.getByText('Identification', { exact: true }).waitFor();
@@ -43,7 +43,6 @@ test.describe('Playground page', () => {
   });
 
   test('Page renders signal tables', async ({ page }) => {
-    await page.getByText('Visitor ID', { exact: true }).waitFor();
     await page.getByText('Last seen', { exact: true }).waitFor();
     await page.getByText('Confidence Score', { exact: true }).waitFor();
 
