@@ -30,6 +30,7 @@ import {
   MyCollapsibleTrigger,
   MyCollapsibleContent,
 } from '../../client/components/common/Collapsible/Collapsible';
+import { ChevronSvg } from '../../client/img/chevronSvg';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',
@@ -423,7 +424,10 @@ function Playground() {
             <div className={styles.tablesContainer}>
               <MyCollapsible defaultOpen>
                 <h3 className={styles.tableTitle}>
-                  Identification <MyCollapsibleTrigger>⬇️</MyCollapsibleTrigger>
+                  Identification{' '}
+                  <MyCollapsibleTrigger>
+                    <ChevronSvg />
+                  </MyCollapsibleTrigger>
                 </h3>
                 <MyCollapsibleContent>
                   <SignalTable data={identificationSignals} />
@@ -432,7 +436,10 @@ function Playground() {
 
               <MyCollapsible defaultOpen>
                 <h3 className={styles.tableTitle}>
-                  Smart signals <MyCollapsibleTrigger>⬇️</MyCollapsibleTrigger>
+                  Smart signals{' '}
+                  <MyCollapsibleTrigger>
+                    <ChevronSvg />
+                  </MyCollapsibleTrigger>
                 </h3>
                 <MyCollapsibleContent>
                   <SignalTable data={smartSignals} />
@@ -440,7 +447,10 @@ function Playground() {
               </MyCollapsible>
               <MyCollapsible defaultOpen>
                 <h3 className={styles.tableTitle}>
-                  Mobile Smart signals <MyCollapsibleTrigger>⬇️</MyCollapsibleTrigger>
+                  Mobile Smart signals{' '}
+                  <MyCollapsibleTrigger>
+                    <ChevronSvg />
+                  </MyCollapsibleTrigger>
                 </h3>
                 <MyCollapsibleContent>
                   <SignalTable data={mobileSmartSignals} />

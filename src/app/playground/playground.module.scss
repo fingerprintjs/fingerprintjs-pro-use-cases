@@ -236,8 +236,24 @@ h2.sectionTitle {
   text-transform: uppercase;
   margin-bottom: rem(16px);
 
+  display: flex;
+  gap: 2px;
+
   @include media('<=tabletWide') {
     margin-bottom: rem(12px);
+  }
+
+  button {
+    padding: 3px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @include media('>tabletWide') {
+      &[data-state='open'] {
+        display: none;
+      }
+    }
   }
 }
 
