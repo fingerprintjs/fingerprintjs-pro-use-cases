@@ -33,7 +33,6 @@ export function CodeSnippet({
   className,
   children,
   dataTestId,
-  collapsibleJSON = false,
 }: PropsWithChildren<CodeSnippetProps>) {
   const PRISM_CUSTOM_STYLE: CSSProperties = {
     padding: '16px',
@@ -53,32 +52,51 @@ export function CodeSnippet({
         <MyCopyButton contentToCopy={children} className={styles.copyButton} />
       </div>
       <MyScrollArea className={styles.scrollArea}>
-        {collapsibleJSON ? (
-          <div className={styles.reactJsonViewerWrapper}>
-            <JsonView
-              src={children}
-              CopyComponent={({ onClick, className }) => (
-                <CopyButtonSvg onClick={onClick} className={className} style={{ scale: 0.8 }} />
-              )}
-              CopidComponent={({ className }) => <CheckMarkSvg className={className} style={{ scale: 0.8 }} />}
-            />
-          </div>
-        ) : (
-          <PrismAsyncLight
-            showLineNumbers={showLineNumbers}
-            lineNumberStyle={PRISM_LINE_NUMBER_STYLE}
-            wrapLines
-            language={language}
-            style={lightTheme}
-            /** Must use this to override the default style, CSS alone does not work */
-            customStyle={PRISM_CUSTOM_STYLE}
-            codeTagProps={PRISM_CODE_TAG_PROPS}
-            className={classnames(styles.snippet, className)}
-            data-testid={dataTestId}
-          >
-            {children}
-          </PrismAsyncLight>
-        )}
+        <PrismAsyncLight
+          showLineNumbers={showLineNumbers}
+          lineNumberStyle={PRISM_LINE_NUMBER_STYLE}
+          wrapLines
+          language={language}
+          style={lightTheme}
+          /** Must use this to override the default style, CSS alone does not work */
+          customStyle={PRISM_CUSTOM_STYLE}
+          codeTagProps={PRISM_CODE_TAG_PROPS}
+          className={classnames(styles.snippet, className)}
+          data-testid={dataTestId}
+        >
+          {children}
+        </PrismAsyncLight>
+      </MyScrollArea>
+    </div>
+  );
+}
+
+export interface JsonViewerProps {
+  json: Record<any, any>;
+  className?: string;
+  dataTestId?: string;
+}
+
+export function CollapsibleJsonViewer({ json, className, dataTestId }: JsonViewerProps) {
+  return (
+    <div className={classnames(styles.snippetContainer, className)} data-testid={dataTestId}>
+      <div className={styles.copyButtonContainer}>
+        <MyCopyButton contentToCopy={JSON.stringify(json, null, 2)} className={styles.copyButton} />
+      </div>
+      <MyScrollArea className={styles.scrollArea}>
+        <div className={styles.reactJsonViewerWrapper}>
+          <JsonView
+            src={json}
+            // collapseObjectsAfterLength={20}
+            collapseStringsAfterLength={120}
+            collapseStringMode='word'
+            collapsed={4}
+            CopyComponent={({ onClick, className }) => (
+              <CopyButtonSvg onClick={onClick} className={className} style={{ scale: 0.8 }} />
+            )}
+            CopidComponent={({ className }) => <CheckMarkSvg className={className} style={{ scale: 0.8 }} />}
+          />
+        </div>
       </MyScrollArea>
     </div>
   );

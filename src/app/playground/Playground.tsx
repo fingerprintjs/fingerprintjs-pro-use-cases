@@ -1,7 +1,7 @@
 'use client';
 
 import { FunctionComponent } from 'react';
-import { CodeSnippet } from '../../client/components/common/CodeSnippet/CodeSnippet';
+import { CollapsibleJsonViewer } from '../../client/components/common/CodeSnippet/CodeSnippet';
 import dynamic from 'next/dynamic';
 import SignalTable, { TableCellData } from './components/SignalTable';
 import BotDetectionResult from './components/BotDetectionResult';
@@ -83,7 +83,7 @@ function Playground() {
   }
 
   const usedIdentificationEvent = identificationEvent ?? cachedEvent;
-  const ipLocation = usedIdentificationEvent?.products?.ipInfo?.data?.v4?.geolocation;
+  const { ipLocation, ...displayedAgentResponse } = agentResponse ?? {};
   const { latitude, longitude } = ipLocation ?? {};
 
   const identificationSignals: TableCellData[][] = [
@@ -475,17 +475,17 @@ function Playground() {
             <div className={styles.jsonContainer}>
               <div>
                 <h4 className={styles.jsonTitle}>JavaScript Agent Response {isLoadingAgentResponse && <Spinner />}</h4>
-
-                <CodeSnippet language='json' dataTestId={TEST_IDS.playground.agentResponseJSON} collapsibleJSON>
-                  {agentResponse}
-                </CodeSnippet>
+                <CollapsibleJsonViewer
+                  dataTestId={TEST_IDS.playground.agentResponseJSON}
+                  json={displayedAgentResponse ?? {}}
+                />
               </div>
               <div>
                 <h4 className={styles.jsonTitle}>Server API Response {isLoadingServerResponse && <Spinner />}</h4>
-
-                <CodeSnippet language='json' dataTestId={TEST_IDS.playground.serverResponseJSON}>
-                  {JSON.stringify(usedIdentificationEvent, null, 2)}
-                </CodeSnippet>
+                <CollapsibleJsonViewer
+                  dataTestId={TEST_IDS.playground.serverResponseJSON}
+                  json={usedIdentificationEvent ?? {}}
+                />
               </div>
             </div>
           </Container>
