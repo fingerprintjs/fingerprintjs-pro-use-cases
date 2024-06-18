@@ -476,8 +476,8 @@ function Playground() {
               <div>
                 <h4 className={styles.jsonTitle}>JavaScript Agent Response {isLoadingAgentResponse && <Spinner />}</h4>
 
-                <CodeSnippet language='json' dataTestId={TEST_IDS.playground.agentResponseJSON}>
-                  {JSON.stringify(agentResponse, null, 2)}
+                <CodeSnippet language='json' dataTestId={TEST_IDS.playground.agentResponseJSON} collapsibleJSON>
+                  {agentResponse}
                 </CodeSnippet>
               </div>
               <div>

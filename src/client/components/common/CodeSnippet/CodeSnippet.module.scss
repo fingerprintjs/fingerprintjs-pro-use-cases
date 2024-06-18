@@ -3,6 +3,31 @@
   position: relative;
 }
 
+.reactJsonViewerWrapper {
+  padding: 16px;
+
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  font-family:
+    JetBrains Mono,
+    monospace !important;
+
+  :global {
+    .icon-container {
+      display: none !important;
+    }
+
+    .variable-row,
+    .object-key-val {
+      border-left: 1px solid transparent !important;
+    }
+
+    span:has(> span.array-key) {
+      display: none !important;
+    }
+  }
+}
+
 .scrollArea {
   height: 450px;
   border-radius: 8px;
