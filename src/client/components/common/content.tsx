@@ -28,12 +28,14 @@ export type UseCase = {
   instructions: readonly (ReactNode | ((props: RestartHintProps) => ReactNode))[];
   instructionsNote?: ReactNode;
   iconSvg?: any | undefined;
-  moreResources?: readonly {
-    type: 'Use case tutorial' | 'Case study' | 'Industry' | 'Article' | 'Use case';
-    title: string;
-    url: string;
-  }[];
+  moreResources?: ResourceLink[];
   hiddenInNavigation?: boolean;
+};
+
+export type ResourceLink = {
+  type: 'Use case tutorial' | 'Case study' | 'Industry' | 'Article' | 'Use case' | 'Video' | 'Webinar';
+  title: string;
+  url: string;
 };
 
 export const USE_CASES = {
@@ -627,7 +629,7 @@ export const PLAYGROUND_METADATA: Pick<
   UseCase,
   'title' | 'url' | 'descriptionHomepage' | 'iconSvg' | 'titleMeta' | 'descriptionMeta'
 > = {
-  title: 'Smart Signals',
+  title: 'Playground',
   url: '/playground',
   iconSvg: SmartSignalsIcon,
   descriptionHomepage: [

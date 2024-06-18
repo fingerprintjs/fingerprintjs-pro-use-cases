@@ -24,7 +24,7 @@ export function DropdownMenu({ name, className, darkMode, dropdownProps, onLinkC
 
   return (
     <div className={classNames(className, { [styles.darkDropdown]: darkMode })} ref={ref}>
-      <span onClick={() => setIsOpen(!isOpen)} className={styles.link}>
+      <span tabIndex={0} onClick={() => setIsOpen(!isOpen)} className={styles.link}>
         {name}
         <Image
           src={ExpandMoreSvg}
