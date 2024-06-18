@@ -1,5 +1,3 @@
-'use client';
-
 import { CSSProperties, PropsWithChildren } from 'react';
 import { PrismAsyncLight } from 'react-syntax-highlighter';
 import lightTheme from 'react-syntax-highlighter/dist/cjs/styles/prism/coy';
@@ -77,6 +75,9 @@ export interface JsonViewerProps {
   dataTestId?: string;
 }
 
+/**
+ * Provides a syntax-highlighted JSON viewer with collapsible and copy-pastable properties
+ */
 export function CollapsibleJsonViewer({ json, className, dataTestId }: JsonViewerProps) {
   return (
     <div className={classnames(styles.snippetContainer, className)} data-testid={dataTestId}>
@@ -87,14 +88,16 @@ export function CollapsibleJsonViewer({ json, className, dataTestId }: JsonViewe
         <div className={styles.reactJsonViewerWrapper}>
           <JsonView
             src={json}
-            // collapseObjectsAfterLength={20}
-            collapseStringsAfterLength={120}
             collapseStringMode='word'
+            // Collapse object after 4 nesting levels
             collapsed={4}
+            customizeCopy={(node) => (typeof node === 'object' ? JSON.stringify(node, null, 2) : node)}
             CopyComponent={({ onClick, className }) => (
-              <CopyButtonSvg onClick={onClick} className={className} style={{ scale: 0.8 }} />
+              <CopyButtonSvg onClick={onClick} className={classnames(className, styles.jsonViewerIcon)} />
             )}
-            CopidComponent={({ className }) => <CheckMarkSvg className={className} style={{ scale: 0.8 }} />}
+            CopidComponent={({ className }) => (
+              <CheckMarkSvg className={classnames(className, styles.jsonViewerIcon)} />
+            )}
           />
         </div>
       </MyScrollArea>
