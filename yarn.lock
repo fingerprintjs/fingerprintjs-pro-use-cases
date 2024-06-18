@@ -5230,10 +5230,10 @@ react-use@^17.5.0:
     ts-easing "^0.2.0"
     tslib "^2.1.0"
 
-react18-json-view@^0.2.8:
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/react18-json-view/-/react18-json-view-0.2.8.tgz#45897648c6c91540046da61af7401dbdc5392c19"
-  integrity sha512-uJlcf5PEDaba6yTqfcDAcMSYECZ15SLcpP94mLFTa/+fa1kZANjERqKzS7YxxsrGP4+jDxt6sIaglR0PbQcKPw==
+react18-json-view@^0.2.9-canary.0:
+  version "0.2.9-canary.0"
+  resolved "https://registry.yarnpkg.com/react18-json-view/-/react18-json-view-0.2.9-canary.0.tgz#f7782ff52f28b9659486b93a58de91487c490320"
+  integrity sha512-TZRGN++c0+76FRwdDO3cbdwH+/GbX6AIpsvdO5nwqDUiMycCWQSRIjRtHzO4KNr9lYsyquhHEFIiA42ohaZQaw==
 
 react@^18.2.0:
   version "18.2.0"

@@ -9,6 +9,8 @@ import { MyScrollArea } from '../ScrollArea/ScrollArea';
 import { MyCopyButton } from '../CopyButton/CopyButton';
 import JsonView from 'react18-json-view';
 import 'react18-json-view/src/style.css';
+import { CopyButtonSvg } from '../../../img/CopyButtonSvg';
+import { CheckMarkSvg } from '../../../img/CheckmarkSvg';
 
 export interface CodeSnippetProps {
   language: string;
@@ -53,7 +55,13 @@ export function CodeSnippet({
       <MyScrollArea className={styles.scrollArea}>
         {collapsibleJSON ? (
           <div className={styles.reactJsonViewerWrapper}>
-            <JsonView src={children} ignoreLargeArray />
+            <JsonView
+              src={children}
+              CopyComponent={({ onClick, className }) => (
+                <CopyButtonSvg onClick={onClick} className={className} style={{ scale: 0.8 }} />
+              )}
+              CopidComponent={({ className }) => <CheckMarkSvg className={className} style={{ scale: 0.8 }} />}
+            />
           </div>
         ) : (
           <PrismAsyncLight

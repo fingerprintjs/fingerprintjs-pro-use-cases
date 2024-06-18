@@ -49,7 +49,7 @@
     "react-query": "^3.39.3",
     "react-syntax-highlighter": "^15.5.0",
     "react-use": "^17.5.0",
-    "react18-json-view": "^0.2.8",
+    "react18-json-view": "^0.2.9-canary.0",
     "sequelize": "^6.37.1",
     "sharp": "^0.33.2",
     "twilio": "^5.0.1"

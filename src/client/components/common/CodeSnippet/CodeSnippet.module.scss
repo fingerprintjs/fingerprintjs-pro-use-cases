@@ -15,6 +15,8 @@
       --json-string: rgb(47, 156, 10);
       --json-boolean: #676dff;
       --json-null: #676dff;
+
+      font-weight: 400;
     }
     .json-view .json-view--property {
       color: var(--json-property);
