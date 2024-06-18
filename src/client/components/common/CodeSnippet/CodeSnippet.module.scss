@@ -6,24 +6,33 @@
 .reactJsonViewerWrapper {
   padding: 16px;
 
-  font-size: 16px !important;
-  font-weight: 400 !important;
-  font-family:
-    JetBrains Mono,
-    monospace !important;
-
   :global {
-    .icon-container {
-      display: none !important;
+    .json-view {
+      color: v('dark-gray');
+      --json-property: rgb(201, 44, 44);
+      --json-index: var(--gray-5);
+      --json-number: #676dff;
+      --json-string: rgb(47, 156, 10);
+      --json-boolean: #676dff;
+      --json-null: #676dff;
     }
-
-    .variable-row,
-    .object-key-val {
-      border-left: 1px solid transparent !important;
+    .json-view .json-view--property {
+      color: var(--json-property);
     }
-
-    span:has(> span.array-key) {
-      display: none !important;
+    .json-view .json-view--index {
+      color: var(--json-index);
+    }
+    .json-view .json-view--number {
+      color: var(--json-number);
+    }
+    .json-view .json-view--string {
+      color: var(--json-string);
+    }
+    .json-view .json-view--boolean {
+      color: var(--json-boolean);
+    }
+    .json-view .json-view--null {
+      color: var(--json-null);
     }
   }
 }

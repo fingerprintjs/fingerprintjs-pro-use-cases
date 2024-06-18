@@ -26,7 +26,6 @@
     "@emotion/styled": "^11.11.0",
     "@fingerprintjs/fingerprintjs-pro-react": "^2.6.2",
     "@fingerprintjs/fingerprintjs-pro-server-api": "^3.1.0",
-    "@microlink/react-json-view": "^1.23.0",
     "@mui/icons-material": "^5.15.11",
     "@mui/material": "^5.15.11",
     "@radix-ui/react-accordion": "^1.1.2",
@@ -50,6 +49,7 @@
     "react-query": "^3.39.3",
     "react-syntax-highlighter": "^15.5.0",
     "react-use": "^17.5.0",
+    "react18-json-view": "^0.2.8",
     "sequelize": "^6.37.1",
     "sharp": "^0.33.2",
     "twilio": "^5.0.1"
