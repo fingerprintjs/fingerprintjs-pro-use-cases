@@ -43,9 +43,9 @@ const Map: FunctionComponent<MapProps> = (props) => {
       doubleClickZoom={false}
       attributionControl={false}
     >
-      {/* More options here https://github.com/leaflet-extras/leaflet-providers */}
-      {/* <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' /> */}
-      <TileLayer url='https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png' />
+      {/* More options here https://github.com/leaflet-extras/leaflet-providers 
+      but make sure to test them live, some of them only work on Localhost  */}
+      <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
       <Marker position={props.position} icon={DefaultIcon} interactive={false} />
     </MapContainer>
   );
