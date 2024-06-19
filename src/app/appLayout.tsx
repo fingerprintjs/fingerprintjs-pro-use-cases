@@ -5,5 +5,5 @@ import { Layout } from '../Layout';
 
 export default function LayoutUiInsideApp({ children }: { children: React.ReactNode }) {
   const segments = useSelectedLayoutSegments();
-  return <Layout embed={segments.includes('embed')}>{children}</Layout>;
+  return <Layout embed={Boolean(segments?.includes('embed'))}>{children}</Layout>;
 }
