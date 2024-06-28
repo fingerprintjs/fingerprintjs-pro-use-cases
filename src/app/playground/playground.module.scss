@@ -16,10 +16,10 @@
     }
     text-align: center;
     font-family: Inter;
-    font-size: rem(44px);
+    font-size: rem(48px);
     font-style: normal;
-    font-weight: 600;
-    line-height: 130%;
+    font-weight: 500;
+    line-height: 44px;
     letter-spacing: -1px;
     margin: 0;
 
@@ -49,7 +49,7 @@
 
   background-color: v('soft-orange-background');
   padding: rem(32px) rem(20px);
-  border-radius: rem(12px) rem(12px) rem(0px) rem(0px);
+  border-radius: rem(12px);
   display: flex;
   flex-direction: column;
   gap: rem(8px);
@@ -61,12 +61,12 @@
   }
 
   p {
-    color: v('dark-black');
+    color: v('dark-gray');
     text-align: center;
     font-family: Inter;
-    font-size: rem(18px);
-    line-height: 130%;
-    font-weight: 500;
+    font-size: rem(20px);
+    line-height: 160%;
+    font-weight: 400;
     margin: 0;
 
     @include media('<=tabletWide') {

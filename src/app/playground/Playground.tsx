@@ -5,7 +5,7 @@ import { CollapsibleJsonViewer } from '../../client/components/common/CodeSnippe
 import dynamic from 'next/dynamic';
 import SignalTable, { TableCellData } from './components/SignalTable';
 import BotDetectionResult from './components/BotDetectionResult';
-import RefreshButton from './components/RefreshButton';
+import { RefreshButton } from './components/RefreshButton';
 import IpBlocklistResult from './components/IpBlocklistResult';
 import VpnDetectionResult from './components/VpnDetectionResult';
 import { FormatIpAddress } from './components/ipFormatUtils';
