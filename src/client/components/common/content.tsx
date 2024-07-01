@@ -36,6 +36,7 @@ export type ResourceLink = {
   type: 'Use case tutorial' | 'Case study' | 'Industry' | 'Article' | 'Use case' | 'Video' | 'Webinar';
   title: string;
   url: string;
+  description?: string;
 };
 
 export const USE_CASES = {

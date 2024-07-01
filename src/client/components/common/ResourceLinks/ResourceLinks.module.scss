@@ -1,8 +1,60 @@
-.cardsContainer {
+.container {
+  background-color: v('gray-background');
+}
+
+.cardCollection {
+  // Wrap cards when screen is wide
   display: grid;
   gap: rem(20px);
   flex-wrap: wrap;
   grid-template-columns: repeat(auto-fit, 300px);
+
+  // background and margin
+  background-color: v('gray-background');
+  padding-bottom: rem(200px);
+
+  @include media('<=tabletWide') {
+    padding-bottom: rem(80px);
+  }
+
+  /** Switch into horizontal scroll mode when screen is narrow */
+  @include media('<=tablet') {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 10px;
+    margin: 0 -20px;
+    scroll-padding: 0 20px;
+
+    &::before,
+    &::after {
+      content: '';
+      flex: 0 0 10px;
+    }
+
+    .card {
+      flex: 0 0 auto;
+      max-width: 400px;
+
+      .description {
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    & ::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    & {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  }
 }
 
 .card {
@@ -46,5 +98,15 @@
     @include media('<=phoneLandscape') {
       font-size: rem(16px);
     }
+  }
+
+  .description {
+    color: v('dark-gray');
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 160%; /* 22.4px */
+    letter-spacing: 0.14px;
   }
 }

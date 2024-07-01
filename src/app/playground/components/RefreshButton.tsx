@@ -6,7 +6,7 @@ import { TEST_IDS } from '../../../client/testIDs';
 import Restart from '../../../client/img/restart.svg';
 import Image from 'next/image';
 
-const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: () => void; className?: string }> = ({
+export const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: () => void; className?: string }> = ({
   loading,
   getAgentData,
   className,
@@ -14,8 +14,8 @@ const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: () => v
   return (
     <Button
       color='primary'
-      outlined
       size='large'
+      variant='ghost'
       onClick={() => getAgentData()}
       disabled={loading}
       data-testid={TEST_IDS.playground.refreshButton}
@@ -27,5 +27,3 @@ const RefreshButton: FunctionComponent<{ loading: boolean; getAgentData: () => v
     </Button>
   );
 };
-
-export default RefreshButton;

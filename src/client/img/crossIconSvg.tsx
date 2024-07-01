@@ -6,9 +6,9 @@ export const CrossIconSvg: FunctionComponent<ComponentProps<'svg'>> = (props) =>
       d='M2.6665 2.66602L13.3332 13.3327M2.6665 13.3327L13.3332 2.66602'
       stroke='currentColor'
       stroke-opacity='0.6'
-      stroke-width='1.2'
-      stroke-linecap='round'
-      stroke-linejoin='round'
+      strokeWidth='1.2'
+      strokeLinecap='round'
+      strokeLinejoin='round'
     />
   </svg>
 );

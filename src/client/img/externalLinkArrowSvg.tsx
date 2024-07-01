@@ -5,8 +5,8 @@ export const ExternalLinkArrowSvg: FunctionComponent<ComponentProps<'svg'>> = (p
     <path
       d='M3.83399 1H11.334M11.334 1L11.334 8.5M11.334 1L1.33398 11'
       stroke='currentColor'
-      stroke-linecap='square'
-      stroke-linejoin='round'
+      strokeLinecap='square'
+      strokeLinejoin='round'
     />
   </svg>
 );

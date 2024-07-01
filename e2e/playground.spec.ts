@@ -1,5 +1,4 @@
 import { Page, expect, test } from '@playwright/test';
-import { isAgentResponse, isServerResponse } from './zodUtils';
 import { blockGoogleTagManager } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
 
@@ -8,14 +7,25 @@ const TEST_ID = TEST_IDS.playground;
 const getAgentResponse = async (page: Page) => {
   const agentResponse =
     (await (await page.getByTestId(TEST_ID.agentResponseJSON)).textContent()) ?? 'Agent response not found';
-  return JSON.parse(agentResponse);
+  return agentResponse;
 };
 
 const getServerResponse = async (page: Page) => {
   const serverResponse =
     (await (await page.getByTestId(TEST_ID.serverResponseJSON)).textContent()) ?? 'Server response not found';
-  return JSON.parse(serverResponse);
+  return serverResponse;
 };
+
+function parseRequestId(inputString: string) {
+  const regex = /requestId:\s*"([^"]+)"/;
+  const match = inputString.match(regex);
+
+  if (match && match[1]) {
+    return match[1];
+  } else {
+    return null;
+  }
+}
 
 const clickPlaygroundRefreshButton = async (page: Page) => {
   await page.getByTestId(TEST_ID.refreshButton).first().click();
@@ -55,18 +65,27 @@ test.describe('Playground page', () => {
 
   test('Page renders agent response', async ({ page }) => {
     const agentResponse = await getAgentResponse(page);
-    expect(isAgentResponse(agentResponse)).toBe(true);
+    expect(agentResponse).toContain('requestId');
+    expect(agentResponse).toContain('browserName');
+    expect(agentResponse).toContain('browserVersion');
+    expect(agentResponse).toContain('visitorId');
   });
 
   test('Page renders server response', async ({ page }) => {
     const serverResponse = await getServerResponse(page);
-    expect(isServerResponse(serverResponse)).toBe(true);
+
+    expect(serverResponse).toContain('requestId');
+    expect(serverResponse).toContain('visitorId');
+    expect(serverResponse).toContain('incognito');
+    expect(serverResponse).toContain('botd');
+    expect(serverResponse).toContain('vpn');
+    expect(serverResponse).toContain('privacySettings');
   });
 
   test('Reload button updates agent response', async ({ page }) => {
-    const { requestId: oldRequestId } = await getAgentResponse(page);
+    const oldRequestId = parseRequestId(await getAgentResponse(page));
     await clickPlaygroundRefreshButton(page);
-    const { requestId } = await getAgentResponse(page);
+    const requestId = parseRequestId(await getAgentResponse(page));
 
     expect(oldRequestId).toHaveLength(20);
     expect(requestId).toHaveLength(20);
@@ -74,9 +93,9 @@ test.describe('Playground page', () => {
   });
 
   test('Reload button updates server response', async ({ page }) => {
-    const oldRequestId = (await getServerResponse(page)).products.botd.data.requestId;
+    const oldRequestId = parseRequestId(await getServerResponse(page));
     await clickPlaygroundRefreshButton(page);
-    const requestId = (await getServerResponse(page)).products.botd.data.requestId;
+    const requestId = parseRequestId(await getServerResponse(page));
 
     expect(oldRequestId).toHaveLength(20);
     expect(requestId).toHaveLength(20);

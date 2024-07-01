@@ -80,12 +80,12 @@ export interface JsonViewerProps {
  */
 export function CollapsibleJsonViewer({ json, className, dataTestId }: JsonViewerProps) {
   return (
-    <div className={classnames(styles.snippetContainer, className)} data-testid={dataTestId}>
+    <div className={classnames(styles.snippetContainer, className)}>
       <div className={styles.copyButtonContainer}>
         <MyCopyButton contentToCopy={JSON.stringify(json, null, 2)} className={styles.copyButton} />
       </div>
       <MyScrollArea className={styles.scrollArea}>
-        <div className={styles.reactJsonViewerWrapper}>
+        <div className={styles.reactJsonViewerWrapper} data-testid={dataTestId}>
           <JsonView
             src={json}
             collapseStringMode='word'
