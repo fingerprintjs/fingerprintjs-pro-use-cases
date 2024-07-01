@@ -42,3 +42,16 @@ export const getFlagEmoji = (countryCode?: string) => {
     .map((char) => 127397 + char.charCodeAt(0));
   return String.fromCodePoint(...codePoints);
 };
+
+export const getZoomLevel = (accuracyRadius?: number) => {
+  if (!accuracyRadius || accuracyRadius > 500) {
+    // Continent level zoon
+    return 2;
+  }
+  if (accuracyRadius > 100) {
+    // Country level zoom
+    return 5;
+  }
+  // City level zoom
+  return 9;
+};

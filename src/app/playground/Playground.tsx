@@ -10,7 +10,7 @@ import IpBlocklistResult from './components/IpBlocklistResult';
 import VpnDetectionResult from './components/VpnDetectionResult';
 import { FormatIpAddress } from './components/ipFormatUtils';
 import { usePlaygroundSignals } from './hooks/usePlaygroundSignals';
-import { getLocationName } from '../../shared/utils/locationUtils';
+import { getLocationName, getZoomLevel } from '../../shared/utils/locationUtils';
 import { FP_LOAD_OPTIONS } from '../../pages/_app';
 import Link from 'next/link';
 import styles from './playground.module.scss';
@@ -31,7 +31,6 @@ import {
   MyCollapsibleContent,
 } from '../../client/components/common/Collapsible/Collapsible';
 import { ChevronSvg } from '../../client/img/chevronSvg';
-import { getZoomLevel } from './components/Map';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',
