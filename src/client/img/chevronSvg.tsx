@@ -5,7 +5,7 @@ export const ChevronSvg: FunctionComponent<ComponentProps<'svg'>> = (props) => (
     <path
       d='M0.500479 0.999999L6.32091 6.37371C6.704 6.72739 7.29453 6.72739 7.67761 6.37371L13.498 1'
       stroke='url(#paint0_linear_1639_58018)'
-      stroke-width='1.4'
+      strokeWidth='1.4'
     />
     <defs>
       <linearGradient
@@ -16,9 +16,9 @@ export const ChevronSvg: FunctionComponent<ComponentProps<'svg'>> = (props) => (
         y2='4.68623'
         gradientUnits='userSpaceOnUse'
       >
-        <stop stop-color='#F5614B' />
-        <stop offset='0.0001' stop-color='#F5614B' />
-        <stop offset='1' stop-color='#FA7545' />
+        <stop stopColor='#F5614B' />
+        <stop offset='0.0001' stopColor='#F5614B' />
+        <stop offset='1' stopColor='#FA7545' />
       </linearGradient>
     </defs>
   </svg>

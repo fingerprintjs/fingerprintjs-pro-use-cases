@@ -99,7 +99,7 @@ h2.sectionTitle {
   line-height: 130%;
   padding-bottom: rem(32px);
 
-  @include media('<=tabletWide') {
+  @include media('<=phoneLandscape') {
     font-size: rem(20px);
     padding-bottom: rem(24px);
   }
@@ -125,11 +125,12 @@ h2.sectionTitle {
 }
 
 .learnMoreSection {
+  border-top: 1px solid v('gray-box-stroke');
   background-color: v('gray-background');
-  padding-bottom: rem(200px);
+  padding-top: rem(64px);
 
   @include media('<=tabletWide') {
-    padding-bottom: rem(80px);
+    padding-top: rem(48px);
   }
 }
 

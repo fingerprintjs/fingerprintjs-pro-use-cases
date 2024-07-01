@@ -489,28 +489,28 @@ function Playground() {
               </div>
             </div>
           </Container>
-          <Container size='large' className={classnames(styles.isSection, styles.learnMoreSection)}>
+          <Container size='large' className={styles.learnMoreSection}>
             <h2 className={styles.sectionTitle}>Learn more</h2>
-            <ResourceLinks
-              resources={[
-                {
-                  title: 'Quick Start Guide',
-                  url: 'https://dev.fingerprint.com/docs/quick-start-guide',
-                  type: 'Article',
-                },
-                {
-                  title: 'What is Fingerprint',
-                  url: 'https://dev.fingerprint.com/docs/what-is-fingerprint',
-                  type: 'Article',
-                },
-                {
-                  title: 'Intro to Device Intelligence Webinar',
-                  url: 'https://www.youtube.com/watch?v=YTRmWUeQWyY',
-                  type: 'Webinar',
-                },
-              ]}
-            />
           </Container>
+          <ResourceLinks
+            resources={[
+              {
+                title: 'Quick Start Guide',
+                url: 'https://dev.fingerprint.com/docs/quick-start-guide',
+                type: 'Article',
+              },
+              {
+                title: 'What is Fingerprint',
+                url: 'https://dev.fingerprint.com/docs/what-is-fingerprint',
+                type: 'Article',
+              },
+              {
+                title: 'Intro to Device Intelligence Webinar',
+                url: 'https://www.youtube.com/watch?v=YTRmWUeQWyY',
+                type: 'Webinar',
+              },
+            ]}
+          />
         </>
       )}
     </>

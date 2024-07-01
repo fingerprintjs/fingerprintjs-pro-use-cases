@@ -198,11 +198,11 @@ h1.title {
   display: flex;
   flex-direction: column;
   gap: rem(32px);
-  padding-bottom: rem(200px);
+  padding-bottom: rem(32px);
 
   @include media('<=tabletWide') {
     padding-top: rem(64px);
-    padding-bottom: rem(80px);
+    padding-bottom: rem(16px);
   }
 
   .learnMoreTitle {
@@ -211,6 +211,10 @@ h1.title {
     font-size: rem(28px);
     font-weight: 600;
     line-height: 130%;
+
+    @include media('<=tabletWide') {
+      font-size: rem(20px);
+    }
   }
 }
 

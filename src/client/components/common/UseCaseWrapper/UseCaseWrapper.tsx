@@ -133,12 +133,14 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
       </div>
 
       {moreResourcesPresent ? (
-        <Container size='large' className={styles.learnMore}>
-          <h3 className={styles.learnMoreTitle} ref={learnMoreRef}>
-            Learn more
-          </h3>
+        <>
+          <Container size='large' className={styles.learnMore}>
+            <h3 className={styles.learnMoreTitle} ref={learnMoreRef}>
+              Learn more
+            </h3>
+          </Container>
           <ResourceLinks resources={moreResources} />
-        </Container>
+        </>
       ) : (
         <div className={styles.learnMorePlaceholder}></div>
       )}
