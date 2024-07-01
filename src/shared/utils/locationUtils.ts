@@ -8,11 +8,11 @@ export function getLocationName(ipLocation?: EventResponseIpInfoV4Geolocation, i
     return UNKNOWN_LOCATION;
   }
   const { city, country, subdivisions } = ipLocation;
-  if (city?.name) {
+  if (city?.name && ipLocation.accuracyRadius && ipLocation?.accuracyRadius <= 50) {
     addressParts.push(city.name);
   }
 
-  if (subdivisions?.[0]?.name && includeSubdivision) {
+  if (subdivisions?.[0]?.name && ipLocation.accuracyRadius && ipLocation?.accuracyRadius <= 100 && includeSubdivision) {
     addressParts.push(subdivisions[0].name);
   }
 

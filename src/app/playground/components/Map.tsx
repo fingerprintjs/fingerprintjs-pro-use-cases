@@ -7,6 +7,19 @@ import React from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
+export const getZoomLevel = (accuracyRadius?: number) => {
+  if (!accuracyRadius || accuracyRadius > 500) {
+    // Continent level zoon
+    return 2;
+  }
+  if (accuracyRadius > 100) {
+    // Country level zoom
+    return 5;
+  }
+  // City level zoom
+  return 9;
+};
+
 // This is a workaround for the marker icon not showing up out of the box
 const DefaultIcon = L.divIcon({
   html: `<svg width="30" height="30" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 30 30">
@@ -24,13 +37,15 @@ type MapProps = {
   position: [number, number];
   height?: string;
   width?: string;
+  zoom?: number;
 };
 
 const Map: FunctionComponent<MapProps> = (props) => {
+  const defaultZoom = 9; // Shows you rougly inside a specific city
   return (
     <MapContainer
       center={props.position}
-      zoom={9}
+      zoom={props.zoom ?? defaultZoom}
       style={{
         height: props.height ?? '200px',
         width: props.width ?? '100%',

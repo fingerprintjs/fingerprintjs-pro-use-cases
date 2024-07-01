@@ -31,6 +31,7 @@ import {
   MyCollapsibleContent,
 } from '../../client/components/common/Collapsible/Collapsible';
 import { ChevronSvg } from '../../client/img/chevronSvg';
+import { getZoomLevel } from './components/Map';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',
@@ -84,7 +85,8 @@ function Playground() {
 
   const usedIdentificationEvent = identificationEvent ?? cachedEvent;
   const { ipLocation, ...displayedAgentResponse } = agentResponse ?? {};
-  const { latitude, longitude } = ipLocation ?? {};
+  const { latitude, longitude, accuracyRadius } = ipLocation ?? {};
+  const zoom = getZoomLevel(accuracyRadius);
 
   const identificationSignals: TableCellData[][] = [
     [
@@ -140,7 +142,12 @@ function Playground() {
           <>
             {latitude && longitude && (
               <div>
-                <Map key={[latitude, longitude].toString()} position={[latitude, longitude]} height='95px' />
+                <Map
+                  key={[latitude, longitude].toString()}
+                  position={[latitude, longitude]}
+                  zoom={zoom}
+                  height='95px'
+                />
               </div>
             )}
           </>
