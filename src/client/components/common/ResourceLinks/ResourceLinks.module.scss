@@ -22,14 +22,14 @@
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
-    gap: 10px;
+    gap: 8px;
     margin: 0 -20px;
     scroll-padding: 0 20px;
 
     &::before,
     &::after {
       content: '';
-      flex: 0 0 10px;
+      flex: 0 0 12px;
     }
 
     .card {

@@ -24,13 +24,15 @@ type MapProps = {
   position: [number, number];
   height?: string;
   width?: string;
+  zoom?: number;
 };
 
 const Map: FunctionComponent<MapProps> = (props) => {
+  const defaultZoom = 9; // Shows you rougly inside a specific city
   return (
     <MapContainer
       center={props.position}
-      zoom={9}
+      zoom={props.zoom ?? defaultZoom}
       style={{
         height: props.height ?? '200px',
         width: props.width ?? '100%',

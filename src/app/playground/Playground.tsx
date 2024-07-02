@@ -10,7 +10,7 @@ import IpBlocklistResult from './components/IpBlocklistResult';
 import VpnDetectionResult from './components/VpnDetectionResult';
 import { FormatIpAddress } from './components/ipFormatUtils';
 import { usePlaygroundSignals } from './hooks/usePlaygroundSignals';
-import { getLocationName } from '../../shared/utils/locationUtils';
+import { getLocationName, getZoomLevel } from '../../shared/utils/locationUtils';
 import { FP_LOAD_OPTIONS } from '../../pages/_app';
 import Link from 'next/link';
 import styles from './playground.module.scss';
@@ -84,7 +84,8 @@ function Playground() {
 
   const usedIdentificationEvent = identificationEvent ?? cachedEvent;
   const { ipLocation, ...displayedAgentResponse } = agentResponse ?? {};
-  const { latitude, longitude } = ipLocation ?? {};
+  const { latitude, longitude, accuracyRadius } = ipLocation ?? {};
+  const zoom = getZoomLevel(accuracyRadius);
 
   const identificationSignals: TableCellData[][] = [
     [
@@ -123,6 +124,8 @@ function Playground() {
     ],
   ];
 
+  const suspectScore = usedIdentificationEvent?.products?.suspectScore?.data?.result;
+
   const smartSignals: TableCellData[][] = [
     [
       {
@@ -140,7 +143,12 @@ function Playground() {
           <>
             {latitude && longitude && (
               <div>
-                <Map key={[latitude, longitude].toString()} position={[latitude, longitude]} height='95px' />
+                <Map
+                  key={[latitude, longitude].toString()}
+                  position={[latitude, longitude]}
+                  zoom={zoom}
+                  height='95px'
+                />
               </div>
             )}
           </>
@@ -285,13 +293,10 @@ function Playground() {
         ],
       },
       {
-        // @ts-expect-error suspectScore not yet available in Node SDK, TODO: remove this once it's available
         content: usedIdentificationEvent?.products?.suspectScore?.data?.result ?? 'Not available',
-        // @ts-expect-error suspectScore not yet available in Node SDK, TODO: remove this once it's available
-        className: !Boolean(usedIdentificationEvent?.products?.suspectScore)
+        className: !suspectScore
           ? tableStyles.neutral
-          : // @ts-expect-error suspectScore not yet available in Node SDK, TODO: remove this once it's available
-            usedIdentificationEvent?.products?.suspectScore?.data?.result > SUSPECT_SCORE_RED_THRESHOLD
+          : suspectScore > SUSPECT_SCORE_RED_THRESHOLD
             ? tableStyles.red
             : tableStyles.green,
       },
