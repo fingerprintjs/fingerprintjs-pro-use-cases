@@ -77,7 +77,6 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
     if (vpnDetection.methods?.auxiliaryMobile) {
       reason = `Your IP address appears to be in ${locationName}, but your phone is not.`;
     }
-    // @ts-expect-error Remove when Node SDK includes new osMismatch property
     if (vpnDetection.methods?.osMismatch) {
       reason = `Your browser operating system does not match the system inferred from the request network signature.`;
     }
