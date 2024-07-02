@@ -6,27 +6,17 @@ import classnames from 'classnames';
 import styles from './Accordion.module.scss';
 import { ButtonPlusSvgThin } from '../../../img/buttonPlusSvg';
 import { ButtonMinusSvgThin } from '../../../img/buttonMinusSvg';
+import { extendUnstyledPrimitiveWithClass } from '../componentUtils';
 
 /**
  * References
  * https://ui.shadcn.com/docs/components/accordion
  * https://www.radix-ui.com/primitives/docs/components/accordion
  */
-const Accordion = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root>
->(({ className, ...props }, ref) => (
-  <AccordionPrimitive.Root ref={ref} className={classnames(styles.AccordionRoot, className)} {...props} />
-));
-Accordion.displayName = AccordionPrimitive.Root.displayName;
 
-const AccordionItem = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
->(({ className, ...props }, ref) => (
-  <AccordionPrimitive.Item ref={ref} className={classnames(styles.AccordionItem, className)} {...props} />
-));
-AccordionItem.displayName = 'AccordionItem';
+const Accordion = extendUnstyledPrimitiveWithClass(AccordionPrimitive.Root, styles.AccordionRoot, 'Accordion');
+
+const AccordionItem = extendUnstyledPrimitiveWithClass(AccordionPrimitive.Item, styles.AccordionItem, 'AccordionItem');
 
 const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
@@ -52,7 +42,6 @@ const AccordionContent = React.forwardRef<
     <div className={classnames(className)}>{children}</div>
   </AccordionPrimitive.Content>
 ));
-
 AccordionContent.displayName = AccordionPrimitive.Content.displayName;
 
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
