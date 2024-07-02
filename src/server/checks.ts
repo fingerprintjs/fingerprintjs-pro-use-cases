@@ -74,7 +74,7 @@ export const checkFreshIdentificationRequest: RuleCheck = (eventResponse) => {
  * @deprecated Use getAndValidateFingerprintResult() for new use cases
  */
 export const checkConfidenceScore: RuleCheck = (eventResponse) => {
-  const confidenceScore = eventResponse?.products?.identification?.data?.confidence.score;
+  const confidenceScore = eventResponse?.products?.identification?.data?.confidence?.score;
   if (!confidenceScore || confidenceScore < env.MIN_CONFIDENCE_SCORE) {
     return new CheckResult(
       "Low confidence score, we'd rather verify you with the second factor,",
@@ -281,7 +281,7 @@ export const getAndValidateFingerprintResult = async ({
    * This is context-sensitive and less reliable than the binary checks above, that's why it is checked last.
    * More info: https://dev.fingerprint.com/docs/understanding-your-confidence-score
    */
-  if (identification.confidence.score < env.MIN_CONFIDENCE_SCORE) {
+  if (identification?.confidence?.score && identification?.confidence?.score < env.MIN_CONFIDENCE_SCORE) {
     return { okay: false, error: 'Identification confidence score too low, potential spoofing attack.' };
   }
 
