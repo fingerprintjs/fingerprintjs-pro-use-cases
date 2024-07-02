@@ -1,0 +1,24 @@
+.copyButton {
+  color: v('orange-gradient');
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.copiedContainer {
+  display: flex;
+  gap: 4px;
+  font-family: JetBrains Mono;
+  align-items: center;
+  text-transform: uppercase;
+  color: v('dark-gray');
+
+  font-size: rem(14px);
+
+  @include media('<phoneLandscape') {
+    font-size: rem(12px);
+  }
+}

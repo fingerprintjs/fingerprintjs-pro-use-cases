@@ -56,7 +56,7 @@ jobs:
           retention-days: 30
   report-status:
     needs: e2e
-    if: ${{ needs.e2e.result == 'failure' }}
+    if: failure()
     uses: fingerprintjs/dx-team-toolkit/.github/workflows/report-workflow-status.yml@v1
     with:
       notification_title: 'Hey, <@U04GNKK5ZTQ>! Production e2e tests on demo.fingerprint.com have {status_message}'

@@ -62,7 +62,7 @@ h1.title {
   box-shadow: 0px 2px 4px 0px rgba(208, 208, 208, 0.15);
   overflow: hidden;
 
-  @include dashedOrangeBorder(12);
+  border: 1px dashed v('orange-gradient');
 
   @include media('<=tabletWide') {
     flex-direction: column;
@@ -80,52 +80,6 @@ h1.title {
     font-weight: 500;
     line-height: 140%;
     margin-bottom: rem(20px);
-  }
-
-  ol {
-    list-style-type: none;
-    counter-reset: my-counter;
-  }
-
-  ol li:before {
-    content: counter(my-counter);
-    color: v('orange-gradient');
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid v('gray-box-stroke');
-    border-radius: 50%;
-    text-align: center;
-    background-color: white;
-
-    font-family: Inter;
-    font-size: rem(12px);
-    font-style: normal;
-    font-weight: 500;
-    line-height: 155%;
-
-    width: rem(26px);
-    min-width: rem(26px);
-    height: rem(26px);
-    min-height: rem(26px);
-    margin-right: rem(12px);
-  }
-
-  ol li {
-    counter-increment: my-counter;
-    line-height: 160%;
-    margin-bottom: rem(10px);
-    // The marker and li text are two columns
-    display: flex;
-
-    code {
-      white-space: nowrap;
-    }
-
-    a {
-      text-decoration: underline;
-      color: v('orange-gradient');
-    }
   }
 
   .resourcesButton {
@@ -244,11 +198,11 @@ h1.title {
   display: flex;
   flex-direction: column;
   gap: rem(32px);
-  padding-bottom: rem(200px);
+  padding-bottom: rem(32px);
 
   @include media('<=tabletWide') {
     padding-top: rem(64px);
-    padding-bottom: rem(80px);
+    padding-bottom: rem(16px);
   }
 
   .learnMoreTitle {
@@ -257,49 +211,9 @@ h1.title {
     font-size: rem(28px);
     font-weight: 600;
     line-height: 130%;
-  }
 
-  .cardsContainer {
-    display: grid;
-    gap: rem(20px);
-    flex-wrap: wrap;
-    grid-template-columns: repeat(auto-fit, 300px);
-  }
-
-  .card {
-    background-color: white;
-    color: v('dark-black');
-    padding: rem(24px) rem(16px);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: rem(8px);
-    align-self: stretch;
-    border-radius: rem(6px);
-    border: 1px solid v('gray-box-stroke');
-    min-width: rem(300px);
-    @include transition((box-shadow, border));
-
-    &:hover {
-      @include shadowLarge;
-      border: 1px solid white;
-    }
-
-    .type {
-      font-size: rem(12px);
-      font-weight: 400;
-      line-height: 100%;
-      letter-spacing: 0.36px;
-      text-transform: uppercase;
-    }
-
-    .title {
+    @include media('<=tabletWide') {
       font-size: rem(20px);
-      font-weight: 600;
-      line-height: 140%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
   }
 }

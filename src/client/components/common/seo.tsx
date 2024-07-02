@@ -38,7 +38,7 @@ export const generateMetadata = ({ title, description, image, path }: SeoProps):
   };
 };
 
-export const generateUseCaseMetadata = (useCase: UseCase): Metadata =>
+export const generateUseCaseMetadata = (useCase: Pick<UseCase, 'titleMeta' | 'descriptionMeta' | 'url'>): Metadata =>
   generateMetadata({
     title: useCase.titleMeta,
     description: useCase.descriptionMeta,

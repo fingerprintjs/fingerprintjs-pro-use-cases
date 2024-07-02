@@ -53,11 +53,7 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
    * (timezone mismatch is false)
    * So we still return a successful response while acknowledging the result.
    */
-  if (
-    // @ts-expect-error Remove when Node SDK includes new osMismatch property
-    vpnDetection?.methods?.osMismatch === true &&
-    vpnDetection.methods.timezoneMismatch === false
-  ) {
+  if (vpnDetection?.methods?.osMismatch === true && vpnDetection.methods.timezoneMismatch === false) {
     const privateRelayNote =
       'It looks like you are using an IP anonymizing service (for example, Apple Private relay) without changing your location. You still get the discount!';
     return NextResponse.json(
