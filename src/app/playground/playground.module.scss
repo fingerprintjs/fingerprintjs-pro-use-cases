@@ -250,6 +250,7 @@ h2.sectionTitle {
     align-items: center;
     justify-content: center;
 
+    // Only show the collapsible chevron icon on mobile devices OR if the collapsible is closed
     @include media('>tabletWide') {
       &[data-state='open'] {
         opacity: 0;

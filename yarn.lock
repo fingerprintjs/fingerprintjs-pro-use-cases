@@ -512,12 +512,10 @@
     "@fingerprintjs/fingerprintjs-pro-spa" "^1.2.0"
     fast-deep-equal "3.1.3"
 
-"@fingerprintjs/fingerprintjs-pro-server-api@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@fingerprintjs/fingerprintjs-pro-server-api/-/fingerprintjs-pro-server-api-3.1.0.tgz#4fdf58682ba27c5162986b3073b3582f10038e29"
-  integrity sha512-NjkR+A0jzJwxKTQLsqXBEWcTqh0fT1sszFgCC2dS62/8DBBHPAtw4eJ1FRmq6nWU4fhj7CF1xyDBu7Fnk2wudQ==
-  dependencies:
-    node-fetch "^2.6.1"
+"@fingerprintjs/fingerprintjs-pro-server-api@^4.1.2":
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/@fingerprintjs/fingerprintjs-pro-server-api/-/fingerprintjs-pro-server-api-4.1.2.tgz#91d3a27d23f1191ee33f795c5595d151d9a69272"
+  integrity sha512-rKdVmYo/z6Fqkt5DHp9r6NYVtm/HuriCzja7lFOffBW7sNEVJ5iFXwlFnZ92Hp5n2k2fqcNaAM5cw5I7dZ5mnw==
 
 "@fingerprintjs/fingerprintjs-pro-spa@^1.2.0":
   version "1.3.0"
@@ -4584,13 +4582,6 @@ node-cron@^3.0.3:
   dependencies:
     uuid "8.3.2"
 
-node-fetch@^2.6.1:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.7.0.tgz#d0f0fa6e3e2dc1d27efcd8ad99d550bda94d187d"
-  integrity sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==
-  dependencies:
-    whatwg-url "^5.0.0"
-
 node-gyp@8.x:
   version "8.4.1"
   resolved "https://registry.yarnpkg.com/node-gyp/-/node-gyp-8.4.1.tgz#3d49308fc31f768180957d6b5746845fbd429937"
@@ -6088,11 +6079,6 @@ tr46@^5.0.0:
   dependencies:
     punycode "^2.3.1"
 
-tr46@~0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
-  integrity sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
-
 ts-api-utils@^1.0.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/ts-api-utils/-/ts-api-utils-1.2.1.tgz#f716c7e027494629485b21c0df6180f4d08f5e8b"
@@ -6210,10 +6196,10 @@ typed-array-length@^1.0.5:
     is-typed-array "^1.1.13"
     possible-typed-array-names "^1.0.0"
 
-typescript@^5.3.3:
-  version "5.4.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.4.2.tgz#0ae9cebcfae970718474fe0da2c090cad6577372"
-  integrity sha512-+2/g0Fds1ERlP6JsakQQDXjZdZMM+rqpamFZJEKh4kwTIn3iDkgKtby0CeNd5ATNZ4Ry1ax15TMx0W2V+miizQ==
+typescript@^5.5.3:
+  version "5.5.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.5.3.tgz#e1b0a3c394190838a0b168e771b0ad56a0af0faa"
+  integrity sha512-/hreyEujaB0w76zKo6717l3L0o/qEUtRgdvUBvlkhoWeOVMjMuHNHk0BRBzikzuGDqNmPQbg5ifMEqsHLiIUcQ==
 
 ufo@^1.3.2:
   version "1.4.0"
@@ -6383,11 +6369,6 @@ w3c-xmlserializer@^5.0.0:
   dependencies:
     xml-name-validator "^5.0.0"
 
-webidl-conversions@^3.0.0:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-3.0.1.tgz#24534275e2a7bc6be7bc86611cc16ae0a5654871"
-  integrity sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==
-
 webidl-conversions@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-7.0.0.tgz#256b4e1882be7debbf01d05f0aa2039778ea080a"
@@ -6412,14 +6393,6 @@ whatwg-url@^14.0.0:
   dependencies:
     tr46 "^5.0.0"
     webidl-conversions "^7.0.0"
-
-whatwg-url@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/whatwg-url/-/whatwg-url-5.0.0.tgz#966454e8765462e37644d3626f6742ce8b70965d"
-  integrity sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==
-  dependencies:
-    tr46 "~0.0.3"
-    webidl-conversions "^3.0.0"
 
 which-boxed-primitive@^1.0.2:
   version "1.0.2"
