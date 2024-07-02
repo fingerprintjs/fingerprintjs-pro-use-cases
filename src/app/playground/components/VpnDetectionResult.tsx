@@ -12,7 +12,6 @@ const VpnDetectionResult: FunctionComponent<{ event: EventResponse | undefined }
   const reasons = [
     VpnData.methods?.publicVPN ? 'public VPN IP' : undefined,
     VpnData.methods?.timezoneMismatch ? 'timezone mismatch' : undefined,
-    // @ts-expect-error Remove when Node SDK includes new osMismatch property
     VpnData.methods?.osMismatch ? 'OS mismatch' : undefined,
   ].filter(Boolean);
   const reasonsString = reasons.length > 0 ? ` (${reasons.join(', ')})` : '';
