@@ -244,7 +244,7 @@ h2.sectionTitle {
     margin-bottom: rem(12px);
   }
 
-  button {
+  > button {
     padding: 3px 5px;
     display: flex;
     align-items: center;
@@ -252,7 +252,8 @@ h2.sectionTitle {
 
     @include media('>tabletWide') {
       &[data-state='open'] {
-        display: none;
+        opacity: 0;
+        pointer-events: none;
       }
     }
   }
