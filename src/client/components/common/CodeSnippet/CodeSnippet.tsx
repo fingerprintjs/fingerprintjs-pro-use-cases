@@ -21,6 +21,7 @@ export interface CodeSnippetProps {
 }
 
 const PRISM_LINE_NUMBER_STYLE = { minWidth: 28 };
+const PRISM_CODE_TAG_PROPS = { style: { color: '#c92c2c', font: 'inherit' as const } };
 
 /**
  * Provides a syntax-highlighted code block
@@ -42,7 +43,6 @@ export function CodeSnippet({
     marginLeft: '0',
     marginRight: '0',
   };
-  const PRISM_CODE_TAG_PROPS = { style: { color: '#c92c2c', font: 'inherit' as const } };
 
   return (
     <div className={styles.snippetContainer}>
