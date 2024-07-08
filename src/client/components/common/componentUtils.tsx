@@ -17,4 +17,3 @@ export function extendUnstyledPrimitiveWithClass<P extends { className?: string 
   WrappedComponent.displayName = displayName;
   return WrappedComponent;
 }
-
