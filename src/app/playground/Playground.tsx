@@ -125,6 +125,8 @@ function Playground() {
   ];
 
   const suspectScore = usedIdentificationEvent?.products?.suspectScore?.data?.result;
+  // @ts-expect-error Not supported in Node SDK yet
+  const remoteControl: boolean | undefined = usedIdentificationEvent?.products?.remoteControl?.data?.result;
 
   const smartSignals: TableCellData[][] = [
     [
@@ -250,6 +252,27 @@ function Playground() {
       {
         content: [
           <DocsLink
+            href='https://dev.fingerprint.com/docs/smart-signals-overview#remote-control-tools-detection'
+            key='remote-control-tools'
+          >
+            Remote Control Tools
+          </DocsLink>,
+        ],
+      },
+      {
+        content: remoteControl === undefined ? 'Not available' : remoteControl === true ? 'Yes 🕹️' : 'Not detected',
+        className:
+          remoteControl === undefined
+            ? tableStyles.neutral
+            : remoteControl === true
+              ? tableStyles.red
+              : tableStyles.green,
+      },
+    ],
+    [
+      {
+        content: [
+          <DocsLink
             href='https://dev.fingerprint.com/docs/smart-signals-overview#ip-blocklist-matching'
             key='blocklist'
           >
@@ -294,11 +317,12 @@ function Playground() {
       },
       {
         content: usedIdentificationEvent?.products?.suspectScore?.data?.result ?? 'Not available',
-        className: !suspectScore
-          ? tableStyles.neutral
-          : suspectScore > SUSPECT_SCORE_RED_THRESHOLD
-            ? tableStyles.red
-            : tableStyles.green,
+        className:
+          suspectScore === undefined
+            ? tableStyles.neutral
+            : suspectScore > SUSPECT_SCORE_RED_THRESHOLD
+              ? tableStyles.red
+              : tableStyles.green,
       },
     ],
     [
