@@ -420,7 +420,9 @@ function Playground() {
         <Container size='large'>
           <div className={styles.runningIntelligence}>
             <Spinner size={64} />
-            <h2>Running device intelligence...</h2>
+            <h2>
+              Running Device Intelligence<span className={styles.blink}>_</span>
+            </h2>
           </div>
         </Container>
       ) : (

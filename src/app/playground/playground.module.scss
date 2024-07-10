@@ -177,16 +177,38 @@ h2.sectionTitle {
   }
 
   h2 {
-    color: v('dark-black');
-    font-family: Inter;
-    font-size: rem(24px);
-    font-weight: 400;
+    color: v('orange-gradient');
     text-align: center;
-    letter-spacing: -0.25px;
+    font-family: JetBrains Mono;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 160%;
 
-    @include media('<=tabletWide') {
-      font-size: rem(18px);
-    }
+    animation: reveal 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    display: inline-block;
+  }
+
+  .blink {
+    animation: blink 0.3s infinite;
+  }
+}
+
+@keyframes reveal {
+  from {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+  }
+  to {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
   }
 }
 
