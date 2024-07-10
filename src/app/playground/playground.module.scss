@@ -26,6 +26,10 @@
     @include media('<=tabletWide') {
       font-size: rem(30px);
     }
+
+    @include media('<=phoneLandscape') {
+      text-align: left;
+    }
   }
 
   p {
@@ -40,6 +44,10 @@
 
     @include media('<=tabletWide') {
       font-size: rem(16px);
+    }
+
+    @include media('<=phoneLandscape') {
+      text-align: left;
     }
   }
 }
@@ -232,8 +240,11 @@ h2.sectionTitle {
 .reloadButton {
   margin: rem(16px) auto rem(32px) auto;
 
-  @include media('<=tabletWide') {
-    margin: rem(24px) auto rem(24px) auto;
+  @include media('<=phoneLandscape') {
+    &.reloadButton {
+      margin: rem(16px) 0 rem(32px) 0;
+      padding: 0px;
+    }
   }
 }
 
