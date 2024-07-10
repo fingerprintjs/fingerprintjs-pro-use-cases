@@ -56,6 +56,9 @@ export const env = createEnv({
       .default('https://metrics.fingerprinthub.com/web/v<version>/<apiKey>/loader_v<loaderVersion>.js'),
     NEXT_PUBLIC_ENDPOINT: z.string().min(1).default('https://metrics.fingerprinthub.com'),
 
+    // Playground
+    NEXT_PUBLIC_MAPBOX_API_TOKEN: z.string().min(1).optional(),
+
     // Fingerprint configuration for VPN Detection demo feat. Sealed client results
     NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY: z.string().min(1).default('2lFEzpuyfqkfQ9KJgiqv'),
     NEXT_PUBLIC_SEALED_RESULTS_SCRIPT_URL: z
@@ -81,6 +84,9 @@ export const env = createEnv({
     NEXT_PUBLIC_ENDPOINT: process.env.NEXT_PUBLIC_ENDPOINT,
     NEXT_PUBLIC_REGION: process.env.NEXT_PUBLIC_REGION,
     SERVER_API_KEY: process.env.SERVER_API_KEY,
+
+    // Playground
+    NEXT_PUBLIC_MAPBOX_API_TOKEN: process.env.NEXT_PUBLIC_MAPBOX_API_TOKEN,
 
     // E2E tests
     MIN_CONFIDENCE_SCORE: process.env.MIN_CONFIDENCE_SCORE,
