@@ -419,7 +419,7 @@ function Playground() {
       {!cachedEvent ? (
         <Container size='large'>
           <div className={styles.runningIntelligence}>
-            <Spinner size='40px' thickness={3} />
+            <Spinner size={64} />
             <h2>Running device intelligence...</h2>
           </div>
         </Container>
