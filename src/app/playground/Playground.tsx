@@ -31,6 +31,7 @@ import {
   MyCollapsibleContent,
 } from '../../client/components/common/Collapsible/Collapsible';
 import { ChevronSvg } from '../../client/img/chevronSvg';
+import { pluralize } from '../../shared/utils';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',
@@ -127,6 +128,8 @@ function Playground() {
   const suspectScore = usedIdentificationEvent?.products?.suspectScore?.data?.result;
   // @ts-expect-error Not supported in Node SDK yet
   const remoteControl: boolean | undefined = usedIdentificationEvent?.products?.remoteControl?.data?.result;
+  // @ts-expect-error Not supported in Node SDK yet
+  const ipVelocity: number | undefined = usedIdentificationEvent?.products?.velocity?.data?.distinctIp.intervals['1h'];
 
   const smartSignals: TableCellData[][] = [
     [
@@ -305,6 +308,20 @@ function Playground() {
         content: usedIdentificationEvent?.products?.highActivity?.data?.result === true ? 'Yes 🔥' : 'Not detected',
         className:
           usedIdentificationEvent?.products?.highActivity?.data?.result === true ? tableStyles.red : tableStyles.green,
+      },
+    ],
+    [
+      {
+        content: [
+          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#velocity-signals' key='velocity '>
+            Velocity signals
+          </DocsLink>,
+        ],
+      },
+      {
+        content: ipVelocity === undefined ? 'Not available' : `${pluralize(ipVelocity, 'IP')} in the past hour`,
+        className:
+          ipVelocity === undefined ? tableStyles.neutral : ipVelocity > 1 ? tableStyles.red : tableStyles.green,
       },
     ],
     [
