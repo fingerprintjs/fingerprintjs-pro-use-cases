@@ -139,13 +139,18 @@ h2.sectionTitle {
 
   &:hover {
     color: v('orange-gradient');
+
+    .externalLinkArrow {
+      translate: 2px 0px;
+    }
   }
 
-  img {
-    margin-left: rem(2px);
+  .externalLinkArrow {
+    margin-left: 4px;
     vertical-align: baseline;
-    height: rem(10px);
-    color: v('dark-black');
+    width: 10px;
+    height: 10px;
+    transition: translate 0.2s ease-in-out;
   }
 }
 
@@ -195,17 +200,12 @@ h2.sectionTitle {
 }
 
 .locationText {
-  color: v('dark-gray');
+  color: v('dark-black');
   font-family: Inter;
   font-size: rem(13px);
   font-weight: 400;
   line-height: 160%;
   letter-spacing: 0.13px;
-}
-
-.externalLinkArrow {
-  margin-left: 4px;
-  vertical-align: baseline;
 }
 
 .reloadButton {
