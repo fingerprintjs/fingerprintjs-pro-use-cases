@@ -53,7 +53,6 @@
   display: flex;
   flex-direction: column;
   gap: rem(8px);
-  margin-bottom: rem(32px);
 
   @include media('<=tabletWide') {
     padding: rem(20px);
@@ -231,7 +230,7 @@ h2.sectionTitle {
 }
 
 .reloadButton {
-  margin: rem(48px) auto rem(48px) auto;
+  margin: rem(16px) auto rem(32px) auto;
 
   @include media('<=tabletWide') {
     margin: rem(24px) auto rem(24px) auto;
@@ -247,6 +246,7 @@ h2.sectionTitle {
   @include media('<=1200px') {
     grid-template-columns: minmax(0, 500px);
   }
+  margin-bottom: rem(48px);
 }
 
 .tableTitle {

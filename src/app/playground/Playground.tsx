@@ -407,7 +407,6 @@ function Playground() {
         </h1>
         <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>
       </Container>
-
       {agentResponse && (
         <Container size='large'>
           <div className={styles.visitorIdBox}>
@@ -428,6 +427,12 @@ function Playground() {
       ) : (
         <>
           <Container size='large'>
+            <RefreshButton
+              loading={isLoadingAgentResponse || isLoadingServerResponse}
+              getAgentData={getAgentData}
+              className={styles.reloadButton}
+            />
+
             <div className={styles.tablesContainer}>
               <MyCollapsible defaultOpen>
                 <h3 className={styles.tableTitle}>
@@ -464,14 +469,6 @@ function Playground() {
                 </MyCollapsibleContent>
               </MyCollapsible>
             </div>
-          </Container>
-
-          <Container size='large'>
-            <RefreshButton
-              loading={isLoadingAgentResponse || isLoadingServerResponse}
-              getAgentData={getAgentData}
-              className={styles.reloadButton}
-            />
           </Container>
 
           <Container size='large' className={styles.isSection}>
