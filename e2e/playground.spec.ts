@@ -5,15 +5,15 @@ import { TEST_IDS } from '../src/client/testIDs';
 const TEST_ID = TEST_IDS.playground;
 
 const getAgentResponse = async (page: Page) => {
-  const agentResponse =
-    (await (await page.getByTestId(TEST_ID.agentResponseJSON)).textContent()) ?? 'Agent response not found';
-  return agentResponse;
+  const agentResponse = await page.getByTestId(TEST_ID.agentResponseJSON);
+  const agentResponseText = await agentResponse.textContent();
+  return agentResponseText ?? 'Agent response not found';
 };
 
 const getServerResponse = async (page: Page) => {
-  const serverResponse =
-    (await (await page.getByTestId(TEST_ID.serverResponseJSON)).textContent()) ?? 'Server response not found';
-  return serverResponse;
+  const serverResponse = await page.getByTestId(TEST_ID.serverResponseJSON);
+  const serverResponseText = await serverResponse.textContent();
+  return serverResponseText ?? 'Server response not found';
 };
 
 function parseRequestId(inputString: string) {
@@ -22,9 +22,8 @@ function parseRequestId(inputString: string) {
 
   if (match && match[1]) {
     return match[1];
-  } else {
-    return null;
   }
+  return null;
 }
 
 const clickPlaygroundRefreshButton = async (page: Page) => {

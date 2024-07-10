@@ -179,7 +179,7 @@ const Results = ({ data, isFetching, error }: UseQueryResult<FlightQueryResult, 
   if (isFetching) {
     return (
       <div className={styles.loaderContainer}>
-        <Spinner size={40} thickness={4} />
+        <Spinner size={40} />
       </div>
     );
   }

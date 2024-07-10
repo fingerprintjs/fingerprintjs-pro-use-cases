@@ -141,7 +141,7 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
     return Boolean(blockedIps?.find((blockedIp) => blockedIp === ip));
   };
 
-  let content = <Spinner size='40px' thickness={3} />;
+  let content = <Spinner size={40} />;
   if (botVisitsQueryStatus === 'error') {
     content = <Alert severity='error'>Error fetching bot visits.</Alert>;
   }
