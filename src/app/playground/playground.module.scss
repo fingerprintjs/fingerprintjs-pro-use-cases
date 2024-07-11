@@ -1,6 +1,6 @@
 .hero {
   padding-top: rem(64px);
-  padding-bottom: rem(40px);
+  padding-bottom: rem(16px);
   display: flex;
   flex-direction: column;
   gap: rem(8px);
@@ -56,11 +56,12 @@
   border: 1px dashed v('orange-gradient');
 
   background-color: v('soft-orange-background');
-  padding: rem(32px) rem(20px);
-  border-radius: rem(12px);
-  display: flex;
-  flex-direction: column;
+  padding: rem(16px) rem(12px);
+  border-radius: rem(8px);
+  // display: flex;
+  // flex-direction: column;
   gap: rem(8px);
+  margin-bottom: rem(8px);
 
   @include media('<=tabletWide') {
     padding: rem(20px);
@@ -71,10 +72,11 @@
     color: v('dark-gray');
     text-align: center;
     font-family: Inter;
-    font-size: rem(20px);
+    font-size: rem(18px);
     line-height: 160%;
-    font-weight: 400;
+    font-weight: 600;
     margin: 0;
+    display: inline;
 
     @include media('<=tabletWide') {
       font-size: rem(16px);
@@ -85,10 +87,11 @@
     color: v('orange-gradient');
     text-align: center;
     font-family: 'JetBrains Mono';
-    font-size: 30px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 800;
     line-height: 130%;
     margin: 0;
+    display: inline;
 
     @include media('<=tabletWide') {
       font-size: rem(23px);
@@ -175,7 +178,6 @@ h2.sectionTitle {
   flex-direction: column;
   gap: 40px;
   align-items: center;
-  min-height: 60vh;
   padding-top: rem(32px);
 
   @include media('<=tabletWide') {
@@ -238,7 +240,7 @@ h2.sectionTitle {
 }
 
 .reloadButton {
-  margin: rem(16px) auto rem(32px) auto;
+  margin: 0 auto rem(32px) auto;
 
   @include media('<=phoneLandscape') {
     &.reloadButton {
@@ -258,6 +260,7 @@ h2.sectionTitle {
     grid-template-columns: minmax(0, 500px);
   }
   margin-bottom: rem(48px);
+  min-height: 800px;
 }
 
 .tableTitle {
