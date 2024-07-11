@@ -3,7 +3,6 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
 env:
   # Playwright headless browsers running in CI get low confidence scores, causing flaky e2e tests. Lower the confidence score threshold for CI testing.
   MIN_CONFIDENCE_SCORE: 0

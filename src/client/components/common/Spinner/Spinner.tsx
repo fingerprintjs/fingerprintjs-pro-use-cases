@@ -4,7 +4,7 @@ import { SpinnerSvg } from '../../../img/SpinnerSvg';
 import classNames from 'classnames';
 
 export const Spinner: FunctionComponent<{
-  size?: number;
+  size: number;
   className?: string;
 }> = ({ size, className }) => (
   <SpinnerSvg className={classNames(styles.spinner, className)} width={size} height={size} />

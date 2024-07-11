@@ -519,14 +519,18 @@ function Playground() {
           <Container size='large' className={classnames(styles.isSection, styles.jsonSection)}>
             <div className={styles.jsonContainer}>
               <div>
-                <h4 className={styles.jsonTitle}>JavaScript Agent Response {isLoadingAgentResponse && <Spinner />}</h4>
+                <h4 className={styles.jsonTitle}>
+                  JavaScript Agent Response {isLoadingAgentResponse && <Spinner size={16} />}
+                </h4>
                 <CollapsibleJsonViewer
                   dataTestId={TEST_IDS.playground.agentResponseJSON}
                   json={displayedAgentResponse ?? {}}
                 />
               </div>
               <div>
-                <h4 className={styles.jsonTitle}>Server API Response {isLoadingServerResponse && <Spinner />}</h4>
+                <h4 className={styles.jsonTitle}>
+                  Server API Response {isLoadingServerResponse && <Spinner size={16} />}
+                </h4>
                 <CollapsibleJsonViewer
                   dataTestId={TEST_IDS.playground.serverResponseJSON}
                   json={usedIdentificationEvent ?? {}}
