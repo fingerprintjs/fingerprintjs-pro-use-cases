@@ -52,12 +52,9 @@
 
 .visitorIdBox {
   border: 1px dashed v('orange-gradient');
-
   background-color: v('soft-orange-background');
   padding: rem(16px) rem(12px);
   border-radius: rem(8px);
-  // display: flex;
-  // flex-direction: column;
   gap: rem(8px);
   margin-bottom: rem(8px);
 
@@ -67,6 +64,7 @@
   }
 
   p {
+    display: inline;
     color: v('dark-gray');
     text-align: center;
     font-family: Inter;
@@ -74,7 +72,6 @@
     line-height: 160%;
     font-weight: 600;
     margin: 0;
-    display: inline;
 
     @include media('<=tabletWide') {
       font-size: rem(16px);
