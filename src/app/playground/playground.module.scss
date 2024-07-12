@@ -26,6 +26,10 @@
     @include media('<=tabletWide') {
       font-size: rem(30px);
     }
+
+    @include media('<=phoneLandscape') {
+      text-align: left;
+    }
   }
 
   p {
@@ -41,6 +45,10 @@
     @include media('<=tabletWide') {
       font-size: rem(16px);
     }
+
+    @include media('<=phoneLandscape') {
+      text-align: left;
+    }
   }
 }
 
@@ -53,7 +61,6 @@
   display: flex;
   flex-direction: column;
   gap: rem(8px);
-  margin-bottom: rem(32px);
 
   @include media('<=tabletWide') {
     padding: rem(20px);
@@ -139,13 +146,18 @@ h2.sectionTitle {
 
   &:hover {
     color: v('orange-gradient');
+
+    .externalLinkArrow {
+      translate: 2px 0px;
+    }
   }
 
-  img {
-    margin-left: rem(2px);
+  .externalLinkArrow {
+    margin-left: 4px;
     vertical-align: baseline;
-    height: rem(10px);
-    color: v('dark-black');
+    width: 10px;
+    height: 10px;
+    transition: translate 0.2s ease-in-out;
   }
 }
 
@@ -172,16 +184,38 @@ h2.sectionTitle {
   }
 
   h2 {
-    color: v('dark-black');
-    font-family: Inter;
-    font-size: rem(24px);
-    font-weight: 400;
+    color: v('orange-gradient');
     text-align: center;
-    letter-spacing: -0.25px;
+    font-family: JetBrains Mono;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 160%;
 
-    @include media('<=tabletWide') {
-      font-size: rem(18px);
-    }
+    animation: reveal 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    display: inline-block;
+  }
+
+  .blink {
+    animation: blink 0.3s infinite;
+  }
+}
+
+@keyframes reveal {
+  from {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+  }
+  to {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
   }
 }
 
@@ -195,7 +229,7 @@ h2.sectionTitle {
 }
 
 .locationText {
-  color: v('dark-gray');
+  color: v('dark-black');
   font-family: Inter;
   font-size: rem(13px);
   font-weight: 400;
@@ -203,16 +237,14 @@ h2.sectionTitle {
   letter-spacing: 0.13px;
 }
 
-.externalLinkArrow {
-  margin-left: 4px;
-  vertical-align: baseline;
-}
-
 .reloadButton {
-  margin: rem(48px) auto rem(48px) auto;
+  margin: rem(16px) auto rem(32px) auto;
 
-  @include media('<=tabletWide') {
-    margin: rem(24px) auto rem(24px) auto;
+  @include media('<=phoneLandscape') {
+    &.reloadButton {
+      margin: rem(16px) 0 rem(32px) 0;
+      padding: 0px;
+    }
   }
 }
 
@@ -225,6 +257,7 @@ h2.sectionTitle {
   @include media('<=1200px') {
     grid-template-columns: minmax(0, 500px);
   }
+  margin-bottom: rem(48px);
 }
 
 .tableTitle {

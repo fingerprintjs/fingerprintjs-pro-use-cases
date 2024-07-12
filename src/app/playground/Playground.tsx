@@ -31,6 +31,7 @@ import {
   MyCollapsibleContent,
 } from '../../client/components/common/Collapsible/Collapsible';
 import { ChevronSvg } from '../../client/img/chevronSvg';
+import { pluralize } from '../../shared/utils';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',
@@ -125,6 +126,10 @@ function Playground() {
   ];
 
   const suspectScore = usedIdentificationEvent?.products?.suspectScore?.data?.result;
+  // @ts-expect-error Not supported in Node SDK yet
+  const remoteControl: boolean | undefined = usedIdentificationEvent?.products?.remoteControl?.data?.result;
+  // @ts-expect-error Not supported in Node SDK yet
+  const ipVelocity: number | undefined = usedIdentificationEvent?.products?.velocity?.data?.distinctIp.intervals['1h'];
 
   const smartSignals: TableCellData[][] = [
     [
@@ -250,6 +255,27 @@ function Playground() {
       {
         content: [
           <DocsLink
+            href='https://dev.fingerprint.com/docs/smart-signals-overview#remote-control-tools-detection'
+            key='remote-control-tools'
+          >
+            Remote Control Tools
+          </DocsLink>,
+        ],
+      },
+      {
+        content: remoteControl === undefined ? 'Not available' : remoteControl === true ? 'Yes 🕹️' : 'Not detected',
+        className:
+          remoteControl === undefined
+            ? tableStyles.neutral
+            : remoteControl === true
+              ? tableStyles.red
+              : tableStyles.green,
+      },
+    ],
+    [
+      {
+        content: [
+          <DocsLink
             href='https://dev.fingerprint.com/docs/smart-signals-overview#ip-blocklist-matching'
             key='blocklist'
           >
@@ -287,6 +313,20 @@ function Playground() {
     [
       {
         content: [
+          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#velocity-signals' key='velocity '>
+            Velocity signals
+          </DocsLink>,
+        ],
+      },
+      {
+        content: ipVelocity === undefined ? 'Not available' : `${pluralize(ipVelocity, 'IP')} in the past hour`,
+        className:
+          ipVelocity === undefined ? tableStyles.neutral : ipVelocity > 1 ? tableStyles.red : tableStyles.green,
+      },
+    ],
+    [
+      {
+        content: [
           <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#suspect-score' key='suspect-score'>
             Suspect Score
           </DocsLink>,
@@ -294,11 +334,12 @@ function Playground() {
       },
       {
         content: usedIdentificationEvent?.products?.suspectScore?.data?.result ?? 'Not available',
-        className: !suspectScore
-          ? tableStyles.neutral
-          : suspectScore > SUSPECT_SCORE_RED_THRESHOLD
-            ? tableStyles.red
-            : tableStyles.green,
+        className:
+          suspectScore === undefined
+            ? tableStyles.neutral
+            : suspectScore > SUSPECT_SCORE_RED_THRESHOLD
+              ? tableStyles.red
+              : tableStyles.green,
       },
     ],
     [
@@ -407,7 +448,6 @@ function Playground() {
         </h1>
         <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>
       </Container>
-
       {agentResponse && (
         <Container size='large'>
           <div className={styles.visitorIdBox}>
@@ -419,13 +459,21 @@ function Playground() {
       {!cachedEvent ? (
         <Container size='large'>
           <div className={styles.runningIntelligence}>
-            <Spinner size='40px' thickness={3} />
-            <h2>Running device intelligence...</h2>
+            <Spinner size={64} />
+            <h2>
+              Running Device Intelligence<span className={styles.blink}>_</span>
+            </h2>
           </div>
         </Container>
       ) : (
         <>
           <Container size='large'>
+            <RefreshButton
+              loading={isLoadingAgentResponse || isLoadingServerResponse}
+              getAgentData={getAgentData}
+              className={styles.reloadButton}
+            />
+
             <div className={styles.tablesContainer}>
               <MyCollapsible defaultOpen>
                 <h3 className={styles.tableTitle}>
@@ -464,14 +512,6 @@ function Playground() {
             </div>
           </Container>
 
-          <Container size='large'>
-            <RefreshButton
-              loading={isLoadingAgentResponse || isLoadingServerResponse}
-              getAgentData={getAgentData}
-              className={styles.reloadButton}
-            />
-          </Container>
-
           <Container size='large' className={styles.isSection}>
             <h2 className={styles.sectionTitle}>How to use this demo</h2>
             <HowToUseThisPlayground />
@@ -479,14 +519,18 @@ function Playground() {
           <Container size='large' className={classnames(styles.isSection, styles.jsonSection)}>
             <div className={styles.jsonContainer}>
               <div>
-                <h4 className={styles.jsonTitle}>JavaScript Agent Response {isLoadingAgentResponse && <Spinner />}</h4>
+                <h4 className={styles.jsonTitle}>
+                  JavaScript Agent Response {isLoadingAgentResponse && <Spinner size={16} />}
+                </h4>
                 <CollapsibleJsonViewer
                   dataTestId={TEST_IDS.playground.agentResponseJSON}
                   json={displayedAgentResponse ?? {}}
                 />
               </div>
               <div>
-                <h4 className={styles.jsonTitle}>Server API Response {isLoadingServerResponse && <Spinner />}</h4>
+                <h4 className={styles.jsonTitle}>
+                  Server API Response {isLoadingServerResponse && <Spinner size={16} />}
+                </h4>
                 <CollapsibleJsonViewer
                   dataTestId={TEST_IDS.playground.serverResponseJSON}
                   json={usedIdentificationEvent ?? {}}
