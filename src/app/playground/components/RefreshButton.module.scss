@@ -1,15 +1,11 @@
 .refreshButton.refreshButton {
   display: flex;
-  padding: rem(12px) rem(24px);
+  padding: 16px;
   font-weight: 500;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 150%; /* 24px */
   white-space: unset;
-
-  @include media('<=phoneLandscape') {
-    font-size: 14px;
-  }
 
   img {
     transition: scale 0.2s ease;

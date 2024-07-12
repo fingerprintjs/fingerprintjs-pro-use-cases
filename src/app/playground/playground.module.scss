@@ -1,13 +1,11 @@
 .hero {
   padding-top: rem(64px);
-  padding-bottom: rem(16px);
   display: flex;
   flex-direction: column;
   gap: rem(8px);
 
   @include media('<=tabletWide') {
     padding-top: rem(40px);
-    padding-bottom: rem(32px);
   }
 
   h1 {
@@ -175,14 +173,13 @@ h2.sectionTitle {
 
 .runningIntelligence {
   display: flex;
-  flex-direction: column;
-  gap: 40px;
-  align-items: center;
-  padding-top: rem(32px);
+  justify-content: center;
+  padding-bottom: rem(24px);
+  font-weight: 500;
 
-  @include media('<=tabletWide') {
-    padding-top: rem(24px);
-    gap: rem(20px);
+  @include media('<=phoneLandscape') {
+    justify-content: left;
+    text-align: left;
   }
 
   h2 {
@@ -192,9 +189,13 @@ h2.sectionTitle {
     font-size: 16px;
     font-weight: 400;
     line-height: 160%;
-
+    padding: rem(16px) 0;
     animation: reveal 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
     display: inline-block;
+
+    @include media('<=phoneLandscape') {
+      text-align: left;
+    }
   }
 
   .blink {
@@ -239,14 +240,10 @@ h2.sectionTitle {
   letter-spacing: 0.13px;
 }
 
-.reloadButton {
-  margin: 0 auto rem(32px) auto;
-
+.reloadButton.reloadButton {
   @include media('<=phoneLandscape') {
-    &.reloadButton {
-      margin: rem(16px) 0 rem(32px) 0;
-      padding: 0px;
-    }
+    padding-left: 0px;
+    text-align: left;
   }
 }
 
@@ -260,7 +257,6 @@ h2.sectionTitle {
     grid-template-columns: minmax(0, 500px);
   }
   margin-bottom: rem(48px);
-  min-height: 800px;
 }
 
 .tableTitle {

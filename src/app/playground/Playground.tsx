@@ -448,28 +448,25 @@ function Playground() {
         </h1>
         <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>
       </Container>
-      {!cachedEvent ? (
-        <Container size='large'>
-          <div className={styles.runningIntelligence}>
-            <Spinner size={64} />
+      <Container size='large'>
+        <div className={styles.runningIntelligence}>
+          {!cachedEvent ? (
             <h2>
               Running Device Intelligence<span className={styles.blink}>_</span>
             </h2>
-          </div>
-        </Container>
-      ) : (
-        <RefreshButton
-          loading={isLoadingAgentResponse || isLoadingServerResponse}
-          getAgentData={getAgentData}
-          className={styles.reloadButton}
-        />
-      )}
-
+          ) : (
+            <RefreshButton
+              loading={isLoadingAgentResponse || isLoadingServerResponse}
+              getAgentData={getAgentData}
+              className={styles.reloadButton}
+            />
+          )}
+        </div>
+      </Container>
       <>
         <Container size='large'>
           <div className={styles.tablesContainer}>
-            {/* {agentResponse ? ( */}
-            {cachedEvent ? (
+            {agentResponse ? (
               <MyCollapsible defaultOpen>
                 <h3 className={styles.tableTitle}>
                   Identification{' '}
@@ -486,7 +483,10 @@ function Playground() {
                   <SignalTable data={identificationSignals} />
                 </MyCollapsibleContent>
               </MyCollapsible>
-            ) : null}
+            ) : (
+              // Spacer element to push footer down when no data is ready
+              <div style={{ height: '800px' }} />
+            )}
             {cachedEvent ? (
               <>
                 <MyCollapsible defaultOpen>
