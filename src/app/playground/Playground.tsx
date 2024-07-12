@@ -1,6 +1,6 @@
 'use client';
 
-import { FunctionComponent, useEffect } from 'react';
+import { FunctionComponent, useEffect, ReactNode } from 'react';
 import { CollapsibleJsonViewer } from '../../client/components/common/CodeSnippet/CodeSnippet';
 import dynamic from 'next/dynamic';
 import SignalTable, { TableCellData } from './components/SignalTable';
@@ -32,6 +32,7 @@ import {
 } from '../../client/components/common/Collapsible/Collapsible';
 import { ChevronSvg } from '../../client/img/chevronSvg';
 import { pluralize } from '../../shared/utils';
+import { motion } from 'framer-motion';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',
@@ -62,6 +63,17 @@ const DocsLink: FunctionComponent<{ children: string; href: string; style?: Reac
 
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('./components/Map'), { ssr: false });
+
+const TableTitle = ({ children }: { children: ReactNode }) => (
+  <motion.h3
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.3 }}
+    className={styles.tableTitle}
+  >
+    {children}
+  </motion.h3>
+);
 
 function Playground() {
   const {
@@ -154,14 +166,14 @@ function Playground() {
         content: (
           <>
             {latitude && longitude && (
-              <div>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.25 }}>
                 <Map
                   key={[latitude, longitude].toString()}
                   position={[latitude, longitude]}
                   zoom={zoom}
                   height='95px'
                 />
-              </div>
+              </motion.div>
             )}
           </>
         ),
@@ -475,12 +487,12 @@ function Playground() {
           <div className={styles.tablesContainer}>
             {agentResponse ? (
               <MyCollapsible defaultOpen>
-                <h3 className={styles.tableTitle}>
+                <TableTitle>
                   Identification{' '}
                   <MyCollapsibleTrigger>
                     <ChevronSvg />
                   </MyCollapsibleTrigger>
-                </h3>
+                </TableTitle>
                 <MyCollapsibleContent>
                   <div className={styles.visitorIdBox}>
                     <p>Your Visitor ID is </p>
@@ -497,23 +509,23 @@ function Playground() {
             {cachedEvent ? (
               <>
                 <MyCollapsible defaultOpen>
-                  <h3 className={styles.tableTitle}>
+                  <TableTitle>
                     Smart signals{' '}
                     <MyCollapsibleTrigger>
                       <ChevronSvg />
                     </MyCollapsibleTrigger>
-                  </h3>
+                  </TableTitle>
                   <MyCollapsibleContent>
                     <SignalTable data={smartSignals} />
                   </MyCollapsibleContent>
                 </MyCollapsible>
                 <MyCollapsible defaultOpen>
-                  <h3 className={styles.tableTitle}>
+                  <TableTitle>
                     Mobile Smart signals{' '}
                     <MyCollapsibleTrigger>
                       <ChevronSvg />
                     </MyCollapsibleTrigger>
-                  </h3>
+                  </TableTitle>
                   <MyCollapsibleContent>
                     <SignalTable data={mobileSmartSignals} />
                   </MyCollapsibleContent>
