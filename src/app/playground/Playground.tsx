@@ -1,6 +1,6 @@
 'use client';
 
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useEffect, ReactNode } from 'react';
 import { CollapsibleJsonViewer } from '../../client/components/common/CodeSnippet/CodeSnippet';
 import dynamic from 'next/dynamic';
 import SignalTable, { TableCellData } from './components/SignalTable';
@@ -32,6 +32,7 @@ import {
 } from '../../client/components/common/Collapsible/Collapsible';
 import { ChevronSvg } from '../../client/img/chevronSvg';
 import { pluralize } from '../../shared/utils';
+import { motion } from 'framer-motion';
 
 const PLAYGROUND_COPY = {
   androidOnly: 'Applicable only to Android devices',
@@ -63,6 +64,17 @@ const DocsLink: FunctionComponent<{ children: string; href: string; style?: Reac
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('./components/Map'), { ssr: false });
 
+const TableTitle = ({ children }: { children: ReactNode }) => (
+  <motion.h3
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.3 }}
+    className={styles.tableTitle}
+  >
+    {children}
+  </motion.h3>
+);
+
 function Playground() {
   const {
     agentResponse,
@@ -74,6 +86,13 @@ function Playground() {
     isLoadingServerResponse,
     serverError,
   } = usePlaygroundSignals();
+
+  /**
+   * Prevent restoring scroll position on page refresh since there is nothing to scroll to while the data is being loaded
+   */
+  useEffect(() => {
+    window.history.scrollRestoration = 'manual';
+  }, []);
 
   if (agentError) {
     return <Alert severity={'error'}>JavaScript Agent Error: {agentError.message}.</Alert>;
@@ -147,14 +166,14 @@ function Playground() {
         content: (
           <>
             {latitude && longitude && (
-              <div>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.25 }}>
                 <Map
                   key={[latitude, longitude].toString()}
                   position={[latitude, longitude]}
                   zoom={zoom}
                   height='95px'
                 />
-              </div>
+              </motion.div>
             )}
           </>
         ),
@@ -448,120 +467,126 @@ function Playground() {
         </h1>
         <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>
       </Container>
-      {agentResponse && (
-        <Container size='large'>
-          <div className={styles.visitorIdBox}>
-            <p>Welcome, this is your visitor ID</p>
-            <h2 className={styles.visitorId}>{agentResponse?.visitorId}</h2>
-          </div>
-        </Container>
-      )}
-      {!cachedEvent ? (
-        <Container size='large'>
-          <div className={styles.runningIntelligence}>
-            <Spinner size={64} />
+      <Container size='large'>
+        <div className={styles.runningIntelligence}>
+          {!cachedEvent ? (
             <h2>
               Running Device Intelligence<span className={styles.blink}>_</span>
             </h2>
-          </div>
-        </Container>
-      ) : (
-        <>
-          <Container size='large'>
+          ) : (
             <RefreshButton
               loading={isLoadingAgentResponse || isLoadingServerResponse}
               getAgentData={getAgentData}
               className={styles.reloadButton}
             />
-
-            <div className={styles.tablesContainer}>
+          )}
+        </div>
+      </Container>
+      <>
+        <Container size='large'>
+          <div className={styles.tablesContainer}>
+            {agentResponse ? (
               <MyCollapsible defaultOpen>
-                <h3 className={styles.tableTitle}>
+                <TableTitle>
                   Identification{' '}
                   <MyCollapsibleTrigger>
                     <ChevronSvg />
                   </MyCollapsibleTrigger>
-                </h3>
+                </TableTitle>
                 <MyCollapsibleContent>
+                  <div className={styles.visitorIdBox}>
+                    <p>Your Visitor ID is </p>
+                    <h2 className={styles.visitorId}>{agentResponse?.visitorId}</h2>
+                  </div>
+
                   <SignalTable data={identificationSignals} />
                 </MyCollapsibleContent>
               </MyCollapsible>
-
-              <MyCollapsible defaultOpen>
-                <h3 className={styles.tableTitle}>
-                  Smart signals{' '}
-                  <MyCollapsibleTrigger>
-                    <ChevronSvg />
-                  </MyCollapsibleTrigger>
-                </h3>
-                <MyCollapsibleContent>
-                  <SignalTable data={smartSignals} />
-                </MyCollapsibleContent>
-              </MyCollapsible>
-              <MyCollapsible defaultOpen>
-                <h3 className={styles.tableTitle}>
-                  Mobile Smart signals{' '}
-                  <MyCollapsibleTrigger>
-                    <ChevronSvg />
-                  </MyCollapsibleTrigger>
-                </h3>
-                <MyCollapsibleContent>
-                  <SignalTable data={mobileSmartSignals} />
-                </MyCollapsibleContent>
-              </MyCollapsible>
-            </div>
-          </Container>
-
-          <Container size='large' className={styles.isSection}>
-            <h2 className={styles.sectionTitle}>How to use this demo</h2>
-            <HowToUseThisPlayground />
-          </Container>
-          <Container size='large' className={classnames(styles.isSection, styles.jsonSection)}>
-            <div className={styles.jsonContainer}>
-              <div>
-                <h4 className={styles.jsonTitle}>
-                  JavaScript Agent Response {isLoadingAgentResponse && <Spinner size={16} />}
-                </h4>
-                <CollapsibleJsonViewer
-                  dataTestId={TEST_IDS.playground.agentResponseJSON}
-                  json={displayedAgentResponse ?? {}}
-                />
+            ) : (
+              // Spacer element to push footer down when no data is ready
+              <div style={{ height: '800px' }} />
+            )}
+            {cachedEvent ? (
+              <>
+                <MyCollapsible defaultOpen>
+                  <TableTitle>
+                    Smart signals{' '}
+                    <MyCollapsibleTrigger>
+                      <ChevronSvg />
+                    </MyCollapsibleTrigger>
+                  </TableTitle>
+                  <MyCollapsibleContent>
+                    <SignalTable data={smartSignals} />
+                  </MyCollapsibleContent>
+                </MyCollapsible>
+                <MyCollapsible defaultOpen>
+                  <TableTitle>
+                    Mobile Smart signals{' '}
+                    <MyCollapsibleTrigger>
+                      <ChevronSvg />
+                    </MyCollapsibleTrigger>
+                  </TableTitle>
+                  <MyCollapsibleContent>
+                    <SignalTable data={mobileSmartSignals} />
+                  </MyCollapsibleContent>
+                </MyCollapsible>
+              </>
+            ) : null}
+          </div>
+        </Container>
+        {cachedEvent ? (
+          <>
+            <Container size='large' className={styles.isSection}>
+              <h2 className={styles.sectionTitle}>How to use this demo</h2>
+              <HowToUseThisPlayground />
+            </Container>
+            <Container size='large' className={classnames(styles.isSection, styles.jsonSection)}>
+              <div className={styles.jsonContainer}>
+                <div>
+                  <h4 className={styles.jsonTitle}>
+                    JavaScript Agent Response {isLoadingAgentResponse && <Spinner size={16} />}
+                  </h4>
+                  <CollapsibleJsonViewer
+                    dataTestId={TEST_IDS.playground.agentResponseJSON}
+                    json={displayedAgentResponse ?? {}}
+                  />
+                </div>
+                <div>
+                  <h4 className={styles.jsonTitle}>
+                    Server API Response {isLoadingServerResponse && <Spinner size={16} />}
+                  </h4>
+                  <CollapsibleJsonViewer
+                    dataTestId={TEST_IDS.playground.serverResponseJSON}
+                    json={usedIdentificationEvent ?? {}}
+                  />
+                </div>
               </div>
-              <div>
-                <h4 className={styles.jsonTitle}>
-                  Server API Response {isLoadingServerResponse && <Spinner size={16} />}
-                </h4>
-                <CollapsibleJsonViewer
-                  dataTestId={TEST_IDS.playground.serverResponseJSON}
-                  json={usedIdentificationEvent ?? {}}
-                />
-              </div>
-            </div>
-          </Container>
-          <Container size='large' className={styles.learnMoreSection}>
-            <h2 className={styles.sectionTitle}>Learn more</h2>
-          </Container>
-          <ResourceLinks
-            resources={[
-              {
-                title: 'Quick Start Guide',
-                url: 'https://dev.fingerprint.com/docs/quick-start-guide',
-                type: 'Article',
-              },
-              {
-                title: 'What is Fingerprint',
-                url: 'https://dev.fingerprint.com/docs/what-is-fingerprint',
-                type: 'Article',
-              },
-              {
-                title: 'Intro to Device Intelligence Webinar',
-                url: 'https://www.youtube.com/watch?v=YTRmWUeQWyY',
-                type: 'Webinar',
-              },
-            ]}
-          />
-        </>
-      )}
+            </Container>
+            <Container size='large' className={styles.learnMoreSection}>
+              <h2 className={styles.sectionTitle}>Learn more</h2>
+            </Container>
+            <ResourceLinks
+              resources={[
+                {
+                  title: 'Quick Start Guide',
+                  url: 'https://dev.fingerprint.com/docs/quick-start-guide',
+                  type: 'Article',
+                },
+                {
+                  title: 'What is Fingerprint',
+                  url: 'https://dev.fingerprint.com/docs/what-is-fingerprint',
+                  type: 'Article',
+                },
+                {
+                  title: 'Intro to Device Intelligence Webinar',
+                  url: 'https://www.youtube.com/watch?v=YTRmWUeQWyY',
+                  type: 'Webinar',
+                },
+              ]}
+            />
+          </>
+        ) : null}
+      </>
     </>
   );
 }
