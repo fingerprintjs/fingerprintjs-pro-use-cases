@@ -1,6 +1,6 @@
 'use client';
 
-import { FunctionComponent, ReactNode, useEffect } from 'react';
+import { FunctionComponent, useEffect, ReactNode } from 'react';
 import { CollapsibleJsonViewer } from '../../client/components/common/CodeSnippet/CodeSnippet';
 import dynamic from 'next/dynamic';
 import SignalTable, { TableCellData } from './components/SignalTable';
