@@ -1,6 +1,6 @@
 'use client';
 
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useEffect } from 'react';
 import { CollapsibleJsonViewer } from '../../client/components/common/CodeSnippet/CodeSnippet';
 import dynamic from 'next/dynamic';
 import SignalTable, { TableCellData } from './components/SignalTable';
@@ -74,6 +74,13 @@ function Playground() {
     isLoadingServerResponse,
     serverError,
   } = usePlaygroundSignals();
+
+  /**
+   * Prevent restoring scroll position on page refresh since there is nothing to scroll to while the data is being loaded
+   */
+  useEffect(() => {
+    window.history.scrollRestoration = 'manual';
+  }, []);
 
   if (agentError) {
     return <Alert severity={'error'}>JavaScript Agent Error: {agentError.message}.</Alert>;
