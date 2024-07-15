@@ -14,27 +14,29 @@ interface MobileNavbarProps {
   closeMobileMenu: () => void;
 }
 export default function MobileNavbar({ darkMode, closeMobileMenu }: MobileNavbarProps) {
-  const { mutate, isLoading: isResetLoading } = useReset({});
+  const { mutate, isLoading: isResetLoading, shouldDisplayResetButton } = useReset({});
 
   return (
     <nav className={classNames(styles.nav, { [styles.darkNavHeader]: darkMode })}>
       <div className={styles.container}>
-        <div className={classNames(styles.links, styles.top)}>
-          <Button
-            className={classNames(styles.resetButton, isResetLoading && styles.loading)}
-            onClick={() => mutate()}
-            variant='primary'
-            outlined
-            disabled={isResetLoading}
-            size={'medium'}
-            title='Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action.'
-            buttonId='click_top_nav_restart'
-            data-testid={TEST_IDS.reset.resetButton}
-          >
-            Restart
-            <Image src={Restart} alt='Restart button' />
-          </Button>
-        </div>
+        {shouldDisplayResetButton ? (
+          <div className={classNames(styles.links, styles.top)}>
+            <Button
+              className={classNames(styles.resetButton, isResetLoading && styles.loading)}
+              onClick={() => mutate()}
+              variant='primary'
+              outlined
+              disabled={isResetLoading}
+              size={'medium'}
+              title='Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action.'
+              buttonId='click_top_nav_restart'
+              data-testid={TEST_IDS.reset.resetButton}
+            >
+              Restart
+              <Image src={Restart} alt='Restart button' />
+            </Button>
+          </div>
+        ) : null}
         <div className={classNames(styles.links, styles.top)}>
           <Button
             href={URL.contactSales}
