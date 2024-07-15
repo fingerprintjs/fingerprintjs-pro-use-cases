@@ -1,0 +1,32 @@
+.refreshButton.refreshButton {
+  display: flex;
+  padding: 16px;
+  font-weight: 500;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%; /* 24px */
+  white-space: unset;
+
+  img {
+    transition: scale 0.2s ease;
+    margin-left: rem(4px);
+  }
+
+  &:hover {
+    img {
+      scale: 1.2;
+    }
+  }
+
+  &.loading {
+    img {
+      animation: spin 1s infinite linear;
+    }
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+}

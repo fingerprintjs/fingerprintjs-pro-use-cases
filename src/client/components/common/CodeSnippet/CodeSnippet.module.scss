@@ -1,0 +1,86 @@
+/**
+ * Common container and copy button styles
+ */
+.snippetContainer {
+  // Necessary to position the copy button
+  position: relative;
+  @include media('<=tabletWide') {
+    font-size: rem(14px);
+  }
+
+  .scrollArea {
+    height: 450px;
+    border-radius: 8px;
+    border: 1px solid v('light-grey');
+  }
+
+  .copyButtonContainer {
+    position: absolute;
+    z-index: 1000;
+    top: 16px;
+    right: 16px;
+    border-radius: 0;
+    background-color: white;
+
+    :hover {
+      background-color: v('gray-background');
+    }
+  }
+}
+
+/** 
+ * CollapsibleJsonViewer overrides
+ */
+.reactJsonViewerWrapper {
+  padding: 16px;
+
+  .jsonViewerIcon {
+    color: v('gray-5');
+    scale: 0.8;
+
+    &:hover {
+      color: v('dark-gray');
+    }
+  }
+
+  :global {
+    .json-view {
+      color: v('dark-gray');
+      --json-property: rgb(201, 44, 44);
+      --json-index: var(--gray-5);
+      --json-number: #676dff;
+      --json-string: rgb(47, 156, 10);
+      --json-boolean: #676dff;
+      --json-null: #676dff;
+
+      font-weight: 400;
+    }
+    .json-view .json-view--property {
+      color: var(--json-property);
+    }
+    .json-view .json-view--index {
+      color: var(--json-index);
+    }
+    .json-view .json-view--number {
+      color: var(--json-number);
+    }
+    .json-view .json-view--string {
+      color: var(--json-string);
+    }
+    .json-view .json-view--boolean {
+      color: var(--json-boolean);
+    }
+    .json-view .json-view--null {
+      color: var(--json-null);
+    }
+  }
+}
+
+/** 
+ * CodeSnippet/Prism overrides
+ */
+pre.snippet.snippet {
+  @include media('<=tabletWide') {
+    font-size: rem(14px) !important;
+  }
+}

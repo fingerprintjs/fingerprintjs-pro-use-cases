@@ -8,11 +8,11 @@ export function getLocationName(ipLocation?: EventResponseIpInfoV4Geolocation, i
     return UNKNOWN_LOCATION;
   }
   const { city, country, subdivisions } = ipLocation;
-  if (city?.name) {
+  if (city?.name && ipLocation.accuracyRadius && ipLocation?.accuracyRadius <= 50) {
     addressParts.push(city.name);
   }
 
-  if (subdivisions?.[0]?.name && includeSubdivision) {
+  if (subdivisions?.[0]?.name && ipLocation.accuracyRadius && ipLocation?.accuracyRadius <= 100 && includeSubdivision) {
     addressParts.push(subdivisions[0].name);
   }
 
@@ -41,4 +41,17 @@ export const getFlagEmoji = (countryCode?: string) => {
     .split('')
     .map((char) => 127397 + char.charCodeAt(0));
   return String.fromCodePoint(...codePoints);
+};
+
+export const getZoomLevel = (accuracyRadius?: number) => {
+  if (!accuracyRadius || accuracyRadius > 500) {
+    // Continent level zoon
+    return 2;
+  }
+  if (accuracyRadius > 100) {
+    // Country level zoom
+    return 5;
+  }
+  // City level zoom
+  return 9;
 };

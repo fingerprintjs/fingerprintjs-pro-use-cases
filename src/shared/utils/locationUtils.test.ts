@@ -10,8 +10,43 @@ describe('getLocationName test', () => {
     expect(getLocationName({})).toBe(UNKNOWN_LOCATION);
   });
 
+  it('Should return only country in case of high accuracyRadius', () => {
+    expect(
+      getLocationName({
+        city: { name: 'Columbus' },
+        country: { code: 'US', name: 'United States' },
+        accuracyRadius: 1000,
+      }),
+    ).toBe('United States');
+  });
+
+  it('Should return only subdivision in case of medium accuracyRadius', () => {
+    expect(
+      getLocationName({
+        accuracyRadius: 100,
+        city: {
+          name: 'Guimarães',
+        },
+        country: {
+          code: 'PT',
+          name: 'Portugal',
+        },
+        continent: {
+          code: 'EU',
+          name: 'Europe',
+        },
+        subdivisions: [
+          {
+            isoCode: '13',
+            name: 'Porto',
+          },
+        ],
+      }),
+    ).toBe('Porto, Portugal');
+  });
+
   it('Should return only city in case of other empty params', () => {
-    expect(getLocationName({ city: { name: 'Berlin' } })).toBe('Berlin');
+    expect(getLocationName({ city: { name: 'Berlin' }, accuracyRadius: 20 })).toBe('Berlin');
   });
 
   it('Should return city and country in case of empty subdivisions', () => {
@@ -19,6 +54,7 @@ describe('getLocationName test', () => {
       getLocationName({
         city: { name: 'Columbus' },
         country: { code: 'US', name: 'United States' },
+        accuracyRadius: 20,
       }),
     ).toBe('Columbus, United States');
   });
@@ -29,6 +65,7 @@ describe('getLocationName test', () => {
         city: { name: 'Columbus' },
         country: { code: 'US', name: 'United States' },
         subdivisions: [{ isoCode: 'OH', name: 'Ohio' }],
+        accuracyRadius: 20,
       }),
     ).toBe('Columbus, Ohio, United States');
   });
@@ -38,6 +75,7 @@ describe('getLocationName test', () => {
       getLocationName({
         city: { name: 'Columbus' },
         country: { code: 'US', name: 'United States' },
+        accuracyRadius: 20,
         subdivisions: [
           { isoCode: 'OH', name: 'Ohio' },
           // @ts-ignore Mock test object

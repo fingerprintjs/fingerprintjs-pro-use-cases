@@ -6,7 +6,7 @@ import Providers from '../Providers';
 import { Layout } from '../Layout';
 import { env } from '../env';
 
-const FP_LOAD_OPTIONS: FingerprintJSPro.LoadOptions = {
+export const FP_LOAD_OPTIONS: FingerprintJSPro.LoadOptions = {
   apiKey: env.NEXT_PUBLIC_API_KEY,
   scriptUrlPattern: [env.NEXT_PUBLIC_SCRIPT_URL_PATTERN, FingerprintJSPro.defaultScriptUrlPattern],
   endpoint: [env.NEXT_PUBLIC_ENDPOINT, FingerprintJSPro.defaultEndpoint],

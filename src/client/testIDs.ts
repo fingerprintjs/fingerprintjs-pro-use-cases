@@ -84,6 +84,11 @@ export const TEST_IDS = {
     callout: 'callout',
     activateRegionalPricing: 'activateRegionalPricing',
   },
+  playground: {
+    agentResponseJSON: 'agentResponseJSON',
+    serverResponseJSON: 'serverResponseJSON',
+    refreshButton: 'refreshButton',
+  },
 } as const;
 
 export const TEST_ATTRIBUTES = {

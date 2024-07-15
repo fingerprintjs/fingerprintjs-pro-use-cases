@@ -164,7 +164,20 @@ button {
   /* 3 */
 }
 
-svg,
 img {
   vertical-align: middle;
+}
+
+/**
+ * Leaflet used high z-indexes by default, causing z-index issues, enforce low z-index for it
+ */
+.leaflet-control.leaflet-control {
+  z-index: 0;
+}
+.leaflet-pane.leaflet-pane {
+  z-index: 0;
+}
+.leaflet-top.leaflet-top,
+.leaflet-bottom.leaflet-bottom {
+  z-index: 0;
 }

@@ -115,13 +115,7 @@ export default function Index({ embed }: CustomPageProps) {
             </div>
             <div className={styles.products}>
               {isLoading ? (
-                <Spinner
-                  size={36}
-                  thickness={4}
-                  sx={{
-                    marginLeft: '24px',
-                  }}
-                />
+                <Spinner size={36} className={styles.spinner} />
               ) : (
                 <>
                   {productsQuery.data?.data?.products?.length ? (
