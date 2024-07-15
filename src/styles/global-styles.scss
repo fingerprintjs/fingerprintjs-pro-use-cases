@@ -171,13 +171,13 @@ img {
 /**
  * Leaflet used high z-indexes by default, causing z-index issues, enforce low z-index for it
  */
-.leaflet-control {
-  z-index: 0 !important;
+.leaflet-control.leaflet-control {
+  z-index: 0;
 }
-.leaflet-pane {
-  z-index: 0 !important;
+.leaflet-pane.leaflet-pane {
+  z-index: 0;
 }
-.leaflet-top,
-.leaflet-bottom {
-  z-index: 0 !important;
+.leaflet-top.leaflet-top,
+.leaflet-bottom.leaflet-bottom {
+  z-index: 0;
 }
