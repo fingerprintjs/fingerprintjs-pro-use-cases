@@ -50,7 +50,7 @@ export const Map: FunctionComponent<MapProps> = (props) => {
     >
       <TileLayer
         url={`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${MAPBOX_ACCESS_TOKEN}`}
-        id='mapbox/outdoors-v11'
+        id='mapbox/light-v11'
         tileSize={512}
         zoomOffset={-1}
       />
