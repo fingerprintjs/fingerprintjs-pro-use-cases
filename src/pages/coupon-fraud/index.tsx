@@ -55,7 +55,7 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
   const [airMaxCount, setAirMaxCount] = useState(1);
   const [allStarCount, setAllStarCount] = useState(1);
 
-  const [couponCode, setCouponCode] = useState('');
+  const [couponCode, setCouponCode] = useState('Promo3000');
   const [discount, setDiscount] = useState(0);
 
   const cartItems = [
@@ -99,6 +99,7 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
                 type='text'
                 placeholder='Enter a coupon'
                 onChange={(e) => setCouponCode(e.target.value)}
+                value={couponCode}
                 required
                 data-testid={TEST_IDS.couponFraud.couponCode}
               />

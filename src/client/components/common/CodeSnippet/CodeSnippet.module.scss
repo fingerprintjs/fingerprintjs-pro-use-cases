@@ -73,6 +73,25 @@
     .json-view .json-view--null {
       color: var(--json-null);
     }
+
+    // Make expand object button look more obviously clickable
+    .json-view .jv-button {
+      visibility: hidden;
+      position: relative;
+
+      &:after {
+        visibility: visible;
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: '···';
+        background: v('gray-box-stroke');
+        border-radius: 8px;
+        letter-spacing: -3px;
+        padding-left: 3px;
+        padding-right: 6px;
+      }
+    }
   }
 }
 
