@@ -34,12 +34,6 @@ import { ChevronSvg } from '../../client/img/chevronSvg';
 import { pluralize } from '../../shared/utils';
 import { motion } from 'framer-motion';
 
-const PLAYGROUND_COPY = {
-  androidOnly: 'Applicable only to Android devices',
-  iosOnly: 'Applicable only to iOS devices',
-  mobileOnly: 'Applicable only to iOS and Android devices',
-} as const;
-
 // Nothing magic about `8` here, each customer must define their own use-case specific threshold
 const SUSPECT_SCORE_RED_THRESHOLD = 8;
 
@@ -60,6 +54,26 @@ const DocsLink: FunctionComponent<{ children: string; href: string; style?: Reac
     </Link>
   );
 };
+
+const PLAYGROUND_COPY = {
+  androidOnly: (
+    <>
+      Available in the native{' '}
+      <DocsLink href='https://dev.fingerprint.com/docs/native-android-integration'>Android SDK</DocsLink>
+    </>
+  ),
+  iosOnly: (
+    <>
+      Available in the native <DocsLink href='https://dev.fingerprint.com/docs/ios'>iOS SDK</DocsLink>
+    </>
+  ),
+  mobileOnly: (
+    <>
+      Available in native <DocsLink href='https://dev.fingerprint.com/docs/ios'>iOS</DocsLink> and{' '}
+      <DocsLink href='https://dev.fingerprint.com/docs/native-android-integration'>Android</DocsLink> SDKs
+    </>
+  ),
+} as const;
 
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('./components/Map'), { ssr: false });
