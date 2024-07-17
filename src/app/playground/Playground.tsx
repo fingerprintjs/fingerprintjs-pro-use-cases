@@ -59,18 +59,30 @@ const PLAYGROUND_COPY = {
   androidOnly: (
     <>
       Available in the native{' '}
-      <DocsLink href='https://dev.fingerprint.com/docs/native-android-integration'>Android SDK</DocsLink>
+      <Link href='https://dev.fingerprint.com/docs/native-android-integration' target='_blank'>
+        Android SDK
+      </Link>
     </>
   ),
   iosOnly: (
     <>
-      Available in the native <DocsLink href='https://dev.fingerprint.com/docs/ios'>iOS SDK</DocsLink>
+      Available in the native{' '}
+      <Link href='https://dev.fingerprint.com/docs/ios' target='_blank'>
+        iOS SDK
+      </Link>
     </>
   ),
   mobileOnly: (
     <>
-      Available in native <DocsLink href='https://dev.fingerprint.com/docs/ios'>iOS</DocsLink> and{' '}
-      <DocsLink href='https://dev.fingerprint.com/docs/native-android-integration'>Android</DocsLink> SDKs
+      Available in native{' '}
+      <Link href='https://dev.fingerprint.com/docs/ios' target='_blank'>
+        iOS
+      </Link>{' '}
+      and{' '}
+      <Link href='https://dev.fingerprint.com/docs/native-android-integration' target='_blank'>
+        Android
+      </Link>{' '}
+      SDKs
     </>
   ),
 } as const;

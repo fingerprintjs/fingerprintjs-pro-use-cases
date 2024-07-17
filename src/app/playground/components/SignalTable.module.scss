@@ -28,6 +28,21 @@
   td:first {
     padding: rem(12px) rem(8px);
   }
+
+  td:last-of-type {
+    a {
+      color: v('gray');
+
+      text-decoration: underline;
+      text-decoration-color: v('gray-box-stroke');
+      text-underline-offset: 4px;
+
+      &:hover {
+        color: v('orange-gradient');
+        text-decoration-color: v('orange-gradient');
+      }
+    }
+  }
 }
 
 td.red {
