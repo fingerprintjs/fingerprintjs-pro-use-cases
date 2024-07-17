@@ -53,5 +53,5 @@ export const getZoomLevel = (accuracyRadius?: number) => {
     return 5;
   }
   // City level zoom
-  return 9;
+  return 10;
 };
