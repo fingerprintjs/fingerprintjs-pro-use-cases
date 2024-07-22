@@ -265,6 +265,31 @@ function Playground() {
     ],
     [
       {
+        content: [
+          <DocsLink
+            href='https://dev.fingerprint.com/docs/smart-signals-overview#developer-tools-detection'
+            key='devtools'
+          >
+            Developer Tools
+          </DocsLink>,
+        ],
+      },
+      {
+        content: (
+          <>
+            {/* @ts-expect-error Not supported in Node SDK yet */}
+            {usedIdentificationEvent?.products?.developerTools?.data?.result === true ? 'Yes 🔧' : 'Not detected'}{' '}
+          </>
+        ),
+        className:
+          // @ts-expect-error Not supported in Node SDK yet
+          usedIdentificationEvent?.products?.developerTools?.data?.result === true
+            ? tableStyles.red
+            : tableStyles.green,
+      },
+    ],
+    [
+      {
         content: (
           <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#virtual-machine-detection'>
             Virtual Machine
