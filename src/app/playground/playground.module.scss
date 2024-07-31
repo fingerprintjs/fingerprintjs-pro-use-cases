@@ -159,6 +159,27 @@ h2.sectionTitle {
   }
 }
 
+.jsonLink {
+  color: v('dark-black');
+
+  &:hover {
+    color: v('orange-gradient');
+    cursor: pointer;
+
+    .jsonArrow {
+      translate: 0px 2px;
+    }
+  }
+
+  .jsonArrow {
+    margin-left: 4px;
+    vertical-align: baseline;
+    width: 10px;
+    height: 10px;
+    transition: translate 0.2s ease-in-out;
+  }
+}
+
 .title {
   color: v('dark-black');
   font-family: Inter;

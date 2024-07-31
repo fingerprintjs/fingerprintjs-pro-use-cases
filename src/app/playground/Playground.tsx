@@ -61,6 +61,29 @@ const DocsLink: FunctionComponent<{ children: string; href: string; style?: Reac
   );
 };
 
+const JsonLink: FunctionComponent<{ children: string; propertyName: string }> = ({ children, propertyName }) => {
+  const lastWord = children.split(' ').pop();
+  const leadingWords = children.split(' ').slice(0, -1).join(' ');
+  return (
+    <div
+      className={styles.jsonLink}
+      onClick={() => {
+        const jsonProperties = document.querySelectorAll('.json-view--property');
+        const targetElement = Array.from(jsonProperties).find((el) => el.textContent?.includes(propertyName));
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }}
+    >
+      {leadingWords}{' '}
+      <span style={{ whiteSpace: 'nowrap' }}>
+        {lastWord}
+        <ExternalLinkArrowSvg className={styles.jsonArrow} style={{ marginLeft: '5px', rotate: '135deg' }} />
+      </span>
+    </div>
+  );
+};
+
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('./components/Map'), { ssr: false });
 
@@ -250,10 +273,10 @@ function Playground() {
       },
       {
         content: (
-          <>
+          <JsonLink propertyName='developerTools'>
             {/* @ts-expect-error Not supported in Node SDK yet */}
-            {usedIdentificationEvent?.products?.developerTools?.data?.result === true ? 'Yes 🔧' : 'Not detected'}{' '}
-          </>
+            {usedIdentificationEvent?.products?.developerTools?.data?.result === true ? 'Yes 🔧' : 'Not detected'}
+          </JsonLink>
         ),
         className:
           // @ts-expect-error Not supported in Node SDK yet
