@@ -160,8 +160,6 @@ h2.sectionTitle {
 }
 
 .jsonLink {
-  color: v('dark-black');
-
   &:hover {
     color: v('orange-gradient');
     cursor: pointer;
@@ -338,5 +336,18 @@ h2.sectionTitle {
 
   @include media('<=1200px') {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.jsonPropertyHighlighted {
+  animation: fadeBackground 5s ease-out;
+}
+
+@keyframes fadeBackground {
+  0% {
+    background-color: v('orange-gradient');
+  }
+  100% {
+    background-color: transparent;
   }
 }

@@ -66,6 +66,10 @@ const JsonLink: FunctionComponent<{ children: string; propertyName: string }> = 
         const targetElement = Array.from(jsonProperties).find((el) => el.textContent?.includes(propertyName));
         if (targetElement) {
           targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          targetElement.classList.add(styles.jsonPropertyHighlighted);
+          setTimeout(() => {
+            targetElement.classList.remove(styles.jsonPropertyHighlighted);
+          }, 5000);
         }
       }}
     >
@@ -159,7 +163,15 @@ function Playground() {
   const identificationSignals: TableCellData[][] = [
     [
       { content: 'Browser' },
-      { content: `${agentResponse?.browserName} ${agentResponse?.browserVersion}`, className: tableStyles.neutral },
+      {
+        content: (
+          <JsonLink propertyName='browserName'>
+            {`${agentResponse?.browserName} ${agentResponse?.browserVersion}`}
+          </JsonLink>
+        ),
+
+        className: tableStyles.neutral,
+      },
     ],
     [
       { content: 'Operating System' },
