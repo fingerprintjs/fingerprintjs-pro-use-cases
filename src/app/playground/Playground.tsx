@@ -1,6 +1,6 @@
 'use client';
 
-import { FunctionComponent, useEffect, ReactNode } from 'react';
+import { FunctionComponent, useEffect, ReactNode, useRef } from 'react';
 import { CollapsibleJsonViewer } from '../../client/components/common/CodeSnippet/CodeSnippet';
 import dynamic from 'next/dynamic';
 import SignalTable, { TableCellData } from './components/SignalTable';
@@ -56,8 +56,10 @@ const DocsLink: FunctionComponent<{ children: string; href: string; style?: Reac
 };
 
 const JsonLink: FunctionComponent<{ children: string; propertyName: string }> = ({ children, propertyName }) => {
+  const timeout = useRef<NodeJS.Timeout | undefined>();
   const lastWord = children.split(' ').pop();
   const leadingWords = children.split(' ').slice(0, -1).join(' ');
+
   return (
     <div
       className={styles.jsonLink}
@@ -65,9 +67,13 @@ const JsonLink: FunctionComponent<{ children: string; propertyName: string }> = 
         const jsonProperties = document.querySelectorAll('.json-view--property');
         const targetElement = Array.from(jsonProperties).find((el) => el.textContent?.includes(propertyName));
         if (targetElement) {
+          if (targetElement.classList.contains(styles.jsonPropertyHighlighted)) {
+            targetElement.classList.remove(styles.jsonPropertyHighlighted);
+            clearTimeout(timeout.current);
+          }
           targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
           targetElement.classList.add(styles.jsonPropertyHighlighted);
-          setTimeout(() => {
+          timeout.current = setTimeout(() => {
             targetElement.classList.remove(styles.jsonPropertyHighlighted);
           }, 5000);
         }
