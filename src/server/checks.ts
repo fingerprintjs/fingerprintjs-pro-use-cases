@@ -227,7 +227,7 @@ export const getAndValidateFingerprintResult = async ({
     } catch (error) {
       console.error(error);
       // Throw a specific error if the request ID is not found
-      if (isEventError(error) && error.status === 404) {
+      if (isEventError(error) && error.statusCode === 404) {
         return { okay: false, error: 'Request ID not found, potential spoofing attack.' };
       }
       return { okay: false, error: String(error) };
