@@ -1,7 +1,7 @@
 import { FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
 import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import Link from 'next/link';
-import { FunctionComponent, useRef } from 'react';
+import { FunctionComponent, useEffect, useRef } from 'react';
 import { ExternalLinkArrowSvg } from '../../../client/img/externalLinkArrowSvg';
 import styles from '../playground.module.scss';
 import { TEST_IDS } from '../../../client/testIDs';
@@ -12,8 +12,9 @@ export const DocsLink: FunctionComponent<{ children: string; href: string; style
   style,
 }) => {
   // Prevent the arrow from being the only element on a new line
-  const lastWord = children.split(' ').pop();
-  const leadingWords = children.split(' ').slice(0, -1).join(' ');
+  const words = children.split(' ');
+  const lastWord = [...words].pop();
+  const leadingWords = [...words].slice(0, -1).join(' ');
   return (
     <Link href={href} target='_blank' className={styles.docsLink} style={style}>
       {leadingWords}{' '}
@@ -35,8 +36,12 @@ export const JsonLink: FunctionComponent<{
   const timeout = useRef<NodeJS.Timeout | undefined>();
 
   // Prevent the arrow from being the only element on a new line
-  const lastWord = children.split(' ').pop();
-  const leadingWords = children.split(' ').slice(0, -1).join(' ');
+  const words = children.split(' ');
+  const lastWord = [...words].pop();
+  const leadingWords = [...words].slice(0, -1).join(' ');
+
+  // clear timoeut when componend unmounts
+  useEffect(() => () => clearTimeout(timeout.current), []);
 
   return (
     <div
