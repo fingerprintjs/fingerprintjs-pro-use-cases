@@ -60,7 +60,11 @@ const DocsLink: FunctionComponent<{ children: string; href: string; style?: Reac
 
 type PropertyName = keyof EventResponse['products'] | keyof FingerprintJSPro.ExtendedGetResult;
 
-const JsonLink: FunctionComponent<{ children: string; propertyName: PropertyName }> = ({ children, propertyName }) => {
+const JsonLink: FunctionComponent<{
+  children: string;
+  propertyName: PropertyName;
+  elementOrder?: 'first' | 'last';
+}> = ({ children, propertyName, elementOrder }) => {
   const timeout = useRef<NodeJS.Timeout | undefined>();
 
   // Prevent the arrow from being the only element on a new line
@@ -73,7 +77,8 @@ const JsonLink: FunctionComponent<{ children: string; propertyName: PropertyName
       onClick={() => {
         // scroll to property and highlight it
         const jsonProperties = document.querySelectorAll('.json-view--property');
-        const targetElement = Array.from(jsonProperties).findLast((el) => el.textContent?.includes(propertyName));
+        const foundElements = Array.from(jsonProperties).filter((el) => el.textContent?.includes(propertyName));
+        const targetElement = elementOrder === 'first' ? foundElements[0] : foundElements[foundElements.length - 1];
         if (targetElement) {
           if (targetElement.classList.contains(styles.jsonPropertyHighlighted)) {
             targetElement.classList.remove(styles.jsonPropertyHighlighted);
@@ -179,7 +184,7 @@ function Playground() {
       { content: 'Browser' },
       {
         content: (
-          <JsonLink propertyName='browserVersion'>
+          <JsonLink propertyName='browserVersion' elementOrder='first'>
             {`${agentResponse?.browserName} ${agentResponse?.browserVersion}`}
           </JsonLink>
         ),
@@ -190,7 +195,12 @@ function Playground() {
     [
       { content: 'Operating System' },
       {
-        content: <JsonLink propertyName='osVersion'>{`${agentResponse?.os} ${agentResponse?.osVersion}`}</JsonLink>,
+        content: (
+          <JsonLink
+            propertyName='osVersion'
+            elementOrder='first'
+          >{`${agentResponse?.os} ${agentResponse?.osVersion}`}</JsonLink>
+        ),
         className: tableStyles.neutral,
       },
     ],
@@ -203,7 +213,13 @@ function Playground() {
         content: <DocsLink href='https://dev.fingerprint.com/docs/useful-timestamps#definitions'>Last seen</DocsLink>,
       },
       {
-        content: agentResponse?.lastSeenAt.global ? timeAgoLabel(agentResponse?.lastSeenAt.global) : 'Unknown',
+        content: agentResponse?.lastSeenAt.global ? (
+          <JsonLink propertyName='lastSeenAt' elementOrder='first'>
+            {timeAgoLabel(agentResponse?.lastSeenAt.global)}
+          </JsonLink>
+        ) : (
+          'Unknown'
+        ),
         className: tableStyles.neutral,
       },
     ],
@@ -216,7 +232,13 @@ function Playground() {
         ],
       },
       {
-        content: agentResponse?.confidence.score ? Math.trunc(agentResponse.confidence.score * 100) / 100 : 'N/A',
+        content: agentResponse?.confidence.score ? (
+          <JsonLink propertyName='confidence' elementOrder='first'>
+            {String(Math.trunc(agentResponse.confidence.score * 100) / 100)}
+          </JsonLink>
+        ) : (
+          'Not available'
+        ),
         className: agentResponse && agentResponse.confidence.score >= 0.7 ? tableStyles.green : tableStyles.red,
       },
     ],
