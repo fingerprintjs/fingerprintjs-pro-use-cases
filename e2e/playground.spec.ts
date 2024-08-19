@@ -101,7 +101,7 @@ test.describe('Playground page', () => {
     expect(requestId).not.toEqual(oldRequestId);
   });
 
-  test.only('Clicking JSON link scrolls to appropriate JSON property', async ({ page }) => {
+  test('Clicking JSON link scrolls to appropriate JSON property', async ({ page }) => {
     await page.getByText('See the JSON below').click({ force: true });
     await expect(page.locator('span.json-view--property:text("rawDeviceAttributes")')).toBeInViewport();
   });
