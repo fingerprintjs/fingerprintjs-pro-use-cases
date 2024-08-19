@@ -339,6 +339,10 @@ h2.sectionTitle {
   }
 }
 
+.ipAddress {
+  word-wrap: break-word;
+}
+
 .jsonPropertyHighlighted {
   animation: fadeBackground 5s ease-out;
 }

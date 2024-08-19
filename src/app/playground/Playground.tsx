@@ -1,6 +1,6 @@
 'use client';
 
-import { FunctionComponent, useEffect, ReactNode, useRef } from 'react';
+import { useEffect, ReactNode } from 'react';
 import { CollapsibleJsonViewer } from '../../client/components/common/CodeSnippet/CodeSnippet';
 import dynamic from 'next/dynamic';
 import SignalTable, { TableCellData } from './components/SignalTable';
@@ -8,7 +8,6 @@ import botDetectionResult from './components/BotDetectionResult';
 import { RefreshButton } from './components/RefreshButton';
 import { ipBlocklistResult } from './components/IpBlocklistResult';
 import { vpnDetectionResult } from './components/VpnDetectionResult';
-import { FormatIpAddress } from './components/ipFormatUtils';
 import { usePlaygroundSignals } from './hooks/usePlaygroundSignals';
 import { getLocationName, getZoomLevel } from '../../shared/utils/locationUtils';
 import { FP_LOAD_OPTIONS } from '../../pages/_app';
@@ -17,11 +16,10 @@ import styles from './playground.module.scss';
 import { Spinner } from '../../client/components/common/Spinner/Spinner';
 import { Alert } from '../../client/components/common/Alert/Alert';
 import { timeAgoLabel } from '../../shared/timeUtils';
-import { FingerprintJSPro, FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
+import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import Container from '../../client/components/common/Container';
 import { TEST_IDS } from '../../client/testIDs';
 import tableStyles from './components/SignalTable.module.scss';
-import { ExternalLinkArrowSvg } from '../../client/img/externalLinkArrowSvg';
 import { HowToUseThisPlayground } from './components/HowToUseThisPlayground';
 import classnames from 'classnames';
 import { ResourceLinks } from '../../client/components/common/ResourceLinks/ResourceLinks';
@@ -33,73 +31,10 @@ import {
 import { ChevronSvg } from '../../client/img/chevronSvg';
 import { pluralize } from '../../shared/utils';
 import { motion } from 'framer-motion';
-import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
-import { ExportCustomJobListInstance } from 'twilio/lib/rest/bulkexports/v1/export/exportCustomJob';
+import { JsonLink, DocsLink } from './components/ArrowLinks';
 
 // Nothing magic about `8` here, each customer must define their own use-case specific threshold
 const SUSPECT_SCORE_RED_THRESHOLD = 8;
-
-const DocsLink: FunctionComponent<{ children: string; href: string; style?: React.CSSProperties }> = ({
-  children,
-  href,
-  style,
-}) => {
-  // Prevent the arrow from being the only element on a new line
-  const lastWord = children.split(' ').pop();
-  const leadingWords = children.split(' ').slice(0, -1).join(' ');
-  return (
-    <Link href={href} target='_blank' className={styles.docsLink} style={style}>
-      {leadingWords}{' '}
-      <span style={{ whiteSpace: 'nowrap' }}>
-        {lastWord}
-        <ExternalLinkArrowSvg className={styles.externalLinkArrow} />
-      </span>
-    </Link>
-  );
-};
-
-type PropertyName = keyof EventResponse['products'] | keyof FingerprintJSPro.ExtendedGetResult;
-
-const JsonLink: FunctionComponent<{
-  children: string;
-  propertyName: PropertyName;
-  elementOrder?: 'first' | 'last';
-}> = ({ children, propertyName, elementOrder }) => {
-  const timeout = useRef<NodeJS.Timeout | undefined>();
-
-  // Prevent the arrow from being the only element on a new line
-  const lastWord = children.split(' ').pop();
-  const leadingWords = children.split(' ').slice(0, -1).join(' ');
-
-  return (
-    <div
-      className={styles.jsonLink}
-      onClick={() => {
-        // scroll to property and highlight it
-        const jsonProperties = document.querySelectorAll('.json-view--property');
-        const foundElements = Array.from(jsonProperties).filter((el) => el.textContent?.includes(propertyName));
-        const targetElement = elementOrder === 'first' ? foundElements[0] : foundElements[foundElements.length - 1];
-        if (targetElement) {
-          if (targetElement.classList.contains(styles.jsonPropertyHighlighted)) {
-            targetElement.classList.remove(styles.jsonPropertyHighlighted);
-            clearTimeout(timeout.current);
-          }
-          targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          targetElement.classList.add(styles.jsonPropertyHighlighted);
-          timeout.current = setTimeout(() => {
-            targetElement.classList.remove(styles.jsonPropertyHighlighted);
-          }, 5000);
-        }
-      }}
-    >
-      {leadingWords}{' '}
-      <span style={{ whiteSpace: 'nowrap' }}>
-        {lastWord}
-        <ExternalLinkArrowSvg className={styles.jsonArrow} style={{ marginLeft: '5px', rotate: '135deg' }} />
-      </span>
-    </div>
-  );
-};
 
 const PLAYGROUND_COPY = {
   androidOnly: (
@@ -206,7 +141,16 @@ function Playground() {
     ],
     [
       { content: 'IP Address' },
-      { content: <FormatIpAddress ipAddress={agentResponse?.ip} />, className: tableStyles.neutral },
+      {
+        content: (
+          <span className={styles.ipAddress}>
+            <JsonLink propertyName='ip' elementOrder='first'>
+              {`${agentResponse?.ip}`}
+            </JsonLink>
+          </span>
+        ),
+        className: tableStyles.neutral,
+      },
     ],
     [
       {
@@ -259,7 +203,7 @@ function Playground() {
               Geolocation
             </DocsLink>
             <div className={styles.locationText}>
-              <JsonLink propertyName='ipLocation'>{getLocationName(ipLocation)}</JsonLink>
+              <JsonLink propertyName='ipInfo'>{getLocationName(ipLocation)}</JsonLink>
             </div>
           </>
         ),
