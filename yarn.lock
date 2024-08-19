@@ -512,10 +512,10 @@
     "@fingerprintjs/fingerprintjs-pro-spa" "^1.2.0"
     fast-deep-equal "3.1.3"
 
-"@fingerprintjs/fingerprintjs-pro-server-api@^4.1.2":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@fingerprintjs/fingerprintjs-pro-server-api/-/fingerprintjs-pro-server-api-4.1.2.tgz#91d3a27d23f1191ee33f795c5595d151d9a69272"
-  integrity sha512-rKdVmYo/z6Fqkt5DHp9r6NYVtm/HuriCzja7lFOffBW7sNEVJ5iFXwlFnZ92Hp5n2k2fqcNaAM5cw5I7dZ5mnw==
+"@fingerprintjs/fingerprintjs-pro-server-api@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@fingerprintjs/fingerprintjs-pro-server-api/-/fingerprintjs-pro-server-api-5.0.0.tgz#71f1747e6c66ca8e53e2113f6c1842adde685789"
+  integrity sha512-iqnq9L0jNuDplKwNMkc86N7254fQIv8ahguIWFXr8HbD1VS2jg/1iDzWLpgHj/vRyKkrHSlm3hyvGXy9Ld3Cjg==
 
 "@fingerprintjs/fingerprintjs-pro-spa@^1.2.0":
   version "1.3.0"
