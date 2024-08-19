@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { FunctionComponent, useRef } from 'react';
 import { ExternalLinkArrowSvg } from '../../../client/img/externalLinkArrowSvg';
 import styles from '../playground.module.scss';
+import { TEST_IDS } from '../../../client/testIDs';
 
 export const DocsLink: FunctionComponent<{ children: string; href: string; style?: React.CSSProperties }> = ({
   children,
@@ -40,6 +41,8 @@ export const JsonLink: FunctionComponent<{
   return (
     <div
       className={styles.jsonLink}
+      data-testid={TEST_IDS.playground.jsonLink}
+      data-test-property-name={propertyName}
       onClick={() => {
         // scroll to property and highlight it
         const jsonProperties = document.querySelectorAll('.json-view--property');
