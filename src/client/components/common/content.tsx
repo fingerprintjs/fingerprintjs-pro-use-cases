@@ -463,7 +463,7 @@ export const USE_CASES = {
         </Link>
         . See the{' '}
         <Link
-          href={`https://fingerprint.com/blog/bot-detection-powered-application-firewall#explore-the-bot-firewall-demo`}
+          href={`https://fingerprint.com/blog/bot-detection-powered-application-firewall/#explore-the-bot-firewall-demo`}
           target='_blank'
         >
           demo tutorial
@@ -677,7 +677,7 @@ export const URL = {
   statusUrl: 'https://status.fingerprint.com',
   supportMail: 'support@fingerprint.com',
   salesMail: 'sales@fingerprint.com',
-  contactSales: 'https://fingerprint.com/contact-sales',
+  contactSales: 'https://fingerprint.com/contact-sales/',
   worKMail: 'work@fingerprint.com',
   pressMail: 'press@fingerprint.com',
   discordServerURL: 'https://discord.gg/ad6R2ttHVX',
