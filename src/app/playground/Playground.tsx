@@ -1,14 +1,13 @@
 'use client';
 
-import { FunctionComponent, useEffect, ReactNode } from 'react';
+import { useEffect, ReactNode } from 'react';
 import { CollapsibleJsonViewer } from '../../client/components/common/CodeSnippet/CodeSnippet';
 import dynamic from 'next/dynamic';
 import SignalTable, { TableCellData } from './components/SignalTable';
-import BotDetectionResult from './components/BotDetectionResult';
+import botDetectionResult from './components/BotDetectionResult';
 import { RefreshButton } from './components/RefreshButton';
-import IpBlocklistResult from './components/IpBlocklistResult';
-import VpnDetectionResult from './components/VpnDetectionResult';
-import { FormatIpAddress } from './components/ipFormatUtils';
+import { ipBlocklistResult } from './components/IpBlocklistResult';
+import { vpnDetectionResult } from './components/VpnDetectionResult';
 import { usePlaygroundSignals } from './hooks/usePlaygroundSignals';
 import { getLocationName, getZoomLevel } from '../../shared/utils/locationUtils';
 import { FP_LOAD_OPTIONS } from '../../pages/_app';
@@ -21,7 +20,6 @@ import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import Container from '../../client/components/common/Container';
 import { TEST_IDS } from '../../client/testIDs';
 import tableStyles from './components/SignalTable.module.scss';
-import { ExternalLinkArrowSvg } from '../../client/img/externalLinkArrowSvg';
 import { HowToUseThisPlayground } from './components/HowToUseThisPlayground';
 import classnames from 'classnames';
 import { ResourceLinks } from '../../client/components/common/ResourceLinks/ResourceLinks';
@@ -33,27 +31,10 @@ import {
 import { ChevronSvg } from '../../client/img/chevronSvg';
 import { pluralize } from '../../shared/utils';
 import { motion } from 'framer-motion';
+import { JsonLink, DocsLink } from './components/ArrowLinks';
 
 // Nothing magic about `8` here, each customer must define their own use-case specific threshold
 const SUSPECT_SCORE_RED_THRESHOLD = 8;
-
-const DocsLink: FunctionComponent<{ children: string; href: string; style?: React.CSSProperties }> = ({
-  children,
-  href,
-  style,
-}) => {
-  const lastWord = children.split(' ').pop();
-  const leadingWords = children.split(' ').slice(0, -1).join(' ');
-  return (
-    <Link href={href} target='_blank' className={styles.docsLink} style={style}>
-      {leadingWords}{' '}
-      <span style={{ whiteSpace: 'nowrap' }}>
-        {lastWord}
-        <ExternalLinkArrowSvg className={styles.externalLinkArrow} />
-      </span>
-    </Link>
-  );
-};
 
 const PLAYGROUND_COPY = {
   androidOnly: (
@@ -136,22 +117,53 @@ function Playground() {
   const identificationSignals: TableCellData[][] = [
     [
       { content: 'Browser' },
-      { content: `${agentResponse?.browserName} ${agentResponse?.browserVersion}`, className: tableStyles.neutral },
+      {
+        content: (
+          <JsonLink propertyName='browserVersion' elementOrder='first'>
+            {`${agentResponse?.browserName} ${agentResponse?.browserVersion}`}
+          </JsonLink>
+        ),
+
+        className: tableStyles.neutral,
+      },
     ],
     [
       { content: 'Operating System' },
-      { content: `${agentResponse?.os} ${agentResponse?.osVersion}`, className: tableStyles.neutral },
+      {
+        content: (
+          <JsonLink
+            propertyName='osVersion'
+            elementOrder='first'
+          >{`${agentResponse?.os} ${agentResponse?.osVersion}`}</JsonLink>
+        ),
+        className: tableStyles.neutral,
+      },
     ],
     [
       { content: 'IP Address' },
-      { content: <FormatIpAddress ipAddress={agentResponse?.ip} />, className: tableStyles.neutral },
+      {
+        content: (
+          <span className={styles.ipAddress}>
+            <JsonLink propertyName='ip' elementOrder='first'>
+              {`${agentResponse?.ip}`}
+            </JsonLink>
+          </span>
+        ),
+        className: tableStyles.neutral,
+      },
     ],
     [
       {
         content: <DocsLink href='https://dev.fingerprint.com/docs/useful-timestamps#definitions'>Last seen</DocsLink>,
       },
       {
-        content: agentResponse?.lastSeenAt.global ? timeAgoLabel(agentResponse?.lastSeenAt.global) : 'Unknown',
+        content: agentResponse?.lastSeenAt.global ? (
+          <JsonLink propertyName='lastSeenAt' elementOrder='first'>
+            {timeAgoLabel(agentResponse?.lastSeenAt.global)}
+          </JsonLink>
+        ) : (
+          'Unknown'
+        ),
         className: tableStyles.neutral,
       },
     ],
@@ -164,17 +176,23 @@ function Playground() {
         ],
       },
       {
-        content: agentResponse?.confidence.score ? Math.trunc(agentResponse.confidence.score * 100) / 100 : 'N/A',
+        content: agentResponse?.confidence.score ? (
+          <JsonLink propertyName='confidence' elementOrder='first'>
+            {String(Math.trunc(agentResponse.confidence.score * 100) / 100)}
+          </JsonLink>
+        ) : (
+          'Not available'
+        ),
         className: agentResponse && agentResponse.confidence.score >= 0.7 ? tableStyles.green : tableStyles.red,
       },
     ],
   ];
 
   const suspectScore = usedIdentificationEvent?.products?.suspectScore?.data?.result;
-  // @ts-expect-error Not supported in Node SDK yet
   const remoteControl: boolean | undefined = usedIdentificationEvent?.products?.remoteControl?.data?.result;
-  // @ts-expect-error Not supported in Node SDK yet
-  const ipVelocity: number | undefined = usedIdentificationEvent?.products?.velocity?.data?.distinctIp.intervals['1h'];
+
+  const ipVelocity: number | undefined =
+    usedIdentificationEvent?.products?.velocity?.data?.distinctIp?.intervals?.['1h'];
 
   const smartSignals: TableCellData[][] = [
     [
@@ -184,7 +202,9 @@ function Playground() {
             <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-overview#ip-geolocation'>
               Geolocation
             </DocsLink>
-            <div className={styles.locationText}>{getLocationName(ipLocation)}</div>
+            <div className={styles.locationText}>
+              <JsonLink propertyName='ipInfo'>{getLocationName(ipLocation)}</JsonLink>
+            </div>
           </>
         ),
       },
@@ -215,7 +235,11 @@ function Playground() {
         ),
       },
       {
-        content: usedIdentificationEvent?.products?.incognito?.data?.result ? 'You are incognito 🕶' : 'Not detected',
+        content: (
+          <JsonLink propertyName='incognito'>
+            {usedIdentificationEvent?.products?.incognito?.data?.result ? 'You are incognito 🕶' : 'Not detected'}
+          </JsonLink>
+        ),
         className: usedIdentificationEvent?.products?.incognito?.data?.result ? tableStyles.red : tableStyles.green,
       },
     ],
@@ -228,7 +252,7 @@ function Playground() {
         ],
       },
       {
-        content: <BotDetectionResult key='botDetectionResult' event={usedIdentificationEvent} />,
+        content: <JsonLink propertyName='botd'>{botDetectionResult({ event: usedIdentificationEvent })}</JsonLink>,
         className:
           usedIdentificationEvent?.products?.botd?.data?.bot?.result === 'bad' ? tableStyles.red : tableStyles.green,
       },
@@ -242,7 +266,7 @@ function Playground() {
         ],
       },
       {
-        content: <VpnDetectionResult event={usedIdentificationEvent} />,
+        content: <JsonLink propertyName='vpn'>{vpnDetectionResult({ event: usedIdentificationEvent })}</JsonLink>,
         className: usedIdentificationEvent?.products?.vpn?.data?.result === true ? tableStyles.red : tableStyles.green,
       },
     ],
@@ -258,7 +282,12 @@ function Playground() {
         ],
       },
       {
-        content: usedIdentificationEvent?.products?.tampering?.data?.result === true ? 'Yes 🖥️🔧' : 'Not detected',
+        content: (
+          <JsonLink propertyName='tampering'>
+            {usedIdentificationEvent?.products?.tampering?.data?.result === true ? 'Yes 🖥️🔧' : 'Not detected'}
+          </JsonLink>
+        ),
+
         className:
           usedIdentificationEvent?.products?.tampering?.data?.result === true ? tableStyles.red : tableStyles.green,
       },
@@ -276,13 +305,11 @@ function Playground() {
       },
       {
         content: (
-          <>
-            {/* @ts-expect-error Not supported in Node SDK yet */}
-            {usedIdentificationEvent?.products?.developerTools?.data?.result === true ? 'Yes 🔧' : 'Not detected'}{' '}
-          </>
+          <JsonLink propertyName='developerTools'>
+            {usedIdentificationEvent?.products?.developerTools?.data?.result === true ? 'Yes 🔧' : 'Not detected'}
+          </JsonLink>
         ),
         className:
-          // @ts-expect-error Not supported in Node SDK yet
           usedIdentificationEvent?.products?.developerTools?.data?.result === true
             ? tableStyles.red
             : tableStyles.green,
@@ -297,7 +324,12 @@ function Playground() {
         ),
       },
       {
-        content: usedIdentificationEvent?.products?.virtualMachine?.data?.result === true ? 'Yes ☁️💻' : 'Not detected',
+        content: (
+          <JsonLink propertyName='virtualMachine'>
+            {usedIdentificationEvent?.products?.virtualMachine?.data?.result === true ? 'Yes ☁️💻' : 'Not detected'}
+          </JsonLink>
+        ),
+
         className:
           usedIdentificationEvent?.products?.virtualMachine?.data?.result === true
             ? tableStyles.red
@@ -313,8 +345,11 @@ function Playground() {
         ),
       },
       {
-        content:
-          usedIdentificationEvent?.products?.privacySettings?.data?.result === true ? 'Yes 🙈💻' : 'Not detected',
+        content: (
+          <JsonLink propertyName='privacySettings'>
+            {usedIdentificationEvent?.products?.privacySettings?.data?.result === true ? 'Yes 🙈💻' : 'Not detected'}
+          </JsonLink>
+        ),
         className:
           usedIdentificationEvent?.products?.privacySettings?.data?.result === true
             ? tableStyles.red
@@ -333,7 +368,12 @@ function Playground() {
         ],
       },
       {
-        content: remoteControl === undefined ? 'Not available' : remoteControl === true ? 'Yes 🕹️' : 'Not detected',
+        content:
+          remoteControl === undefined ? (
+            'Not available'
+          ) : (
+            <JsonLink propertyName='remoteControl'>{remoteControl === true ? 'Yes 🕹️' : 'Not detected'}</JsonLink>
+          ),
         className:
           remoteControl === undefined
             ? tableStyles.neutral
@@ -354,7 +394,9 @@ function Playground() {
         ],
       },
       {
-        content: <IpBlocklistResult event={usedIdentificationEvent} />,
+        content: (
+          <JsonLink propertyName='ipBlocklist'>{ipBlocklistResult({ event: usedIdentificationEvent })}</JsonLink>
+        ),
         className:
           usedIdentificationEvent?.products?.ipBlocklist?.data?.result ||
           usedIdentificationEvent?.products?.proxy?.data?.result ||
@@ -375,7 +417,12 @@ function Playground() {
         ],
       },
       {
-        content: usedIdentificationEvent?.products?.highActivity?.data?.result === true ? 'Yes 🔥' : 'Not detected',
+        content: (
+          <JsonLink propertyName='highActivity'>
+            {usedIdentificationEvent?.products?.highActivity?.data?.result === true ? 'Yes 🔥' : 'Not detected'}
+          </JsonLink>
+        ),
+
         className:
           usedIdentificationEvent?.products?.highActivity?.data?.result === true ? tableStyles.red : tableStyles.green,
       },
@@ -389,7 +436,11 @@ function Playground() {
         ],
       },
       {
-        content: ipVelocity === undefined ? 'Not available' : `${pluralize(ipVelocity, 'IP')} in the past hour`,
+        content: (
+          <JsonLink propertyName='velocity'>
+            {ipVelocity === undefined ? 'Not available' : `${pluralize(ipVelocity, 'IP')} in the past hour`}
+          </JsonLink>
+        ),
         className:
           ipVelocity === undefined ? tableStyles.neutral : ipVelocity > 1 ? tableStyles.red : tableStyles.green,
       },
@@ -403,7 +454,12 @@ function Playground() {
         ],
       },
       {
-        content: usedIdentificationEvent?.products?.suspectScore?.data?.result ?? 'Not available',
+        content:
+          suspectScore !== undefined ? (
+            <JsonLink propertyName='suspectScore'>{String(suspectScore)}</JsonLink>
+          ) : (
+            'Not available'
+          ),
         className:
           suspectScore === undefined
             ? tableStyles.neutral
@@ -420,7 +476,10 @@ function Playground() {
           </DocsLink>,
         ],
       },
-      { content: 'See the JSON below', className: tableStyles.green },
+      {
+        content: <JsonLink propertyName='rawDeviceAttributes'>See the JSON below</JsonLink>,
+        className: tableStyles.green,
+      },
     ],
   ];
 

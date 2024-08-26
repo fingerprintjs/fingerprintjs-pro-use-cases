@@ -1,17 +1,16 @@
 import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
-import { FunctionComponent } from 'react';
 
-const BotDetectionResult: FunctionComponent<{ event: EventResponse | undefined }> = ({ event }) => {
+const botDetectionResult = ({ event }: { event: EventResponse | undefined }): string => {
   switch (event?.products?.botd?.data?.bot?.result) {
     case 'good':
-      return <>You are a good bot 🤖</>;
+      return 'You are a good bot 🤖';
     case 'bad':
-      return <>You are a bad bot 🤖 (type: {event?.products?.botd?.data?.bot?.type})</>;
+      return `You are a bad bot 🤖 (type: ${event?.products?.botd?.data?.bot?.type})`;
     case 'notDetected':
-      return <>Not detected</>;
+      return 'Not detected';
     default:
-      return <>Unknown</>;
+      return 'Unknown';
   }
 };
 
-export default BotDetectionResult;
+export default botDetectionResult;

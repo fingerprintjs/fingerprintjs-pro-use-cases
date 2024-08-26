@@ -88,6 +88,7 @@ export const TEST_IDS = {
     agentResponseJSON: 'agentResponseJSON',
     serverResponseJSON: 'serverResponseJSON',
     refreshButton: 'refreshButton',
+    jsonLink: 'jsonLink',
   },
 } as const;
 

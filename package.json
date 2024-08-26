@@ -25,7 +25,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
     "@fingerprintjs/fingerprintjs-pro-react": "^2.6.2",
-    "@fingerprintjs/fingerprintjs-pro-server-api": "^4.1.2",
+    "@fingerprintjs/fingerprintjs-pro-server-api": "^5.0.0",
     "@mui/icons-material": "^5.15.11",
     "@mui/material": "^5.15.11",
     "@radix-ui/react-accordion": "^1.1.2",

@@ -100,6 +100,11 @@ test.describe('Playground page', () => {
     expect(requestId).toHaveLength(20);
     expect(requestId).not.toEqual(oldRequestId);
   });
+
+  test('Clicking JSON link scrolls to appropriate JSON property', async ({ page }) => {
+    await page.getByText('See the JSON below').click({ force: true });
+    await expect(page.locator('span.json-view--property:text("rawDeviceAttributes")')).toBeInViewport();
+  });
 });
 
 test.describe('Proxy integration', () => {
