@@ -69,7 +69,7 @@ export const JsonLink: FunctionComponent<{
       {leadingWords}{' '}
       <span style={{ whiteSpace: 'nowrap' }}>
         {lastWord}
-        <ExternalLinkArrowSvg className={styles.jsonArrow} style={{ marginLeft: '5px', rotate: '135deg' }} />
+        <ExternalLinkArrowSvg className={styles.jsonArrow} />
       </span>
     </div>
   );
