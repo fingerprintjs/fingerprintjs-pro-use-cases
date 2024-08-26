@@ -40,7 +40,7 @@ export const JsonLink: FunctionComponent<{
   const lastWord = [...words].pop();
   const leadingWords = [...words].slice(0, -1).join(' ');
 
-  // clear timoeut when componend unmounts
+  // clear timeout when component unmounts
   useEffect(() => () => clearTimeout(timeout.current), []);
 
   return (
