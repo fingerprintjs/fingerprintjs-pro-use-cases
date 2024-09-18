@@ -3,7 +3,7 @@ import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 
-export function usePlaygroundSignals() {
+export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: EventResponse) => void }) {
   const {
     data: agentResponse,
     isLoading: isLoadingAgentResponse,
@@ -29,7 +29,16 @@ export function usePlaygroundSignals() {
         }
         return res.json();
       }),
-    { enabled: Boolean(agentResponse), retry: false, onSuccess: (data) => setCachedEvent(data) },
+    {
+      enabled: Boolean(agentResponse),
+      retry: false,
+      onSuccess: (data) => {
+        if (data) {
+          setCachedEvent(data);
+          config?.onServerApiSuccess?.(data);
+        }
+      },
+    },
   );
 
   return {
