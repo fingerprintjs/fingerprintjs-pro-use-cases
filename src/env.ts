@@ -71,6 +71,9 @@ export const env = createEnv({
       .string()
       .min(1)
       .default('https://staging.fingerprinthub.com/fp-sealed/result?region=us'),
+    // Analytics
+    NEXT_PUBLIC_GTM_ID: z.string().min(1).optional(),
+    NEXT_PUBLIC_AMPLITUDE_API_KEY: z.string().min(1).optional(),
   },
   /*
    * Due to how Next.js bundles environment variables on Edge and Client,
@@ -112,6 +115,10 @@ export const env = createEnv({
     NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY: process.env.NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY,
     NEXT_PUBLIC_SEALED_RESULTS_SCRIPT_URL: process.env.NEXT_PUBLIC_SEALED_RESULTS_SCRIPT_URL,
     NEXT_PUBLIC_SEALED_RESULTS_ENDPOINT: process.env.NEXT_PUBLIC_SEALED_RESULTS_ENDPOINT,
+
+    // Analytics
+    NEXT_PUBLIC_GTM_ID: process.env.NEXT_PUBLIC_GTM_ID,
+    NEXT_PUBLIC_AMPLITUDE_API_KEY: process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY,
   },
   isServer:
     // Comprehensive server check

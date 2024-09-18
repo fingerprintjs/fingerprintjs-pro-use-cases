@@ -3,13 +3,14 @@ import { FunctionComponent, PropsWithChildren } from 'react';
 import Footer from './client/components/common/Footer/Footer';
 import Header from './client/components/common/Header/Header';
 import styles from './styles/layout.module.scss';
-import DeploymentUtils from './client/DeploymentUtils';
+import { IS_PRODUCTION } from './envShared';
+import { Analytics } from './client/Analytics';
 
 export const Layout: FunctionComponent<PropsWithChildren<{ embed: boolean }>> = ({ children, embed }) => {
   return (
     <div className={styles.layout}>
       {embed ? null : <Header />}
-      <DeploymentUtils />
+      {IS_PRODUCTION ? <Analytics /> : null}
       <div>{children}</div>
       {embed ? null : <Footer />}
     </div>
