@@ -7,8 +7,6 @@
 
 import { env } from '../../env';
 
-import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
-import { FP_LOAD_OPTIONS } from '../../pages/_app';
 import { GoogleTagManager } from './Gtm';
 import { Amplitude } from './Amplitude';
 import { useEffect } from 'react';
@@ -39,13 +37,7 @@ export const Analytics = () => {
   return (
     <>
       {GTM_ID ? <GoogleTagManager gtmId={GTM_ID} /> : null}
-      {AMPLITUDE_API_KEY ? (
-        // After migrating everything to `app` directory,
-        // we might be able to remove the `FpjsProvider` from here and just use the global one
-        <FpjsProvider loadOptions={FP_LOAD_OPTIONS}>
-          <Amplitude apiKey={AMPLITUDE_API_KEY} />
-        </FpjsProvider>
-      ) : null}
+      {AMPLITUDE_API_KEY ? <Amplitude apiKey={AMPLITUDE_API_KEY} /> : null}
     </>
   );
 };

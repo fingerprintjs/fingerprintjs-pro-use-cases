@@ -10,13 +10,11 @@ import { ipBlocklistResult } from './components/IpBlocklistResult';
 import { vpnDetectionResult } from './components/VpnDetectionResult';
 import { usePlaygroundSignals } from './hooks/usePlaygroundSignals';
 import { getLocationName, getZoomLevel } from '../../shared/utils/locationUtils';
-import { FP_LOAD_OPTIONS } from '../../pages/_app';
 import Link from 'next/link';
 import styles from './playground.module.scss';
 import { Spinner } from '../../client/components/common/Spinner/Spinner';
 import { Alert } from '../../client/components/common/Alert/Alert';
 import { timeAgoLabel } from '../../shared/timeUtils';
-import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import Container from '../../client/components/common/Container';
 import { TEST_IDS } from '../../client/testIDs';
 import tableStyles from './components/SignalTable.module.scss';
@@ -701,10 +699,4 @@ function Playground() {
   );
 }
 
-export default function PlaygroundPage() {
-  return (
-    <FpjsProvider loadOptions={FP_LOAD_OPTIONS}>
-      <Playground />
-    </FpjsProvider>
-  );
-}
+export default Playground;
