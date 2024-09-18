@@ -4,7 +4,7 @@ import Footer from './client/components/common/Footer/Footer';
 import Header from './client/components/common/Header/Header';
 import styles from './styles/layout.module.scss';
 import { IS_PRODUCTION } from './envShared';
-import { Analytics } from './client/Analytics';
+import { Analytics } from './client/analytics/Analytics';
 
 export const Layout: FunctionComponent<PropsWithChildren<{ embed: boolean }>> = ({ children, embed }) => {
   return (
