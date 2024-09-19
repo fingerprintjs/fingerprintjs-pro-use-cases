@@ -1,6 +1,6 @@
 import '../styles/global-styles.scss';
 import Head from 'next/head';
-import { FpjsProvider, FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
+import { FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
 import { AppProps } from 'next/app';
 import Providers from '../Providers';
 import { Layout } from '../Layout';
@@ -24,11 +24,9 @@ function CustomApp({ Component, pageProps }: AppProps<CustomPageProps>) {
         <title>Fingerprint Pro Use Cases</title>
       </Head>
       <Providers>
-        <FpjsProvider loadOptions={FP_LOAD_OPTIONS}>
-          <Layout embed={Boolean(pageProps.embed)}>
-            <Component {...pageProps} />
-          </Layout>
-        </FpjsProvider>
+        <Layout embed={Boolean(pageProps.embed)}>
+          <Component {...pageProps} />
+        </Layout>
       </Providers>
     </>
   );

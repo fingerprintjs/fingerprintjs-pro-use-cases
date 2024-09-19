@@ -1,9 +1,8 @@
-import { isValidPostRequest } from '../../../server/server';
 import { Op } from 'sequelize';
-import { COUPON_CODES, CouponClaimDbModel, CouponCodeString } from '../../../server/coupon-fraud/database';
-import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { COUPON_FRAUD_COPY } from '../../../server/coupon-fraud/copy';
+import { COUPON_CODES, CouponClaimDbModel, CouponCodeString } from '../../../../server/coupon-fraud/database';
+import { Severity, getAndValidateFingerprintResult } from '../../../../server/checks';
+import { COUPON_FRAUD_COPY } from '../../../../server/coupon-fraud/copy';
+import { NextResponse } from 'next/server';
 
 export type CouponClaimPayload = {
   couponCode: string;
@@ -19,34 +18,24 @@ const isCouponCode = (couponCode: string): couponCode is CouponCodeString => {
   return COUPON_CODES.includes(couponCode as CouponCodeString);
 };
 
-export default async function claimCouponHandler(req: NextApiRequest, res: NextApiResponse<CouponClaimResponse>) {
-  // This API route accepts only POST requests.
-  const reqValidation = isValidPostRequest(req);
-  if (!reqValidation.okay) {
-    res.status(405).send({ severity: 'error', message: reqValidation.error });
-    return;
-  }
-
-  const { couponCode, requestId } = req.body as CouponClaimPayload;
+export async function POST(req: Request): Promise<NextResponse<CouponClaimResponse>> {
+  const { couponCode, requestId } = (await req.json()) as CouponClaimPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
   const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
   if (!fingerprintResult.okay) {
-    res.status(403).send({ severity: 'error', message: fingerprintResult.error });
-    return;
+    return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });
   }
 
   // Get visitorId from the Server API Identification event
   const visitorId = fingerprintResult.data.products?.identification?.data?.visitorId;
   if (!visitorId) {
-    res.status(403).send({ severity: 'error', message: 'Visitor ID not found.' });
-    return;
+    return NextResponse.json({ severity: 'error', message: 'Visitor ID not found.' }, { status: 403 });
   }
 
   // Check if Coupon exists
   if (!isCouponCode(couponCode)) {
-    res.status(403).send({ severity: 'error', message: COUPON_FRAUD_COPY.doesNotExist });
-    return;
+    return NextResponse.json({ severity: 'error', message: COUPON_FRAUD_COPY.doesNotExist }, { status: 403 });
   }
 
   // Check if visitor used this coupon before
@@ -54,8 +43,7 @@ export default async function claimCouponHandler(req: NextApiRequest, res: NextA
     where: { visitorId, couponCode },
   });
   if (usedBefore) {
-    res.status(403).send({ severity: 'error', message: COUPON_FRAUD_COPY.usedBefore });
-    return;
+    return NextResponse.json({ severity: 'error', message: COUPON_FRAUD_COPY.usedBefore }, { status: 403 });
   }
 
   // Check if visitor claimed another coupon recently
@@ -70,8 +58,12 @@ export default async function claimCouponHandler(req: NextApiRequest, res: NextA
     },
   });
   if (usedAnotherCouponRecently) {
-    res.status(403).send({ severity: 'error', message: COUPON_FRAUD_COPY.usedAnotherCouponRecently });
-    return;
+    return NextResponse.json(
+      { severity: 'error', message: COUPON_FRAUD_COPY.usedAnotherCouponRecently },
+      {
+        status: 403,
+      },
+    );
   }
 
   // If all checks passed, claim coupon
@@ -80,5 +72,5 @@ export default async function claimCouponHandler(req: NextApiRequest, res: NextA
     visitorId,
     timestamp: new Date(),
   });
-  res.status(200).send({ severity: 'success', message: COUPON_FRAUD_COPY.success });
+  return NextResponse.json({ severity: 'success', message: COUPON_FRAUD_COPY.success });
 }

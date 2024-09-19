@@ -4,6 +4,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { SnackbarProvider } from 'notistack';
 import { PropsWithChildren } from 'react';
 import { CloseSnackbarButton, CustomSnackbar } from './client/components/common/Alert/Alert';
+import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
+import { FP_LOAD_OPTIONS } from './pages/_app';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,7 +34,7 @@ function Providers({ children }: PropsWithChildren) {
           info: CustomSnackbar,
         }}
       >
-        {children}
+        <FpjsProvider loadOptions={FP_LOAD_OPTIONS}>{children}</FpjsProvider>
       </SnackbarProvider>
     </QueryClientProvider>
   );
