@@ -1,13 +1,12 @@
 'use client';
 
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import { FunctionComponent, useCallback, useMemo, useState } from 'react';
+import { FunctionComponent, useMemo, useState } from 'react';
 import {
   loanDurationValidation,
   loanValueValidation,
   monthlyIncomeValidation,
 } from '../../client/loan-risk/validation';
-import { useRequestLoan } from '../../client/api/loan-risk/use-request-loan';
 import { calculateMonthInstallment } from '../../shared/loan-risk/calculate-month-installment';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
@@ -20,6 +19,8 @@ import styles from './loanRisk.module.scss';
 import classNames from 'classnames';
 import { TEST_IDS } from '../../client/testIDs';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useMutation } from 'react-query';
+import { LoanRequestPayload, LoanRequestResponse } from './api/request-loan/route';
 
 type SliderFieldProps = {
   label: string;
@@ -64,14 +65,40 @@ const SliderField: FunctionComponent<SliderFieldProps> = ({
     </div>
   );
 };
+
 export function LoanRisk() {
-  const { getData, isLoading: isVisitorDataLoading } = useVisitorData(
+  const { getData: getVisitorData, isLoading: isVisitorDataLoading } = useVisitorData(
     { ignoreCache: true },
     {
       immediate: false,
     },
   );
-  const loanRequestMutation = useRequestLoan();
+
+  const {
+    mutate: requestLoan,
+    isLoading: isLoanRequestLoading,
+    data: loanRequestResponse,
+  } = useMutation<LoanRequestResponse, unknown, Omit<LoanRequestPayload, 'requestId'>, unknown>({
+    mutationKey: ['request loan'],
+    mutationFn: async ({ firstName, lastName, loanValue, monthlyIncome, loanDuration }) => {
+      const { requestId } = await getVisitorData({ ignoreCache: true });
+      const response = await fetch('/loan-risk/api/request-loan', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          loanValue,
+          monthlyIncome,
+          loanDuration,
+          requestId,
+        } satisfies LoanRequestPayload),
+      });
+      return await response.json();
+    },
+  });
 
   const [firstName, setFirstName] = useState('John');
   const [lastName, setLastName] = useState('Doe');
@@ -88,26 +115,18 @@ export function LoanRisk() {
     [loanDuration, loanValue],
   );
 
-  const handleSubmit = useCallback(
-    async (event: React.FormEvent) => {
-      event.preventDefault();
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    await requestLoan({
+      firstName,
+      lastName,
+      loanValue,
+      monthlyIncome,
+      loanDuration,
+    });
+  };
 
-      const fpData = await getData();
-
-      if (!fpData) {
-        console.error("Visitor data couldn't be fetched");
-        return;
-      }
-
-      await loanRequestMutation.mutateAsync({
-        fpData,
-        body: { loanValue, monthlyIncome, loanDuration, firstName, lastName },
-      });
-    },
-    [firstName, lastName, loanDuration, loanRequestMutation, loanValue, monthlyIncome, getData],
-  );
-
-  const isLoading = isVisitorDataLoading || loanRequestMutation.isLoading;
+  const isLoading = isVisitorDataLoading || isLoanRequestLoading;
 
   return (
     <UseCaseWrapper useCase={USE_CASES.loanRisk}>
@@ -172,8 +191,8 @@ export function LoanRisk() {
                 </div>
               </div>
             </div>
-            {loanRequestMutation.data?.message && !loanRequestMutation.isLoading && (
-              <Alert severity={loanRequestMutation.data.severity}>{loanRequestMutation.data.message}</Alert>
+            {loanRequestResponse?.message && !isLoanRequestLoading && (
+              <Alert severity={loanRequestResponse.severity}>{loanRequestResponse.message}</Alert>
             )}
             <Button
               type='submit'
