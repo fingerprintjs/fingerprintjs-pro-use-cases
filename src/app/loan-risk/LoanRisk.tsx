@@ -1,6 +1,7 @@
+'use client';
+
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { FunctionComponent, useCallback, useMemo, useState } from 'react';
-
 import {
   loanDurationValidation,
   loanValueValidation,
@@ -10,7 +11,6 @@ import { useRequestLoan } from '../../client/api/loan-risk/use-request-loan';
 import { calculateMonthInstallment } from '../../shared/loan-risk/calculate-month-installment';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
-import { CustomPageProps } from '../_app';
 import Button from '../../client/components/common/Button/Button';
 import { Alert } from '../../client/components/common/Alert/Alert';
 import formStyles from '../../styles/forms.module.scss';
@@ -64,7 +64,7 @@ const SliderField: FunctionComponent<SliderFieldProps> = ({
     </div>
   );
 };
-export default function LoanRisk({ embed }: CustomPageProps) {
+export function LoanRisk() {
   const { getData, isLoading: isVisitorDataLoading } = useVisitorData(
     { ignoreCache: true },
     {
@@ -110,7 +110,7 @@ export default function LoanRisk({ embed }: CustomPageProps) {
   const isLoading = isVisitorDataLoading || loanRequestMutation.isLoading;
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.loanRisk} embed={embed}>
+    <UseCaseWrapper useCase={USE_CASES.loanRisk}>
       <div className={classNames(formStyles.wrapper, styles.formWrapper)}>
         <form onSubmit={handleSubmit} className={formStyles.useCaseForm}>
           <div className={styles.nameWrapper}>
