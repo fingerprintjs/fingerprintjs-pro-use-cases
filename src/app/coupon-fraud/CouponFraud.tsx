@@ -15,7 +15,7 @@ import { Cart } from '../../client/components/common/Cart/Cart';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
 import { useMutation } from 'react-query';
-import { CouponClaimPayload, CouponClaimResponse } from '../../pages/api/coupon-fraud/claim';
+import { CouponClaimPayload, CouponClaimResponse } from './api/claim/route';
 
 const AIRMAX_PRICE = 356.02;
 const ALLSTAR_PRICE = 102.5;
@@ -37,7 +37,7 @@ export function CouponFraudUseCase() {
     mutationKey: ['request coupon claim'],
     mutationFn: async ({ couponCode }: Omit<CouponClaimPayload, 'requestId'>) => {
       const { requestId } = await getVisitorData({ ignoreCache: true });
-      const response = await fetch('/api/coupon-fraud/claim', {
+      const response = await fetch('/coupon-fraud/api/claim', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
