@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import React from 'react';
@@ -12,10 +14,10 @@ import shownIcon from './iconShown.svg';
 import Image from 'next/image';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
-import { LoginPayload, LoginResponse } from '../api/credential-stuffing/authenticate';
 import { useMutation } from 'react-query';
+import { LoginResponse, LoginPayload } from '../../pages/api/credential-stuffing/authenticate';
 
-export default function Index() {
+export function CredentialStuffing() {
   const { getData: getVisitorData } = useVisitorData(
     { ignoreCache: true },
     {
