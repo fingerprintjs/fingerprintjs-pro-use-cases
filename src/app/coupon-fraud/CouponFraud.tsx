@@ -1,8 +1,9 @@
+'use client';
+
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { useState } from 'react';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
-import { CustomPageProps } from '../_app';
 import styles from './couponFraud.module.scss';
 import formStyles from '../../styles/forms.module.scss';
 import classNames from 'classnames';
@@ -14,13 +15,13 @@ import { Cart } from '../../client/components/common/Cart/Cart';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
 import { useMutation } from 'react-query';
-import { CouponClaimPayload, CouponClaimResponse } from '../api/coupon-fraud/claim';
+import { CouponClaimPayload, CouponClaimResponse } from '../../pages/api/coupon-fraud/claim';
 
 const AIRMAX_PRICE = 356.02;
 const ALLSTAR_PRICE = 102.5;
 const TAXES = 6;
 
-export default function CouponFraudUseCase({ embed }: CustomPageProps) {
+export function CouponFraudUseCase() {
   const { getData: getVisitorData } = useVisitorData(
     {
       ignoreCache: true,
@@ -82,7 +83,7 @@ export default function CouponFraudUseCase({ embed }: CustomPageProps) {
   ];
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.couponFraud} embed={embed}>
+    <UseCaseWrapper useCase={USE_CASES.couponFraud}>
       <div className={classNames(styles.wrapper, formStyles.wrapper)}>
         <Cart items={cartItems} discount={discount} taxPerItem={TAXES} discountLabel='Coupon discount'></Cart>
         <div className={styles.innerWrapper}>

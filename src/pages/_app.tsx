@@ -24,11 +24,9 @@ function CustomApp({ Component, pageProps }: AppProps<CustomPageProps>) {
         <title>Fingerprint Pro Use Cases</title>
       </Head>
       <Providers>
-        <FpjsProvider loadOptions={FP_LOAD_OPTIONS}>
-          <Layout embed={Boolean(pageProps.embed)}>
-            <Component {...pageProps} />
-          </Layout>
-        </FpjsProvider>
+        <Layout embed={Boolean(pageProps.embed)}>
+          <Component {...pageProps} />
+        </Layout>
       </Providers>
     </>
   );
