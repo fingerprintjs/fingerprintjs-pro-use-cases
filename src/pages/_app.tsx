@@ -1,6 +1,6 @@
 import '../styles/global-styles.scss';
 import Head from 'next/head';
-import { FpjsProvider, FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
+import { FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
 import { AppProps } from 'next/app';
 import Providers from '../Providers';
 import { Layout } from '../Layout';
