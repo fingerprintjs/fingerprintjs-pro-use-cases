@@ -7,7 +7,6 @@ const EVENT_TYPE = 'Demo Page Viewed';
 
 /**
  * This is an Amplitude plugin that renames the Page view event_properties according to our analytics needs
- * @returns EnrichmentPlugin
  */
 const renameEventPropertiesEnrichment: amplitude.Types.EnrichmentPlugin = {
   name: 'rename-event-properties-enrichment',
