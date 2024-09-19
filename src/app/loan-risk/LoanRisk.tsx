@@ -20,7 +20,7 @@ import classNames from 'classnames';
 import { TEST_IDS } from '../../client/testIDs';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useMutation } from 'react-query';
-import { LoanRequestPayload, LoanRequestResponse } from './api/request-loan/route';
+import { LoanRequestData, LoanRequestPayload, LoanRequestResponse } from './api/request-loan/route';
 
 type SliderFieldProps = {
   label: string;
@@ -78,21 +78,16 @@ export function LoanRisk() {
     mutate: requestLoan,
     isLoading: isLoanRequestLoading,
     data: loanRequestResponse,
-  } = useMutation<LoanRequestResponse, unknown, Omit<LoanRequestPayload, 'requestId'>, unknown>({
+    error: loanRequestNetworkError,
+  } = useMutation<LoanRequestResponse, Error, LoanRequestData, unknown>({
     mutationKey: ['request loan'],
-    mutationFn: async ({ firstName, lastName, loanValue, monthlyIncome, loanDuration }) => {
+    mutationFn: async (loanRequest: LoanRequestData) => {
       const { requestId } = await getVisitorData({ ignoreCache: true });
       const response = await fetch('/loan-risk/api/request-loan', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          firstName,
-          lastName,
-          loanValue,
-          monthlyIncome,
-          loanDuration,
+          ...loanRequest,
           requestId,
         } satisfies LoanRequestPayload),
       });
@@ -114,24 +109,24 @@ export function LoanRisk() {
       }),
     [loanDuration, loanValue],
   );
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    await requestLoan({
-      firstName,
-      lastName,
-      loanValue,
-      monthlyIncome,
-      loanDuration,
-    });
-  };
-
   const isLoading = isVisitorDataLoading || isLoanRequestLoading;
 
   return (
     <UseCaseWrapper useCase={USE_CASES.loanRisk}>
       <div className={classNames(formStyles.wrapper, styles.formWrapper)}>
-        <form onSubmit={handleSubmit} className={formStyles.useCaseForm}>
+        <form
+          onSubmit={(event) => () => {
+            event.preventDefault();
+            requestLoan({
+              firstName,
+              lastName,
+              loanValue,
+              monthlyIncome,
+              loanDuration,
+            });
+          }}
+          className={formStyles.useCaseForm}
+        >
           <div className={styles.nameWrapper}>
             <label>Name</label>
             <input
@@ -191,6 +186,7 @@ export function LoanRisk() {
                 </div>
               </div>
             </div>
+            {loanRequestNetworkError && <Alert severity='error'>{loanRequestNetworkError.message}</Alert>}
             {loanRequestResponse?.message && !isLoanRequestLoading && (
               <Alert severity={loanRequestResponse.severity}>{loanRequestResponse.message}</Alert>
             )}
