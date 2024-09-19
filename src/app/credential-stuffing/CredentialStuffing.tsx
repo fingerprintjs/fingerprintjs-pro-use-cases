@@ -15,7 +15,7 @@ import Image from 'next/image';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
 import { useMutation } from 'react-query';
-import { LoginResponse, LoginPayload } from '../../pages/api/credential-stuffing/authenticate';
+import { LoginPayload, LoginResponse } from './api/authenticate/route';
 
 export function CredentialStuffing() {
   const { getData: getVisitorData } = useVisitorData(
@@ -34,7 +34,7 @@ export function CredentialStuffing() {
     mutationKey: ['login attempt'],
     mutationFn: async ({ username, password }) => {
       const { requestId, visitorId } = await getVisitorData({ ignoreCache: true });
-      const response = await fetch('/api/credential-stuffing/authenticate', {
+      const response = await fetch('/credential-stuffing/api/authenticate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

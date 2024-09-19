@@ -1,10 +1,10 @@
 import { Op } from 'sequelize';
-import { isValidPostRequest, sequelize } from '../../../server/server';
-import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { CREDENTIAL_STUFFING_COPY } from '../../../server/credentialStuffing/copy';
-import { env } from '../../../env';
-import { LoginAttemptDbModel, LoginAttemptResult } from '../../../server/credentialStuffing/database';
+import { NextResponse } from 'next/server';
+import { env } from 'process';
+import { Severity, getAndValidateFingerprintResult } from '../../../../server/checks';
+import { CREDENTIAL_STUFFING_COPY } from '../../../../server/credentialStuffing/copy';
+import { LoginAttemptResult, LoginAttemptDbModel } from '../../../../server/credentialStuffing/database';
+import { sequelize } from '../../../../server/server';
 
 export type LoginPayload = {
   username: string;
@@ -32,30 +32,21 @@ function getKnownVisitorIds() {
   return visitorIdsFromEnv ? [...defaultVisitorIds, ...visitorIdsFromEnv] : defaultVisitorIds;
 }
 
-export default async function loginHandler(req: NextApiRequest, res: NextApiResponse) {
-  // This API route accepts only POST requests.
-  const reqValidation = isValidPostRequest(req);
-  if (!reqValidation.okay) {
-    res.status(405).send({ severity: 'error', message: reqValidation.error });
-    return;
-  }
-
-  const { requestId, username, password, visitorId: clientVisitorId } = req.body as LoginPayload;
+export async function POST(req: Request): Promise<NextResponse<LoginResponse>> {
+  const { requestId, username, password, visitorId: clientVisitorId } = (await req.json()) as LoginPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
   const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
   if (!fingerprintResult.okay) {
     logLoginAttempt(clientVisitorId, username, 'RequestIdValidationFailed');
-    res.status(403).send({ severity: 'error', message: fingerprintResult.error });
-    return;
+    return NextResponse.json({ message: fingerprintResult.error, severity: 'error' }, { status: 403 });
   }
 
   // Get visitorId from the Server API Identification event
   const visitorId = fingerprintResult.data.products?.identification?.data?.visitorId;
   if (!visitorId) {
     logLoginAttempt(clientVisitorId, username, 'RequestIdValidationFailed');
-    res.status(403).send({ severity: 'error', message: 'Visitor ID not found.' });
-    return;
+    return NextResponse.json({ message: 'Visitor ID not found.', severity: 'error' }, { status: 403 });
   }
 
   // If the visitor ID performed 5 unsuccessful login attempts during the last 24 hours we do not perform the login.
@@ -73,28 +64,31 @@ export default async function loginHandler(req: NextApiRequest, res: NextApiResp
   });
   if (failedLoginsToday.count >= 5) {
     logLoginAttempt(visitorId, username, 'TooManyLoginAttempts');
-    res.status(403).send({ severity: 'error', message: CREDENTIAL_STUFFING_COPY.tooManyAttempts });
-    return;
+    return NextResponse.json({ message: CREDENTIAL_STUFFING_COPY.tooManyAttempts, severity: 'error' }, { status: 403 });
   }
 
   // If the provided credentials are incorrect, we return an error.
   if (!credentialsAreCorrect(username, password)) {
     logLoginAttempt(visitorId, username, 'IncorrectCredentials');
-    res.status(403).send({ severity: 'error', message: CREDENTIAL_STUFFING_COPY.invalidCredentials });
-    return;
+    return NextResponse.json(
+      { message: CREDENTIAL_STUFFING_COPY.invalidCredentials, severity: 'error' },
+      { status: 403 },
+    );
   }
 
   // If the provided credentials are correct but the user never logged in using this browser,
   // we force the user to use multi-factor authentication (text message, email, authenticator app, etc.)
   if (!mockedUser.knownVisitorIds.includes(visitorId)) {
     logLoginAttempt(visitorId, username, 'UnknownBrowserEnforceMFA');
-    res.status(403).send({ severity: 'warning', message: CREDENTIAL_STUFFING_COPY.differentVisitorIdUseMFA });
-    return;
+    return NextResponse.json(
+      { message: CREDENTIAL_STUFFING_COPY.differentVisitorIdUseMFA, severity: 'warning' },
+      { status: 403 },
+    );
   }
 
   // If the provided credentials are correct and we recognize the browser, we log the user in
   logLoginAttempt(visitorId, username, 'Success');
-  res.status(200).send({ severity: 'success', message: CREDENTIAL_STUFFING_COPY.success });
+  return NextResponse.json({ message: CREDENTIAL_STUFFING_COPY.success, severity: 'success' });
 }
 
 // Dummy action simulating authentication.
