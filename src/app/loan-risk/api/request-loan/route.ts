@@ -3,7 +3,7 @@ import { Severity, getAndValidateFingerprintResult } from '../../../../server/ch
 import { NextResponse } from 'next/server';
 import { LoanRequestDbModel } from './database';
 import { LOAN_RISK_COPY } from './copy';
-import { calculateLoanValues as evaluateLoanRequest, LoanResult } from './calculate-loan-values';
+import { evaluateLoanRequest, LoanResult } from './evaluateLoanRequest';
 
 export type LoanRequestData = {
   firstName: string;

@@ -18,7 +18,7 @@ export type LoanResult = {
   approved: boolean;
 };
 
-export function calculateLoanValues({ loanValue, monthlyIncome, loanDuration }: LoanAsk): LoanResult {
+export function evaluateLoanRequest({ loanValue, monthlyIncome, loanDuration }: LoanAsk): LoanResult {
   const monthInstallment = calculateMonthInstallment({ loanValue, loanDuration });
   const remainingIncome = monthlyIncome - monthInstallment;
 

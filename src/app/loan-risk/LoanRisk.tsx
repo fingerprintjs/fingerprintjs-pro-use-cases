@@ -115,9 +115,9 @@ export function LoanRisk() {
     <UseCaseWrapper useCase={USE_CASES.loanRisk}>
       <div className={classNames(formStyles.wrapper, styles.formWrapper)}>
         <form
-          onSubmit={(event) => () => {
+          onSubmit={async (event) => {
             event.preventDefault();
-            requestLoan({
+            await requestLoan({
               firstName,
               lastName,
               loanValue,
