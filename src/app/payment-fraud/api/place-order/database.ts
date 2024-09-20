@@ -4,9 +4,9 @@ import { sequelize } from '../../../../server/server';
 interface PaymentAttemptAttributes
   extends Model<InferAttributes<PaymentAttemptAttributes>, InferCreationAttributes<PaymentAttemptAttributes>> {
   visitorId: string;
-  isChargebacked: boolean;
-  usedStolenCard: boolean;
-  checkResult: string;
+  filedChargeback: boolean;
+  usingStolenCard: boolean;
+  wasSuccessful: boolean;
   timestamp: number;
 }
 
@@ -14,14 +14,14 @@ export const PaymentAttemptDbModel = sequelize.define<PaymentAttemptAttributes>(
   visitorId: {
     type: DataTypes.STRING,
   },
-  isChargebacked: {
+  filedChargeback: {
     type: DataTypes.BOOLEAN,
   },
-  usedStolenCard: {
+  usingStolenCard: {
     type: DataTypes.BOOLEAN,
   },
-  checkResult: {
-    type: DataTypes.STRING,
+  wasSuccessful: {
+    type: DataTypes.BOOLEAN,
   },
   timestamp: {
     type: DataTypes.DATE,
@@ -29,5 +29,6 @@ export const PaymentAttemptDbModel = sequelize.define<PaymentAttemptAttributes>(
 });
 
 export type PaymentAttempt = Attributes<PaymentAttemptAttributes>;
+export type PaymentAttemptData = Omit<PaymentAttempt, 'timestamp'>;
 
 PaymentAttemptDbModel.sync({ force: false });

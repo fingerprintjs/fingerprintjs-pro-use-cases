@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult, Severity } from '../../../../server/checks';
-import { PaymentAttemptDbModel } from './database';
+import { PaymentAttemptData, PaymentAttemptDbModel } from './database';
 import { PAYMENT_FRAUD_COPY } from './copy';
 import { Op } from 'sequelize';
-import { checkResultType } from '../../../../server/checkResult';
 import { sequelize } from '../../../../server/server';
 
 type Card = {
@@ -23,17 +22,9 @@ function areCardDetailsCorrect(card: Card) {
   return card.number === mockedCard.number && card.expiration === mockedCard.expiration && card.cvv === mockedCard.cvv;
 }
 
-async function logPaymentAttempt(
-  visitorId: string,
-  isChargebacked: boolean,
-  usedStolenCard: boolean,
-  paymentAttemptCheckResult: string,
-) {
+async function savePaymentAttempt(paymentAttempt: PaymentAttemptData) {
   await PaymentAttemptDbModel.create({
-    visitorId,
-    isChargebacked,
-    usedStolenCard,
-    checkResult: paymentAttemptCheckResult,
+    ...paymentAttempt,
     timestamp: new Date().getTime(),
   });
   await sequelize.sync();
@@ -41,11 +32,9 @@ async function logPaymentAttempt(
 
 export type PaymentPayload = {
   requestId: string;
-  applyChargeback: boolean;
+  filedChargeback: boolean;
   usingStolenCard: boolean;
-  cardNumber: string;
-  cardCvv: string;
-  cardExpiration: string;
+  card: Card;
 };
 
 export type PaymentResponse = {
@@ -54,8 +43,7 @@ export type PaymentResponse = {
 };
 
 export async function POST(req: Request): Promise<NextResponse<PaymentResponse>> {
-  const { requestId, applyChargeback, usingStolenCard, cardNumber, cardCvv, cardExpiration } =
-    (await req.json()) as PaymentPayload;
+  const { requestId, filedChargeback, usingStolenCard, card } = (await req.json()) as PaymentPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
   const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
@@ -70,12 +58,7 @@ export async function POST(req: Request): Promise<NextResponse<PaymentResponse>>
   }
 
   // If this visitor ID ever paid with a stolen credit card, do not process the payment
-  const usedStolenCreditCard = await PaymentAttemptDbModel.findOne({
-    where: {
-      visitorId,
-      usedStolenCard: true,
-    },
-  });
+  const usedStolenCreditCard = await PaymentAttemptDbModel.findOne({ where: { visitorId, usingStolenCard: true } });
   if (usedStolenCreditCard) {
     return NextResponse.json({ severity: 'error', message: PAYMENT_FRAUD_COPY.stolenCard }, { status: 403 });
   }
@@ -83,13 +66,7 @@ export async function POST(req: Request): Promise<NextResponse<PaymentResponse>>
   // If the visitor ID filed more than 1 chargeback in the last year, do not process the payment.
   // (Adjust the number for you use case)
   const chargebacksFiledPastYear = await PaymentAttemptDbModel.findAndCountAll({
-    where: {
-      visitorId,
-      isChargebacked: true,
-      timestamp: {
-        [Op.gt]: new Date().getTime() - 365 * 24 * 60 * 1000,
-      },
-    },
+    where: { visitorId, filedChargeback: true, timestamp: { [Op.gt]: new Date().getTime() - 365 * 24 * 60 * 1000 } },
   });
   if (chargebacksFiledPastYear.count > 1) {
     return NextResponse.json({ severity: 'error', message: PAYMENT_FRAUD_COPY.previousChargeback }, { status: 403 });
@@ -99,12 +76,8 @@ export async function POST(req: Request): Promise<NextResponse<PaymentResponse>>
   const invalidPaymentsPastYear = await PaymentAttemptDbModel.findAndCountAll({
     where: {
       visitorId,
-      timestamp: {
-        [Op.gt]: new Date().getTime() - 365 * 24 * 60 * 1000,
-      },
-      checkResult: {
-        [Op.not]: checkResultType.Passed,
-      },
+      timestamp: { [Op.gt]: new Date().getTime() - 365 * 24 * 60 * 1000 },
+      wasSuccessful: false,
     },
   });
   if (invalidPaymentsPastYear.count > 2) {
@@ -114,13 +87,11 @@ export async function POST(req: Request): Promise<NextResponse<PaymentResponse>>
     );
   }
 
-  // TODO: Fix and refactor this
-
-  if (!areCardDetailsCorrect({ number: cardNumber, expiration: cardExpiration, cvv: cardCvv })) {
-    logPaymentAttempt(visitorId, applyChargeback, usingStolenCard, 'Incorrect card details');
+  if (!areCardDetailsCorrect(card)) {
+    savePaymentAttempt({ visitorId, filedChargeback, usingStolenCard, wasSuccessful: false });
     return NextResponse.json({ severity: 'error', message: PAYMENT_FRAUD_COPY.incorrectCardDetails }, { status: 403 });
   } else {
-    logPaymentAttempt(visitorId, applyChargeback, usingStolenCard, 'Successful payment');
+    savePaymentAttempt({ visitorId, filedChargeback, usingStolenCard, wasSuccessful: true });
     return NextResponse.json({ severity: 'success', message: PAYMENT_FRAUD_COPY.successfulPayment }, { status: 200 });
   }
 }
