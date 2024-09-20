@@ -1,5 +1,5 @@
 import { Model, InferAttributes, InferCreationAttributes, DataTypes, Attributes } from 'sequelize';
-import { sequelize } from '../server';
+import { sequelize } from '../../../../server/server';
 
 interface LoanRequestAttributes
   extends Model<InferAttributes<LoanRequestAttributes>, InferCreationAttributes<LoanRequestAttributes>> {

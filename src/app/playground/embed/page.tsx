@@ -4,6 +4,6 @@ import { Playground } from '../Playground';
 
 export const metadata = generateUseCaseMetadata(PLAYGROUND_METADATA);
 
-export default function VpnDetectionPage() {
+export default function PlaygroundPage() {
   return <Playground />;
 }
