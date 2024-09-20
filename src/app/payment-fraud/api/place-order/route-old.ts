@@ -6,56 +6,18 @@ import {
   messageSeverity,
   reportSuspiciousActivity,
   sequelize,
-} from '../../../server/server';
-import { CheckResult, checkResultType } from '../../../server/checkResult';
+} from '../../../../server/server';
+import { CheckResult, checkResultType } from '../../../../server/checkResult';
 import {
   RuleCheck,
   checkConfidenceScore,
   checkFreshIdentificationRequest,
   checkIpAddressIntegrity,
   checkOriginsIntegrity,
-} from '../../../server/checks';
-import { sendForbiddenResponse, sendOkResponse } from '../../../server/response';
+} from '../../../../server/checks';
+import { sendForbiddenResponse, sendOkResponse } from '../../../../server/response';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { PAYMENT_FRAUD_COPY } from '../../../server/paymentFraud/copy';
-
-interface PaymentAttemptAttributes
-  extends Model<InferAttributes<PaymentAttemptAttributes>, InferCreationAttributes<PaymentAttemptAttributes>> {
-  visitorId: string;
-  isChargebacked: boolean;
-  usedStolenCard: boolean;
-  checkResult: string;
-  timestamp: number;
-}
-
-export const PaymentAttemptDbModel = sequelize.define<PaymentAttemptAttributes>('payment-attempt', {
-  visitorId: {
-    type: DataTypes.STRING,
-  },
-  isChargebacked: {
-    type: DataTypes.BOOLEAN,
-  },
-  usedStolenCard: {
-    type: DataTypes.BOOLEAN,
-  },
-  checkResult: {
-    type: DataTypes.STRING,
-  },
-  timestamp: {
-    type: DataTypes.DATE,
-  },
-});
-
-export type PaymentAttempt = Attributes<PaymentAttemptAttributes>;
-
-// Mocked credit card details.
-const mockedCard = {
-  number: '4242 4242 4242 4242',
-  expiration: '04/28',
-  cvv: '123',
-};
-
-PaymentAttemptDbModel.sync({ force: false });
+import { PAYMENT_FRAUD_COPY } from './copy';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // This API route accepts only POST requests.

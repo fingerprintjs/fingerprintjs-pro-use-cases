@@ -1,5 +1,5 @@
 import { isValidPostRequest } from '../../../server/server';
-import { PaymentAttemptDbModel } from '../payment-fraud/place-order';
+import { PaymentAttemptDbModel } from '../../../app/payment-fraud/api/place-order/route-old';
 import {
   UserCartItemDbModel,
   UserPreferencesDbModel,

@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import React from 'react';
@@ -7,13 +9,12 @@ import Button from '../../client/components/common/Button/Button';
 import styles from './paymentFraud.module.scss';
 import formStyles from '../../styles/forms.module.scss';
 import { Alert } from '../../client/components/common/Alert/Alert';
-import { CustomPageProps } from '../_app';
 import classNames from 'classnames';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
 import { Severity } from '../../server/checks';
 
-export default function Index({ embed }: CustomPageProps) {
+export function PaymentFraud() {
   const { getData } = useVisitorData(
     { ignoreCache: true },
     {
@@ -69,7 +70,7 @@ export default function Index({ embed }: CustomPageProps) {
   }
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.paymentFraud} embed={embed}>
+    <UseCaseWrapper useCase={USE_CASES.paymentFraud}>
       <div className={formStyles.wrapper}>
         <form onSubmit={handleSubmit} className={classNames(formStyles.useCaseForm, styles.paymentForm)}>
           <label>Card Number</label>
