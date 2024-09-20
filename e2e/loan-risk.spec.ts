@@ -1,7 +1,7 @@
 import { Page, expect, test } from '@playwright/test';
 import { blockGoogleTagManager, resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
-import { LOAN_RISK_COPY } from '../src/server/loan-risk/copy';
+import { LOAN_RISK_COPY } from '../src/app/loan-risk/api/request-loan/copy';
 
 const testIds = TEST_IDS.loanRisk;
 

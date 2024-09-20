@@ -5,7 +5,7 @@ import {
   UserPreferencesDbModel,
   UserSearchHistoryDbModel,
 } from '../../../server/personalization/database';
-import { LoanRequestDbModel } from '../../../server/loan-risk/database';
+import { LoanRequestDbModel } from '../../../app/loan-risk/api/request-loan/database';
 import { ArticleViewDbModel } from '../../../server/paywall/database';
 import { CouponClaimDbModel } from '../../../server/coupon-fraud/database';
 import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';

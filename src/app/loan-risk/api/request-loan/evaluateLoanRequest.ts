@@ -1,4 +1,4 @@
-import { calculateMonthInstallment } from '../../shared/loan-risk/calculate-month-installment';
+import { calculateMonthInstallment } from '../../../../shared/loan-risk/calculate-month-installment';
 
 /**
  * Required minimal income.
@@ -12,7 +12,13 @@ type LoanAsk = {
   loanDuration: number;
 };
 
-export function calculateLoanValues({ loanValue, monthlyIncome, loanDuration }: LoanAsk) {
+export type LoanResult = {
+  monthInstallment: number;
+  remainingIncome: number;
+  approved: boolean;
+};
+
+export function evaluateLoanRequest({ loanValue, monthlyIncome, loanDuration }: LoanAsk): LoanResult {
   const monthInstallment = calculateMonthInstallment({ loanValue, loanDuration });
   const remainingIncome = monthlyIncome - monthInstallment;
 
