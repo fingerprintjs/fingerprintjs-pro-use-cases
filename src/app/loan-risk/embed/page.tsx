@@ -4,6 +4,6 @@ import { LoanRisk } from '../LoanRisk';
 
 export const metadata = generateUseCaseMetadata(USE_CASES.loanRisk);
 
-export default function VpnDetectionPage() {
+export default function LoanRiskPage() {
   return <LoanRisk />;
 }
