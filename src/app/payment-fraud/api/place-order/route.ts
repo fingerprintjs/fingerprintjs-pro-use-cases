@@ -64,7 +64,7 @@ export async function POST(req: Request): Promise<NextResponse<PaymentResponse>>
   }
 
   // If the visitor ID filed more than 1 chargeback in the last year, do not process the payment.
-  // (Adjust the number for you use case)
+  // (Adjust the numbers for you use case)
   const chargebacksFiledPastYear = await PaymentAttemptDbModel.findAndCountAll({
     where: { visitorId, filedChargeback: true, timestamp: { [Op.gt]: new Date().getTime() - 365 * 24 * 60 * 1000 } },
   });
@@ -87,6 +87,7 @@ export async function POST(req: Request): Promise<NextResponse<PaymentResponse>>
     );
   }
 
+  // Check the card details and perform payment if they are correct, log the payment attempt in either case
   if (!areCardDetailsCorrect(card)) {
     savePaymentAttempt({ visitorId, filedChargeback, usingStolenCard, wasSuccessful: false });
     return NextResponse.json({ severity: 'error', message: PAYMENT_FRAUD_COPY.incorrectCardDetails }, { status: 403 });
