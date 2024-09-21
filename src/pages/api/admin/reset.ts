@@ -1,5 +1,4 @@
 import { isValidPostRequest } from '../../../server/server';
-import { PaymentAttemptDbModel } from '../../../app/payment-fraud/api/place-order/route-old';
 import {
   UserCartItemDbModel,
   UserPreferencesDbModel,
@@ -14,6 +13,7 @@ import { deleteBlockedIp } from '../../../server/botd-firewall/blockedIpsDatabas
 import { syncFirewallRuleset } from '../../../server/botd-firewall/cloudflareApiHelper';
 import { SmsVerificationDatabaseModel } from '../../../server/sms-pumping/database';
 import { LoginAttemptDbModel } from '../../../server/credentialStuffing/database';
+import { PaymentAttemptDbModel } from '../../../app/payment-fraud/api/place-order/database';
 
 export type ResetResponse = {
   message: string;
