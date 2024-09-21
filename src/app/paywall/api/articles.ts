@@ -1,7 +1,6 @@
 /**
  * Mock articles "database". In the real world, these articles could be fetched from anywhere.
  * */
-
 import ArticleHeroSvg from './images/articleHero.svg';
 import GenericAvatarImage from './images/genericAvatar.png';
 

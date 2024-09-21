@@ -1,11 +1,11 @@
 import classNames from 'classnames';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { FunctionComponent } from 'react';
-import { ArticleData } from '../../../server/paywall/articles';
-import { TEST_IDS } from '../../testIDs';
+import { TEST_IDS } from '../../../client/testIDs';
 import Image from 'next/image';
 import styles from './articleGrid.module.scss';
 import BylineDot from './dot.svg';
+import { ArticleData } from '../api/articles';
 
 function calculateReadingTime(text: string[], wordsPerMinute = 200) {
   const words = text

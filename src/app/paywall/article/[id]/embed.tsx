@@ -1,5 +1,5 @@
 import { GetStaticProps } from 'next';
-import Article from '.';
+import Article from './page';
 import { CustomPageProps } from '../../../_app';
 import { ARTICLES } from '../../../../server/paywall/articles';
 
