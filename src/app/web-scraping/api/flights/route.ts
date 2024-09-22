@@ -30,7 +30,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<FlightsRespon
     options: { minConfidenceScore: 0.5 },
   });
   if (!fingerprintResult.okay) {
-    return NextResponse.json({ severity: 'error', message: fingerprintResult.error });
+    return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });
   }
 
   const identification = fingerprintResult.data.products?.identification?.data;
@@ -51,18 +51,18 @@ export async function POST(req: NextRequest): Promise<NextResponse<FlightsRespon
     // Optionally, here you could also save the bot's IP address to a blocklist in your database
     // and block all requests from this IP address in the future at a web server/firewall level.
     saveBotVisit(botData, identification?.visitorId ?? 'N/A');
-    return NextResponse.json({
-      severity: 'error',
-      message: '🤖 Malicious bot detected, access denied.',
-    });
+    return NextResponse.json(
+      { severity: 'error', message: '🤖 Malicious bot detected, access denied.' },
+      { status: 403 },
+    );
   }
 
   // Check for unexpected bot detection value, just in case
   if (!['notDetected', 'good'].includes(botData.bot?.result)) {
-    return NextResponse.json({
-      severity: 'error',
-      message: 'Server error, unexpected bot detection value.',
-    });
+    return NextResponse.json(
+      { severity: 'error', message: 'Server error, unexpected bot detection value.' },
+      { status: 500 },
+    );
   }
 
   // All checks passed, allow access
