@@ -14,7 +14,6 @@ import { ArticleGrid, Byline } from '../../components/ArticleGrid';
 import { BackArrow } from '../../../../client/components/common/BackArrow/BackArrow';
 import { ArticleRequestPayload, ArticleResponse } from '../../api/article/[id]/route';
 import { ARTICLES } from '../../api/articles';
-import { PAYWALL_COPY } from '../../api/copy';
 
 function ArticleSkeleton({ animation = false }: { animation?: SkeletonTypeMap['props']['animation'] }) {
   const skeletons = Array.from({ length: 4 }).map((_, index) => <Skeleton key={index} animation={animation} />);
@@ -26,16 +25,19 @@ export function Article({ articleId, embed }: { articleId: string; embed: boolea
     ignoreCache: true,
   });
 
-  const { data: articleData } = useQuery<ArticleResponse>(['GET_ARTICLE_QUERY', articleId], async () => {
-    const { requestId } = await getVisitorData();
-    const response = await fetch(`/paywall/api/article/${articleId}`, {
-      method: 'POST',
-      body: JSON.stringify({ requestId } satisfies ArticleRequestPayload),
-    });
-    return await response.json();
-  });
+  const { data: articleData, error: articleError } = useQuery<ArticleRequestPayload, Error, ArticleResponse>(
+    ['GET_ARTICLE_QUERY', articleId],
+    async () => {
+      const { requestId } = await getVisitorData();
+      const response = await fetch(`/paywall/api/article/${articleId}`, {
+        method: 'POST',
+        body: JSON.stringify({ requestId } satisfies ArticleRequestPayload),
+      });
+      return await response.json();
+    },
+  );
 
-  const { article, remainingViews } = articleData ?? {};
+  const { article } = articleData ?? {};
   const returnUrl = `/paywall${embed ? '/embed' : ''}`;
   const relatedArticles = ARTICLES.filter((article) => article.id !== articleId).slice(0, 4);
 
@@ -44,14 +46,8 @@ export function Article({ articleId, embed }: { articleId: string; embed: boolea
       <div className={styles.articleContainer}>
         <BackArrow as='Link' href={returnUrl} label='Back to articles' testId={TEST_IDS.paywall.goBack} />
         {!articleData && <ArticleSkeleton animation='wave' />}
-        {articleData && articleData.message && articleData.severity !== 'success' && (
-          <Alert severity={articleData.severity}>{articleData.message}</Alert>
-        )}
-        {articleData && articleData.severity === 'success' && remainingViews !== undefined && (
-          <Alert severity='warning'>
-            {remainingViews > 0 ? PAYWALL_COPY.nArticlesRemaining(remainingViews) : PAYWALL_COPY.lastArticle}
-          </Alert>
-        )}
+        {articleData && articleData.message && <Alert severity={articleData.severity}>{articleData.message}</Alert>}
+        {articleError && <Alert severity='error'>{articleError.message}</Alert>}
         {article && (
           <div className={styles.article} data-testid={TEST_IDS.paywall.articleContent}>
             <Image src={article.image} alt={article.title} sizes='100vw' className={styles.articleImage} />

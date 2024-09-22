@@ -70,12 +70,13 @@ export async function POST(
   // Otherwise, save the article view and return the article
   await saveArticleView(articleId, visitorId);
   const newViewCount = viewedThisArticleBefore ? oldViewCount : oldViewCount + 1;
+  const articlesRemaining = ARTICLE_VIEW_LIMIT - newViewCount;
   return NextResponse.json({
-    severity: 'success',
-    message: 'Article viewed',
+    severity: 'warning',
+    message: articlesRemaining > 0 ? PAYWALL_COPY.nArticlesRemaining(articlesRemaining) : PAYWALL_COPY.lastArticle,
     article,
-    remainingViews: ARTICLE_VIEW_LIMIT - newViewCount,
-    viewedArticles: newViewCount,
+    articlesRemaining,
+    articlesViewed: newViewCount,
   });
 }
 
