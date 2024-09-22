@@ -4,6 +4,7 @@ import { ArticleData, ARTICLES } from '../../articles';
 import { ArticleViewDbModel } from '../../database';
 import { getTodayDateRange } from '../../../../../shared/utils/date';
 import { Op } from 'sequelize';
+import { PAYWALL_COPY } from '../../copy';
 
 export type ArticleResponse = {
   message: string;
@@ -16,6 +17,8 @@ export type ArticleResponse = {
 export type ArticleRequestPayload = {
   requestId: string;
 };
+
+const ARTICLE_VIEW_LIMIT = 2;
 
 /**
  * Fetches article by its ID. Supports paywall logic, which means that we keep track of how many articles were viewed by a given user.
@@ -45,29 +48,41 @@ export async function POST(
     return NextResponse.json({ severity: 'error', message: 'Article not found' }, { status: 404 });
   }
 
-  const viewCount = await countViewedArticles(visitorId);
-  const viewedThisArticleBefore = await isRereadingAlreadyViewedArticle(visitorId, articleId);
+  // Check how many articles were viewed by this visitor ID today
+  const oldViewCount = await ArticleViewDbModel.count({
+    where: { visitorId, timestamp: { [Op.between]: getTodayDateRange() } },
+  });
 
-  if (viewCount >= ARTICLE_VIEW_LIMIT && !viewedThisArticleBefore) {
-    return NextResponse.json({ severity: 'error', message: 'Article view limit reached' }, { status: 403 });
+  // Check if this visitor has already viewed this specific article
+  const viewedThisArticleBefore = await ArticleViewDbModel.findOne({
+    where: {
+      visitorId,
+      articleId,
+      timestamp: { [Op.between]: getTodayDateRange() },
+    },
+  });
+
+  // If the visitor is trying to view a new article beyond the daily limit, return an error
+  if (oldViewCount >= ARTICLE_VIEW_LIMIT && !viewedThisArticleBefore) {
+    return NextResponse.json({ severity: 'error', message: PAYWALL_COPY.limitReached }, { status: 403 });
   }
 
+  // Otherwise, save the article view and return the article
   await saveArticleView(articleId, visitorId);
+  const newViewCount = viewedThisArticleBefore ? oldViewCount : oldViewCount + 1;
   return NextResponse.json({
     severity: 'success',
     message: 'Article viewed',
     article,
-    remainingViews: ARTICLE_VIEW_LIMIT - viewCount,
-    viewedArticles: viewCount,
+    remainingViews: ARTICLE_VIEW_LIMIT - newViewCount,
+    viewedArticles: newViewCount,
   });
 }
 
-export const ARTICLE_VIEW_LIMIT = 2;
-
 /**
  * Saves article view into the database. If it already exists, we update its timestamp.
- * */
-export async function saveArticleView(articleId: string, visitorId: string) {
+ */
+async function saveArticleView(articleId: string, visitorId: string) {
   const [view, created] = await ArticleViewDbModel.findOrCreate({
     where: { articleId, visitorId, timestamp: { [Op.between]: getTodayDateRange() } },
     defaults: { articleId, visitorId, timestamp: new Date() },
@@ -77,32 +92,5 @@ export async function saveArticleView(articleId: string, visitorId: string) {
     view.timestamp = new Date();
     await view.save();
   }
-
   return view;
-}
-
-/**
- * Returns count of all articles that were viewed by given visitorId today.
- * */
-export async function countViewedArticles(visitorId: string) {
-  return await ArticleViewDbModel.count({
-    where: { visitorId, timestamp: { [Op.between]: getTodayDateRange() } },
-  });
-}
-
-/**
- * Check if the visitor is re-reading an article they already viewed.
- * */
-export async function isRereadingAlreadyViewedArticle(visitorId: string, articleId: string) {
-  return Boolean(
-    ArticleViewDbModel.findOne({
-      where: {
-        visitorId,
-        articleId,
-        timestamp: {
-          [Op.between]: getTodayDateRange(),
-        },
-      },
-    }),
-  );
 }
