@@ -5,5 +5,5 @@ import Paywall from './Paywall';
 export const metadata = generateUseCaseMetadata(USE_CASES.paywall);
 
 export default function PaywallPage() {
-  return <Paywall />;
+  return <Paywall embed={false} />;
 }

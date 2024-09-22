@@ -36,7 +36,7 @@ export const Byline = ({ article, includeReadingTime }: { article: ArticleData; 
  */
 type ArticleCardProps = {
   article: ArticleData;
-  embed?: boolean;
+  embed: boolean;
   isHeroArticle?: boolean;
 };
 
@@ -66,7 +66,7 @@ export const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article, embe
   );
 };
 
-export const ArticleGrid: FunctionComponent<{ articles: ArticleData[]; embed?: boolean }> = ({ articles, embed }) => {
+export const ArticleGrid: FunctionComponent<{ articles: ArticleData[]; embed: boolean }> = ({ articles, embed }) => {
   return (
     <div className={styles.articles}>
       {articles.map((article) => (
