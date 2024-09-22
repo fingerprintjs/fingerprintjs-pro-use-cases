@@ -2,9 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
 import { isValidPostRequest } from '../../../server/server';
 import { ONE_DAY_MS, FIVE_MINUTES_MS, ONE_HOUR_MS } from '../../../shared/timeUtils';
-import { AIRPORTS } from '../../web-scraping';
 import { Flight } from '../../../client/components/web-scraping/FlightCard';
 import { saveBotVisit } from '../../../server/botd-firewall/botVisitDatabase';
+import { AIRPORTS } from '../../../app/web-scraping/WebScraping';
 
 const roundToFiveMinutes = (time: number) => Math.round(time / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
 

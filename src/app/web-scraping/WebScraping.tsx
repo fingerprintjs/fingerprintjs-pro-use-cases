@@ -1,13 +1,13 @@
+'use client';
+
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import FlightCard, { Flight } from '../../client/components/web-scraping/FlightCard';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useQueryState } from 'next-usequerystate';
 import { useQuery, UseQueryResult } from 'react-query';
-import { GetServerSideProps, NextPage } from 'next';
-import { FlightQuery } from '../api/web-scraping/flights';
+import { GetServerSideProps } from 'next';
 import { CheckResultObject } from '../../server/checkResult';
 import { USE_CASES } from '../../client/components/common/content';
-import { CustomPageProps } from '../_app';
 import { Select, SelectItem } from '../../client/components/common/Select/Select';
 import ArrowIcon from '../../client/img/arrowRight.svg';
 import Image from 'next/image';
@@ -15,6 +15,9 @@ import styles from './webScraping.module.scss';
 import Button from '../../client/components/common/Button/Button';
 import { Alert } from '../../client/components/common/Alert/Alert';
 import { Spinner } from '../../client/components/common/Spinner/Spinner';
+import { FlightQuery } from '../../pages/api/web-scraping/flights';
+import { FunctionComponent } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 // Make URL query object available as props to the page on first render
 // to read `from`, `to` params and a `disableBotDetection` param for testing and demo purposes
@@ -66,14 +69,14 @@ type QueryAsProps = {
   disableBotDetection: boolean;
 };
 
-export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
-  from,
-  to,
-  disableBotDetection,
-  embed,
-}) => {
-  const [fromCode, setFromCode] = useQueryState('from', { defaultValue: from?.toUpperCase() ?? AIRPORTS[0].code });
-  const [toCode, setToCode] = useQueryState('to', { defaultValue: to?.toUpperCase() ?? AIRPORTS[1].code });
+export const WebScrapingUseCase: FunctionComponent = () => {
+  const searchParams = useSearchParams();
+  const [fromCode, setFromCode] = useQueryState('from', {
+    defaultValue: searchParams?.get('from')?.toUpperCase() ?? AIRPORTS[0].code,
+  });
+  const [toCode, setToCode] = useQueryState('to', {
+    defaultValue: searchParams?.get('to')?.toUpperCase() ?? AIRPORTS[1].code,
+  });
 
   /**
    * We use the Fingerprint Pro React SDK hook to get visitor data (https://github.com/fingerprintjs/fingerprintjs-pro-react)
@@ -106,8 +109,8 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
           from: fromCode,
           to: toCode,
           requestId,
-          disableBotDetection,
-        } as FlightQuery),
+          disableBotDetection: Boolean(searchParams?.get('disableBotDetection')),
+        } satisfies FlightQuery),
       });
       if (response.status < 500) {
         return await response.json();
@@ -125,7 +128,7 @@ export const WebScrapingUseCase: NextPage<QueryAsProps & CustomPageProps> = ({
 
   return (
     <>
-      <UseCaseWrapper useCase={USE_CASES.webScraping} embed={embed}>
+      <UseCaseWrapper useCase={USE_CASES.webScraping}>
         <h2 className={styles.searchTitle}>Search for today&apos;s flights</h2>
         <form
           onSubmit={(event) => {
@@ -203,5 +206,3 @@ const Results = ({ data, isFetching, error }: UseQueryResult<FlightQueryResult, 
     </div>
   );
 };
-
-export default WebScrapingUseCase;
