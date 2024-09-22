@@ -1,9 +1,9 @@
 import { Severity, getAndValidateFingerprintResult } from '../../../../server/checks';
 import { ONE_DAY_MS, FIVE_MINUTES_MS, ONE_HOUR_MS } from '../../../../shared/timeUtils';
-import { Flight } from '../../../../client/components/web-scraping/FlightCard';
 import { saveBotVisit } from '../../../../server/botd-firewall/botVisitDatabase';
 import { NextRequest, NextResponse } from 'next/server';
 import { AIRPORTS } from '../../data/airports';
+import { Flight } from '../../components/FlightCard';
 
 const roundToFiveMinutes = (time: number) => Math.round(time / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
 

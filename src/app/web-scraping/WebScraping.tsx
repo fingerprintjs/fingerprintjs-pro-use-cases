@@ -1,7 +1,6 @@
 'use client';
 
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import FlightCard, { Flight } from '../../client/components/web-scraping/FlightCard';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useQueryState } from 'next-usequerystate';
 import { useQuery, UseQueryResult } from 'react-query';
@@ -15,13 +14,14 @@ import Button from '../../client/components/common/Button/Button';
 import { Alert } from '../../client/components/common/Alert/Alert';
 import { Spinner } from '../../client/components/common/Spinner/Spinner';
 import { FlightQuery } from './api/flights/route';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AIRPORTS } from './data/airports';
+import { Flight, FlightCard } from './components/FlightCard';
 
 type FlightQueryResult = CheckResultObject<Flight[]>;
 
-export const WebScrapingUseCase: FunctionComponent = () => {
+const WebScraping: FunctionComponent = () => {
   const searchParams = useSearchParams();
   const [fromCode, setFromCode] = useQueryState('from', {
     defaultValue: searchParams?.get('from')?.toUpperCase() ?? AIRPORTS[0].code,
@@ -125,6 +125,15 @@ export const WebScrapingUseCase: FunctionComponent = () => {
         <Results {...getFlightsQuery} />
       </UseCaseWrapper>
     </>
+  );
+};
+
+export const WebScrapingUseCase = () => {
+  // Suspense required due to useSearchParams() https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
+  return (
+    <Suspense>
+      <WebScraping />
+    </Suspense>
   );
 };
 
