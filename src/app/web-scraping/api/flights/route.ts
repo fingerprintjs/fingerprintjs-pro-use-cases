@@ -1,10 +1,9 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
-import { isValidPostRequest } from '../../../server/server';
-import { ONE_DAY_MS, FIVE_MINUTES_MS, ONE_HOUR_MS } from '../../../shared/timeUtils';
-import { Flight } from '../../../client/components/web-scraping/FlightCard';
-import { saveBotVisit } from '../../../server/botd-firewall/botVisitDatabase';
-import { AIRPORTS } from '../../../app/web-scraping/WebScraping';
+import { Severity, getAndValidateFingerprintResult } from '../../../../server/checks';
+import { ONE_DAY_MS, FIVE_MINUTES_MS, ONE_HOUR_MS } from '../../../../shared/timeUtils';
+import { Flight } from '../../../../client/components/web-scraping/FlightCard';
+import { saveBotVisit } from '../../../../server/botd-firewall/botVisitDatabase';
+import { NextRequest, NextResponse } from 'next/server';
+import { AIRPORTS } from '../../data/airports';
 
 const roundToFiveMinutes = (time: number) => Math.round(time / FIVE_MINUTES_MS) * FIVE_MINUTES_MS;
 
@@ -21,21 +20,17 @@ export type FlightsResponse = {
   data?: Flight[];
 };
 
-export default async function getFlights(req: NextApiRequest, res: NextApiResponse<FlightsResponse>) {
-  // This API route accepts only POST requests.
-  const reqValidation = isValidPostRequest(req);
-  if (!reqValidation.okay) {
-    res.status(405).send({ severity: 'error', message: reqValidation.error });
-    return;
-  }
-
-  const { from, to, requestId, disableBotDetection } = req.body as FlightQuery;
+export async function POST(req: NextRequest): Promise<NextResponse<FlightsResponse>> {
+  const { from, to, requestId, disableBotDetection } = (await req.json()) as FlightQuery;
 
   // Get the full Identification and Bot Detection result from Fingerprint Server API and validate its authenticity
-  const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
+  const fingerprintResult = await getAndValidateFingerprintResult({
+    requestId,
+    req,
+    options: { minConfidenceScore: 0.5 },
+  });
   if (!fingerprintResult.okay) {
-    res.status(403).send({ severity: 'error', message: fingerprintResult.error });
-    return;
+    return NextResponse.json({ severity: 'error', message: fingerprintResult.error });
   }
 
   const identification = fingerprintResult.data.products?.identification?.data;
@@ -44,35 +39,34 @@ export default async function getFlights(req: NextApiRequest, res: NextApiRespon
   // Backdoor for demo and testing purposes
   // If bot detection is disabled, just send the result
   if (!botData || disableBotDetection) {
-    res
-      .status(200)
-      .send({ severity: 'success', message: 'Bot detection is disabled.', data: getFlightResults(from, to) });
-    return;
+    return NextResponse.json({
+      severity: 'success',
+      message: 'Bot detection is disabled.',
+      data: getFlightResults(from, to),
+    });
   }
 
   // If a bot is detected, return an error
   if (botData.bot?.result === 'bad') {
-    res.status(403).send({
-      severity: 'error',
-      message: '🤖 Malicious bot detected, access denied.',
-    });
     // Optionally, here you could also save the bot's IP address to a blocklist in your database
     // and block all requests from this IP address in the future at a web server/firewall level.
     saveBotVisit(botData, identification?.visitorId ?? 'N/A');
-    return;
+    return NextResponse.json({
+      severity: 'error',
+      message: '🤖 Malicious bot detected, access denied.',
+    });
   }
 
   // Check for unexpected bot detection value, just in case
   if (!['notDetected', 'good'].includes(botData.bot?.result)) {
-    res.status(500).send({
+    return NextResponse.json({
       severity: 'error',
       message: 'Server error, unexpected bot detection value.',
     });
-    return;
   }
 
   // All checks passed, allow access
-  res.status(200).send({
+  return NextResponse.json({
     severity: 'success',
     message: 'No malicious bot nor spoofing detected, access allowed.',
     data: getFlightResults(from, to),
