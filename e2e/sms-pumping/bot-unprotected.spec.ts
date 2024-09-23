@@ -1,14 +1,15 @@
 import { expect, test } from '@playwright/test';
 import { TEST_IDS } from '../../src/client/testIDs';
-import {
-  MAX_SMS_ATTEMPTS,
-  SMS_ATTEMPT_TIMEOUT_MAP,
-  SMS_FRAUD_COPY,
-  TEST_PHONE_NUMBER,
-} from '../../src/server/sms-pumping/smsPumpingConst';
+
 import { assertAlert, assertSnackbar, blockGoogleTagManager, resetScenarios } from '../e2eTestUtils';
 import { ONE_MINUTE_MS } from '../../src/shared/timeUtils';
 import { TEST_BUILD } from '../../src/envShared';
+import {
+  SMS_FRAUD_COPY,
+  TEST_PHONE_NUMBER,
+  MAX_SMS_ATTEMPTS,
+  SMS_ATTEMPT_TIMEOUT_MAP,
+} from '../../src/app/sms-pumping/api/smsPumpingConst';
 
 const TEST_ID = TEST_IDS.smsFraud;
 
