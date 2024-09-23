@@ -16,9 +16,9 @@ import { SubmitCodeForm } from './components/SubmitCodeForm';
 import { PhoneNumberForm } from './components/PhoneNumberForm';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useMutation } from 'react-query';
-import { TEST_PHONE_NUMBER } from '../../server/sms-pumping/smsPumpingConst';
 import { useSearchParams } from 'next/navigation';
 import { SendSMSPayload, SendSMSResponse } from './api/send-verification-sms/route';
+import { TEST_PHONE_NUMBER } from './api/smsPumpingConst';
 
 type FormStep = 'Send SMS' | 'Submit code';
 type QueryAsProps = {
@@ -53,7 +53,7 @@ export const useSendMessage = ({ onSuccess, disableBotDetection = false }: SendM
     mutationKey: 'sendSms',
     mutationFn: async ({ phoneNumber, email }) => {
       const { requestId } = await getData();
-      const response = await fetch(`/api/sms-pumping/send-verification-sms`, {
+      const response = await fetch(`/sms-pumping/api/send-verification-sms`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

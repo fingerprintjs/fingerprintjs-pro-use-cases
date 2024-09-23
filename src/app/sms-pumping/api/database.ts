@@ -1,5 +1,5 @@
-import { sequelize } from '../server';
 import { Attributes, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
+import { sequelize } from '../../../server/server';
 
 interface SmsVerificationAttributes
   extends Model<InferAttributes<SmsVerificationAttributes>, InferCreationAttributes<SmsVerificationAttributes>> {

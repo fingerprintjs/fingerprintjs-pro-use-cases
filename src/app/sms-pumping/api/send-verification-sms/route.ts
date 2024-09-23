@@ -1,19 +1,19 @@
 import { Severity, getAndValidateFingerprintResult } from '../../../../server/checks';
-import { RealSmsPerVisitorModel, SmsVerificationDatabaseModel } from '../../../../server/sms-pumping/database';
 import { ONE_SECOND_MS, readableMilliseconds } from '../../../../shared/timeUtils';
 import { Op } from 'sequelize';
 import { pluralize } from '../../../../shared/utils';
 import Twilio from 'twilio';
 import { hashString } from '../../../../server/server-utils';
-import {
-  SMS_ATTEMPT_TIMEOUT_MAP,
-  MAX_SMS_ATTEMPTS,
-  REAL_SMS_LIMIT_PER_VISITOR,
-  SMS_FRAUD_COPY,
-  TEST_PHONE_NUMBER,
-} from '../../../../server/sms-pumping/smsPumpingConst';
 import { env } from '../../../../env';
 import { NextRequest, NextResponse } from 'next/server';
+import { RealSmsPerVisitorModel, SmsVerificationDatabaseModel } from '../database';
+import {
+  TEST_PHONE_NUMBER,
+  MAX_SMS_ATTEMPTS,
+  SMS_FRAUD_COPY,
+  SMS_ATTEMPT_TIMEOUT_MAP,
+  REAL_SMS_LIMIT_PER_VISITOR,
+} from '../smsPumpingConst';
 
 export type SendSMSPayload = {
   requestId: string;
@@ -83,7 +83,7 @@ const sendSms = async (phone: string, body: string, visitorId: string) => {
   console.log('Message sent: ', message.sid);
 };
 
-export default async function sendVerificationSMS(req: NextRequest): Promise<NextResponse<SendSMSResponse>> {
+export async function POST(req: NextRequest): Promise<NextResponse<SendSMSResponse>> {
   const { phoneNumber: phone, email, requestId, disableBotDetection } = (await req.json()) as SendSMSPayload;
 
   // Get the full identification Fingerprint Server API, check it authenticity and filter away Bot and Tor requests

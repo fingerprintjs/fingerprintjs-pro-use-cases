@@ -1,9 +1,9 @@
 import { Severity, getAndValidateFingerprintResult } from '../../../../server/checks';
-import { SmsVerificationDatabaseModel } from '../../../../server/sms-pumping/database';
 import { Op } from 'sequelize';
 import { hashString } from '../../../../server/server-utils';
-import { SMS_FRAUD_COPY } from '../../../../server/sms-pumping/smsPumpingConst';
 import { NextRequest, NextResponse } from 'next/server';
+import { SmsVerificationDatabaseModel } from '../database';
+import { SMS_FRAUD_COPY } from '../smsPumpingConst';
 
 export type SubmitCodePayload = {
   requestId: string;
@@ -16,7 +16,7 @@ export type SubmitCodeResponse = {
   severity: Severity;
 };
 
-export default async function sendVerificationSMS(req: NextRequest): Promise<NextResponse<SubmitCodeResponse>> {
+export async function POST(req: NextRequest): Promise<NextResponse<SubmitCodeResponse>> {
   const { phoneNumber, code, requestId } = (await req.json()) as SubmitCodePayload;
 
   // Get the full identification result from Fingerprint Server API and validate its authenticity
