@@ -18,7 +18,7 @@ import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useMutation } from 'react-query';
 import { TEST_PHONE_NUMBER } from '../../server/sms-pumping/smsPumpingConst';
 import { useSearchParams } from 'next/navigation';
-import { SendSMSPayload, SendSMSResponse } from '../../pages/api/sms-pumping/send-verification-sms';
+import { SendSMSPayload, SendSMSResponse } from './api/send-verification-sms/route';
 
 type FormStep = 'Send SMS' | 'Submit code';
 type QueryAsProps = {

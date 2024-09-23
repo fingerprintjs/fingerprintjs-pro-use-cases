@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { FunctionComponent, useState } from 'react';
 import { useMutation } from 'react-query';
-import { SubmitCodeResponse, SubmitCodePayload } from '../../../pages/api/sms-pumping/submit-code';
+import { SubmitCodeResponse, SubmitCodePayload } from '../api/submit-code/route';
 import { TEST_IDS } from '../../../client/testIDs';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { SendMessageButton } from './SendSMSMessageButton';
