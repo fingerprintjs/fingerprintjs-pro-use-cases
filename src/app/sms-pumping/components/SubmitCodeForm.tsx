@@ -22,7 +22,7 @@ export const useSubmitCode = (params?: { onSuccess?: () => void }) => {
     mutationKey: ['submitCode'],
     mutationFn: async ({ code, phoneNumber }) => {
       const { requestId } = await getData();
-      const response = await fetch(`/api/sms-pumping/submit-code`, {
+      const response = await fetch(`/sms-pumping/api/submit-code`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
