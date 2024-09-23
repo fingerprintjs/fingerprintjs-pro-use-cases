@@ -1,11 +1,11 @@
 import classNames from 'classnames';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { FunctionComponent } from 'react';
-import { ArticleData } from '../../../server/paywall/articles';
-import { TEST_IDS } from '../../testIDs';
+import { TEST_IDS } from '../../../client/testIDs';
 import Image from 'next/image';
 import styles from './articleGrid.module.scss';
 import BylineDot from './dot.svg';
+import { ArticleData } from '../api/articles';
 
 function calculateReadingTime(text: string[], wordsPerMinute = 200) {
   const words = text
@@ -36,7 +36,7 @@ export const Byline = ({ article, includeReadingTime }: { article: ArticleData; 
  */
 type ArticleCardProps = {
   article: ArticleData;
-  embed?: boolean;
+  embed: boolean;
   isHeroArticle?: boolean;
 };
 
@@ -66,7 +66,7 @@ export const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article, embe
   );
 };
 
-export const ArticleGrid: FunctionComponent<{ articles: ArticleData[]; embed?: boolean }> = ({ articles, embed }) => {
+export const ArticleGrid: FunctionComponent<{ articles: ArticleData[]; embed: boolean }> = ({ articles, embed }) => {
   return (
     <div className={styles.articles}>
       {articles.map((article) => (
