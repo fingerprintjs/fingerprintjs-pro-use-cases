@@ -1,4 +1,6 @@
-import { useState } from 'react';
+'use client';
+
+import { FunctionComponent, Suspense, useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
@@ -9,13 +11,14 @@ import { CloseSnackbarButton } from '../../client/components/common/Alert/Alert'
 import { enqueueSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
 import { BackArrow } from '../../client/components/common/BackArrow/BackArrow';
-import { GetServerSideProps, NextPage } from 'next';
-import { SubmitCodeForm } from '../../client/components/sms-pumping/SubmitCodeForm';
-import { PhoneNumberForm } from '../../client/components/sms-pumping/PhoneNumberForm';
+import { GetServerSideProps } from 'next';
+import { SubmitCodeForm } from './components/SubmitCodeForm';
+import { PhoneNumberForm } from './components/PhoneNumberForm';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useMutation } from 'react-query';
-import { SendSMSResponse, SendSMSPayload } from '../api/sms-pumping/send-verification-sms';
 import { TEST_PHONE_NUMBER } from '../../server/sms-pumping/smsPumpingConst';
+import { useSearchParams } from 'next/navigation';
+import { SendSMSPayload, SendSMSResponse } from '../../pages/api/sms-pumping/send-verification-sms';
 
 type FormStep = 'Send SMS' | 'Submit code';
 type QueryAsProps = {
@@ -76,11 +79,15 @@ export const useSendMessage = ({ onSuccess, disableBotDetection = false }: SendM
   });
 };
 
-const SmsFraudUseCase: NextPage<QueryAsProps> = ({ disableBotDetection }) => {
+const SmsFraud: FunctionComponent = () => {
   // Default mocked user data
   const [phoneNumber, setPhoneNumber] = useState(TEST_PHONE_NUMBER);
   const [email, setEmail] = useState('user@company.com');
   const [formStep, setFormStep] = useState<FormStep>('Send SMS');
+
+  const searchParams = useSearchParams();
+  const disableBotDetection =
+    searchParams?.get('disableBotDetection') === '1' || searchParams?.get('disableBotDetection') === 'true';
 
   const [, copyToClipboard] = useCopyToClipboard();
   const sendMessageMutation = useSendMessage({
@@ -138,4 +145,11 @@ const SmsFraudUseCase: NextPage<QueryAsProps> = ({ disableBotDetection }) => {
   );
 };
 
-export default SmsFraudUseCase;
+export const SmsPumpingUseCase = () => {
+  // Suspense required due to useSearchParams() https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
+  return (
+    <Suspense>
+      <SmsFraud />
+    </Suspense>
+  );
+};

@@ -9,7 +9,7 @@ import { Alert } from '../../../client/components/common/Alert/Alert';
 import Button from '../../../client/components/common/Button/Button';
 import styles from './smsPumping.module.scss';
 import formStyles from '../../../styles/forms.module.scss';
-import { SendMessageMutation } from '../../../pages/sms-pumping';
+import { SendMessageMutation } from '../SmsPumping';
 
 export const useSubmitCode = (params?: { onSuccess?: () => void }) => {
   const { getData } = useVisitorData(

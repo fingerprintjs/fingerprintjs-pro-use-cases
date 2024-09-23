@@ -4,7 +4,7 @@ import { SendMessageButton } from './SendSMSMessageButton';
 import classNames from 'classnames';
 import styles from './smsPumping.module.scss';
 import formStyles from '../../../styles/forms.module.scss';
-import { SendMessageMutation } from '../../../pages/sms-pumping';
+import { SendMessageMutation } from '../SmsPumping';
 
 type PhoneNumberFormProps = {
   phoneNumber: string;

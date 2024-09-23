@@ -3,7 +3,7 @@ import { TEST_IDS } from '../../../client/testIDs';
 import styles from './smsPumping.module.scss';
 import { Alert } from '../../../client/components/common/Alert/Alert';
 import Button from '../../../client/components/common/Button/Button';
-import { SendMessageMutation } from '../../../pages/sms-pumping';
+import { SendMessageMutation } from '../SmsPumping';
 
 type SendMessageButtonProps = {
   sendMessageMutation: SendMessageMutation;
