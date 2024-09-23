@@ -178,8 +178,9 @@ type GetFingerprintResultArgs = {
   serverApiKey?: string;
   region?: Region;
   options?: {
-    blockTor: boolean;
-    blockBots: boolean;
+    blockTor?: boolean;
+    blockBots?: boolean;
+    minConfidenceScore?: number;
   };
 };
 
@@ -281,8 +282,14 @@ export const getAndValidateFingerprintResult = async ({
    * This is context-sensitive and less reliable than the binary checks above, that's why it is checked last.
    * More info: https://dev.fingerprint.com/docs/understanding-your-confidence-score
    */
-  if (identification?.confidence?.score && identification?.confidence?.score < env.MIN_CONFIDENCE_SCORE) {
-    return { okay: false, error: 'Identification confidence score too low, potential spoofing attack.' };
+  if (
+    identification?.confidence?.score &&
+    identification?.confidence?.score < (options?.minConfidenceScore ?? env.MIN_CONFIDENCE_SCORE)
+  ) {
+    return {
+      okay: false,
+      error: `Identification confidence score too low (${identification?.confidence?.score}), potential spoofing attack.`,
+    };
   }
 
   // All checks passed, we can trust this identification event

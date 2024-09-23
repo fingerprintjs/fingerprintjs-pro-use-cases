@@ -1,13 +1,13 @@
 import { FunctionComponent } from 'react';
 import styles from './FlightCard.module.scss';
-import DepartureIcon from '../../img/departure.svg';
-import ArrivalIcon from '../../img/arrival.svg';
-import AirCanada from '../../img/airCanada.svg';
+import DepartureIcon from '../images/departure.svg';
+import ArrivalIcon from '../images/arrival.svg';
+import AirCanada from '../images/airCanada.svg';
+import StarIcon from '../images/star.svg';
 import Image from 'next/image';
-import Button from '../common/Button/Button';
-import StarIcon from '../../img/star.svg';
-import { TEST_IDS } from '../../testIDs';
 import { ONE_HOUR_MS, ONE_MINUTE_MS } from '../../../shared/timeUtils';
+import { TEST_IDS } from '../../../client/testIDs';
+import Button from '../../../client/components/common/Button/Button';
 
 const TEST_ID = TEST_IDS.webScraping;
 
@@ -174,5 +174,3 @@ export const FlightCard: FunctionComponent<FlightCardProps> = ({ flight }) => {
     </div>
   );
 };
-
-export default FlightCard;
