@@ -9,10 +9,10 @@ import { LoanRequestDbModel } from '../../../app/loan-risk/api/request-loan/data
 import { CouponClaimDbModel } from '../../../server/coupon-fraud/database';
 import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { syncFirewallRuleset } from '../../../app/bot-firewall/api/block-ip/cloudflareApiHelper';
-import { SmsVerificationDatabaseModel } from '../../../server/sms-pumping/database';
 import { LoginAttemptDbModel } from '../../../server/credentialStuffing/database';
 import { ArticleViewDbModel } from '../../../app/paywall/api/database';
+import { SmsVerificationDatabaseModel } from '../../../app/sms-pumping/api/database';
+import { syncFirewallRuleset } from '../../../app/bot-firewall/api/block-ip/cloudflareApiHelper';
 import { deleteBlockedIp } from '../../../app/bot-firewall/api/get-blocked-ips/blockedIpsDatabase';
 
 export type ResetResponse = {

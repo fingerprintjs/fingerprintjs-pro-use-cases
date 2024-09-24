@@ -1,15 +1,15 @@
 import classNames from 'classnames';
 import { FunctionComponent, useState } from 'react';
 import { useMutation } from 'react-query';
-import { SubmitCodeResponse, SubmitCodePayload } from '../../../pages/api/sms-pumping/submit-code';
-import { TEST_IDS } from '../../testIDs';
+import { SubmitCodeResponse, SubmitCodePayload } from '../api/submit-code/route';
+import { TEST_IDS } from '../../../client/testIDs';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { SendMessageButton } from './SendSMSMessageButton';
-import { Alert } from '../common/Alert/Alert';
-import Button from '../common/Button/Button';
+import { Alert } from '../../../client/components/common/Alert/Alert';
+import Button from '../../../client/components/common/Button/Button';
 import styles from './smsPumping.module.scss';
 import formStyles from '../../../styles/forms.module.scss';
-import { SendMessageMutation } from '../../../pages/sms-pumping';
+import { SendMessageMutation } from '../SmsPumping';
 
 export const useSubmitCode = (params?: { onSuccess?: () => void }) => {
   const { getData } = useVisitorData(
@@ -22,7 +22,7 @@ export const useSubmitCode = (params?: { onSuccess?: () => void }) => {
     mutationKey: ['submitCode'],
     mutationFn: async ({ code, phoneNumber }) => {
       const { requestId } = await getData();
-      const response = await fetch(`/api/sms-pumping/submit-code`, {
+      const response = await fetch(`/sms-pumping/api/submit-code`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

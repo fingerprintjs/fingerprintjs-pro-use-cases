@@ -1,9 +1,9 @@
 import { ButtonHTMLAttributes, FunctionComponent } from 'react';
-import { TEST_IDS } from '../../testIDs';
+import { TEST_IDS } from '../../../client/testIDs';
 import styles from './smsPumping.module.scss';
-import { Alert } from '../common/Alert/Alert';
-import Button from '../common/Button/Button';
-import { SendMessageMutation } from '../../../pages/sms-pumping';
+import { Alert } from '../../../client/components/common/Alert/Alert';
+import Button from '../../../client/components/common/Button/Button';
+import { SendMessageMutation } from '../SmsPumping';
 
 type SendMessageButtonProps = {
   sendMessageMutation: SendMessageMutation;
