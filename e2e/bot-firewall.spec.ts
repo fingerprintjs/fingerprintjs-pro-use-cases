@@ -1,8 +1,8 @@
 import { Locator, Page, expect, test } from '@playwright/test';
 import { blockGoogleTagManager, resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
-import { BOT_FIREWALL_COPY } from '../src/app/bot-firewall/botFirewallCopy';
 import { PRODUCTION_E2E_TEST_BASE_URL } from '../playwright.config';
+import { BOT_FIREWALL_COPY } from '../src/app/bot-firewall/components/botFirewallCopy';
 
 const WEB_SCRAPING_URL = PRODUCTION_E2E_TEST_BASE_URL
   ? `${PRODUCTION_E2E_TEST_BASE_URL}/web-scraping`
