@@ -11,9 +11,9 @@ import { Severity, getAndValidateFingerprintResult } from '../../../server/check
 import { NextApiRequest, NextApiResponse } from 'next';
 import { deleteBlockedIp } from '../../../server/botd-firewall/blockedIpsDatabase';
 import { syncFirewallRuleset } from '../../../server/botd-firewall/cloudflareApiHelper';
-import { SmsVerificationDatabaseModel } from '../../../server/sms-pumping/database';
 import { LoginAttemptDbModel } from '../../../server/credentialStuffing/database';
 import { ArticleViewDbModel } from '../../../app/paywall/api/database';
+import { SmsVerificationDatabaseModel } from '../../../app/sms-pumping/api/database';
 
 export type ResetResponse = {
   message: string;
