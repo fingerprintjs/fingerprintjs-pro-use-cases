@@ -1,5 +1,5 @@
-import { getBlockedIps } from '../../../../server/botd-firewall/blockedIpsDatabase';
 import { NextResponse } from 'next/server';
+import { getBlockedIps } from './blockedIpsDatabase';
 
 export async function GET(): Promise<NextResponse<string[]>> {
   try {

@@ -3,20 +3,20 @@
 import { INSTRUCTION_ANCHOR_ID, UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { USE_CASES } from '../../client/components/common/content';
 import { useMutation, useQuery } from 'react-query';
-import { BotVisit } from '../../server/botd-firewall/botVisitDatabase';
 import Button from '../../client/components/common/Button/Button';
-import styles from '../../client/bot-firewall/botFirewallComponents.module.scss';
 import { BlockIpPayload, BlockIpResponse } from './api/block-ip/route';
+import styles from './components/botFirewallComponents.module.scss';
 import { VisitorQueryContext, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { OptionsObject as SnackbarOptions, enqueueSnackbar } from 'notistack';
 import ChevronIcon from '../../client/img/chevronBlack.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FunctionComponent, useState } from 'react';
-import { BotTypeInfo, BotVisitAction, InstructionPrompt } from '../../client/bot-firewall/botFirewallComponents';
 import { wait } from '../../shared/timeUtils';
 import { Spinner } from '../../client/components/common/Spinner/Spinner';
 import { Alert } from '../../client/components/common/Alert/Alert';
+import { BotVisit } from './api/get-bot-visits/botVisitDatabase';
+import { BotTypeInfo, BotVisitAction, InstructionPrompt } from './components/botFirewallComponents';
 
 const DEFAULT_DISPLAYED_VISITS = 10;
 const DISPLAYED_VISITS_INCREMENT = 10;

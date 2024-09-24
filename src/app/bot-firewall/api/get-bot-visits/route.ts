@@ -1,5 +1,7 @@
-import { BotVisit, getBotVisits } from '../../../../server/botd-firewall/botVisitDatabase';
 import { NextRequest, NextResponse } from 'next/server';
+import { BotVisit, getBotVisits } from './botVisitDatabase';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest): Promise<NextResponse<BotVisit[]>> {
   try {

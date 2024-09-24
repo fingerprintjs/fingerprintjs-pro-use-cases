@@ -1,9 +1,9 @@
-import { deleteBlockedIp, saveBlockedIp } from '../../../../server/botd-firewall/blockedIpsDatabase';
-import { syncFirewallRuleset } from '../../../../server/botd-firewall/cloudflareApiHelper';
+import { syncFirewallRuleset } from './cloudflareApiHelper';
 import { Severity, getAndValidateFingerprintResult } from '../../../../server/checks';
 import { isIP } from 'is-ip';
 import { ValidationResult } from '../../../../shared/types';
 import { NextRequest, NextResponse } from 'next/server';
+import { deleteBlockedIp, saveBlockedIp } from '../get-blocked-ips/blockedIpsDatabase';
 
 export type BlockIpPayload = {
   ip: string;

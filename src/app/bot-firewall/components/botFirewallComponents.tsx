@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion';
 import { FunctionComponent, PropsWithChildren } from 'react';
-import { BlockIpPayload } from '../../app/bot-firewall/api/block-ip/route';
 import { BOT_FIREWALL_COPY } from './botFirewallCopy';
-import Button from '../components/common/Button/Button';
 import { Tooltip } from '@mui/material';
 import Image from 'next/image';
-import WaveIcon from '../../client/img/wave.svg';
-import InfoIcon from '../../client/img/InfoIcon.svg';
+import WaveIcon from '../../../client/img/wave.svg';
+import InfoIcon from '../../../client/img/InfoIcon.svg';
 import styles from './botFirewallComponents.module.scss';
+import { BlockIpPayload } from '../api/block-ip/route';
+import Button from '../../../client/components/common/Button/Button';
 
 type BotVisitActionProps = {
   ip: string;
