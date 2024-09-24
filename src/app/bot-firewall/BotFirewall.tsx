@@ -1,18 +1,18 @@
+'use client';
+
 import { INSTRUCTION_ANCHOR_ID, UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import { NextPage } from 'next';
 import { USE_CASES } from '../../client/components/common/content';
-import { CustomPageProps } from '../_app';
 import { useMutation, useQuery } from 'react-query';
 import { BotVisit } from '../../server/botd-firewall/botVisitDatabase';
 import Button from '../../client/components/common/Button/Button';
 import styles from '../../client/bot-firewall/botFirewallComponents.module.scss';
-import { BlockIpPayload, BlockIpResponse } from '../api/bot-firewall/block-ip';
+import { BlockIpPayload, BlockIpResponse } from './api/block-ip/route';
 import { VisitorQueryContext, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { OptionsObject as SnackbarOptions, enqueueSnackbar } from 'notistack';
 import ChevronIcon from '../../client/img/chevronBlack.svg';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { BotTypeInfo, BotVisitAction, InstructionPrompt } from '../../client/bot-firewall/botFirewallComponents';
 import { wait } from '../../shared/timeUtils';
 import { Spinner } from '../../client/components/common/Spinner/Spinner';
@@ -46,7 +46,7 @@ const useBotVisits = () => {
   } = useQuery({
     queryKey: ['get bot visits'],
     queryFn: (): Promise<BotVisit[]> => {
-      return fetch(`/api/bot-firewall/get-bot-visits?limit=${BOT_VISITS_FETCH_LIMIT}`).then((res) => res.json());
+      return fetch(`/bot-firewall/api/get-bot-visits?limit=${BOT_VISITS_FETCH_LIMIT}`).then((res) => res.json());
     },
   });
   return { botVisits, refetchBotVisits, isFetchingBotVisits, botVisitsQueryStatus };
@@ -61,7 +61,7 @@ const useBlockedIps = () => {
   } = useQuery({
     queryKey: ['get blocked IPs'],
     queryFn: (): Promise<string[]> => {
-      return fetch('/api/bot-firewall/get-blocked-ips').then((res) => res.json());
+      return fetch('/bot-firewall/api/get-blocked-ips').then((res) => res.json());
     },
   });
   return { blockedIps, refetchBlockedIps, isFetchingBlockedIps };
@@ -76,7 +76,7 @@ const useBlockUnblockIpAddress = (
     mutationKey: ['block IP'],
     mutationFn: async ({ ip, blocked }: Omit<BlockIpPayload, 'requestId'>) => {
       const { requestId } = await getVisitorData({ ignoreCache: true });
-      const response = await fetch('/api/bot-firewall/block-ip', {
+      const response = await fetch('/bot-firewall/api/block-ip', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -112,7 +112,7 @@ const useBlockUnblockIpAddress = (
 /**
  * Bot Firewall Page Component
  */
-export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
+export const BotFirewall: FunctionComponent = () => {
   // Get visitor data from Fingerprint (just used for the visitor's IP address)
   const {
     getData: getVisitorData,
@@ -234,7 +234,6 @@ export const BotFirewall: NextPage<CustomPageProps> = ({ embed }) => {
     <>
       <UseCaseWrapper
         useCase={USE_CASES.botFirewall}
-        embed={embed}
         instructionsNote={`For the purposes of this demo, you can only block/unblock your own IP address (${visitorData?.ip}). The block expires after one hour. The database of bot visits is cleared on every website update.`}
       >
         <div className={styles.container}>

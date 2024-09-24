@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { FunctionComponent, PropsWithChildren } from 'react';
-import { BlockIpPayload } from '../../pages/api/bot-firewall/block-ip';
+import { BlockIpPayload } from '../../app/bot-firewall/api/block-ip/route';
 import { BOT_FIREWALL_COPY } from './botFirewallCopy';
 import Button from '../components/common/Button/Button';
 import { Tooltip } from '@mui/material';

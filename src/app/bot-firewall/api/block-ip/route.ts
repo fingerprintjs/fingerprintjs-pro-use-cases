@@ -1,10 +1,9 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { deleteBlockedIp, saveBlockedIp } from '../../../server/botd-firewall/blockedIpsDatabase';
-import { syncFirewallRuleset } from '../../../server/botd-firewall/cloudflareApiHelper';
-import { isValidPostRequest } from '../../../server/server';
-import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
+import { deleteBlockedIp, saveBlockedIp } from '../../../../server/botd-firewall/blockedIpsDatabase';
+import { syncFirewallRuleset } from '../../../../server/botd-firewall/cloudflareApiHelper';
+import { Severity, getAndValidateFingerprintResult } from '../../../../server/checks';
 import { isIP } from 'is-ip';
-import { ValidationResult } from '../../../shared/types';
+import { ValidationResult } from '../../../../shared/types';
+import { NextRequest, NextResponse } from 'next/server';
 
 export type BlockIpPayload = {
   ip: string;
@@ -21,19 +20,12 @@ export type BlockIpResponse = {
   };
 };
 
-export default async function blockIp(req: NextApiRequest, res: NextApiResponse<BlockIpResponse>) {
-  // This API route accepts only POST requests.
-  const reqValidation = isValidPostRequest(req);
-  if (!reqValidation.okay) {
-    res.status(405).send({ severity: 'error', message: reqValidation.error });
-    return;
-  }
-
+export async function POST(req: NextRequest): Promise<NextResponse<BlockIpResponse>> {
   // Validate block/unblock request
-  const { ip, blocked, requestId } = req.body as BlockIpPayload;
+  const { ip, blocked, requestId } = (await req.json()) as BlockIpPayload;
   const validationResult = await isValidBlockIpRequest(requestId, ip, req);
   if (!validationResult.okay) {
-    return res.status(403).json({ severity: 'error', message: validationResult.error });
+    return NextResponse.json({ severity: 'error', message: validationResult.error }, { status: 403 });
   }
 
   try {
@@ -48,17 +40,17 @@ export default async function blockIp(req: NextApiRequest, res: NextApiResponse<
     await syncFirewallRuleset();
 
     // Return success
-    return res.status(200).json({ severity: 'success', message: 'OK', data: { ip, blocked } });
+    return NextResponse.json({ severity: 'success', message: 'OK', data: { ip, blocked } }, { status: 200 });
   } catch (error) {
     console.error(error);
     // Catch unexpected errors and return 500 to the client
-    return res.status(500).json({ severity: 'error', message: 'Internal server error.' });
+    return NextResponse.json({ severity: 'error', message: 'Internal server error.' }, { status: 500 });
   }
 }
 
 // For this demo, we want to only enable visitors to block their own IP, not other people's IPs, to not interfere with their demo experience.
 // In the actual scenario, only your authenticated admins could block bot IPs (or they would be blocked automatically) so this check would not be necessary.
-const isValidBlockIpRequest = async (requestId: string, ip: string, req: NextApiRequest): Promise<ValidationResult> => {
+const isValidBlockIpRequest = async (requestId: string, ip: string, req: Request): Promise<ValidationResult> => {
   // Validate IP address
   if (!isIP(ip)) {
     return { okay: false, error: 'Invalid IP address.' };
