@@ -5,6 +5,8 @@ import { ValidationResult } from '../../../../shared/types';
 import { NextRequest, NextResponse } from 'next/server';
 import { deleteBlockedIp, saveBlockedIp } from '../get-blocked-ips/blockedIpsDatabase';
 
+export const dynamic = 'force-dynamic';
+
 export type BlockIpPayload = {
   ip: string;
   blocked: boolean;

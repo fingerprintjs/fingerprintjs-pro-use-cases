@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getBlockedIps } from './blockedIpsDatabase';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(): Promise<NextResponse<string[]>> {
   try {
     const blockedIps = await getBlockedIps();
