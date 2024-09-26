@@ -46,7 +46,11 @@ export async function POST(req: Request): Promise<NextResponse<PaymentResponse>>
   const { requestId, filedChargeback, usingStolenCard, card } = (await req.json()) as PaymentPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
-  const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
+  const fingerprintResult = await getAndValidateFingerprintResult({
+    requestId,
+    req,
+    options: { minConfidenceScore: 0.2 },
+  });
   if (!fingerprintResult.okay) {
     return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });
   }
