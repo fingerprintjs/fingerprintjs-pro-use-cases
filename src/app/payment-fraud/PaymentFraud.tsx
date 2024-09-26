@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import React from 'react';
@@ -7,14 +9,14 @@ import Button from '../../client/components/common/Button/Button';
 import styles from './paymentFraud.module.scss';
 import formStyles from '../../styles/forms.module.scss';
 import { Alert } from '../../client/components/common/Alert/Alert';
-import { CustomPageProps } from '../_app';
 import classNames from 'classnames';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
-import { Severity } from '../../server/checks';
+import { PaymentPayload, PaymentResponse } from './api/place-order/route';
+import { useMutation } from 'react-query';
 
-export default function Index({ embed }: CustomPageProps) {
-  const { getData } = useVisitorData(
+export function PaymentFraud() {
+  const { getData: getVisitorData } = useVisitorData(
     { ignoreCache: true },
     {
       immediate: false,
@@ -25,51 +27,45 @@ export default function Index({ embed }: CustomPageProps) {
   const [cardNumber, setCardNumber] = useState('4242 4242 4242 4242');
   const [cardCvv, setCardCvv] = useState('123');
   const [cardExpiration, setCardExpiration] = useState('04/28');
-
-  const [orderStatusMessage, setOrderStatusMessage] = useState();
-  const [applyChargeback, setApplyChargeback] = useState(false);
+  const [filedChargeback, setFiledChargeback] = useState(false);
   const [usingStolenCard, setUsingStolenCard] = useState(false);
-  const [severity, setSeverity] = useState<Severity | undefined>();
-  const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
-  const [httpResponseStatus, setHttpResponseStatus] = useState<number | undefined>();
+
+  const {
+    mutate: submitPayment,
+    isLoading: isLoadingPayment,
+    data: paymentResponse,
+    error: paymentNetworkError,
+  } = useMutation<PaymentResponse, Error, Omit<PaymentPayload, 'requestId'>, unknown>({
+    mutationKey: ['request loan'],
+    mutationFn: async (payment) => {
+      const { requestId } = await getVisitorData({ ignoreCache: true });
+      const response = await fetch('/payment-fraud/api/place-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...payment,
+          requestId,
+        } satisfies PaymentPayload),
+      });
+      return await response.json();
+    },
+  });
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsWaitingForResponse(true);
-
-    const fpData = await getData();
-    const { requestId, visitorId } = fpData;
-
-    const orderData = {
-      cardNumber,
-      cardCvv,
-      cardExpiration,
-      applyChargeback,
+    submitPayment({
+      filedChargeback: filedChargeback,
       usingStolenCard,
-      visitorId,
-      requestId,
-    };
-
-    // Server-side handler for this route is located in api/payment-fraud/place-order.js file.
-    const response = await fetch('/api/payment-fraud/place-order', {
-      method: 'POST',
-      body: JSON.stringify(orderData),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+      card: {
+        number: cardNumber,
+        cvv: cardCvv,
+        expiration: cardExpiration,
       },
     });
-
-    const responseJson = await response.json();
-    const responseStatus = response.status;
-    setOrderStatusMessage(responseJson.message);
-    setSeverity(responseJson.severity);
-    setHttpResponseStatus(responseStatus);
-    setIsWaitingForResponse(false);
   }
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.paymentFraud} embed={embed}>
+    <UseCaseWrapper useCase={USE_CASES.paymentFraud}>
       <div className={formStyles.wrapper}>
         <form onSubmit={handleSubmit} className={classNames(formStyles.useCaseForm, styles.paymentForm)}>
           <label>Card Number</label>
@@ -116,7 +112,7 @@ export default function Index({ embed }: CustomPageProps) {
               <input
                 type='checkbox'
                 name='applyChargeback'
-                onChange={(event) => setApplyChargeback(event.target.checked)}
+                onChange={(event) => setFiledChargeback(event.target.checked)}
                 data-testid={TEST_IDS.paymentFraud.askForChargeback}
               />
               Ask for chargeback after purchase
@@ -135,14 +131,15 @@ export default function Index({ embed }: CustomPageProps) {
             </label>
           </div>
 
-          {httpResponseStatus ? <Alert severity={severity ?? 'warning'}>{orderStatusMessage}</Alert> : null}
+          {paymentNetworkError ? <Alert severity='error'>{paymentNetworkError.message}</Alert> : null}
+          {paymentResponse ? <Alert severity={paymentResponse.severity}>{paymentResponse.message}</Alert> : null}
           <Button
-            disabled={isWaitingForResponse}
+            disabled={isLoadingPayment}
             size='large'
             type='submit'
             data-testid={TEST_IDS.paymentFraud.submitPayment}
           >
-            {isWaitingForResponse ? 'Hold on, doing magic...' : 'Place Order'}
+            {isLoadingPayment ? 'Hold on, doing magic...' : 'Place Order'}
           </Button>
         </form>
       </div>

@@ -1,5 +1,4 @@
 import { isValidPostRequest } from '../../../server/server';
-import { PaymentAttemptDbModel } from '../payment-fraud/place-order';
 import {
   UserCartItemDbModel,
   UserPreferencesDbModel,
@@ -14,6 +13,7 @@ import { ArticleViewDbModel } from '../../../app/paywall/api/database';
 import { SmsVerificationDatabaseModel } from '../../../app/sms-pumping/api/database';
 import { syncFirewallRuleset } from '../../../app/bot-firewall/api/block-ip/cloudflareApiHelper';
 import { deleteBlockedIp } from '../../../app/bot-firewall/api/get-blocked-ips/blockedIpsDatabase';
+import { PaymentAttemptDbModel } from '../../../app/payment-fraud/api/place-order/database';
 
 export type ResetResponse = {
   message: string;
@@ -36,7 +36,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const { requestId } = req.body as ResetRequest;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
-  const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
+  const fingerprintResult = await getAndValidateFingerprintResult({
+    requestId,
+    req,
+    options: { minConfidenceScore: 0.3 },
+  });
   if (!fingerprintResult.okay) {
     res.status(403).send({ severity: 'error', message: fingerprintResult.error });
     return;
