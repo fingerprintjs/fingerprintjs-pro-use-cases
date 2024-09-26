@@ -1,9 +1,9 @@
-import { BlockedIpDbModel } from '../src/server/botd-firewall/blockedIpsDatabase';
 import { Op } from 'sequelize';
-import { syncFirewallRuleset } from '../src/server/botd-firewall/cloudflareApiHelper';
+import { syncFirewallRuleset } from '../src/app/bot-firewall/api/block-ip/cloudflareApiHelper';
 import { schedule } from 'node-cron';
 import 'dotenv/config';
 import { ONE_HOUR_MS } from '../src/shared/timeUtils';
+import { BlockedIpDbModel } from '../src/app/bot-firewall/api/get-blocked-ips/blockedIpsDatabase';
 
 /**
  * In production, run this file in conjunction with the production web server like:
