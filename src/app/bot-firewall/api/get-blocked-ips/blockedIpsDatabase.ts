@@ -1,6 +1,6 @@
 import { Attributes, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
-import { sequelize } from '../server';
-import { MAX_BLOCKED_IPS } from './buildFirewallRules';
+import { sequelize } from '../../../../server/server';
+import { MAX_BLOCKED_IPS } from '../block-ip/buildFirewallRules';
 
 interface BlockedIpAttributes
   extends Model<InferAttributes<BlockedIpAttributes>, InferCreationAttributes<BlockedIpAttributes>> {

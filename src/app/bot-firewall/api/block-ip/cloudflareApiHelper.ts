@@ -1,5 +1,5 @@
-import { env } from '../../env';
-import { getBlockedIps } from './blockedIpsDatabase';
+import { env } from '../../../../env';
+import { getBlockedIps } from '../get-blocked-ips/blockedIpsDatabase';
 import { CloudflareRule, buildFirewallRules } from './buildFirewallRules';
 
 async function updateRulesetUsingCloudflareAPI(rules: CloudflareRule[]) {

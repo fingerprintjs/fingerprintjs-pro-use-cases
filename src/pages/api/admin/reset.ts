@@ -9,11 +9,11 @@ import { LoanRequestDbModel } from '../../../app/loan-risk/api/request-loan/data
 import { CouponClaimDbModel } from '../../../server/coupon-fraud/database';
 import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { deleteBlockedIp } from '../../../server/botd-firewall/blockedIpsDatabase';
-import { syncFirewallRuleset } from '../../../server/botd-firewall/cloudflareApiHelper';
 import { LoginAttemptDbModel } from '../../../server/credentialStuffing/database';
 import { ArticleViewDbModel } from '../../../app/paywall/api/database';
 import { SmsVerificationDatabaseModel } from '../../../app/sms-pumping/api/database';
+import { syncFirewallRuleset } from '../../../app/bot-firewall/api/block-ip/cloudflareApiHelper';
+import { deleteBlockedIp } from '../../../app/bot-firewall/api/get-blocked-ips/blockedIpsDatabase';
 
 export type ResetResponse = {
   message: string;
