@@ -181,6 +181,7 @@ type GetFingerprintResultArgs = {
     blockTor?: boolean;
     blockBots?: boolean;
     minConfidenceScore?: number;
+    disableFreshnessCheck?: boolean;
   };
 };
 
@@ -258,7 +259,10 @@ export const getAndValidateFingerprintResult = async ({
    * An attacker might have acquired a valid requestId and visitorId via phishing.
    * It's recommended to check freshness of the identification request to prevent replay attacks.
    */
-  if (Date.now() - Number(new Date(identification.time)) > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
+  if (
+    Date.now() - Number(new Date(identification.time)) > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS &&
+    !options?.disableFreshnessCheck
+  ) {
     return { okay: false, error: 'Old identification request, potential replay attack.' };
   }
 
