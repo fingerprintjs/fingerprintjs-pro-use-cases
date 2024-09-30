@@ -1,7 +1,8 @@
-import { Product, ProductDbModel, UserSearchHistoryDbModel } from '../../../server/personalization/database';
+import { Product, ProductDbModel, UserSearchHistoryDbModel } from '../../../../server/personalization/database';
 import { Op } from 'sequelize';
-import { personalizationEndpoint } from '../../../server/personalization/personalization-endpoint';
-import { seedProducts } from '../../../server/personalization/seed';
+import { seedProducts } from '../../../../server/personalization/seed';
+import { NextRequest, NextResponse } from 'next/server';
+import { getAndValidateFingerprintResult } from '../../../../server/checks';
 
 function searchProducts(query: string) {
   if (!query) {
@@ -53,34 +54,40 @@ export type GetProductResponse = {
   size: number;
 };
 
+type GetProductPayload = {
+  query: string;
+  requestId: string;
+};
+
 // Returns products from database, supports simple search query.
 // If search query is provided and visitorId is valid it is saved in database.
-export default personalizationEndpoint(async (req, res, { usePersonalizedData, visitorId }) => {
+export async function POST(req: NextRequest): Promise<NextResponse<GetProductResponse>> {
   let querySaved = false;
 
-  const { query } = JSON.parse(req.body);
+  const { query, requestId } = (await req.json()) as GetProductPayload;
 
   const productsCount = await ProductDbModel.count();
-
   if (!productsCount) {
     await seedProducts();
   }
 
   const products = await searchProducts(query);
 
-  if (query && usePersonalizedData && visitorId) {
-    await persistSearchPhrase(query.trim(), visitorId);
+  // Get the full Identification result from Fingerprint Server API and validate its authenticity
+  const fingerprintResult = await getAndValidateFingerprintResult({
+    requestId,
+    req,
+    options: { minConfidenceScore: 0.3 },
+  });
+  const visitorId = fingerprintResult.okay ? fingerprintResult.data.products.identification?.data?.visitorId : null;
 
+  if (query && visitorId) {
+    await persistSearchPhrase(query.trim(), visitorId);
     querySaved = true;
   }
 
-  const response: GetProductResponse = {
-    data: {
-      products,
-      querySaved,
-    },
+  return NextResponse.json({
+    data: { products, querySaved },
     size: products.length,
-  };
-
-  return res.status(200).json(response);
-});
+  });
+}

@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from 'react-query';
 import { SEARCH_HISTORY_QUERY } from './use-search-history';
 import { apiRequest } from '../api';
-import { GetProductResponse } from '../../../pages/api/personalization/get-products';
+import { GetProductResponse } from '../../../app/personalization/api/get-products/route';
 import { useVisitorData, FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
 
 function getProducts(fpData: FingerprintJSPro.GetResult | undefined, query: string): Promise<GetProductResponse> {
