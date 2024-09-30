@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { useDebounce, useSessionStorage } from 'react-use';
 import { useSearchHistory } from '../../client/api/personalization/use-search-history';
@@ -10,7 +12,6 @@ import { useUserPreferences } from '../../client/api/personalization/use-user-pr
 import { useCart } from '../../client/api/personalization/use-cart';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
-import { CustomPageProps } from '../_app';
 import styles from './personalization.module.scss';
 import Image from 'next/image';
 import Button from '../../client/components/common/Button/Button';
@@ -21,7 +22,7 @@ import { ProductCard } from '../../client/components/personalization/productCard
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { Spinner } from '../../client/components/common/Spinner/Spinner';
 
-export default function Index({ embed }: CustomPageProps) {
+export function Personalization() {
   const { enqueueSnackbar } = useSnackbar();
 
   const { isLoading: isFpDataLoading, data } = useVisitorData({ extendedResult: true });
@@ -103,7 +104,7 @@ export default function Index({ embed }: CustomPageProps) {
           <Button onClick={() => setDidAcknowledge(true)}>Okay, I understand</Button>
         </DialogActions>
       </Dialog>
-      <UseCaseWrapper useCase={USE_CASES.personalization} embed={embed}>
+      <UseCaseWrapper useCase={USE_CASES.personalization}>
         <div className={styles.twoColumnContainer}>
           <div className={styles.leftColumn}>
             <div className={styles.search}>
