@@ -46,26 +46,6 @@ export const ProductDbModel = sequelize.define<ProductAttributes>('product', {
 
 export type Product = Attributes<ProductAttributes>;
 
-interface UserPreferencesAttributes
-  extends Model<InferAttributes<UserPreferencesAttributes>, InferCreationAttributes<UserPreferencesAttributes>> {
-  visitorId: string;
-  hasDarkMode: boolean;
-  timestamp: Date;
-}
-
-// Defines db model for user preferences.
-export const UserPreferencesDbModel = sequelize.define<UserPreferencesAttributes>('user_data', {
-  visitorId: {
-    type: DataTypes.STRING,
-  },
-  hasDarkMode: {
-    type: DataTypes.BOOLEAN,
-  },
-  timestamp: {
-    type: DataTypes.DATE,
-  },
-});
-
 interface UserSearchHistoryAttributes
   extends Model<InferAttributes<UserSearchHistoryAttributes>, InferCreationAttributes<UserSearchHistoryAttributes>> {
   visitorId: string;
@@ -85,6 +65,8 @@ export const UserSearchHistoryDbModel = sequelize.define<UserSearchHistoryAttrib
     type: DataTypes.DATE,
   },
 });
+
+export type UserSearchTerm = Attributes<UserSearchHistoryAttributes>;
 
 interface UserCartItemAttributes
   extends Model<InferAttributes<UserCartItemAttributes>, InferCreationAttributes<UserCartItemAttributes>> {
@@ -124,13 +106,7 @@ UserCartItemDbModel.belongsTo(ProductDbModel);
 
 let didInit = false;
 
-const productModels = [
-  ProductDbModel,
-  UserCartItemDbModel,
-  UserPreferencesDbModel,
-  UserCartItemDbModel,
-  UserSearchHistoryDbModel,
-];
+const productModels = [ProductDbModel, UserCartItemDbModel, UserCartItemDbModel, UserSearchHistoryDbModel];
 
 // Create DB tables
 productModels.map((model) => model.sync({ force: false }));

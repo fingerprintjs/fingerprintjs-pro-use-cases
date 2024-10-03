@@ -46,7 +46,7 @@ async function persistSearchPhrase(query: string, visitorId: string) {
   });
 }
 
-export type GetProductResponse = {
+export type GetProductsResponse = {
   data: {
     products: Product[];
     querySaved: boolean;
@@ -54,17 +54,17 @@ export type GetProductResponse = {
   size: number;
 };
 
-type GetProductPayload = {
+export type GetProductsPayload = {
   query: string;
   requestId: string;
 };
 
 // Returns products from database, supports simple search query.
 // If search query is provided and visitorId is valid it is saved in database.
-export async function POST(req: NextRequest): Promise<NextResponse<GetProductResponse>> {
+export async function POST(req: NextRequest): Promise<NextResponse<GetProductsResponse>> {
   let querySaved = false;
 
-  const { query, requestId } = (await req.json()) as GetProductPayload;
+  const { query, requestId } = (await req.json()) as GetProductsPayload;
 
   const productsCount = await ProductDbModel.count();
   if (!productsCount) {

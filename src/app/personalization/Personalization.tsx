@@ -8,7 +8,6 @@ import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } 
 import { useProducts } from '../../client/api/personalization/use-products';
 import { usePersonalizationNotification } from '../../client/hooks/personalization/use-personalization-notification';
 import { useSnackbar } from 'notistack';
-import { useUserPreferences } from '../../client/api/personalization/use-user-preferences';
 import { useCart } from '../../client/api/personalization/use-cart';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
@@ -35,7 +34,9 @@ export function Personalization() {
   const searchHistoryQuery = useSearchHistory();
   const { addCartItemMutation, removeCartItemMutation, cartQuery } = useCart();
   const productsQuery = useProducts(searchQuery);
-  const { hasDarkMode } = useUserPreferences();
+
+  // TODO: Remove
+  const hasDarkMode = false;
 
   const isLoading = productsQuery.isLoading || isFpDataLoading;
 

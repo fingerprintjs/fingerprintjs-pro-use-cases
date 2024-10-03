@@ -1,16 +1,7 @@
-import { UserSearchHistoryDbModel } from '../../../../server/personalization/database';
+import { UserSearchHistoryDbModel, UserSearchTerm } from '../../../../server/personalization/database';
 import { Op } from 'sequelize';
 import { NextRequest, NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult, Severity } from '../../../../server/checks';
- 
-type SearchTermData = {
-  id: number;
-  visitorId: string;
-  query: string;
-  timestamp: string;
-  createdAt: string;
-  updatedAt: string;
-};
 
 export type SearchHistoryPayload = {
   requestId: string;
@@ -19,7 +10,7 @@ export type SearchHistoryPayload = {
 export type SearchHistoryResponse = {
   severity: Severity;
   message?: string;
-  data?: SearchTermData[];
+  data?: UserSearchTerm[];
   size?: number;
 };
 

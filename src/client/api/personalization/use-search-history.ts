@@ -6,7 +6,6 @@ export const SEARCH_HISTORY_QUERY = 'SEARCH_HISTORY_QUERY';
 
 export function useSearchHistory() {
   const { data: visitorData } = useVisitorData();
-
   return useQuery<SearchHistoryResponse>({
     queryFn: async () => {
       const { requestId } = visitorData!;
