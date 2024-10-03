@@ -110,7 +110,7 @@ export function Personalization() {
             <div className={styles.search}>
               <Search search={search} setSearch={setSearch} />
               <SearchHistory
-                searchHistory={searchHistoryQuery.data?.data.map((searchTerm) => searchTerm.query)}
+                searchHistory={searchHistoryQuery.data?.data?.map((searchTerm) => searchTerm.query)}
                 setSearchHistory={(searchTerm) => setSearch(searchTerm)}
               />
             </div>

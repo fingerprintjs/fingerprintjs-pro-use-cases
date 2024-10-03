@@ -1,33 +1,25 @@
 import { useQuery } from 'react-query';
-import { apiRequest } from '../api';
-import { useVisitorData, FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
-
-function getSearchHistory(fpData: FingerprintJSPro.GetResult | undefined) {
-  return apiRequest('/api/personalization/get-search-history', fpData);
-}
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { SearchHistoryPayload, SearchHistoryResponse } from '../../../app/personalization/api/get-search-history/route';
 
 export const SEARCH_HISTORY_QUERY = 'SEARCH_HISTORY_QUERY';
 
-export type SearchTermData = {
-  id: number;
-  visitorId: string;
-  query: string;
-  timestamp: string;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type SearchHistoryResponse = {
-  data: SearchTermData[];
-  size: number;
-};
-
 export function useSearchHistory() {
-  const { data: fpData } = useVisitorData();
+  const { data: visitorData } = useVisitorData();
 
-  return useQuery<SearchHistoryResponse>(SEARCH_HISTORY_QUERY, () => getSearchHistory(fpData), {
-    enabled: Boolean(fpData),
+  return useQuery<SearchHistoryResponse>({
+    queryFn: async () => {
+      const { requestId } = visitorData!;
+      const response = await fetch('/personalization/api/get-search-history', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ requestId } satisfies SearchHistoryPayload),
+      });
+      return await response.json();
+    },
+    enabled: Boolean(visitorData),
     initialData: {
+      severity: 'success',
       data: [],
       size: 0,
     },

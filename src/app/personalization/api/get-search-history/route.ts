@@ -2,15 +2,24 @@ import { UserSearchHistoryDbModel } from '../../../../server/personalization/dat
 import { Op } from 'sequelize';
 import { NextRequest, NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult, Severity } from '../../../../server/checks';
+ 
+type SearchTermData = {
+  id: number;
+  visitorId: string;
+  query: string;
+  timestamp: string;
+  createdAt: string;
+  updatedAt: string;
+};
 
-type SearchHistoryPayload = {
+export type SearchHistoryPayload = {
   requestId: string;
 };
 
-type SearchHistoryResponse = {
+export type SearchHistoryResponse = {
   severity: Severity;
   message?: string;
-  data?: any;
+  data?: SearchTermData[];
   size?: number;
 };
 
@@ -21,7 +30,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<SearchHistory
   const fingerprintResult = await getAndValidateFingerprintResult({
     requestId,
     req,
-    options: { minConfidenceScore: 0.3 },
+    options: { minConfidenceScore: 0.3, disableFreshnessCheck: true },
   });
   if (!fingerprintResult.okay) {
     return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });

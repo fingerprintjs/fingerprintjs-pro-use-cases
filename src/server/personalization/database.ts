@@ -132,6 +132,10 @@ const productModels = [
   UserSearchHistoryDbModel,
 ];
 
+// Create DB tables
+productModels.map((model) => model.sync({ force: false }));
+
+// Remove this
 export async function initProducts() {
   if (didInit) {
     return;
