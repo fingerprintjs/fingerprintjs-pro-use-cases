@@ -1,4 +1,4 @@
-import { UserCartItemAttributes, UserCartItemDbModel } from '../../../../../server/personalization/database';
+import { UserCartItemAttributes, UserCartItemDbModel } from '../../database';
 import { getAndValidateFingerprintResult, Severity } from '../../../../../server/checks';
 import { NextRequest, NextResponse } from 'next/server';
 

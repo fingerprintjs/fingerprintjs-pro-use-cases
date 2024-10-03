@@ -1,8 +1,8 @@
 import { FunctionComponent } from 'react';
 import Image from 'next/image';
-import SearchIcon from '../../img/search.svg';
+import SearchIcon from '../img/search.svg';
 import styles from './searchComponents.module.scss';
-import { TEST_IDS } from '../../testIDs';
+import { TEST_IDS } from '../../../client/testIDs';
 
 type SearchProps = {
   search: string;

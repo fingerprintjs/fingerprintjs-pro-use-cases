@@ -1,4 +1,4 @@
-import { UserSearchHistoryDbModel, UserSearchTerm } from '../../../../server/personalization/database';
+import { UserSearchHistoryDbModel, UserSearchTerm } from '../database';
 import { Op } from 'sequelize';
 import { NextRequest, NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult, Severity } from '../../../../server/checks';

@@ -2,13 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { useDebounce, useSessionStorage } from 'react-use';
-import { useSearchHistory } from '../../client/api/personalization/use-search-history';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import { useProducts } from '../../client/api/personalization/use-products';
 import { usePersonalizationNotification } from '../../client/hooks/personalization/use-personalization-notification';
 import { useSnackbar } from 'notistack';
-import { useCart } from '../../client/api/personalization/use-cart';
+import { useCart } from './hooks/use-cart';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
 import styles from './personalization.module.scss';
@@ -16,10 +14,12 @@ import Image from 'next/image';
 import Button from '../../client/components/common/Button/Button';
 import CartIcon from '../../client/img/cart.svg';
 import { Cart, CartProduct } from '../../client/components/common/Cart/Cart';
-import { Search, SearchHistory } from '../../client/components/personalization/searchComponents';
-import { ProductCard } from '../../client/components/personalization/productCard';
+import { Search, SearchHistory } from './components/searchComponents';
+import { ProductCard } from './components/productCard';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { Spinner } from '../../client/components/common/Spinner/Spinner';
+import { useSearchHistory } from './hooks/use-search-history';
+import { useProducts } from './hooks/use-products';
 
 export function Personalization() {
   const { enqueueSnackbar } = useSnackbar();

@@ -1,4 +1,4 @@
-import { UserCartItem, ProductDbModel, UserCartItemDbModel } from '../../../../../server/personalization/database';
+import { UserCartItem, ProductDbModel, UserCartItemDbModel } from '../../database';
 import { Op } from 'sequelize';
 import { NextRequest, NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult, Severity } from '../../../../../server/checks';

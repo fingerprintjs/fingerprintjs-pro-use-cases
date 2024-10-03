@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from 'react-query';
 import { useCallback } from 'react';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import { GetCartItemsPayload, GetCartItemsResponse } from '../../../app/personalization/api/cart/get-items/route';
-import { AddCartItemPayload, AddCartItemResponse } from '../../../app/personalization/api/cart/add-item/route';
-import { RemoveCartItemPayload } from '../../../app/personalization/api/cart/remove-item/route';
+import { GetCartItemsPayload, GetCartItemsResponse } from '../api/cart/get-items/route';
+import { AddCartItemPayload, AddCartItemResponse } from '../api/cart/add-item/route';
+import { RemoveCartItemPayload } from '../api/cart/remove-item/route';
 
 const GET_CART_QUERY = 'GET_CART_QUERY';
 const ADD_CART_ITEM_MUTATION = 'ADD_CART_ITEM_MUTATION';

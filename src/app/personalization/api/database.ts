@@ -7,7 +7,7 @@ import {
   ForeignKey,
   CreationOptional,
 } from 'sequelize';
-import { sequelize } from '../server';
+import { sequelize } from '../../../server/server';
 
 interface ProductAttributes
   extends Model<InferAttributes<ProductAttributes>, InferCreationAttributes<ProductAttributes>> {

@@ -1,5 +1,5 @@
 import { isValidPostRequest } from '../../../server/server';
-import { UserCartItemDbModel, UserSearchHistoryDbModel } from '../../../server/personalization/database';
+import { UserCartItemDbModel, UserSearchHistoryDbModel } from '../../../app/personalization/api/database';
 import { LoanRequestDbModel } from '../../../app/loan-risk/api/request-loan/database';
 import { CouponClaimDbModel } from '../../../server/coupon-fraud/database';
 import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';

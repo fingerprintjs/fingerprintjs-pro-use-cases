@@ -1,6 +1,6 @@
-import { Product, ProductDbModel, UserSearchHistoryDbModel } from '../../../../server/personalization/database';
+import { Product, ProductDbModel, UserSearchHistoryDbModel } from '../database';
 import { Op } from 'sequelize';
-import { seedProducts } from '../../../../server/personalization/seed';
+import { seedProducts } from '../seed';
 import { NextRequest, NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult } from '../../../../server/checks';
 

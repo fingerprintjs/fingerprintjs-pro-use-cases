@@ -1,15 +1,15 @@
 import { FunctionComponent, useState } from 'react';
 import { useDebounce } from 'react-use';
-import { useCart } from '../../api/personalization/use-cart';
-import { usePersonalizationNotification } from '../../hooks/personalization/use-personalization-notification';
-import { ButtonMinusSvg } from '../../img/buttonMinusSvg';
-import { ButtonPlusSvg } from '../../img/buttonPlusSvg';
+import { useCart } from '../hooks/use-cart';
+import { usePersonalizationNotification } from '../../../client/hooks/personalization/use-personalization-notification';
+import { ButtonMinusSvg } from '../../../client/img/buttonMinusSvg';
+import { ButtonPlusSvg } from '../../../client/img/buttonPlusSvg';
 import Image from 'next/image';
 import styles from './productCard.module.scss';
-import Button from '../common/Button/Button';
-import HeartIcon from '../../img/heart.svg';
-import { TEST_IDS } from '../../testIDs';
-import { UserCartItem } from '../../../server/personalization/database';
+import Button from '../../../client/components/common/Button/Button';
+import HeartIcon from '../img/heart.svg';
+import { TEST_IDS } from '../../../client/testIDs';
+import { UserCartItem } from '../api/database';
 
 type Product = {
   price: number;
