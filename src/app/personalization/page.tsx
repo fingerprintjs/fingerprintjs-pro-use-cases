@@ -4,6 +4,6 @@ import { Personalization } from './Personalization';
 
 export const metadata = generateUseCaseMetadata(USE_CASES.personalization);
 
-export default function PaywallPage() {
+export default function PersonalizationPage() {
   return <Personalization />;
 }

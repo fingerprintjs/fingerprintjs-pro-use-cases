@@ -35,9 +35,6 @@ export function Personalization() {
   const { addCartItemMutation, removeCartItemMutation, cartQuery } = useCart();
   const productsQuery = useProducts(searchQuery);
 
-  // TODO: Remove
-  const hasDarkMode = false;
-
   const isLoading = productsQuery.isLoading || isFpDataLoading;
 
   const { showNotification } = usePersonalizationNotification();
@@ -61,7 +58,7 @@ export function Personalization() {
       data?.incognito &&
       data?.visitorFound &&
       !userWelcomed &&
-      (searchHistoryQuery.data?.data?.length || hasDarkMode || cartQuery.data?.data?.length)
+      (searchHistoryQuery.data?.data?.length || cartQuery.data?.data?.length)
     ) {
       enqueueSnackbar('Welcome back! We synced your cart and search terms.', {
         variant: 'info',
@@ -70,7 +67,7 @@ export function Personalization() {
 
       setUserWelcomed(true);
     }
-  }, [cartQuery.data, data, enqueueSnackbar, hasDarkMode, searchHistoryQuery.data, userWelcomed]);
+  }, [cartQuery.data, data, enqueueSnackbar, searchHistoryQuery.data, userWelcomed]);
 
   const cartItems: CartProduct[] | undefined = cartQuery.data?.data?.map((item) => {
     return {

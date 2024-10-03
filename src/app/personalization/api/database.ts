@@ -104,20 +104,7 @@ export type UserCartItem = Attributes<UserCartItemAttributes> & { product: Produ
 ProductDbModel.hasMany(UserCartItemDbModel);
 UserCartItemDbModel.belongsTo(ProductDbModel);
 
-let didInit = false;
-
 const productModels = [ProductDbModel, UserCartItemDbModel, UserCartItemDbModel, UserSearchHistoryDbModel];
 
 // Create DB tables
 productModels.map((model) => model.sync({ force: false }));
-
-// Remove this
-export async function initProducts() {
-  if (didInit) {
-    return;
-  }
-
-  didInit = true;
-
-  await Promise.all(productModels.map((model) => model.sync({ force: false }))).catch(console.error);
-}
