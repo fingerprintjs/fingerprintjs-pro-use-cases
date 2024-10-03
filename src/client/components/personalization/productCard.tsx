@@ -41,7 +41,7 @@ export const ProductCard: FunctionComponent<{ product: Product }> = ({ product }
   const { showNotification } = usePersonalizationNotification();
   const [wasAdded, setWasAdded] = useState(false);
 
-  const cartItem: UserCartItem | undefined = cartQuery.data?.data.find((item) => item.productId === product.id);
+  const cartItem: UserCartItem | undefined = cartQuery.data?.data?.find((item) => item.productId === product.id);
 
   const addToCart = async () => {
     await addCartItemMutation.mutateAsync({ productId: product.id });

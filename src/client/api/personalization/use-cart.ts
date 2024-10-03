@@ -1,22 +1,9 @@
-import { apiRequest } from '../api';
 import { useMutation, useQuery } from 'react-query';
 import { useCallback } from 'react';
-import { UserCartItem } from '../../../server/personalization/database';
-import { useVisitorData, FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
-
-function getCart(fpData?: FingerprintJSPro.GetResult) {
-  return apiRequest('/api/personalization/cart/get-items', fpData);
-}
-
-function addCartItem(productId: number, fpData?: FingerprintJSPro.GetResult) {
-  return apiRequest('/api/personalization/cart/add-item', fpData, {
-    productId,
-  });
-}
-
-function removeCartItem(itemId: number, fpData?: FingerprintJSPro.GetResult) {
-  return apiRequest('/api/personalization/cart/remove-item', fpData, { itemId });
-}
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { GetCartItemsPayload, GetCartItemsResponse } from '../../../app/personalization/api/cart/get-items/route';
+import { AddCartItemPayload, AddCartItemResponse } from '../../../app/personalization/api/cart/add-item/route';
+import { RemoveCartItemPayload } from '../../../app/personalization/api/cart/remove-item/route';
 
 const GET_CART_QUERY = 'GET_CART_QUERY';
 const ADD_CART_ITEM_MUTATION = 'ADD_CART_ITEM_MUTATION';
@@ -25,11 +12,26 @@ const REMOVE_CART_ITEM_MUTATION = 'REMOVE_CART_ITEM_MUTATION';
 export function useCart() {
   const { data: visitorData } = useVisitorData();
 
-  const cartQuery = useQuery<{ data: UserCartItem[]; size: number }>(GET_CART_QUERY, () => getCart(visitorData), {
+  const cartQuery = useQuery({
+    queryKey: [GET_CART_QUERY],
+    queryFn: async () => {
+      if (!visitorData) {
+        throw new Error('Visitor data is undefined');
+      }
+      const response = await fetch('/personalization/api/cart/get-items', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          requestId: visitorData.requestId,
+        } satisfies GetCartItemsPayload),
+      });
+      return (await response.json()) as GetCartItemsResponse;
+    },
     enabled: Boolean(visitorData),
   });
+
   const refetchCartOnSuccess = useCallback(
-    async (data: UserCartItem[]) => {
+    async (data: AddCartItemResponse) => {
       if (data) {
         await cartQuery.refetch();
       }
@@ -37,20 +39,43 @@ export function useCart() {
     [cartQuery],
   );
 
-  const addCartItemMutation = useMutation<any, any, { productId: number }>(
-    ADD_CART_ITEM_MUTATION,
-    ({ productId }) => addCartItem(productId, visitorData),
-    {
-      onSuccess: refetchCartOnSuccess,
+  const addCartItemMutation = useMutation({
+    mutationKey: [ADD_CART_ITEM_MUTATION],
+    mutationFn: async ({ productId }: { productId: number }) => {
+      if (!visitorData) {
+        throw new Error('Visitor data is undefined');
+      }
+      const response = await fetch('/personalization/api/cart/add-item', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          requestId: visitorData.requestId,
+          productId,
+        } satisfies AddCartItemPayload),
+      });
+      return (await response.json()) as AddCartItemResponse;
     },
-  );
-  const removeCartItemMutation = useMutation<any, any, { itemId: number }>(
-    REMOVE_CART_ITEM_MUTATION,
-    ({ itemId }) => removeCartItem(itemId, visitorData),
-    {
-      onSuccess: refetchCartOnSuccess,
+    onSuccess: (data: AddCartItemResponse) => refetchCartOnSuccess(data),
+  });
+
+  const removeCartItemMutation = useMutation({
+    mutationKey: [REMOVE_CART_ITEM_MUTATION],
+    mutationFn: async ({ itemId }: { itemId: number }) => {
+      if (!visitorData) {
+        throw new Error('Visitor data is undefined');
+      }
+      const response = await fetch('/personalization/api/cart/remove-item', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          requestId: visitorData.requestId,
+          itemId,
+        } satisfies RemoveCartItemPayload),
+      });
+      return (await response.json()) as AddCartItemResponse;
     },
-  );
+    onSuccess: refetchCartOnSuccess,
+  });
 
   return {
     cartQuery,

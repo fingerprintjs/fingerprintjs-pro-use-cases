@@ -3,11 +3,11 @@ import { Op } from 'sequelize';
 import { NextRequest, NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult, Severity } from '../../../../../server/checks';
 
-type GetItemsPayload = {
+export type GetCartItemsPayload = {
   requestId: string;
 };
 
-type GetCartItemsResponse = {
+export type GetCartItemsResponse = {
   severity: Severity;
   message?: string;
   data?: UserCartItem[];
@@ -16,12 +16,12 @@ type GetCartItemsResponse = {
 
 // Returns cart items for the given visitorId
 export async function POST(req: NextRequest): Promise<NextResponse<GetCartItemsResponse>> {
-  const { requestId } = (await req.json()) as GetItemsPayload;
+  const { requestId } = (await req.json()) as GetCartItemsPayload;
 
   const fingerprintResult = await getAndValidateFingerprintResult({
     requestId,
     req,
-    options: { minConfidenceScore: 0.3 },
+    options: { minConfidenceScore: 0.3, disableFreshnessCheck: true },
   });
   const visitorId = fingerprintResult.okay ? fingerprintResult.data.products.identification?.data?.visitorId : null;
 

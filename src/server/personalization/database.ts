@@ -68,7 +68,7 @@ export const UserSearchHistoryDbModel = sequelize.define<UserSearchHistoryAttrib
 
 export type UserSearchTerm = Attributes<UserSearchHistoryAttributes>;
 
-interface UserCartItemAttributes
+export interface UserCartItemAttributes
   extends Model<InferAttributes<UserCartItemAttributes>, InferCreationAttributes<UserCartItemAttributes>> {
   id: CreationOptional<number>;
   visitorId: string;

@@ -7,11 +7,10 @@ export const GET_PRODUCTS_QUERY = 'GET_PRODUCTS_QUERY';
 
 export function useProducts(query: string) {
   const { data: visitorData } = useVisitorData();
-
   const queryClient = useQueryClient();
-
   return useQuery<GetProductsResponse>({
-    queryKey: GET_PRODUCTS_QUERY,
+    // Make a new request every time `query` changes
+    queryKey: [GET_PRODUCTS_QUERY, query],
     queryFn: async () => {
       const { requestId } = visitorData!;
       const response = await fetch('/personalization/api/get-products', {

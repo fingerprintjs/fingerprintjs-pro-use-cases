@@ -72,7 +72,7 @@ export function Personalization() {
     }
   }, [cartQuery.data, data, enqueueSnackbar, hasDarkMode, searchHistoryQuery.data, userWelcomed]);
 
-  const cartItems: CartProduct[] | undefined = cartQuery.data?.data.map((item) => {
+  const cartItems: CartProduct[] | undefined = cartQuery.data?.data?.map((item) => {
     return {
       id: item.id,
       name: item.product.name,

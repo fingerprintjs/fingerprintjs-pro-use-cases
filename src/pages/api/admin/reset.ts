@@ -1,9 +1,5 @@
 import { isValidPostRequest } from '../../../server/server';
-import {
-  UserCartItemDbModel,
-  UserPreferencesDbModel,
-  UserSearchHistoryDbModel,
-} from '../../../server/personalization/database';
+import { UserCartItemDbModel, UserSearchHistoryDbModel } from '../../../server/personalization/database';
 import { LoanRequestDbModel } from '../../../app/loan-risk/api/request-loan/database';
 import { CouponClaimDbModel } from '../../../server/coupon-fraud/database';
 import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
@@ -72,9 +68,8 @@ const deleteVisitorData = async (visitorId: string, ip: string) => {
     deletedCouponsClaims: await tryToDestroy(() => CouponClaimDbModel.destroy(options)),
     deletedPersonalizationRecords: await tryToDestroy(async () => {
       const deletedCartItemsCount = await UserCartItemDbModel.destroy(options);
-      const deletedUserPreferencesCount = await UserPreferencesDbModel.destroy(options);
       const deletedUserSearchHistoryCount = await UserSearchHistoryDbModel.destroy(options);
-      return deletedCartItemsCount + deletedUserPreferencesCount + deletedUserSearchHistoryCount;
+      return deletedCartItemsCount + deletedUserSearchHistoryCount;
     }),
     deletedLoanRequests: await tryToDestroy(() => LoanRequestDbModel.destroy(options)),
     deletedArticleViews: await tryToDestroy(() => ArticleViewDbModel.destroy(options)),

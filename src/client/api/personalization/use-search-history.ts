@@ -7,6 +7,7 @@ export const SEARCH_HISTORY_QUERY = 'SEARCH_HISTORY_QUERY';
 export function useSearchHistory() {
   const { data: visitorData } = useVisitorData();
   return useQuery<SearchHistoryResponse>({
+    queryKey: [SEARCH_HISTORY_QUERY],
     queryFn: async () => {
       const { requestId } = visitorData!;
       const response = await fetch('/personalization/api/get-search-history', {

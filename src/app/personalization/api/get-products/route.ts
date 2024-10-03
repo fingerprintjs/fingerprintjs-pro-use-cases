@@ -77,13 +77,17 @@ export async function POST(req: NextRequest): Promise<NextResponse<GetProductsRe
   const fingerprintResult = await getAndValidateFingerprintResult({
     requestId,
     req,
-    options: { minConfidenceScore: 0.3 },
+    options: { minConfidenceScore: 0.3, disableFreshnessCheck: true },
   });
   const visitorId = fingerprintResult.okay ? fingerprintResult.data.products.identification?.data?.visitorId : null;
 
-  if (query && visitorId) {
-    await persistSearchPhrase(query.trim(), visitorId);
-    querySaved = true;
+  if (query) {
+    if (visitorId) {
+      await persistSearchPhrase(query.trim(), visitorId);
+      querySaved = true;
+    } else {
+      console.error('Could not retrieve visitor ID to save the search term. Returning found products anyway.');
+    }
   }
 
   return NextResponse.json({

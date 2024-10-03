@@ -3,19 +3,19 @@ import { Op } from 'sequelize';
 import { NextRequest, NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult, Severity } from '../../../../../server/checks';
 
-type AddItemPayload = {
+export type AddCartItemPayload = {
   requestId: string;
   productId: number;
 };
 
-type AddItemResponse = {
+export type AddCartItemResponse = {
   severity: Severity;
   message: string;
   data?: any;
 };
 
-export async function POST(req: NextRequest): Promise<NextResponse<AddItemResponse>> {
-  const { requestId, productId } = (await req.json()) as AddItemPayload;
+export async function POST(req: NextRequest): Promise<NextResponse<AddCartItemResponse>> {
+  const { requestId, productId } = (await req.json()) as AddCartItemPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
   const fingerprintResult = await getAndValidateFingerprintResult({
