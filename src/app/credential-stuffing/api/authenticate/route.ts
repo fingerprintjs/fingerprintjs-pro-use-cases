@@ -2,9 +2,9 @@ import { Op } from 'sequelize';
 import { NextResponse } from 'next/server';
 import { env } from 'process';
 import { Severity, getAndValidateFingerprintResult } from '../../../../server/checks';
-import { CREDENTIAL_STUFFING_COPY } from '../../../../server/credentialStuffing/copy';
-import { LoginAttemptResult, LoginAttemptDbModel } from '../../../../server/credentialStuffing/database';
-import { sequelize } from '../../../../server/server';
+import { CREDENTIAL_STUFFING_COPY } from './copy';
+import { LoginAttemptResult, LoginAttemptDbModel } from './database';
+import { sequelize } from '../../../../server/sequelize';
 
 export type LoginPayload = {
   username: string;

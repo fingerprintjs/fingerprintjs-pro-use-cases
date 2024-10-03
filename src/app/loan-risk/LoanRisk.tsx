@@ -2,11 +2,6 @@
 
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { FunctionComponent, useMemo, useState } from 'react';
-import {
-  loanDurationValidation,
-  loanValueValidation,
-  monthlyIncomeValidation,
-} from '../../client/loan-risk/validation';
 import { calculateMonthInstallment } from '../../shared/loan-risk/calculate-month-installment';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
@@ -64,6 +59,21 @@ const SliderField: FunctionComponent<SliderFieldProps> = ({
       </div>
     </div>
   );
+};
+
+const loanValueValidation = {
+  min: 1000,
+  max: 1_0_000,
+};
+
+const monthlyIncomeValidation = {
+  min: 500,
+  max: 3_0_000,
+};
+
+const loanDurationValidation = {
+  min: 2,
+  max: 48,
 };
 
 export function LoanRisk() {

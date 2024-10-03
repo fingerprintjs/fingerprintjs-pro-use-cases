@@ -1,5 +1,5 @@
 import { ProductDbModel } from './database';
-import { sequelize } from '../../../server/server';
+import { sequelize } from '../../../server/sequelize';
 
 export async function seedProducts() {
   await Promise.all([

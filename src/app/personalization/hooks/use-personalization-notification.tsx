@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { SnackbarKey, useSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
-import Button from '../../components/common/Button/Button';
-import { CloseSnackbarButton } from '../../components/common/Alert/Alert';
+import Button from '../../../client/components/common/Button/Button';
+import { CloseSnackbarButton } from '../../../client/components/common/Alert/Alert';
 
 export function usePersonalizationNotification() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();

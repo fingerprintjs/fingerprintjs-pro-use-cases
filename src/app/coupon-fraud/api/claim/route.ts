@@ -1,7 +1,7 @@
 import { Op } from 'sequelize';
-import { COUPON_CODES, CouponClaimDbModel, CouponCodeString } from '../../../../server/coupon-fraud/database';
+import { COUPON_CODES, CouponClaimDbModel, CouponCodeString } from './database';
 import { Severity, getAndValidateFingerprintResult } from '../../../../server/checks';
-import { COUPON_FRAUD_COPY } from '../../../../server/coupon-fraud/copy';
+import { COUPON_FRAUD_COPY } from './copy';
 import { NextResponse } from 'next/server';
 
 export type CouponClaimPayload = {

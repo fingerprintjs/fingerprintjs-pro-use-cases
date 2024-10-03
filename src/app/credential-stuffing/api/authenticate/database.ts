@@ -1,5 +1,5 @@
 import { Attributes, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
-import { sequelize } from '../server';
+import { sequelize } from '../../../../server/sequelize';
 
 export type LoginAttemptResult =
   | 'RequestIdValidationFailed'

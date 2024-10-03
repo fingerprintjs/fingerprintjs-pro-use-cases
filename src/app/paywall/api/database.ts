@@ -1,5 +1,5 @@
 import { Attributes, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
-import { sequelize } from '../../../server/server';
+import { sequelize } from '../../../server/sequelize';
 
 interface ArticleViewAttributes
   extends Model<InferAttributes<ArticleViewAttributes>, InferCreationAttributes<ArticleViewAttributes>> {

@@ -4,8 +4,6 @@ import {
   Region,
   isEventError,
 } from '@fingerprintjs/fingerprintjs-pro-server-api';
-import { CheckResult, checkResultType } from './checkResult';
-import { NextApiRequest, NextApiResponse } from 'next';
 import { ValidationDataResult } from '../shared/types';
 import { decryptSealedResult } from './decryptSealedResult';
 import { env } from '../env';
@@ -34,97 +32,7 @@ export function areVisitorIdAndRequestIdValid(visitorId: string, requestId: stri
   return isRequestIdFormatValid(requestId) && isVisitorIdFormatValid(visitorId);
 }
 
-/**
- * @deprecated Use getAndValidateFingerprintResult() for new use cases
- */
-export type RequestCallback = (req: NextApiRequest, res: NextApiResponse, visitorData: EventResponse) => void;
-
-/**
- * @deprecated Use getAndValidateFingerprintResult() for new use cases
- */
-export type RuleCheck = (
-  eventResponse: EventResponse,
-  req: NextApiRequest,
-  ...args: any
-) => (CheckResult | undefined) | Promise<CheckResult | undefined>;
-
-/**
- * @deprecated Use getAndValidateFingerprintResult() for new use cases
- */
-export const checkFreshIdentificationRequest: RuleCheck = (eventResponse) => {
-  const timestamp = eventResponse?.products?.identification?.data?.timestamp;
-  if (!eventResponse || !timestamp) {
-    return new CheckResult(
-      'Hmmm, sneaky trying to forge information from the client-side, no luck this time, no sensitive action was performed.',
-      'error',
-      checkResultType.RequestIdMismatch,
-    );
-  }
-
-  const requestTimestampDiff = new Date().getTime() - timestamp;
-
-  if (requestTimestampDiff > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS) {
-    return new CheckResult('Old requestId detected. Action ignored and logged.', 'error', checkResultType.OldTimestamp);
-  }
-
-  return undefined;
-};
-
-/**
- * @deprecated Use getAndValidateFingerprintResult() for new use cases
- */
-export const checkConfidenceScore: RuleCheck = (eventResponse) => {
-  const confidenceScore = eventResponse?.products?.identification?.data?.confidence?.score;
-  if (!confidenceScore || confidenceScore < env.MIN_CONFIDENCE_SCORE) {
-    return new CheckResult(
-      "Low confidence score, we'd rather verify you with the second factor,",
-      'error',
-      checkResultType.LowConfidenceScore,
-    );
-  }
-
-  return undefined;
-};
-
-/**
- * @deprecated Use getAndValidateFingerprintResult() for new use cases
- */
-export const checkIpAddressIntegrity: RuleCheck = (eventResponse, request) => {
-  if (!visitIpMatchesRequestIp(eventResponse.products?.identification?.data?.ip, request)) {
-    return new CheckResult(
-      'IP mismatch. An attacker might have tried to phish the victim.',
-      'error',
-      checkResultType.IpMismatch,
-    );
-  }
-
-  return undefined;
-};
-
-/**
- * @deprecated Use getAndValidateFingerprintResult() for new use cases
- */
-export const checkOriginsIntegrity: RuleCheck = (eventResponse, request) => {
-  if (!originIsAllowed(eventResponse.products?.identification?.data?.url, request)) {
-    return new CheckResult(
-      'Origin mismatch. An attacker might have tried to phish the victim.',
-      'error',
-      checkResultType.ForeignOrigin,
-    );
-  }
-
-  return undefined;
-};
-
-const isRequest = (request: Request | NextApiRequest): request is Request => {
-  return typeof request.headers.get == 'function';
-};
-
-const getHeader = (request: Request | NextApiRequest, header: string) => {
-  return isRequest(request) ? request.headers.get(header) : request.headers[header];
-};
-
-export function visitIpMatchesRequestIp(visitIp = '', request: NextApiRequest | Request) {
+export function visitIpMatchesRequestIp(visitIp = '', request: Request) {
   // This check is skipped on purpose in the Stackblitz and localhost environments.
   if (IS_DEVELOPMENT) {
     return true;
@@ -139,7 +47,7 @@ export function visitIpMatchesRequestIp(visitIp = '', request: NextApiRequest | 
    * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
    * https://adam-p.ca/blog/2022/03/x-forwarded-for/.
    */
-  const xForwardedFor = getHeader(request, 'x-forwarded-for');
+  const xForwardedFor = request.headers.get('x-forwarded-for');
   const requestIp = Array.isArray(xForwardedFor) ? xForwardedFor[0] : xForwardedFor?.split(',')[0] ?? '';
 
   // IPv6 addresses are not supported yet, skip the check
@@ -150,13 +58,13 @@ export function visitIpMatchesRequestIp(visitIp = '', request: NextApiRequest | 
   return requestIp === visitIp;
 }
 
-export function originIsAllowed(url = '', request: NextApiRequest | Request) {
+export function originIsAllowed(url = '', request: Request) {
   // This check is skipped on purpose in the Stackblitz and localhost environments.
   if (IS_DEVELOPMENT) {
     return true;
   }
 
-  const headerOrigin = getHeader(request, 'origin');
+  const headerOrigin = request.headers.get('origin');
   const visitDataOrigin = new URL(url).origin;
   return (
     visitDataOrigin === headerOrigin && OUR_ORIGINS.includes(visitDataOrigin) && OUR_ORIGINS.includes(headerOrigin)
@@ -173,7 +81,7 @@ export function originIsAllowed(url = '', request: NextApiRequest | Request) {
 
 type GetFingerprintResultArgs = {
   requestId: string;
-  req: NextApiRequest | Request;
+  req: Request;
   sealedResult?: string;
   serverApiKey?: string;
   region?: Region;

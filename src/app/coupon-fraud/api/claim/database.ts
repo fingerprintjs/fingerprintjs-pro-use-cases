@@ -1,4 +1,4 @@
-import { sequelize } from '../server';
+import { sequelize } from '../../../../server/sequelize';
 import { Attributes, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 
 export const COUPON_CODES = ['Promo3000', 'BlackFriday'] as const;

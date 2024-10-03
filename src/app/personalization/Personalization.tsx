@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useDebounce, useSessionStorage } from 'react-use';
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import { usePersonalizationNotification } from '../../client/hooks/personalization/use-personalization-notification';
 import { useSnackbar } from 'notistack';
 import { useCart } from './hooks/use-cart';
 import React from 'react';
@@ -20,6 +19,7 @@ import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { Spinner } from '../../client/components/common/Spinner/Spinner';
 import { useSearchHistory } from './hooks/use-search-history';
 import { useProducts } from './hooks/use-products';
+import { usePersonalizationNotification } from './hooks/use-personalization-notification';
 
 export function Personalization() {
   const { enqueueSnackbar } = useSnackbar();

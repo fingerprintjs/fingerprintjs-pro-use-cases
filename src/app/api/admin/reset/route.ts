@@ -1,15 +1,14 @@
-import { isValidPostRequest } from '../../../server/server';
-import { UserCartItemDbModel, UserSearchHistoryDbModel } from '../../../app/personalization/api/database';
-import { LoanRequestDbModel } from '../../../app/loan-risk/api/request-loan/database';
-import { CouponClaimDbModel } from '../../../server/coupon-fraud/database';
-import { Severity, getAndValidateFingerprintResult } from '../../../server/checks';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { LoginAttemptDbModel } from '../../../server/credentialStuffing/database';
-import { ArticleViewDbModel } from '../../../app/paywall/api/database';
-import { SmsVerificationDatabaseModel } from '../../../app/sms-pumping/api/database';
-import { syncFirewallRuleset } from '../../../app/bot-firewall/api/block-ip/cloudflareApiHelper';
-import { deleteBlockedIp } from '../../../app/bot-firewall/api/get-blocked-ips/blockedIpsDatabase';
-import { PaymentAttemptDbModel } from '../../../app/payment-fraud/api/place-order/database';
+import { UserCartItemDbModel, UserSearchHistoryDbModel } from '../../../personalization/api/database';
+import { LoanRequestDbModel } from '../../../loan-risk/api/request-loan/database';
+import { CouponClaimDbModel } from '../../../coupon-fraud/api/claim/database';
+import { Severity, getAndValidateFingerprintResult } from '../../../../server/checks';
+import { LoginAttemptDbModel } from '../../../credential-stuffing/api/authenticate/database';
+import { ArticleViewDbModel } from '../../../paywall/api/database';
+import { SmsVerificationDatabaseModel } from '../../../sms-pumping/api/database';
+import { syncFirewallRuleset } from '../../../bot-firewall/api/block-ip/cloudflareApiHelper';
+import { deleteBlockedIp } from '../../../bot-firewall/api/get-blocked-ips/blockedIpsDatabase';
+import { PaymentAttemptDbModel } from '../../../payment-fraud/api/place-order/database';
+import { NextRequest, NextResponse } from 'next/server';
 
 export type ResetResponse = {
   message: string;
@@ -21,15 +20,8 @@ export type ResetRequest = {
   requestId: string;
 };
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<ResetResponse>) {
-  // This API route accepts only POST requests.
-  const reqValidation = isValidPostRequest(req);
-  if (!reqValidation.okay) {
-    res.status(405).send({ severity: 'error', message: reqValidation.error });
-    return;
-  }
-
-  const { requestId } = req.body as ResetRequest;
+export async function POST(req: NextRequest): Promise<NextResponse<ResetResponse>> {
+  const { requestId } = (await req.json()) as ResetRequest;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
   const fingerprintResult = await getAndValidateFingerprintResult({
@@ -38,19 +30,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     options: { minConfidenceScore: 0.3 },
   });
   if (!fingerprintResult.okay) {
-    res.status(403).send({ severity: 'error', message: fingerprintResult.error });
-    return;
+    return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });
   }
 
   const { visitorId, ip } = fingerprintResult.data.products?.identification?.data ?? {};
   if (!visitorId) {
-    res.status(403).send({ severity: 'error', message: 'Visitor ID not found.' });
-    return;
+    return NextResponse.json({ severity: 'error', message: 'Visitor ID not found.' }, { status: 403 });
   }
 
   const deleteResult = await deleteVisitorData(visitorId, ip ?? '');
 
-  res.status(200).json({
+  return NextResponse.json({
     message: 'Visitor data deleted successfully.',
     severity: 'success',
     result: deleteResult,

@@ -1,7 +1,6 @@
 import { FunctionComponent, useState } from 'react';
 import { useDebounce } from 'react-use';
 import { useCart } from '../hooks/use-cart';
-import { usePersonalizationNotification } from '../../../client/hooks/personalization/use-personalization-notification';
 import { ButtonMinusSvg } from '../../../client/img/buttonMinusSvg';
 import { ButtonPlusSvg } from '../../../client/img/buttonPlusSvg';
 import Image from 'next/image';
@@ -10,6 +9,7 @@ import Button from '../../../client/components/common/Button/Button';
 import HeartIcon from '../img/heart.svg';
 import { TEST_IDS } from '../../../client/testIDs';
 import { UserCartItem } from '../api/database';
+import { usePersonalizationNotification } from '../hooks/use-personalization-notification';
 
 type Product = {
   price: number;
