@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { GetCartItemsPayload, GetCartItemsResponse } from '../api/cart/get-items/route';
 import { AddCartItemPayload, AddCartItemResponse } from '../api/cart/add-item/route';
-import { RemoveCartItemPayload } from '../api/cart/remove-item/route';
+import { RemoveCartItemPayload, RemoveCartItemResponse } from '../api/cart/remove-item/route';
 
 const GET_CART_QUERY = 'GET_CART_QUERY';
 const ADD_CART_ITEM_MUTATION = 'ADD_CART_ITEM_MUTATION';
@@ -12,7 +12,7 @@ const REMOVE_CART_ITEM_MUTATION = 'REMOVE_CART_ITEM_MUTATION';
 export function useCart() {
   const { data: visitorData } = useVisitorData();
 
-  const cartQuery = useQuery({
+  const cartQuery = useQuery<GetCartItemsResponse>({
     queryKey: [GET_CART_QUERY],
     queryFn: async () => {
       if (!visitorData) {
@@ -25,13 +25,13 @@ export function useCart() {
           requestId: visitorData.requestId,
         } satisfies GetCartItemsPayload),
       });
-      return (await response.json()) as GetCartItemsResponse;
+      return await response.json();
     },
     enabled: Boolean(visitorData),
   });
 
   const refetchCartOnSuccess = useCallback(
-    async (data: AddCartItemResponse) => {
+    async (data: AddCartItemResponse | RemoveCartItemResponse) => {
       if (data) {
         await cartQuery.refetch();
       }
@@ -72,7 +72,7 @@ export function useCart() {
           itemId,
         } satisfies RemoveCartItemPayload),
       });
-      return (await response.json()) as AddCartItemResponse;
+      return (await response.json()) as RemoveCartItemResponse;
     },
     onSuccess: refetchCartOnSuccess,
   });

@@ -1,4 +1,4 @@
-import { ProductDbModel, UserCartItemDbModel } from '../../database';
+import { ProductDbModel, UserCartItemAttributes, UserCartItemDbModel } from '../../database';
 import { Op } from 'sequelize';
 import { NextRequest, NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult, Severity } from '../../../../../server/checks';
@@ -11,7 +11,7 @@ export type AddCartItemPayload = {
 export type AddCartItemResponse = {
   severity: Severity;
   message: string;
-  data?: any;
+  data?: UserCartItemAttributes;
 };
 
 export async function POST(req: NextRequest): Promise<NextResponse<AddCartItemResponse>> {

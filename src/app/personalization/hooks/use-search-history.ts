@@ -9,7 +9,10 @@ export function useSearchHistory() {
   return useQuery<SearchHistoryResponse>({
     queryKey: [SEARCH_HISTORY_QUERY],
     queryFn: async () => {
-      const { requestId } = visitorData!;
+      if (!visitorData) {
+        throw new Error('Visitor data is undefined');
+      }
+      const { requestId } = visitorData;
       const response = await fetch('/personalization/api/get-search-history', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
