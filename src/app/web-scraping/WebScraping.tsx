@@ -4,7 +4,6 @@ import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/Us
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useQueryState } from 'next-usequerystate';
 import { useQuery, UseQueryResult } from 'react-query';
-import { CheckResultObject } from '../../server/checkResult';
 import { USE_CASES } from '../../client/components/common/content';
 import { Select, SelectItem } from '../../client/components/common/Select/Select';
 import ArrowIcon from '../../client/img/arrowRight.svg';
@@ -18,8 +17,14 @@ import { FunctionComponent, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AIRPORTS } from './data/airports';
 import { Flight, FlightCard } from './components/FlightCard';
+import { Severity } from '../../server/checks';
 
-type FlightQueryResult = CheckResultObject<Flight[]>;
+type FlightQueryResult = {
+  message: string;
+  severity: Severity;
+  type: string;
+  data?: Flight[];
+};
 
 const WebScraping: FunctionComponent = () => {
   const searchParams = useSearchParams();

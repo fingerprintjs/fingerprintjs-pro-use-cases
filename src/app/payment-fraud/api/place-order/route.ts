@@ -3,7 +3,7 @@ import { getAndValidateFingerprintResult, Severity } from '../../../../server/ch
 import { PaymentAttemptData, PaymentAttemptDbModel } from './database';
 import { PAYMENT_FRAUD_COPY } from './copy';
 import { Op } from 'sequelize';
-import { sequelize } from '../../../../server/server';
+import { sequelize } from '../../../../server/sequelize';
 
 type Card = {
   number: string;

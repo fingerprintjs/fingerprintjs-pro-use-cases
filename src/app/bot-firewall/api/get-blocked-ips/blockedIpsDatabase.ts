@@ -1,5 +1,5 @@
 import { Attributes, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
-import { sequelize } from '../../../../server/server';
+import { sequelize } from '../../../../server/sequelize';
 import { MAX_BLOCKED_IPS } from '../block-ip/buildFirewallRules';
 
 interface BlockedIpAttributes
