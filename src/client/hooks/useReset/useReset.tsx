@@ -2,7 +2,7 @@
 
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useMutation } from 'react-query';
-import { ResetRequest, ResetResponse } from '../../../pages/api/admin/reset';
+import { ResetRequest, ResetResponse } from '../../../app/api/admin/reset/route';
 import { useSnackbar } from 'notistack';
 import styles from './userReset.module.scss';
 import { PLAYGROUND_METADATA, USE_CASES } from '../../components/common/content';

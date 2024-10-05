@@ -12,7 +12,7 @@ import VpnDetectionIcon from '../../img/vpnDetection.svg';
 import SmsIcon from '../../img/smsIcon.svg';
 import { ReactNode } from 'react';
 import { RestartHint, RestartHintProps } from './UseCaseWrapper/RestartHint';
-import { TEST_PHONE_NUMBER } from '../../../server/sms-pumping/smsPumpingConst';
+import { TEST_PHONE_NUMBER } from '../../../app/sms-pumping/api/smsPumpingConst';
 
 export const PRODUCTION_URL = 'https://demo.fingerprint.com';
 

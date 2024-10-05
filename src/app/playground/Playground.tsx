@@ -80,7 +80,7 @@ const TableTitle = ({ children }: { children: ReactNode }) => (
   </motion.h3>
 );
 
-function Playground() {
+export function Playground() {
   const {
     agentResponse,
     isLoadingAgentResponse,
@@ -698,5 +698,3 @@ function Playground() {
     </>
   );
 }
-
-export default Playground;
