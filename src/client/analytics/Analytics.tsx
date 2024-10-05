@@ -21,7 +21,7 @@ declare global {
 }
 
 const enableAnalytics = () => {
-  // Required for development since without SSR sendEvent will be calPled before Helmet has a chance to inject the script that initializes dataLayer.
+  // Required for development since without SSR sendEvent will be called before Helmet has a chance to inject the script that initializes dataLayer.
   window.dataLayer = window.dataLayer ?? [];
   window.dataLayer.push({ event: 'event.enableAnalytics' }, { enableAnalytics: true });
 };
