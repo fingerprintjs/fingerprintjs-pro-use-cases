@@ -2,7 +2,7 @@ import * as amplitude from '@amplitude/analytics-browser';
 import { usePlaygroundSignals } from '../../app/playground/hooks/usePlaygroundSignals';
 import { FunctionComponent } from 'react';
 
-const AMPLITUDE_INGRESS_PROXY = 'https://dlxhio63e79vv.cloudfront.net/ampl-api/2/httpapi';
+const AMPLITUDE_INGRESS_PROXY = 'https://demo.fingerprint.com/ampl-api/2/httpapi';
 const EVENT_TYPE = 'Demo Page Viewed';
 
 /**

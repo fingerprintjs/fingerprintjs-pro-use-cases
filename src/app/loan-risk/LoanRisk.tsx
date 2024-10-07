@@ -2,7 +2,7 @@
 
 import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
 import { FunctionComponent, useMemo, useState } from 'react';
-import { calculateMonthInstallment } from '../../shared/loan-risk/calculate-month-installment';
+import { calculateMonthInstallment } from './api/request-loan/calculate-month-installment';
 import React from 'react';
 import { USE_CASES } from '../../client/components/common/content';
 import Button from '../../client/components/common/Button/Button';

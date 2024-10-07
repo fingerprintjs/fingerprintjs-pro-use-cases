@@ -9,12 +9,12 @@ import { RefreshButton } from './components/RefreshButton';
 import { ipBlocklistResult } from './components/IpBlocklistResult';
 import { vpnDetectionResult } from './components/VpnDetectionResult';
 import { usePlaygroundSignals } from './hooks/usePlaygroundSignals';
-import { getLocationName, getZoomLevel } from '../../shared/utils/locationUtils';
+import { getLocationName, getZoomLevel } from '../../utils/locationUtils';
 import Link from 'next/link';
 import styles from './playground.module.scss';
 import { Spinner } from '../../client/components/common/Spinner/Spinner';
 import { Alert } from '../../client/components/common/Alert/Alert';
-import { timeAgoLabel } from '../../shared/timeUtils';
+import { timeAgoLabel } from '../../utils/timeUtils';
 import Container from '../../client/components/common/Container';
 import { TEST_IDS } from '../../client/testIDs';
 import tableStyles from './components/SignalTable.module.scss';
@@ -27,7 +27,7 @@ import {
   MyCollapsibleContent,
 } from '../../client/components/common/Collapsible/Collapsible';
 import { ChevronSvg } from '../../client/img/chevronSvg';
-import { pluralize } from '../../shared/utils';
+import { pluralize } from '../../utils/utils';
 import { motion } from 'framer-motion';
 import { JsonLink, DocsLink } from './components/ArrowLinks';
 

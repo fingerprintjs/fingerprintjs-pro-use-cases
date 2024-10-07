@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { TEST_IDS } from '../../src/client/testIDs';
 
 import { assertAlert, assertSnackbar, blockGoogleTagManager, resetScenarios } from '../e2eTestUtils';
-import { ONE_MINUTE_MS } from '../../src/shared/timeUtils';
+import { ONE_MINUTE_MS } from '../../src/utils/timeUtils';
 import { TEST_BUILD } from '../../src/envShared';
 import {
   SMS_FRAUD_COPY,

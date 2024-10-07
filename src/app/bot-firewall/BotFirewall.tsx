@@ -12,7 +12,7 @@ import ChevronIcon from '../../client/img/chevronBlack.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FunctionComponent, useState } from 'react';
-import { wait } from '../../shared/timeUtils';
+import { wait } from '../../utils/timeUtils';
 import { Spinner } from '../../client/components/common/Spinner/Spinner';
 import { Alert } from '../../client/components/common/Alert/Alert';
 import { BotVisit } from './api/get-bot-visits/botVisitDatabase';

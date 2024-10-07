@@ -1,4 +1,4 @@
-import { calculateMonthInstallment } from '../../../../shared/loan-risk/calculate-month-installment';
+import { calculateMonthInstallment } from './calculate-month-installment';
 
 /**
  * Required minimal income.

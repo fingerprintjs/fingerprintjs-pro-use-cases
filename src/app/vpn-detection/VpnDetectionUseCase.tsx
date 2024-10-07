@@ -13,7 +13,7 @@ import { FingerprintJSPro, FpjsProvider, useVisitorData } from '@fingerprintjs/f
 import { useMutation } from 'react-query';
 import { ActivateRegionalPricingPayload, ActivateRegionalPricingResponse } from './api/activate-ppp/route';
 import { useUnsealedResult } from '../../client/hooks/useUnsealedResult';
-import { getFlagEmoji, getIpLocation } from '../../shared/utils/locationUtils';
+import { getFlagEmoji, getIpLocation } from '../../utils/locationUtils';
 import { getRegionalDiscount } from './data/getDiscountByCountry';
 import courseLogo from './fingerprintLogoLowOpacitySquareBordered.svg';
 import { env } from '../../env';
