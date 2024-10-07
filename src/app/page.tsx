@@ -6,16 +6,18 @@ import LinkArrow from '../client/img/externalLinkArrow.svg';
 import Image from 'next/image';
 import { TEST_IDS } from '../client/testIDs';
 import { Fragment } from 'react';
-import { SEO } from '../client/components/common/seo';
+import { Metadata } from 'next';
+import { generateMetadata } from '../client/components/common/seo';
+
+export const metadata: Metadata = generateMetadata({
+  title: 'Fingerprint Use Cases | Discover Device Intelligence Use Cases',
+  description:
+    'Explore an extensive range of use cases supported by Fingerprint, and learn how to successfully implement it for your business with practical guidance and a comprehensive demo.',
+});
 
 export default function Index() {
   return (
     <>
-      <SEO
-        title='Fingerprint Use Cases | Discover Device Intelligence Use Cases'
-        description={`Explore an extensive range of use cases supported by Fingerprint, and learn how to successfully implement it for your 
-        business with practical guidance and a comprehensive demo.`}
-      />
       <Container size='large' className={styles.hero}>
         <h1 className={styles.title}>Fingerprint use cases</h1>
         <div className={styles.intro}>
