@@ -8,7 +8,7 @@ import { Analytics } from '../client/analytics/Analytics';
 import Footer from '../client/components/common/Footer/Footer';
 import styles from '../styles/layout.module.scss';
 
-export default function LayoutUiInsideApp({ children }: { children: React.ReactNode }) {
+export function LayoutUI({ children }: { children: React.ReactNode }) {
   const segments = useSelectedLayoutSegments();
   const embed = Boolean(segments?.includes('embed'));
   return (
