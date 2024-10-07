@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { EventResponse, isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { OUR_ORIGINS } from '../../../../server/checks';
 import { IS_PRODUCTION } from '../../../../envShared';
 import { fingerprintServerApiClient } from '../../../../server/fingerprint-server-api';
@@ -12,6 +12,8 @@ const getCorsHeaders = (origin: string | null) => ({
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 });
+
+type CorsHeaders = ReturnType<typeof getCorsHeaders>;
 
 export async function POST(request: NextRequest, { params }: { params: { requestId: string } }) {
   const origin = request.headers.get('origin');
@@ -34,41 +36,50 @@ export async function POST(request: NextRequest, { params }: { params: { request
     });
   }
 
-  return tryGetFingerprintEvent(requestId, origin);
+  const result = await tryGetFingerprintEvent(requestId);
+
+  if (!result.okay) {
+    return sendErrorResponse(result.error, getCorsHeaders(origin));
+  }
+
+  return NextResponse.json(result.data, { headers: getCorsHeaders(origin) });
 }
 
 async function tryGetFingerprintEvent(
   requestId: string,
-  origin: string | null,
   retryCount = 5,
   retryDelay: number = 3000,
-): Promise<NextResponse> {
+): Promise<{ okay: true; data: EventResponse } | { okay: false; error: unknown }> {
   try {
     const eventResponse = await fingerprintServerApiClient.getEvent(requestId);
-    return NextResponse.json(eventResponse, { headers: getCorsHeaders(origin) });
+    return { okay: true, data: eventResponse };
   } catch (error) {
     // Retry only Not Found (404) requests.
     if (isEventError(error) && error.statusCode === 404 && retryCount > 1) {
       await new Promise((resolve) => setTimeout(resolve, retryDelay));
-      return tryGetFingerprintEvent(requestId, origin, retryCount - 1, retryDelay);
+      return tryGetFingerprintEvent(requestId, retryCount - 1, retryDelay);
     } else {
       console.error(error);
-      return sendErrorResponse(error);
+      return { okay: false, error };
     }
   }
 }
 
-function sendErrorResponse(error: unknown): NextResponse {
+function sendErrorResponse(error: unknown, corsHeaders: CorsHeaders): NextResponse {
   if (isEventError(error)) {
     return NextResponse.json(
       { message: error.message, code: error.errorCode },
-      { status: error.statusCode, statusText: `${error.errorCode} - ${error.message}` },
+      {
+        status: error.statusCode,
+        statusText: `${error.errorCode} - ${error.message}`,
+        headers: corsHeaders,
+      },
     );
   } else {
     return new NextResponse(null, {
       status: 500,
       statusText: `Something went wrong ${error}`,
-      headers: getCorsHeaders(origin),
+      headers: corsHeaders,
     });
   }
 }
