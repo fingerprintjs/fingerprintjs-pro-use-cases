@@ -5,7 +5,7 @@ import ArrivalIcon from '../images/arrival.svg';
 import AirCanada from '../images/airCanada.svg';
 import StarIcon from '../images/star.svg';
 import Image from 'next/image';
-import { ONE_HOUR_MS, ONE_MINUTE_MS } from '../../../shared/timeUtils';
+import { ONE_HOUR_MS, ONE_MINUTE_MS } from '../../../utils/timeUtils';
 import { TEST_IDS } from '../../../client/testIDs';
 import Button from '../../../client/components/common/Button/Button';
 

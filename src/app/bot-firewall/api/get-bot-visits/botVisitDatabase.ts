@@ -1,6 +1,6 @@
 import { Attributes, DataTypes, FindOptions, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import { sequelize } from '../../../../server/sequelize';
-import { EventResponseBotData } from '../../../../shared/types';
+import { EventResponseBotData } from '../../../../utils/types';
 
 interface BotVisitAttributes
   extends Model<InferAttributes<BotVisitAttributes>, InferCreationAttributes<BotVisitAttributes>> {

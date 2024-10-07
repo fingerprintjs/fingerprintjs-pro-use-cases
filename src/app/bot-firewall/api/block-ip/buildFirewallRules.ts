@@ -1,4 +1,4 @@
-import { chunk } from '../../../../shared/utils';
+import { chunk } from '../../../../utils/utils';
 
 /**
  * Cloudflare rule expressions are limited to [4096 characters](https://developers.cloudflare.com/ruleset-engine/rules-language/expressions/#maximum-rule-expression-length).

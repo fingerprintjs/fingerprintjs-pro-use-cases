@@ -1,5 +1,5 @@
 import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
-import { EventResponseIpInfoV4Geolocation } from '../types';
+import { EventResponseIpInfoV4Geolocation } from './types';
 
 export const UNKNOWN_LOCATION = 'Unknown';
 export function getLocationName(ipLocation?: EventResponseIpInfoV4Geolocation, includeSubdivision = true) {

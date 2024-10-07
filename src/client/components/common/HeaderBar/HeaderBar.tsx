@@ -2,7 +2,7 @@ import React from 'react';
 import Container from '../Container';
 
 import styles from './HeaderBar.module.scss';
-import { isLocalLink } from '../../../../shared/utils/link';
+import { isLocalLink } from '../../../../utils/link';
 import Link from 'next/link';
 
 export interface headerBarProps {
