@@ -1,17 +1,8 @@
 import '../styles/global-styles.scss';
 import Head from 'next/head';
-import { FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
 import { AppProps } from 'next/app';
 import Providers from '../Providers';
 import { Layout } from '../Layout';
-import { env } from '../env';
-
-export const FP_LOAD_OPTIONS: FingerprintJSPro.LoadOptions = {
-  apiKey: env.NEXT_PUBLIC_API_KEY,
-  scriptUrlPattern: [env.NEXT_PUBLIC_SCRIPT_URL_PATTERN, FingerprintJSPro.defaultScriptUrlPattern],
-  endpoint: [env.NEXT_PUBLIC_ENDPOINT, FingerprintJSPro.defaultEndpoint],
-  region: env.NEXT_PUBLIC_REGION,
-};
 
 export type CustomPageProps = { embed?: boolean };
 

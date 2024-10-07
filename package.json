@@ -22,6 +22,7 @@
     "node": ">=18.17.0"
   },
   "dependencies": {
+    "@amplitude/analytics-browser": "^2.11.5",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
     "@fingerprintjs/fingerprintjs-pro-react": "^2.6.2",
