@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import styles from './index.module.scss';
+import styles from './page.module.scss';
 import Container from '../client/components/common/Container';
 import { HOMEPAGE_CARDS } from '../client/components/common/content';
 import LinkArrow from '../client/img/externalLinkArrow.svg';
