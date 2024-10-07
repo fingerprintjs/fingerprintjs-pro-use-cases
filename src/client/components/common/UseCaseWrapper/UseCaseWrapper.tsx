@@ -13,7 +13,6 @@ import RestartIcon from '../../../img/restart.svg';
 import { useReset } from '../../../hooks/useReset/useReset';
 import classNames from 'classnames';
 import { RestartHint } from './RestartHint';
-import { SEO } from '../seo';
 import { TEST_IDS } from '../../../testIDs';
 import { FancyNumberedList } from '../FancyNumberedList/FancyNumberedList';
 import { ResourceLinks } from '../ResourceLinks/ResourceLinks';
@@ -57,7 +56,6 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
 
   return (
     <>
-      <SEO title={useCase.titleMeta ?? ''} description={useCase.descriptionMeta ?? ''} path={useCase.url} />
       {embed && shouldDisplayResetButton && (
         <Tooltip title='Click Restart to remove all information obtained from this browser. This will reenable some scenarios for you if you were locked out of a specific action.'>
           <div
