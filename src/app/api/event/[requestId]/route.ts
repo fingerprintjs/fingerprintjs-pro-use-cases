@@ -7,6 +7,7 @@ import { fingerprintServerApiClient } from '../../../../server/fingerprint-serve
 // Also allow our documentation to use the endpoint
 const allowedOrigins = [...OUR_ORIGINS, 'https://dev.fingerprint.com'];
 
+// Handle CORS
 const getCorsHeaders = (origin: string | null) => ({
   'Access-Control-Allow-Origin': String(origin),
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -15,6 +16,21 @@ const getCorsHeaders = (origin: string | null) => ({
 
 type CorsHeaders = ReturnType<typeof getCorsHeaders>;
 
+export async function OPTIONS(request: NextRequest) {
+  const origin = request.headers.get('origin');
+
+  // CORS preflight
+  if (origin && allowedOrigins.includes(origin)) {
+    return new NextResponse(null, {
+      status: 200,
+      headers: getCorsHeaders(origin),
+    });
+  }
+
+  return new NextResponse(null, { status: 204 });
+}
+
+// Main handler
 export async function POST(request: NextRequest, { params }: { params: { requestId: string } }) {
   const origin = request.headers.get('origin');
   const requestId = params.requestId;
@@ -82,18 +98,4 @@ function sendErrorResponse(error: unknown, corsHeaders: CorsHeaders): NextRespon
       headers: corsHeaders,
     });
   }
-}
-
-export async function OPTIONS(request: NextRequest) {
-  const origin = request.headers.get('origin');
-
-  // CORS preflight
-  if (origin && allowedOrigins.includes(origin)) {
-    return new NextResponse(null, {
-      status: 200,
-      headers: getCorsHeaders(origin),
-    });
-  }
-
-  return new NextResponse(null, { status: 204 });
 }
