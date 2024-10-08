@@ -14,13 +14,12 @@ import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
 import { PaymentPayload, PaymentResponse } from './api/place-order/route';
 import { useMutation } from 'react-query';
+import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
 export function PaymentFraud() {
   const { getData: getVisitorData } = useVisitorData(
-    { ignoreCache: true },
-    {
-      immediate: false,
-    },
+    { ignoreCache: true, timeout: FPJS_CLIENT_TIMEOUT },
+    { immediate: false },
   );
 
   // Default mocked card data

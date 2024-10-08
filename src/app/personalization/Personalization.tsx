@@ -20,11 +20,12 @@ import { Spinner } from '../../client/components/Spinner/Spinner';
 import { useSearchHistory } from './hooks/use-search-history';
 import { useProducts } from './hooks/use-products';
 import { usePersonalizationNotification } from './hooks/use-personalization-notification';
+import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
 export function Personalization() {
   const { enqueueSnackbar } = useSnackbar();
 
-  const { isLoading: isFpDataLoading, data } = useVisitorData({ extendedResult: true });
+  const { isLoading: isFpDataLoading, data } = useVisitorData({ extendedResult: true, timeout: FPJS_CLIENT_TIMEOUT });
 
   const [didAcknowledge, setDidAcknowledge] = useSessionStorage('didAcknowledgePersonalizationUseCaseWarning', false);
   const [search, setSearch] = useState('');

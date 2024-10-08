@@ -14,6 +14,7 @@ import { ArticleGrid, Byline } from '../../components/ArticleGrid';
 import { BackArrow } from '../../../../client/components/BackArrow/BackArrow';
 import { ArticleRequestPayload, ArticleResponse } from '../../api/article/[id]/route';
 import { ARTICLES } from '../../api/articles';
+import { FPJS_CLIENT_TIMEOUT } from '../../../../const';
 
 function ArticleSkeleton({ animation = false }: { animation?: SkeletonTypeMap['props']['animation'] }) {
   const skeletons = Array.from({ length: 4 }).map((_, index) => <Skeleton key={index} animation={animation} />);
@@ -23,6 +24,7 @@ function ArticleSkeleton({ animation = false }: { animation?: SkeletonTypeMap['p
 export function Article({ articleId, embed }: { articleId: string; embed: boolean }) {
   const { getData: getVisitorData } = useVisitorData({
     ignoreCache: true,
+    timeout: FPJS_CLIENT_TIMEOUT,
   });
 
   const { data: articleData, error: articleError } = useQuery<ArticleRequestPayload, Error, ArticleResponse>(

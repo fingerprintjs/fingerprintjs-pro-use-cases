@@ -4,13 +4,14 @@ import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { GetCartItemsPayload, GetCartItemsResponse } from '../api/cart/get-items/route';
 import { AddCartItemPayload, AddCartItemResponse } from '../api/cart/add-item/route';
 import { RemoveCartItemPayload, RemoveCartItemResponse } from '../api/cart/remove-item/route';
+import { FPJS_CLIENT_TIMEOUT } from '../../../const';
 
 const GET_CART_QUERY = 'GET_CART_QUERY';
 const ADD_CART_ITEM_MUTATION = 'ADD_CART_ITEM_MUTATION';
 const REMOVE_CART_ITEM_MUTATION = 'REMOVE_CART_ITEM_MUTATION';
 
 export function useCart() {
-  const { data: visitorData } = useVisitorData();
+  const { data: visitorData } = useVisitorData({ timeout: FPJS_CLIENT_TIMEOUT });
 
   const cartQuery = useQuery<GetCartItemsResponse>({
     queryKey: [GET_CART_QUERY],

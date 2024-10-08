@@ -18,6 +18,7 @@ import { useSearchParams } from 'next/navigation';
 import { AIRPORTS } from './data/airports';
 import { Flight, FlightCard } from './components/FlightCard';
 import { Severity } from '../../server/checks';
+import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
 type FlightQueryResult = {
   message: string;
@@ -44,6 +45,7 @@ const WebScraping: FunctionComponent = () => {
     {
       // Don't use a cached fingerprint, it must be fresh to avoid replay attacks
       ignoreCache: true,
+      timeout: FPJS_CLIENT_TIMEOUT,
     },
     // Don't fingerprint the visitor on mount, but when they click "Search flights", the fingerprint must be fresh
     { immediate: false },

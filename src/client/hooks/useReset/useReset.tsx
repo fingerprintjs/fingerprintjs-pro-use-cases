@@ -8,6 +8,7 @@ import styles from './userReset.module.scss';
 import { PLAYGROUND_METADATA, USE_CASES } from '../../content';
 import { TEST_IDS } from '../../testIDs';
 import { usePathname } from 'next/navigation';
+import { FPJS_CLIENT_TIMEOUT } from '../../../const';
 
 type UseResetParams = {
   onError?: () => void;
@@ -15,7 +16,7 @@ type UseResetParams = {
 };
 
 export const useReset = ({ onError, onSuccess }: UseResetParams) => {
-  const { getData } = useVisitorData({ ignoreCache: true }, { immediate: false });
+  const { getData } = useVisitorData({ ignoreCache: true, timeout: FPJS_CLIENT_TIMEOUT }, { immediate: false });
   const { enqueueSnackbar } = useSnackbar();
   const pathname = usePathname();
 
