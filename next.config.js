@@ -9,7 +9,7 @@ module.exports = {
     formats: ['image/webp'],
   },
   sassOptions: {
-    includePaths: [path.join(__dirname, 'src/styles')],
+    includePaths: [path.join(__dirname, 'src/client/styles')],
     prependData: `@import "common.scss";`,
   },
   experimental: {

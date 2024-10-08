@@ -3,7 +3,7 @@ import { getAndValidateFingerprintResult } from '../../../../server/checks';
 import { getRegionalDiscount } from '../../data/getDiscountByCountry';
 import { env } from '../../../../env';
 import { VPN_DETECTION_COPY } from '../../copy';
-import { getIpLocation, getLocationName } from '../../../../shared/utils/locationUtils';
+import { getIpLocation, getLocationName } from '../../../../utils/locationUtils';
 
 export type ActivateRegionalPricingPayload = {
   requestId: string;

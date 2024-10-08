@@ -1,7 +1,7 @@
 import { Severity, getAndValidateFingerprintResult } from '../../../../server/checks';
-import { ONE_SECOND_MS, readableMilliseconds } from '../../../../shared/timeUtils';
+import { ONE_SECOND_MS, readableMilliseconds } from '../../../../utils/timeUtils';
 import { Op } from 'sequelize';
-import { pluralize } from '../../../../shared/utils';
+import { pluralize } from '../../../../utils/utils';
 import Twilio from 'twilio';
 import { hashString } from '../../../../server/server-utils';
 import { env } from '../../../../env';

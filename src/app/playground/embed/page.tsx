@@ -1,5 +1,5 @@
-import { PLAYGROUND_METADATA } from '../../../client/components/common/content';
-import { generateUseCaseMetadata } from '../../../client/components/common/seo';
+import { PLAYGROUND_METADATA } from '../../../client/content';
+import { generateUseCaseMetadata } from '../../../client/seo';
 import { Playground } from '../Playground';
 
 export const metadata = generateUseCaseMetadata(PLAYGROUND_METADATA);

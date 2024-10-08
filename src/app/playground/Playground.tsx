@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, ReactNode } from 'react';
-import { CollapsibleJsonViewer } from '../../client/components/common/CodeSnippet/CodeSnippet';
+import { CollapsibleJsonViewer } from '../../client/components/CodeSnippet/CodeSnippet';
 import dynamic from 'next/dynamic';
 import SignalTable, { TableCellData } from './components/SignalTable';
 import botDetectionResult from './components/BotDetectionResult';
@@ -9,25 +9,25 @@ import { RefreshButton } from './components/RefreshButton';
 import { ipBlocklistResult } from './components/IpBlocklistResult';
 import { vpnDetectionResult } from './components/VpnDetectionResult';
 import { usePlaygroundSignals } from './hooks/usePlaygroundSignals';
-import { getLocationName, getZoomLevel } from '../../shared/utils/locationUtils';
+import { getLocationName, getZoomLevel } from '../../utils/locationUtils';
 import Link from 'next/link';
 import styles from './playground.module.scss';
-import { Spinner } from '../../client/components/common/Spinner/Spinner';
-import { Alert } from '../../client/components/common/Alert/Alert';
-import { timeAgoLabel } from '../../shared/timeUtils';
-import Container from '../../client/components/common/Container';
+import { Spinner } from '../../client/components/Spinner/Spinner';
+import { Alert } from '../../client/components/Alert/Alert';
+import { timeAgoLabel } from '../../utils/timeUtils';
+import Container from '../../client/components/Container';
 import { TEST_IDS } from '../../client/testIDs';
 import tableStyles from './components/SignalTable.module.scss';
 import { HowToUseThisPlayground } from './components/HowToUseThisPlayground';
 import classnames from 'classnames';
-import { ResourceLinks } from '../../client/components/common/ResourceLinks/ResourceLinks';
+import { ResourceLinks } from '../../client/components/ResourceLinks/ResourceLinks';
 import {
   MyCollapsible,
   MyCollapsibleTrigger,
   MyCollapsibleContent,
-} from '../../client/components/common/Collapsible/Collapsible';
+} from '../../client/components/Collapsible/Collapsible';
 import { ChevronSvg } from '../../client/img/chevronSvg';
-import { pluralize } from '../../shared/utils';
+import { pluralize } from '../../utils/utils';
 import { motion } from 'framer-motion';
 import { JsonLink, DocsLink } from './components/ArrowLinks';
 

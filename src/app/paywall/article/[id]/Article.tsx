@@ -1,17 +1,17 @@
 'use client';
 
 import { Skeleton, SkeletonTypeMap } from '@mui/material';
-import { UseCaseWrapper } from '../../../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import { USE_CASES } from '../../../../client/components/common/content';
+import { UseCaseWrapper } from '../../../../client/components/UseCaseWrapper/UseCaseWrapper';
+import { USE_CASES } from '../../../../client/content';
 
 import Image from 'next/image';
 import styles from '../../paywall.module.scss';
-import { Alert } from '../../../../client/components/common/Alert/Alert';
+import { Alert } from '../../../../client/components/Alert/Alert';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useQuery } from 'react-query';
 import { TEST_IDS } from '../../../../client/testIDs';
 import { ArticleGrid, Byline } from '../../components/ArticleGrid';
-import { BackArrow } from '../../../../client/components/common/BackArrow/BackArrow';
+import { BackArrow } from '../../../../client/components/BackArrow/BackArrow';
 import { ArticleRequestPayload, ArticleResponse } from '../../api/article/[id]/route';
 import { ARTICLES } from '../../api/articles';
 

@@ -1,16 +1,16 @@
 'use client';
 
 import { FunctionComponent, Suspense, useState } from 'react';
-import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
+import { UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
 import React from 'react';
-import { USE_CASES } from '../../client/components/common/content';
-import Button from '../../client/components/common/Button/Button';
-import formStyles from '../../styles/forms.module.scss';
+import { USE_CASES } from '../../client/content';
+import Button from '../../client/components/Button/Button';
+import formStyles from '../../client/styles/forms.module.scss';
 import { TEST_IDS } from '../../client/testIDs';
-import { CloseSnackbarButton } from '../../client/components/common/Alert/Alert';
+import { CloseSnackbarButton } from '../../client/components/Alert/Alert';
 import { enqueueSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
-import { BackArrow } from '../../client/components/common/BackArrow/BackArrow';
+import { BackArrow } from '../../client/components/BackArrow/BackArrow';
 import { GetServerSideProps } from 'next';
 import { SubmitCodeForm } from './components/SubmitCodeForm';
 import { PhoneNumberForm } from './components/PhoneNumberForm';

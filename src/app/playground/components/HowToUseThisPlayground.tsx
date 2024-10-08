@@ -4,8 +4,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '../../../client/components/common/Accordion/Accordion';
-import { FancyNumberedList } from '../../../client/components/common/FancyNumberedList/FancyNumberedList';
+} from '../../../client/components/Accordion/Accordion';
+import { FancyNumberedList } from '../../../client/components/FancyNumberedList/FancyNumberedList';
 import Link from 'next/link';
 
 type HowTo = {

@@ -2,9 +2,9 @@ import { getAndValidateFingerprintResult, Severity } from '../../../../../server
 import { NextResponse } from 'next/server';
 import { ArticleData, ARTICLES } from '../../articles';
 import { ArticleViewDbModel } from '../../database';
-import { getTodayDateRange } from '../../../../../shared/utils/date';
 import { Op } from 'sequelize';
 import { PAYWALL_COPY } from '../../copy';
+import { getTodayDateRange } from '../../../../../utils/timeUtils';
 
 export type ArticleResponse = {
   message: string;

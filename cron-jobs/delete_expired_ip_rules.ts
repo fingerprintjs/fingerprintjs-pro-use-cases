@@ -2,7 +2,7 @@ import { Op } from 'sequelize';
 import { syncFirewallRuleset } from '../src/app/bot-firewall/api/block-ip/cloudflareApiHelper';
 import { schedule } from 'node-cron';
 import 'dotenv/config';
-import { ONE_HOUR_MS } from '../src/shared/timeUtils';
+import { ONE_HOUR_MS } from '../src/utils/timeUtils';
 import { BlockedIpDbModel } from '../src/app/bot-firewall/api/get-blocked-ips/blockedIpsDatabase';
 
 /**

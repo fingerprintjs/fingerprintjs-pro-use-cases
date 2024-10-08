@@ -2,21 +2,21 @@
 
 import { useEffect, useState } from 'react';
 import { useDebounce, useSessionStorage } from 'react-use';
-import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
+import { UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useCart } from './hooks/use-cart';
 import React from 'react';
-import { USE_CASES } from '../../client/components/common/content';
+import { USE_CASES } from '../../client/content';
 import styles from './personalization.module.scss';
 import Image from 'next/image';
-import Button from '../../client/components/common/Button/Button';
+import Button from '../../client/components/Button/Button';
 import CartIcon from '../../client/img/cart.svg';
-import { Cart, CartProduct } from '../../client/components/common/Cart/Cart';
+import { Cart, CartProduct } from '../../client/components/Cart/Cart';
 import { Search, SearchHistory } from './components/searchComponents';
 import { ProductCard } from './components/productCard';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import { Spinner } from '../../client/components/common/Spinner/Spinner';
+import { Spinner } from '../../client/components/Spinner/Spinner';
 import { useSearchHistory } from './hooks/use-search-history';
 import { useProducts } from './hooks/use-products';
 import { usePersonalizationNotification } from './hooks/use-personalization-notification';

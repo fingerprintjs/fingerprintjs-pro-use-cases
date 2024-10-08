@@ -3,7 +3,7 @@ import { TEST_IDS } from '../../../client/testIDs';
 import { SendMessageButton } from './SendSMSMessageButton';
 import classNames from 'classnames';
 import styles from './smsPumping.module.scss';
-import formStyles from '../../../styles/forms.module.scss';
+import formStyles from '../../../client/styles/forms.module.scss';
 import { SendMessageMutation } from '../SmsPumping';
 
 type PhoneNumberFormProps = {

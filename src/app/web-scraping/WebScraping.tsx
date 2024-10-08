@@ -1,17 +1,17 @@
 'use client';
 
-import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
+import { UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useQueryState } from 'next-usequerystate';
 import { useQuery, UseQueryResult } from 'react-query';
-import { USE_CASES } from '../../client/components/common/content';
-import { Select, SelectItem } from '../../client/components/common/Select/Select';
+import { USE_CASES } from '../../client/content';
+import { Select, SelectItem } from '../../client/components/Select/Select';
 import ArrowIcon from '../../client/img/arrowRight.svg';
 import Image from 'next/image';
 import styles from './webScraping.module.scss';
-import Button from '../../client/components/common/Button/Button';
-import { Alert } from '../../client/components/common/Alert/Alert';
-import { Spinner } from '../../client/components/common/Spinner/Spinner';
+import Button from '../../client/components/Button/Button';
+import { Alert } from '../../client/components/Alert/Alert';
+import { Spinner } from '../../client/components/Spinner/Spinner';
 import { FlightQuery } from './api/flights/route';
 import { FunctionComponent, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';

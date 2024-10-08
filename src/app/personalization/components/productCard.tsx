@@ -5,7 +5,7 @@ import { ButtonMinusSvg } from '../../../client/img/buttonMinusSvg';
 import { ButtonPlusSvg } from '../../../client/img/buttonPlusSvg';
 import Image from 'next/image';
 import styles from './productCard.module.scss';
-import Button from '../../../client/components/common/Button/Button';
+import Button from '../../../client/components/Button/Button';
 import HeartIcon from '../img/heart.svg';
 import { TEST_IDS } from '../../../client/testIDs';
 import { UserCartItem } from '../api/database';

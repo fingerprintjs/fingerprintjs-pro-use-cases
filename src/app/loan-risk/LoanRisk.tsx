@@ -1,15 +1,15 @@
 'use client';
 
-import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
+import { UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
 import { FunctionComponent, useMemo, useState } from 'react';
-import { calculateMonthInstallment } from '../../shared/loan-risk/calculate-month-installment';
+import { calculateMonthInstallment } from './api/request-loan/calculate-month-installment';
 import React from 'react';
-import { USE_CASES } from '../../client/components/common/content';
-import Button from '../../client/components/common/Button/Button';
-import { Alert } from '../../client/components/common/Alert/Alert';
-import formStyles from '../../styles/forms.module.scss';
-import { Slider } from '../../client/components/common/Slider/Slider';
-import { NumberInputWithUnits } from '../../client/components/common/InputNumberWithUnits/InputNumberWithUnits';
+import { USE_CASES } from '../../client/content';
+import Button from '../../client/components/Button/Button';
+import { Alert } from '../../client/components/Alert/Alert';
+import formStyles from '../../client/styles/forms.module.scss';
+import { Slider } from '../../client/components/Slider/Slider';
+import { NumberInputWithUnits } from '../../client/components/InputNumberWithUnits/InputNumberWithUnits';
 import styles from './loanRisk.module.scss';
 import classNames from 'classnames';
 import { TEST_IDS } from '../../client/testIDs';

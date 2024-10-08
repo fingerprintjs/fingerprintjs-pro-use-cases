@@ -5,10 +5,10 @@ import { SubmitCodeResponse, SubmitCodePayload } from '../api/submit-code/route'
 import { TEST_IDS } from '../../../client/testIDs';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { SendMessageButton } from './SendSMSMessageButton';
-import { Alert } from '../../../client/components/common/Alert/Alert';
-import Button from '../../../client/components/common/Button/Button';
+import { Alert } from '../../../client/components/Alert/Alert';
+import Button from '../../../client/components/Button/Button';
 import styles from './smsPumping.module.scss';
-import formStyles from '../../../styles/forms.module.scss';
+import formStyles from '../../../client/styles/forms.module.scss';
 import { SendMessageMutation } from '../SmsPumping';
 
 export const useSubmitCode = (params?: { onSuccess?: () => void }) => {

@@ -1,7 +1,7 @@
 'use client';
 
-import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import { USE_CASES } from '../../client/components/common/content';
+import { UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
+import { USE_CASES } from '../../client/content';
 import { ArticleCard, ArticleGrid } from './components/ArticleGrid';
 import { ARTICLES } from './api/articles';
 

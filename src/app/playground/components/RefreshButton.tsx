@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import Button from '../../../client/components/common/Button/Button';
+import Button from '../../../client/components/Button/Button';
 import styles from './RefreshButton.module.scss';
 import classnames from 'classnames';
 import { TEST_IDS } from '../../../client/testIDs';

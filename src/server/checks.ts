@@ -4,7 +4,7 @@ import {
   Region,
   isEventError,
 } from '@fingerprintjs/fingerprintjs-pro-server-api';
-import { ValidationDataResult } from '../shared/types';
+import { ValidationDataResult } from '../utils/types';
 import { decryptSealedResult } from './decryptSealedResult';
 import { env } from '../env';
 import { getServerRegion } from './fingerprint-server-api';

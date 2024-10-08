@@ -1,5 +1,5 @@
-import Providers from '../Providers';
-import LayoutUiInsideApp from './appLayout';
+import { LayoutUI } from './LayoutUI';
+import Providers from './Providers';
 
 export const metadata = {
   title: 'Fingerprint Pro Use Cases',
@@ -12,7 +12,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang='en'>
       <body>
         <Providers>
-          <LayoutUiInsideApp>{children}</LayoutUiInsideApp>
+          <LayoutUI>{children}</LayoutUI>
         </Providers>
       </body>
     </html>
