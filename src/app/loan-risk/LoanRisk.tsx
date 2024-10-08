@@ -16,6 +16,7 @@ import { TEST_IDS } from '../../client/testIDs';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useMutation } from 'react-query';
 import { LoanRequestData, LoanRequestPayload, LoanRequestResponse } from './api/request-loan/route';
+import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
 type SliderFieldProps = {
   label: string;
@@ -78,10 +79,8 @@ const loanDurationValidation = {
 
 export function LoanRisk() {
   const { getData: getVisitorData, isLoading: isVisitorDataLoading } = useVisitorData(
-    { ignoreCache: true },
-    {
-      immediate: false,
-    },
+    { ignoreCache: true, timeout: FPJS_CLIENT_TIMEOUT },
+    { immediate: false },
   );
 
   const {

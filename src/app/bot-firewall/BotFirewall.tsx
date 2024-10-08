@@ -17,6 +17,7 @@ import { Spinner } from '../../client/components/Spinner/Spinner';
 import { Alert } from '../../client/components/Alert/Alert';
 import { BotVisit } from './api/get-bot-visits/botVisitDatabase';
 import { BotTypeInfo, BotVisitAction, InstructionPrompt } from './components/botFirewallComponents';
+import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
 const DEFAULT_DISPLAYED_VISITS = 10;
 const DISPLAYED_VISITS_INCREMENT = 10;
@@ -84,7 +85,7 @@ const useBlockUnblockIpAddress = (
         body: JSON.stringify({ ip, blocked, requestId } satisfies BlockIpPayload),
       });
       if (!response.ok) {
-        throw new Error('Failed to update firewall: ' + (await response.json()).message ?? response.statusText);
+        throw new Error('Failed to update firewall: ' + ((await response.json()).message ?? response.statusText));
       }
       return await response.json();
     },
@@ -120,6 +121,7 @@ export const BotFirewall: FunctionComponent = () => {
     isLoading: isLoadingVisitorData,
   } = useVisitorData({
     extendedResult: true,
+    timeout: FPJS_CLIENT_TIMEOUT,
   });
 
   // Get a list of bot visits

@@ -16,6 +16,7 @@ import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
 import { useMutation } from 'react-query';
 import { CouponClaimPayload, CouponClaimResponse } from './api/claim/route';
+import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
 const AIRMAX_PRICE = 356.02;
 const ALLSTAR_PRICE = 102.5;
@@ -25,6 +26,7 @@ export function CouponFraudUseCase() {
   const { getData: getVisitorData } = useVisitorData(
     {
       ignoreCache: true,
+      timeout: FPJS_CLIENT_TIMEOUT,
     },
     { immediate: false },
   );

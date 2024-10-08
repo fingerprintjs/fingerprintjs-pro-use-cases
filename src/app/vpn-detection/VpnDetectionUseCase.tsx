@@ -19,6 +19,7 @@ import courseLogo from './fingerprintLogoLowOpacitySquareBordered.svg';
 import { env } from '../../env';
 import { TEST_IDS } from '../../client/testIDs';
 import { VPN_DETECTION_COPY } from './copy';
+import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
 const COURSE_PRICE = 100;
 const TAXES = 15;
@@ -26,6 +27,7 @@ const TAXES = 15;
 const VpnDetectionUseCase: FunctionComponent = () => {
   const { getData: getVisitorData, data: visitorData } = useVisitorData({
     ignoreCache: true,
+    timeout: FPJS_CLIENT_TIMEOUT,
   });
   const { data: unsealedVisitorData } = useUnsealedResult(visitorData?.sealedResult);
   const visitorIpCountry = getIpLocation(unsealedVisitorData)?.country;
