@@ -1,5 +1,5 @@
 import { Severity, getAndValidateFingerprintResult } from '../../../../server/checks';
-import { ONE_DAY_MS, FIVE_MINUTES_MS, ONE_HOUR_MS } from '../../../../shared/timeUtils';
+import { ONE_DAY_MS, FIVE_MINUTES_MS, ONE_HOUR_MS } from '../../../../utils/timeUtils';
 import { NextRequest, NextResponse } from 'next/server';
 import { AIRPORTS } from '../../data/airports';
 import { Flight } from '../../components/FlightCard';

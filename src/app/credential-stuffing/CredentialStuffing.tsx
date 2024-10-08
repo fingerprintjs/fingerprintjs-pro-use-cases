@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
+import { UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
 import React from 'react';
-import { USE_CASES } from '../../client/components/common/content';
-import { Alert } from '../../client/components/common/Alert/Alert';
-import Button from '../../client/components/common/Button/Button';
+import { USE_CASES } from '../../client/content';
+import { Alert } from '../../client/components/Alert/Alert';
+import Button from '../../client/components/Button/Button';
 import styles from './credentialStuffing.module.scss';
-import formStyles from '../../styles/forms.module.scss';
+import formStyles from '../../client/styles/forms.module.scss';
 import classNames from 'classnames';
 import hiddenIcon from './iconHidden.svg';
 import shownIcon from './iconShown.svg';

@@ -1,5 +1,5 @@
-import { USE_CASES } from '../../client/components/common/content';
-import { generateUseCaseMetadata } from '../../client/components/common/seo';
+import { USE_CASES } from '../../client/content';
+import { generateUseCaseMetadata } from '../../client/seo';
 import { CouponFraudUseCase } from './CouponFraud';
 
 export const metadata = generateUseCaseMetadata(USE_CASES.couponFraud);

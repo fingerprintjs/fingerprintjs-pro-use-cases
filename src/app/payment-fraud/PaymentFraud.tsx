@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
+import { UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
 import React from 'react';
-import { USE_CASES } from '../../client/components/common/content';
-import Button from '../../client/components/common/Button/Button';
+import { USE_CASES } from '../../client/content';
+import Button from '../../client/components/Button/Button';
 
 import styles from './paymentFraud.module.scss';
-import formStyles from '../../styles/forms.module.scss';
-import { Alert } from '../../client/components/common/Alert/Alert';
+import formStyles from '../../client/styles/forms.module.scss';
+import { Alert } from '../../client/components/Alert/Alert';
 import classNames from 'classnames';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';

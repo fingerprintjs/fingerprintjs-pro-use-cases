@@ -1,7 +1,7 @@
 import { syncFirewallRuleset } from './cloudflareApiHelper';
 import { Severity, getAndValidateFingerprintResult } from '../../../../server/checks';
 import { isIP } from 'is-ip';
-import { ValidationResult } from '../../../../shared/types';
+import { ValidationResult } from '../../../../utils/types';
 import { NextRequest, NextResponse } from 'next/server';
 import { deleteBlockedIp, saveBlockedIp } from '../get-blocked-ips/blockedIpsDatabase';
 
