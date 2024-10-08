@@ -1,14 +1,14 @@
 'use client';
 
-import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
+import { UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
 import { FunctionComponent, useState } from 'react';
-import { USE_CASES } from '../../client/components/common/content';
+import { USE_CASES } from '../../client/content';
 import styles from './vpnDetection.module.scss';
-import formStyles from '../../styles/forms.module.scss';
+import formStyles from '../../client/styles/forms.module.scss';
 import classNames from 'classnames';
-import { Alert } from '../../client/components/common/Alert/Alert';
-import Button from '../../client/components/common/Button/Button';
-import { Cart } from '../../client/components/common/Cart/Cart';
+import { Alert } from '../../client/components/Alert/Alert';
+import Button from '../../client/components/Button/Button';
+import { Cart } from '../../client/components/Cart/Cart';
 import { FingerprintJSPro, FpjsProvider, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useMutation } from 'react-query';
 import { ActivateRegionalPricingPayload, ActivateRegionalPricingResponse } from './api/activate-ppp/route';

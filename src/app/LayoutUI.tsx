@@ -1,12 +1,12 @@
 'use client';
 
-import '../styles/global-styles.scss';
+import '../client/styles/global-styles.scss';
 import { useSelectedLayoutSegments } from 'next/navigation';
 import { IS_PRODUCTION } from '../envShared';
-import Header from '../client/components/common/Header/Header';
+import Header from '../client/components/Header/Header';
 import { Analytics } from '../client/analytics/Analytics';
-import Footer from '../client/components/common/Footer/Footer';
-import styles from '../styles/layout.module.scss';
+import Footer from '../client/components/Footer/Footer';
+import styles from './LayoutUI.module.scss';
 
 export function LayoutUI({ children }: { children: React.ReactNode }) {
   const segments = useSelectedLayoutSegments();

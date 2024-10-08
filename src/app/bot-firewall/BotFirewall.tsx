@@ -1,9 +1,9 @@
 'use client';
 
-import { INSTRUCTION_ANCHOR_ID, UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
-import { USE_CASES } from '../../client/components/common/content';
+import { INSTRUCTION_ANCHOR_ID, UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
+import { USE_CASES } from '../../client/content';
 import { useMutation, useQuery } from 'react-query';
-import Button from '../../client/components/common/Button/Button';
+import Button from '../../client/components/Button/Button';
 import { BlockIpPayload, BlockIpResponse } from './api/block-ip/route';
 import styles from './components/botFirewallComponents.module.scss';
 import { VisitorQueryContext, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
@@ -13,8 +13,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FunctionComponent, useState } from 'react';
 import { wait } from '../../utils/timeUtils';
-import { Spinner } from '../../client/components/common/Spinner/Spinner';
-import { Alert } from '../../client/components/common/Alert/Alert';
+import { Spinner } from '../../client/components/Spinner/Spinner';
+import { Alert } from '../../client/components/Alert/Alert';
 import { BotVisit } from './api/get-bot-visits/botVisitDatabase';
 import { BotTypeInfo, BotVisitAction, InstructionPrompt } from './components/botFirewallComponents';
 

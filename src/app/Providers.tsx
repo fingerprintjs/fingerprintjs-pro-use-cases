@@ -5,7 +5,7 @@ import { SnackbarProvider } from 'notistack';
 import { PropsWithChildren } from 'react';
 import { FingerprintJSPro, FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import { env } from '../env';
-import { CloseSnackbarButton, CustomSnackbar } from '../client/components/common/Alert/Alert';
+import { CloseSnackbarButton, CustomSnackbar } from '../client/components/Alert/Alert';
 
 const queryClient = new QueryClient({
   defaultOptions: {

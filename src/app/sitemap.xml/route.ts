@@ -1,4 +1,4 @@
-import { HOMEPAGE_CARDS, PRODUCTION_URL } from '../../client/components/common/content';
+import { HOMEPAGE_CARDS, PRODUCTION_URL } from '../../client/content';
 import { NextResponse } from 'next/server';
 
 function generateSiteMap() {

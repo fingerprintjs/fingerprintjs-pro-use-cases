@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import styles from './page.module.scss';
-import Container from '../client/components/common/Container';
-import { HOMEPAGE_CARDS } from '../client/components/common/content';
+import Container from '../client/components/Container';
+import { HOMEPAGE_CARDS } from '../client/content';
 import LinkArrow from '../client/img/externalLinkArrow.svg';
 import Image from 'next/image';
 import { TEST_IDS } from '../client/testIDs';
 import { Fragment } from 'react';
 import { Metadata } from 'next';
-import { generateMetadata } from '../client/components/common/seo';
+import { generateMetadata } from '../client/seo';
 
 export const metadata: Metadata = generateMetadata({
   title: 'Fingerprint Use Cases | Discover Device Intelligence Use Cases',
