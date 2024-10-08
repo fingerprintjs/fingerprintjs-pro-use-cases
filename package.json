@@ -86,6 +86,7 @@
     "zod": "^3.22.4"
   },
   "stackblitz": {
-    "startCommand": "rm yarn.lock && yarn install && yarn dev"
+    "startCommand": "rm yarn.lock && yarn install && yarn dev",
+    "installDependencies": false
   }
 }
