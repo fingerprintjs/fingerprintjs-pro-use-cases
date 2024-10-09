@@ -33,7 +33,7 @@ export function areVisitorIdAndRequestIdValid(visitorId: string, requestId: stri
 }
 
 export function visitIpMatchesRequestIp(visitIp = '', request: Request) {
-  // This check is skipped on purpose in the Stackblitz and localhost environments.
+  // This check is skipped on purpose in localhost environments.
   if (IS_DEVELOPMENT) {
     return true;
   }
@@ -59,7 +59,7 @@ export function visitIpMatchesRequestIp(visitIp = '', request: Request) {
 }
 
 export function originIsAllowed(url = '', request: Request) {
-  // This check is skipped on purpose in the Stackblitz and localhost environments.
+  // This check is skipped on purpose in localhost environments.
   if (IS_DEVELOPMENT) {
     return true;
   }

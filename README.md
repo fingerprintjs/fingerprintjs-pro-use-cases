@@ -22,7 +22,7 @@ You can learn more about these use cases on our [website](https://fingerprint.co
 1. `yarn install`
 2. `yarn dev`
 
-Alternatively, you can use [Stackblitz](https://stackblitz.com/edit/nextjs-dmv5c7) to run the project in your Chromium-based browser.
+Alternatively, you can use [CodeSandbox](https://codesandbox.io/p/devbox/github/fingerprintjs/fingerprintjs-pro-use-cases/) to run the project in your browser.
 
 ## Use cases
 
