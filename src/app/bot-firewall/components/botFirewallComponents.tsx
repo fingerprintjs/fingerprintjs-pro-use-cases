@@ -4,10 +4,10 @@ import { BOT_FIREWALL_COPY } from './botFirewallCopy';
 import { Tooltip } from '@mui/material';
 import Image from 'next/image';
 import WaveIcon from '../../../client/img/wave.svg';
-import InfoIcon from '../../../client/img/InfoIcon.svg';
+import InfoIcon from '../../../client/img/InfoIconSvg.svg';
 import styles from './botFirewallComponents.module.scss';
 import { BlockIpPayload } from '../api/block-ip/route';
-import Button from '../../../client/components/common/Button/Button';
+import Button from '../../../client/components/Button/Button';
 
 type BotVisitActionProps = {
   ip: string;

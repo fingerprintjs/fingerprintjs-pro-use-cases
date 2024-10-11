@@ -1,6 +1,6 @@
 import { TEST_BUILD } from '../../../envShared';
-import { ONE_SECOND_MS } from '../../../shared/timeUtils';
-import { pluralize } from '../../../shared/utils';
+import { ONE_SECOND_MS } from '../../../utils/timeUtils';
+import { pluralize } from '../../../utils/utils';
 
 export const TEST_PHONE_NUMBER = '+1234567890';
 

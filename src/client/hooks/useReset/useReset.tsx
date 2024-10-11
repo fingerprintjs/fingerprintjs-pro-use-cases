@@ -5,7 +5,7 @@ import { useMutation } from 'react-query';
 import { ResetRequest, ResetResponse } from '../../../app/api/admin/reset/route';
 import { useSnackbar } from 'notistack';
 import styles from './userReset.module.scss';
-import { PLAYGROUND_METADATA, USE_CASES } from '../../components/common/content';
+import { PLAYGROUND_METADATA, USE_CASES } from '../../content';
 import { TEST_IDS } from '../../testIDs';
 import { usePathname } from 'next/navigation';
 

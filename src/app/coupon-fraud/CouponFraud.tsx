@@ -1,17 +1,17 @@
 'use client';
 
-import { UseCaseWrapper } from '../../client/components/common/UseCaseWrapper/UseCaseWrapper';
+import { UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
 import { useState } from 'react';
 import React from 'react';
-import { USE_CASES } from '../../client/components/common/content';
+import { USE_CASES } from '../../client/content';
 import styles from './couponFraud.module.scss';
-import formStyles from '../../styles/forms.module.scss';
+import formStyles from '../../client/styles/forms.module.scss';
 import classNames from 'classnames';
 import AirMax from './shoeAirMax.svg';
 import AllStar from './shoeAllStar.svg';
-import { Alert } from '../../client/components/common/Alert/Alert';
-import Button from '../../client/components/common/Button/Button';
-import { Cart } from '../../client/components/common/Cart/Cart';
+import { Alert } from '../../client/components/Alert/Alert';
+import Button from '../../client/components/Button/Button';
+import { Cart } from '../../client/components/Cart/Cart';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
 import { useMutation } from 'react-query';
