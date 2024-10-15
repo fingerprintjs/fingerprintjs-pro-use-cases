@@ -50,16 +50,18 @@ const handleRequest = async (
 
   // In production, validate the origin
   if (IS_PRODUCTION && (!origin || !allowedOrigins.includes(origin))) {
+    const message = `Origin "${origin}" is not allowed to call this endpoint,`;
     return NextResponse.json(
-      { severity: 'error', message: `Origin "${origin}" is not allowed to call this endpoint,` },
-      { status: 403, headers: getCorsHeaders(origin) },
+      { severity: 'error', message },
+      { status: 403, statusText: message, headers: getCorsHeaders(origin) },
     );
   }
 
   if (!requestId) {
+    const message = 'Missing `requestId` parameter.';
     return NextResponse.json(
-      { severity: 'error', message: 'Missing `requestId` parameter.' },
-      { status: 400, headers: getCorsHeaders(origin) },
+      { severity: 'error', message },
+      { status: 400, statusText: message, headers: getCorsHeaders(origin) },
     );
   }
 
@@ -96,12 +98,13 @@ function sendErrorResponse(error: unknown, corsHeaders: CorsHeaders): NextRespon
   if (isEventError(error)) {
     return NextResponse.json(
       { message: error.message, severity: 'error' },
-      { status: error.statusCode, headers: corsHeaders },
+      { status: error.statusCode, statusText: error.message, headers: corsHeaders },
     );
   } else {
+    const message = `Something went wrong ${error}`;
     return NextResponse.json(
-      { message: `Something went wrong ${error}`, severity: 'error' },
-      { status: 500, headers: corsHeaders },
+      { message, severity: 'error' },
+      { status: 500, statusText: message, headers: corsHeaders },
     );
   }
 }
