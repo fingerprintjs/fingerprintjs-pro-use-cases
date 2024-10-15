@@ -30,10 +30,18 @@ export async function OPTIONS(request: NextRequest) {
   return new NextResponse(null, { status: 204 });
 }
 
-// Main handler
 export async function POST(request: NextRequest, { params }: { params: { requestId: string } }) {
+  return await handleRequest(request, params.requestId);
+}
+
+// For backward compatibility with mobile applications, accept GET requests as well
+export async function GET(request: NextRequest, { params }: { params: { requestId: string } }) {
+  return await handleRequest(request, params.requestId);
+}
+
+// Main handler
+const handleRequest = async (request: NextRequest, requestId: string | undefined | null) => {
   const origin = request.headers.get('origin');
-  const requestId = params.requestId;
 
   // In production, validate the origin
   if (IS_PRODUCTION && (!origin || !allowedOrigins.includes(origin))) {
@@ -59,7 +67,7 @@ export async function POST(request: NextRequest, { params }: { params: { request
   }
 
   return NextResponse.json(result.data, { headers: getCorsHeaders(origin) });
-}
+};
 
 async function tryGetFingerprintEvent(
   requestId: string,
