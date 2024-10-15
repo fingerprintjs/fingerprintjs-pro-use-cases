@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { EventResponse, isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
-import { OUR_ORIGINS } from '../../../../server/checks';
+import { OUR_ORIGINS, Severity } from '../../../../server/checks';
 import { IS_PRODUCTION } from '../../../../envShared';
 import { fingerprintServerApiClient } from '../../../../server/fingerprint-server-api';
 
@@ -10,11 +10,13 @@ const allowedOrigins = [...OUR_ORIGINS, 'https://dev.fingerprint.com'];
 // Handle CORS
 const getCorsHeaders = (origin: string | null) => ({
   'Access-Control-Allow-Origin': String(origin),
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 });
 
 type CorsHeaders = ReturnType<typeof getCorsHeaders>;
+
+type GetEventPayload = EventResponse | { severity: Severity; message: string };
 
 export async function OPTIONS(request: NextRequest) {
   const origin = request.headers.get('origin');
@@ -40,24 +42,25 @@ export async function GET(request: NextRequest, { params }: { params: { requestI
 }
 
 // Main handler
-const handleRequest = async (request: NextRequest, requestId: string | undefined | null) => {
+const handleRequest = async (
+  request: NextRequest,
+  requestId: string | undefined | null,
+): Promise<NextResponse<GetEventPayload>> => {
   const origin = request.headers.get('origin');
 
   // In production, validate the origin
   if (IS_PRODUCTION && (!origin || !allowedOrigins.includes(origin))) {
-    return new NextResponse(null, {
-      status: 403,
-      statusText: `Origin "${origin}" is not allowed to call this endpoint`,
-      headers: getCorsHeaders(origin),
-    });
+    return NextResponse.json(
+      { severity: 'error', message: `Origin "${origin}" is not allowed to call this endpoint,` },
+      { status: 403, headers: getCorsHeaders(origin) },
+    );
   }
 
   if (!requestId) {
-    return new NextResponse(null, {
-      status: 400,
-      statusText: 'Missing requestId parameter',
-      headers: getCorsHeaders(origin),
-    });
+    return NextResponse.json(
+      { severity: 'error', message: 'Missing `requestId` parameter.' },
+      { status: 400, headers: getCorsHeaders(origin) },
+    );
   }
 
   const result = await tryGetFingerprintEvent(requestId);
@@ -89,21 +92,16 @@ async function tryGetFingerprintEvent(
   }
 }
 
-function sendErrorResponse(error: unknown, corsHeaders: CorsHeaders): NextResponse {
+function sendErrorResponse(error: unknown, corsHeaders: CorsHeaders): NextResponse<GetEventPayload> {
   if (isEventError(error)) {
     return NextResponse.json(
-      { message: error.message, code: error.errorCode },
-      {
-        status: error.statusCode,
-        statusText: `${error.errorCode} - ${error.message}`,
-        headers: corsHeaders,
-      },
+      { message: error.message, severity: 'error' },
+      { status: error.statusCode, headers: corsHeaders },
     );
   } else {
-    return new NextResponse(null, {
-      status: 500,
-      statusText: `Something went wrong ${error}`,
-      headers: corsHeaders,
-    });
+    return NextResponse.json(
+      { message: `Something went wrong ${error}`, severity: 'error' },
+      { status: 500, headers: corsHeaders },
+    );
   }
 }
