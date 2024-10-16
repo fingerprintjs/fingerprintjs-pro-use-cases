@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { EventResponse, isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
-import { OUR_ORIGINS } from '../../../../server/checks';
+import { OUR_ORIGINS, Severity } from '../../../../server/checks';
 import { IS_PRODUCTION } from '../../../../envShared';
 import { fingerprintServerApiClient } from '../../../../server/fingerprint-server-api';
 
@@ -10,11 +10,13 @@ const allowedOrigins = [...OUR_ORIGINS, 'https://dev.fingerprint.com'];
 // Handle CORS
 const getCorsHeaders = (origin: string | null) => ({
   'Access-Control-Allow-Origin': String(origin),
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 });
 
 type CorsHeaders = ReturnType<typeof getCorsHeaders>;
+
+type GetEventPayload = EventResponse | { severity: Severity; message: string };
 
 export async function OPTIONS(request: NextRequest) {
   const origin = request.headers.get('origin');
@@ -30,26 +32,37 @@ export async function OPTIONS(request: NextRequest) {
   return new NextResponse(null, { status: 204 });
 }
 
-// Main handler
 export async function POST(request: NextRequest, { params }: { params: { requestId: string } }) {
+  return await handleRequest(request, params.requestId);
+}
+
+// For backward compatibility with mobile applications, accept GET requests as well
+export async function GET(request: NextRequest, { params }: { params: { requestId: string } }) {
+  return await handleRequest(request, params.requestId);
+}
+
+// Main handler
+const handleRequest = async (
+  request: NextRequest,
+  requestId: string | undefined | null,
+): Promise<NextResponse<GetEventPayload>> => {
   const origin = request.headers.get('origin');
-  const requestId = params.requestId;
 
   // In production, validate the origin
   if (IS_PRODUCTION && (!origin || !allowedOrigins.includes(origin))) {
-    return new NextResponse(null, {
-      status: 403,
-      statusText: `Origin "${origin}" is not allowed to call this endpoint`,
-      headers: getCorsHeaders(origin),
-    });
+    const message = `Origin "${origin}" is not allowed to call this endpoint,`;
+    return NextResponse.json(
+      { severity: 'error', message },
+      { status: 403, statusText: message, headers: getCorsHeaders(origin) },
+    );
   }
 
   if (!requestId) {
-    return new NextResponse(null, {
-      status: 400,
-      statusText: 'Missing requestId parameter',
-      headers: getCorsHeaders(origin),
-    });
+    const message = 'Missing `requestId` parameter.';
+    return NextResponse.json(
+      { severity: 'error', message },
+      { status: 400, statusText: message, headers: getCorsHeaders(origin) },
+    );
   }
 
   const result = await tryGetFingerprintEvent(requestId);
@@ -59,7 +72,7 @@ export async function POST(request: NextRequest, { params }: { params: { request
   }
 
   return NextResponse.json(result.data, { headers: getCorsHeaders(origin) });
-}
+};
 
 async function tryGetFingerprintEvent(
   requestId: string,
@@ -81,21 +94,17 @@ async function tryGetFingerprintEvent(
   }
 }
 
-function sendErrorResponse(error: unknown, corsHeaders: CorsHeaders): NextResponse {
+function sendErrorResponse(error: unknown, corsHeaders: CorsHeaders): NextResponse<GetEventPayload> {
   if (isEventError(error)) {
     return NextResponse.json(
-      { message: error.message, code: error.errorCode },
-      {
-        status: error.statusCode,
-        statusText: `${error.errorCode} - ${error.message}`,
-        headers: corsHeaders,
-      },
+      { message: error.message, severity: 'error' },
+      { status: error.statusCode, statusText: error.message, headers: corsHeaders },
     );
   } else {
-    return new NextResponse(null, {
-      status: 500,
-      statusText: `Something went wrong ${error}`,
-      headers: corsHeaders,
-    });
+    const message = `Something went wrong ${error}`;
+    return NextResponse.json(
+      { message, severity: 'error' },
+      { status: 500, statusText: message, headers: corsHeaders },
+    );
   }
 }
