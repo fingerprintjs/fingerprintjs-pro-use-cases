@@ -2,11 +2,12 @@ import { useQuery, useQueryClient } from 'react-query';
 import { GetProductsResponse, GetProductsPayload } from '../../../app/personalization/api/get-products/route';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { SEARCH_HISTORY_QUERY } from './use-search-history';
+import { FPJS_CLIENT_TIMEOUT } from '../../../const';
 
 export const GET_PRODUCTS_QUERY = 'GET_PRODUCTS_QUERY';
 
 export function useProducts(query: string) {
-  const { data: visitorData } = useVisitorData();
+  const { data: visitorData } = useVisitorData({ timeout: FPJS_CLIENT_TIMEOUT });
   const queryClient = useQueryClient();
   return useQuery<GetProductsResponse>({
     // Make a new request every time `query` changes

@@ -19,6 +19,7 @@ import { useMutation } from 'react-query';
 import { useSearchParams } from 'next/navigation';
 import { SendSMSPayload, SendSMSResponse } from './api/send-verification-sms/route';
 import { TEST_PHONE_NUMBER } from './api/smsPumpingConst';
+import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
 type FormStep = 'Send SMS' | 'Submit code';
 type QueryAsProps = {
@@ -44,7 +45,7 @@ type SendMessageMutationArgs = {
 export type SendMessageMutation = ReturnType<typeof useSendMessage>;
 export const useSendMessage = ({ onSuccess, disableBotDetection = false }: SendMessageMutationArgs) => {
   const { getData } = useVisitorData(
-    { ignoreCache: true },
+    { ignoreCache: true, timeout: FPJS_CLIENT_TIMEOUT },
     {
       immediate: false,
     },

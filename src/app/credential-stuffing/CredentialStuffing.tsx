@@ -16,10 +16,11 @@ import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
 import { useMutation } from 'react-query';
 import { LoginPayload, LoginResponse } from './api/authenticate/route';
+import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
 export function CredentialStuffing() {
   const { getData: getVisitorData } = useVisitorData(
-    { ignoreCache: true },
+    { ignoreCache: true, timeout: FPJS_CLIENT_TIMEOUT },
     {
       immediate: false,
     },
