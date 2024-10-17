@@ -8,8 +8,8 @@ const EVENT_TYPE = 'Demo Page Viewed';
 /**
  * This is an Amplitude plugin that renames the Page view event_properties according to our analytics needs
  */
-const renameEventPropertiesEnrichment: amplitude.Types.EnrichmentPlugin = {
-  name: 'rename-event-properties-enrichment',
+const demoPageViewedEventPropertiesEnrichment = (botDetected: 'True' | 'False'): amplitude.Types.EnrichmentPlugin => ({
+  name: 'custom-event-properties-enrichment',
   type: 'enrichment',
   setup: async () => undefined,
   execute: async (event) => {
@@ -26,10 +26,11 @@ const renameEventPropertiesEnrichment: amplitude.Types.EnrichmentPlugin = {
       'Demo Page Path': originalEventProperties?.['[Amplitude] Page Path'],
       'Demo Page Title': originalEventProperties?.['[Amplitude] Page Title'],
       'Demo Page URL': originalEventProperties?.['[Amplitude] Page URL'],
+      botDetected,
     };
     return event;
   },
-};
+});
 
 type AmplitudeProps = {
   apiKey: string;
@@ -41,7 +42,7 @@ export const Amplitude: FunctionComponent<AmplitudeProps> = ({ apiKey }) => {
       const visitorId = event.products.identification?.data?.visitorId;
       const botDetected = event?.products?.botd?.data?.bot?.result === 'bad' ? 'True' : 'False';
 
-      amplitude.add(renameEventPropertiesEnrichment);
+      amplitude.add(demoPageViewedEventPropertiesEnrichment(botDetected));
       amplitude.init(apiKey, {
         defaultTracking: {
           pageViews: {
