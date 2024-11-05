@@ -8,6 +8,7 @@ import { TEST_IDS } from '../client/testIDs';
 import { Fragment } from 'react';
 import { Metadata } from 'next';
 import { generateMetadata } from '../client/seo';
+import InkeepChatButton from './inkeep/chat-button/inkeep-chat-button';
 
 export const metadata: Metadata = generateMetadata({
   title: 'Fingerprint Use Cases | Discover Device Intelligence Use Cases',
@@ -58,6 +59,7 @@ export default function Index() {
           </div>
         ))}
       </div>
+      <InkeepChatButton />
     </>
   );
 }
