@@ -15,8 +15,8 @@ type InkeepSharedSettings = {
 
 const useInkeepSettings = (): InkeepSharedSettings => {
   const baseSettings: InkeepBaseSettings = {
-    apiKey: '64fc830c4e4bb4b94990b4a21712e89d79a7a6770efb4043',
-    integrationId: 'cm2kpiuzn04o2uk7k2mwkdy3n',
+    apiKey: 'b0537306817fb8a0daea377df2b273d1b00ac709182d1dc7',
+    integrationId: 'cm366b5qy000412p946i586tu',
     organizationId: 'org_d0VDri411QUR4Xi7',
     primaryBrandColor: '#F04405',
     //logEventCallback: customAnalyticsCallback,
