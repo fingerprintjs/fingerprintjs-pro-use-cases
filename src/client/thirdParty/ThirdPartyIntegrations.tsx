@@ -1,7 +1,8 @@
 /**
- * This file and folder just contains code for tools that help us see trends in how people use demo.fingerprint.com
- * It is only deployed for production builds (`next build`) and when the expected environment variables are set
- * It is not part of the reference implementation for any of the use cases, feel free to ignore it
+ * This file and folder just contains code for third-party tools that help us provide user assistance and see trends
+ * in how people use demo.fingerprint.com.
+ * It is only deployed for production builds (`next build`) and when the expected environment variables are set.
+ * It is not part of the reference implementation for any of the use cases, feel free to ignore it.
  **/
 'use client';
 
@@ -10,7 +11,7 @@ import { env } from '../../env';
 import { GoogleTagManager } from './Gtm';
 import { Amplitude } from './Amplitude';
 import React, { useEffect } from 'react';
-import InkeepChatButton from '../inkeep/chat-button/inkeep-chat-button';
+import { InkeepChatButton } from './Inkeep';
 
 // GTM API requires dataLayer access through global window variable
 declare global {
@@ -30,7 +31,7 @@ const enableAnalytics = () => {
 const GTM_ID = env.NEXT_PUBLIC_GTM_ID;
 const AMPLITUDE_API_KEY = env.NEXT_PUBLIC_AMPLITUDE_API_KEY;
 
-export const Analytics = () => {
+export const ThirdPartyIntegrations = () => {
   useEffect(() => {
     enableAnalytics();
   }, []);

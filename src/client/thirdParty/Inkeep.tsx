@@ -1,11 +1,18 @@
+'use client';
+
+import { InkeepChatButtonProps } from '@inkeep/uikit';
 import type {
   InkeepAIChatSettings,
   InkeepSearchSettings,
   InkeepBaseSettings,
   InkeepModalSettings,
 } from '@inkeep/uikit';
-import { AIChatDisclaimerSettings } from '@inkeep/uikit';
 import { env } from '../../env';
+import dynamic from 'next/dynamic';
+
+const ChatButton = dynamic(() => import('@inkeep/uikit').then((mod) => mod.InkeepChatButton), {
+  ssr: false,
+});
 
 type InkeepSharedSettings = {
   baseSettings: InkeepBaseSettings;
@@ -26,22 +33,17 @@ const useInkeepSettings = (): InkeepSharedSettings => {
     primaryBrandColor: '#F04405',
     //logEventCallback: customAnalyticsCallback,
   };
-
-  const disclaimerSettings: AIChatDisclaimerSettings = {
-    isDisclaimerEnabled: true,
-    disclaimerLabel: 'Information',
-    disclaimerTooltip:
-      'Powered by our friends at Inkeep, this AI assistant uses information from our documentation and website. Please do not provide sensitive or personal information. AI answers are not guaranteed to be accurate in all cases. For complex issues, consult our official documentation or contact support.',
-  };
-
   const modalSettings: InkeepModalSettings = {};
-
   const searchSettings: InkeepSearchSettings = {};
-
   const aiChatSettings: InkeepAIChatSettings = {
     chatSubjectName: 'Fingerprint',
     botAvatarSrcUrl: 'https://fingerprint.com/img/uploads/fpjs-small-logo-for-email.png',
-    disclaimerSettings: disclaimerSettings,
+    disclaimerSettings: {
+      isDisclaimerEnabled: true,
+      disclaimerLabel: 'Information',
+      disclaimerTooltip:
+        'Powered by our friends at Inkeep, this AI assistant uses information from our documentation and website. Please do not provide sensitive or personal information. AI answers are not guaranteed to be accurate in all cases. For complex issues, consult our official documentation or contact support.',
+    },
     getHelpCallToActions: [
       {
         name: 'Contact support',
@@ -76,4 +78,15 @@ const useInkeepSettings = (): InkeepSharedSettings => {
   return { baseSettings, aiChatSettings, searchSettings, modalSettings };
 };
 
-export default useInkeepSettings;
+export function InkeepChatButton() {
+  const { baseSettings, aiChatSettings, searchSettings, modalSettings } = useInkeepSettings();
+
+  const chatButtonProps: InkeepChatButtonProps = {
+    baseSettings,
+    aiChatSettings,
+    searchSettings,
+    modalSettings,
+  };
+
+  return <ChatButton {...chatButtonProps} />;
+}
