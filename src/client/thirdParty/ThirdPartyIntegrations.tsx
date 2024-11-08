@@ -10,7 +10,7 @@ import { env } from '../../env';
 
 import { GoogleTagManager } from './Gtm';
 import { Amplitude } from './Amplitude';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { InkeepChatButton } from './Inkeep';
 
 // GTM API requires dataLayer access through global window variable
