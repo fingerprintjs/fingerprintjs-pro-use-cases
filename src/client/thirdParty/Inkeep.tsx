@@ -10,6 +10,11 @@ import type {
 import { env } from '../../env';
 import dynamic from 'next/dynamic';
 
+/**
+ * Inkeep (AI Help) chat button
+ * Implemented according to https://docs.inkeep.com/integrations/nextjs/chat-button
+ */
+
 const ChatButton = dynamic(() => import('@inkeep/uikit').then((mod) => mod.InkeepChatButton), {
   ssr: false,
 });
