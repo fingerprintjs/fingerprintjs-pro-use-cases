@@ -5,6 +5,7 @@ import type {
   InkeepModalSettings,
 } from '@inkeep/uikit';
 import { AIChatDisclaimerSettings } from '@inkeep/uikit';
+import { env } from '../../env';
 
 type InkeepSharedSettings = {
   baseSettings: InkeepBaseSettings;
@@ -14,10 +15,14 @@ type InkeepSharedSettings = {
 };
 
 const useInkeepSettings = (): InkeepSharedSettings => {
+  const apiKey = env.NEXT_PUBLIC_INKEEP_API_KEY;
+  const integrationId = env.NEXT_PUBLIC_INKEEP_INTEGRATION_ID;
+  const organizationId = env.NEXT_PUBLIC_INKEEP_ORG_ID;
+
   const baseSettings: InkeepBaseSettings = {
-    apiKey: 'b0537306817fb8a0daea377df2b273d1b00ac709182d1dc7',
-    integrationId: 'cm366b5qy000412p946i586tu',
-    organizationId: 'org_d0VDri411QUR4Xi7',
+    apiKey,
+    integrationId,
+    organizationId,
     primaryBrandColor: '#F04405',
     //logEventCallback: customAnalyticsCallback,
   };

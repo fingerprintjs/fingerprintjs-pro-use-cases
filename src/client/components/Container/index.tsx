@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './Container.module.scss';
 import classNames from 'classnames';
-import InkeepChatButton from '../../inkeep/chat-button/inkeep-chat-button';
 
 export default function Container({
   children,
@@ -17,20 +16,17 @@ export default function Container({
   containerId?: string;
 }) {
   return (
-    <>
-      <div
-        className={classNames(
-          styles.container,
-          { [styles.small]: size === 'small' },
-          { [styles.large]: size === 'large' },
-          className,
-        )}
-        style={style}
-        id={containerId}
-      >
-        {children}
-      </div>
-      <InkeepChatButton />
-    </>
+    <div
+      className={classNames(
+        styles.container,
+        { [styles.small]: size === 'small' },
+        { [styles.large]: size === 'large' },
+        className,
+      )}
+      style={style}
+      id={containerId}
+    >
+      {children}
+    </div>
   );
 }

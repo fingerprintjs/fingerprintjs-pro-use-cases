@@ -9,7 +9,8 @@ import { env } from '../../env';
 
 import { GoogleTagManager } from './Gtm';
 import { Amplitude } from './Amplitude';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
+import InkeepChatButton from '../inkeep/chat-button/inkeep-chat-button';
 
 // GTM API requires dataLayer access through global window variable
 declare global {
@@ -38,6 +39,7 @@ export const Analytics = () => {
     <>
       {GTM_ID ? <GoogleTagManager gtmId={GTM_ID} /> : null}
       {AMPLITUDE_API_KEY ? <Amplitude apiKey={AMPLITUDE_API_KEY} /> : null}
+      <InkeepChatButton />
     </>
   );
 };
