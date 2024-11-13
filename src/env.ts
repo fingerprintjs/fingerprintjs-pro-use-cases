@@ -74,6 +74,10 @@ export const env = createEnv({
     // Analytics
     NEXT_PUBLIC_GTM_ID: z.string().min(1).optional(),
     NEXT_PUBLIC_AMPLITUDE_API_KEY: z.string().min(1).optional(),
+    // Inkeep
+    NEXT_PUBLIC_INKEEP_API_KEY: z.string().min(1).default('b0537306817fb8a0daea377df2b273d1b00ac709182d1dc7'),
+    NEXT_PUBLIC_INKEEP_INTEGRATION_ID: z.string().min(1).default('cm366b5qy000412p946i586tu'),
+    NEXT_PUBLIC_INKEEP_ORG_ID: z.string().min(1).default('org_d0VDri411QUR4Xi7'),
   },
   /*
    * Due to how Next.js bundles environment variables on Edge and Client,
@@ -119,6 +123,11 @@ export const env = createEnv({
     // Analytics
     NEXT_PUBLIC_GTM_ID: process.env.NEXT_PUBLIC_GTM_ID,
     NEXT_PUBLIC_AMPLITUDE_API_KEY: process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY,
+
+    // Inkeep
+    NEXT_PUBLIC_INKEEP_API_KEY: process.env.NEXT_PUBLIC_INKEEP_API_KEY,
+    NEXT_PUBLIC_INKEEP_INTEGRATION_ID: process.env.NEXT_PUBLIC_INKEEP_INTEGRATION_ID,
+    NEXT_PUBLIC_INKEEP_ORG_ID: process.env.NEXT_PUBLIC_INKEEP_ORG_ID,
   },
   isServer:
     // Comprehensive server check
