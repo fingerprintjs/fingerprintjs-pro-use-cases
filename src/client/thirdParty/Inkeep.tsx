@@ -9,6 +9,9 @@ import type {
 } from '@inkeep/uikit';
 import { env } from '../../env';
 import dynamic from 'next/dynamic';
+import { trackAskAIkHelpMethodChosen } from "./Amplitude";
+
+const GET_HELP_OPTIONS_CLICKED = 'get_help_option_clicked';
 
 /**
  * Inkeep (AI Help) chat button
@@ -26,6 +29,13 @@ type InkeepSharedSettings = {
   modalSettings: InkeepModalSettings;
 };
 
+export const customAnalyticsCallback = async (event) => {
+  if (event.eventName === GET_HELP_OPTIONS_CLICKED) {
+    const { name } = event.properties;
+    await trackAskAIkHelpMethodChosen(name);
+  }
+};
+
 const useInkeepSettings = (): InkeepSharedSettings => {
   const apiKey = env.NEXT_PUBLIC_INKEEP_API_KEY;
   const integrationId = env.NEXT_PUBLIC_INKEEP_INTEGRATION_ID;
@@ -36,7 +46,7 @@ const useInkeepSettings = (): InkeepSharedSettings => {
     integrationId,
     organizationId,
     primaryBrandColor: '#F04405',
-    //logEventCallback: customAnalyticsCallback,
+    logEventCallback: customAnalyticsCallback,
   };
   const modalSettings: InkeepModalSettings = {};
   const searchSettings: InkeepSearchSettings = {};

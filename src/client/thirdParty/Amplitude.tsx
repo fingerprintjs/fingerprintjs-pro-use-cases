@@ -1,9 +1,12 @@
 import * as amplitude from '@amplitude/analytics-browser';
 import { usePlaygroundSignals } from '../../app/playground/hooks/usePlaygroundSignals';
 import { FunctionComponent } from 'react';
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
 const AMPLITUDE_INGRESS_PROXY = 'https://demo.fingerprint.com/ampl-api/2/httpapi';
 const EVENT_TYPE = 'Demo Page Viewed';
+const ASK_AI_CHOSEN_EVENT_TYPE = 'Demo Ask AI Help Chosen';
 
 /**
  * This is an Amplitude plugin that renames the Page view event_properties according to our analytics needs
@@ -36,33 +39,53 @@ type AmplitudeProps = {
   apiKey: string;
 };
 
-export const Amplitude: FunctionComponent<AmplitudeProps> = ({ apiKey }) => {
+function initAmplitude(apiKey: string) {
+  amplitude.init(apiKey, {
+    defaultTracking: {
+      attribution: false,
+      sessions: false,
+      formInteractions: false,
+      fileDownloads: false,
+    },
+    serverUrl: AMPLITUDE_INGRESS_PROXY,
+  });
+}
+
+function initPlaygroundSignals() {
   usePlaygroundSignals({
     onServerApiSuccess: (event) => {
       const visitorId = event.products.identification?.data?.visitorId;
       const botDetected = event?.products?.botd?.data?.bot?.result === 'bad' ? 'True' : 'False';
 
       amplitude.add(demoPageViewedEventPropertiesEnrichment(botDetected));
-      amplitude.init(apiKey, {
-        defaultTracking: {
-          pageViews: {
-            eventType: EVENT_TYPE,
-          },
-          attribution: false,
-          sessions: false,
-          formInteractions: false,
-          fileDownloads: false,
-        },
-        deviceId: visitorId,
-        serverUrl: AMPLITUDE_INGRESS_PROXY,
-      });
 
-      // Set Amplify user's custom `botDetected` property based on Fingerprint Bot Detection result
-      const identifyEvent = new amplitude.Identify();
-      identifyEvent.set('botDetected', botDetected);
-      amplitude.identify(identifyEvent);
+      amplitude.track(EVENT_TYPE, {
+        botDetected,
+        visitorId,
+      });
     },
   });
+}
+
+export async function trackAskAIkHelpMethodChosen(helpMethod: string) {
+  const { getData: getVisitorData } = useVisitorData(
+    { ignoreCache: true, timeout: FPJS_CLIENT_TIMEOUT },
+    {
+      immediate: false,
+    },
+  );
+
+  const { visitorId } = await getVisitorData({ ignoreCache: true });
+
+  amplitude.track(ASK_AI_CHOSEN_EVENT_TYPE, {
+    helpMethod,
+    visitorId,
+  });
+}
+
+export const Amplitude: FunctionComponent<AmplitudeProps> = ({ apiKey }) => {
+  initAmplitude(apiKey);
+  initPlaygroundSignals();
 
   return null;
 };
