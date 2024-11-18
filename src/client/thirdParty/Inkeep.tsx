@@ -10,6 +10,10 @@ import type {
 import { env } from '../../env';
 import dynamic from 'next/dynamic';
 import { trackAskAIkHelpMethodChosen } from './Amplitude';
+import { GetDataOptions, useVisitorData, VisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { FPJS_CLIENT_TIMEOUT } from '../../const';
+import { useLocation } from 'react-use';
+import { LocationSensorState } from 'react-use/lib/useLocation';
 
 const GET_HELP_OPTIONS_CLICKED = 'get_help_option_clicked';
 
@@ -29,17 +33,32 @@ type InkeepSharedSettings = {
   modalSettings: InkeepModalSettings;
 };
 
-export const customAnalyticsCallback = async (event) => {
-  if (event.eventName === GET_HELP_OPTIONS_CLICKED) {
-    const { name } = event.properties;
-    await trackAskAIkHelpMethodChosen(name);
-  }
+export const createCustomAnalyticsCallback = (
+  getVisitorData: (getDataOptions?: GetDataOptions<boolean>) => Promise<VisitorData<boolean>>,
+  location: LocationSensorState,
+) => {
+  return async (event) => {
+    if (event.eventName === GET_HELP_OPTIONS_CLICKED) {
+      const { visitorId } = await getVisitorData({ ignoreCache: true });
+
+      const { name } = event.properties;
+      const pagePath = location.pathname || '';
+      const pageTitle = document.title;
+
+      await trackAskAIkHelpMethodChosen(name, visitorId, pagePath, pageTitle);
+    }
+  };
 };
 
-const useInkeepSettings = (): InkeepSharedSettings => {
+const useInkeepSettings = (
+  getVisitorData: (getDataOptions?: GetDataOptions<boolean>) => Promise<VisitorData<boolean>>,
+  location: LocationSensorState,
+): InkeepSharedSettings => {
   const apiKey = env.NEXT_PUBLIC_INKEEP_API_KEY;
   const integrationId = env.NEXT_PUBLIC_INKEEP_INTEGRATION_ID;
   const organizationId = env.NEXT_PUBLIC_INKEEP_ORG_ID;
+
+  const customAnalyticsCallback = createCustomAnalyticsCallback(getVisitorData, location);
 
   const baseSettings: InkeepBaseSettings = {
     apiKey,
@@ -94,7 +113,15 @@ const useInkeepSettings = (): InkeepSharedSettings => {
 };
 
 export function InkeepChatButton() {
-  const { baseSettings, aiChatSettings, searchSettings, modalSettings } = useInkeepSettings();
+  const { getData: getVisitorData } = useVisitorData(
+    { ignoreCache: true, timeout: FPJS_CLIENT_TIMEOUT },
+    {
+      immediate: false,
+    },
+  );
+  const location = useLocation();
+
+  const { baseSettings, aiChatSettings, searchSettings, modalSettings } = useInkeepSettings(getVisitorData, location);
 
   const chatButtonProps: InkeepChatButtonProps = {
     baseSettings,

@@ -1,9 +1,6 @@
 import * as amplitude from '@amplitude/analytics-browser';
 import { usePlaygroundSignals } from '../../app/playground/hooks/usePlaygroundSignals';
 import { FunctionComponent } from 'react';
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import { FPJS_CLIENT_TIMEOUT } from '../../const';
-import { useLocation } from 'react-use';
 
 const AMPLITUDE_INGRESS_PROXY = 'https://demo.fingerprint.com/ampl-api/2/httpapi';
 const EVENT_TYPE = 'Demo Page Viewed';
@@ -52,47 +49,39 @@ function initAmplitude(apiKey: string) {
   });
 }
 
-function initPlaygroundSignals() {
+function usePlaygroundSignalsWrapper() {
   usePlaygroundSignals({
     onServerApiSuccess: (event) => {
       const visitorId = event.products.identification?.data?.visitorId;
       const botDetected = event?.products?.botd?.data?.bot?.result === 'bad' ? 'True' : 'False';
-
-      const location = useLocation();
-      const pagePath = location.pathname;
-      const pageTitle = document.title;
 
       amplitude.add(demoPageViewedEventPropertiesEnrichment(botDetected));
 
       amplitude.track(EVENT_TYPE, {
         botDetected,
         visitorId,
-        'Docs Page Path': pagePath,
-        'Docs Page Title': pageTitle,
       });
     },
   });
 }
 
-export async function trackAskAIkHelpMethodChosen(helpMethod: string) {
-  const { getData: getVisitorData } = useVisitorData(
-    { ignoreCache: true, timeout: FPJS_CLIENT_TIMEOUT },
-    {
-      immediate: false,
-    },
-  );
-
-  const { visitorId } = await getVisitorData({ ignoreCache: true });
-
+export async function trackAskAIkHelpMethodChosen(
+  helpMethod: string,
+  visitorId: string,
+  pagePath: string,
+  pageTitle: string,
+) {
   amplitude.track(ASK_AI_CHOSEN_EVENT_TYPE, {
     helpMethod,
     visitorId,
+    'Docs Page Path': pagePath,
+    'Docs Page Title': pageTitle,
   });
 }
 
 export const Amplitude: FunctionComponent<AmplitudeProps> = ({ apiKey }) => {
   initAmplitude(apiKey);
-  initPlaygroundSignals();
+  usePlaygroundSignalsWrapper();
 
   return null;
 };
