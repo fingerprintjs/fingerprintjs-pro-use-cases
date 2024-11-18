@@ -9,7 +9,7 @@ import type {
 } from '@inkeep/uikit';
 import { env } from '../../env';
 import dynamic from 'next/dynamic';
-import { trackAskAIkHelpMethodChosen } from "./Amplitude";
+import { trackAskAIkHelpMethodChosen } from './Amplitude';
 
 const GET_HELP_OPTIONS_CLICKED = 'get_help_option_clicked';
 

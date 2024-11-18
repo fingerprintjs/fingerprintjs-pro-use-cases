@@ -3,6 +3,7 @@ import { usePlaygroundSignals } from '../../app/playground/hooks/usePlaygroundSi
 import { FunctionComponent } from 'react';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
+import { useLocation } from 'react-use';
 
 const AMPLITUDE_INGRESS_PROXY = 'https://demo.fingerprint.com/ampl-api/2/httpapi';
 const EVENT_TYPE = 'Demo Page Viewed';
@@ -57,11 +58,17 @@ function initPlaygroundSignals() {
       const visitorId = event.products.identification?.data?.visitorId;
       const botDetected = event?.products?.botd?.data?.bot?.result === 'bad' ? 'True' : 'False';
 
+      const location = useLocation();
+      const pagePath = location.pathname;
+      const pageTitle = document.title;
+
       amplitude.add(demoPageViewedEventPropertiesEnrichment(botDetected));
 
       amplitude.track(EVENT_TYPE, {
         botDetected,
         visitorId,
+        'Docs Page Path': pagePath,
+        'Docs Page Title': pageTitle,
       });
     },
   });
