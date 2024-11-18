@@ -37,7 +37,7 @@ export const createCustomAnalyticsCallback = (
   getVisitorData: (getDataOptions?: GetDataOptions<boolean>) => Promise<VisitorData<boolean>>,
   location: LocationSensorState,
 ) => {
-  return async (event) => {
+  return async (event: any) => {
     if (event.eventName === GET_HELP_OPTIONS_CLICKED) {
       const { visitorId } = await getVisitorData({ ignoreCache: true });
 
