@@ -26,6 +26,7 @@ const mockedUser = {
 };
 
 function getKnownVisitorIds() {
+  // cspell:disable-next-line
   const defaultVisitorIds = ['bXbwuhCBRB9lLTK692vw', 'ABvLgKyH3fAr6uAjn0vq', 'BNvLgKyHefAr9iOjn0ul'];
   const visitorIdsFromEnv = env.KNOWN_VISITOR_IDS?.split(',');
   console.info(`Extracted ${visitorIdsFromEnv?.length ?? 0} visitorIds from env.`);

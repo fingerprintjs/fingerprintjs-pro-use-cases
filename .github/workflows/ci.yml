@@ -35,6 +35,9 @@ jobs:
 
       - name: Lint
         run: yarn lint
+
+      - name: Spellcheck
+        run: yarn spellcheck
   unit-tests:
     name: Unit tests
     runs-on: ubuntu-latest

@@ -25,8 +25,8 @@ See the [package.json](./package.json) -> `scripts` section for more useful comm
 
 - Merging a PR into `main` automatically triggers a new deployment accessible on [demo.fingerprint.com](https://demo.fingerprint.com).
 - The app is deployed as a Digital Ocean App.
-- The app is deployed behind a Cloudfront distribution in the Fingerprint DEV AWS environment (search for `demo.fingerprint.com` in the distribution description).
-  - If you ever encounter caching issues, for example, a cached index.html pointing to no longer existing resources, you can fix it by [creating a cache invalidation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Invalidation_Requests.html#invalidating-objects-console) (`/*` is fine) in the Cloudfront distribution.
+- The app is deployed behind a CloudFront distribution in the Fingerprint DEV AWS environment (search for `demo.fingerprint.com` in the distribution description).
+  - If you ever encounter caching issues, for example, a cached index.html pointing to no longer existing resources, you can fix it by [creating a cache invalidation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Invalidation_Requests.html#invalidating-objects-console) (`/*` is fine) in the CloudFront distribution.
 
 ### Rollbacks and incident response
 
