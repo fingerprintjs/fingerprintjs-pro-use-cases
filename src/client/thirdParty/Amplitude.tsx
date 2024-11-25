@@ -37,40 +37,13 @@ type AmplitudeProps = {
   apiKey: string;
 };
 
-function initAmplitude(apiKey: string) {
-  amplitude.init(apiKey, {
-    defaultTracking: {
-      attribution: false,
-      sessions: false,
-      formInteractions: false,
-      fileDownloads: false,
-    },
-    serverUrl: AMPLITUDE_INGRESS_PROXY,
-  });
-}
-
-function usePlaygroundSignalsWrapper() {
-  usePlaygroundSignals({
-    onServerApiSuccess: (event) => {
-      const visitorId = event.products.identification?.data?.visitorId;
-      const botDetected = event?.products?.botd?.data?.bot?.result === 'bad' ? 'True' : 'False';
-
-      amplitude.add(demoPageViewedEventPropertiesEnrichment(botDetected));
-
-      amplitude.track(EVENT_TYPE, {
-        botDetected,
-        visitorId,
-      });
-    },
-  });
-}
-
-export async function trackAskAIkHelpMethodChosen(
-  helpMethod: string,
-  visitorId: string,
-  pagePath: string,
-  pageTitle: string,
+export function trackAskAIkHelpMethodChosen(
+    helpMethod: string,
+    visitorId: string,
+    pagePath: string,
+    pageTitle: string,
 ) {
+  debugger;
   amplitude.track(ASK_AI_CHOSEN_EVENT_TYPE, {
     helpMethod,
     visitorId,
@@ -79,9 +52,34 @@ export async function trackAskAIkHelpMethodChosen(
   });
 }
 
+
 export const Amplitude: FunctionComponent<AmplitudeProps> = ({ apiKey }) => {
-  initAmplitude(apiKey);
-  usePlaygroundSignalsWrapper();
+  usePlaygroundSignals({
+    onServerApiSuccess: (event) => {
+      const visitorId = event.products.identification?.data?.visitorId;
+      const botDetected = event?.products?.botd?.data?.bot?.result === 'bad' ? 'True' : 'False';
+
+      amplitude.add(demoPageViewedEventPropertiesEnrichment(botDetected));
+      amplitude.init(apiKey, {
+        defaultTracking: {
+          pageViews: {
+            eventType: EVENT_TYPE,
+          },
+          attribution: false,
+          sessions: false,
+          formInteractions: false,
+          fileDownloads: false,
+        },
+        deviceId: visitorId,
+        serverUrl: AMPLITUDE_INGRESS_PROXY,
+      });
+
+      // Set Amplify user's custom `botDetected` property based on Fingerprint Bot Detection result
+      const identifyEvent = new amplitude.Identify();
+      identifyEvent.set('botDetected', botDetected);
+      amplitude.identify(identifyEvent);
+    },
+  });
 
   return null;
 };

@@ -34,31 +34,27 @@ type InkeepSharedSettings = {
 };
 
 export const createCustomAnalyticsCallback = (
-  getVisitorData: (getDataOptions?: GetDataOptions<boolean>) => Promise<VisitorData<boolean>>,
-  location: LocationSensorState,
+  visitorId: string,
 ) => {
   return async (event: any) => {
     if (event.eventName === GET_HELP_OPTIONS_CLICKED) {
-      const { visitorId } = await getVisitorData({ ignoreCache: true });
-
       const { name } = event.properties;
-      const pagePath = location.pathname || '';
+      const pagePath = document.location.pathname;
       const pageTitle = document.title;
 
-      await trackAskAIkHelpMethodChosen(name, visitorId, pagePath, pageTitle);
+      trackAskAIkHelpMethodChosen(name, visitorId, pagePath, pageTitle);
     }
   };
 };
 
 const useInkeepSettings = (
-  getVisitorData: (getDataOptions?: GetDataOptions<boolean>) => Promise<VisitorData<boolean>>,
-  location: LocationSensorState,
+  visitorId: string
 ): InkeepSharedSettings => {
   const apiKey = env.NEXT_PUBLIC_INKEEP_API_KEY;
   const integrationId = env.NEXT_PUBLIC_INKEEP_INTEGRATION_ID;
   const organizationId = env.NEXT_PUBLIC_INKEEP_ORG_ID;
 
-  const customAnalyticsCallback = createCustomAnalyticsCallback(getVisitorData, location);
+  const customAnalyticsCallback = createCustomAnalyticsCallback(visitorId);
 
   const baseSettings: InkeepBaseSettings = {
     apiKey,
@@ -113,22 +109,21 @@ const useInkeepSettings = (
 };
 
 export function InkeepChatButton() {
-  const { getData: getVisitorData } = useVisitorData(
-    { ignoreCache: true, timeout: FPJS_CLIENT_TIMEOUT },
-    {
-      immediate: false,
-    },
-  );
-  const location = useLocation();
+  const { data } = useVisitorData({ extendedResult: true, timeout: FPJS_CLIENT_TIMEOUT });
 
-  const { baseSettings, aiChatSettings, searchSettings, modalSettings } = useInkeepSettings(getVisitorData, location);
+  const visitorId =  data?.visitorId
 
-  const chatButtonProps: InkeepChatButtonProps = {
-    baseSettings,
-    aiChatSettings,
-    searchSettings,
-    modalSettings,
-  };
+  debugger;
+  if (visitorId) {
+    const { baseSettings, aiChatSettings, searchSettings, modalSettings } = useInkeepSettings(visitorId);
 
-  return <ChatButton {...chatButtonProps} />;
+    const chatButtonProps: InkeepChatButtonProps = {
+      baseSettings,
+      aiChatSettings,
+      searchSettings,
+      modalSettings,
+    };
+
+    return <ChatButton {...chatButtonProps} />;
+  }
 }
