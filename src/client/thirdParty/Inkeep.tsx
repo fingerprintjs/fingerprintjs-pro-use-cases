@@ -10,10 +10,8 @@ import type {
 import { env } from '../../env';
 import dynamic from 'next/dynamic';
 import { trackAskAIkHelpMethodChosen } from './Amplitude';
-import { GetDataOptions, useVisitorData, VisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
-import { useLocation } from 'react-use';
-import { LocationSensorState } from 'react-use/lib/useLocation';
 
 const GET_HELP_OPTIONS_CLICKED = 'get_help_option_clicked';
 
@@ -33,9 +31,7 @@ type InkeepSharedSettings = {
   modalSettings: InkeepModalSettings;
 };
 
-export const createCustomAnalyticsCallback = (
-  visitorId: string,
-) => {
+export const createCustomAnalyticsCallback = (visitorId: string) => {
   return async (event: any) => {
     if (event.eventName === GET_HELP_OPTIONS_CLICKED) {
       const { name } = event.properties;
@@ -47,9 +43,7 @@ export const createCustomAnalyticsCallback = (
   };
 };
 
-const useInkeepSettings = (
-  visitorId: string
-): InkeepSharedSettings => {
+const useInkeepSettings = (visitorId: string): InkeepSharedSettings => {
   const apiKey = env.NEXT_PUBLIC_INKEEP_API_KEY;
   const integrationId = env.NEXT_PUBLIC_INKEEP_INTEGRATION_ID;
   const organizationId = env.NEXT_PUBLIC_INKEEP_ORG_ID;
@@ -110,20 +104,22 @@ const useInkeepSettings = (
 
 export function InkeepChatButton() {
   const { data } = useVisitorData({ extendedResult: true, timeout: FPJS_CLIENT_TIMEOUT });
+  const visitorId = data?.visitorId;
 
-  const visitorId =  data?.visitorId
+  const settings = useInkeepSettings(visitorId ?? '');
 
-  debugger;
-  if (visitorId) {
-    const { baseSettings, aiChatSettings, searchSettings, modalSettings } = useInkeepSettings(visitorId);
-
-    const chatButtonProps: InkeepChatButtonProps = {
-      baseSettings,
-      aiChatSettings,
-      searchSettings,
-      modalSettings,
-    };
-
-    return <ChatButton {...chatButtonProps} />;
+  if (!visitorId || !settings) {
+    return null;
   }
+
+  const { baseSettings, aiChatSettings, searchSettings, modalSettings } = settings;
+
+  const chatButtonProps: InkeepChatButtonProps = {
+    baseSettings,
+    aiChatSettings,
+    searchSettings,
+    modalSettings,
+  };
+
+  return <ChatButton {...chatButtonProps} />;
 }

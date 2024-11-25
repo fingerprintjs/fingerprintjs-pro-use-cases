@@ -38,12 +38,11 @@ type AmplitudeProps = {
 };
 
 export function trackAskAIkHelpMethodChosen(
-    helpMethod: string,
-    visitorId: string,
-    pagePath: string,
-    pageTitle: string,
+  helpMethod: string,
+  visitorId: string,
+  pagePath: string,
+  pageTitle: string,
 ) {
-  debugger;
   amplitude.track(ASK_AI_CHOSEN_EVENT_TYPE, {
     helpMethod,
     visitorId,
@@ -51,7 +50,6 @@ export function trackAskAIkHelpMethodChosen(
     'Docs Page Title': pageTitle,
   });
 }
-
 
 export const Amplitude: FunctionComponent<AmplitudeProps> = ({ apiKey }) => {
   usePlaygroundSignals({
