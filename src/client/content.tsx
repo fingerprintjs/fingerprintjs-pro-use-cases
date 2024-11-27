@@ -33,7 +33,7 @@ export type UseCase = {
 };
 
 export type ResourceLink = {
-  type: 'Use case tutorial' | 'Case study' | 'Industry' | 'Article' | 'Use case' | 'Video' | 'Webinar';
+  type: 'Use case tutorial' | 'Case study' | 'Industry' | 'Article' | 'Use case' | 'Video' | 'Webinar' | 'Demo app';
   title: string;
   url: string;
   description?: string;
