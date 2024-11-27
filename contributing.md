@@ -32,7 +32,7 @@ See the [package.json](./package.json) -> `scripts` section for more useful comm
 
 If an incident occurs, any member of the Fingerprint team on Digital Ocean can rollback the app to the previous version. In case of any problems, please contact @JuroUhlar and the Integrations team.
 
-1. Go to the [Digital Ocean control panel](https://cloud.digitalocean.com/apps/69a24f2e-6d8e-4e9d-bcf3-024a653ae7b2/deployments).
+1. Go to the [Digital Ocean control panel](https://cloud.digitalocean.com/apps).
 2. Find the `fingerprint-use-cases` app.
 3. Click on the `Activity` tab.
 4. Find a previous working version and click `Rollback`.
