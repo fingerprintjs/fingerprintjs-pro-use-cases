@@ -37,7 +37,7 @@ type AmplitudeProps = {
   apiKey: string;
 };
 
-export function trackAskAIkHelpMethodChosen(
+export function trackAskAIHelpMethodChosen(
   helpMethod: string,
   visitorId: string,
   pagePath: string,
@@ -46,8 +46,8 @@ export function trackAskAIkHelpMethodChosen(
   amplitude.track(ASK_AI_CHOSEN_EVENT_TYPE, {
     helpMethod,
     visitorId,
-    'Docs Page Path': pagePath,
-    'Docs Page Title': pageTitle,
+    'Demo Page Path': pagePath,
+    'Demo Page Title': pageTitle,
   });
 }
 

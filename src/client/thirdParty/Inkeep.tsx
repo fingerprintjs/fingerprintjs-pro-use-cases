@@ -9,7 +9,7 @@ import type {
 } from '@inkeep/uikit';
 import { env } from '../../env';
 import dynamic from 'next/dynamic';
-import { trackAskAIkHelpMethodChosen } from './Amplitude';
+import { trackAskAIHelpMethodChosen } from './Amplitude';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
@@ -31,31 +31,30 @@ type InkeepSharedSettings = {
   modalSettings: InkeepModalSettings;
 };
 
-export const createCustomAnalyticsCallback = (visitorId: string) => {
-  return async (event: any) => {
-    if (event.eventName === GET_HELP_OPTIONS_CLICKED) {
-      const { name } = event.properties;
-      const pagePath = document.location.pathname;
-      const pageTitle = document.title;
-
-      trackAskAIkHelpMethodChosen(name, visitorId, pagePath, pageTitle);
-    }
-  };
-};
-
-const useInkeepSettings = (visitorId: string): InkeepSharedSettings => {
+const useInkeepSettings = (): InkeepSharedSettings => {
   const apiKey = env.NEXT_PUBLIC_INKEEP_API_KEY;
   const integrationId = env.NEXT_PUBLIC_INKEEP_INTEGRATION_ID;
   const organizationId = env.NEXT_PUBLIC_INKEEP_ORG_ID;
 
-  const customAnalyticsCallback = createCustomAnalyticsCallback(visitorId);
+  const { data } = useVisitorData({ extendedResult: true, timeout: FPJS_CLIENT_TIMEOUT });
+  const visitorId = data?.visitorId || '';
+
+
+  const logEventCallback = (event) => {
+    debugger;
+    const { name } = event.properties;
+    const pagePath = document.location.pathname;
+    const pageTitle = document.title;
+
+    trackAskAIHelpMethodChosen(name, visitorId, pagePath, pageTitle);
+  }
 
   const baseSettings: InkeepBaseSettings = {
     apiKey,
     integrationId,
     organizationId,
     primaryBrandColor: '#F04405',
-    logEventCallback: customAnalyticsCallback,
+    logEventCallback,
   };
   const modalSettings: InkeepModalSettings = {};
   const searchSettings: InkeepSearchSettings = {};
@@ -103,23 +102,11 @@ const useInkeepSettings = (visitorId: string): InkeepSharedSettings => {
 };
 
 export function InkeepChatButton() {
-  const { data } = useVisitorData({ extendedResult: true, timeout: FPJS_CLIENT_TIMEOUT });
-  const visitorId = data?.visitorId;
+  const settings = useInkeepSettings();
 
-  const settings = useInkeepSettings(visitorId ?? '');
-
-  if (!visitorId || !settings) {
+  if (!settings) {
     return null;
   }
 
-  const { baseSettings, aiChatSettings, searchSettings, modalSettings } = settings;
-
-  const chatButtonProps: InkeepChatButtonProps = {
-    baseSettings,
-    aiChatSettings,
-    searchSettings,
-    modalSettings,
-  };
-
-  return <ChatButton {...chatButtonProps} />;
+  return <ChatButton {...settings} />;
 }
