@@ -1,5 +1,5 @@
 import { FunctionComponent, PropsWithChildren } from 'react';
-import SuccessIcon from './sucess.svg';
+import SuccessIcon from './success.svg';
 import ErrorIcon from './error.svg';
 import WarningIcon from './warning.svg';
 import InfoIcon from '../../img/InfoIconSvg.svg';
