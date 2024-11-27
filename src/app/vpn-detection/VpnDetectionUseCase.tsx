@@ -107,7 +107,7 @@ const VpnDetectionUseCase: FunctionComponent = () => {
               <Alert severity={activateResponse.severity}>{activateResponse.message}</Alert>
             </div>
           )}
-          <div className={styles.regionaPricingContainer}>
+          <div className={styles.regionalPricingContainer}>
             <Button
               disabled={isLoading}
               size='medium'

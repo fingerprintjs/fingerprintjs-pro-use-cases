@@ -72,6 +72,7 @@ const useInkeepSettings = (): InkeepSharedSettings => {
         name: 'Contact support',
         url: 'https://fingerprint.com/support/',
         icon: {
+          // cspell:disable-next-line
           builtIn: 'IoChatbubblesOutline',
         },
       },
