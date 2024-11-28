@@ -100,9 +100,5 @@ const useInkeepSettings = (): InkeepSharedSettings => {
 export function InkeepChatButton() {
   const settings = useInkeepSettings();
 
-  if (!settings) {
-    return null;
-  }
-
   return <ChatButton {...settings} />;
 }
