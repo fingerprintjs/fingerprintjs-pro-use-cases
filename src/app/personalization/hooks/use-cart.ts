@@ -31,14 +31,9 @@ export function useCart() {
     enabled: Boolean(visitorData),
   });
 
-  const refetchCartOnSuccess = useCallback(
-    async (data: AddCartItemResponse | RemoveCartItemResponse) => {
-      if (data) {
-        await cartQuery.refetch();
-      }
-    },
-    [cartQuery],
-  );
+  const refetchCartOnSuccess = useCallback(async () => {
+    await cartQuery.refetch();
+  }, [cartQuery]);
 
   const addCartItemMutation = useMutation({
     mutationKey: [ADD_CART_ITEM_MUTATION],

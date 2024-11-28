@@ -40,7 +40,7 @@ export const Amplitude: FunctionComponent<AmplitudeProps> = ({ apiKey }) => {
   usePlaygroundSignals({
     onServerApiSuccess: (event) => {
       const visitorId = event.products.identification?.data?.visitorId;
-      const botDetected = event?.products?.botd?.data?.bot?.result === 'bad' ? 'True' : 'False';
+      const botDetected = event.products.botd?.data?.bot.result === 'bad' ? 'True' : 'False';
 
       amplitude.add(demoPageViewedEventPropertiesEnrichment(botDetected));
       amplitude.init(apiKey, {

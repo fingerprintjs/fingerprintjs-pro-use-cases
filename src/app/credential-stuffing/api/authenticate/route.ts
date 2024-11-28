@@ -44,7 +44,7 @@ export async function POST(req: Request): Promise<NextResponse<LoginResponse>> {
   }
 
   // Get visitorId from the Server API Identification event
-  const visitorId = fingerprintResult.data.products?.identification?.data?.visitorId;
+  const visitorId = fingerprintResult.data.products.identification?.data?.visitorId;
   if (!visitorId) {
     logLoginAttempt(clientVisitorId, username, 'RequestIdValidationFailed');
     return NextResponse.json({ message: 'Visitor ID not found.', severity: 'error' }, { status: 403 });

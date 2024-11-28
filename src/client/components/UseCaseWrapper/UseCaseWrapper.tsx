@@ -35,7 +35,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   embed,
   instructionsNote,
 }) => {
-  const { title, description, articleUrl, instructions, moreResources, doNotMentionResetButton } = useCase ?? {};
+  const { title, description, articleUrl, instructions, moreResources, doNotMentionResetButton } = useCase;
   const learnMoreRef = useRef<ElementRef<'h3'>>(null);
 
   const { mutate, shouldDisplayResetButton, isLoading } = useReset({});
@@ -104,7 +104,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
             <div>
               {moreResourcesPresent && (
                 <Button
-                  onClick={() => learnMoreRef?.current?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => learnMoreRef.current?.scrollIntoView({ behavior: 'smooth' })}
                   size='large'
                   outlined
                   openNewTab

@@ -134,7 +134,7 @@ export const env = createEnv({
     // https://github.com/t3-oss/t3-env/issues/154
     typeof window === 'undefined' ||
     'Deno' in window ||
-    globalThis.process?.env?.['NODE_ENV'] === 'test' ||
-    !!globalThis.process?.env?.['JEST_WORKER_ID'] ||
-    !!globalThis.process?.env?.['VITEST_WORKER_ID'],
+    globalThis.process.env['NODE_ENV'] === 'test' ||
+    !!globalThis.process.env['JEST_WORKER_ID'] ||
+    !!globalThis.process.env['VITEST_WORKER_ID'],
 });
