@@ -56,7 +56,7 @@ export const saveBotVisit = async (botData: EventResponseBotData, visitorId: str
     requestId: botData.requestId,
     timestamp: botData.time,
     botResult: botData.bot.result,
-    botType: botData.bot.type,
+    botType: botData.bot.type ?? '',
     userAgent: botData.userAgent,
     url: botData.url,
   });

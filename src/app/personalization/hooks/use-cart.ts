@@ -51,7 +51,7 @@ export function useCart() {
       });
       return (await response.json()) as AddCartItemResponse;
     },
-    onSuccess: (data: AddCartItemResponse) => refetchCartOnSuccess(data),
+    onSuccess: () => refetchCartOnSuccess(),
   });
 
   const removeCartItemMutation = useMutation({
