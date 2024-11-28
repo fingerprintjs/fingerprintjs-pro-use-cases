@@ -8,7 +8,7 @@ import type {
 } from '@inkeep/uikit';
 import { env } from '../../env';
 import dynamic from 'next/dynamic';
-import { trackAskAIHelpMethodChosen } from './Amplitude';
+import { trackAskAIHelpChosen } from './Amplitude';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
@@ -34,17 +34,17 @@ const useInkeepSettings = (): InkeepSharedSettings => {
   const apiKey = env.NEXT_PUBLIC_INKEEP_API_KEY;
   const integrationId = env.NEXT_PUBLIC_INKEEP_INTEGRATION_ID;
   const organizationId = env.NEXT_PUBLIC_INKEEP_ORG_ID;
-
-  const { data } = useVisitorData({ extendedResult: true, timeout: FPJS_CLIENT_TIMEOUT });
-  const visitorId = data?.visitorId || '';
+  const { data } = useVisitorData({ timeout: FPJS_CLIENT_TIMEOUT });
+  const visitorId = data?.visitorId ?? '';
 
   const logEventCallback = (event: any) => {
     if (event.eventName === GET_HELP_OPTIONS_CLICKED) {
-      const { name } = event.properties;
-      const pagePath = document.location.pathname;
-      const pageTitle = document.title;
-
-      trackAskAIHelpMethodChosen(name, visitorId, pagePath, pageTitle);
+      trackAskAIHelpChosen({
+        visitorId,
+        helpMethod: event.properties.name,
+        'Demo Page Path': document.location.pathname,
+        'Demo Page Title': document.title,
+      });
     }
   };
 

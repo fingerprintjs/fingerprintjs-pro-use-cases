@@ -3,8 +3,10 @@ import { usePlaygroundSignals } from '../../app/playground/hooks/usePlaygroundSi
 import { FunctionComponent } from 'react';
 
 const AMPLITUDE_INGRESS_PROXY = 'https://demo.fingerprint.com/ampl-api/2/httpapi';
-const EVENT_TYPE = 'Demo Page Viewed';
-const ASK_AI_CHOSEN_EVENT_TYPE = 'Demo Ask AI Help Chosen';
+const AMPLITUDE_EVENT = {
+  DEMO_PAGE_VIEWED: 'Demo Page Viewed',
+  DEMO_ASK_AI_HELP_CHOSEN: 'Demo Ask AI Help Chosen',
+} as const;
 
 /**
  * This is an Amplitude plugin that renames the Page view event_properties according to our analytics needs
@@ -15,7 +17,7 @@ const demoPageViewedEventPropertiesEnrichment = (botDetected: 'True' | 'False'):
   setup: async () => undefined,
   execute: async (event) => {
     // Only apply to Demo Page View events
-    if (event.event_type !== EVENT_TYPE) {
+    if (event.event_type !== AMPLITUDE_EVENT.DEMO_PAGE_VIEWED) {
       return event;
     }
 
@@ -37,13 +39,15 @@ type AmplitudeProps = {
   apiKey: string;
 };
 
-export function trackAskAIHelpMethodChosen(helpMethod: string, visitorId: string, pagePath: string, pageTitle: string) {
-  amplitude.track(ASK_AI_CHOSEN_EVENT_TYPE, {
-    helpMethod,
-    visitorId,
-    'Demo Page Path': pagePath,
-    'Demo Page Title': pageTitle,
-  });
+type AskAIHelpChosenEventProperties = {
+  visitorId: string;
+  helpMethod: string;
+  'Demo Page Path': string;
+  'Demo Page Title': string;
+};
+
+export function trackAskAIHelpChosen(properties: AskAIHelpChosenEventProperties) {
+  amplitude.track(AMPLITUDE_EVENT.DEMO_ASK_AI_HELP_CHOSEN, properties);
 }
 
 export const Amplitude: FunctionComponent<AmplitudeProps> = ({ apiKey }) => {
@@ -56,7 +60,7 @@ export const Amplitude: FunctionComponent<AmplitudeProps> = ({ apiKey }) => {
       amplitude.init(apiKey, {
         defaultTracking: {
           pageViews: {
-            eventType: EVENT_TYPE,
+            eventType: AMPLITUDE_EVENT.DEMO_PAGE_VIEWED,
           },
           attribution: false,
           sessions: false,
