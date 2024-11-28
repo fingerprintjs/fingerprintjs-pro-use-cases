@@ -37,7 +37,6 @@ const useInkeepSettings = (): InkeepSharedSettings => {
   const visitorId = data?.visitorId || '';
 
   const logEventCallback = (event: any) => {
-    debugger;
     const { name } = event.properties;
     const pagePath = document.location.pathname;
     const pageTitle = document.title;
