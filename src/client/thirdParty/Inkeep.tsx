@@ -12,6 +12,8 @@ import { trackAskAIHelpMethodChosen } from './Amplitude';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
+const GET_HELP_OPTIONS_CLICKED = 'get_help_option_clicked';
+
 /**
  * Inkeep (AI Help) chat button
  * Implemented according to https://docs.inkeep.com/integrations/nextjs/chat-button
@@ -37,11 +39,13 @@ const useInkeepSettings = (): InkeepSharedSettings => {
   const visitorId = data?.visitorId || '';
 
   const logEventCallback = (event: any) => {
-    const { name } = event.properties;
-    const pagePath = document.location.pathname;
-    const pageTitle = document.title;
+    if (event.eventName === GET_HELP_OPTIONS_CLICKED) {
+      const { name } = event.properties;
+      const pagePath = document.location.pathname;
+      const pageTitle = document.title;
 
-    trackAskAIHelpMethodChosen(name, visitorId, pagePath, pageTitle);
+      trackAskAIHelpMethodChosen(name, visitorId, pagePath, pageTitle);
+    }
   };
 
   const baseSettings: InkeepBaseSettings = {
