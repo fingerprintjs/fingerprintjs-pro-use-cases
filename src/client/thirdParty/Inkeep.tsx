@@ -9,8 +9,6 @@ import type {
 import { env } from '../../env';
 import dynamic from 'next/dynamic';
 import { trackAskAIHelpMethodChosen } from './Amplitude';
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
 const GET_HELP_OPTIONS_CLICKED = 'get_help_option_clicked';
 
@@ -35,16 +33,13 @@ const useInkeepSettings = (): InkeepSharedSettings => {
   const integrationId = env.NEXT_PUBLIC_INKEEP_INTEGRATION_ID;
   const organizationId = env.NEXT_PUBLIC_INKEEP_ORG_ID;
 
-  const { data } = useVisitorData({ extendedResult: true, timeout: FPJS_CLIENT_TIMEOUT });
-  const visitorId = data?.visitorId || '';
-
   const logEventCallback = (event: any) => {
     if (event.eventName === GET_HELP_OPTIONS_CLICKED) {
       const { name } = event.properties;
       const pagePath = document.location.pathname;
       const pageTitle = document.title;
 
-      trackAskAIHelpMethodChosen(name, visitorId, pagePath, pageTitle);
+      trackAskAIHelpMethodChosen(name, pagePath, pageTitle);
     }
   };
 
