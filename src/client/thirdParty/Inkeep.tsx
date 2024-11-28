@@ -8,7 +8,7 @@ import type {
 } from '@inkeep/uikit';
 import { env } from '../../env';
 import dynamic from 'next/dynamic';
-import { trackAskAIHelpMethodChosen } from './Amplitude';
+import { trackAskAIHelpChosen } from './Amplitude';
 
 const GET_HELP_OPTIONS_CLICKED = 'get_help_option_clicked';
 
@@ -35,11 +35,11 @@ const useInkeepSettings = (): InkeepSharedSettings => {
 
   const logEventCallback = (event: any) => {
     if (event.eventName === GET_HELP_OPTIONS_CLICKED) {
-      const { name } = event.properties;
-      const pagePath = document.location.pathname;
-      const pageTitle = document.title;
-
-      trackAskAIHelpMethodChosen(name, pagePath, pageTitle);
+      trackAskAIHelpChosen({
+        helpMethod: event.properties.name,
+        'Demo Page Path': document.location.pathname,
+        'Demo Page Title': document.title,
+      });
     }
   };
 
