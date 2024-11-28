@@ -152,7 +152,7 @@ export function Playground() {
     ],
     [
       {
-        content: <DocsLink href='https://dev.fingerprint.com/docs/useful-timestamps'>Last seen</DocsLink>,
+        content: <DocsLink href='https://dev.fingerprint.com/docs/useful-timestamps'>Last Seen</DocsLink>,
       },
       {
         content: agentResponse?.lastSeenAt.global ? (
@@ -435,7 +435,7 @@ export function Playground() {
       {
         content: [
           <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-reference#velocity-signals' key='velocity '>
-            Velocity signals
+            Velocity Signals
           </DocsLink>,
         ],
       },
@@ -476,7 +476,7 @@ export function Playground() {
       {
         content: [
           <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-reference#raw-device-attributes' key='raw'>
-            Raw device attributes
+            Raw Device Attributes
           </DocsLink>,
         ],
       },
@@ -515,7 +515,7 @@ export function Playground() {
             href='https://dev.fingerprint.com/docs/smart-signals-reference#geolocation-spoofing-detection'
             key='spoof'
           >
-            Location spoofing
+            Location Spoofing
           </DocsLink>,
         ],
       },
@@ -551,7 +551,7 @@ export function Playground() {
             href='https://dev.fingerprint.com/docs/smart-signals-reference#rooted-device-detection'
             key='tamper'
           >
-            Rooted device
+            Rooted Device
           </DocsLink>,
         ],
       },
