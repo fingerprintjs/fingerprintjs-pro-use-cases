@@ -10,8 +10,6 @@ import { env } from '../../env';
 import dynamic from 'next/dynamic';
 import { trackAskAIHelpChosen } from './Amplitude';
 
-const GET_HELP_OPTIONS_CLICKED = 'get_help_option_clicked';
-
 /**
  * Inkeep (AI Help) chat button
  * Implemented according to https://docs.inkeep.com/integrations/nextjs/chat-button
@@ -33,22 +31,20 @@ const useInkeepSettings = (): InkeepSharedSettings => {
   const integrationId = env.NEXT_PUBLIC_INKEEP_INTEGRATION_ID;
   const organizationId = env.NEXT_PUBLIC_INKEEP_ORG_ID;
 
-  const logEventCallback = (event: any) => {
-    if (event.eventName === GET_HELP_OPTIONS_CLICKED) {
-      trackAskAIHelpChosen({
-        helpMethod: event.properties.name,
-        'Demo Page Path': document.location.pathname,
-        'Demo Page Title': document.title,
-      });
-    }
-  };
-
   const baseSettings: InkeepBaseSettings = {
     apiKey,
     integrationId,
     organizationId,
     primaryBrandColor: '#F04405',
-    logEventCallback,
+    logEventCallback: (event) => {
+      if (event.eventName === 'get_help_option_clicked') {
+        trackAskAIHelpChosen({
+          helpMethod: event.properties.name,
+          'Demo Page Path': document.location.pathname,
+          'Demo Page Title': document.title,
+        });
+      }
+    },
   };
   const modalSettings: InkeepModalSettings = {};
   const searchSettings: InkeepSearchSettings = {};
