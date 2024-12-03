@@ -157,7 +157,7 @@ export function Playground() {
       {
         content: agentResponse?.lastSeenAt.global ? (
           <JsonLink propertyName='lastSeenAt' elementOrder='first'>
-            {timeAgoLabel(agentResponse?.lastSeenAt.global)}
+            {timeAgoLabel(agentResponse.lastSeenAt.global)}
           </JsonLink>
         ) : (
           'Unknown'
@@ -189,11 +189,10 @@ export function Playground() {
     ],
   ];
 
-  const suspectScore = usedIdentificationEvent?.products?.suspectScore?.data?.result;
-  const remoteControl: boolean | undefined = usedIdentificationEvent?.products?.remoteControl?.data?.result;
+  const suspectScore = usedIdentificationEvent?.products.suspectScore?.data?.result;
+  const remoteControl: boolean | undefined = usedIdentificationEvent?.products.remoteControl?.data?.result;
 
-  const ipVelocity: number | undefined =
-    usedIdentificationEvent?.products?.velocity?.data?.distinctIp?.intervals?.['1h'];
+  const ipVelocity: number | undefined = usedIdentificationEvent?.products.velocity?.data?.distinctIp.intervals?.['1h'];
 
   const smartSignals: TableCellData[][] = [
     [
@@ -238,10 +237,10 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='incognito'>
-            {usedIdentificationEvent?.products?.incognito?.data?.result ? 'You are incognito 🕶' : 'Not detected'}
+            {usedIdentificationEvent?.products.incognito?.data?.result ? 'You are incognito 🕶' : 'Not detected'}
           </JsonLink>
         ),
-        className: usedIdentificationEvent?.products?.incognito?.data?.result ? tableStyles.red : tableStyles.green,
+        className: usedIdentificationEvent?.products.incognito?.data?.result ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -255,7 +254,7 @@ export function Playground() {
       {
         content: <JsonLink propertyName='botd'>{botDetectionResult({ event: usedIdentificationEvent })}</JsonLink>,
         className:
-          usedIdentificationEvent?.products?.botd?.data?.bot?.result === 'bad' ? tableStyles.red : tableStyles.green,
+          usedIdentificationEvent?.products.botd?.data?.bot.result === 'bad' ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -271,7 +270,7 @@ export function Playground() {
       },
       {
         content: <JsonLink propertyName='vpn'>{vpnDetectionResult({ event: usedIdentificationEvent })}</JsonLink>,
-        className: usedIdentificationEvent?.products?.vpn?.data?.result === true ? tableStyles.red : tableStyles.green,
+        className: usedIdentificationEvent?.products.vpn?.data?.result === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -288,12 +287,12 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='tampering'>
-            {usedIdentificationEvent?.products?.tampering?.data?.result === true ? 'Yes 🖥️🔧' : 'Not detected'}
+            {usedIdentificationEvent?.products.tampering?.data?.result === true ? 'Yes 🖥️🔧' : 'Not detected'}
           </JsonLink>
         ),
 
         className:
-          usedIdentificationEvent?.products?.tampering?.data?.result === true ? tableStyles.red : tableStyles.green,
+          usedIdentificationEvent?.products.tampering?.data?.result === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -310,13 +309,11 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='developerTools'>
-            {usedIdentificationEvent?.products?.developerTools?.data?.result === true ? 'Yes 🔧' : 'Not detected'}
+            {usedIdentificationEvent?.products.developerTools?.data?.result === true ? 'Yes 🔧' : 'Not detected'}
           </JsonLink>
         ),
         className:
-          usedIdentificationEvent?.products?.developerTools?.data?.result === true
-            ? tableStyles.red
-            : tableStyles.green,
+          usedIdentificationEvent?.products.developerTools?.data?.result === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -330,14 +327,12 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='virtualMachine'>
-            {usedIdentificationEvent?.products?.virtualMachine?.data?.result === true ? 'Yes ☁️💻' : 'Not detected'}
+            {usedIdentificationEvent?.products.virtualMachine?.data?.result === true ? 'Yes ☁️💻' : 'Not detected'}
           </JsonLink>
         ),
 
         className:
-          usedIdentificationEvent?.products?.virtualMachine?.data?.result === true
-            ? tableStyles.red
-            : tableStyles.green,
+          usedIdentificationEvent?.products.virtualMachine?.data?.result === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -351,11 +346,11 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='privacySettings'>
-            {usedIdentificationEvent?.products?.privacySettings?.data?.result === true ? 'Yes 🙈💻' : 'Not detected'}
+            {usedIdentificationEvent?.products.privacySettings?.data?.result === true ? 'Yes 🙈💻' : 'Not detected'}
           </JsonLink>
         ),
         className:
-          usedIdentificationEvent?.products?.privacySettings?.data?.result === true
+          usedIdentificationEvent?.products.privacySettings?.data?.result === true
             ? tableStyles.red
             : tableStyles.green,
       },
@@ -402,9 +397,9 @@ export function Playground() {
           <JsonLink propertyName='ipBlocklist'>{ipBlocklistResult({ event: usedIdentificationEvent })}</JsonLink>
         ),
         className:
-          usedIdentificationEvent?.products?.ipBlocklist?.data?.result ||
-          usedIdentificationEvent?.products?.proxy?.data?.result ||
-          usedIdentificationEvent?.products?.tor?.data?.result
+          usedIdentificationEvent?.products.ipBlocklist?.data?.result ||
+          usedIdentificationEvent?.products.proxy?.data?.result ||
+          usedIdentificationEvent?.products.tor?.data?.result
             ? tableStyles.red
             : tableStyles.green,
       },
@@ -423,12 +418,12 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='highActivity'>
-            {usedIdentificationEvent?.products?.highActivity?.data?.result === true ? 'Yes 🔥' : 'Not detected'}
+            {usedIdentificationEvent?.products.highActivity?.data?.result === true ? 'Yes 🔥' : 'Not detected'}
           </JsonLink>
         ),
 
         className:
-          usedIdentificationEvent?.products?.highActivity?.data?.result === true ? tableStyles.red : tableStyles.green,
+          usedIdentificationEvent?.products.highActivity?.data?.result === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -610,7 +605,7 @@ export function Playground() {
                 <MyCollapsibleContent>
                   <div className={styles.visitorIdBox}>
                     <p>Your Visitor ID is </p>
-                    <h2 className={styles.visitorId}>{agentResponse?.visitorId}</h2>
+                    <h2 className={styles.visitorId}>{agentResponse.visitorId}</h2>
                   </div>
 
                   <SignalTable data={identificationSignals} />
@@ -662,7 +657,7 @@ export function Playground() {
                   </h4>
                   <CollapsibleJsonViewer
                     dataTestId={TEST_IDS.playground.agentResponseJSON}
-                    json={displayedAgentResponse ?? {}}
+                    json={displayedAgentResponse}
                   />
                 </div>
                 <div>

@@ -102,7 +102,7 @@ const VpnDetectionUseCase: FunctionComponent = () => {
             We are offering purchasing power parity pricing.
           </p>
           {Boolean(activateError) && <Alert severity='error'>{String(activateError)}</Alert>}
-          {activateResponse?.message && !isLoading && (
+          {activateResponse?.message && (
             <div>
               <Alert severity={activateResponse.severity}>{activateResponse.message}</Alert>
             </div>

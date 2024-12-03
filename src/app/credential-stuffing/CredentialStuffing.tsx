@@ -85,7 +85,7 @@ export function CredentialStuffing() {
             <Image src={showPassword ? shownIcon : hiddenIcon} alt={showPassword ? 'Hide password' : 'Show password'} />
           </button>
           {loginNetworkError && <Alert severity='error'>{loginNetworkError.message}</Alert>}
-          {loginResponse?.message && !isLoading && (
+          {loginResponse?.message && (
             <Alert severity={loginResponse.severity} className={styles.alert}>
               {loginResponse.message}
             </Alert>
