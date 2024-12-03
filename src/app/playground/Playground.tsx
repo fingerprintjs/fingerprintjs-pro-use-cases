@@ -691,6 +691,16 @@ export function Playground() {
                   url: 'https://www.youtube.com/watch?v=YTRmWUeQWyY',
                   type: 'Webinar',
                 },
+                {
+                  title: 'Android Playground app',
+                  url: 'https://play.google.com/store/apps/details?id=com.fingerprintjs.android.fpjs_pro_demo',
+                  type: 'Demo app',
+                },
+                {
+                  title: 'iOS Playground app',
+                  url: 'https://apps.apple.com/us/app/fingerprint-pro/id1644105278',
+                  type: 'Demo app',
+                },
               ]}
             />
           </>
