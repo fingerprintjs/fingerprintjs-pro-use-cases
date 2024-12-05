@@ -46,7 +46,7 @@ const useInkeepSettings = (): InkeepSharedSettings => {
       }
     },
   };
-  const modalSettings: InkeepModalSettings = {};
+  const modalSettings: InkeepModalSettings = { defaultView: 'AI_CHAT', forceInitialDefaultView: true };
   const searchSettings: InkeepSearchSettings = {};
   const aiChatSettings: InkeepAIChatSettings = {
     chatSubjectName: 'Fingerprint',
@@ -87,6 +87,7 @@ const useInkeepSettings = (): InkeepSharedSettings => {
       'Fingerprint Identification vs FingerprintJS?',
       'How to proxy requests through my own domain?',
     ],
+    shouldOpenLinksInNewTab: true,
   };
 
   return { baseSettings, aiChatSettings, searchSettings, modalSettings };
