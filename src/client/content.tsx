@@ -624,6 +624,47 @@ export const USE_CASES = {
       },
     ],
   },
+  accountSharing: {
+    title: 'Account Sharing',
+    titleMeta: 'Fingerprint Use Cases | Account Sharing',
+    url: '/account-sharing',
+    articleUrl: 'https://fingerprint.com/blog/account-sharing-fraud-prevention/',
+    iconSvg: SmartSignalsIcon,
+    descriptionMeta:
+      'See in real-time how Fingerprint can prevent account sharing. Try out our live demo to see Fingerprint detect too many devices using a single account at the same time.=',
+    descriptionHomepage: [
+      <p key='1'>Users sharing their accounts can lead to security vulnerabilities and lost revenue.</p>,
+      <p key='2'>
+        Use Fingerprint device intelligence to detect account sharing a prevent too many devices from a using a single
+        account.
+      </p>,
+    ],
+    description: (
+      <>
+        <p>
+          Price-conscious users often share their paid accounts between family, friends or even strangers. This practice
+          results not only in lost potential revenue but also presents a security risk.
+        </p>
+        <p>
+          Use Fingerprint device intelligence to reliably link a specific browser or device to each account login.
+          Detect and stop too many devices using a single account to prevent account sharing.
+        </p>
+      </>
+    ),
+    instructions: [
+      <>Create an account in the form below and log in to our demo streaming service.</>,
+      <>
+        Open a different browser (for example, if you are using Chrome, open Firefox, or open the demo on your phone)
+        and try logging in to the same account.
+      </>,
+      <>You will be blocked from logging in until you have logged out of the account in the first browser.</>,
+      <>
+        This is an example implementation. In a real-world scenario, you could allow users to have up to N devices,
+        restrict devices by a common location, or simply flag accounts suspected of account sharing for a personalized
+        upgrade campaign.
+      </>,
+    ],
+  },
 } as const satisfies Record<string, UseCase>;
 
 export const PLAYGROUND_METADATA: Pick<
