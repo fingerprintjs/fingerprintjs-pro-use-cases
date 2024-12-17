@@ -1,4 +1,4 @@
-form.credentialStuffingForm {
+form.accountSharingForm {
   .alert {
     margin: rem(24px) 0;
   }
@@ -17,6 +17,30 @@ form.credentialStuffingForm {
 
     @include media('<=250px') {
       display: none;
+    }
+  }
+}
+
+.formTitle {
+  margin-bottom: rem(32px);
+  font-size: rem(24px);
+  font-weight: 700;
+  text-align: center;
+}
+
+.switchMode {
+  margin-top: rem(24px);
+  text-align: center;
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: v('orange-gradient');
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
     }
   }
 }
