@@ -17,6 +17,7 @@ import { useMutation } from 'react-query';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { CreateAccountPayload, CreateAccountResponse } from './api/create-account/route';
 import { Alert } from '../../client/components/Alert/Alert';
+import { LoginResponse } from './api/login/route';
 
 const TEST_ID = TEST_IDS.accountSharing;
 
@@ -36,7 +37,7 @@ export function AccountSharing() {
 
   const {
     mutate: createAccount,
-    isLoading,
+    isLoading: isLoadingCreateAccount,
     data: createAccountResponse,
     error: createAccountError,
   } = useMutation<CreateAccountResponse, Error, Omit<CreateAccountPayload, 'requestId' | 'visitorId'>>({
@@ -49,6 +50,26 @@ export function AccountSharing() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password, requestId } satisfies CreateAccountPayload),
+      });
+      return await response.json();
+    },
+  });
+
+  const {
+    mutate: login,
+    isLoading: isLoadingLogin,
+    data: loginResponse,
+    error: loginError,
+  } = useMutation<LoginResponse, Error, Omit<LoginPayload, 'requestId' | 'visitorId'>>({
+    mutationKey: ['login attempt'],
+    mutationFn: async ({ username, password }) => {
+      const { requestId } = await getVisitorData({ ignoreCache: true });
+      const response = await fetch('/account-sharing/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password, requestId } satisfies LoginPayload),
       });
       return await response.json();
     },
@@ -87,20 +108,42 @@ export function AccountSharing() {
           <button className={styles.showHideIcon} type='button' onClick={() => setShowPassword(!showPassword)}>
             <Image src={showPassword ? shownIcon : hiddenIcon} alt={showPassword ? 'Hide password' : 'Show password'} />
           </button>
-          <Button
-            disabled={isLoading}
-            type='submit'
-            data-testid={TEST_ID.login}
-            onClick={() => createAccount({ username, password })}
-          >
-            {isLoading ? 'One moment...' : mode === 'signup' ? 'Sign up' : 'Log in'}
-          </Button>
-          {createAccountError && <Alert severity='error'>{createAccountError.message}</Alert>}
-          {createAccountResponse?.message && (
-            <Alert severity={createAccountResponse.severity} className={styles.alert}>
-              {createAccountResponse.message}
-            </Alert>
+          {mode === 'signup' ? (
+            <>
+              <Button
+                disabled={isLoadingCreateAccount}
+                type='submit'
+                data-testid={TEST_ID.login}
+                onClick={() => createAccount({ username, password })}
+              >
+                {isLoadingCreateAccount ? 'One moment...' : 'Sign up'}
+              </Button>
+              {createAccountError && <Alert severity='error'>{createAccountError.message}</Alert>}
+              {createAccountResponse?.message && (
+                <Alert severity={createAccountResponse.severity} className={styles.alert}>
+                  {createAccountResponse.message}
+                </Alert>
+              )}
+            </>
+          ) : (
+            <>
+              <Button
+                disabled={isLoadingLogin}
+                type='submit'
+                data-testid={TEST_ID.login}
+                onClick={() => login({ username, password })}
+              >
+                {isLoadingLogin ? 'One moment...' : 'Log in'}
+              </Button>
+              {loginError && <Alert severity='error'>{loginError.message}</Alert>}
+              {loginResponse?.message && (
+                <Alert severity={loginResponse.severity} className={styles.alert}>
+                  {loginResponse.message}
+                </Alert>
+              )}
+            </>
           )}
+
           <p className={styles.switchMode}>
             {mode === 'signup' ? (
               <>
