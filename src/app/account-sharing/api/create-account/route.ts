@@ -29,6 +29,14 @@ export async function POST(req: Request): Promise<NextResponse<CreateAccountResp
     return NextResponse.json({ message: 'Visitor ID not found.', severity: 'error' }, { status: 403 });
   }
 
+  const existingUser = await UserDbModel.findOne({ where: { username } });
+  if (existingUser) {
+    return NextResponse.json(
+      { message: 'Username already exists. Log in instead?', severity: 'error' },
+      { status: 403 },
+    );
+  }
+
   UserDbModel.create({
     username,
     passwordHash: hashString(password),
