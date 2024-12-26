@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult } from '../../../../server/checks';
-import { UserDbModel } from '../database';
+import { DeviceDbModel, UserDbModel } from '../database';
 import { hashString } from '../../../../server/server-utils';
+import { getLocationName } from '../../../../utils/locationUtils';
 
 export type CreateAccountPayload = {
   requestId: string;
@@ -37,11 +38,19 @@ export async function POST(req: Request): Promise<NextResponse<CreateAccountResp
     );
   }
 
+  // Create the user
   UserDbModel.create({
     username,
     passwordHash: hashString(password),
   });
 
+  // Set the device as current device
+  await DeviceDbModel.create({
+    visitorId,
+    username,
+    deviceName: fingerprintResult.data.products.identification?.data?.browserDetails.browserName ?? 'the other device',
+    deviceLocation: getLocationName(fingerprintResult.data.products.ipInfo?.data?.v4?.geolocation, false),
+  });
   // If the provided credentials are correct and we recognize the browser, we log the user in
   return NextResponse.json({ message: 'Account created successfully', severity: 'success' });
 }

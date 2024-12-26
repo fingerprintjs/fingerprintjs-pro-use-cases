@@ -8,13 +8,16 @@ export type LoginPayload = {
   username: string;
   password: string;
   requestId: string;
-  force: boolean;
+  force?: boolean;
 };
 
 export type LoginResponse = {
   message: string;
   severity: 'success' | 'error';
-  token?: string;
+  otherDevice?: {
+    deviceName: string;
+    deviceLocation: string;
+  };
 };
 
 export async function POST(req: Request): Promise<NextResponse<LoginResponse>> {
@@ -58,8 +61,12 @@ export async function POST(req: Request): Promise<NextResponse<LoginResponse>> {
             Logging in here will log you out of ${accountDevice.deviceName} in ${accountDevice.deviceLocation}. 
             Log in anyway?`,
         severity: 'error',
+        otherDevice: {
+          deviceName: accountDevice.deviceName,
+          deviceLocation: accountDevice.deviceLocation,
+        },
       },
-      { status: 401 },
+      { status: 409 },
     );
   }
 
@@ -69,7 +76,7 @@ export async function POST(req: Request): Promise<NextResponse<LoginResponse>> {
     visitorId,
     username,
     deviceName: fingerprintResult.data.products.identification?.data?.browserDetails.browserName ?? 'the other device',
-    deviceLocation: getLocationName(fingerprintResult.data.products.ipInfo?.data?.v4?.geolocation),
+    deviceLocation: getLocationName(fingerprintResult.data.products.ipInfo?.data?.v4?.geolocation, false),
   });
 
   return NextResponse.json({ message: 'Login successful', severity: 'success' }, { status: 200 });

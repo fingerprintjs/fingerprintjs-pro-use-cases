@@ -44,3 +44,17 @@ form.accountSharingForm {
     }
   }
 }
+
+.challengeButtons {
+  display: flex;
+  gap: rem(16px);
+
+  // grow buttons to fill space
+  button {
+    flex-grow: 1;
+  }
+}
+
+.backArrow {
+  margin: rem(24px) auto;
+}

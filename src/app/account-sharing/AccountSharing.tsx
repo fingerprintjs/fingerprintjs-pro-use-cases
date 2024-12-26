@@ -17,7 +17,8 @@ import { useMutation } from 'react-query';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { CreateAccountPayload, CreateAccountResponse } from './api/create-account/route';
 import { Alert } from '../../client/components/Alert/Alert';
-import { LoginResponse } from './api/login/route';
+import { LoginPayload, LoginResponse } from './api/login/route';
+import { BackArrow } from '../../client/components/BackArrow/BackArrow';
 
 const TEST_ID = TEST_IDS.accountSharing;
 
@@ -60,6 +61,7 @@ export function AccountSharing() {
     isLoading: isLoadingLogin,
     data: loginResponse,
     error: loginError,
+    reset: resetLoginMutation,
   } = useMutation<LoginResponse, Error, Omit<LoginPayload, 'requestId' | 'visitorId'>>({
     mutationKey: ['login attempt'],
     mutationFn: async ({ username, password }) => {
@@ -75,6 +77,110 @@ export function AccountSharing() {
     },
   });
 
+  const formMarkup = (
+    <>
+      <label>Username</label>
+      <input
+        type='text'
+        name='username'
+        placeholder='Username'
+        defaultValue={username}
+        onChange={(e) => setUsername(e.target.value)}
+        required
+      />
+
+      <label>Password</label>
+      <input
+        name='password'
+        placeholder='Password'
+        className={styles.password}
+        type={showPassword ? 'text' : 'password'}
+        defaultValue={password}
+        data-testid={TEST_ID.password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button className={styles.showHideIcon} type='button' onClick={() => setShowPassword(!showPassword)}>
+        <Image src={showPassword ? shownIcon : hiddenIcon} alt={showPassword ? 'Hide password' : 'Show password'} />
+      </button>
+    </>
+  );
+
+  const signUpMarkup = (
+    <>
+      {formMarkup}
+      <Button
+        disabled={isLoadingCreateAccount}
+        type='submit'
+        data-testid={TEST_ID.login}
+        onClick={() => createAccount({ username, password })}
+      >
+        {isLoadingCreateAccount ? 'One moment...' : 'Sign up'}
+      </Button>
+      {createAccountError && <Alert severity='error'>{createAccountError.message}</Alert>}
+      {createAccountResponse?.message && (
+        <Alert severity={createAccountResponse.severity} className={styles.alert}>
+          {createAccountResponse.message}
+        </Alert>
+      )}
+      <p className={styles.switchMode}>
+        Already have an account? <button onClick={() => setMode('login')}>Log in</button>
+      </p>
+    </>
+  );
+
+  const loginMarkup = (
+    <>
+      {formMarkup}
+      <Button
+        disabled={isLoadingLogin}
+        type='submit'
+        data-testid={TEST_ID.login}
+        onClick={() => login({ username, password })}
+      >
+        {isLoadingLogin ? 'One moment...' : 'Log in'}
+      </Button>
+      {loginError && <Alert severity='error'>{loginError.message}</Alert>}
+      {loginResponse?.message && (
+        <Alert severity={loginResponse.severity} className={styles.alert}>
+          {loginResponse.message}
+        </Alert>
+      )}
+      <p className={styles.switchMode}>
+        Don't have an account yet? <button onClick={() => setMode('signup')}>Sign up first</button>
+      </p>
+    </>
+  );
+
+  const challengeMarkup = (
+    <>
+      {loginResponse?.message && (
+        <>
+          <Alert severity={loginResponse.severity} className={styles.alert}>
+            {loginResponse.message}
+          </Alert>
+          <div className={styles.challengeButtons}>
+            <Button variant='primary' size='medium'>
+              Log in here, log out there
+            </Button>
+            <Button variant='green' size='medium' disabled>
+              Upgrade account
+            </Button>
+          </div>
+          <BackArrow
+            as='button'
+            className={styles.backArrow}
+            onClick={async () => {
+              // Reset login mutation
+              resetLoginMutation();
+              setMode('login');
+            }}
+            label='Go back'
+          />
+        </>
+      )}
+    </>
+  );
+
   return (
     <UseCaseWrapper useCase={USE_CASES.accountSharing}>
       <div className={formStyles.wrapper}>
@@ -85,76 +191,7 @@ export function AccountSharing() {
           }}
           className={classNames(formStyles.useCaseForm, styles.accountSharingForm)}
         >
-          <label>Username</label>
-          <input
-            type='text'
-            name='username'
-            placeholder='Username'
-            defaultValue={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-
-          <label>Password</label>
-          <input
-            name='password'
-            placeholder='Password'
-            className={styles.password}
-            type={showPassword ? 'text' : 'password'}
-            defaultValue={password}
-            data-testid={TEST_ID.password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button className={styles.showHideIcon} type='button' onClick={() => setShowPassword(!showPassword)}>
-            <Image src={showPassword ? shownIcon : hiddenIcon} alt={showPassword ? 'Hide password' : 'Show password'} />
-          </button>
-          {mode === 'signup' ? (
-            <>
-              <Button
-                disabled={isLoadingCreateAccount}
-                type='submit'
-                data-testid={TEST_ID.login}
-                onClick={() => createAccount({ username, password })}
-              >
-                {isLoadingCreateAccount ? 'One moment...' : 'Sign up'}
-              </Button>
-              {createAccountError && <Alert severity='error'>{createAccountError.message}</Alert>}
-              {createAccountResponse?.message && (
-                <Alert severity={createAccountResponse.severity} className={styles.alert}>
-                  {createAccountResponse.message}
-                </Alert>
-              )}
-            </>
-          ) : (
-            <>
-              <Button
-                disabled={isLoadingLogin}
-                type='submit'
-                data-testid={TEST_ID.login}
-                onClick={() => login({ username, password })}
-              >
-                {isLoadingLogin ? 'One moment...' : 'Log in'}
-              </Button>
-              {loginError && <Alert severity='error'>{loginError.message}</Alert>}
-              {loginResponse?.message && (
-                <Alert severity={loginResponse.severity} className={styles.alert}>
-                  {loginResponse.message}
-                </Alert>
-              )}
-            </>
-          )}
-
-          <p className={styles.switchMode}>
-            {mode === 'signup' ? (
-              <>
-                Already have an account? <button onClick={() => setMode('login')}>Log in</button>
-              </>
-            ) : (
-              <>
-                Don't have an account yet? <button onClick={() => setMode('signup')}>Sign up first</button>
-              </>
-            )}
-          </p>
+          {loginResponse?.otherDevice ? challengeMarkup : mode === 'signup' ? signUpMarkup : loginMarkup}
         </form>
       </div>
     </UseCaseWrapper>
