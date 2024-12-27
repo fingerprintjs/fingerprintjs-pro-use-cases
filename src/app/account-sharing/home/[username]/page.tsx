@@ -26,7 +26,7 @@ export default function AccountSharingHome({ params }: { params: { username: str
   });
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.accountSharing}>
+    <UseCaseWrapper useCase={USE_CASES.accountSharing} noInnerPadding={true}>
       <div>Home</div>
       {isLoading && <div>Loading...</div>}
       {data?.message && <div>{data.message}</div>}
