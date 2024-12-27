@@ -20,7 +20,15 @@ export const BackArrow: FunctionComponent<Props> = ({ label, testId, className, 
   );
   return (
     <div className={classNames(styles.buckButton, className)} data-testid={testId}>
-      {props.as === 'Link' && <Link href={props.href}>{content}</Link>}
+      {props.as === 'Link' && (
+        <Link
+          href={props.href}
+          // Do not scroll to top, keep the demo view (demo browser) in view
+          scroll={false}
+        >
+          {content}
+        </Link>
+      )}
       {props.as === 'button' && <div onClick={props.onClick}>{content}</div>}
     </div>
   );
