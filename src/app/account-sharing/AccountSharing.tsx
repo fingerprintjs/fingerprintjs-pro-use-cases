@@ -19,6 +19,7 @@ import { CreateAccountPayload, CreateAccountResponse } from './api/create-accoun
 import { Alert } from '../../client/components/Alert/Alert';
 import { LoginPayload, LoginResponse } from './api/login/route';
 import { BackArrow } from '../../client/components/BackArrow/BackArrow';
+import { useRouter } from 'next/navigation';
 
 const TEST_ID = TEST_IDS.accountSharing;
 
@@ -27,7 +28,9 @@ export function AccountSharing() {
   const [username, setUsername] = useState('user');
   const [password, setPassword] = useState('password');
   const [showPassword, setShowPassword] = useState(false);
-  const [mode, setMode] = useState<'signup' | 'login'>('signup');
+  const [mode, setMode] = useState<'signup' | 'login' | 'home'>('signup');
+
+  const router = useRouter();
 
   const { getData: getVisitorData } = useVisitorData(
     { ignoreCache: true, timeout: FPJS_CLIENT_TIMEOUT },
@@ -54,6 +57,9 @@ export function AccountSharing() {
       });
       return await response.json();
     },
+    onSuccess: () => {
+      router.push(`/account-sharing/home/${username}`, { scroll: false });
+    },
   });
 
   const {
@@ -64,16 +70,19 @@ export function AccountSharing() {
     reset: resetLoginMutation,
   } = useMutation<LoginResponse, Error, Omit<LoginPayload, 'requestId' | 'visitorId'>>({
     mutationKey: ['login attempt'],
-    mutationFn: async ({ username, password }) => {
+    mutationFn: async ({ username, password, force }) => {
       const { requestId } = await getVisitorData({ ignoreCache: true });
       const response = await fetch('/account-sharing/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password, requestId } satisfies LoginPayload),
+        body: JSON.stringify({ username, password, requestId, force } satisfies LoginPayload),
       });
       return await response.json();
+    },
+    onSuccess: () => {
+      router.push(`/account-sharing/home/${username}`, { scroll: false });
     },
   });
 
@@ -159,7 +168,7 @@ export function AccountSharing() {
             {loginResponse.message}
           </Alert>
           <div className={styles.challengeButtons}>
-            <Button variant='primary' size='medium'>
+            <Button variant='primary' size='medium' onClick={() => login({ username, password, force: true })}>
               Log in here, log out there
             </Button>
             <Button variant='green' size='medium' disabled>
