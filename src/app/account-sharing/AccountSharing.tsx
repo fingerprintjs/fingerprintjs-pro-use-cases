@@ -57,8 +57,10 @@ export function AccountSharing() {
       });
       return await response.json();
     },
-    onSuccess: () => {
-      router.push(`/account-sharing/home/${username}`, { scroll: false });
+    onSuccess: (data) => {
+      if (data.severity === 'success') {
+        router.push(`/account-sharing/home/${username}`, { scroll: false });
+      }
     },
   });
 
@@ -81,8 +83,10 @@ export function AccountSharing() {
       });
       return await response.json();
     },
-    onSuccess: () => {
-      router.push(`/account-sharing/home/${username}`, { scroll: false });
+    onSuccess: (data) => {
+      if (data.severity === 'success') {
+        router.push(`/account-sharing/home/${username}`, { scroll: false });
+      }
     },
   });
 
