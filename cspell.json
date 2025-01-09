@@ -4,6 +4,7 @@
     "AIRMAX",
     "ALLSTAR",
     "botd",
+    "Browserless",
     "chargeback",
     "chargebacks",
     "fingerprinthub",
@@ -14,23 +15,33 @@
     "inkeep",
     "Jailbroken",
     "Jumia",
+    "Juro",
     "Korsit",
     "mapbox",
     "notistack",
     "omnichannel",
     "pastable",
-    "subheadline",
-    "unshredded",
-    "usequerystate",
-    "Webstore",
     "ruleset",
     "rulesets",
     "srcset",
+    "subheadline",
+    "Uhlar",
+    "unshredded",
     "urlset",
-    "Juro",
-    "Uhlar"
+    "usequerystate",
+    "Webstore"
   ],
-  "flagWords": ["Cloudfront"],
-  "files": ["**/*.md", "src/**/*.ts", "src/**/*.tsx"],
-  "ignorePaths": ["node_modules", "dist", "src/env.ts"]
+  "flagWords": [
+    "Cloudfront"
+  ],
+  "files": [
+    "**/*.md",
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "ignorePaths": [
+    "node_modules",
+    "dist",
+    "src/env.ts"
+  ]
 }
