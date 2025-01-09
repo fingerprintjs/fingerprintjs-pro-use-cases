@@ -58,3 +58,34 @@ form.accountSharingForm {
 .backArrow {
   margin: rem(24px) auto;
 }
+
+/**
+ * Home page
+ */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: rem(16px);
+
+
+  background-image: linear-gradient(180deg,rgba(0,0,0,.7) 10%,transparent);
+
+  h1 {
+    font-size: rem(36px);
+    font-weight: 700;
+    font-family: Bebas Neue, sans-serif;
+    color: #e50914;
+    text-transform: uppercase;
+    margin: 0;
+    padding: 0;
+  }
+
+  .headerRight {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: rem(16px);
+    color: white;
+  }
+}
