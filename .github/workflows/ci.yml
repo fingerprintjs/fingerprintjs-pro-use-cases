@@ -62,7 +62,7 @@ jobs:
   e2e:
     name: Playwright e2e tests
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
