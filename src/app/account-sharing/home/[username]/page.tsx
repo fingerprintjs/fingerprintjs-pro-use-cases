@@ -17,6 +17,10 @@ export default function AccountSharingHome({ params }: { params: { username: str
   const { data: visitorData, isLoading: isLoadingVisitorData } = useVisitorData({ timeout: FPJS_CLIENT_TIMEOUT });
   const router = useRouter();
 
+  const youHaveBeenLoggedOut = () => {
+    router.push(`/account-sharing?mode=login&justLoggedOut=true`, { scroll: false });
+  };
+
   const { data: loginData, isLoading: isLoadingLoggedIn } = useQuery<IsLoggedInResponse, Error, IsLoggedInResponse>({
     queryKey: ['isLoggedIn', params.username, visitorData?.requestId],
     queryFn: async () => {
@@ -30,17 +34,15 @@ export default function AccountSharingHome({ params }: { params: { username: str
       return await response.json();
     },
     enabled: Boolean(visitorData?.requestId),
-    refetchInterval: 1000,
+    /**
+     * To keep the demo simple, we are using polling to check if the user has been logged out from this device.
+     * In a real-world application, you might opt to use a server-sent events (SSE) or web sockets to get real-time updates.
+     */
+    refetchInterval: 2000,
     onSuccess: (data) => {
       if (data.severity === 'error') {
-        const timeoutId = setTimeout(() => {
-          router.push(`/account-sharing/`, { scroll: false });
-        }, 1000);
-
-        // Clear the timeout if the component unmounts
-        return () => clearTimeout(timeoutId);
+        youHaveBeenLoggedOut();
       }
-      return () => {};
     },
   });
 
@@ -55,14 +57,11 @@ export default function AccountSharingHome({ params }: { params: { username: str
         method: 'POST',
         body: JSON.stringify({ username, requestId: visitorData?.requestId ?? '' }),
       });
-      if (!response.ok) {
-        throw new Error('Failed to logout', { cause: response.json() });
-      }
       return await response.json();
     },
     onSuccess: (data) => {
       if (data.severity === 'success') {
-        router.push(`/account-sharing/`, { scroll: false });
+        youHaveBeenLoggedOut();
       }
     },
   });

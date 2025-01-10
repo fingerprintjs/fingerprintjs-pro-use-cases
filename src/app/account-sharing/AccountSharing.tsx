@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
 import React from 'react';
 import { USE_CASES } from '../../client/content';
@@ -20,6 +20,7 @@ import { Alert } from '../../client/components/Alert/Alert';
 import { LoginPayload, LoginResponse } from './api/login/route';
 import { BackArrow } from '../../client/components/BackArrow/BackArrow';
 import { useRouter } from 'next/navigation';
+import { useQueryState, parseAsBoolean, parseAsStringEnum } from 'next-usequerystate';
 
 const TEST_ID = TEST_IDS.accountSharing;
 
@@ -28,7 +29,16 @@ export function AccountSharing() {
   const [username, setUsername] = useState('user');
   const [password, setPassword] = useState('password');
   const [showPassword, setShowPassword] = useState(false);
-  const [mode, setMode] = useState<'signup' | 'login' | 'home'>('signup');
+  const [mode, setMode] = useQueryState<'signup' | 'login'>(
+    'mode',
+    parseAsStringEnum(['signup', 'login']).withDefault('signup'),
+  );
+
+  const [justLoggedOut, setJustLoggedOut] = useQueryState('justLoggedOut', parseAsBoolean);
+
+  useEffect(() => {
+    console.log('justLoggedOut', justLoggedOut);
+  }, [justLoggedOut]);
 
   const router = useRouter();
 
@@ -143,6 +153,7 @@ export function AccountSharing() {
 
   const loginMarkup = (
     <>
+      {justLoggedOut && <Alert severity='success'>You have been logged out from this device.</Alert>}
       {formMarkup}
       <Button
         disabled={isLoadingLogin}
@@ -159,7 +170,15 @@ export function AccountSharing() {
         </Alert>
       )}
       <p className={styles.switchMode}>
-        Don't have an account yet? <button onClick={() => setMode('signup')}>Sign up first</button>
+        Don't have an account yet?{' '}
+        <button
+          onClick={() => {
+            setMode('signup');
+            setJustLoggedOut(false);
+          }}
+        >
+          Sign up first
+        </button>
       </p>
     </>
   );
