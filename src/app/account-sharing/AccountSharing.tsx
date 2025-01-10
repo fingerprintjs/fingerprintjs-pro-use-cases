@@ -151,7 +151,6 @@ export function AccountSharing() {
 
   const loginMarkup = (
     <>
-      {justLoggedOut && <Alert severity='success'>You have been logged out from this device.</Alert>}
       {formMarkup}
       <Button
         disabled={isLoadingLogin}
@@ -214,6 +213,11 @@ export function AccountSharing() {
   return (
     <UseCaseWrapper useCase={USE_CASES.accountSharing}>
       <div className={formStyles.wrapper}>
+        {mode === 'login' && justLoggedOut && (
+          <Alert severity='success' className={styles.loggedOutAlert}>
+            You have been logged out from this device.
+          </Alert>
+        )}
         <h3 className={styles.formTitle}>{mode === 'signup' ? 'Sign up for FraudFlix' : 'Log in to FraudFlix'}</h3>
         <form
           onSubmit={(e) => {
