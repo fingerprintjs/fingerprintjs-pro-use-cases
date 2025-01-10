@@ -21,13 +21,14 @@ import { LoginPayload, LoginResponse } from './api/login/route';
 import { BackArrow } from '../../client/components/BackArrow/BackArrow';
 import { useRouter } from 'next/navigation';
 import { useQueryState, parseAsBoolean, parseAsStringEnum } from 'next-usequerystate';
+import { defaultUser } from './const';
 
 const TEST_ID = TEST_IDS.accountSharing;
 
 export function AccountSharing() {
   // Default mocked user data
-  const [username, setUsername] = useState('user');
-  const [password, setPassword] = useState('password');
+  const [username, setUsername] = useState(defaultUser.username);
+  const [password, setPassword] = useState(defaultUser.password);
   const [showPassword, setShowPassword] = useState(false);
   const [mode, setMode] = useQueryState<'signup' | 'login'>(
     'mode',
@@ -35,10 +36,6 @@ export function AccountSharing() {
   );
 
   const [justLoggedOut, setJustLoggedOut] = useQueryState('justLoggedOut', parseAsBoolean);
-
-  useEffect(() => {
-    console.log('justLoggedOut', justLoggedOut);
-  }, [justLoggedOut]);
 
   const router = useRouter();
 
@@ -83,6 +80,7 @@ export function AccountSharing() {
   } = useMutation<LoginResponse, Error, Omit<LoginPayload, 'requestId' | 'visitorId'>>({
     mutationKey: ['login attempt'],
     mutationFn: async ({ username, password, force }) => {
+      setJustLoggedOut(false);
       const { requestId } = await getVisitorData({ ignoreCache: true });
       const response = await fetch('/account-sharing/api/login', {
         method: 'POST',
@@ -164,7 +162,7 @@ export function AccountSharing() {
         {isLoadingLogin ? 'One moment...' : 'Log in'}
       </Button>
       {loginError && <Alert severity='error'>{loginError.message}</Alert>}
-      {loginResponse?.message && (
+      {loginResponse?.message && loginResponse.severity !== 'success' && (
         <Alert severity={loginResponse.severity} className={styles.alert}>
           {loginResponse.message}
         </Alert>

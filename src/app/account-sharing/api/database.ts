@@ -1,5 +1,7 @@
 import { Attributes, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import { sequelize } from '../../../server/sequelize';
+import { defaultUser } from '../const';
+import { hashString } from '../../../server/server-utils';
 
 /** Accounts */
 interface AccountAttributes
@@ -19,6 +21,12 @@ export const UserDbModel = sequelize.define<AccountAttributes>('account_sharing_
 });
 
 UserDbModel.sync({ force: false });
+
+// Seed the database with the default user.
+UserDbModel.findOrCreate({
+  where: { username: defaultUser.username },
+  defaults: { username: defaultUser.username, passwordHash: hashString(defaultUser.password) },
+});
 
 export type User = Attributes<AccountAttributes>;
 
