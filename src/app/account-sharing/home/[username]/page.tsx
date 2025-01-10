@@ -14,11 +14,11 @@ import { useRouter } from 'next/navigation';
 
 export default function AccountSharingHome({ params }: { params: { username: string } }) {
   const username = params.username;
-  const { data: visitorData } = useVisitorData({ timeout: FPJS_CLIENT_TIMEOUT });
+  const { data: visitorData, isLoading: isLoadingVisitorData } = useVisitorData({ timeout: FPJS_CLIENT_TIMEOUT });
   const router = useRouter();
 
-  const { data, isLoading } = useQuery<IsLoggedInResponse, Error, IsLoggedInResponse>({
-    queryKey: ['isLoggedIn', params.username],
+  const { data: loginData, isLoading: isLoadingLoggedIn } = useQuery<IsLoggedInResponse, Error, IsLoggedInResponse>({
+    queryKey: ['isLoggedIn', params.username, visitorData?.requestId],
     queryFn: async () => {
       const response = await fetch(`/account-sharing/api/is-logged-in`, {
         method: 'POST',
@@ -30,6 +30,18 @@ export default function AccountSharingHome({ params }: { params: { username: str
       return await response.json();
     },
     enabled: Boolean(visitorData?.requestId),
+    refetchInterval: 1000,
+    onSuccess: (data) => {
+      if (data.severity === 'error') {
+        const timeoutId = setTimeout(() => {
+          router.push(`/account-sharing/`, { scroll: false });
+        }, 1000);
+
+        // Clear the timeout if the component unmounts
+        return () => clearTimeout(timeoutId);
+      }
+      return () => {};
+    },
   });
 
   const {
@@ -71,35 +83,37 @@ export default function AccountSharingHome({ params }: { params: { username: str
         </Alert>
       )}
 
-      {isLoading && <div>Loading...</div>}
-      {data?.message && <div>{data.message}</div>}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-          gap: '1rem',
-          padding: '2rem',
-        }}
-      >
-        {[...Array(12)].map((_, i) => (
-          <div
-            key={i}
-            style={{
-              aspectRatio: '16/9',
-              backgroundColor: '#2F2F2F',
-              borderRadius: '4px',
-              transition: 'transform 0.2s',
-              cursor: 'pointer',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.05)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1)';
-            }}
-          />
-        ))}
-      </div>
+      {isLoadingVisitorData || (isLoadingLoggedIn && <div>Loading...</div>)}
+      {loginData?.message && <div>{loginData.message}</div>}
+      {loginData?.severity === 'success' && (
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+            gap: '1rem',
+            padding: '2rem',
+          }}
+        >
+          {[...Array(12)].map((_, i) => (
+            <div
+              key={i}
+              style={{
+                aspectRatio: '16/9',
+                backgroundColor: '#2F2F2F',
+                borderRadius: '4px',
+                transition: 'transform 0.2s',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.05)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+            />
+          ))}
+        </div>
+      )}
     </UseCaseWrapper>
   );
 }
