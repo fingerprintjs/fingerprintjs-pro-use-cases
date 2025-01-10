@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
 import React from 'react';
 import { USE_CASES } from '../../client/content';
@@ -20,7 +20,7 @@ import { Alert } from '../../client/components/Alert/Alert';
 import { LoginPayload, LoginResponse } from './api/login/route';
 import { BackArrow } from '../../client/components/BackArrow/BackArrow';
 import { useRouter } from 'next/navigation';
-import { useQueryState, parseAsBoolean, parseAsStringEnum } from 'next-usequerystate';
+import { useQueryState, parseAsBoolean, parseAsStringEnum, parseAsString } from 'next-usequerystate';
 import { defaultUser } from './const';
 
 const TEST_ID = TEST_IDS.accountSharing;
@@ -36,6 +36,7 @@ export function AccountSharing() {
   );
 
   const [justLoggedOut, setJustLoggedOut] = useQueryState('justLoggedOut', parseAsBoolean);
+  const [otherDevice, setOtherDevice] = useQueryState('otherDevice', parseAsString);
 
   const router = useRouter();
 
@@ -80,7 +81,8 @@ export function AccountSharing() {
   } = useMutation<LoginResponse, Error, Omit<LoginPayload, 'requestId' | 'visitorId'>>({
     mutationKey: ['login attempt'],
     mutationFn: async ({ username, password, force }) => {
-      setJustLoggedOut(false);
+      setJustLoggedOut(null);
+      setOtherDevice(null);
       const { requestId } = await getVisitorData({ ignoreCache: true });
       const response = await fetch('/account-sharing/api/login', {
         method: 'POST',
@@ -171,7 +173,7 @@ export function AccountSharing() {
         <button
           onClick={() => {
             setMode('signup');
-            setJustLoggedOut(false);
+            setJustLoggedOut(null);
           }}
         >
           Sign up first
@@ -210,14 +212,37 @@ export function AccountSharing() {
     </>
   );
 
+  let loggedOutAlert = null;
+  if (mode === 'login' && justLoggedOut) {
+    if (otherDevice) {
+      loggedOutAlert = (
+        <Alert
+          severity='warning'
+          className={styles.loggedOutAlert}
+          onClose={() => {
+            setJustLoggedOut(null);
+            setOtherDevice(null);
+          }}
+        >
+          <div className={styles.loggedOutAlertTitle}>You have been logged out</div>
+          You just logged in on {otherDevice}. You current plan allows you to use FraudFlix on one device at a time.
+          Consider <span style={{ textDecoration: 'underline' }}> upgrading your plan</span> to enjoy fraud content on
+          multiple devices.
+        </Alert>
+      );
+    } else {
+      loggedOutAlert = (
+        <Alert severity='success' className={styles.loggedOutAlert} onClose={() => setJustLoggedOut(null)}>
+          You have logged out.
+        </Alert>
+      );
+    }
+  }
+
   return (
     <UseCaseWrapper useCase={USE_CASES.accountSharing}>
       <div className={formStyles.wrapper}>
-        {mode === 'login' && justLoggedOut && (
-          <Alert severity='success' className={styles.loggedOutAlert}>
-            You have been logged out from this device.
-          </Alert>
-        )}
+        {loggedOutAlert}
         <h3 className={styles.formTitle}>{mode === 'signup' ? 'Sign up for FraudFlix' : 'Log in to FraudFlix'}</h3>
         <form
           onSubmit={(e) => {

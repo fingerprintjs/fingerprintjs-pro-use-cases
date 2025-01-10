@@ -17,8 +17,14 @@ export default function AccountSharingHome({ params }: { params: { username: str
   const { data: visitorData, isLoading: isLoadingVisitorData } = useVisitorData({ timeout: FPJS_CLIENT_TIMEOUT });
   const router = useRouter();
 
-  const youHaveBeenLoggedOut = () => {
-    router.push(`/account-sharing?mode=login&justLoggedOut=true`, { scroll: false });
+  const youHaveBeenLoggedOut = (otherDevice?: string) => {
+    const searchParams = new URLSearchParams();
+    searchParams.set('mode', 'login');
+    searchParams.set('justLoggedOut', 'true');
+    if (otherDevice) {
+      searchParams.set('otherDevice', otherDevice);
+    }
+    router.push(`/account-sharing?${searchParams.toString()}`, { scroll: false });
   };
 
   const { data: loginData, isLoading: isLoadingLoggedIn } = useQuery<IsLoggedInResponse, Error, IsLoggedInResponse>({
@@ -41,7 +47,9 @@ export default function AccountSharingHome({ params }: { params: { username: str
     refetchInterval: 2000,
     onSuccess: (data) => {
       if (data.severity === 'error') {
-        youHaveBeenLoggedOut();
+        youHaveBeenLoggedOut(
+          data.otherDevice ? `${data.otherDevice.deviceName} (${data.otherDevice.deviceLocation})` : undefined,
+        );
       }
     },
   });
@@ -76,7 +84,7 @@ export default function AccountSharingHome({ params }: { params: { username: str
         </div>
       </div>
       {logoutError && <div>{logoutError.message}</div>}
-      {logoutData?.message && (
+      {logoutData?.message && logoutData.severity !== 'success' && (
         <Alert severity={logoutData.severity} className={styles.alert}>
           {logoutData.message}
         </Alert>

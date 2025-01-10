@@ -10,6 +10,10 @@ export type IsLoggedInPayload = {
 export type IsLoggedInResponse = {
   message: string;
   severity: 'success' | 'error';
+  otherDevice?: {
+    deviceName: string;
+    deviceLocation: string;
+  };
 };
 
 export async function POST(req: Request): Promise<NextResponse<IsLoggedInResponse>> {
@@ -35,7 +39,20 @@ export async function POST(req: Request): Promise<NextResponse<IsLoggedInRespons
 
   const isLoggedIn = await DeviceDbModel.findOne({ where: { username, visitorId } });
   if (!isLoggedIn) {
-    return NextResponse.json({ message: 'You have been logged out', severity: 'error' }, { status: 401 });
+    const otherDevice = await DeviceDbModel.findOne({ where: { username } });
+    return NextResponse.json(
+      {
+        message: 'You have been logged out',
+        severity: 'error',
+        otherDevice: otherDevice
+          ? {
+              deviceName: otherDevice.deviceName,
+              deviceLocation: otherDevice.deviceLocation,
+            }
+          : undefined,
+      },
+      { status: 401 },
+    );
   }
 
   // If the provided credentials are correct and we recognize the browser, we log the user in

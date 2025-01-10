@@ -22,7 +22,8 @@ form.accountSharingForm {
 }
 
 .formTitle {
-  margin-bottom: rem(32px);
+  margin-top: rem(24px);
+  margin-bottom: rem(24px);
   font-size: rem(24px);
   font-weight: 700;
   text-align: center;
@@ -92,4 +93,9 @@ form.accountSharingForm {
 
 .loggedOutAlert {
   margin-bottom: rem(24px);
+}
+
+.loggedOutAlertTitle {
+  font-weight: 700;
+  margin-bottom: rem(10px);
 }
