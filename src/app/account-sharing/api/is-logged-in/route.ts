@@ -56,5 +56,5 @@ export async function POST(req: Request): Promise<NextResponse<IsLoggedInRespons
   }
 
   // If the provided credentials are correct and we recognize the browser, we log the user in
-  return NextResponse.json({ message: 'User is logged in', severity: 'success' });
+  return NextResponse.json({ message: `You are logged in as '${username}'`, severity: 'success' });
 }
