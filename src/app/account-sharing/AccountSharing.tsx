@@ -37,6 +37,8 @@ export function AccountSharing() {
 
   const [justLoggedOut, setJustLoggedOut] = useQueryState('justLoggedOut', parseAsBoolean);
   const [otherDevice, setOtherDevice] = useQueryState('otherDevice', parseAsString);
+  // We need to store the current login response to be able to keep displaying it while new request is in progr
+  const [currentLoginResponse, setCurrentLoginResponse] = useState<LoginResponse | null>(null);
 
   const router = useRouter();
 
@@ -94,6 +96,7 @@ export function AccountSharing() {
       return await response.json();
     },
     onSuccess: (data) => {
+      setCurrentLoginResponse(data);
       if (data.severity === 'success') {
         router.push(`/account-sharing/home/${username}`, { scroll: false });
       }
@@ -184,14 +187,14 @@ export function AccountSharing() {
 
   const challengeMarkup = (
     <>
-      {loginResponse?.message && (
+      {currentLoginResponse?.message && (
         <>
-          <Alert severity={loginResponse.severity} className={styles.alert}>
-            {loginResponse.message}
+          <Alert severity={currentLoginResponse.severity} className={styles.alert}>
+            {currentLoginResponse.message}
           </Alert>
           <div className={styles.challengeButtons}>
             <Button variant='primary' size='medium' onClick={() => login({ username, password, force: true })}>
-              Log in here, log out there
+              {isLoadingLogin ? 'One moment...' : 'Log in here, log out there'}
             </Button>
             <Button variant='green' size='medium' disabled>
               Upgrade account
@@ -203,6 +206,7 @@ export function AccountSharing() {
             onClick={async () => {
               // Reset login mutation
               resetLoginMutation();
+              setCurrentLoginResponse(null);
               setMode('login');
             }}
             label='Go back'
@@ -250,7 +254,7 @@ export function AccountSharing() {
           }}
           className={classNames(formStyles.useCaseForm, styles.accountSharingForm)}
         >
-          {loginResponse?.otherDevice ? challengeMarkup : mode === 'signup' ? signUpMarkup : loginMarkup}
+          {currentLoginResponse?.otherDevice ? challengeMarkup : mode === 'signup' ? signUpMarkup : loginMarkup}
         </form>
       </div>
     </UseCaseWrapper>
