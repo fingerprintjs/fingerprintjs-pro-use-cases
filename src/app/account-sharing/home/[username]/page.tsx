@@ -97,7 +97,7 @@ export default function AccountSharingHome({ params }: { params: { username: str
         <h1>FraudFlix</h1>
         <div className={styles.headerRight}>
           <Button size='medium' onClick={() => logout()}>
-            {isLoadingLogout ? 'Logging out...' : 'Logout'}
+            {isLoadingLogout || logoutData?.severity === 'success' ? 'Logging out...' : 'Logout'}
           </Button>
         </div>
       </div>

@@ -163,7 +163,7 @@ export function AccountSharing() {
         data-testid={TEST_ID.login}
         onClick={() => login({ username, password })}
       >
-        {isLoadingLogin ? 'One moment...' : 'Log in'}
+        {isLoadingLogin || loginResponse?.severity === 'success' ? 'One moment...' : 'Log in'}
       </Button>
       {loginError && <Alert severity='error'>{loginError.message}</Alert>}
       {loginResponse?.message && loginResponse.severity !== 'success' && (
@@ -194,7 +194,7 @@ export function AccountSharing() {
           </Alert>
           <div className={styles.challengeButtons}>
             <Button variant='primary' size='medium' onClick={() => login({ username, password, force: true })}>
-              {isLoadingLogin ? 'One moment...' : 'Log in here, log out there'}
+              {isLoadingLogin || loginResponse?.severity === 'success' ? 'One moment...' : 'Log in here, log out there'}
             </Button>
             <Button variant='green' size='medium' disabled>
               Upgrade account
