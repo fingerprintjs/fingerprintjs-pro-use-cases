@@ -12,14 +12,27 @@ import { LogoutResponse } from '../../api/logout/route';
 import { Alert } from '../../../../client/components/Alert/Alert';
 import { useRouter } from 'next/navigation';
 import { FunctionComponent } from 'react';
+import Link from 'next/link';
 
-const CardRow: FunctionComponent<{ cards: string[] }> = ({ cards }) => {
+type Card = {
+  title: string;
+  backgroundImage: string;
+  url?: string;
+};
+
+const CardRow: FunctionComponent<{ cards: Card[] }> = ({ cards }) => {
   return (
     <div className={styles.cardsRow}>
       {cards.map((card, index) => (
-        <div key={index} className={styles.card}>
-          {card}
-        </div>
+        <Link
+          href={card.url ?? ''}
+          key={index}
+          className={styles.card}
+          target='_blank'
+          style={{ backgroundImage: `url(${card.backgroundImage})` }}
+        >
+          {card.title}
+        </Link>
       ))}
     </div>
   );
@@ -130,15 +143,40 @@ export default function AccountSharingHome({ params }: { params: { username: str
           <div className={styles.homeContent}>
             <h3>See what's next in Fraud</h3>
           </div>
-          <CardRow cards={['Card 1', 'Card 2', 'Card 3', 'Card 4', 'Card 5', 'Card 6', 'Card 7', 'Card 8']} />
+          <CardRow
+            cards={[
+              {
+                title: `Reveal user's true intentions`,
+                backgroundImage: '/account-sharing/img/airport.jpg',
+                url: 'https://www.youtube.com/watch?v=8TJxUGlpTDE',
+              },
+              { title: 'Card 2', backgroundImage: '/account-sharing/img/airport.jpg' },
+              { title: 'Card 3', backgroundImage: '/account-sharing/img/airport.jpg' },
+              { title: 'Card 4', backgroundImage: '/account-sharing/img/airport.jpg' },
+            ]}
+          />
           <div className={styles.homeContent}>
             <h3>Webinars</h3>
           </div>
-          <CardRow cards={['Card 1', 'Card 2', 'Card 3', 'Card 4', 'Card 5', 'Card 6', 'Card 7', 'Card 8']} />
+          <CardRow
+            cards={[
+              { title: 'Card 1', backgroundImage: '/account-sharing/img/airport.jpg' },
+              { title: 'Card 2', backgroundImage: '/account-sharing/img/airport.jpg' },
+              { title: 'Card 3', backgroundImage: '/account-sharing/img/airport.jpg' },
+              { title: 'Card 4', backgroundImage: '/account-sharing/img/airport.jpg' },
+            ]}
+          />{' '}
           <div className={styles.homeContent}>
             <h3>Podcasts</h3>
           </div>
-          <CardRow cards={['Card 1', 'Card 2', 'Card 3', 'Card 4', 'Card 5', 'Card 6', 'Card 7', 'Card 8']} />
+          <CardRow
+            cards={[
+              { title: 'Card 1', backgroundImage: '/account-sharing/img/airport.jpg' },
+              { title: 'Card 2', backgroundImage: '/account-sharing/img/airport.jpg' },
+              { title: 'Card 3', backgroundImage: '/account-sharing/img/airport.jpg' },
+              { title: 'Card 4', backgroundImage: '/account-sharing/img/airport.jpg' },
+            ]}
+          />
         </>
       )}
     </UseCaseWrapper>
