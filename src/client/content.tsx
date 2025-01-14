@@ -186,9 +186,13 @@ export const USE_CASES = {
     instructions: [
       <>Create an account in the form below and log in to our demo streaming service.</>,
       <>
-        Open a different browser (for example, if you are using Chrome, open Firefox, or open the demo on your phone)
-        and try logging in with the same username and password.
+        Open{' '}
+        <Link href={'/account-sharing?mode=login'} target='_blank'>
+          this page
+        </Link>{' '}
+        in a different browser (for example, if you are using Chrome, open Firefox, or open the demo on your phone).
       </>,
+      <>Try logging in with the same username and password.</>,
       <>You will be blocked from logging in and forced to log out in the original browser first.</>,
     ],
     instructionsNote: `This is an example implementation. In a real-world scenario, you could allow users to use up to N devices
