@@ -141,18 +141,40 @@ export default function AccountSharingHome({ params }: { params: { username: str
       {loggedInData?.severity === 'success' && (
         <>
           <div className={styles.homeContent}>
-            <h3>See what's next in Fraud</h3>
+            <h3>Shorts</h3>
           </div>
           <CardRow
             cards={[
               {
-                title: `Reveal user's true intentions`,
+                title: `A Tale of a False Positive Flamingo`,
                 backgroundImage: '/account-sharing/img/airport.jpg',
                 url: 'https://www.youtube.com/watch?v=8TJxUGlpTDE',
               },
-              { title: 'Card 2', backgroundImage: '/account-sharing/img/airport.jpg' },
-              { title: 'Card 3', backgroundImage: '/account-sharing/img/airport.jpg' },
-              { title: 'Card 4', backgroundImage: '/account-sharing/img/airport.jpg' },
+              {
+                title: 'A Fraud Sommelier',
+                backgroundImage: '/account-sharing/img/sommelier.jpg',
+                url: 'https://www.youtube.com/watch?v=mll2Bm5Qi2A',
+              },
+              {
+                title: 'Catfished',
+                backgroundImage: '/account-sharing/img/catfished.jpg',
+                url: 'https://www.youtube.com/watch?v=oJolDByP9II',
+              },
+              {
+                title: 'Introduction to Fingerprint',
+                url: 'https://www.youtube.com/watch?v=cV2KbL9ALPw',
+                backgroundImage: '/account-sharing/img/keshia-intro.jpg',
+              },
+              {
+                title: 'Device Reputation Network for Android',
+                url: 'https://www.youtube.com/watch?v=rU_yd8MrZNY',
+                backgroundImage: '/account-sharing/img/drn.jpg',
+              },
+              {
+                title: 'Protect Android apps from cloning',
+                url: 'https://www.youtube.com/watch?v=9ORRUQK4Kgk',
+                backgroundImage: '/account-sharing/img/android-cloning.jpg',
+              },
             ]}
           />
           <div className={styles.homeContent}>
@@ -160,10 +182,36 @@ export default function AccountSharingHome({ params }: { params: { username: str
           </div>
           <CardRow
             cards={[
-              { title: 'Card 1', backgroundImage: '/account-sharing/img/airport.jpg' },
-              { title: 'Card 2', backgroundImage: '/account-sharing/img/airport.jpg' },
-              { title: 'Card 3', backgroundImage: '/account-sharing/img/airport.jpg' },
-              { title: 'Card 4', backgroundImage: '/account-sharing/img/airport.jpg' },
+              {
+                title: 'Fingerprint  101',
+                url: 'https://www.youtube.com/watch?v=YTRmWUeQWyY&list=PLjhozvP52rLMYFiBLs6wm6E1b2TSbk0yt',
+                backgroundImage: '/account-sharing/img/back-to-school.jpg',
+              },
+              {
+                title: 'Smart signals introduction',
+                url: 'https://www.youtube.com/watch?v=sf8KM8UgtYY',
+                backgroundImage: '/account-sharing/img/smart-signals.jpg',
+              },
+              {
+                title: 'Device Intelligence for Fintech',
+                url: 'https://www.youtube.com/watch?v=9UrNabnA9uY',
+                backgroundImage: '/account-sharing/img/fintech.jpg',
+              },
+              {
+                title: 'Why accuracy is everything',
+                url: 'https://www.youtube.com/watch?v=rTBXQpsioUo&t',
+                backgroundImage: '/account-sharing/img/accuracy.jpg',
+              },
+              {
+                title: 'Apple and Google privacy changes',
+                url: 'https://www.youtube.com/watch?v=3ebVmdnVw_E',
+                backgroundImage: '/account-sharing/img/privacy.jpg',
+              },
+              {
+                title: 'State of Payment Fraud',
+                url: 'https://www.youtube.com/watch?v=cV2KbL9ALPw',
+                backgroundImage: '/account-sharing/img/payment-fraud.jpg',
+              },
             ]}
           />{' '}
           <div className={styles.homeContent}>
@@ -171,7 +219,11 @@ export default function AccountSharingHome({ params }: { params: { username: str
           </div>
           <CardRow
             cards={[
-              { title: 'Card 1', backgroundImage: '/account-sharing/img/airport.jpg' },
+              {
+                title: 'Dan Pinto on State of Identity podcast',
+                url: 'https://liminal.co/podcast/fingerprintjs-fraud-at-the-source/',
+                backgroundImage: '/account-sharing/img/dan-pinto.jpg',
+              },
               { title: 'Card 2', backgroundImage: '/account-sharing/img/airport.jpg' },
               { title: 'Card 3', backgroundImage: '/account-sharing/img/airport.jpg' },
               { title: 'Card 4', backgroundImage: '/account-sharing/img/airport.jpg' },
