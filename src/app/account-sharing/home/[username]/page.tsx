@@ -251,6 +251,7 @@ export default function AccountSharingHome({ params }: { params: { username: str
               },
             ]}
           />
+          <div className={styles.spacer} />
         </>
       )}
     </UseCaseWrapper>
