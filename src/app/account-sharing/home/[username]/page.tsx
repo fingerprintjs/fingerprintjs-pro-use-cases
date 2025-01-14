@@ -31,7 +31,7 @@ const CardRow: FunctionComponent<{ cards: Card[] }> = ({ cards }) => {
           target='_blank'
           style={{ backgroundImage: `url(${card.backgroundImage})` }}
         >
-          {card.title}
+          <span className={styles.cardTitle}>{card.title}</span>
         </Link>
       ))}
     </div>
@@ -220,13 +220,35 @@ export default function AccountSharingHome({ params }: { params: { username: str
           <CardRow
             cards={[
               {
-                title: 'Dan Pinto on State of Identity podcast',
+                title: 'CEO Dan Pinto on State of Identity podcast',
                 url: 'https://liminal.co/podcast/fingerprintjs-fraud-at-the-source/',
-                backgroundImage: '/account-sharing/img/dan-pinto.jpg',
+                backgroundImage: '/account-sharing/img/state-of-identity-podcast.webp',
               },
-              { title: 'Card 2', backgroundImage: '/account-sharing/img/airport.jpg' },
-              { title: 'Card 3', backgroundImage: '/account-sharing/img/airport.jpg' },
-              { title: 'Card 4', backgroundImage: '/account-sharing/img/airport.jpg' },
+              {
+                title: 'CTO Valentin Vasilyev on Modern CTO podcast',
+                url: 'https://moderncto.io/valentin-vasilyev/',
+                backgroundImage: '/account-sharing/img/modern-cto.jpg',
+              },
+              {
+                title: 'CEO Dan Pinto on PayPod',
+                url: 'https://open.spotify.com/episode/7uUMq1GYFfKgiZ3WiX21Lc',
+                backgroundImage: '/account-sharing/img/paypod.webp',
+              },
+              {
+                title: 'CTO Valentin Vasilyev on Code Story podcast',
+                url: 'https://codestory.co/podcast/bonus-valentin-vasilyev-fingerprint-com-device-identity/',
+                backgroundImage: '/account-sharing/img/code-story.webp',
+              },
+              {
+                title: 'CEO Dan Pinto on Leaders in Payments podcast',
+                url: 'https://www.youtube.com/watch?v=5xSmfi_mMyM',
+                backgroundImage: '/account-sharing/img/leaders-in-payments.webp',
+              },
+              {
+                title: 'CTO Valentin Vasilyev on Journey Into Fraud Prevention',
+                url: 'https://podcasts.apple.com/gb/podcast/a-journey-into-fraud-prevention/id1696704281',
+                backgroundImage: '/account-sharing/img/journey-into-fraud-prevention.webp',
+              },
             ]}
           />
         </>
