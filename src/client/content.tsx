@@ -655,14 +655,34 @@ export const USE_CASES = {
       <>Create an account in the form below and log in to our demo streaming service.</>,
       <>
         Open a different browser (for example, if you are using Chrome, open Firefox, or open the demo on your phone)
-        and try logging in to the same account.
+        and try logging in with the same username and password.
       </>,
-      <>You will be blocked from logging in until you have logged out of the account in the first browser.</>,
-      <>
-        This is an example implementation. In a real-world scenario, you could allow users to have up to N devices,
-        restrict devices by a common location, or simply flag accounts suspected of account sharing for a personalized
-        upgrade campaign.
-      </>,
+      <>You will be blocked from logging in and forced to log out in the original browser first.</>,
+    ],
+    instructionsNote: `This is an example implementation. In a real-world scenario, you could allow users to use up to N devices
+        simultaneously, restrict devices by a common location, or simply flag accounts suspected of account sharing for
+        a personalized upgrade campaign.`,
+    moreResources: [
+      {
+        type: 'Use case tutorial',
+        title: 'Account Sharing Prevention Guide',
+        url: 'https://fingerprint.com/blog/increase-revenue-identifying-preventing-account-sharing/',
+      },
+      {
+        type: 'Case study',
+        title: 'How Chegg Solved Account Sharing',
+        url: 'https://fingerprint.com/case-studies/chegg-stops-account-sharing/',
+      },
+      {
+        type: 'Article',
+        title: 'Account sharing lessons from Netflix and Amazon',
+        url: 'https://fingerprint.com/blog/ultimate-account-sharing-prevention-guide-netflix-amazon/',
+      },
+      {
+        type: 'Article',
+        title: 'Driver account sharing fraud',
+        url: 'https://fingerprint.com/blog/preventing-account-security-fraud-in-food-delivery-services/#driver-account-sharing-fraud-puts-customers-at-risk',
+      },
     ],
   },
 } as const satisfies Record<string, UseCase>;
