@@ -11,18 +11,22 @@ import styles from '../../accountSharing.module.scss';
 import { LogoutResponse } from '../../api/logout/route';
 import { Alert } from '../../../../client/components/Alert/Alert';
 import { useRouter } from 'next/navigation';
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState, useRef } from 'react';
 import Link from 'next/link';
-
+import { GoChevronLeft } from 'react-icons/go';
+import { GoChevronRight } from 'react-icons/go';
 type Card = {
   title: string;
   backgroundImage: string;
   url?: string;
 };
 
-const CardRow: FunctionComponent<{ cards: Card[] }> = ({ cards }) => {
+const CardRow: FunctionComponent<{ cards: Card[]; scrollContainerRef?: React.RefObject<HTMLDivElement> }> = ({
+  cards,
+  scrollContainerRef,
+}) => {
   return (
-    <div className={styles.cardsRow}>
+    <div className={styles.cardsRow} ref={scrollContainerRef}>
       {cards.map((card, index) => (
         <Link
           href={card.url ?? ''}
@@ -35,6 +39,39 @@ const CardRow: FunctionComponent<{ cards: Card[] }> = ({ cards }) => {
         </Link>
       ))}
     </div>
+  );
+};
+
+const ContentCategory: FunctionComponent<{ title: string; cards: Card[] }> = ({ title, cards }) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const scrollAmount = 266;
+    const newScrollPosition = container.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
+
+    container.scrollTo({
+      left: newScrollPosition,
+      behavior: 'smooth',
+    });
+  };
+  return (
+    <>
+      <div className={styles.homeContent}>
+        <h3 className={styles.categoryTitle}>
+          <div>{title}</div>
+          <button className={styles.scrollButton} onClick={() => scroll('left')}>
+            <GoChevronLeft />
+          </button>
+          <button className={styles.scrollButton} onClick={() => scroll('right')}>
+            <GoChevronRight />
+          </button>
+        </h3>
+      </div>
+      <CardRow cards={cards} scrollContainerRef={scrollContainerRef} />
+    </>
   );
 };
 
@@ -148,10 +185,8 @@ export default function AccountSharingHome({ params }: { params: { username: str
         </div>
         {loggedInData?.severity === 'success' && (
           <>
-            <div className={styles.homeContent}>
-              <h3>Shorts</h3>
-            </div>
-            <CardRow
+            <ContentCategory
+              title='Shorts'
               cards={[
                 {
                   title: `A Tale of a False Positive Flamingo`,
@@ -185,10 +220,8 @@ export default function AccountSharingHome({ params }: { params: { username: str
                 },
               ]}
             />
-            <div className={styles.homeContent}>
-              <h3>Webinars</h3>
-            </div>
-            <CardRow
+            <ContentCategory
+              title='Webinars'
               cards={[
                 {
                   title: 'Fingerprint  101',
@@ -221,11 +254,9 @@ export default function AccountSharingHome({ params }: { params: { username: str
                   backgroundImage: '/account-sharing/img/payment-fraud.jpg',
                 },
               ]}
-            />{' '}
-            <div className={styles.homeContent}>
-              <h3>Podcasts</h3>
-            </div>
-            <CardRow
+            />
+            <ContentCategory
+              title='Podcasts'
               cards={[
                 {
                   title: 'CEO Dan Pinto on State of Identity podcast',

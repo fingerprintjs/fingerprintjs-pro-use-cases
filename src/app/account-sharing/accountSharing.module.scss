@@ -142,15 +142,33 @@ form.accountSharingForm {
 
 }
 
+.categoryTitle {
+  display: flex;
+  align-items: center;
+
+  .scrollButton {
+    cursor: pointer;
+    display: flex;
+    align-items: last baseline;
+    padding: rem(2px);
+
+    &:hover {
+      background-color: v('gray-box-stroke');
+    }
+
+    &:first-of-type {
+      margin-left: 4px;
+    }
+  } 
+}
+
 .cardsRow {
   --gap: 8px;
-
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
   gap: var(--gap);
   scroll-padding: 0 20px;
-  
   padding-top: rem(4px);
   padding-bottom: rem(4px);
 
@@ -165,8 +183,8 @@ form.accountSharingForm {
     display: none;
   }
 
-  /* Hide scrollbar for IE, Edge and Firefox */
-  & {
+   /* Hide scrollbar for IE, Edge and Firefox */
+   & {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
