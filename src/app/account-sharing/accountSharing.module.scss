@@ -89,6 +89,8 @@ form.accountSharingForm {
   @include media('<=phone') {
     --horizontal-padding: 16px;
   }
+
+  min-height: 90vh;
 }
 
 .header {
@@ -121,6 +123,11 @@ form.accountSharingForm {
     align-items: flex-start;
     gap: rem(16px);
   }
+}
+
+.loading {
+  margin-top: rem(8px);
+  text-align: center;
 }
 
 .homeContent {

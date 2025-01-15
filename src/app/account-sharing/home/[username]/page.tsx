@@ -11,7 +11,7 @@ import styles from '../../accountSharing.module.scss';
 import { LogoutResponse } from '../../api/logout/route';
 import { Alert } from '../../../../client/components/Alert/Alert';
 import { useRouter } from 'next/navigation';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 import Link from 'next/link';
 
 type Card = {
@@ -41,6 +41,8 @@ const CardRow: FunctionComponent<{ cards: Card[] }> = ({ cards }) => {
 export default function AccountSharingHome({ params }: { params: { username: string } }) {
   const username = params.username;
   const { data: visitorData, isLoading: isLoadingVisitorData } = useVisitorData({ timeout: FPJS_CLIENT_TIMEOUT });
+  // To display the loading state even before Fingerprint JavaScript agent is loaded
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const router = useRouter();
 
   const {
@@ -71,6 +73,9 @@ export default function AccountSharingHome({ params }: { params: { username: str
           data.otherDevice ? `${data.otherDevice.deviceName} (${data.otherDevice.deviceLocation})` : undefined,
         );
       }
+    },
+    onSettled: () => {
+      setIsInitialLoading(false);
     },
   });
 
@@ -127,7 +132,9 @@ export default function AccountSharingHome({ params }: { params: { username: str
               {logoutData.message}
             </Alert>
           )}
-          {isLoadingVisitorData || (isLoadingLoggedIn && <div>Loading...</div>)}
+          {isInitialLoading || isLoadingVisitorData || isLoadingLoggedIn ? (
+            <div className={styles.loading}>Loading your content library...</div>
+          ) : null}
           {loggedInError && (
             <Alert severity='error' className={styles.alert}>
               {loggedInError.message}
