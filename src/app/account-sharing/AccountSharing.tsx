@@ -22,14 +22,15 @@ import { BackArrow } from '../../client/components/BackArrow/BackArrow';
 import { useRouter } from 'next/navigation';
 import { useQueryState, parseAsBoolean, parseAsStringEnum, parseAsString } from 'next-usequerystate';
 import { defaultUser } from './const';
+import { useSessionStorage } from 'react-use';
 
 const TEST_ID = TEST_IDS.accountSharing;
 
 export function AccountSharing() {
   // Default mocked user data
-  const [username, setUsername] = useState(defaultUser.username);
-  const [password, setPassword] = useState(defaultUser.password);
-  const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useSessionStorage('username', defaultUser.username);
+  const [password, setPassword] = useSessionStorage('password', defaultUser.password);
+  const [showPassword, setShowPassword] = useSessionStorage('showPassword', false);
   const [mode, setMode] = useQueryState<'signup' | 'login'>(
     'mode',
     parseAsStringEnum(['signup', 'login']).withDefault('signup'),
