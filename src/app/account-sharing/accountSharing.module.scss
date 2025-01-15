@@ -27,6 +27,10 @@ form.accountSharingForm {
   font-size: rem(24px);
   font-weight: 700;
   text-align: center;
+
+  @include media('<=phone') {
+    font-size: rem(20px);
+  }
 }
 
 .switchMode {
@@ -44,11 +48,16 @@ form.accountSharingForm {
       text-decoration: none;
     }
   }
+
+  @include media('<=phone') {
+    font-size: rem(14px);
+  }
 }
 
 .challengeButtons {
   display: flex;
   gap: rem(16px);
+  flex-wrap: wrap;
 
   // grow buttons to fill space
   button {
@@ -73,15 +82,23 @@ form.accountSharingForm {
 /**
  * Home page
  */
+
+.homeContainer {
+  --horizontal-padding: 32px;
+
+  @include media('<=phone') {
+    --horizontal-padding: 16px;
+  }
+}
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-top: rem(16px);
   padding-bottom: rem(16px);
-  padding-left: rem(32px);
-  padding-right: rem(32px);
-
+  padding-left: var(--horizontal-padding);
+  padding-right: var(--horizontal-padding);
 
   h1 {
     font-size: rem(32px);
@@ -98,10 +115,16 @@ form.accountSharingForm {
     gap: rem(16px);
     color: white;
   }
+
+  @include media('<=phoneSmall') {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: rem(16px);
+  }
 }
 
 .homeContent {
-  padding: rem(8px) rem(32px);
+  padding: rem(8px) var(--horizontal-padding);
 
   h3 {
     margin-top: rem(8px);
@@ -109,14 +132,16 @@ form.accountSharingForm {
     font-family: Inter;
     font-weight: 500;
   }
+
 }
 
 .cardsRow {
+  --gap: 8px;
+
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  gap: 8px;
-  // margin: 0 -20px;
+  gap: var(--gap);
   scroll-padding: 0 20px;
   
   padding-top: rem(4px);
@@ -125,7 +150,7 @@ form.accountSharingForm {
   &::before,
   &::after {
     content: '';
-    flex: 0 0 24px;
+    flex: 0 0 calc(var(--horizontal-padding) - var(--gap));
   }
 
   /* Hide scrollbar for Chrome, Safari and Opera */
@@ -171,8 +196,18 @@ form.accountSharingForm {
   &:hover {
     transform: scale(1.05);
   }
+
+  // small screens
+  @include media('<=phone') {
+    width: rem(200px);
+    height: rem(120px);
+  }
 }
 
 .spacer {
   height: rem(32px);
+
+  @include media('<=phoneSmall') {
+    height: rem(16px);
+  }
 }

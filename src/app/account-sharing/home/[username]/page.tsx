@@ -106,154 +106,156 @@ export default function AccountSharingHome({ params }: { params: { username: str
 
   return (
     <UseCaseWrapper useCase={USE_CASES.accountSharing} noInnerPadding={true}>
-      <div className={styles.header}>
-        <h1>FraudFlix</h1>
-        <div className={styles.headerRight}>
-          <Button size='medium' onClick={() => logout()}>
-            {isLoadingLogout || logoutData?.severity === 'success' ? 'Logging out...' : 'Logout'}
-          </Button>
+      <div className={styles.homeContainer}>
+        <div className={styles.header}>
+          <h1>FraudFlix</h1>
+          <div className={styles.headerRight}>
+            <Button size='medium' onClick={() => logout()}>
+              {isLoadingLogout || logoutData?.severity === 'success' ? 'Logging out...' : 'Log out'}
+            </Button>
+          </div>
         </div>
-      </div>
 
-      <div className={styles.homeContent}>
-        {logoutError && (
-          <Alert severity='error' className={styles.alert}>
-            {logoutError.message}
-          </Alert>
-        )}
-        {logoutData?.message && logoutData.severity !== 'success' && (
-          <Alert severity={logoutData.severity} className={styles.alert}>
-            {logoutData.message}
-          </Alert>
-        )}
-        {isLoadingVisitorData || (isLoadingLoggedIn && <div>Loading...</div>)}
-        {loggedInError && (
-          <Alert severity='error' className={styles.alert}>
-            {loggedInError.message}
-          </Alert>
-        )}
-        {loggedInData?.message && (
-          <Alert severity={loggedInData.severity} className={styles.alert}>
-            {loggedInData.message}
-          </Alert>
+        <div className={styles.homeContent}>
+          {logoutError && (
+            <Alert severity='error' className={styles.alert}>
+              {logoutError.message}
+            </Alert>
+          )}
+          {logoutData?.message && logoutData.severity !== 'success' && (
+            <Alert severity={logoutData.severity} className={styles.alert}>
+              {logoutData.message}
+            </Alert>
+          )}
+          {isLoadingVisitorData || (isLoadingLoggedIn && <div>Loading...</div>)}
+          {loggedInError && (
+            <Alert severity='error' className={styles.alert}>
+              {loggedInError.message}
+            </Alert>
+          )}
+          {loggedInData?.message && (
+            <Alert severity={loggedInData.severity} className={styles.alert}>
+              {loggedInData.message}
+            </Alert>
+          )}
+        </div>
+        {loggedInData?.severity === 'success' && (
+          <>
+            <div className={styles.homeContent}>
+              <h3>Shorts</h3>
+            </div>
+            <CardRow
+              cards={[
+                {
+                  title: `A Tale of a False Positive Flamingo`,
+                  backgroundImage: '/account-sharing/img/airport.jpg',
+                  url: 'https://www.youtube.com/watch?v=8TJxUGlpTDE',
+                },
+                {
+                  title: 'A Fraud Sommelier',
+                  backgroundImage: '/account-sharing/img/sommelier.jpg',
+                  url: 'https://www.youtube.com/watch?v=mll2Bm5Qi2A',
+                },
+                {
+                  title: 'Catfished',
+                  backgroundImage: '/account-sharing/img/catfished.jpg',
+                  url: 'https://www.youtube.com/watch?v=oJolDByP9II',
+                },
+                {
+                  title: 'Introduction to Fingerprint',
+                  url: 'https://www.youtube.com/watch?v=cV2KbL9ALPw',
+                  backgroundImage: '/account-sharing/img/keshia-intro.jpg',
+                },
+                {
+                  title: 'Device Reputation Network for Android',
+                  url: 'https://www.youtube.com/watch?v=rU_yd8MrZNY',
+                  backgroundImage: '/account-sharing/img/drn.jpg',
+                },
+                {
+                  title: 'Protect Android apps from cloning',
+                  url: 'https://www.youtube.com/watch?v=9ORRUQK4Kgk',
+                  backgroundImage: '/account-sharing/img/android-cloning.jpg',
+                },
+              ]}
+            />
+            <div className={styles.homeContent}>
+              <h3>Webinars</h3>
+            </div>
+            <CardRow
+              cards={[
+                {
+                  title: 'Fingerprint  101',
+                  url: 'https://www.youtube.com/watch?v=YTRmWUeQWyY&list=PLjhozvP52rLMYFiBLs6wm6E1b2TSbk0yt',
+                  backgroundImage: '/account-sharing/img/back-to-school.jpg',
+                },
+                {
+                  title: 'Smart signals introduction',
+                  url: 'https://www.youtube.com/watch?v=sf8KM8UgtYY',
+                  backgroundImage: '/account-sharing/img/smart-signals.jpg',
+                },
+                {
+                  title: 'Device Intelligence for Fintech',
+                  url: 'https://www.youtube.com/watch?v=9UrNabnA9uY',
+                  backgroundImage: '/account-sharing/img/fintech.jpg',
+                },
+                {
+                  title: 'Why accuracy is everything',
+                  url: 'https://www.youtube.com/watch?v=rTBXQpsioUo&t',
+                  backgroundImage: '/account-sharing/img/accuracy.jpg',
+                },
+                {
+                  title: 'Apple and Google privacy changes',
+                  url: 'https://www.youtube.com/watch?v=3ebVmdnVw_E',
+                  backgroundImage: '/account-sharing/img/privacy.jpg',
+                },
+                {
+                  title: 'State of Payment Fraud',
+                  url: 'https://www.youtube.com/watch?v=cV2KbL9ALPw',
+                  backgroundImage: '/account-sharing/img/payment-fraud.jpg',
+                },
+              ]}
+            />{' '}
+            <div className={styles.homeContent}>
+              <h3>Podcasts</h3>
+            </div>
+            <CardRow
+              cards={[
+                {
+                  title: 'CEO Dan Pinto on State of Identity podcast',
+                  url: 'https://liminal.co/podcast/fingerprintjs-fraud-at-the-source/',
+                  backgroundImage: '/account-sharing/img/state-of-identity-podcast.webp',
+                },
+                {
+                  title: 'CTO Valentin Vasilyev on Modern CTO podcast',
+                  url: 'https://moderncto.io/valentin-vasilyev/',
+                  backgroundImage: '/account-sharing/img/modern-cto.jpg',
+                },
+                {
+                  title: 'CEO Dan Pinto on PayPod',
+                  url: 'https://open.spotify.com/episode/7uUMq1GYFfKgiZ3WiX21Lc',
+                  backgroundImage: '/account-sharing/img/paypod.webp',
+                },
+                {
+                  title: 'CTO Valentin Vasilyev on Code Story podcast',
+                  url: 'https://codestory.co/podcast/bonus-valentin-vasilyev-fingerprint-com-device-identity/',
+                  backgroundImage: '/account-sharing/img/code-story.webp',
+                },
+                {
+                  title: 'CEO Dan Pinto on Leaders in Payments podcast',
+                  url: 'https://www.youtube.com/watch?v=5xSmfi_mMyM',
+                  backgroundImage: '/account-sharing/img/leaders-in-payments.webp',
+                },
+                {
+                  title: 'CTO Valentin Vasilyev on Journey Into Fraud Prevention',
+                  url: 'https://podcasts.apple.com/gb/podcast/a-journey-into-fraud-prevention/id1696704281',
+                  backgroundImage: '/account-sharing/img/journey-into-fraud-prevention.webp',
+                },
+              ]}
+            />
+            <div className={styles.spacer} />
+          </>
         )}
       </div>
-      {loggedInData?.severity === 'success' && (
-        <>
-          <div className={styles.homeContent}>
-            <h3>Shorts</h3>
-          </div>
-          <CardRow
-            cards={[
-              {
-                title: `A Tale of a False Positive Flamingo`,
-                backgroundImage: '/account-sharing/img/airport.jpg',
-                url: 'https://www.youtube.com/watch?v=8TJxUGlpTDE',
-              },
-              {
-                title: 'A Fraud Sommelier',
-                backgroundImage: '/account-sharing/img/sommelier.jpg',
-                url: 'https://www.youtube.com/watch?v=mll2Bm5Qi2A',
-              },
-              {
-                title: 'Catfished',
-                backgroundImage: '/account-sharing/img/catfished.jpg',
-                url: 'https://www.youtube.com/watch?v=oJolDByP9II',
-              },
-              {
-                title: 'Introduction to Fingerprint',
-                url: 'https://www.youtube.com/watch?v=cV2KbL9ALPw',
-                backgroundImage: '/account-sharing/img/keshia-intro.jpg',
-              },
-              {
-                title: 'Device Reputation Network for Android',
-                url: 'https://www.youtube.com/watch?v=rU_yd8MrZNY',
-                backgroundImage: '/account-sharing/img/drn.jpg',
-              },
-              {
-                title: 'Protect Android apps from cloning',
-                url: 'https://www.youtube.com/watch?v=9ORRUQK4Kgk',
-                backgroundImage: '/account-sharing/img/android-cloning.jpg',
-              },
-            ]}
-          />
-          <div className={styles.homeContent}>
-            <h3>Webinars</h3>
-          </div>
-          <CardRow
-            cards={[
-              {
-                title: 'Fingerprint  101',
-                url: 'https://www.youtube.com/watch?v=YTRmWUeQWyY&list=PLjhozvP52rLMYFiBLs6wm6E1b2TSbk0yt',
-                backgroundImage: '/account-sharing/img/back-to-school.jpg',
-              },
-              {
-                title: 'Smart signals introduction',
-                url: 'https://www.youtube.com/watch?v=sf8KM8UgtYY',
-                backgroundImage: '/account-sharing/img/smart-signals.jpg',
-              },
-              {
-                title: 'Device Intelligence for Fintech',
-                url: 'https://www.youtube.com/watch?v=9UrNabnA9uY',
-                backgroundImage: '/account-sharing/img/fintech.jpg',
-              },
-              {
-                title: 'Why accuracy is everything',
-                url: 'https://www.youtube.com/watch?v=rTBXQpsioUo&t',
-                backgroundImage: '/account-sharing/img/accuracy.jpg',
-              },
-              {
-                title: 'Apple and Google privacy changes',
-                url: 'https://www.youtube.com/watch?v=3ebVmdnVw_E',
-                backgroundImage: '/account-sharing/img/privacy.jpg',
-              },
-              {
-                title: 'State of Payment Fraud',
-                url: 'https://www.youtube.com/watch?v=cV2KbL9ALPw',
-                backgroundImage: '/account-sharing/img/payment-fraud.jpg',
-              },
-            ]}
-          />{' '}
-          <div className={styles.homeContent}>
-            <h3>Podcasts</h3>
-          </div>
-          <CardRow
-            cards={[
-              {
-                title: 'CEO Dan Pinto on State of Identity podcast',
-                url: 'https://liminal.co/podcast/fingerprintjs-fraud-at-the-source/',
-                backgroundImage: '/account-sharing/img/state-of-identity-podcast.webp',
-              },
-              {
-                title: 'CTO Valentin Vasilyev on Modern CTO podcast',
-                url: 'https://moderncto.io/valentin-vasilyev/',
-                backgroundImage: '/account-sharing/img/modern-cto.jpg',
-              },
-              {
-                title: 'CEO Dan Pinto on PayPod',
-                url: 'https://open.spotify.com/episode/7uUMq1GYFfKgiZ3WiX21Lc',
-                backgroundImage: '/account-sharing/img/paypod.webp',
-              },
-              {
-                title: 'CTO Valentin Vasilyev on Code Story podcast',
-                url: 'https://codestory.co/podcast/bonus-valentin-vasilyev-fingerprint-com-device-identity/',
-                backgroundImage: '/account-sharing/img/code-story.webp',
-              },
-              {
-                title: 'CEO Dan Pinto on Leaders in Payments podcast',
-                url: 'https://www.youtube.com/watch?v=5xSmfi_mMyM',
-                backgroundImage: '/account-sharing/img/leaders-in-payments.webp',
-              },
-              {
-                title: 'CTO Valentin Vasilyev on Journey Into Fraud Prevention',
-                url: 'https://podcasts.apple.com/gb/podcast/a-journey-into-fraud-prevention/id1696704281',
-                backgroundImage: '/account-sharing/img/journey-into-fraud-prevention.webp',
-              },
-            ]}
-          />
-          <div className={styles.spacer} />
-        </>
-      )}
     </UseCaseWrapper>
   );
 }
