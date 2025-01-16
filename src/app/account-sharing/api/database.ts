@@ -1,6 +1,6 @@
 import { Attributes, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import { sequelize } from '../../../server/sequelize';
-import { defaultUser } from '../const';
+import { DEFAULT_USER } from '../const';
 import { hashString } from '../../../server/server-utils';
 
 /** Users */
@@ -27,10 +27,10 @@ UserDbModel.sync({ force: false });
 
 // Seed the database with the default user.
 UserDbModel.findOrCreate({
-  where: { username: defaultUser.username },
+  where: { username: DEFAULT_USER.username },
   defaults: {
-    username: defaultUser.username,
-    passwordHash: hashString(defaultUser.password),
+    username: DEFAULT_USER.username,
+    passwordHash: hashString(DEFAULT_USER.password),
     createdWithVisitorId: '',
   },
 });

@@ -3,6 +3,7 @@ import { getAndValidateFingerprintResult } from '../../../../server/checks';
 import { DeviceDbModel, UserDbModel } from '../database';
 import { hashString } from '../../../../server/server-utils';
 import { getLocationName } from '../../../../utils/locationUtils';
+import { ACCOUNT_SHARING_COPY } from '../../const';
 
 export type CreateAccountPayload = {
   requestId: string;
@@ -32,10 +33,7 @@ export async function POST(req: Request): Promise<NextResponse<CreateAccountResp
 
   const existingUser = await UserDbModel.findOne({ where: { username } });
   if (existingUser) {
-    return NextResponse.json(
-      { message: 'Username already exists. Log in instead?', severity: 'error' },
-      { status: 403 },
-    );
+    return NextResponse.json({ message: ACCOUNT_SHARING_COPY.userAlreadyExists, severity: 'error' }, { status: 403 });
   }
 
   // Create the user

@@ -3,6 +3,7 @@ import { DeviceDbModel, UserDbModel } from '../database';
 import { hashString } from '../../../../server/server-utils';
 import { getAndValidateFingerprintResult } from '../../../../server/checks';
 import { getLocationName } from '../../../../utils/locationUtils';
+import { ACCOUNT_SHARING_COPY } from '../../const';
 
 export type LoginPayload = {
   username: string;
@@ -32,20 +33,20 @@ export async function POST(req: Request): Promise<NextResponse<LoginResponse>> {
   // Get visitorId from the Server API Identification event
   const visitorId = fingerprintResult.data.products.identification?.data?.visitorId;
   if (!visitorId) {
-    return NextResponse.json({ message: 'Visitor ID not found.', severity: 'error' }, { status: 403 });
+    return NextResponse.json({ message: ACCOUNT_SHARING_COPY.visitorIdNotFound, severity: 'error' }, { status: 403 });
   }
 
   const account = await UserDbModel.findOne({ where: { username } });
   if (!account) {
     // Note: More secure practice is to return a generic message like `Invalid username or password.`
     // to not give away any information. But here we are optimizing for ease of use for people trying the demo.
-    return NextResponse.json({ message: 'User not found.', severity: 'error' }, { status: 401 });
+    return NextResponse.json({ message: ACCOUNT_SHARING_COPY.userNotFound, severity: 'error' }, { status: 401 });
   }
 
   // Check if the password is correct
   const isPasswordValid = hashString(password) === account.passwordHash;
   if (!isPasswordValid) {
-    return NextResponse.json({ message: 'Incorrect password.', severity: 'error' }, { status: 401 });
+    return NextResponse.json({ message: ACCOUNT_SHARING_COPY.incorrectPassword, severity: 'error' }, { status: 401 });
   }
 
   // Check if the user is already logged in on another device

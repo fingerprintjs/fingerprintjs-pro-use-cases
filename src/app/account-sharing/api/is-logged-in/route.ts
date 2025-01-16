@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult } from '../../../../server/checks';
 import { DeviceDbModel } from '../database';
+import { ACCOUNT_SHARING_COPY } from '../../const';
 
 export type IsLoggedInPayload = {
   requestId: string;
@@ -34,7 +35,7 @@ export async function POST(req: Request): Promise<NextResponse<IsLoggedInRespons
   // Get visitorId from the Server API Identification event
   const visitorId = fingerprintResult.data.products.identification?.data?.visitorId;
   if (!visitorId) {
-    return NextResponse.json({ message: 'Visitor ID not found.', severity: 'error' }, { status: 403 });
+    return NextResponse.json({ message: ACCOUNT_SHARING_COPY.visitorIdNotFound, severity: 'error' }, { status: 403 });
   }
 
   const isLoggedIn = await DeviceDbModel.findOne({ where: { username, visitorId } });
@@ -56,5 +57,5 @@ export async function POST(req: Request): Promise<NextResponse<IsLoggedInRespons
   }
 
   // If the provided credentials are correct and we recognize the browser, we log the user in
-  return NextResponse.json({ message: `You are logged in as '${username}'`, severity: 'success' });
+  return NextResponse.json({ message: ACCOUNT_SHARING_COPY.loginSuccess(username), severity: 'success' });
 }

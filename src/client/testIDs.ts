@@ -91,8 +91,15 @@ export const TEST_IDS = {
     jsonLink: 'jsonLink',
   },
   accountSharing: {
-    login: 'login',
-    password: 'password',
+    usernameInput: 'usernameInput',
+    passwordInput: 'passwordInput',
+    loginButton: 'loginButton',
+    signUpButton: 'signUpButton',
+    forceLoginButton: 'forceLoginButton',
+    logoutButton: 'logoutButton',
+    contentCard: 'contentCard',
+    switchToLoginButton: 'switchToLoginButton',
+    switchToSignUpButton: 'switchToSignUpButton',
   },
 } as const;
 

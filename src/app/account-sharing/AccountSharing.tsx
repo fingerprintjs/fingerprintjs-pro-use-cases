@@ -21,15 +21,15 @@ import { LoginPayload, LoginResponse } from './api/login/route';
 import { BackArrow } from '../../client/components/BackArrow/BackArrow';
 import { useRouter } from 'next/navigation';
 import { useQueryState, parseAsBoolean, parseAsStringEnum, parseAsString } from 'next-usequerystate';
-import { defaultUser } from './const';
+import { DEFAULT_USER } from './const';
 import { useSessionStorage } from 'react-use';
 
 const TEST_ID = TEST_IDS.accountSharing;
 
 export function AccountSharing() {
   // Default mocked user data
-  const [username, setUsername] = useSessionStorage('username', defaultUser.username);
-  const [password, setPassword] = useSessionStorage('password', defaultUser.password);
+  const [username, setUsername] = useSessionStorage('username', DEFAULT_USER.username);
+  const [password, setPassword] = useSessionStorage('password', DEFAULT_USER.password);
   const [showPassword, setShowPassword] = useSessionStorage('showPassword', false);
   const [mode, setMode] = useQueryState<'signup' | 'login'>(
     'mode',
@@ -113,6 +113,7 @@ export function AccountSharing() {
         placeholder='Username'
         defaultValue={username}
         onChange={(e) => setUsername(e.target.value)}
+        data-testid={TEST_ID.usernameInput}
         required
       />
 
@@ -123,7 +124,7 @@ export function AccountSharing() {
         className={styles.password}
         type={showPassword ? 'text' : 'password'}
         defaultValue={password}
-        data-testid={TEST_ID.password}
+        data-testid={TEST_ID.passwordInput}
         onChange={(e) => setPassword(e.target.value)}
       />
       <button className={styles.showHideIcon} type='button' onClick={() => setShowPassword(!showPassword)}>
@@ -138,7 +139,7 @@ export function AccountSharing() {
       <Button
         disabled={isLoadingCreateAccount}
         type='submit'
-        data-testid={TEST_ID.login}
+        data-testid={TEST_ID.signUpButton}
         onClick={() => createAccount({ username, password })}
       >
         {isLoadingCreateAccount ? 'One moment...' : 'Sign up'}
@@ -150,7 +151,10 @@ export function AccountSharing() {
         </Alert>
       )}
       <p className={styles.switchMode}>
-        Already have an account? <button onClick={() => setMode('login')}>Log in</button>
+        Already have an account?{' '}
+        <button data-testid={TEST_ID.switchToLoginButton} onClick={() => setMode('login')}>
+          Log in
+        </button>
       </p>
     </>
   );
@@ -161,7 +165,7 @@ export function AccountSharing() {
       <Button
         disabled={isLoadingLogin}
         type='submit'
-        data-testid={TEST_ID.login}
+        data-testid={TEST_ID.loginButton}
         onClick={() => login({ username, password })}
       >
         {isLoadingLogin || loginResponse?.severity === 'success' ? 'One moment...' : 'Log in'}
@@ -175,6 +179,7 @@ export function AccountSharing() {
       <p className={styles.switchMode}>
         Don't have an account yet?{' '}
         <button
+          data-testid={TEST_ID.switchToSignUpButton}
           onClick={() => {
             setMode('signup');
             setJustLoggedOut(null);
@@ -194,7 +199,12 @@ export function AccountSharing() {
             {currentLoginResponse.message}
           </Alert>
           <div className={styles.challengeButtons}>
-            <Button variant='primary' size='medium' onClick={() => login({ username, password, force: true })}>
+            <Button
+              variant='primary'
+              size='medium'
+              onClick={() => login({ username, password, force: true })}
+              data-testid={TEST_ID.forceLoginButton}
+            >
               {isLoadingLogin || loginResponse?.severity === 'success' ? 'One moment...' : 'Log in here, log out there'}
             </Button>
             <Button variant='green' size='medium' disabled>
