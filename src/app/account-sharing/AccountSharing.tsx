@@ -38,7 +38,7 @@ export function AccountSharing() {
 
   const [justLoggedOut, setJustLoggedOut] = useQueryState('justLoggedOut', parseAsBoolean);
   const [otherDevice, setOtherDevice] = useQueryState('otherDevice', parseAsString);
-  // We need to store the current login response to be able to keep displaying it while new request is in progr
+  // We need to store the current login response to be able to keep displaying it while new request is in progress
   const [currentLoginResponse, setCurrentLoginResponse] = useState<LoginResponse | null>(null);
 
   const router = useRouter();
