@@ -1,45 +1,29 @@
-import { Page, chromium, expect, firefox, test } from '@playwright/test';
-import { blockGoogleTagManager, assertAlert, resetScenarios } from './e2eTestUtils';
-import { TEST_IDS } from '../src/client/testIDs';
-import { ACCOUNT_SHARING_COPY } from '../src/app/account-sharing/const';
-import { beforeEach } from 'node:test';
-import { DeviceDbModel, UserDbModel } from '../src/app/account-sharing/api/database';
-import { hashString } from '../src/server/server-utils';
+import { chromium, expect, firefox, test } from '@playwright/test';
+import { ACCOUNT_SHARING_COPY } from '../../src/app/account-sharing/const';
+import { TEST_IDS } from '../../src/client/testIDs';
+import { assertAlert, blockGoogleTagManager } from '../e2eTestUtils';
+import {
+  ensureTestUserNotLoggedInAnywhere,
+  ensureTestUserExists,
+  deleteTestUser,
+  logInTestUser,
+  TEST_USER,
+  fillLoginForm,
+} from './accountSharingTestUtils';
 
 const TEST_ID = TEST_IDS.accountSharing;
 
-const TEST_USER = {
-  username: 'e2eTestUser',
-  password: 'e2eTestPassword',
-};
-
-async function logInTestUser(page: Page) {
-  await page.getByTestId(TEST_ID.switchToLoginButton).click();
-  await fillLoginForm(page, TEST_USER.username, TEST_USER.password);
-  await page.getByTestId(TEST_ID.loginButton).click();
-
-  await page.waitForURL(`/account-sharing/home/${TEST_USER.username}`);
-  await assertAlert({
-    page,
-    severity: 'success',
-    text: ACCOUNT_SHARING_COPY.loginSuccess(TEST_USER.username),
-  });
-}
-
-async function fillLoginForm(page: Page, username: string, password: string) {
-  await page.getByTestId(TEST_ID.usernameInput).fill(username);
-  await page.getByTestId(TEST_ID.passwordInput).fill(password);
-}
-
 test.describe('Account Sharing - single browser tests', () => {
   test.beforeEach(async ({ page }) => {
+    await ensureTestUserExists();
+    await ensureTestUserNotLoggedInAnywhere();
     await blockGoogleTagManager(page);
     await page.goto('/account-sharing');
   });
 
   test('should allow signup with new credentials', async ({ page }) => {
     // Reset scenarios to ensure TEST_USER does not already exist
-    await resetScenarios(page);
+    await deleteTestUser();
 
     const username = TEST_USER.username;
     const password = TEST_USER.password;
@@ -132,20 +116,8 @@ const getTwoBrowsers = async () => {
 
 test.describe('Account Sharing - multi-browser tests', () => {
   test.beforeEach(async () => {
-    // Make sure test user exists
-    console.log('Creating test user');
-    await UserDbModel.findOrCreate({
-      where: { username: TEST_USER.username },
-      defaults: {
-        username: TEST_USER.username,
-        passwordHash: hashString(TEST_USER.password),
-        createdWithVisitorId: '1234567890',
-      },
-    });
-
-    // Make sure test user is not logged in anywhere
-    console.log('Destroying devices for test user');
-    await DeviceDbModel.destroy({ where: { username: TEST_USER.username } });
+    await ensureTestUserExists();
+    await ensureTestUserNotLoggedInAnywhere();
   });
 
   test('Should prevent two browsers from logging in to the same account at the same time', async () => {
