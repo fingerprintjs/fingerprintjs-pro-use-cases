@@ -1,7 +1,7 @@
 import { Page, expect, test } from '@playwright/test';
 import { blockGoogleTagManager, assertAlert, resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
-import { ACCOUNT_SHARING_COPY, DEFAULT_USER } from '../src/app/account-sharing/const';
+import { ACCOUNT_SHARING_COPY } from '../src/app/account-sharing/const';
 
 const TEST_ID = TEST_IDS.accountSharing;
 
@@ -9,6 +9,19 @@ const TEST_USER = {
   username: 'e2eTestUser',
   password: 'e2eTestPassword',
 };
+
+async function logInTestUser(page: Page) {
+  await page.getByTestId(TEST_ID.switchToLoginButton).click();
+  await fillLoginForm(page, TEST_USER.username, TEST_USER.password);
+  await page.getByTestId(TEST_ID.loginButton).click();
+
+  await expect(page).toHaveURL(`/account-sharing/home/${TEST_USER.username}`);
+  await assertAlert({
+    page,
+    severity: 'success',
+    text: ACCOUNT_SHARING_COPY.loginSuccess(TEST_USER.username),
+  });
+}
 
 async function fillLoginForm(page: Page, username: string, password: string) {
   await page.getByTestId(TEST_ID.usernameInput).fill(username);
@@ -52,15 +65,19 @@ test.describe('Account Sharing', () => {
   });
 
   test('should allow login with correct credentials', async ({ page }) => {
-    await page.getByTestId(TEST_ID.switchToLoginButton).click();
-    await fillLoginForm(page, TEST_USER.username, TEST_USER.password);
-    await page.getByTestId(TEST_ID.loginButton).click();
+    await logInTestUser(page);
+  });
 
-    await expect(page).toHaveURL(`/account-sharing/home/${TEST_USER.username}`);
+  test('should let users log out', async ({ page }) => {
+    await logInTestUser(page);
+
+    await page.getByTestId(TEST_ID.logoutButton).click();
+    await page.waitForURL('/account-sharing?mode=login&justLoggedOut=true');
+
     await assertAlert({
       page,
       severity: 'success',
-      text: ACCOUNT_SHARING_COPY.loginSuccess(TEST_USER.username),
+      text: ACCOUNT_SHARING_COPY.logoutSuccess,
     });
   });
 
@@ -87,41 +104,6 @@ test.describe('Account Sharing', () => {
       text: ACCOUNT_SHARING_COPY.userNotFound,
     });
   });
-
-  // TODO: should allow logging you out
-
-  //   test('should detect login from another device', async ({ context }) => {
-  //     // First login
-  //     await fillLoginForm(page, 'user', 'fingerprint');
-  //     await submitForm(page);
-  //     await expect(page).toHaveURL('/account-sharing/home/user');
-
-  //     // Try to login from "another device" (new tab)
-  //     const newTab = await context.newPage();
-  //     await newTab.goto('/account-sharing');
-  //     await newTab.getByText('Log in').click();
-  //     await fillLoginForm(newTab, 'user', 'fingerprint');
-  //     await submitForm(newTab);
-
-  //     await assertAlert({
-  //       page: newTab,
-  //       severity: 'error',
-  //       text: 'It seems you are already logged in to this account from another device',
-  //     });
-  //   });
-
-  //   test('should allow logout', async ({ page }) => {
-  //     await page.getByText('Log in').click();
-  //     await fillLoginForm(page, 'user', 'fingerprint');
-  //     await submitForm(page);
-
-  //     await page.getByRole('button', { name: 'Log out' }).click();
-  //     await expect(page).toHaveURL('/account-sharing?mode=login&justLoggedOut=true');
-
-  //     await assertAlert({
-  //       page,
-  //       severity: 'success',
-  //       text: 'You have logged out.',
-  //     });
-  //   });
 });
+
+

@@ -15,6 +15,10 @@ import { FunctionComponent, useState, useRef } from 'react';
 import Link from 'next/link';
 import { GoChevronLeft } from 'react-icons/go';
 import { GoChevronRight } from 'react-icons/go';
+import { TEST_IDS } from '../../../../client/testIDs';
+
+const TEST_ID = TEST_IDS.accountSharing;
+
 type Card = {
   title: string;
   backgroundImage: string;
@@ -152,7 +156,7 @@ export default function AccountSharingHome({ params }: { params: { username: str
         <div className={styles.header}>
           <h1>FraudFlix</h1>
           <div className={styles.headerRight}>
-            <Button size='medium' onClick={() => logout()}>
+            <Button size='medium' onClick={() => logout()} data-testid={TEST_ID.logoutButton}>
               {isLoadingLogout || logoutData?.severity === 'success' ? 'Logging out...' : 'Log out'}
             </Button>
           </div>

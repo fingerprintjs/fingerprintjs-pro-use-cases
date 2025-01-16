@@ -21,7 +21,7 @@ import { LoginPayload, LoginResponse } from './api/login/route';
 import { BackArrow } from '../../client/components/BackArrow/BackArrow';
 import { useRouter } from 'next/navigation';
 import { useQueryState, parseAsBoolean, parseAsStringEnum, parseAsString } from 'next-usequerystate';
-import { DEFAULT_USER } from './const';
+import { ACCOUNT_SHARING_COPY, DEFAULT_USER } from './const';
 import { useSessionStorage } from 'react-use';
 
 const TEST_ID = TEST_IDS.accountSharing;
@@ -248,7 +248,7 @@ export function AccountSharing() {
     } else {
       loggedOutAlert = (
         <Alert severity='success' className={styles.loggedOutAlert} onClose={() => setJustLoggedOut(null)}>
-          You have logged out.
+          {ACCOUNT_SHARING_COPY.logoutSuccess}
         </Alert>
       );
     }
