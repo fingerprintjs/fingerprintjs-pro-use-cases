@@ -96,11 +96,11 @@ export const TEST_IDS = {
     loginButton: 'loginButton',
     signUpButton: 'signUpButton',
     forceLoginButton: 'forceLoginButton',
+    challengeGoBackButton: 'challengeGoBackButton',
     logoutButton: 'logoutButton',
     contentCard: 'contentCard',
     switchToLoginButton: 'switchToLoginButton',
     switchToSignUpButton: 'switchToSignUpButton',
-    challengeGoBackButton: 'challengeGoBackButton',
   },
 } as const;
 

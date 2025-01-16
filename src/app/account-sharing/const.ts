@@ -12,4 +12,5 @@ export const ACCOUNT_SHARING_COPY = {
   visitorIdNotFound: 'Visitor ID not found.',
   alreadyLoggedIn: `It seems you are already logged in to this account from another device.
     Your current plan lets you use FraudFlix on one device at a time.`,
+  youWereLoggedOut: 'You have been logged out of your account.',
 };

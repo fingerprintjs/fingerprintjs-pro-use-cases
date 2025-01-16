@@ -240,7 +240,7 @@ export function AccountSharing() {
             setOtherDevice(null);
           }}
         >
-          <div className={styles.loggedOutAlertTitle}>You have been logged out</div>
+          <div className={styles.loggedOutAlertTitle}>{ACCOUNT_SHARING_COPY.youWereLoggedOut}</div>
           You are logged in on {otherDevice}. You current plan allows you to use FraudFlix on one device at a time.
           Consider <span style={{ textDecoration: 'underline' }}> upgrading your plan</span> to enjoy fraud content on
           multiple devices.
