@@ -28,13 +28,13 @@ async function fillLoginForm(page: Page, username: string, password: string) {
   await page.getByTestId(TEST_ID.passwordInput).fill(password);
 }
 
-test.beforeEach(async ({ page }) => {
-  await blockGoogleTagManager(page);
-  await page.goto('/account-sharing');
-  //
-});
+test.describe('Account Sharing - single browser tests', () => {
+  test.beforeEach(async ({ page }) => {
+    await blockGoogleTagManager(page);
+    await page.goto('/account-sharing');
+    //
+  });
 
-test.describe('Account Sharing', () => {
   test('should allow signup with new credentials', async ({ page }) => {
     // Reset scenarios to ensure TEST_USER does not already exist
     await resetScenarios(page);
@@ -45,7 +45,7 @@ test.describe('Account Sharing', () => {
     await fillLoginForm(page, username, password);
     await page.getByTestId(TEST_ID.signUpButton).click();
 
-    await expect(page).toHaveURL(`/account-sharing/home/${username}`);
+    await page.waitForURL(`/account-sharing/home/${username}`);
     await assertAlert({
       page,
       severity: 'success',
@@ -104,8 +104,10 @@ test.describe('Account Sharing', () => {
       text: ACCOUNT_SHARING_COPY.userNotFound,
     });
   });
+});
 
-  test('Should prevent two browsers from logging in to the same accoutn at the same time', async () => {
+test.describe.only('Account Sharing - multi-browser tests', () => {
+  test('Should prevent two browsers from logging in to the same account at the same time', async () => {
     const chromeBrowser = await chromium.launch();
     const firefoxBrowser = await firefox.launch();
 
@@ -133,6 +135,10 @@ test.describe('Account Sharing', () => {
       severity: 'error',
       text: ACCOUNT_SHARING_COPY.alreadyLoggedIn,
     });
+
+    await firefoxPage.getByTestId(TEST_ID.challengeGoBackButton).click();
+    await firefoxPage.waitForURL('/account-sharing?mode=login');
+    await expect(firefoxPage.getByTestId(TEST_ID.loginButton)).toBeVisible();
 
     // Clean up
     await chromeBrowser.close();

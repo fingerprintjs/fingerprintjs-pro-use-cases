@@ -100,6 +100,7 @@ export const TEST_IDS = {
     contentCard: 'contentCard',
     switchToLoginButton: 'switchToLoginButton',
     switchToSignUpButton: 'switchToSignUpButton',
+    challengeGoBackButton: 'challengeGoBackButton',
   },
 } as const;
 

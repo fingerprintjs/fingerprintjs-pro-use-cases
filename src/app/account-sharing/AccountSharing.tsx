@@ -214,6 +214,7 @@ export function AccountSharing() {
           <BackArrow
             as='button'
             className={styles.backArrow}
+            testId={TEST_ID.challengeGoBackButton}
             onClick={async () => {
               // Reset login mutation
               resetLoginMutation();

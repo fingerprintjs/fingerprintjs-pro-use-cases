@@ -25,7 +25,11 @@ export async function POST(req: Request): Promise<NextResponse<LoginResponse>> {
   const { username, password, requestId, force } = (await req.json()) as LoginPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
-  const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
+  const fingerprintResult = await getAndValidateFingerprintResult({
+    requestId,
+    req,
+    options: { minConfidenceScore: 0.5 },
+  });
   if (!fingerprintResult.okay) {
     return NextResponse.json({ message: fingerprintResult.error, severity: 'error' }, { status: 403 });
   }
