@@ -450,9 +450,10 @@ export const USE_CASES = {
         demo.
       </>,
       <>
-        You will only see an error message if the request is coming from a bot. Try it using our{' '}
-        <a href='https://botd-demo.fpjs.sh/' target='_blank'>
-          online bot playground
+        You will only see an error message if the request is coming from a bot. Try it using a tool like Playwright
+        locally, or an online bot playground like{' '}
+        <a href='https://chrome.browserless.io/debugger/' target='_blank'>
+          Browserless
         </a>
         .
       </>,
