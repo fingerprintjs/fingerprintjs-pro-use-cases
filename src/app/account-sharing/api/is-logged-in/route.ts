@@ -38,8 +38,10 @@ export async function POST(req: Request): Promise<NextResponse<IsLoggedInRespons
     return NextResponse.json({ message: ACCOUNT_SHARING_COPY.visitorIdNotFound, severity: 'error' }, { status: 403 });
   }
 
-  const isLoggedIn = await DeviceDbModel.findOne({ where: { username, visitorId } });
-  if (!isLoggedIn) {
+  // Check if the user is logged in with this device
+  const isLoggedIn = Boolean(await DeviceDbModel.findOne({ where: { username, visitorId } }));
+  // If not, return error
+  if (isLoggedIn === false) {
     const otherDevice = await DeviceDbModel.findOne({ where: { username } });
     return NextResponse.json(
       {
@@ -56,6 +58,6 @@ export async function POST(req: Request): Promise<NextResponse<IsLoggedInRespons
     );
   }
 
-  // If the provided credentials are correct and we recognize the browser, we log the user in
+  // If yes, return success
   return NextResponse.json({ message: ACCOUNT_SHARING_COPY.loginSuccess(username), severity: 'success' });
 }

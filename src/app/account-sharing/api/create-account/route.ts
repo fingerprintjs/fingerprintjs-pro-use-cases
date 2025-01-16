@@ -31,6 +31,7 @@ export async function POST(req: Request): Promise<NextResponse<CreateAccountResp
     return NextResponse.json({ message: 'Visitor ID not found.', severity: 'error' }, { status: 403 });
   }
 
+  // Check if the user already exists
   const existingUser = await UserDbModel.findOne({ where: { username } });
   if (existingUser) {
     return NextResponse.json({ message: ACCOUNT_SHARING_COPY.userAlreadyExists, severity: 'error' }, { status: 403 });
@@ -50,6 +51,7 @@ export async function POST(req: Request): Promise<NextResponse<CreateAccountResp
     deviceName: fingerprintResult.data.products.identification?.data?.browserDetails.browserName ?? 'the other device',
     deviceLocation: getLocationName(fingerprintResult.data.products.ipInfo?.data?.v4?.geolocation, false),
   });
-  // If the provided credentials are correct and we recognize the browser, we log the user in
+
+  // Return success
   return NextResponse.json({ message: 'Account created successfully', severity: 'success' });
 }

@@ -54,19 +54,20 @@ export async function POST(req: Request): Promise<NextResponse<LoginResponse>> {
   }
 
   // Check if the user is already logged in on another device
-  const accountDevice = await DeviceDbModel.findOne({ where: { username } });
-  const alreadyLoggedInDifferentDevice = accountDevice && accountDevice.visitorId !== visitorId;
-  if (alreadyLoggedInDifferentDevice && !force) {
+  const loggedInDevices = await DeviceDbModel.findAll({ where: { username } });
+  const anotherDevice = loggedInDevices[0];
+  const alreadyLoggedInAnotherDevice = loggedInDevices.length >= 1 && anotherDevice.visitorId !== visitorId;
+  if (alreadyLoggedInAnotherDevice && !force) {
     return NextResponse.json(
       {
         message: `${ACCOUNT_SHARING_COPY.alreadyLoggedIn}
             \n\n 
-            Logging in here will log you out of ${accountDevice.deviceName} in ${accountDevice.deviceLocation}. 
+            Logging in here will log you out of ${anotherDevice.deviceName} in ${anotherDevice.deviceLocation}. 
             Log in anyway?`,
         severity: 'error',
         otherDevice: {
-          deviceName: accountDevice.deviceName,
-          deviceLocation: accountDevice.deviceLocation,
+          deviceName: anotherDevice.deviceName,
+          deviceLocation: anotherDevice.deviceLocation,
         },
       },
       { status: 409 },

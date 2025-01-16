@@ -1,4 +1,4 @@
-import { chromium, expect, firefox, test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { ACCOUNT_SHARING_COPY } from '../../src/app/account-sharing/const';
 import { TEST_IDS } from '../../src/client/testIDs';
 import { assertAlert, blockGoogleTagManager } from '../e2eTestUtils';
@@ -7,9 +7,10 @@ import {
   ensureTestUserExists,
   deleteTestUser,
   TEST_USER,
-  fillForm as fillForm,
+  fillForm,
   logInAndAssertSuccess,
   logInAndAssertChallenge,
+  getTwoBrowsers,
 } from './accountSharingTestUtils';
 
 const TEST_ID = TEST_IDS.accountSharing;
@@ -23,7 +24,7 @@ test.describe('Account Sharing - single browser tests', () => {
   });
 
   test('should allow signup with new credentials', async ({ page }) => {
-    // Reset scenarios to ensure TEST_USER does not already exist
+    // For this one test, we need the test user not to exist
     await deleteTestUser();
     const { username, password } = TEST_USER;
 
@@ -90,28 +91,6 @@ test.describe('Account Sharing - single browser tests', () => {
     });
   });
 });
-
-const getTwoBrowsers = async () => {
-  const chromeBrowser = await chromium.launch();
-  const firefoxBrowser = await firefox.launch();
-
-  const chromeContext = await chromeBrowser.newContext();
-  const firefoxContext = await firefoxBrowser.newContext({
-    permissions: [],
-  });
-
-  const chromePage = await chromeContext.newPage();
-  const firefoxPage = await firefoxContext.newPage();
-
-  return {
-    chromePage,
-    firefoxPage,
-    cleanUp: async () => {
-      await chromeBrowser.close();
-      await firefoxBrowser.close();
-    },
-  };
-};
 
 test.describe('Account Sharing - multi-browser tests', () => {
   test.beforeEach(async () => {

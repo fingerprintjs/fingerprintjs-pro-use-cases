@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { chromium, firefox, Page } from '@playwright/test';
 import { UserDbModel, DeviceDbModel } from '../../src/app/account-sharing/api/database';
 import { ACCOUNT_SHARING_COPY } from '../../src/app/account-sharing/const';
 import { hashString } from '../../src/server/server-utils';
@@ -60,3 +60,24 @@ export const logInAndAssertChallenge = async (page: Page) => {
   });
 };
 
+export const getTwoBrowsers = async () => {
+  const chromeBrowser = await chromium.launch();
+  const firefoxBrowser = await firefox.launch();
+
+  const chromeContext = await chromeBrowser.newContext();
+  const firefoxContext = await firefoxBrowser.newContext({
+    permissions: [],
+  });
+
+  const chromePage = await chromeContext.newPage();
+  const firefoxPage = await firefoxContext.newPage();
+
+  return {
+    chromePage,
+    firefoxPage,
+    cleanUp: async () => {
+      await chromeBrowser.close();
+      await firefoxBrowser.close();
+    },
+  };
+};

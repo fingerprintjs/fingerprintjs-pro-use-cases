@@ -3,7 +3,9 @@ import { sequelize } from '../../../server/sequelize';
 import { DEFAULT_USER } from '../const';
 import { hashString } from '../../../server/server-utils';
 
-/** Users */
+/**
+ * Users
+ */
 interface AccountAttributes
   extends Model<InferAttributes<AccountAttributes>, InferCreationAttributes<AccountAttributes>> {
   passwordHash: string;
@@ -37,7 +39,9 @@ UserDbModel.findOrCreate({
 
 export type User = Attributes<AccountAttributes>;
 
-/** Current Devices */
+/**
+ * Currently Logged-In Devices
+ */
 interface DeviceAttributes extends Model<InferAttributes<DeviceAttributes>, InferCreationAttributes<DeviceAttributes>> {
   visitorId: string;
   username: string;
