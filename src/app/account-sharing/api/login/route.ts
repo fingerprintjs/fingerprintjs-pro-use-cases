@@ -55,9 +55,7 @@ export async function POST(req: Request): Promise<NextResponse<LoginResponse>> {
   if (alreadyLoggedInDifferentDevice && !force) {
     return NextResponse.json(
       {
-        message: `
-            It seems you are already logged in to this account from another device. 
-            Your current plan lets you use FraudFlix on one device at a time.
+        message: `${ACCOUNT_SHARING_COPY.alreadyLoggedIn}
             \n\n 
             Logging in here will log you out of ${accountDevice.deviceName} in ${accountDevice.deviceLocation}. 
             Log in anyway?`,

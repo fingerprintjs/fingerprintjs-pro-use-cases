@@ -1,4 +1,4 @@
-import { Page, expect, test } from '@playwright/test';
+import { Page, chromium, expect, firefox, test } from '@playwright/test';
 import { blockGoogleTagManager, assertAlert, resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
 import { ACCOUNT_SHARING_COPY } from '../src/app/account-sharing/const';
@@ -15,7 +15,7 @@ async function logInTestUser(page: Page) {
   await fillLoginForm(page, TEST_USER.username, TEST_USER.password);
   await page.getByTestId(TEST_ID.loginButton).click();
 
-  await expect(page).toHaveURL(`/account-sharing/home/${TEST_USER.username}`);
+  await page.waitForURL(`/account-sharing/home/${TEST_USER.username}`);
   await assertAlert({
     page,
     severity: 'success',
@@ -104,6 +104,38 @@ test.describe('Account Sharing', () => {
       text: ACCOUNT_SHARING_COPY.userNotFound,
     });
   });
+
+  test('Should prevent two browsers from logging in to the same accoutn at the same time', async () => {
+    const chromeBrowser = await chromium.launch();
+    const firefoxBrowser = await firefox.launch();
+
+    const chromeContext = await chromeBrowser.newContext();
+    const firefoxContext = await firefoxBrowser.newContext({
+      permissions: [],
+    });
+
+    const chromePage = await chromeContext.newPage();
+    const firefoxPage = await firefoxContext.newPage();
+
+    await chromePage.goto('/account-sharing');
+
+    // Log in with Chrome first
+    await logInTestUser(chromePage);
+
+    // Try to log in with Firefox
+    await firefoxPage.goto('/account-sharing');
+    await firefoxPage.getByTestId(TEST_ID.switchToLoginButton).click();
+    await fillLoginForm(firefoxPage, TEST_USER.username, TEST_USER.password);
+    await firefoxPage.getByTestId(TEST_ID.loginButton).click();
+
+    await assertAlert({
+      page: firefoxPage,
+      severity: 'error',
+      text: ACCOUNT_SHARING_COPY.alreadyLoggedIn,
+    });
+
+    // Clean up
+    await chromeBrowser.close();
+    await firefoxBrowser.close();
+  });
 });
-
-

@@ -10,4 +10,6 @@ export const ACCOUNT_SHARING_COPY = {
   incorrectPassword: 'Incorrect password.',
   userNotFound: 'User not found.',
   visitorIdNotFound: 'Visitor ID not found.',
+  alreadyLoggedIn: `It seems you are already logged in to this account from another device.
+    Your current plan lets you use FraudFlix on one device at a time.`,
 };
