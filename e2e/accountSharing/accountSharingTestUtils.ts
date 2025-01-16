@@ -13,7 +13,6 @@ export const TEST_USER = {
 };
 
 export const ensureTestUserExists = async () => {
-  console.log('Creating test user');
   const { username, password } = TEST_USER;
   await UserDbModel.findOrCreate({
     where: { username },
@@ -22,19 +21,22 @@ export const ensureTestUserExists = async () => {
 };
 
 export const deleteTestUser = async () => {
-  console.log('Deleting test user');
   await UserDbModel.destroy({ where: { username: TEST_USER.username } });
 };
 
 export const ensureTestUserNotLoggedInAnywhere = async () => {
-  console.log('Deleting devices for test user');
   await DeviceDbModel.destroy({ where: { username: TEST_USER.username } });
 };
 
-export async function logInTestUser(page: Page) {
+export const fillForm = async (page: Page, username: string, password: string) => {
+  await page.getByTestId(TEST_ID.usernameInput).fill(username);
+  await page.getByTestId(TEST_ID.passwordInput).fill(password);
+};
+
+export const logInAndAssertSuccess = async (page: Page) => {
   const { username, password } = TEST_USER;
   await page.getByTestId(TEST_ID.switchToLoginButton).click();
-  await fillLoginForm(page, username, password);
+  await fillForm(page, username, password);
   await page.getByTestId(TEST_ID.loginButton).click();
 
   await page.waitForURL(`/account-sharing/home/${username}`);
@@ -43,9 +45,18 @@ export async function logInTestUser(page: Page) {
     severity: 'success',
     text: ACCOUNT_SHARING_COPY.loginSuccess(username),
   });
-}
+};
 
-export async function fillLoginForm(page: Page, username: string, password: string) {
-  await page.getByTestId(TEST_ID.usernameInput).fill(username);
-  await page.getByTestId(TEST_ID.passwordInput).fill(password);
-}
+export const logInAndAssertChallenge = async (page: Page) => {
+  const { username, password } = TEST_USER;
+  await page.getByTestId(TEST_ID.switchToLoginButton).click();
+  await fillForm(page, username, password);
+  await page.getByTestId(TEST_ID.loginButton).click();
+
+  await assertAlert({
+    page,
+    severity: 'error',
+    text: ACCOUNT_SHARING_COPY.alreadyLoggedIn,
+  });
+};
+

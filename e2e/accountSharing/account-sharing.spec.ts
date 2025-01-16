@@ -6,9 +6,10 @@ import {
   ensureTestUserNotLoggedInAnywhere,
   ensureTestUserExists,
   deleteTestUser,
-  logInTestUser,
   TEST_USER,
-  fillLoginForm,
+  fillForm as fillForm,
+  logInAndAssertSuccess,
+  logInAndAssertChallenge,
 } from './accountSharingTestUtils';
 
 const TEST_ID = TEST_IDS.accountSharing;
@@ -24,11 +25,9 @@ test.describe('Account Sharing - single browser tests', () => {
   test('should allow signup with new credentials', async ({ page }) => {
     // Reset scenarios to ensure TEST_USER does not already exist
     await deleteTestUser();
+    const { username, password } = TEST_USER;
 
-    const username = TEST_USER.username;
-    const password = TEST_USER.password;
-
-    await fillLoginForm(page, username, password);
+    await fillForm(page, username, password);
     await page.getByTestId(TEST_ID.signUpButton).click();
 
     await page.waitForURL(`/account-sharing/home/${username}`);
@@ -40,7 +39,7 @@ test.describe('Account Sharing - single browser tests', () => {
   });
 
   test('should prevent signup with existing username', async ({ page }) => {
-    await fillLoginForm(page, TEST_USER.username, TEST_USER.password);
+    await fillForm(page, TEST_USER.username, TEST_USER.password);
     await page.getByTestId(TEST_ID.signUpButton).click();
 
     await assertAlert({
@@ -51,11 +50,11 @@ test.describe('Account Sharing - single browser tests', () => {
   });
 
   test('should allow login with correct credentials', async ({ page }) => {
-    await logInTestUser(page);
+    await logInAndAssertSuccess(page);
   });
 
   test('should let users log out', async ({ page }) => {
-    await logInTestUser(page);
+    await logInAndAssertSuccess(page);
 
     await page.getByTestId(TEST_ID.logoutButton).click();
     await page.waitForURL('/account-sharing?mode=login&justLoggedOut=true');
@@ -69,7 +68,7 @@ test.describe('Account Sharing - single browser tests', () => {
 
   test('should prevent login with incorrect password', async ({ page }) => {
     await page.getByTestId(TEST_ID.switchToLoginButton).click();
-    await fillLoginForm(page, TEST_USER.username, 'wrongpass');
+    await fillForm(page, TEST_USER.username, 'wrongpass');
     await page.getByTestId(TEST_ID.loginButton).click();
 
     await assertAlert({
@@ -81,7 +80,7 @@ test.describe('Account Sharing - single browser tests', () => {
 
   test('should prevent login with non-existent username', async ({ page }) => {
     await page.getByTestId(TEST_ID.switchToLoginButton).click();
-    await fillLoginForm(page, 'non-existent-username-1921r74289', 'whatever');
+    await fillForm(page, 'non-existent-username-1921r74289', 'whatever');
     await page.getByTestId(TEST_ID.loginButton).click();
 
     await assertAlert({
@@ -122,58 +121,39 @@ test.describe('Account Sharing - multi-browser tests', () => {
 
   test('Should prevent two browsers from logging in to the same account at the same time', async () => {
     const { chromePage, firefoxPage, cleanUp } = await getTwoBrowsers();
-
     await chromePage.goto('/account-sharing');
+    await firefoxPage.goto('/account-sharing');
 
     // Log in with Chrome first
-    await logInTestUser(chromePage);
+    await logInAndAssertSuccess(chromePage);
 
     // Try to log in with Firefox
-    await firefoxPage.goto('/account-sharing');
-    await firefoxPage.getByTestId(TEST_ID.switchToLoginButton).click();
-    await fillLoginForm(firefoxPage, TEST_USER.username, TEST_USER.password);
-    await firefoxPage.getByTestId(TEST_ID.loginButton).click();
+    await logInAndAssertChallenge(firefoxPage);
 
-    await assertAlert({
-      page: firefoxPage,
-      severity: 'error',
-      text: ACCOUNT_SHARING_COPY.alreadyLoggedIn,
-    });
-
-    // Give up and go back to the login page
+    // On Firefox, give up and go back to the login page
     await firefoxPage.getByTestId(TEST_ID.challengeGoBackButton).click();
     await firefoxPage.waitForURL('/account-sharing?mode=login');
     await expect(firefoxPage.getByTestId(TEST_ID.loginButton)).toBeVisible();
 
     // Clean up
-    await chromePage.getByTestId(TEST_ID.logoutButton).click();
     await cleanUp();
   });
 
   test('Force log in with a second browser logs you out of the first', async () => {
     const { chromePage, firefoxPage, cleanUp } = await getTwoBrowsers();
-
     await chromePage.goto('/account-sharing');
+    await firefoxPage.goto('/account-sharing');
 
     // Log in with Chrome first
-    await logInTestUser(chromePage);
+    await logInAndAssertSuccess(chromePage);
 
     // Try to log in with Firefox
-    await firefoxPage.goto('/account-sharing');
-    await firefoxPage.getByTestId(TEST_ID.switchToLoginButton).click();
-    await fillLoginForm(firefoxPage, TEST_USER.username, TEST_USER.password);
-    await firefoxPage.getByTestId(TEST_ID.loginButton).click();
+    await logInAndAssertChallenge(firefoxPage);
 
-    await assertAlert({
-      page: firefoxPage,
-      severity: 'error',
-      text: ACCOUNT_SHARING_COPY.alreadyLoggedIn,
-    });
-
-    // Force log in
+    // Force log in with Firefox
     await firefoxPage.getByTestId(TEST_ID.forceLoginButton).click();
 
-    // Firefix login successful
+    // Firefix login should be successful
     await firefoxPage.waitForURL(`/account-sharing/home/${TEST_USER.username}`);
     await assertAlert({
       page: firefoxPage,
