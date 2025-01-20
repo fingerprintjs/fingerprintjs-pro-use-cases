@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
 import React from 'react';
 import { USE_CASES } from '../../client/content';
@@ -19,12 +19,18 @@ import { CreateAccountPayload, CreateAccountResponse } from './api/create-accoun
 import { Alert } from '../../client/components/Alert/Alert';
 import { LoginPayload, LoginResponse } from './api/login/route';
 import { BackArrow } from '../../client/components/BackArrow/BackArrow';
-import { useRouter } from 'next/navigation';
-import { useQueryState, parseAsBoolean, parseAsStringEnum, parseAsString } from 'next-usequerystate';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useQueryState, parseAsStringEnum } from 'next-usequerystate';
 import { ACCOUNT_SHARING_COPY } from './const';
 import { useSessionStorage } from 'react-use';
 
 const TEST_ID = TEST_IDS.accountSharing;
+
+const deleteQueryParam = (param: string) => {
+  const url = new URL(window.location.href);
+  url.searchParams.delete(param);
+  window.history.replaceState({}, '', url);
+};
 
 export function AccountSharing() {
   // Start with empty username and password to make user create their own account
@@ -38,8 +44,25 @@ export function AccountSharing() {
     parseAsStringEnum(['signup', 'login']).withDefault('signup'),
   );
 
-  const [justLoggedOut, setJustLoggedOut] = useQueryState('justLoggedOut', parseAsBoolean);
-  const [otherDevice, setOtherDevice] = useQueryState('otherDevice', parseAsString);
+  // Get potential app state from query params, then delete the query params
+  // so the alerts go away on page reload
+  const [justLoggedOut, setJustLoggedOut] = useState<boolean | null>(null);
+  const [otherDevice, setOtherDevice] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const justLoggedOut = searchParams.get('justLoggedOut');
+    if (justLoggedOut) {
+      setJustLoggedOut(justLoggedOut === 'true');
+      deleteQueryParam('justLoggedOut');
+    }
+
+    const otherDevice = searchParams.get('otherDevice');
+    if (otherDevice) {
+      setOtherDevice(otherDevice);
+      deleteQueryParam('otherDevice');
+    }
+  }, [searchParams]);
+
   // We need to store the current login response to be able to keep displaying it while new request is in progress
   const [currentLoginResponse, setCurrentLoginResponse] = useState<LoginResponse | null>(null);
 
@@ -185,6 +208,7 @@ export function AccountSharing() {
           onClick={() => {
             setMode('signup');
             setJustLoggedOut(null);
+            setOtherDevice(null);
           }}
         >
           Sign up first
