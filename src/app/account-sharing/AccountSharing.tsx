@@ -21,15 +21,17 @@ import { LoginPayload, LoginResponse } from './api/login/route';
 import { BackArrow } from '../../client/components/BackArrow/BackArrow';
 import { useRouter } from 'next/navigation';
 import { useQueryState, parseAsBoolean, parseAsStringEnum, parseAsString } from 'next-usequerystate';
-import { ACCOUNT_SHARING_COPY, DEFAULT_USER } from './const';
+import { ACCOUNT_SHARING_COPY } from './const';
 import { useSessionStorage } from 'react-use';
 
 const TEST_ID = TEST_IDS.accountSharing;
 
 export function AccountSharing() {
-  // Default mocked user data
-  const [username, setUsername] = useSessionStorage('username', DEFAULT_USER.username);
-  const [password, setPassword] = useSessionStorage('password', DEFAULT_USER.password);
+  // Start with empty username and password to make user create their own account
+  // and avoid potentially interfering with other people's demos
+  // Note: Can use `DEFAULT_USER` for development purposes
+  const [username, setUsername] = useSessionStorage('username', '');
+  const [password, setPassword] = useSessionStorage('password', '');
   const [showPassword, setShowPassword] = useSessionStorage('showPassword', false);
   const [mode, setMode] = useQueryState<'signup' | 'login'>(
     'mode',
