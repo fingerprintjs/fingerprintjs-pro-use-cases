@@ -32,7 +32,7 @@ const deleteQueryParam = (param: string) => {
   window.history.replaceState({}, '', url);
 };
 
-export function AccountSharing() {
+export const AccountSharing = ({ embed }: { embed?: boolean }) => {
   // Start with empty username and password to make user create their own account
   // and avoid potentially interfering with other people's demos
   // Note: Can use `DEFAULT_USER` for development purposes
@@ -282,7 +282,15 @@ export function AccountSharing() {
   }
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.accountSharing}>
+    <UseCaseWrapper
+      useCase={USE_CASES.accountSharing}
+      embed={embed}
+      onReset={() => {
+        setJustLoggedOut(null);
+        setOtherDevice(null);
+        setCurrentLoginResponse(null);
+      }}
+    >
       <div className={formStyles.wrapper}>
         {loggedOutAlert}
         <h3 className={styles.formTitle}>{mode === 'signup' ? 'Sign up for FraudFlix' : 'Log in to FraudFlix'}</h3>
@@ -297,4 +305,4 @@ export function AccountSharing() {
       </div>
     </UseCaseWrapper>
   );
-}
+};
