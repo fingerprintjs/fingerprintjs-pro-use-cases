@@ -95,7 +95,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
     },
     onSuccess: (data) => {
       if (data.severity === 'success') {
-        router.push(`/account-sharing/home/${username}`, { scroll: false });
+        router.push(`/account-sharing/home/${username}/${embed ? 'embed' : ''}`, { scroll: false });
       }
     },
   });
@@ -124,7 +124,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
     onSuccess: (data) => {
       setCurrentLoginResponse(data);
       if (data.severity === 'success') {
-        router.push(`/account-sharing/home/${username}`, { scroll: false });
+        router.push(`/account-sharing/home/${username}/${embed ? 'embed' : ''}`, { scroll: false });
       }
     },
   });

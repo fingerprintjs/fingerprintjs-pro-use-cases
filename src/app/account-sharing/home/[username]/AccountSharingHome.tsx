@@ -146,7 +146,7 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
     if (otherDevice) {
       searchParams.set('otherDevice', otherDevice);
     }
-    router.push(`/account-sharing?${searchParams.toString()}`, { scroll: false });
+    router.push(`/account-sharing${embed ? '/embed' : ''}?${searchParams.toString()}`, { scroll: false });
   };
 
   return (
