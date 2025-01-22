@@ -293,7 +293,10 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
     >
       <div className={formStyles.wrapper}>
         {loggedOutAlert}
-        <h3 className={styles.formTitle}>{mode === 'signup' ? 'Sign up for FraudFlix' : 'Log in to FraudFlix'}</h3>
+        <h3 className={styles.formTitle}>
+          {mode === 'signup' ? 'Sign up for ' : 'Log in to '}
+          <span>FraudFlix</span>
+        </h3>
         <form
           onSubmit={(e) => {
             e.preventDefault();
