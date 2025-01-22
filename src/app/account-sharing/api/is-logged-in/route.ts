@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult } from '../../../../server/checks';
-import { DeviceDbModel } from '../database';
+import { SessionDbModel, UserDbModel } from '../database';
 import { ACCOUNT_SHARING_COPY } from '../../const';
 
 export type IsLoggedInPayload = {
@@ -38,11 +38,17 @@ export async function POST(req: Request): Promise<NextResponse<IsLoggedInRespons
     return NextResponse.json({ message: ACCOUNT_SHARING_COPY.visitorIdNotFound, severity: 'error' }, { status: 403 });
   }
 
+  // Check if the user exists
+  const user = await UserDbModel.findOne({ where: { username } });
+  if (!user) {
+    return NextResponse.json({ message: ACCOUNT_SHARING_COPY.userNotFound, severity: 'error' }, { status: 403 });
+  }
+
   // Check if the user is logged in with this device
-  const isLoggedIn = Boolean(await DeviceDbModel.findOne({ where: { username, visitorId } }));
+  const isLoggedIn = Boolean(await SessionDbModel.findOne({ where: { username, visitorId } }));
   // If not, return error
   if (isLoggedIn === false) {
-    const otherDevice = await DeviceDbModel.findOne({ where: { username } });
+    const otherDevice = await SessionDbModel.findOne({ where: { username } });
     return NextResponse.json(
       {
         message: 'You have been logged out',

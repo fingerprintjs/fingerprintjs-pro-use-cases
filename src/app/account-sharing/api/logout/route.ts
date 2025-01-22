@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { DeviceDbModel, UserDbModel } from '../database';
+import { SessionDbModel, UserDbModel } from '../database';
 import { getAndValidateFingerprintResult } from '../../../../server/checks';
 import { ACCOUNT_SHARING_COPY } from '../../const';
 
@@ -38,6 +38,6 @@ export async function POST(req: Request): Promise<NextResponse<LogoutResponse>> 
   }
 
   // Log out the user
-  await DeviceDbModel.destroy({ where: { username, visitorId } });
+  await SessionDbModel.destroy({ where: { username, visitorId } });
   return NextResponse.json({ message: ACCOUNT_SHARING_COPY.logoutSuccess, severity: 'success' }, { status: 200 });
 }

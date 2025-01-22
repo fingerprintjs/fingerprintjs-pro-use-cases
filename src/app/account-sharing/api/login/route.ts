@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { DeviceDbModel, UserDbModel } from '../database';
+import { SessionDbModel, UserDbModel } from '../database';
 import { hashString } from '../../../../server/server-utils';
 import { getAndValidateFingerprintResult } from '../../../../server/checks';
 import { getLocationName } from '../../../../utils/locationUtils';
@@ -54,7 +54,7 @@ export async function POST(req: Request): Promise<NextResponse<LoginResponse>> {
   }
 
   // Check if the user is already logged in on another device
-  const loggedInDevices = await DeviceDbModel.findAll({ where: { username } });
+  const loggedInDevices = await SessionDbModel.findAll({ where: { username } });
   const anotherDevice = loggedInDevices[0];
   const alreadyLoggedInAnotherDevice = loggedInDevices.length >= 1 && anotherDevice.visitorId !== visitorId;
   if (alreadyLoggedInAnotherDevice && !force) {
@@ -75,8 +75,8 @@ export async function POST(req: Request): Promise<NextResponse<LoginResponse>> {
   }
 
   // No devices currently logged in or force is true
-  await DeviceDbModel.destroy({ where: { username } });
-  await DeviceDbModel.create({
+  await SessionDbModel.destroy({ where: { username } });
+  await SessionDbModel.create({
     visitorId,
     username,
     deviceName: fingerprintResult.data.products.identification?.data?.browserDetails.browserName ?? 'the other device',

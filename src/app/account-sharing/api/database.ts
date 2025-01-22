@@ -40,16 +40,17 @@ UserDbModel.findOrCreate({
 export type User = Attributes<AccountAttributes>;
 
 /**
- * Currently Logged-In Devices
+ * Sessions (currently logged-in devices per user)
  */
-interface DeviceAttributes extends Model<InferAttributes<DeviceAttributes>, InferCreationAttributes<DeviceAttributes>> {
+interface SessionAttributes
+  extends Model<InferAttributes<SessionAttributes>, InferCreationAttributes<SessionAttributes>> {
   visitorId: string;
   username: string;
   deviceName: string;
   deviceLocation: string;
 }
 
-export const DeviceDbModel = sequelize.define<DeviceAttributes>('account_sharing_device', {
+export const SessionDbModel = sequelize.define<SessionAttributes>('account_sharing_session', {
   visitorId: {
     type: DataTypes.STRING,
   },
@@ -64,6 +65,6 @@ export const DeviceDbModel = sequelize.define<DeviceAttributes>('account_sharing
   },
 });
 
-DeviceDbModel.sync({ force: false });
+SessionDbModel.sync({ force: false });
 
-export type Device = Attributes<DeviceAttributes>;
+export type Session = Attributes<SessionAttributes>;

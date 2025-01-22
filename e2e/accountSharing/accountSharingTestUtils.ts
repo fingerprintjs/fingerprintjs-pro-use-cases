@@ -1,5 +1,5 @@
 import { chromium, firefox, Page } from '@playwright/test';
-import { UserDbModel, DeviceDbModel } from '../../src/app/account-sharing/api/database';
+import { UserDbModel, SessionDbModel } from '../../src/app/account-sharing/api/database';
 import { ACCOUNT_SHARING_COPY } from '../../src/app/account-sharing/const';
 import { hashString } from '../../src/server/server-utils';
 import { assertAlert } from '../e2eTestUtils';
@@ -25,7 +25,7 @@ export const deleteTestUser = async () => {
 };
 
 export const ensureTestUserNotLoggedInAnywhere = async () => {
-  await DeviceDbModel.destroy({ where: { username: TEST_USER.username } });
+  await SessionDbModel.destroy({ where: { username: TEST_USER.username } });
 };
 
 export const fillForm = async (page: Page, username: string, password: string) => {

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult } from '../../../../server/checks';
-import { DeviceDbModel, UserDbModel } from '../database';
+import { SessionDbModel, UserDbModel } from '../database';
 import { hashString } from '../../../../server/server-utils';
 import { getLocationName } from '../../../../utils/locationUtils';
 import { ACCOUNT_SHARING_COPY } from '../../const';
@@ -44,8 +44,8 @@ export async function POST(req: Request): Promise<NextResponse<CreateAccountResp
     createdWithVisitorId: visitorId,
   });
 
-  // Set the device as current device
-  await DeviceDbModel.create({
+  // Set the device as currently logged-in
+  await SessionDbModel.create({
     visitorId,
     username,
     deviceName: fingerprintResult.data.products.identification?.data?.browserDetails.browserName ?? 'the other device',
