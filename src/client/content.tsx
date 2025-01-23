@@ -13,6 +13,7 @@ import SmsIcon from './img/smsIcon.svg';
 import { ReactNode } from 'react';
 import { RestartHint, RestartHintProps } from './components/UseCaseWrapper/RestartHint';
 import { TEST_PHONE_NUMBER } from '../app/sms-pumping/api/smsPumpingConst';
+import { AccountSharingDemoLink } from '../app/account-sharing/components/AccountSharingDemoLink';
 
 export const PRODUCTION_URL = 'https://demo.fingerprint.com';
 
@@ -186,8 +187,8 @@ export const USE_CASES = {
     instructions: [
       <>Create an account in the form below and log in to our demo streaming service.</>,
       <>
-        Open this page (<code>{`dev.fingerprint.com/account-sharing?mode=login`}</code>) in a different browser. For
-        example, if you are using Chrome, open Firefox, or open the demo on your phone.
+        Open this page <AccountSharingDemoLink /> in a different browser. For example, if you are using Chrome, open
+        Firefox, or open the demo on your phone.
       </>,
       <>Try logging in with the same username and password.</>,
       <>You will be blocked from logging in and forced to log out in the original browser first.</>,
