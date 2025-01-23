@@ -60,6 +60,17 @@ export const logInAndAssertChallenge = async (page: Page) => {
   });
 };
 
+export const logOutAndAssertSuccess = async (page: Page) => {
+  await page.getByTestId(TEST_ID.logoutButton).click();
+  await page.waitForURL('/account-sharing?mode=login&justLoggedOut=true');
+
+  await assertAlert({
+    page,
+    severity: 'success',
+    text: ACCOUNT_SHARING_COPY.logoutSuccess,
+  });
+};
+
 export const getTwoBrowsers = async () => {
   const chromeBrowser = await chromium.launch();
   const firefoxBrowser = await firefox.launch();
