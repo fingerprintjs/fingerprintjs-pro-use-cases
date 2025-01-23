@@ -140,8 +140,12 @@ test.describe('Account Sharing - multi-browser tests', () => {
       text: ACCOUNT_SHARING_COPY.loginSuccess(TEST_USER.username),
     });
 
+    // Scroll demo into view just in case for easier debugging
+    await firefoxPage.getByTestId(TEST_ID.logoutButton).scrollIntoViewIfNeeded();
+    await chromePage.getByTestId(TEST_ID.usernameInput).scrollIntoViewIfNeeded();
+
     // Chrome is logged out
-    await chromePage.waitForURL('/account-sharing?mode=login&justLoggedOut=true**');
+    await chromePage.waitForURL('/account-sharing?mode=login');
     await assertAlert({
       page: chromePage,
       severity: 'warning',
