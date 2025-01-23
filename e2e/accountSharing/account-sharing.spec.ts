@@ -84,6 +84,12 @@ test.describe('Account Sharing - single browser tests', () => {
     });
   });
 
+  test('Going to homepage when logged out should redirect to login page', async ({ page }) => {
+    await page.goto(`/account-sharing/home/${TEST_USER.username}`, { waitUntil: 'load' });
+    await page.waitForURL('/account-sharing?mode=login');
+    await expect(page.getByTestId(TEST_ID.loginButton)).toBeVisible();
+  });
+
   test('should allow switching between signup and login', async ({ page }) => {
     await page.getByTestId(TEST_ID.switchToLoginButton).click();
     await page.waitForURL('/account-sharing?mode=login');
