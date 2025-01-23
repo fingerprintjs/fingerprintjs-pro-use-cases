@@ -80,6 +80,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
     isLoading: isLoadingCreateAccount,
     data: createAccountResponse,
     error: createAccountError,
+    reset: resetCreateAccountMutation,
   } = useMutation<CreateAccountResponse, Error, Omit<CreateAccountPayload, 'requestId' | 'visitorId'>>({
     mutationKey: ['login attempt'],
     mutationFn: async ({ username, password }) => {
@@ -151,6 +152,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
         defaultValue={password}
         data-testid={TEST_ID.passwordInput}
         onChange={(e) => setPassword(e.target.value)}
+        required
       />
       <button className={styles.showHideIcon} type='button' onClick={() => setShowPassword(!showPassword)}>
         <Image src={showPassword ? shownIcon : hiddenIcon} alt={showPassword ? 'Hide password' : 'Show password'} />
@@ -161,12 +163,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
   const signUpMarkup = (
     <>
       {formMarkup}
-      <Button
-        disabled={isLoadingCreateAccount}
-        type='submit'
-        data-testid={TEST_ID.signUpButton}
-        onClick={() => createAccount({ username, password })}
-      >
+      <Button disabled={isLoadingCreateAccount} type='submit' data-testid={TEST_ID.signUpButton}>
         {isLoadingCreateAccount ? 'One moment...' : 'Sign up'}
       </Button>
       {createAccountError && <Alert severity='error'>{createAccountError.message}</Alert>}
@@ -177,7 +174,14 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
       )}
       <p className={styles.switchMode}>
         Already have an account?{' '}
-        <button data-testid={TEST_ID.switchToLoginButton} onClick={() => setMode('login')}>
+        <button
+          type='button'
+          data-testid={TEST_ID.switchToLoginButton}
+          onClick={() => {
+            setMode('login');
+            resetCreateAccountMutation();
+          }}
+        >
           Log in
         </button>
       </p>
@@ -187,12 +191,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
   const loginMarkup = (
     <>
       {formMarkup}
-      <Button
-        disabled={isLoadingLogin}
-        type='submit'
-        data-testid={TEST_ID.loginButton}
-        onClick={() => login({ username, password })}
-      >
+      <Button disabled={isLoadingLogin} type='submit' data-testid={TEST_ID.loginButton}>
         {isLoadingLogin || loginResponse?.severity === 'success' ? 'One moment...' : 'Log in'}
       </Button>
       {loginError && <Alert severity='error'>{loginError.message}</Alert>}
@@ -205,10 +204,12 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
         Don't have an account yet?{' '}
         <button
           data-testid={TEST_ID.switchToSignUpButton}
+          type='button'
           onClick={() => {
             setMode('signup');
             setJustLoggedOut(null);
             setOtherDevice(null);
+            resetLoginMutation();
           }}
         >
           Sign up first
@@ -300,6 +301,11 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            if (mode === 'signup') {
+              createAccount({ username, password });
+            } else {
+              login({ username, password });
+            }
           }}
           className={classNames(formStyles.useCaseForm, styles.accountSharingForm)}
         >
