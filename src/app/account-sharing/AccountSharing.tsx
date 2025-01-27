@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
 import React from 'react';
 import { USE_CASES } from '../../client/content';
@@ -26,12 +26,6 @@ import { useSessionStorage } from 'react-use';
 
 const TEST_ID = TEST_IDS.accountSharing;
 
-const deleteQueryParam = (param: string) => {
-  const url = new URL(window.location.href);
-  url.searchParams.delete(param);
-  window.history.replaceState({}, '', url);
-};
-
 export const AccountSharing = ({ embed }: { embed?: boolean }) => {
   // Identify the visitor with Fingerprint
   const { getData: getVisitorData } = useVisitorData(
@@ -52,11 +46,24 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
     parseAsStringEnum(['signup', 'login']).withDefault('signup'),
   );
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const deleteQueryParam = useCallback(
+    (param: string) => {
+      const newSearchParams = new URLSearchParams(searchParams.toString());
+      newSearchParams.delete(param);
+      const newPathname = newSearchParams.toString()
+        ? `${window.location.pathname}?${newSearchParams.toString()}`
+        : window.location.pathname;
+      router.replace(newPathname);
+    },
+    [router, searchParams],
+  );
+
   // Get potential app state from query params, then delete the query params
   // so the alerts go away on page reload
   const [justLoggedOut, setJustLoggedOut] = useState<boolean | null>(null);
   const [otherDevice, setOtherDevice] = useState<string | null>(null);
-  const searchParams = useSearchParams();
   useEffect(() => {
     const justLoggedOut = searchParams.get('justLoggedOut');
     if (justLoggedOut) {
@@ -69,12 +76,10 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
       setOtherDevice(otherDevice);
       deleteQueryParam('otherDevice');
     }
-  }, [searchParams]);
+  }, [searchParams, deleteQueryParam]);
 
   // We need to store the current login response to be able to keep displaying it while new request is in progress
   const [currentLoginResponse, setCurrentLoginResponse] = useState<LoginResponse | null>(null);
-
-  const router = useRouter();
 
   const {
     mutate: createAccount,
