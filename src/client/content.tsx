@@ -1,19 +1,20 @@
-import Link from 'next/link';
-import SmartSignalsIcon from './img/smartSignalsIcon.svg';
-import CouponFraudIcon from './img/couponFraudIcon.svg';
-import CredentialStuffingIcon from './img/credentialStuffingIcon.svg';
-import LoanRiskIcon from './img/loanRiskIcon.svg';
-import PaymentFraudIcon from './img/paymentFraudIcon.svg';
-import PaywallIcon from './img/paywallIcon.svg';
-import PersonalizationIcon from './img/personalizationIcon.svg';
-import ScrapingIcon from './img/scrapingIcon.svg';
-import FirewallIcon from './img/firewallIcon.svg';
-import VpnDetectionIcon from './img/vpnDetection.svg';
-import SmsIcon from './img/smsIcon.svg';
+import CouponFraudIcon from './img/home-icons/coupon-fraud.svg';
+import CredentialStuffingIcon from './img/home-icons/credential-stuffing.svg';
+import LoanRiskIcon from './img/home-icons/loan-risk.svg';
+import PaymentFraudIcon from './img/home-icons/payment-fraud.svg';
+import PaywallIcon from './img/home-icons/paywall.svg';
+import PersonalizationIcon from './img/home-icons/personalization.svg';
+import ScrapingIcon from './img/home-icons/web-scraping.svg';
+import FirewallIcon from './img/home-icons/bot-firewall.svg';
+import VpnDetectionIcon from './img/home-icons/vpn-detection.svg';
+import SmsIcon from './img/home-icons/sms-pumping.svg';
+import PlaygroundIcon from './img/home-icons/playground.svg';
+import AccountSharingIcon from './img/home-icons/account-sharing.svg';
 import { ReactNode } from 'react';
 import { RestartHint, RestartHintProps } from './components/UseCaseWrapper/RestartHint';
 import { TEST_PHONE_NUMBER } from '../app/sms-pumping/api/smsPumpingConst';
 import { AccountSharingDemoLink } from '../app/account-sharing/components/AccountSharingDemoLink';
+import Link from 'next/link';
 
 export const PRODUCTION_URL = 'https://demo.fingerprint.com';
 
@@ -118,7 +119,7 @@ export const USE_CASES = {
     iconSvg: CredentialStuffingIcon,
     descriptionHomepage: [
       <p key='1'>
-        Protect your users against credential stuffing using Fingerprint’s unique visitor ID provided for each user that
+        Protect your users against credential stuffing using Fingerprint's unique visitor ID provided for each user that
         visits your site.
       </p>,
       <p key='2'>
@@ -164,7 +165,7 @@ export const USE_CASES = {
     url: '/account-sharing',
     articleUrl: 'https://fingerprint.com/blog/increase-revenue-identifying-preventing-account-sharing/',
     githubUrl: `https://github.com/fingerprintjs/fingerprintjs-pro-use-cases/tree/main/src/app/account-sharing`,
-    iconSvg: SmartSignalsIcon,
+    iconSvg: AccountSharingIcon,
     descriptionMeta:
       'See in real-time how Fingerprint can prevent account sharing. Try out our live demo to see Fingerprint detect too many devices using a single account at the same time.=',
     descriptionHomepage: [
@@ -229,7 +230,7 @@ export const USE_CASES = {
     iconSvg: PaymentFraudIcon,
     descriptionHomepage: [
       <p key='1'>
-        Identify anonymous visitors behind every transaction. Use Fingerprint’s Identification to recognize repeated
+        Identify anonymous visitors behind every transaction. Use Fingerprint's Identification to recognize repeated
         card testing activity and link it to specific users. Protect your users and your business against various forms
         of payment fraud.
       </p>,
@@ -335,7 +336,7 @@ export const USE_CASES = {
     iconSvg: PaywallIcon,
     descriptionHomepage: [
       <p key='1'>
-        Accurately identify returning users to provide limited access to your content and ensure users aren’t able to
+        Accurately identify returning users to provide limited access to your content and ensure users aren't able to
         exceed their predetermined limits.
       </p>,
       <p key='2'>
@@ -343,7 +344,7 @@ export const USE_CASES = {
       </p>,
     ],
     description:
-      'Use the demo below to see how Fingerprint protects your content from users trying to circumvent your paywall. ',
+      'Use the demo below to see how Fingerprint protects your content from users trying to circumvent your paywall.',
     descriptionMeta:
       'See in real-time how Fingerprint can stop and prevent content paywall evasion. Try out our live demo to see how Fingerprint protects your content from users trying to circumvent your paywall.',
     instructions: [
@@ -429,7 +430,7 @@ export const USE_CASES = {
           based on IP address reputation is not reliable.
         </p>
         <p>
-          Use the demo below to see how Fingerprint’s bot detection identifies and blocks malicious bots, and prevents
+          Use the demo below to see how Fingerprint's bot detection identifies and blocks malicious bots, and prevents
           unauthorized data extraction. Here, the flights API endpoint on this page is protected by the Fingerprint{' '}
           <a href='https://dev.fingerprint.com/docs/bot-detection-quick-start-guide' target={'_blank'}>
             {' '}
@@ -439,8 +440,7 @@ export const USE_CASES = {
         </p>
       </>
     ),
-    descriptionMeta:
-      'See in real-time how Fingerprint can stop and prevent content scraping bots. Try out our live demo to see how Fingerprint’s bot detection identifies and blocks malicious bots, and prevents unauthorized data extraction.',
+    descriptionMeta: `See in real-time how Fingerprint can stop and prevent content scraping bots. Try out our live demo to see how Fingerprint's bot detection identifies and blocks malicious bots, and prevents unauthorized data extraction.`,
     doNotMentionResetButton: true,
     instructions: [
       <>Use a normal browser and search for flights.</>,
@@ -699,11 +699,11 @@ export const PLAYGROUND_METADATA: Pick<
 > = {
   title: 'Playground',
   url: '/playground',
-  iconSvg: SmartSignalsIcon,
+  iconSvg: PlaygroundIcon,
   descriptionHomepage: [
-    <p key='1'>Analyze your own browser with Fingerprint’s identification and Smart Signals.</p>,
+    <p key='1'>Analyze your own browser with Fingerprint's identification and Smart Signals.</p>,
     <p key='2'>
-      Test and examine Fingerprint’s signals including IP geolocation, browser bot detection, incognito mode detection,
+      Test and examine Fingerprint's signals including IP geolocation, browser bot detection, incognito mode detection,
       VPN detection, browser tampering detection, IP blocklist matching, and more.
     </p>,
   ],
