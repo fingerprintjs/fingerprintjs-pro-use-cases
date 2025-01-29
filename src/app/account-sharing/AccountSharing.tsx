@@ -55,7 +55,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
       const newPathname = newSearchParams.toString()
         ? `${window.location.pathname}?${newSearchParams.toString()}`
         : window.location.pathname;
-      router.replace(newPathname);
+      router.replace(newPathname, { scroll: false });
     },
     [router, searchParams],
   );
