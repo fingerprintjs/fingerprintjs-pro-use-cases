@@ -42,6 +42,8 @@ export default function Index() {
                 alt=''
                 className={styles.useCaseIcon}
                 data-testid={TEST_IDS.homepageCard.useCaseIcon}
+                width={56}
+                height={56}
               />
               <Link className={styles.useCaseTitle} data-testid={TEST_IDS.homepageCard.useCaseTitle} href={card.url}>
                 {card.title}
