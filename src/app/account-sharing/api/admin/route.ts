@@ -3,7 +3,7 @@ import {
   ProductionE2eTestActionName,
   productionE2eTestActions,
 } from '../../../../../e2e/accountSharing/accountSharingTestUtils';
-import { env } from '../../../../env';
+import { E2E_TEST_TOKEN } from '../../../../envShared';
 
 /**
  * Sometimes e2e tests manipulate the database to set up or clean up test data.
@@ -24,7 +24,7 @@ export type AccountSharingAdminResponse = {
 export async function POST(req: Request): Promise<NextResponse<AccountSharingAdminResponse>> {
   const { e2eTestToken, action } = (await req.json()) as AccountSharingAdminPayload;
 
-  if (e2eTestToken !== env.E2E_TEST_TOKEN) {
+  if (e2eTestToken !== E2E_TEST_TOKEN) {
     return NextResponse.json({ message: 'Invalid e2e test token', severity: 'error' }, { status: 401 });
   }
 

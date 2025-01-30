@@ -4,7 +4,7 @@ import { ACCOUNT_SHARING_COPY } from '../../src/app/account-sharing/const';
 import { hashString } from '../../src/server/server-utils';
 import { assertAlert, blockGoogleTagManager } from '../e2eTestUtils';
 import { TEST_IDS } from '../../src/client/testIDs';
-import { PRODUCTION_E2E_TEST_BASE_URL } from '../../src/envShared';
+import { E2E_TEST_TOKEN, PRODUCTION_E2E_TEST_BASE_URL } from '../../src/envShared';
 import { AccountSharingAdminPayload } from '../../src/app/account-sharing/api/admin/route';
 
 const TEST_ID = TEST_IDS.accountSharing;
@@ -115,7 +115,7 @@ export const sendProductionE2eTestActionRequest = async (action: ProductionE2eTe
   }
   const response = await fetch(`${url}/account-sharing/api/admin`, {
     method: 'POST',
-    body: JSON.stringify({ action, e2eTestToken: env.E2E_TEST_TOKEN } satisfies AccountSharingAdminPayload),
+    body: JSON.stringify({ action, e2eTestToken: E2E_TEST_TOKEN } satisfies AccountSharingAdminPayload),
   });
   if (!response.ok) {
     throw new Error(
