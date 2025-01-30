@@ -4,6 +4,8 @@ import { ACCOUNT_SHARING_COPY } from '../../src/app/account-sharing/const';
 import { hashString } from '../../src/server/server-utils';
 import { assertAlert, blockGoogleTagManager } from '../e2eTestUtils';
 import { TEST_IDS } from '../../src/client/testIDs';
+import { E2E_TEST_TOKEN, PRODUCTION_E2E_TEST_BASE_URL } from '../../src/envShared';
+import { AccountSharingAdminPayload } from '../../src/app/account-sharing/api/admin/route';
 
 const TEST_ID = TEST_IDS.accountSharing;
 
@@ -24,7 +26,7 @@ export const deleteTestUser = async () => {
   await UserDbModel.destroy({ where: { username: TEST_USER.username } });
 };
 
-export const ensureTestUserNotLoggedInAnywhere = async () => {
+export const logOutTestUserEverywhere = async () => {
   await SessionDbModel.destroy({ where: { username: TEST_USER.username } });
 };
 
@@ -95,4 +97,37 @@ export const getTwoBrowsers = async () => {
       await firefoxBrowser.close();
     },
   };
+};
+
+/**
+ * Production E2E test utils actions
+ */
+export const productionE2eTestActions = {
+  ensureTestUserExists,
+  deleteTestUser,
+  logOutTestUserEverywhere,
+} as const;
+export type ProductionE2eTestActionName = keyof typeof productionE2eTestActions;
+export const sendProductionE2eTestActionRequest = async (action: ProductionE2eTestActionName) => {
+  const url = PRODUCTION_E2E_TEST_BASE_URL;
+  if (!url) {
+    throw new Error('Production E2E test base URL is not set');
+  }
+  const response = await fetch(`${url}/account-sharing/api/admin`, {
+    method: 'POST',
+    body: JSON.stringify({ action, e2eTestToken: E2E_TEST_TOKEN } satisfies AccountSharingAdminPayload),
+  });
+  if (!response.ok) {
+    throw new Error(
+      `Failed to perform E2E test action '${action}' on production URL: ${url}: ${response.status} ${response.statusText}`,
+    );
+  }
+};
+
+export const testUtilsAction = async (action: ProductionE2eTestActionName) => {
+  if (PRODUCTION_E2E_TEST_BASE_URL) {
+    await sendProductionE2eTestActionRequest(action);
+  } else {
+    await productionE2eTestActions[action]();
+  }
 };
