@@ -3,30 +3,28 @@ import { ACCOUNT_SHARING_COPY } from '../../src/app/account-sharing/const';
 import { TEST_IDS } from '../../src/client/testIDs';
 import { assertAlert, assertAlertNotPresent, blockGoogleTagManager, resetScenarios } from '../e2eTestUtils';
 import {
-  ensureTestUserNotLoggedInAnywhere,
-  ensureTestUserExists,
-  deleteTestUser,
   TEST_USER,
   fillForm,
   logInAndAssertSuccess,
   logInAndAssertChallenge,
   getTwoBrowsers,
   logOutAndAssertSuccess,
+  testUtilsAction,
 } from './accountSharingTestUtils';
 
 const TEST_ID = TEST_IDS.accountSharing;
 
 test.describe('Account Sharing - single browser tests', () => {
   test.beforeEach(async ({ page }) => {
-    await ensureTestUserExists();
-    await ensureTestUserNotLoggedInAnywhere();
+    await testUtilsAction('ensureTestUserExists');
+    await testUtilsAction('logOutTestUserEverywhere');
     await blockGoogleTagManager(page);
     await page.goto('/account-sharing');
   });
 
   test('should allow signup with new credentials', async ({ page }) => {
     // For this one test, we need the test user not to exist
-    await deleteTestUser();
+    await testUtilsAction('deleteTestUser');
     const { username, password } = TEST_USER;
 
     await fillForm(page, username, password);
@@ -123,8 +121,8 @@ test.describe('Account Sharing - multi-browser tests', () => {
   test.skip(({ browserName }) => browserName !== 'chromium', 'Multi-browser by nature');
 
   test.beforeEach(async () => {
-    await ensureTestUserExists();
-    await ensureTestUserNotLoggedInAnywhere();
+    await testUtilsAction('ensureTestUserExists');
+    await testUtilsAction('logOutTestUserEverywhere');
   });
 
   test('Should prevent two browsers from logging in to the same account at the same time', async () => {

@@ -4,10 +4,10 @@ import { defineConfig, devices } from '@playwright/test';
  * https://github.com/motdotla/dotenv
  */
 import 'dotenv/config';
+import { PRODUCTION_E2E_TEST_BASE_URL } from './src/envShared';
 
 const IS_CI = Boolean(process.env.CI);
 const PORT = process.env.PORT || 3000;
-export const PRODUCTION_E2E_TEST_BASE_URL = process.env.PRODUCTION_E2E_TEST_BASE_URL;
 const LOCALHOST_URL = `http://localhost:${PORT}`;
 /**
  * @see https://playwright.dev/docs/test-configuration
