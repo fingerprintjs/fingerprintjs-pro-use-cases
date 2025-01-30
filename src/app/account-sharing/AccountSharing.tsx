@@ -129,9 +129,10 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
       return await response.json();
     },
     onSuccess: (data) => {
-      setCurrentLoginResponse(data);
       if (data.severity === 'success') {
         router.push(`/account-sharing/home/${username}/${embed ? 'embed' : ''}`, { scroll: false });
+      } else {
+        setCurrentLoginResponse(data);
       }
     },
   });
