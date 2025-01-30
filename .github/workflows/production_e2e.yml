@@ -48,7 +48,7 @@ jobs:
         run: yarn playwright install --with-deps chromium
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
-        # Since some tests use the database directly, so they need the database colums to
+        # Since some tests use the database directly, we need the database colums to
         # exist or the tests don't even compile
       - name: Build the app
         run: yarn build
