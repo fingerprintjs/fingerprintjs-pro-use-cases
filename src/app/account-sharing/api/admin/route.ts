@@ -25,7 +25,7 @@ export async function POST(req: Request): Promise<NextResponse<AccountSharingAdm
   const { e2eTestToken, action } = (await req.json()) as AccountSharingAdminPayload;
 
   if (e2eTestToken !== E2E_TEST_TOKEN) {
-    return NextResponse.json({ message: 'Invalid e2e test token', severity: 'error' }, { status: 401 });
+    return NextResponse.json({ message: 'Invalid e2eTestToken', severity: 'error' }, { status: 401 });
   }
 
   try {
