@@ -171,14 +171,14 @@ export const USE_CASES = {
     descriptionHomepage: [
       <p key='1'>Users sharing their accounts can lead to security vulnerabilities and lost revenue.</p>,
       <p key='2'>
-        Use Fingerprint device intelligence to detect account sharing a prevent too many devices from a using a single
-        account.
+        Use Fingerprint device intelligence to detect account sharing and prevent too many devices from using a single
+        user account.
       </p>,
     ],
     description: (
       <>
         <p>
-          Price-conscious users often share their paid accounts between family, friends or even strangers. This practice
+          Price-conscious users often share their paid accounts with family, friends, or even strangers. This practice
           results not only in lost potential revenue but also presents a security risk.
         </p>
         <p>
