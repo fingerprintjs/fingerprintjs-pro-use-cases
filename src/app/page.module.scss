@@ -62,7 +62,7 @@
   padding: rem(32px);
   justify-content: space-between;
   align-items: flex-start;
-  border-radius: 8px;
+  border-radius: 12px;
   border: 1px solid v('gray-box-stroke');
   overflow: hidden;
   color: unset;
@@ -83,7 +83,7 @@
   }
 
   .useCaseIcon {
-    margin-bottom: rem(32px);
+    margin-bottom: rem(24px);
   }
 
   .useCaseTitle {
@@ -127,7 +127,7 @@
 
     p {
       margin-top: 0;
-      margin-bottom: rem(32px);
+      margin-bottom: rem(12px);
     }
   }
 
