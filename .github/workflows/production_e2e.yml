@@ -59,13 +59,8 @@ jobs:
         run: yarn playwright install --with-deps firefox
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
-        # Since some tests use the database directly, we need the database colums to
-        # exist or the tests don't even compile
-      - name: Build the app
-        run: yarn build
-
       - name: Run Playwright tests on Chrome
-        run: yarn test:e2e:chrome --reporter=line
+        run: yarn test:e2e:chrome
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
