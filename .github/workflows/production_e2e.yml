@@ -8,7 +8,8 @@ env:
   # Playwright headless browsers running in CI get low confidence scores, causing flaky e2e tests. Lower the confidence score threshold for CI testing.
   MIN_CONFIDENCE_SCORE: 0
   # Run e2e tests against production
-  PRODUCTION_E2E_TEST_BASE_URL: 'https://demo.fingerprint.com'
+  # PRODUCTION_E2E_TEST_BASE_URL: 'https://demo.fingerprint.com'
+  PRODUCTION_E2E_TEST_BASE_URL: 'https://staging.fingerprinthub.com'
   # Make sure to use production e2e test values
   TEST_BUILD: 0
 
