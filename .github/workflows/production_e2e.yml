@@ -10,8 +10,6 @@ env:
   # Run e2e tests against production
   # PRODUCTION_E2E_TEST_BASE_URL: 'https://demo.fingerprint.com'
   PRODUCTION_E2E_TEST_BASE_URL: 'https://staging.fingerprinthub.com'
-  # Make sure to use production e2e test values
-  TEST_BUILD: 0
 
 jobs:
   e2e-prod:
