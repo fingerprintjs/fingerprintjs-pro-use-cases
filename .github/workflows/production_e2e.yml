@@ -3,14 +3,17 @@ on:
   schedule:
     - cron: '0 * * * *' # Run every hour
   workflow_dispatch:
+  pull_request:
 env:
   # Playwright headless browsers running in CI get low confidence scores, causing flaky e2e tests. Lower the confidence score threshold for CI testing.
   MIN_CONFIDENCE_SCORE: 0
   # Run e2e tests against production
   PRODUCTION_E2E_TEST_BASE_URL: 'https://demo.fingerprint.com'
+  # Make sure to use production e2e test values
+  TEST_BUILD: 0
 
 jobs:
-  e2e:
+  e2e-prod:
     name: Playwright
     timeout-minutes: 15
     runs-on: ubuntu-22.04
@@ -27,6 +30,11 @@ jobs:
           key: nodemodules-${{ hashFiles('yarn.lock') }}
           restore-keys: nodemodules-
 
+      - name: Install yarn
+        # Yarn is installed by default on GitHub Actions runner
+        # but install it just in case you are running this workflow locally
+        run: npm install -g yarn
+
       - name: Install node modules
         ## E2E tests might have other dependencies besides Playwright, like Zod for example
         run: yarn install --prefer-offline --frozen-lockfile
@@ -35,17 +43,20 @@ jobs:
         id: playwright-version
         run: echo "PLAYWRIGHT_VERSION=$(node -e "process.stdout.write(require('@playwright/test/package.json').version)")" >> $GITHUB_ENV
 
-      - name: Cache Chromium browser binary
-        # This job uses Chrome only, no need to install all browsers
+      - name: Cache Playwright browser binaries
         uses: actions/cache@v4
         id: playwright-cache
         with:
           path: |
             ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-chrome-${{ env.PLAYWRIGHT_VERSION }}
+          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
 
       - name: Install Chromium browser binary if cache missed
         run: yarn playwright install --with-deps chromium
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+
+      - name: Install Firefox browser binary
+        run: yarn playwright install --with-deps firefox
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
         # Since some tests use the database directly, we need the database colums to
@@ -54,7 +65,7 @@ jobs:
         run: yarn build
 
       - name: Run Playwright tests on Chrome
-        run: yarn test:e2e:chrome
+        run: yarn test:e2e:chrome --reporter=line
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
@@ -64,7 +75,7 @@ jobs:
           path: playwright-report/
           retention-days: 30
   report-status:
-    needs: e2e
+    needs: e2e-prod
     if: failure()
     uses: fingerprintjs/dx-team-toolkit/.github/workflows/report-workflow-status.yml@v1
     with:

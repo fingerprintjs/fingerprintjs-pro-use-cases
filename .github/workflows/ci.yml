@@ -120,7 +120,7 @@ jobs:
         run: yarn build
 
       - name: Run Playwright tests
-        run: yarn playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+        run: yarn playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --reporter=line
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
