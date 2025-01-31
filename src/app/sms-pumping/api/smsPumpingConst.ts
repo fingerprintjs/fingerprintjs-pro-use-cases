@@ -4,8 +4,6 @@ import { pluralize } from '../../../utils/utils';
 
 export const TEST_PHONE_NUMBER = '+1234567890';
 
-console.log({ TEST_BUILD });
-
 // Use smaller timeouts for test builds to speed up e2e tests
 export const SMS_ATTEMPT_TIMEOUT_MAP: Record<number, { timeout: number }> = TEST_BUILD
   ? {
