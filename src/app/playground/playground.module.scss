@@ -260,13 +260,6 @@ h2.sectionTitle {
   letter-spacing: 0.13px;
 }
 
-.reloadButton.reloadButton {
-  @include media('<=phoneLandscape') {
-    padding-left: 0px;
-    text-align: left;
-  }
-}
-
 .tablesContainer {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 405px));
