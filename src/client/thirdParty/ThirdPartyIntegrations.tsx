@@ -12,6 +12,7 @@ import { GoogleTagManager } from './Gtm';
 import { Amplitude } from './Amplitude';
 import { useEffect } from 'react';
 import { InkeepChatButton } from './Inkeep';
+import { usePlaygroundSignals } from '../../app/playground/hooks/usePlaygroundSignals';
 
 // GTM API requires dataLayer access through global window variable
 declare global {
@@ -36,9 +37,15 @@ export const ThirdPartyIntegrations = () => {
     enableAnalytics();
   }, []);
 
+  const { identificationEvent } = usePlaygroundSignals();
+  const isNotBot =
+    identificationEvent &&
+    identificationEvent.products.botd?.data?.bot.result === 'notDetected' &&
+    identificationEvent.products.virtualMachine?.data?.result === false;
+
   return (
     <>
-      {GTM_ID ? <GoogleTagManager gtmId={GTM_ID} /> : null}
+      {GTM_ID && isNotBot ? <GoogleTagManager gtmId={GTM_ID} /> : null}
       {AMPLITUDE_API_KEY ? <Amplitude apiKey={AMPLITUDE_API_KEY} /> : null}
       <InkeepChatButton />
     </>
