@@ -31,6 +31,9 @@ import { pluralize } from '../../utils/utils';
 import { motion } from 'framer-motion';
 import { JsonLink, DocsLink } from './components/ArrowLinks';
 import { LayoutUI } from '../LayoutUI';
+import Image from 'next/image';
+import GooglePlaySvg from './img/google_play.svg';
+import AppStoreSvg from './img/app_store.svg';
 
 // Nothing magic about `8` here, each customer must define their own use-case specific threshold
 const SUSPECT_SCORE_RED_THRESHOLD = 8;
@@ -194,6 +197,7 @@ export function Playground() {
   const remoteControl: boolean | undefined = usedIdentificationEvent?.products.remoteControl?.data?.result;
 
   const ipVelocity: number | undefined = usedIdentificationEvent?.products.velocity?.data?.distinctIp.intervals?.['1h'];
+  const firstCellHeight = '95px';
 
   const smartSignals: TableCellData[][] = [
     [
@@ -218,13 +222,13 @@ export function Playground() {
                   key={[latitude, longitude].toString()}
                   position={[latitude, longitude]}
                   zoom={zoom}
-                  height='95px'
+                  height={firstCellHeight}
                 />
               </motion.div>
             )}
           </>
         ),
-        className: tableStyles.map,
+        className: tableStyles.noPadding,
       },
     ],
     [
@@ -484,6 +488,28 @@ export function Playground() {
   ];
 
   const mobileSmartSignals: TableCellData[][] = [
+    [
+      {
+        content: [
+          <div key='mobile-apps' className={styles.mobileAppsTableCellContainer} style={{ minHeight: firstCellHeight }}>
+            <div className={styles.mobileAppsTableCellTitle}>Try our demo for mobile devices</div>
+            <div className={styles.mobileAppsTableCellIcons}>
+              <Link
+                href='https://play.google.com/store/apps/details?id=com.fingerprintjs.android.fpjs_pro_demo'
+                target='_blank'
+              >
+                <Image src={GooglePlaySvg} alt='Google Play' />
+              </Link>
+              <Link href='https://apps.apple.com/us/app/fingerprint-pro/id1644105278' target='_blank'>
+                <Image src={AppStoreSvg} alt='App Store' />
+              </Link>
+            </div>
+          </div>,
+        ],
+        colSpan: 2,
+        className: `${tableStyles.noPadding} ${tableStyles.neutral}`,
+      },
+    ],
     [
       {
         content: [

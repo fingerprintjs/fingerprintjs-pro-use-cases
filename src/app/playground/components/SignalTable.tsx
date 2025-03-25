@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 export type TableCellData = {
   content: ReactNode | ReactNode[];
   className?: string;
+  colSpan?: number;
 };
 
 const SignalTable: FunctionComponent<{ data: TableCellData[][] }> = ({ data }) => {
@@ -19,7 +20,7 @@ const SignalTable: FunctionComponent<{ data: TableCellData[][] }> = ({ data }) =
             transition={{ duration: 0.25, delay: rowIndex * 0.1 }}
           >
             {row.map((cell, j) => (
-              <td key={j} className={cell.className}>
+              <td key={j} className={cell.className} colSpan={cell.colSpan}>
                 {cell.content}
               </td>
             ))}
