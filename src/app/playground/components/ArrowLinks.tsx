@@ -35,11 +35,6 @@ export const JsonLink: FunctionComponent<{
 }> = ({ children, propertyName, elementOrder }) => {
   const timeout = useRef<NodeJS.Timeout | undefined>();
 
-  // Prevent the arrow from being the only element on a new line
-  const words = children.split(' ');
-  const lastWord = [...words].pop();
-  const leadingWords = [...words].slice(0, -1).join(' ');
-
   // clear timeout when component unmounts
   useEffect(() => () => clearTimeout(timeout.current), []);
 
@@ -69,11 +64,10 @@ export const JsonLink: FunctionComponent<{
         }
       }}
     >
-      {leadingWords}{' '}
-      <span style={{ whiteSpace: 'nowrap' }}>
-        {lastWord}
+      <div>{children}</div>
+      <div>
         <ExternalLinkArrowSvg className={styles.jsonArrow} />
-      </span>
+      </div>
     </div>
   );
 };
