@@ -208,7 +208,9 @@ export function Playground() {
               Geolocation
             </DocsLink>
             <div className={styles.locationText}>
-              <JsonLink propertyName='ipInfo'>{getLocationName(ipLocation)}</JsonLink>
+              <JsonLink propertyName='ipInfo' arrowPosition='inline'>
+                {getLocationName(ipLocation)}
+              </JsonLink>
             </div>
           </>
         ),
