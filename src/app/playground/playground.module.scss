@@ -160,9 +160,6 @@ h2.sectionTitle {
 }
 
 .jsonLink {
-  display: flex;
-  justify-content: space-between;
-
   &:hover {
     color: v('orange-gradient');
     cursor: pointer;
@@ -170,6 +167,11 @@ h2.sectionTitle {
     .jsonArrow {
       translate: 0px 2px;
     }
+  }
+
+  .jsonLinkArrowRightContainer {
+    display: flex;
+    justify-content: space-between;
   }
 
   .jsonArrow {

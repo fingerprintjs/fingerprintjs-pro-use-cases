@@ -32,11 +32,16 @@ export const JsonLink: FunctionComponent<{
   children: string;
   propertyName: PropertyName;
   elementOrder?: 'first' | 'last';
-}> = ({ children, propertyName, elementOrder }) => {
+  arrowPosition?: 'inline' | 'right';
+}> = ({ children, propertyName, elementOrder, arrowPosition = 'right' }) => {
   const timeout = useRef<NodeJS.Timeout | undefined>();
-
   // clear timeout when component unmounts
   useEffect(() => () => clearTimeout(timeout.current), []);
+
+  // Prevent the arrow from being the only element on a new line
+  const words = children.split(' ');
+  const lastWord = [...words].pop();
+  const leadingWords = [...words].slice(0, -1).join(' ');
 
   return (
     <div
@@ -64,10 +69,22 @@ export const JsonLink: FunctionComponent<{
         }
       }}
     >
-      <div>{children}</div>
-      <div>
-        <ExternalLinkArrowSvg className={styles.jsonArrow} />
-      </div>
+      {arrowPosition == 'inline' ? (
+        <>
+          {leadingWords}{' '}
+          <span style={{ whiteSpace: 'nowrap' }}>
+            {lastWord}
+            <ExternalLinkArrowSvg className={styles.jsonArrow} />
+          </span>
+        </>
+      ) : (
+        <div className={styles.jsonLinkArrowRightContainer}>
+          <div>{children}</div>
+          <div>
+            <ExternalLinkArrowSvg className={styles.jsonArrow} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
