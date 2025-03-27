@@ -169,13 +169,18 @@ h2.sectionTitle {
     }
   }
 
+  .jsonLinkArrowRightContainer {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .jsonArrow {
     margin-left: 4px;
     vertical-align: baseline;
     width: 10px;
     height: 10px;
     transition: translate 0.2s ease-in-out;
-    transform: scaleY(0.85) rotate(135deg) ;
+    transform: scaleY(0.85) rotate(135deg);
   }
 }
 
@@ -257,13 +262,6 @@ h2.sectionTitle {
   letter-spacing: 0.13px;
 }
 
-.reloadButton.reloadButton {
-  @include media('<=phoneLandscape') {
-    padding-left: 0px;
-    text-align: left;
-  }
-}
-
 .tablesContainer {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 405px));
@@ -280,9 +278,9 @@ h2.sectionTitle {
   color: v('dark-black');
   font-family: 'JetBrains Mono';
   font-size: rem(16px);
-  font-weight: 500;
+  font-weight: 300;
   line-height: 145%;
-  letter-spacing: 4px;
+  letter-spacing: 0px;
   text-transform: uppercase;
   margin-bottom: rem(16px);
 
@@ -355,4 +353,31 @@ h2.sectionTitle {
   100% {
     background-color: transparent;
   }
+}
+
+.mobileAppsTableCellContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.mobileAppsTableCellTitle {
+  font-family: Inter;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 100%;
+  letter-spacing: 3%;
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.mobileAppsTableCellIcons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
 }
