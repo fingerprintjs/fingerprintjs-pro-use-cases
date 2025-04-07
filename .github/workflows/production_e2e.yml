@@ -1,5 +1,6 @@
 name: Production E2E Tests
 on:
+  pull_request:
   schedule:
     - cron: '0 * * * *' # Run every hour
   workflow_dispatch:
