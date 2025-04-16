@@ -1,7 +1,13 @@
 import { expect, test } from '@playwright/test';
 import { ACCOUNT_SHARING_COPY } from '../../src/app/account-sharing/const';
 import { TEST_IDS } from '../../src/client/testIDs';
-import { assertAlert, assertAlertNotPresent, blockGoogleTagManager, resetScenarios } from '../e2eTestUtils';
+import {
+  assertAlert,
+  assertAlertNotPresent,
+  blockGoogleTagManager,
+  resetScenarios,
+  scrollDemoIntoView,
+} from '../e2eTestUtils';
 import {
   TEST_USER,
   fillForm,
@@ -20,6 +26,7 @@ test.describe('Account Sharing - single browser tests', () => {
     await testUtilsAction('logOutTestUserEverywhere');
     await blockGoogleTagManager(page);
     await page.goto('/account-sharing');
+    await scrollDemoIntoView(page);
   });
 
   test('should allow signup with new credentials', async ({ page }) => {

@@ -45,7 +45,7 @@ export default defineConfig({
     trace: 'on-first-retry',
 
     /* Record video of the failed tests */
-    video: { mode: 'on-first-retry', size: { width: 640, height: 480 } },
+    video: { mode: 'on-first-retry', size: { width: 640, height: 640 } },
   },
 
   /* In CI/GitHub action, run the production server before running tests
