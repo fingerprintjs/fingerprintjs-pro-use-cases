@@ -45,10 +45,10 @@ export default defineConfig({
     trace: 'on-first-retry',
 
     // Use a more vertical viewport to make sure important elements are visible in test screenshots/videos
-    viewport: { width: 1280, height: 1600 },
+    viewport: { width: 720, height: 1280 },
 
     /* Record video of the failed tests */
-    video: { mode: 'on-first-retry', size: { width: 640, height: 720 } },
+    video: { mode: 'on-first-retry', size: { width: 720, height: 1280 } },
   },
 
   /* In CI/GitHub action, run the production server before running tests
