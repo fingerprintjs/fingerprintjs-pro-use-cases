@@ -21,7 +21,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<RemoveCartIte
   const fingerprintResult = await getAndValidateFingerprintResult({
     requestId,
     req,
-    options: { minConfidenceScore: 0.3, disableFreshnessCheck: true },
+    options: { disableFreshnessCheck: true },
   });
   const visitorId = fingerprintResult.okay ? fingerprintResult.data.products.identification?.data?.visitorId : null;
 

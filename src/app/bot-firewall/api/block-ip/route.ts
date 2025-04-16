@@ -59,5 +59,5 @@ const isValidBlockIpRequest = async (requestId: string, ip: string, req: Request
   }
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
-  return await getAndValidateFingerprintResult({ requestId, req, options: { minConfidenceScore: 0.5 } });
+  return await getAndValidateFingerprintResult({ requestId, req });
 };
