@@ -44,8 +44,11 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
 
+    // Use a more vertical viewport to make sure important elements are visible in test screenshots/videos
+    viewport: { width: 1280, height: 1600 },
+
     /* Record video of the failed tests */
-    video: { mode: 'on-first-retry', size: { width: 640, height: 640 } },
+    video: { mode: 'on-first-retry', size: { width: 640, height: 720 } },
   },
 
   /* In CI/GitHub action, run the production server before running tests
