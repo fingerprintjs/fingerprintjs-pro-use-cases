@@ -82,6 +82,8 @@ const assertElementWhileRepeatedlyReloadingPage = async (
       break;
     }
     await page.waitForTimeout(waitBetweenAttempts);
+    await page.close();
+    await context.close();
     await browser.close();
   }
   expect(elementVisible, `Element is not visible after ${tries} attempts`).toBe(true);
