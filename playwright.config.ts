@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 const LOCALHOST_URL = `http://localhost:${PORT}`;
 
 // Use a more square/vertical viewport to make sure important elements are visible in test report screenshots/videos
-const VIEWPORT = { width: 1280, height: 1280 };
+const VIEWPORT = { width: 1280, height: 800 };
 
 /**
  * @see https://playwright.dev/docs/test-configuration
