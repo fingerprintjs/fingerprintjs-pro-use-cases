@@ -17,6 +17,7 @@ export async function blockGoogleTagManager(page: Page) {
 
 // Assumes you already are on a use case page with the Reset button present
 export async function resetScenarios(page: Page) {
+  await page.waitForLoadState('networkidle');
   await page.getByTestId(TEST_IDS.reset.resetButton).click();
   await page.getByTestId(TEST_IDS.reset.resetSuccess).waitFor({ timeout: 20000 });
   await page.getByTestId(TEST_IDS.common.closeSnackbar).first().click();

@@ -7,7 +7,7 @@ const getActivateButton = (page: Page) => page.getByTestId(TEST_IDS.vpnDetection
 
 test.describe('VPN Detection demo', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/vpn-detection');
+    await page.goto('/vpn-detection', { waitUntil: 'networkidle' });
   });
 
   test('should personalize UI copy based on user location', async ({ page }) => {
