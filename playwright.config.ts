@@ -42,13 +42,12 @@ export default defineConfig({
     baseURL: PRODUCTION_E2E_TEST_BASE_URL ?? LOCALHOST_URL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
 
-    // Use a more vertical viewport to make sure important elements are visible in test screenshots/videos
-    viewport: { width: 720, height: 1280 },
+    screenshot: { mode: 'only-on-failure', fullPage: true },
 
     /* Record video of the failed tests */
-    video: { mode: 'on-first-retry', size: { width: 720, height: 1280 } },
+    video: { mode: 'retain-on-failure' },
   },
 
   /* In CI/GitHub action, run the production server before running tests
@@ -68,13 +67,19 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'], screenshot: { mode: 'only-on-failure' }, permissions: ['clipboard-read'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        // Use a more vertical viewport to make sure important elements are visible in test screenshots/videos
+        viewport: { width: 1280, height: 2000 },
+        permissions: ['clipboard-read'],
+      },
     },
     {
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
-        screenshot: { mode: 'only-on-failure' },
+        // Use a more vertical viewport to make sure important elements are visible in test screenshots/videos
+        viewport: { width: 1280, height: 2000 },
         // Firefox is extra secure, so you need to enable clipboard read permission like this
         // https://github.com/microsoft/playwright/issues/13037#issuecomment-1739856724
         launchOptions: {
@@ -87,7 +92,12 @@ export default defineConfig({
     },
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'], screenshot: { mode: 'only-on-failure' } },
+      use: {
+        ...devices['Desktop Safari'],
+        // Use a more vertical viewport to make sure important elements are visible in test screenshots/videos
+        viewport: { width: 1280, height: 2000 },
+      },
+
       // Webkit cannot read the clipboard at all, skip that part of the tests for webkit
     },
 
