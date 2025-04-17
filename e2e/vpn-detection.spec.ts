@@ -11,7 +11,11 @@ test.describe('VPN Detection demo', () => {
   });
 
   test('should personalize UI copy based on user location', async ({ page }) => {
-    await expect(page.getByTestId(TEST_IDS.vpnDetection.callout)).toContainText(VPN_DETECTION_COPY.personalizedCallout);
+    await expect(page.getByTestId(TEST_IDS.vpnDetection.callout)).toContainText(
+      VPN_DETECTION_COPY.personalizedCallout,
+      // Give time identify visitor and recieve Smart Signals from the server
+      { timeout: 15000 },
+    );
 
     const button = await page.getByTestId(TEST_IDS.vpnDetection.activateRegionalPricing);
     await expect(button).toContainText(/\d+% off with/);
