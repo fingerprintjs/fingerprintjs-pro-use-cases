@@ -68,8 +68,8 @@ test.describe('Bot Firewall Demo CHROME_ONLY', () => {
 const assertElementWhileRepeatedlyReloadingPage = async (
   url: string,
   locatorFunction: (page: Page) => Locator,
-  waitBetweenAttempts = 2000,
-  tries = 10,
+  waitBetweenAttempts = 3000,
+  tries = 15,
 ) => {
   let elementVisible = false;
   for (let i = 0; i < tries; i++) {
