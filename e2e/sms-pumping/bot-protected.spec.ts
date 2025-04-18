@@ -11,7 +11,7 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('Sending verification SMS messages', () => {
   test('is not possible as a bot with Bot detection on', async ({ page }) => {
-    await page.goto('/sms-pumping');
+    await page.goto('/sms-pumping', { waitUntil: 'networkidle' });
     await page.getByTestId(TEST_IDS.smsFraud.sendMessage).click();
     await assertAlert({ page, severity: 'error', text: 'Malicious bot detected' });
   });

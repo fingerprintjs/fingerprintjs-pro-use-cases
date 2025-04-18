@@ -103,7 +103,7 @@ jobs:
       # Ubuntu needs extra stuff to run webkit tests, alternative is using a Playwright docker container but
       # that is slower in CI.
       - name: If browser binaries cache hit, install just webkit dependencies
-        run: yarn playwright install-deps webkit
+        run: yarn playwright install --with-deps webkit
         if: steps.playwright-cache.outputs.cache-hit == 'true'
 
       - name: Cache Next build

@@ -1,4 +1,4 @@
-import { Locator, Page, expect, test } from '@playwright/test';
+import { Locator, Page, chromium, expect, test } from '@playwright/test';
 import { blockGoogleTagManager, resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
 import { BOT_FIREWALL_COPY } from '../src/app/bot-firewall/components/botFirewallCopy';
@@ -25,7 +25,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('Bot Firewall Demo CHROME_ONLY', () => {
-  test('Should display bot visit and allow blocking/unblocking its IP address', async ({ page, context }) => {
+  test('Should display bot visit and allow blocking/unblocking its IP address', async ({ page }) => {
     // Record bot visit in web-scraping page
     await page.goto('/web-scraping');
     await expect(page.getByTestId(TEST_IDS.common.alert)).toContainText('Malicious bot detected');
@@ -37,14 +37,10 @@ test.describe('Bot Firewall Demo CHROME_ONLY', () => {
 
     /**
      * Try to visit web-scraping page, should be blocked by Cloudflare.
-     * Using a separate tab also seems to help with flakiness.
+     * Repeatedly reload the page until the element is visible.
      */
-    const secondTab = await context.newPage();
-    await secondTab.goto(WEB_SCRAPING_URL);
-
-    await assertElementWhileRepeatedlyReloadingPage(
-      secondTab,
-      secondTab.getByRole('heading', { name: 'Sorry, you have been blocked' }),
+    await assertElementWhileRepeatedlyReloadingPage(WEB_SCRAPING_URL, (page) =>
+      page.getByRole('heading', { name: 'Sorry, you have been blocked' }),
     );
 
     // Unblock IP
@@ -53,10 +49,8 @@ test.describe('Bot Firewall Demo CHROME_ONLY', () => {
     await page.getByText('was unblocked in the application firewall').waitFor();
 
     // Try to visit web-scraping page, should be allowed again
-    await secondTab.goto(WEB_SCRAPING_URL);
-    await assertElementWhileRepeatedlyReloadingPage(
-      secondTab,
-      secondTab.getByRole('heading', { name: 'Web Scraping Prevention' }),
+    await assertElementWhileRepeatedlyReloadingPage(WEB_SCRAPING_URL, (page) =>
+      page.getByRole('heading', { name: 'Web Scraping Prevention' }),
     );
   });
 });
@@ -72,18 +66,25 @@ test.describe('Bot Firewall Demo CHROME_ONLY', () => {
  * @return {Promise<void>} - A promise that resolves when the element becomes visible, or rejects with an error if the element is not visible after the specified number of attempts.
  */
 const assertElementWhileRepeatedlyReloadingPage = async (
-  page: Page,
-  locator: Locator,
-  waitBetweenAttempts = 5000,
-  tries = 10,
+  url: string,
+  locatorFunction: (page: Page) => Locator,
+  waitBetweenAttempts = 3000,
+  tries = 15,
 ) => {
+  let elementVisible = false;
   for (let i = 0; i < tries; i++) {
-    const isVisible = await locator.isVisible();
-    if (isVisible) {
+    const browser = await chromium.launch();
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    await page.goto(url);
+    if (await locatorFunction(page).isVisible()) {
+      elementVisible = true;
       break;
     }
     await page.waitForTimeout(waitBetweenAttempts);
-    await page.reload();
+    await page.close();
+    await context.close();
+    await browser.close();
   }
-  await locator.waitFor({ state: 'visible' });
+  expect(elementVisible, `Element is not visible after ${tries} attempts`).toBe(true);
 };
