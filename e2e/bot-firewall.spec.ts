@@ -16,7 +16,7 @@ test.skip(({ browserName }) => browserName !== 'chromium', 'Chrome-only');
 /**
  * Increase timeout to give Cloudflare time to update the ruleset
  */
-test.setTimeout(45000);
+test.setTimeout(60000);
 
 test.beforeEach(async ({ page }) => {
   await blockGoogleTagManager(page);
