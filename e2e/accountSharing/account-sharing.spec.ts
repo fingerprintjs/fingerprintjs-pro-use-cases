@@ -25,7 +25,7 @@ test.describe('Account Sharing - single browser tests', () => {
     await testUtilsAction('ensureTestUserExists');
     await testUtilsAction('logOutTestUserEverywhere');
     await blockGoogleTagManager(page);
-    await page.goto('/account-sharing');
+    await page.goto('/account-sharing', { waitUntil: 'networkidle' });
     await scrollDemoIntoView(page);
   });
 

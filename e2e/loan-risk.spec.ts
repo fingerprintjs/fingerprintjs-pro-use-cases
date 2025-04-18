@@ -17,7 +17,7 @@ async function waitForBlockedLoanSubmit(page: Page) {
 
 test.beforeEach(async ({ page }) => {
   await blockGoogleTagManager(page);
-  await page.goto('/loan-risk');
+  await page.goto('/loan-risk', { waitUntil: 'networkidle' });
   await resetScenarios(page);
 });
 
