@@ -9,6 +9,10 @@ import { PRODUCTION_E2E_TEST_BASE_URL } from './src/envShared';
 const IS_CI = Boolean(process.env.CI);
 const PORT = process.env.PORT || 3000;
 const LOCALHOST_URL = `http://localhost:${PORT}`;
+
+// Use a more square/vertical viewport to make sure important elements are visible in test report screenshots/videos
+const VIEWPORT = { width: 1280, height: 800 };
+
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
@@ -42,10 +46,12 @@ export default defineConfig({
     baseURL: PRODUCTION_E2E_TEST_BASE_URL ?? LOCALHOST_URL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
+
+    screenshot: { mode: 'only-on-failure', fullPage: true },
 
     /* Record video of the failed tests */
-    video: { mode: 'on-first-retry', size: { width: 640, height: 480 } },
+    video: { mode: 'retain-on-failure' },
   },
 
   /* In CI/GitHub action, run the production server before running tests
@@ -65,13 +71,17 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'], screenshot: { mode: 'only-on-failure' }, permissions: ['clipboard-read'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: VIEWPORT,
+        permissions: ['clipboard-read'],
+      },
     },
     {
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
-        screenshot: { mode: 'only-on-failure' },
+        viewport: VIEWPORT,
         // Firefox is extra secure, so you need to enable clipboard read permission like this
         // https://github.com/microsoft/playwright/issues/13037#issuecomment-1739856724
         launchOptions: {
@@ -84,7 +94,11 @@ export default defineConfig({
     },
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'], screenshot: { mode: 'only-on-failure' } },
+      use: {
+        ...devices['Desktop Safari'],
+        viewport: VIEWPORT,
+      },
+
       // Webkit cannot read the clipboard at all, skip that part of the tests for webkit
     },
 

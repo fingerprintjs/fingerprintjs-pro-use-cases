@@ -20,8 +20,10 @@ export const env = createEnv({
   server: {
     // Main Fingerprint configuration
     SERVER_API_KEY: z.string().min(1).default('fMUtVoWHKddpfOheQww2'),
-    // Lower confidence score limit for e2e tests
-    MIN_CONFIDENCE_SCORE: z.coerce.number().min(0.0).max(1.0).default(0.85),
+    // Use a low default confidence score limit to make sure production e2e tests are not flaky
+    // Users are advised to decide for themselves the correct threshold for their use case
+    // It can be pretty nuanced: https://dev.fingerprint.com/docs/identification-accuracy-and-confidence#confidence-score
+    MIN_CONFIDENCE_SCORE: z.coerce.number().min(0.0).max(1.0).default(0.4),
 
     // Credential stuffing demo
     KNOWN_VISITOR_IDS: z.string().min(1).default('').optional(),

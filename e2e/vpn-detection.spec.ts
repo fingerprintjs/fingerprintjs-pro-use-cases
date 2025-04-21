@@ -7,11 +7,15 @@ const getActivateButton = (page: Page) => page.getByTestId(TEST_IDS.vpnDetection
 
 test.describe('VPN Detection demo', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/vpn-detection');
+    await page.goto('/vpn-detection', { waitUntil: 'networkidle' });
   });
 
   test('should personalize UI copy based on user location', async ({ page }) => {
-    await expect(page.getByTestId(TEST_IDS.vpnDetection.callout)).toContainText(VPN_DETECTION_COPY.personalizedCallout);
+    await expect(page.getByTestId(TEST_IDS.vpnDetection.callout)).toContainText(
+      VPN_DETECTION_COPY.personalizedCallout,
+      // Give time identify visitor and recieve Smart Signals from the server
+      { timeout: 15000 },
+    );
 
     const button = await page.getByTestId(TEST_IDS.vpnDetection.activateRegionalPricing);
     await expect(button).toContainText(/\d+% off with/);

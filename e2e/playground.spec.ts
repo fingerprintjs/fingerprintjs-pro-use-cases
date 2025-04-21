@@ -1,5 +1,5 @@
 import { Page, expect, test } from '@playwright/test';
-import { blockGoogleTagManager } from './e2eTestUtils';
+import { blockGoogleTagManager, scrollToView } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
 
 const TEST_ID = TEST_IDS.playground;
@@ -34,7 +34,7 @@ const clickPlaygroundRefreshButton = async (page: Page) => {
 
 test.beforeEach(async ({ page }) => {
   await blockGoogleTagManager(page);
-  await page.goto('/playground');
+  await page.goto('/playground', { waitUntil: 'networkidle' });
 });
 
 test.describe('Playground page', () => {
@@ -102,7 +102,9 @@ test.describe('Playground page', () => {
   });
 
   test('Clicking JSON link scrolls to appropriate JSON property', async ({ page }) => {
-    await page.getByText('See the JSON below').click({ force: true });
+    const seeJsonLink = await page.getByText('See the JSON below');
+    await scrollToView(seeJsonLink);
+    await seeJsonLink.click();
     await expect(page.locator('span.json-view--property:text("rawDeviceAttributes")')).toBeInViewport();
   });
 });

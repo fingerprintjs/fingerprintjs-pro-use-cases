@@ -1,4 +1,4 @@
-import { Page, expect } from '@playwright/test';
+import { Locator, Page, expect } from '@playwright/test';
 import { TEST_ATTRIBUTES, TEST_IDS } from '../src/client/testIDs';
 import { Severity } from '../src/server/checks';
 
@@ -17,6 +17,7 @@ export async function blockGoogleTagManager(page: Page) {
 
 // Assumes you already are on a use case page with the Reset button present
 export async function resetScenarios(page: Page) {
+  await page.waitForLoadState('networkidle');
   await page.getByTestId(TEST_IDS.reset.resetButton).click();
   await page.getByTestId(TEST_IDS.reset.resetSuccess).waitFor({ timeout: 20000 });
   await page.getByTestId(TEST_IDS.common.closeSnackbar).first().click();
@@ -51,7 +52,11 @@ export async function assertSnackbar({ page, severity, text, index = 0 }: Assert
   await expect(snackbar).toContainText(text);
 }
 
+export const scrollToView = async (locator: Locator) => {
+  await locator.evaluate((element) => element.scrollIntoView({ behavior: 'smooth', block: 'center' }));
+};
+
 export const scrollDemoIntoView = async (page: Page) => {
   const demoBrowser = await page.getByTestId(TEST_IDS.common.demoBrowser);
-  await demoBrowser.scrollIntoViewIfNeeded();
+  await scrollToView(demoBrowser);
 };
