@@ -14,7 +14,7 @@
 
 # Fingerprint Pro Use Cases
 
-This repository demonstrates various use cases for [Fingerprint Pro](https://fingerprint.com) — a browser and device identity platform with 99.5% accuracy. Each scenario covers frontend and backend sample implementation with a persistent data layer. A live demo of each use case is available at [demo.fingerprint.com](https://demo.fingerprint.com/).
+This repository demonstrates various use cases for [Fingerprint Pro](https://fingerprint.com) — a device intelligence platform offering industry-leading accuracy. Each scenario covers frontend and backend sample implementation with a persistent data layer. A live demo of each use case is available at [demo.fingerprint.com](https://demo.fingerprint.com/).
 You can learn more about these use cases on our [website](https://fingerprint.com/use-cases).
 
 ## How to run
