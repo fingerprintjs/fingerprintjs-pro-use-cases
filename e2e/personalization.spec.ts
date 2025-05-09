@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { blockGoogleTagManager, resetScenarios } from './e2eTestUtils';
+import { blockGoogleTagManager, resetScenarios, scrollToView } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
 
 const CART_ID = TEST_IDS.common.cart;
@@ -48,7 +48,7 @@ test.describe('Personalization', () => {
     expect(subTotal3).toBe(productPrice);
 
     await cartItem.getByTestId(CART_ID.cartItemMinusOne).click();
-    await expect.poll(() => cartItems.count()).toBe(0);
+    await expect(cartItems).toHaveCount(0);
   });
 
   test('should remember cart contents after reloading page', async ({ page }) => {
@@ -65,32 +65,28 @@ test.describe('Personalization', () => {
 
     await page.reload();
 
-    await expect.poll(() => cartItem.count()).toBe(1);
+    await expect(cartItem).toHaveCount(1);
     await expect(cartItem.getByTestId(CART_ID.cartItemCount)).toHaveText('02');
   });
 
   test('should filter products and remember search history', async ({ page }) => {
-    await page.getByTestId(PERS_ID.search).fill('Decaf coffee');
+    const SEARCH_TERM = 'Decaf coffee';
+    const search = page.getByTestId(PERS_ID.search);
+    await scrollToView(search);
+    await search.fill(SEARCH_TERM);
 
     const searchHistory = page.getByTestId(PERS_ID.searchHistoryItem);
     const products = page.getByTestId(PERS_ID.coffeeProduct);
 
-    const checkFoundProducts = async () => {
-      await expect
-        .poll(async () => {
-          const textContents = await Promise.all((await products.all()).map((p) => p.textContent()));
-          return textContents.every((p) => p?.includes('Decaf coffee'));
-        })
-        .toBe(true);
-    };
-
-    await checkFoundProducts();
-    await expect.poll(() => searchHistory.count()).toBe(1);
+    await expect(products).toHaveCount(1);
+    await expect(products.first()).toContainText(SEARCH_TERM);
+    await expect(searchHistory).toHaveCount(1);
 
     await page.reload();
-    await expect.poll(() => searchHistory.count()).toBe(1);
+    await expect(searchHistory).toHaveCount(1);
     await searchHistory.first().click();
 
-    await checkFoundProducts();
+    await expect(products).toHaveCount(1);
+    await expect(products.first()).toContainText(SEARCH_TERM);
   });
 });
