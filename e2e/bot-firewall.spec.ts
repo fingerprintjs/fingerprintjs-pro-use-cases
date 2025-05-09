@@ -16,7 +16,7 @@ test.skip(({ browserName }) => browserName !== 'chromium', 'Chrome-only');
 /**
  * Increase timeout to give Cloudflare time to update the ruleset
  */
-test.setTimeout(60000);
+test.setTimeout(75 * 1000);
 
 test.beforeEach(async ({ page }) => {
   await blockGoogleTagManager(page);
@@ -25,6 +25,11 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('Bot Firewall Demo CHROME_ONLY', () => {
+  /**
+   * Cloudflare is slow sometimes, so retry the test 5 times
+   */
+  test.describe.configure({ retries: 5 });
+
   test('Should display bot visit and allow blocking/unblocking its IP address', async ({ page }) => {
     // Record bot visit in web-scraping page
     await page.goto('/web-scraping');
