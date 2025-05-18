@@ -4,14 +4,14 @@ import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { UseCaseWrapper } from '../../../../client/components/UseCaseWrapper/UseCaseWrapper';
 import { USE_CASES } from '../../../../client/content';
 import { FPJS_CLIENT_TIMEOUT } from '../../../../const';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { IsLoggedInPayload, IsLoggedInResponse } from '../../api/is-logged-in/route';
 import Button from '../../../../client/components/Button/Button';
 import styles from '../../accountSharing.module.scss';
 import { LogoutResponse } from '../../api/logout/route';
 import { Alert } from '../../../../client/components/Alert/Alert';
 import { useRouter } from 'next/navigation';
-import { FunctionComponent, useState, useRef, useCallback } from 'react';
+import { FunctionComponent, useState, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { GoChevronLeft } from 'react-icons/go';
 import { GoChevronRight } from 'react-icons/go';
@@ -105,6 +105,8 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
     data: loggedInData,
     isLoading: isLoadingLoggedIn,
     error: loggedInError,
+    isSuccess,
+    isFetched,
   } = useQuery<IsLoggedInResponse, Error, IsLoggedInResponse>({
     queryKey: ['isLoggedIn', username, visitorData?.requestId],
     queryFn: async () => {
@@ -118,42 +120,53 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
       return await response.json();
     },
     enabled: Boolean(visitorData?.requestId),
-    /**
-     * To keep the demo simple, we are using polling to check if the user has been logged out from this device.
-     * In a real-world application, you might opt to use a server-sent events (SSE) or web sockets to get real-time updates.
-     */
     refetchInterval: 2000,
-    onSuccess: (data) => {
-      if (data.severity === 'error') {
-        youHaveBeenLoggedOut(
-          data.otherDevice ? `${data.otherDevice.deviceName} (${data.otherDevice.deviceLocation})` : undefined,
-        );
-      }
-    },
-    onSettled: () => {
-      setIsInitialLoading(false);
-    },
   });
+  
+  useEffect(() => {
+    if (isSuccess && loggedInData?.severity === 'error') {
+      youHaveBeenLoggedOut(
+        loggedInData.otherDevice
+          ? `${loggedInData.otherDevice.deviceName} (${loggedInData.otherDevice.deviceLocation})`
+          : undefined
+      );
+    }
+  }, [isSuccess, loggedInData]);
+
+  useEffect(() => {
+    if (isFetched) {
+      setIsInitialLoading(false);
+    }
+  }, [isFetched]);
+  
+
 
   const {
     mutate: logout,
-    isLoading: isLoadingLogout,
+    isPending: isLoadingLogout,
     data: logoutData,
     error: logoutError,
-  } = useMutation<LogoutResponse, Error>({
+  } = useMutation<LogoutResponse, Error, void>({
     mutationFn: async () => {
-      const response = await fetch(`/account-sharing/api/logout`, {
+      const response = await fetch('/account-sharing/api/logout', {
         method: 'POST',
-        body: JSON.stringify({ username, requestId: visitorData?.requestId ?? '' }),
+        body: JSON.stringify({
+          username,
+          requestId: visitorData?.requestId ?? '',
+        }),
       });
       return await response.json();
     },
+  });
+  
+  logout(undefined, {
     onSuccess: (data) => {
       if (data.severity === 'success') {
         youHaveBeenLoggedOut();
       }
     },
   });
+  
 
   return (
     <UseCaseWrapper useCase={USE_CASES.accountSharing} noInnerPadding={true} embed={embed}>
