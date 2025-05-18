@@ -2,7 +2,7 @@
 
 import { INSTRUCTION_ANCHOR_ID, UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
 import { USE_CASES } from '../../client/content';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import Button from '../../client/components/Button/Button';
 import { BlockIpPayload, BlockIpResponse } from './api/block-ip/route';
 import styles from './components/botFirewallComponents.module.scss';
@@ -18,6 +18,7 @@ import { Alert } from '../../client/components/Alert/Alert';
 import { BotVisit } from './api/get-bot-visits/botVisitDatabase';
 import { BotTypeInfo, BotVisitAction, InstructionPrompt } from './components/botFirewallComponents';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
+import { boolean, string } from 'zod';
 
 const DEFAULT_DISPLAYED_VISITS = 10;
 const DISPLAYED_VISITS_INCREMENT = 10;
@@ -69,46 +70,57 @@ const useBlockedIps = () => {
 };
 
 /** Mutation (POST request) to block/unblock an IP */
-const useBlockUnblockIpAddress = (
+
+export const useBlockUnblockIpAddress = (
   getVisitorData: VisitorQueryContext<true>['getData'],
-  refetchBlockedIps: () => void,
+  refetchBlockedIps: () => void
 ) => {
-  const { mutate: blockIp, isLoading: isLoadingBlockIp } = useMutation({
-    mutationKey: ['block IP'],
-    mutationFn: async ({ ip, blocked }: Omit<BlockIpPayload, 'requestId'>) => {
+  const { mutate, isPending: isLoadingBlockIp } = useMutation({
+    mutationKey: ['block-ip'],
+    mutationFn: async ({ ip, blocked }: Omit<BlockIpPayload, 'requestId'>): Promise<BlockIpResponse> => {
       const { requestId } = await getVisitorData({ ignoreCache: true });
+
       const response = await fetch('/bot-firewall/api/block-ip', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ip, blocked, requestId } satisfies BlockIpPayload),
+        body: JSON.stringify({ ip, blocked, requestId }),
       });
+
       if (!response.ok) {
-        throw new Error('Failed to update firewall: ' + ((await response.json()).message ?? response.statusText));
+        const errorBody = await response.json();
+        throw new Error(errorBody?.message || 'Failed to update firewall');
       }
-      return await response.json();
+
+      return response.json();
     },
-    onSuccess: async (data: BlockIpResponse) => {
+    onSuccess: (data) => {
       refetchBlockedIps();
       enqueueSnackbar(
         <div>
           IP address <b>&nbsp;{data.data?.ip}&nbsp;</b> was{' '}
-          <b>&nbsp;{data.data?.blocked ? 'blocked' : 'unblocked'}&nbsp;</b> in the application firewall.{' '}
+          <b>&nbsp;{data.data?.blocked ? 'blocked' : 'unblocked'}&nbsp;</b> in the application firewall.
         </div>,
-        { ...snackbarOptions, variant: 'success' },
+        {
+          variant: 'success',
+        }
       );
     },
     onError: (error: Error) => {
       enqueueSnackbar(error.message, {
-        ...snackbarOptions,
         variant: 'error',
       });
     },
   });
 
-  return { blockIp, isLoadingBlockIp };
+  return {
+    blockIp: mutate,
+    isLoadingBlockIp,
+  };
 };
+
+
 
 /**
  * Bot Firewall Page Component
@@ -287,3 +299,7 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
 };
 
 export default BotFirewall;
+function blockIp(arg0: { ip: any; blocked: any; }, arg1: { onSuccess: (data: BlockIpResponse) => Promise<void>; }) {
+  throw new Error('Function not implemented.');
+}
+

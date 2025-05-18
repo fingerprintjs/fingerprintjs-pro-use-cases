@@ -14,7 +14,7 @@ import Button from '../../client/components/Button/Button';
 import { Cart } from '../../client/components/Cart/Cart';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { CouponClaimPayload, CouponClaimResponse } from './api/claim/route';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
@@ -32,28 +32,30 @@ export function CouponFraudUseCase({ embed }: { embed?: boolean }) {
   );
 
   const {
-    mutate: claimCoupon,
-    isLoading,
-    data: claimResponse,
-  } = useMutation({
-    mutationKey: ['request coupon claim'],
-    mutationFn: async ({ couponCode }: Omit<CouponClaimPayload, 'requestId'>) => {
-      const { requestId } = await getVisitorData({ ignoreCache: true });
-      const response = await fetch('/coupon-fraud/api/claim', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ couponCode, requestId } satisfies CouponClaimPayload),
-      });
-      return await response.json();
-    },
-    onSuccess: (data: CouponClaimResponse) => {
-      if (data.severity === 'success') {
-        setDiscount(30);
-      }
-    },
-  });
+  mutate: claimCoupon,
+  isPending,
+  data: claimResponse,
+} = useMutation<CouponClaimResponse, Error, Omit<CouponClaimPayload, 'requestId'>>({
+  mutationKey: ['request coupon claim'],
+  mutationFn: async ({ couponCode }) => {
+    const { requestId } = await getVisitorData({ ignoreCache: true });
+    const response = await fetch('/coupon-fraud/api/claim', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ couponCode, requestId } satisfies CouponClaimPayload),
+    });
+    return await response.json();
+  },
+  onSuccess: (data) => {
+    if (data.severity === 'success') {
+      setDiscount(30);
+    }
+  }
+});
+
+
 
   const [airMaxCount, setAirMaxCount] = useState(1);
   const [allStarCount, setAllStarCount] = useState(1);
@@ -106,8 +108,8 @@ export function CouponFraudUseCase({ embed }: { embed?: boolean }) {
                 required
                 data-testid={TEST_IDS.couponFraud.couponCode}
               />
-              <Button disabled={isLoading} size='medium' data-testid={TEST_IDS.couponFraud.submitCoupon}>
-                {isLoading ? 'Processing...' : 'Apply'}
+              <Button disabled={isPending} size='medium' data-testid={TEST_IDS.couponFraud.submitCoupon}>
+                {isPending ? 'Processing...' : 'Apply'}
               </Button>
             </div>
             {claimResponse?.message && (

@@ -1,7 +1,7 @@
 'use client';
 
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query'
 import { ResetRequest, ResetResponse } from '../../../app/api/admin/reset/route';
 import { useSnackbar } from 'notistack';
 import styles from './userReset.module.scss';
