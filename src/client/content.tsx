@@ -707,7 +707,7 @@ export const PLAYGROUND_METADATA: Pick<
       VPN detection, browser tampering detection, IP blocklist matching, and more.
     </p>,
   ],
-  titleMeta: 'Fingerprint Playground Pro | Test Your Browser Signals',
+  titleMeta: 'Fingerprint Pro Playground | Test Your Browser Signals',
   descriptionMeta: 'Analyze your browser with Fingerprint Pro and see all the available signals.',
 };
 
