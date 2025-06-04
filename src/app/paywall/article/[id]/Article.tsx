@@ -8,7 +8,7 @@ import Image from 'next/image';
 import styles from '../../paywall.module.scss';
 import { Alert } from '../../../../client/components/Alert/Alert';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { TEST_IDS } from '../../../../client/testIDs';
 import { ArticleGrid, Byline } from '../../components/ArticleGrid';
 import { BackArrow } from '../../../../client/components/BackArrow/BackArrow';
@@ -27,17 +27,27 @@ export function Article({ articleId, embed }: { articleId: string; embed: boolea
     timeout: FPJS_CLIENT_TIMEOUT,
   });
 
-  const { data: articleData, error: articleError } = useQuery<ArticleRequestPayload, Error, ArticleResponse>(
-    ['GET_ARTICLE_QUERY', articleId],
-    async () => {
-      const { requestId } = await getVisitorData();
-      const response = await fetch(`/paywall/api/article/${articleId}`, {
-        method: 'POST',
-        body: JSON.stringify({ requestId } satisfies ArticleRequestPayload),
-      });
-      return await response.json();
-    },
-  );
+const { 
+  data: articleData, 
+  error: articleError 
+} = useQuery<ArticleResponse, Error>({
+  queryKey: ['GET_ARTICLE_QUERY', articleId],
+  queryFn: async () => {
+    const { requestId } = await getVisitorData();
+    const response = await fetch(`/paywall/api/article/${articleId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json', // Added missing headers
+      },
+      body: JSON.stringify({ requestId } satisfies ArticleRequestPayload),
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch article');
+    }
+    return await response.json();
+  },
+});
 
   const { article } = articleData ?? {};
   const returnUrl = `/paywall${embed ? '/embed' : ''}`;

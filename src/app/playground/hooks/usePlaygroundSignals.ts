@@ -1,7 +1,7 @@
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { FPJS_CLIENT_TIMEOUT } from '../../../const';
 
 export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: EventResponse) => void }) {
@@ -24,9 +24,9 @@ export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Even
   } = useQuery<EventResponse | undefined>(
     [requestId],
     () =>
-      fetch(`/api/event/${agentResponse?.requestId}`, { method: 'POST' }).then((res) => {
+      fetch(/api/event/${agentResponse?.requestId}, { method: 'POST' }).then((res) => {
         if (res.status !== 200) {
-          throw new Error(`${res.statusText}`);
+          throw new Error(${res.statusText});
         }
         return res.json();
       }),

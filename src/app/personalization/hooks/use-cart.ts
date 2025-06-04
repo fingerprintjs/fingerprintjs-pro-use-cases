@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery } from  '@tanstack/react-query';
 import { useCallback } from 'react';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { GetCartItemsPayload, GetCartItemsResponse } from '../api/cart/get-items/route';
