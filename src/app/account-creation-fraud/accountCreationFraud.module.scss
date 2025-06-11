@@ -1,0 +1,39 @@
+form.accountCreationFraudForm {
+  .alert {
+    margin: rem(24px) 0;
+  }
+  button[type='submit'] {
+    margin: 0 auto;
+    margin-top: rem(24px);
+  }
+
+  input.password {
+    margin-bottom: 0;
+  }
+
+  .showHideIcon {
+    margin-left: rem(-40px);
+    cursor: pointer;
+
+    @include media('<=250px') {
+      display: none;
+    }
+  }
+}
+
+.formTitle {
+  margin-top: rem(20px);
+  margin-bottom: rem(20px);
+  margin-left: auto;
+  margin-right: auto;
+  font-size: rem(24px);
+  font-weight: 700;
+  text-align: center;
+  font-family: Inter;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+
+  @include media('<=phone') {
+    font-size: rem(20px);
+  }
+}

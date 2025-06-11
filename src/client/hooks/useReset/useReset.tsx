@@ -61,6 +61,7 @@ export const useReset = ({ onError, onSuccess }: UseResetParams) => {
               <li>Deleted {data.result?.deletedBlockedIps} blocked IPs.</li>
               <li>Deleted {data.result?.deletedSmsVerificationRequests} SMS verification requests.</li>
               <li>Deleted {data.result?.deletedAccountSharingRecords} account sharing records.</li>
+              <li>Deleted {data.result?.deletedAccountCreationFraudRecords} account creation fraud records.</li>
             </ul>
           </div>,
           {
