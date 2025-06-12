@@ -26,7 +26,7 @@ if (!TEST_BUILD) {
 
 test.beforeEach(async ({ page }) => {
   await blockGoogleTagManager(page);
-  await page.goto(`/sms-pumping?disableBotDetection=1`);
+  await page.goto(`/sms-pumping?disableBotDetection=1`, { waitUntil: 'networkidle' });
   await resetScenarios(page);
   await scrollDemoIntoView(page);
 });

@@ -14,7 +14,7 @@
 
 # Fingerprint Pro Use Cases
 
-This repository demonstrates various use cases for [Fingerprint Pro](https://fingerprint.com) — a browser and device identity platform with 99.5% accuracy. Each scenario covers frontend and backend sample implementation with a persistent data layer. A live demo of each use case is available at [demo.fingerprint.com](https://demo.fingerprint.com/).
+This repository demonstrates various use cases for [Fingerprint Pro](https://fingerprint.com) — a device intelligence platform offering industry-leading accuracy. Each scenario covers frontend and backend sample implementation with a persistent data layer. A live demo of each use case is available at [demo.fingerprint.com](https://demo.fingerprint.com/).
 You can learn more about these use cases on our [website](https://fingerprint.com/use-cases).
 
 ## How to run
@@ -102,6 +102,13 @@ Detect when multiple devices are using the same account. Prevent people from sha
 
 [👥 Account Sharing Prevention Live Demo](https://demo.fingerprint.com/account-sharing)  
 [📖 Account Sharing Prevention Article](https://fingerprint.com/blog/prevent-coupon-promo-abuse-increase-sales/)
+
+### Account Creation Fraud Prevention
+
+Accurately identify visitors who create multiple fake accounts. Fight trial abuse by limiting the number of accounts visitors can create from a single browser or device.
+
+[🔙 Account Creation Fraud Prevention Live Demo](https://demo.fingerprint.com/account-creation-fraud)  
+[📖 Account Creation Fraud Article](https://fingerprint.com/blog/account-creation-fraud/)
 
 ## Documentation and Support
 

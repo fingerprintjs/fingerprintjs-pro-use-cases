@@ -116,6 +116,8 @@ export function Playground() {
   const { latitude, longitude, accuracyRadius } = ipLocation ?? {};
   const zoom = getZoomLevel(accuracyRadius);
 
+  const isBadBot = usedIdentificationEvent?.products.botd?.data?.bot.result === 'bad';
+
   const identificationSignals: TableCellData[][] = [
     [
       { content: 'Browser' },
@@ -218,7 +220,8 @@ export function Playground() {
       {
         content: (
           <>
-            {latitude && longitude && (
+            {/* Do not show Map to bots, avoid needless MapBox API calls */}
+            {latitude && longitude && !isBadBot && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.25 }}>
                 <Map
                   key={[latitude, longitude].toString()}
@@ -260,8 +263,7 @@ export function Playground() {
       },
       {
         content: <JsonLink propertyName='botd'>{botDetectionResult({ event: usedIdentificationEvent })}</JsonLink>,
-        className:
-          usedIdentificationEvent?.products.botd?.data?.bot.result === 'bad' ? tableStyles.red : tableStyles.green,
+        className: isBadBot ? tableStyles.red : tableStyles.green,
       },
     ],
     [

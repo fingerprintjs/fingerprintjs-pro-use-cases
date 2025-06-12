@@ -28,7 +28,6 @@ export async function POST(req: Request): Promise<NextResponse<LoginResponse>> {
   const fingerprintResult = await getAndValidateFingerprintResult({
     requestId,
     req,
-    options: { minConfidenceScore: 0.5 },
   });
   if (!fingerprintResult.okay) {
     return NextResponse.json({ message: fingerprintResult.error, severity: 'error' }, { status: 403 });
