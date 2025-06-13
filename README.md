@@ -103,6 +103,13 @@ Detect when multiple devices are using the same account. Prevent people from sha
 [👥 Account Sharing Prevention Live Demo](https://demo.fingerprint.com/account-sharing)  
 [📖 Account Sharing Prevention Article](https://fingerprint.com/blog/prevent-coupon-promo-abuse-increase-sales/)
 
+### Account Creation Fraud Prevention
+
+Accurately identify visitors who create multiple fake accounts. Fight trial abuse by limiting the number of accounts visitors can create from a single browser or device.
+
+[🔙 Account Creation Fraud Prevention Live Demo](https://demo.fingerprint.com/account-creation-fraud)  
+[📖 Account Creation Fraud Article](https://fingerprint.com/blog/account-creation-fraud/)
+
 ## Documentation and Support
 
 To dive deeper into Fingerprint Pro, see our [Documentation](https://dev.fingerprint.com/docs). For questions or suggestions specific to this repository, you can [create an issue](https://github.com/fingerprintjs/fingerprintjs-pro-use-cases/issues/new). For general questions and community vibes, visit our [Discord server](https://discord.gg/39EpE2neBg). If you require private support, you can email us at [oss-support@fingerprint.com](mailto:oss-support@fingerprint.com).
