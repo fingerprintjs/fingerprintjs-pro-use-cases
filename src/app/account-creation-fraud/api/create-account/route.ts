@@ -41,23 +41,22 @@ export async function POST(req: Request): Promise<NextResponse<CreateAccountResp
     return NextResponse.json({ severity: 'error', message: 'Visitor ID not found.' }, { status: 403 });
   }
 
-  const createResult = await AccountDbModel.findOrCreate({
-    where: { visitorId },
-    defaults: {
-      visitorId,
-      passwordHash: hashString(password),
-      username,
-      timestamp: new Date(),
-    },
-  });
-  const created = createResult[1];
-
-  if (!created) {
+  // Check if an account already exists for this visitorId
+  const existingAccount = await AccountDbModel.findOne({ where: { visitorId } });
+  if (existingAccount) {
     return NextResponse.json(
       { severity: 'error', message: 'An account has already been created by this device.' },
       { status: 409 },
     );
   }
+
+  // If not, create a new account
+  await AccountDbModel.create({
+    visitorId,
+    passwordHash: hashString(password),
+    username,
+    timestamp: new Date(),
+  });
 
   return NextResponse.json({ severity: 'success', message: 'Account created.' }, { status: 200 });
 }
