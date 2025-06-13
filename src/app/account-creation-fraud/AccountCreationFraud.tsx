@@ -53,7 +53,15 @@ export function AccountCreationFraudUseCase({ embed }: { embed?: boolean }) {
   const createAccountStatus = calculateCreateAccountStatus(isLoading, createAccountResponse);
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.accountCreationFraud} embed={embed}>
+    <UseCaseWrapper
+      useCase={{
+        ...USE_CASES.accountCreationFraud,
+        // Temporarily override the title so the use case page uses the desired title for SEO, but the homepage does not
+        // Will role this back after #204 is merged and the issue is fixed for all use cases
+        title: 'Account Creation Fraud Prevention Test',
+      }}
+      embed={embed}
+    >
       {createAccountStatus === 'success' ? (
         <TrialCreated onGoBack={handleGoBack} />
       ) : (
