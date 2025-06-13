@@ -70,7 +70,6 @@ interface CreateTrialFormProps {
 
 function CreateTrialForm({ createAccountStatus, onCreate }: CreateTrialFormProps) {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const formDisabled = createAccountStatus === 'trial-exists';
   const accountCreatePending = createAccountStatus === 'pending';
 
   return (
@@ -92,11 +91,10 @@ function CreateTrialForm({ createAccountStatus, onCreate }: CreateTrialFormProps
           className={classNames(formStyles.useCaseForm, styles.accountCreationFraudForm)}
         >
           <label htmlFor='username'>Username</label>
-          <input disabled={formDisabled} type='text' id='username' name='username' placeholder='Username' required />
+          <input type='text' id='username' name='username' placeholder='Username' required />
 
           <label htmlFor='password'>Password</label>
           <input
-            disabled={formDisabled}
             type={showPassword ? 'text' : 'password'}
             id='password'
             name='password'
@@ -108,7 +106,7 @@ function CreateTrialForm({ createAccountStatus, onCreate }: CreateTrialFormProps
           </button>
           {createAccountStatus === 'trial-exists' ? <TrialExistsAlert /> : null}
           {createAccountStatus === 'unexpected-error' ? <UnexpectedCreationErrorAlert /> : null}
-          <Button disabled={formDisabled || accountCreatePending} type='submit'>
+          <Button disabled={accountCreatePending} type='submit'>
             {accountCreatePending ? 'Processing...' : 'Create trial account'}
           </Button>
         </form>
