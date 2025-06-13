@@ -55,7 +55,27 @@ test.describe('Account Creation Fraud', () => {
     await expect(
       page.getByText('It looks like you have already created a free trial account using this browser.'),
     ).toBeVisible();
-    await expect(getCreateTrialAccountButton(page)).toBeDisabled();
+    await expect(getCreateTrialAccountButton(page)).not.toBeDisabled();
+  });
+
+  test('should disable the submission button while the request is in progress', async ({ page }) => {
+    let completeApiRequest: () => void = () => {};
+    const apiRequestPromise = new Promise<void>((resolve) => (completeApiRequest = resolve));
+    await page.route('**/account-creation-fraud/api/create-account', async (route) => {
+      await apiRequestPromise;
+      await route.continue();
+    });
+
+    await enterUsername(page, 'user1');
+    await enterPassword(page, 'password');
+    await submitCreateTrialAccount(page);
+
+    const processingButton = page.getByRole('button', { name: 'Processing...' });
+    await expect(processingButton).toBeVisible();
+    await expect(processingButton).toBeDisabled();
+
+    completeApiRequest();
+    await expect(page.getByRole('heading', { name: 'Welcome to your free trial' })).toBeVisible();
   });
 
   test('should gracefully handle an unexpected 502 response status code', async ({ page }) => {

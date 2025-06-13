@@ -692,7 +692,7 @@ export const USE_CASES = {
     ],
   },
   accountCreationFraud: {
-    title: 'Account Creation Fraud Prevention Test',
+    title: 'Account Creation Fraud',
     titleMeta: 'Account Creation Fraud Prevention Test | Fingerprint',
     url: '/account-creation-fraud',
     articleUrl: 'https://fingerprint.com/blog/account-creation-fraud/',
@@ -711,7 +711,7 @@ export const USE_CASES = {
       'Use the demo below to see how Fingerprint can identify fraudsters who create multiple accounts and abuse free trials.',
     instructions: [
       <>
-        Fill in the form below and click <b>Create trial account</b>
+        Fill in the form below and click <b>Create trial account</b>.
       </>,
       <>
         Go back and try starting another free trial. You will not be able to create multiple accounts from the same

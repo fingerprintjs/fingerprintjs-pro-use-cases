@@ -53,7 +53,15 @@ export function AccountCreationFraudUseCase({ embed }: { embed?: boolean }) {
   const createAccountStatus = calculateCreateAccountStatus(isLoading, createAccountResponse);
 
   return (
-    <UseCaseWrapper useCase={USE_CASES.accountCreationFraud} embed={embed}>
+    <UseCaseWrapper
+      useCase={{
+        ...USE_CASES.accountCreationFraud,
+        // Temporarily override the title so the use case page uses the desired title for SEO, but the homepage does not
+        // Will role this back after #204 is merged and the issue is fixed for all use cases
+        title: 'Account Creation Fraud Prevention Test',
+      }}
+      embed={embed}
+    >
       {createAccountStatus === 'success' ? (
         <TrialCreated onGoBack={handleGoBack} />
       ) : (
@@ -70,7 +78,6 @@ interface CreateTrialFormProps {
 
 function CreateTrialForm({ createAccountStatus, onCreate }: CreateTrialFormProps) {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const formDisabled = createAccountStatus === 'trial-exists';
   const accountCreatePending = createAccountStatus === 'pending';
 
   return (
@@ -92,11 +99,10 @@ function CreateTrialForm({ createAccountStatus, onCreate }: CreateTrialFormProps
           className={classNames(formStyles.useCaseForm, styles.accountCreationFraudForm)}
         >
           <label htmlFor='username'>Username</label>
-          <input disabled={formDisabled} type='text' id='username' name='username' placeholder='Username' required />
+          <input type='text' id='username' name='username' placeholder='Username' required />
 
           <label htmlFor='password'>Password</label>
           <input
-            disabled={formDisabled}
             type={showPassword ? 'text' : 'password'}
             id='password'
             name='password'
@@ -108,7 +114,7 @@ function CreateTrialForm({ createAccountStatus, onCreate }: CreateTrialFormProps
           </button>
           {createAccountStatus === 'trial-exists' ? <TrialExistsAlert /> : null}
           {createAccountStatus === 'unexpected-error' ? <UnexpectedCreationErrorAlert /> : null}
-          <Button disabled={formDisabled || accountCreatePending} type='submit'>
+          <Button disabled={accountCreatePending} type='submit'>
             {accountCreatePending ? 'Processing...' : 'Create trial account'}
           </Button>
         </form>
