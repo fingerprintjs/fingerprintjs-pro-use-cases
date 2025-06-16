@@ -20,7 +20,7 @@ export const PRODUCTION_URL = 'https://demo.fingerprint.com';
 
 export type UseCase = {
   title: string;
-  titleH1?: string;
+  titleH1: string;
   titleMeta: string;
   url: string;
   description?: React.ReactNode;
