@@ -20,6 +20,7 @@ export const PRODUCTION_URL = 'https://demo.fingerprint.com';
 
 export type UseCase = {
   title: string;
+  titleH1?: string;
   titleMeta: string;
   url: string;
   description?: React.ReactNode;
@@ -44,7 +45,8 @@ export type ResourceLink = {
 
 export const USE_CASES = {
   couponFraud: {
-    title: 'Coupon Fraud Prevention Test',
+    title: 'Coupon Fraud',
+    titleH1: 'Coupon Fraud Prevention Test',
     titleMeta: 'Coupon Fraud Prevention Test | Fingerprint',
     url: '/coupon-fraud',
     iconSvg: CouponFraudIcon,
@@ -101,7 +103,8 @@ export const USE_CASES = {
     ],
   },
   credentialStuffing: {
-    title: 'Credential Stuffing Prevention Test',
+    title: 'Credential Stuffing',
+    titleH1: 'Credential Stuffing Prevention Test',
     titleMeta: 'Credential Stuffing Prevention Test | Fingerprint',
     url: '/credential-stuffing',
     articleUrl: 'https://fingerprint.com/blog/stop-credential-stuffing/',
@@ -160,7 +163,8 @@ export const USE_CASES = {
     ],
   },
   accountSharing: {
-    title: 'Account Sharing Prevention Test',
+    title: 'Account Sharing',
+    titleH1: 'Account Sharing Prevention Test',
     titleMeta: 'Account Sharing Prevention Test | Fingerprint',
     url: '/account-sharing',
     articleUrl: 'https://fingerprint.com/blog/increase-revenue-identifying-preventing-account-sharing/',
@@ -223,7 +227,8 @@ export const USE_CASES = {
     ],
   },
   paymentFraud: {
-    title: 'Payment Fraud Protection Test',
+    title: 'Payment Fraud',
+    titleH1: 'Payment Fraud Protection Test',
     titleMeta: 'Payment Fraud Protection Test | Fingerprint',
     url: '/payment-fraud',
     articleUrl: 'https://fingerprint.com/blog/reducing-payment-fraud-with-reliable-visitor-identification/',
@@ -289,7 +294,8 @@ export const USE_CASES = {
     ],
   },
   loanRisk: {
-    title: 'Loan Application Fraud Protection Test',
+    title: 'Loan Risk',
+    titleH1: 'Loan Application Fraud Protection Test',
     titleMeta: 'Loan Application Fraud Protection Test | Fingerprint',
     url: '/loan-risk',
     articleUrl: 'https://fingerprint.com/blog/detect-repeat-applications-loan-risk/',
@@ -329,7 +335,8 @@ export const USE_CASES = {
     ],
   },
   paywall: {
-    title: 'Paywall Bypass Prevention Test',
+    title: 'Paywall',
+    titleH1: 'Paywall Bypass Prevention Test',
     titleMeta: 'Paywall Bypass Prevention Test | Fingerprint',
     url: '/paywall',
     articleUrl: 'https://fingerprint.com/blog/how-paywalls-work-paywall-protection-tutorial/',
@@ -361,7 +368,8 @@ export const USE_CASES = {
     ],
   },
   personalization: {
-    title: 'Anonymous Visitor Personalization Test',
+    title: 'Personalization',
+    titleH1: 'Anonymous Visitor Personalization Test',
     titleMeta: 'Anonymous Visitor Personalization Test | Fingerprint',
     url: '/personalization',
     articleUrl: 'https://fingerprint.com/blog/providing-personalization-to-anonymous-users/',
@@ -407,7 +415,8 @@ export const USE_CASES = {
     ],
   },
   webScraping: {
-    title: 'Web Scraping Prevention Test',
+    title: 'Web Scraping Prevention',
+    titleH1: 'Web Scraping Prevention Test',
     titleMeta: 'Web Scraping Prevention Test | Fingerprint',
     url: '/web-scraping',
     articleUrl: 'https://fingerprint.com/blog/preventing-content-scraping/',
@@ -486,7 +495,8 @@ export const USE_CASES = {
     ],
   },
   botFirewall: {
-    title: 'Bot Firewall Test',
+    title: 'Bot Firewall',
+    titleH1: 'Bot Firewall Test',
     titleMeta: 'Bot Firewall Test: Detect and Block Repeat Bots',
     url: '/bot-firewall',
     articleUrl: 'https://fingerprint.com/blog/bot-detection-powered-application-firewall/',
@@ -629,7 +639,8 @@ export const USE_CASES = {
     ],
   },
   vpnDetection: {
-    title: 'VPN Detection Test',
+    title: 'VPN Detection',
+    titleH1: 'VPN Detection Test',
     titleMeta: 'VPN Detection Test | Fingerprint',
     url: '/vpn-detection',
     articleUrl: 'https://fingerprint.com/blog/vpn-detection-location-spoofing-fraud-prevention/',
