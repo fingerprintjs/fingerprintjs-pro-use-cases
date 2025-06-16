@@ -578,6 +578,7 @@ export const USE_CASES = {
   },
   smsPumping: {
     title: 'SMS Pumping Fraud Protection',
+    titleH1: 'SMS Pumping Fraud Protection Test',
     titleMeta: 'SMS Pumping Fraud Protection Test | Fingerprint',
     url: '/sms-pumping',
     articleUrl: 'https://fingerprint.com/blog/what-is-sms-fraud-prevention-tutorial/',
