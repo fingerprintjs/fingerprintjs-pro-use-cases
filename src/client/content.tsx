@@ -731,6 +731,11 @@ export const USE_CASES = {
         title: 'New account fraud guide',
         url: 'https://fingerprint.com/blog/account-fraud/',
       },
+      {
+        type: 'Case study',
+        title: 'How DreamHost prevents new account fraud and multi-accounting',
+        url: 'https://fingerprint.com/case-studies/dreamhost-prevents-multi-accounting/',
+      },
     ],
   },
 } as const satisfies Record<string, UseCase>;
