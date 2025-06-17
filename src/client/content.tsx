@@ -706,6 +706,7 @@ export const USE_CASES = {
   },
   accountCreationFraud: {
     title: 'Account Creation Fraud',
+    titleH1: 'Account Creation Fraud Prevention Test',
     titleMeta: 'Account Creation Fraud Prevention Test | Fingerprint',
     url: '/account-creation-fraud',
     articleUrl: 'https://fingerprint.com/blog/account-creation-fraud/',
