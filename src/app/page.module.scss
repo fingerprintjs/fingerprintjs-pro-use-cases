@@ -64,23 +64,43 @@
   align-items: flex-start;
   border-radius: 12px;
   border: 1px solid v('gray-box-stroke');
-  overflow: hidden;
   color: unset;
   cursor: pointer;
+  
   // We need this for the useCaseTitle pseudo element below
   position: relative;
-
+  
   @include shadowMedium();
-  transition-property: border, box-shadow;
-  transition-duration: 0.1s;
-
+  @include transition((border));
+  
   @include media('<=phoneLandscape') {
     padding: rem(24px) rem(16px);
   }
 
-  &:hover {
+  /**
+   * Animating shadows is hard work for the browser and can lead to performance issues.
+   * So we're using a pseudo-element to display the shadow and animate the pseudo-element's opacity instead,
+   * which is easy-peasy for the browser.
+   * https://tobiasahlin.com/blog/how-to-animate-box-shadow/
+   */
+  &::after {
+    content: "";
+    border-radius: 12px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
     @include shadowLarge();
+    @include transition((opacity));
+  }
+
+  &:hover {
     border: 1px solid white;
+    &::after {
+      opacity: 1;
+    }
   }
 
   .useCaseIcon {

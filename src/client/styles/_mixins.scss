@@ -510,8 +510,13 @@
 
 @mixin shadowLarge() {
   box-shadow:
-    0 6px 24px rgba(20, 20, 21, 0.10),
-    0 2px 8px rgba(114, 114, 115, 0.15);
+    0px 3px 2px rgba(20, 20, 21, 0.02),
+    0px 0px 1px rgba(114, 114, 115, 0.15),
+    0px 7px 6px rgba(20, 20, 21, 0.04),
+    0px 12px 10px rgba(20, 20, 21, 0.03),
+    0px 22px 18px rgba(20, 20, 21, 0.03),
+    0px 42px 33px rgba(20, 20, 21, 0.02),
+    0px 100px 80px rgba(20, 20, 21, 0.02);
 }
 
 @mixin shadowMedium() {
