@@ -10,7 +10,7 @@ import { deleteBlockedIp } from '../../../bot-firewall/api/get-blocked-ips/block
 import { PaymentAttemptDbModel } from '../../../payment-fraud/api/place-order/database';
 import { NextRequest, NextResponse } from 'next/server';
 import { SessionDbModel, UserDbModel } from '../../../account-sharing/api/database';
-import { AccountDbModel } from '../../../account-creation-fraud/api/create-account/database';
+import { AccountDbModel } from '../../../new-account-fraud/api/create-account/database';
 
 export type ResetResponse = {
   message: string;
@@ -93,7 +93,7 @@ const deleteVisitorData = async (visitorId: string, ip: string) => {
       }
       return deletedUserCount + deletedSessionsCount;
     }),
-    deletedAccountCreationFraudRecords: await tryToDestroy(() => AccountDbModel.destroy(options)),
+    deletedNewAccountFraudRecords: await tryToDestroy(() => AccountDbModel.destroy(options)),
   };
 };
 

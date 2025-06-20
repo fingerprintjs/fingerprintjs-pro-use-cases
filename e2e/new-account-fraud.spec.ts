@@ -25,11 +25,11 @@ const enterPassword = async (page: Page, password: string) => {
 
 test.beforeEach(async ({ page }) => {
   await blockGoogleTagManager(page);
-  await page.goto('/account-creation-fraud');
+  await page.goto('/new-account-fraud');
   await resetScenarios(page);
 });
 
-test.describe('Account Creation Fraud', () => {
+test.describe('New Account Fraud', () => {
   test('should prevent form submission when username and password not entered', async ({ page }) => {
     await submitCreateTrialAccount(page);
     await expect(page.getByLabel('Username').and(page.locator(':invalid'))).toBeFocused();
@@ -40,7 +40,7 @@ test.describe('Account Creation Fraud', () => {
     await expect(page.getByLabel('Password').and(page.locator(':invalid'))).toBeFocused();
   });
 
-  test('should only allow one account creation', async ({ page }) => {
+  test('should only allow one new account', async ({ page }) => {
     await enterUsername(page, 'user1');
     await enterPassword(page, 'password');
     await submitCreateTrialAccount(page);
@@ -61,7 +61,7 @@ test.describe('Account Creation Fraud', () => {
   test('should disable the submission button while the request is in progress', async ({ page }) => {
     let completeApiRequest: () => void = () => {};
     const apiRequestPromise = new Promise<void>((resolve) => (completeApiRequest = resolve));
-    await page.route('**/account-creation-fraud/api/create-account', async (route) => {
+    await page.route('**/new-account-fraud/api/create-account', async (route) => {
       await apiRequestPromise;
       await route.continue();
     });
@@ -79,7 +79,7 @@ test.describe('Account Creation Fraud', () => {
   });
 
   test('should gracefully handle an unexpected 502 response status code', async ({ page }) => {
-    await page.route('**/account-creation-fraud/api/create-account', (route) =>
+    await page.route('**/new-account-fraud/api/create-account', (route) =>
       route.fulfill({
         json: {
           severity: 'Error',
@@ -97,7 +97,7 @@ test.describe('Account Creation Fraud', () => {
   });
 
   test('should gracefully handle an unexpected 400 response status code', async ({ page }) => {
-    await page.route('**/account-creation-fraud/api/create-account', (route) => {
+    await page.route('**/new-account-fraud/api/create-account', (route) => {
       const postData = route.request().postDataJSON();
       delete postData.username;
       route.continue({ postData });
@@ -111,8 +111,8 @@ test.describe('Account Creation Fraud', () => {
   });
 
   test('should be available as an embeddable page', async ({ page }) => {
-    await page.goto('/account-creation-fraud/embed');
-    await expect(page.getByRole('heading', { name: 'Account Creation Fraud Prevention Test', level: 1 })).toBeVisible();
+    await page.goto('/new-account-fraud/embed');
+    await expect(page.getByRole('heading', { name: 'New Account Fraud Prevention Test', level: 1 })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Home' })).not.toBeVisible();
   });
 });

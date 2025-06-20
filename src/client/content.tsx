@@ -10,7 +10,7 @@ import VpnDetectionIcon from './img/home-icons/vpn-detection.svg';
 import SmsIcon from './img/home-icons/sms-pumping.svg';
 import PlaygroundIcon from './img/home-icons/playground.svg';
 import AccountSharingIcon from './img/home-icons/account-sharing.svg';
-import AccountCreationFraudIcon from './img/home-icons/account-creation-fraud.svg';
+import NewAccountFraudIcon from './img/home-icons/new-account-fraud.svg';
 import { ReactNode } from 'react';
 import { RestartHint, RestartHintProps } from './components/UseCaseWrapper/RestartHint';
 import { TEST_PHONE_NUMBER } from '../app/sms-pumping/api/smsPumpingConst';
@@ -704,16 +704,16 @@ export const USE_CASES = {
       },
     ],
   },
-  accountCreationFraud: {
-    title: 'Account Creation Fraud',
-    titleH1: 'Account Creation Fraud Prevention Test',
-    titleMeta: 'Account Creation Fraud Prevention Test | Fingerprint',
-    url: '/account-creation-fraud',
+  newAccountFraud: {
+    title: 'New Account Fraud',
+    titleH1: 'New Account Fraud Prevention Test',
+    titleMeta: 'New Account Fraud Prevention Test | Fingerprint',
+    url: '/new-account-fraud',
     articleUrl: 'https://fingerprint.com/blog/account-creation-fraud/',
-    githubUrl: 'https://github.com/fingerprintjs/fingerprintjs-pro-use-cases/tree/main/src/app/account-creation-fraud',
+    githubUrl: 'https://github.com/fingerprintjs/fingerprintjs-pro-use-cases/tree/main/src/app/new-account-fraud',
     descriptionMeta:
       'See in real-time how Fingerprint can fight trial abuse. Try out our live demo to see Fingerprint prevent visitors from creating multiple accounts from the same browser or device',
-    iconSvg: AccountCreationFraudIcon,
+    iconSvg: NewAccountFraudIcon,
     descriptionHomepage: [
       <p key='1'>
         Accurately identify visitors who create multiple fake accounts. Fight trial abuse by limiting the number of
@@ -736,7 +736,7 @@ export const USE_CASES = {
     moreResources: [
       {
         type: 'Use case tutorial',
-        title: 'Preventing account creation fraud',
+        title: 'Preventing new account fraud',
         url: 'https://fingerprint.com/blog/account-creation-fraud/',
       },
       {
