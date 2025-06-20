@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import classNames from 'classnames';
 import Image from 'next/image';
-import styles from './accountCreationFraud.module.scss';
+import styles from './newAccountFraud.module.scss';
 import formStyles from '../../client/styles/forms.module.scss';
 import hiddenIcon from '../../client/img/iconHidden.svg';
 import shownIcon from '../../client/img/iconShown.svg';
@@ -18,7 +18,7 @@ import { CreateAccountPayload } from './api/create-account/route';
 
 type CreateAccountStatus = 'not-attempted' | 'pending' | 'success' | 'trial-exists' | 'unexpected-error';
 
-export function AccountCreationFraudUseCase({ embed }: { embed?: boolean }) {
+export function NewAccountFraud({ embed }: { embed?: boolean }) {
   const { getData: getVisitorData } = useVisitorData(
     {
       ignoreCache: true,
@@ -38,7 +38,7 @@ export function AccountCreationFraudUseCase({ embed }: { embed?: boolean }) {
     mutationKey: ['create trial account'],
     mutationFn: async ({ username, password }: Omit<CreateAccountPayload, 'requestId'>) => {
       const { requestId } = await getVisitorData({ ignoreCache: true });
-      return await fetch('/account-creation-fraud/api/create-account', {
+      return await fetch('/new-account-fraud/api/create-account', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,15 +53,7 @@ export function AccountCreationFraudUseCase({ embed }: { embed?: boolean }) {
   const createAccountStatus = calculateCreateAccountStatus(isLoading, createAccountResponse);
 
   return (
-    <UseCaseWrapper
-      useCase={{
-        ...USE_CASES.accountCreationFraud,
-        // Temporarily override the title so the use case page uses the desired title for SEO, but the homepage does not
-        // Will role this back after #204 is merged and the issue is fixed for all use cases
-        title: 'Account Creation Fraud Prevention Test',
-      }}
-      embed={embed}
-    >
+    <UseCaseWrapper useCase={USE_CASES.newAccountFraud} embed={embed}>
       {createAccountStatus === 'success' ? (
         <TrialCreated onGoBack={handleGoBack} />
       ) : (
@@ -96,7 +88,7 @@ function CreateTrialForm({ createAccountStatus, onCreate }: CreateTrialFormProps
               onCreate({ username, password });
             }
           }}
-          className={classNames(formStyles.useCaseForm, styles.accountCreationFraudForm)}
+          className={classNames(formStyles.useCaseForm, styles.newAccountFraudForm)}
         >
           <label htmlFor='username'>Username</label>
           <input type='text' id='username' name='username' placeholder='Username' required />
@@ -151,7 +143,7 @@ function TrialCreated({ onGoBack }: TrialCreatedProps) {
           e.preventDefault();
           onGoBack();
         }}
-        className={classNames(formStyles.useCaseForm, styles.accountCreationFraudForm)}
+        className={classNames(formStyles.useCaseForm, styles.newAccountFraudForm)}
       >
         <Alert severity='success' className={styles.alert}>
           Free trial created. Remaining credits: $30.

@@ -103,12 +103,12 @@ Detect when multiple devices are using the same account. Prevent people from sha
 [👥 Account Sharing Prevention Live Demo](https://demo.fingerprint.com/account-sharing)  
 [📖 Account Sharing Prevention Article](https://fingerprint.com/blog/prevent-coupon-promo-abuse-increase-sales/)
 
-### Account Creation Fraud Prevention
+### New Account Fraud Prevention
 
 Accurately identify visitors who create multiple fake accounts. Fight trial abuse by limiting the number of accounts visitors can create from a single browser or device.
 
-[🔙 Account Creation Fraud Prevention Live Demo](https://demo.fingerprint.com/account-creation-fraud)  
-[📖 Account Creation Fraud Article](https://fingerprint.com/blog/account-creation-fraud/)
+[🔙 New Account Fraud Prevention Live Demo](https://demo.fingerprint.com/new-account-fraud)  
+[📖 New Account Fraud Article](https://fingerprint.com/blog/account-creation-fraud/)
 
 ## Documentation and Support
 

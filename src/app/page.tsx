@@ -11,7 +11,7 @@ import { generateMetadata } from '../client/seo';
 import { LayoutUI } from './LayoutUI';
 
 export const metadata: Metadata = generateMetadata({
-  title: 'Fingerprint Use Cases | Discover Device Intelligence Use Cases',
+  title: 'Fingerprint Demo | Explore 10+ Use Cases',
   description:
     'Explore an extensive range of use cases supported by Fingerprint, and learn how to successfully implement it for your business with practical guidance and a comprehensive demo.',
 });
@@ -20,10 +20,10 @@ export default function Index() {
   return (
     <LayoutUI>
       <Container size='large' className={styles.hero}>
-        <h1 className={styles.title}>Fingerprint use cases</h1>
+        <h1 className={styles.title}>Explore Fingerprint Demos by Use Case</h1>
         <div className={styles.intro}>
           <p>
-            Explore the wide range of major use cases supported by Fingerprint, including a comprehensive demo that
+            Discover the wide range of major use cases supported by Fingerprint, including a comprehensive demo that
             showcases both frontend and backend sample implementations with a persistent data layer for each use case.
           </p>
 

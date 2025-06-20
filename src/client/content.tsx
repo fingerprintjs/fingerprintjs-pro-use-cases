@@ -10,7 +10,7 @@ import VpnDetectionIcon from './img/home-icons/vpn-detection.svg';
 import SmsIcon from './img/home-icons/sms-pumping.svg';
 import PlaygroundIcon from './img/home-icons/playground.svg';
 import AccountSharingIcon from './img/home-icons/account-sharing.svg';
-import AccountCreationFraudIcon from './img/home-icons/account-creation-fraud.svg';
+import NewAccountFraudIcon from './img/home-icons/new-account-fraud.svg';
 import { ReactNode } from 'react';
 import { RestartHint, RestartHintProps } from './components/UseCaseWrapper/RestartHint';
 import { TEST_PHONE_NUMBER } from '../app/sms-pumping/api/smsPumpingConst';
@@ -21,6 +21,7 @@ export const PRODUCTION_URL = 'https://demo.fingerprint.com';
 
 export type UseCase = {
   title: string;
+  titleH1: string;
   titleMeta: string;
   url: string;
   description?: React.ReactNode;
@@ -46,7 +47,8 @@ export type ResourceLink = {
 export const USE_CASES = {
   couponFraud: {
     title: 'Coupon Fraud',
-    titleMeta: 'Fingerprint Use Cases | Coupon Promo Fraud and Abuse Live Demo',
+    titleH1: 'Coupon Fraud Prevention Test',
+    titleMeta: 'Coupon Fraud Prevention Test | Fingerprint',
     url: '/coupon-fraud',
     iconSvg: CouponFraudIcon,
     descriptionHomepage: [
@@ -103,7 +105,8 @@ export const USE_CASES = {
   },
   credentialStuffing: {
     title: 'Credential Stuffing',
-    titleMeta: 'Fingerprint Use Cases | Credential Stuffing Live Demo',
+    titleH1: 'Credential Stuffing Prevention Test',
+    titleMeta: 'Credential Stuffing Prevention Test | Fingerprint',
     url: '/credential-stuffing',
     articleUrl: 'https://fingerprint.com/blog/stop-credential-stuffing/',
     instructions: [
@@ -162,7 +165,8 @@ export const USE_CASES = {
   },
   accountSharing: {
     title: 'Account Sharing',
-    titleMeta: 'Fingerprint Use Cases | Account Sharing',
+    titleH1: 'Account Sharing Prevention Test',
+    titleMeta: 'Account Sharing Prevention Test | Fingerprint',
     url: '/account-sharing',
     articleUrl: 'https://fingerprint.com/blog/increase-revenue-identifying-preventing-account-sharing/',
     githubUrl: `https://github.com/fingerprintjs/fingerprintjs-pro-use-cases/tree/main/src/app/account-sharing`,
@@ -225,7 +229,8 @@ export const USE_CASES = {
   },
   paymentFraud: {
     title: 'Payment Fraud',
-    titleMeta: 'Fingerprint Use Cases | Payment Fraud Live Demo',
+    titleH1: 'Payment Fraud Protection Test',
+    titleMeta: 'Payment Fraud Protection Test | Fingerprint',
     url: '/payment-fraud',
     articleUrl: 'https://fingerprint.com/blog/reducing-payment-fraud-with-reliable-visitor-identification/',
     iconSvg: PaymentFraudIcon,
@@ -291,7 +296,8 @@ export const USE_CASES = {
   },
   loanRisk: {
     title: 'Loan Risk',
-    titleMeta: 'Fingerprint Use Cases | Loan Fraud Live Demo',
+    titleH1: 'Loan Application Fraud Protection Test',
+    titleMeta: 'Loan Application Fraud Protection Test | Fingerprint',
     url: '/loan-risk',
     articleUrl: 'https://fingerprint.com/blog/detect-repeat-applications-loan-risk/',
     iconSvg: LoanRiskIcon,
@@ -331,7 +337,8 @@ export const USE_CASES = {
   },
   paywall: {
     title: 'Paywall',
-    titleMeta: 'Fingerprint Use Cases | Content Paywall Live Demo',
+    titleH1: 'Paywall Bypass Prevention Test',
+    titleMeta: 'Paywall Bypass Prevention Test | Fingerprint',
     url: '/paywall',
     articleUrl: 'https://fingerprint.com/blog/how-paywalls-work-paywall-protection-tutorial/',
     iconSvg: PaywallIcon,
@@ -363,7 +370,8 @@ export const USE_CASES = {
   },
   personalization: {
     title: 'Personalization',
-    titleMeta: 'Fingerprint Use Cases | eCommerce Personalization Live Demo',
+    titleH1: 'Anonymous Visitor Personalization Test',
+    titleMeta: 'Anonymous Visitor Personalization Test | Fingerprint',
     url: '/personalization',
     articleUrl: 'https://fingerprint.com/blog/providing-personalization-to-anonymous-users/',
     iconSvg: PersonalizationIcon,
@@ -409,7 +417,8 @@ export const USE_CASES = {
   },
   webScraping: {
     title: 'Web Scraping Prevention',
-    titleMeta: 'Fingerprint Use Cases | Content Scraping Prevention Live Demo',
+    titleH1: 'Web Scraping Prevention Test',
+    titleMeta: 'Web Scraping Prevention Test | Fingerprint',
     url: '/web-scraping',
     articleUrl: 'https://fingerprint.com/blog/preventing-content-scraping/',
     iconSvg: ScrapingIcon,
@@ -488,7 +497,8 @@ export const USE_CASES = {
   },
   botFirewall: {
     title: 'Bot Firewall',
-    titleMeta: 'Fingerprint Use Cases | Bot-Detection-powered Firewall',
+    titleH1: 'Bot Firewall Test',
+    titleMeta: 'Bot Firewall Test: Detect and Block Repeat Bots',
     url: '/bot-firewall',
     articleUrl: 'https://fingerprint.com/blog/bot-detection-powered-application-firewall/',
     iconSvg: FirewallIcon,
@@ -569,7 +579,8 @@ export const USE_CASES = {
   },
   smsPumping: {
     title: 'SMS Pumping Fraud Protection',
-    titleMeta: 'Fingerprint Use Cases | SMS Pumping Fraud Protection',
+    titleH1: 'SMS Pumping Fraud Protection Test',
+    titleMeta: 'SMS Pumping Fraud Protection Test | Fingerprint',
     url: '/sms-pumping',
     articleUrl: 'https://fingerprint.com/blog/what-is-sms-fraud-prevention-tutorial/',
     iconSvg: SmsIcon,
@@ -631,7 +642,8 @@ export const USE_CASES = {
   },
   vpnDetection: {
     title: 'VPN Detection',
-    titleMeta: 'Fingerprint Use Cases | VPN Detection and Location Spoofing Prevention',
+    titleH1: 'VPN Detection Test',
+    titleMeta: 'VPN Detection Test | Fingerprint',
     url: '/vpn-detection',
     articleUrl: 'https://fingerprint.com/blog/vpn-detection-location-spoofing-fraud-prevention/',
     githubUrl: 'https://github.com/fingerprintjs/fingerprintjs-pro-use-cases/tree/main/src/app/vpn-detection',
@@ -692,15 +704,16 @@ export const USE_CASES = {
       },
     ],
   },
-  accountCreationFraud: {
-    title: 'Account Creation Fraud',
-    titleMeta: 'Account Creation Fraud Prevention Test | Fingerprint',
-    url: '/account-creation-fraud',
+  newAccountFraud: {
+    title: 'New Account Fraud',
+    titleH1: 'New Account Fraud Prevention Test',
+    titleMeta: 'New Account Fraud Prevention Test | Fingerprint',
+    url: '/new-account-fraud',
     articleUrl: 'https://fingerprint.com/blog/account-creation-fraud/',
-    githubUrl: 'https://github.com/fingerprintjs/fingerprintjs-pro-use-cases/tree/main/src/app/account-creation-fraud',
+    githubUrl: 'https://github.com/fingerprintjs/fingerprintjs-pro-use-cases/tree/main/src/app/new-account-fraud',
     descriptionMeta:
       'See in real-time how Fingerprint can fight trial abuse. Try out our live demo to see Fingerprint prevent visitors from creating multiple accounts from the same browser or device',
-    iconSvg: AccountCreationFraudIcon,
+    iconSvg: NewAccountFraudIcon,
     descriptionHomepage: [
       <p key='1'>
         Accurately identify visitors who create multiple fake accounts. Fight trial abuse by limiting the number of
@@ -723,7 +736,7 @@ export const USE_CASES = {
     moreResources: [
       {
         type: 'Use case tutorial',
-        title: 'Preventing account creation fraud',
+        title: 'Preventing new account fraud',
         url: 'https://fingerprint.com/blog/account-creation-fraud/',
       },
       {
