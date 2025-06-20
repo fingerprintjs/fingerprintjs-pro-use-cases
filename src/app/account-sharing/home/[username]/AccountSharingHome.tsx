@@ -125,6 +125,21 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
     refetchInterval: 2000,
   });
 
+  // Handle side-effects previously in onSuccess and onSettled
+  useEffect(() => {
+    if (loggedInData?.severity === 'error') {
+      youHaveBeenLoggedOut(
+        loggedInData.otherDevice
+          ? `${loggedInData.otherDevice.deviceName} (${loggedInData.otherDevice.deviceLocation})`
+          : undefined,
+      );
+    }
+
+    if (loggedInData || loggedInError) {
+      setIsInitialLoading(false);
+    }
+  }, [loggedInData, loggedInError, youHaveBeenLoggedOut]);
+
   const {
     mutate: logout,
     isPending: isPendingLogout,
@@ -144,21 +159,6 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
       }
     },
   });
-
-  // Effects to handle side-effects previously in onSuccess and onSettled
-  useEffect(() => {
-    if (loggedInData?.severity === 'error') {
-      youHaveBeenLoggedOut(
-        loggedInData.otherDevice
-          ? `${loggedInData.otherDevice.deviceName} (${loggedInData.otherDevice.deviceLocation})`
-          : undefined,
-      );
-    }
-
-    if (loggedInData || loggedInError) {
-      setIsInitialLoading(false);
-    }
-  }, [loggedInData, loggedInError, youHaveBeenLoggedOut]);
 
   return (
     <UseCaseWrapper useCase={USE_CASES.accountSharing} noInnerPadding={true} embed={embed}>
