@@ -90,8 +90,8 @@ export function Playground() {
     isLoadingAgentResponse,
     getAgentData,
     agentError,
-    cachedEvent,
     identificationEvent,
+    previousIdentificationEvent,
     isPendingServerResponse,
     serverError,
   } = usePlaygroundSignals();
@@ -111,7 +111,7 @@ export function Playground() {
     return <Alert severity={'error'}>Server API Request {serverError.toString()}.</Alert>;
   }
 
-  const usedIdentificationEvent = identificationEvent ?? cachedEvent;
+  const usedIdentificationEvent = identificationEvent ?? previousIdentificationEvent;
   const { ipLocation, ...displayedAgentResponse } = agentResponse ?? {};
   const { latitude, longitude, accuracyRadius } = ipLocation ?? {};
   const zoom = getZoomLevel(accuracyRadius);
@@ -609,7 +609,7 @@ export function Playground() {
       </Container>
       <Container size='large'>
         <div className={styles.runningIntelligence}>
-          {!cachedEvent ? (
+          {!usedIdentificationEvent ? (
             <h2>
               Running Device Intelligence<span className={styles.blink}>_</span>
             </h2>
@@ -646,7 +646,7 @@ export function Playground() {
               // Spacer element to push footer down when no data is ready
               <div style={{ height: '800px' }} />
             )}
-            {cachedEvent ? (
+            {usedIdentificationEvent ? (
               <>
                 <MyCollapsible defaultOpen>
                   <TableTitle>
@@ -674,7 +674,7 @@ export function Playground() {
             ) : null}
           </div>
         </Container>
-        {cachedEvent ? (
+        {usedIdentificationEvent ? (
           <>
             <Container size='large' className={styles.isSection}>
               <h2 className={styles.sectionTitle}>How to use this demo</h2>
@@ -697,7 +697,7 @@ export function Playground() {
                   </h4>
                   <CollapsibleJsonViewer
                     dataTestId={TEST_IDS.playground.serverResponseJSON}
-                    json={usedIdentificationEvent ?? {}}
+                    json={usedIdentificationEvent}
                   />
                 </div>
               </div>
