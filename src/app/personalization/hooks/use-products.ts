@@ -24,11 +24,7 @@ export function useProducts(search: string) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ requestId, query: search } satisfies GetProductsPayload),
       });
-      const result = (await response.json()) as GetProductsResponse;
-      // If the query was saved, refetch the search history to show it in the "Last searches" UI
-      if (result.data.querySaved) {
-      }
-      return result;
+      return response.json();
     },
     enabled: Boolean(visitorData),
   });
