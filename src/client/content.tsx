@@ -10,6 +10,7 @@ import VpnDetectionIcon from './img/home-icons/vpn-detection.svg';
 import SmsIcon from './img/home-icons/sms-pumping.svg';
 import PlaygroundIcon from './img/home-icons/playground.svg';
 import AccountSharingIcon from './img/home-icons/account-sharing.svg';
+import NewAccountFraudIcon from './img/home-icons/new-account-fraud.svg';
 import { ReactNode } from 'react';
 import { RestartHint, RestartHintProps } from './components/UseCaseWrapper/RestartHint';
 import { TEST_PHONE_NUMBER } from '../app/sms-pumping/api/smsPumpingConst';
@@ -171,7 +172,7 @@ export const USE_CASES = {
     githubUrl: `https://github.com/fingerprintjs/fingerprintjs-pro-use-cases/tree/main/src/app/account-sharing`,
     iconSvg: AccountSharingIcon,
     descriptionMeta:
-      'See in real-time how Fingerprint can prevent account sharing. Try out our live demo to see Fingerprint detect too many devices using a single account at the same time.=',
+      'See in real-time how Fingerprint can prevent account sharing. Try out our live demo to see Fingerprint detect too many devices using a single account at the same time.',
     descriptionHomepage: [
       <p key='1'>Users sharing their accounts can lead to security vulnerabilities and lost revenue.</p>,
       <p key='2'>
@@ -700,6 +701,53 @@ export const USE_CASES = {
         url: 'https://fingerprint.com/blog/vpn-detection-how-it-works/',
         type: 'Article',
         title: 'How VPN Detection Works',
+      },
+    ],
+  },
+  newAccountFraud: {
+    title: 'New Account Fraud',
+    titleH1: 'New Account Fraud Prevention Test',
+    titleMeta: 'New Account Fraud Prevention Test | Fingerprint',
+    url: '/new-account-fraud',
+    articleUrl: 'https://fingerprint.com/blog/account-creation-fraud/',
+    githubUrl: 'https://github.com/fingerprintjs/fingerprintjs-pro-use-cases/tree/main/src/app/new-account-fraud',
+    descriptionMeta:
+      'See in real-time how Fingerprint can fight trial abuse. Try out our live demo to see Fingerprint prevent visitors from creating multiple accounts from the same browser or device',
+    iconSvg: NewAccountFraudIcon,
+    descriptionHomepage: [
+      <p key='1'>
+        Accurately identify visitors who create multiple fake accounts. Fight trial abuse by limiting the number of
+        accounts visitors can create from a single browser or device. Prevent bots and suspicious browsers from creating
+        accounts.
+      </p>,
+    ],
+    description:
+      'Use the demo below to see how Fingerprint can identify fraudsters who create multiple accounts and abuse free trials.',
+    instructions: [
+      <>
+        Fill in the form below and click <b>Create trial account</b>.
+      </>,
+      <>
+        Go back and try starting another free trial. You will not be able to create multiple accounts from the same
+        browser or device.
+      </>,
+      <>You can go into incognito mode or turn on a VPN and try again.</>,
+    ],
+    moreResources: [
+      {
+        type: 'Use case tutorial',
+        title: 'Preventing new account fraud',
+        url: 'https://fingerprint.com/blog/account-creation-fraud/',
+      },
+      {
+        type: 'Article',
+        title: 'New account fraud guide',
+        url: 'https://fingerprint.com/blog/account-fraud/',
+      },
+      {
+        type: 'Case study',
+        title: 'How DreamHost prevents new account fraud and multi-accounting',
+        url: 'https://fingerprint.com/case-studies/dreamhost-prevents-multi-accounting/',
       },
     ],
   },
