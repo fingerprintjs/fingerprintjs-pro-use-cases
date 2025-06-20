@@ -43,7 +43,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   const { title, description, articleUrl, instructions, moreResources, doNotMentionResetButton, githubUrl } = useCase;
   const learnMoreRef = useRef<ElementRef<'h3'>>(null);
 
-  const { mutate: resetScenarios, shouldDisplayResetButton, isPending: isLoading } = useReset({ onSuccess: onReset });
+  const { mutate: resetScenarios, shouldDisplayResetButton, isPending } = useReset({ onSuccess: onReset });
   const [pulseResetButton, setPulseResetButton] = useState(false);
 
   const moreResourcesPresent = moreResources && moreResources.length > 0;
@@ -66,10 +66,10 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
           <div
             className={classNames([
               styles.floatyResetButton,
-              isLoading && styles.loading,
+              isPending && styles.loading,
               pulseResetButton && styles.pulse,
             ])}
-            onClick={() => !isLoading && resetScenarios()}
+            onClick={() => !isPending && resetScenarios()}
             data-testid={TEST_IDS.reset.resetButton}
           >
             <div className={styles.resetTitle}>Restart</div>

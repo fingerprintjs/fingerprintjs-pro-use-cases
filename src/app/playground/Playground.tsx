@@ -92,7 +92,7 @@ export function Playground() {
     agentError,
     cachedEvent,
     identificationEvent,
-    isLoadingServerResponse,
+    isPendingServerResponse,
     serverError,
   } = usePlaygroundSignals();
 
@@ -615,7 +615,7 @@ export function Playground() {
             </h2>
           ) : (
             <RefreshButton
-              loading={isLoadingAgentResponse || isLoadingServerResponse}
+              loading={isLoadingAgentResponse || isPendingServerResponse}
               getAgentData={getAgentData}
               className={styles.reloadButton}
             />
@@ -693,7 +693,7 @@ export function Playground() {
                 </div>
                 <div>
                   <h4 className={styles.jsonTitle}>
-                    Server API Response {isLoadingServerResponse && <Spinner size={16} />}
+                    Server API Response {isPendingServerResponse && <Spinner size={16} />}
                   </h4>
                   <CollapsibleJsonViewer
                     dataTestId={TEST_IDS.playground.serverResponseJSON}

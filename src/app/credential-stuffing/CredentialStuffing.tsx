@@ -28,8 +28,8 @@ export function CredentialStuffing({ embed }: { embed?: boolean }) {
 
   const {
     mutate: tryToLogIn,
-    isPending: isLoading,
     data: loginResponse,
+    isPending,
     error: loginNetworkError,
   } = useMutation<LoginResponse, Error, Omit<LoginPayload, 'requestId' | 'visitorId'>>({
     mutationKey: ['login attempt'],
@@ -90,8 +90,8 @@ export function CredentialStuffing({ embed }: { embed?: boolean }) {
               {loginResponse.message}
             </Alert>
           )}
-          <Button disabled={isLoading} type='submit' data-testid={TEST_IDS.credentialStuffing.login}>
-            {isLoading ? 'Hold on, doing magic...' : 'Log In'}
+          <Button disabled={isPending} type='submit' data-testid={TEST_IDS.credentialStuffing.login}>
+            {isPending ? 'Hold on, doing magic...' : 'Log In'}
           </Button>
         </form>
       </div>

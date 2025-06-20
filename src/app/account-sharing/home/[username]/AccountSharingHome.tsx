@@ -103,7 +103,7 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
 
   const {
     data: loggedInData,
-    isPending: isLoadingLoggedIn,
+    isPending: isPendingLoggedIn,
     error: loggedInError,
   } = useQuery<IsLoggedInResponse, Error, IsLoggedInResponse>({
     queryKey: ['isLoggedIn', username, visitorData?.requestId],
@@ -183,7 +183,7 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
               {logoutData.message}
             </Alert>
           )}
-          {isInitialLoading || isLoadingVisitorData || isLoadingLoggedIn ? (
+          {isInitialLoading || isLoadingVisitorData || isPendingLoggedIn ? (
             <div className={styles.loading}>Loading your content library...</div>
           ) : null}
           {loggedInError && (

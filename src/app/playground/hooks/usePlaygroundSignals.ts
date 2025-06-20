@@ -19,7 +19,7 @@ export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Even
 
   const {
     data: identificationEvent,
-    isPending: isLoadingServerResponse,
+    isPending: isPendingServerResponse,
     error: serverError,
   } = useQuery<EventResponse | undefined>({
     queryKey: [requestId],
@@ -48,7 +48,7 @@ export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Even
     agentError,
     cachedEvent,
     identificationEvent,
-    isLoadingServerResponse,
+    isPendingServerResponse,
     serverError,
   };
 }

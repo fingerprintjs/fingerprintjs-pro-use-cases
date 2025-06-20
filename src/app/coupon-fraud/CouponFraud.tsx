@@ -33,7 +33,7 @@ export function CouponFraudUseCase({ embed }: { embed?: boolean }) {
 
   const {
     mutate: claimCoupon,
-    isPending: isLoading,
+    isPending,
     data: claimResponse,
   } = useMutation({
     mutationKey: ['request coupon claim'],
@@ -106,8 +106,8 @@ export function CouponFraudUseCase({ embed }: { embed?: boolean }) {
                 required
                 data-testid={TEST_IDS.couponFraud.couponCode}
               />
-              <Button disabled={isLoading} size='medium' data-testid={TEST_IDS.couponFraud.submitCoupon}>
-                {isLoading ? 'Processing...' : 'Apply'}
+              <Button disabled={isPending} size='medium' data-testid={TEST_IDS.couponFraud.submitCoupon}>
+                {isPending ? 'Processing...' : 'Apply'}
               </Button>
             </div>
             {claimResponse?.message && (

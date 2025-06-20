@@ -55,7 +55,7 @@ export const SubmitCodeForm: FunctionComponent<SubmitCodeFormProps> = ({ phoneNu
     mutate: submitCode,
     data: submitCodeResponse,
     error: submitCodeError,
-    isPending: isLoadingSubmitCode,
+    isPending: isPendingSubmitCode,
   } = useSubmitCode();
 
   return (
@@ -94,8 +94,8 @@ export const SubmitCodeForm: FunctionComponent<SubmitCodeFormProps> = ({ phoneNu
           {submitCodeResponse.message}
         </Alert>
       )}
-      <Button disabled={isLoadingSubmitCode} type='submit' data-testid={TEST_IDS.smsFraud.sendCode} outlined={true}>
-        {isLoadingSubmitCode ? 'Verifying...' : 'Verify'}
+      <Button disabled={isPendingSubmitCode} type='submit' data-testid={TEST_IDS.smsFraud.sendCode} outlined={true}>
+        {isPendingSubmitCode ? 'Verifying...' : 'Verify'}
       </Button>
     </form>
   );

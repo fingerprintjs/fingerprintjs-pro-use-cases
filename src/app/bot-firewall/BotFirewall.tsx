@@ -73,7 +73,7 @@ const useBlockUnblockIpAddress = (
   getVisitorData: VisitorQueryContext<true>['getData'],
   refetchBlockedIps: () => void,
 ) => {
-  const { mutate: blockIp, isPending: isLoadingBlockIp } = useMutation({
+  const { mutate: blockIp, isPending: isPendingBlockIp } = useMutation({
     mutationKey: ['block IP'],
     mutationFn: async ({ ip, blocked }: Omit<BlockIpPayload, 'requestId'>) => {
       const { requestId } = await getVisitorData({ ignoreCache: true });
@@ -107,7 +107,7 @@ const useBlockUnblockIpAddress = (
     },
   });
 
-  return { blockIp, isLoadingBlockIp };
+  return { blockIp, isPendingBlockIp };
 };
 
 /**
@@ -131,7 +131,7 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
   const { blockedIps, refetchBlockedIps, isFetchingBlockedIps: isLoadingBlockedIps } = useBlockedIps();
 
   // Post request mutation to block/unblock IP addresses
-  const { blockIp, isLoadingBlockIp } = useBlockUnblockIpAddress(getVisitorData, refetchBlockedIps);
+  const { blockIp, isPendingBlockIp } = useBlockUnblockIpAddress(getVisitorData, refetchBlockedIps);
 
   const [displayedVisits, setDisplayedVisits] = useState(DEFAULT_DISPLAYED_VISITS);
 
@@ -185,7 +185,7 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
                       ip={botVisit.ip}
                       isBlockedNow={isIpBlocked(botVisit.ip)}
                       blockIp={blockIp}
-                      isLoadingBlockIp={isLoadingBlockIp}
+                      isPendingBlockIp={isPendingBlockIp}
                       isVisitorsIp={botVisit.ip === visitorData?.ip}
                     />
                   </td>
@@ -221,7 +221,7 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
                   ip={botVisit.ip}
                   isBlockedNow={isIpBlocked(botVisit.ip)}
                   blockIp={blockIp}
-                  isLoadingBlockIp={isLoadingBlockIp}
+                  isPendingBlockIp={isPendingBlockIp}
                   isVisitorsIp={botVisit.ip === visitorData?.ip}
                 />
               </div>

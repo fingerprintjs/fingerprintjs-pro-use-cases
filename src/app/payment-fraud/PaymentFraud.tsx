@@ -31,7 +31,7 @@ export function PaymentFraud({ embed }: { embed?: boolean }) {
 
   const {
     mutate: submitPayment,
-    isPending: isLoadingPayment,
+    isPending: isPendingPayment,
     data: paymentResponse,
     error: paymentNetworkError,
   } = useMutation<PaymentResponse, Error, Omit<PaymentPayload, 'requestId'>, unknown>({
@@ -133,12 +133,12 @@ export function PaymentFraud({ embed }: { embed?: boolean }) {
           {paymentNetworkError ? <Alert severity='error'>{paymentNetworkError.message}</Alert> : null}
           {paymentResponse ? <Alert severity={paymentResponse.severity}>{paymentResponse.message}</Alert> : null}
           <Button
-            disabled={isLoadingPayment}
+            disabled={isPendingPayment}
             size='large'
             type='submit'
             data-testid={TEST_IDS.paymentFraud.submitPayment}
           >
-            {isLoadingPayment ? 'Hold on, doing magic...' : 'Place Order'}
+            {isPendingPayment ? 'Hold on, doing magic...' : 'Place Order'}
           </Button>
         </form>
       </div>

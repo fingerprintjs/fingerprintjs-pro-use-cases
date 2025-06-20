@@ -35,7 +35,7 @@ const VpnDetectionUseCase: FunctionComponent = () => {
 
   const {
     mutate: activateRegionalPricing,
-    isPending: isLoading,
+    isPending,
     data: activateResponse,
     error: activateError,
   } = useMutation({
@@ -109,12 +109,12 @@ const VpnDetectionUseCase: FunctionComponent = () => {
           )}
           <div className={styles.regionalPricingContainer}>
             <Button
-              disabled={isLoading}
+              disabled={isPending}
               size='medium'
               data-testid={TEST_IDS.vpnDetection.activateRegionalPricing}
               type='submit'
             >
-              {isLoading
+              {isPending
                 ? 'Verifying location...'
                 : `Activate ${potentialDiscount ? potentialDiscount + '% off with ' : ''} regional pricing`}
             </Button>
