@@ -36,7 +36,7 @@ export function Personalization({ embed }: { embed?: boolean }) {
   const { addCartItemMutation, removeCartItemMutation, cartQuery } = useCart();
   const productsQuery = useProducts(searchQuery);
 
-  const isLoading = productsQuery.isLoading || isFpDataLoading;
+  const isLoading = productsQuery.isPending || isFpDataLoading;
 
   const { showNotification } = usePersonalizationNotification();
 

@@ -14,7 +14,7 @@ import shownIcon from '../../client/img/iconShown.svg';
 import Image from 'next/image';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { LoginPayload, LoginResponse } from './api/authenticate/route';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
@@ -28,7 +28,7 @@ export function CredentialStuffing({ embed }: { embed?: boolean }) {
 
   const {
     mutate: tryToLogIn,
-    isLoading,
+    isPending: isLoading,
     data: loginResponse,
     error: loginNetworkError,
   } = useMutation<LoginResponse, Error, Omit<LoginPayload, 'requestId' | 'visitorId'>>({

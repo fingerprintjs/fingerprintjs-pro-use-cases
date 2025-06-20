@@ -22,7 +22,7 @@ export const SendMessageButton: FunctionComponent<SendMessageButtonProps> = ({
     mutate: sendMessage,
     data: sendMessageResponse,
     error: sendMessageError,
-    isLoading: isLoadingSendSms,
+    isPending: isLoadingSendSms,
   } = sendMessageMutation;
 
   return (

@@ -43,7 +43,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   const { title, description, articleUrl, instructions, moreResources, doNotMentionResetButton, githubUrl } = useCase;
   const learnMoreRef = useRef<ElementRef<'h3'>>(null);
 
-  const { mutate: resetScenarios, shouldDisplayResetButton, isLoading } = useReset({ onSuccess: onReset });
+  const { mutate: resetScenarios, shouldDisplayResetButton, isPending: isLoading } = useReset({ onSuccess: onReset });
   const [pulseResetButton, setPulseResetButton] = useState(false);
 
   const moreResourcesPresent = moreResources && moreResources.length > 0;

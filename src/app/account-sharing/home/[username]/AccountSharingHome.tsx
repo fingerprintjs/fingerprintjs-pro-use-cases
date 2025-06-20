@@ -4,14 +4,14 @@ import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { UseCaseWrapper } from '../../../../client/components/UseCaseWrapper/UseCaseWrapper';
 import { USE_CASES } from '../../../../client/content';
 import { FPJS_CLIENT_TIMEOUT } from '../../../../const';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { IsLoggedInPayload, IsLoggedInResponse } from '../../api/is-logged-in/route';
 import Button from '../../../../client/components/Button/Button';
 import styles from '../../accountSharing.module.scss';
 import { LogoutResponse } from '../../api/logout/route';
 import { Alert } from '../../../../client/components/Alert/Alert';
 import { useRouter } from 'next/navigation';
-import { FunctionComponent, useState, useRef, useCallback } from 'react';
+import { FunctionComponent, useState, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { GoChevronLeft } from 'react-icons/go';
 import { GoChevronRight } from 'react-icons/go';
@@ -103,7 +103,7 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
 
   const {
     data: loggedInData,
-    isLoading: isLoadingLoggedIn,
+    isPending: isLoadingLoggedIn,
     error: loggedInError,
   } = useQuery<IsLoggedInResponse, Error, IsLoggedInResponse>({
     queryKey: ['isLoggedIn', username, visitorData?.requestId],
@@ -123,21 +123,11 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
      * In a real-world application, you might opt to use a server-sent events (SSE) or web sockets to get real-time updates.
      */
     refetchInterval: 2000,
-    onSuccess: (data) => {
-      if (data.severity === 'error') {
-        youHaveBeenLoggedOut(
-          data.otherDevice ? `${data.otherDevice.deviceName} (${data.otherDevice.deviceLocation})` : undefined,
-        );
-      }
-    },
-    onSettled: () => {
-      setIsInitialLoading(false);
-    },
   });
 
   const {
     mutate: logout,
-    isLoading: isLoadingLogout,
+    isPending: isPendingLogout,
     data: logoutData,
     error: logoutError,
   } = useMutation<LogoutResponse, Error>({
@@ -155,6 +145,21 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
     },
   });
 
+  // Effects to handle side-effects previously in onSuccess and onSettled
+  useEffect(() => {
+    if (loggedInData?.severity === 'error') {
+      youHaveBeenLoggedOut(
+        loggedInData.otherDevice
+          ? `${loggedInData.otherDevice.deviceName} (${loggedInData.otherDevice.deviceLocation})`
+          : undefined,
+      );
+    }
+
+    if (loggedInData || loggedInError) {
+      setIsInitialLoading(false);
+    }
+  }, [loggedInData, loggedInError, youHaveBeenLoggedOut]);
+
   return (
     <UseCaseWrapper useCase={USE_CASES.accountSharing} noInnerPadding={true} embed={embed}>
       <div className={styles.homeContainer}>
@@ -162,7 +167,7 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
           <h1>FraudFlix</h1>
           <div className={styles.headerRight}>
             <Button size='medium' onClick={() => logout()} data-testid={TEST_ID.logoutButton}>
-              {isLoadingLogout || logoutData?.severity === 'success' ? 'Logging out...' : 'Log out'}
+              {isPendingLogout || logoutData?.severity === 'success' ? 'Logging out...' : 'Log out'}
             </Button>
           </div>
         </div>

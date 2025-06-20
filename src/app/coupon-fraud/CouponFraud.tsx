@@ -14,7 +14,7 @@ import Button from '../../client/components/Button/Button';
 import { Cart } from '../../client/components/Cart/Cart';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { CouponClaimPayload, CouponClaimResponse } from './api/claim/route';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
@@ -33,7 +33,7 @@ export function CouponFraudUseCase({ embed }: { embed?: boolean }) {
 
   const {
     mutate: claimCoupon,
-    isLoading,
+    isPending: isLoading,
     data: claimResponse,
   } = useMutation({
     mutationKey: ['request coupon claim'],

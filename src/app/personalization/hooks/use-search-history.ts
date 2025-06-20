@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { SearchHistoryPayload, SearchHistoryResponse } from '../../../app/personalization/api/get-search-history/route';
 

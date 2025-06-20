@@ -97,7 +97,7 @@ export const ProductCard: FunctionComponent<{ product: Product }> = ({ product }
               <ItemCounter count={cartItem.count} addItem={addToCart} removeItem={removeFromCart} />
             ) : (
               <Button size='small' onClick={addToCart} data-testid={TEST_IDS.personalization.addToCart}>
-                {addCartItemMutation.isLoading ? 'Adding...' : 'Add to cart'}
+                {addCartItemMutation.isPending ? 'Adding...' : 'Add to cart'}
               </Button>
             )}
 

@@ -13,7 +13,7 @@ import Image from 'next/image';
 import { TEST_IDS } from '../../client/testIDs';
 import Button from '../../client/components/Button/Button';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { CreateAccountPayload, CreateAccountResponse } from './api/create-account/route';
 import { Alert } from '../../client/components/Alert/Alert';
@@ -82,7 +82,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
 
   const {
     mutate: createAccount,
-    isLoading: isLoadingCreateAccount,
+    isPending: isLoadingCreateAccount,
     data: createAccountResponse,
     error: createAccountError,
     reset: resetCreateAccountMutation,
@@ -108,7 +108,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
 
   const {
     mutate: login,
-    isLoading: isLoadingLogin,
+    isPending: isLoadingLogin,
     data: loginResponse,
     error: loginError,
     reset: resetLoginMutation,

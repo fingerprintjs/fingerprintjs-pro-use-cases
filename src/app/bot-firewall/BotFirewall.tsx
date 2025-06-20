@@ -2,7 +2,7 @@
 
 import { INSTRUCTION_ANCHOR_ID, UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
 import { USE_CASES } from '../../client/content';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import Button from '../../client/components/Button/Button';
 import { BlockIpPayload, BlockIpResponse } from './api/block-ip/route';
 import styles from './components/botFirewallComponents.module.scss';
@@ -73,7 +73,7 @@ const useBlockUnblockIpAddress = (
   getVisitorData: VisitorQueryContext<true>['getData'],
   refetchBlockedIps: () => void,
 ) => {
-  const { mutate: blockIp, isLoading: isLoadingBlockIp } = useMutation({
+  const { mutate: blockIp, isPending: isLoadingBlockIp } = useMutation({
     mutationKey: ['block IP'],
     mutationFn: async ({ ip, blocked }: Omit<BlockIpPayload, 'requestId'>) => {
       const { requestId } = await getVisitorData({ ignoreCache: true });

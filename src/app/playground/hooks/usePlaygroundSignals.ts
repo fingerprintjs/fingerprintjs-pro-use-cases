@@ -1,7 +1,7 @@
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
-import { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { FPJS_CLIENT_TIMEOUT } from '../../../const';
 
 export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: EventResponse) => void }) {
@@ -19,28 +19,27 @@ export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Even
 
   const {
     data: identificationEvent,
-    isLoading: isLoadingServerResponse,
+    isPending: isLoadingServerResponse,
     error: serverError,
-  } = useQuery<EventResponse | undefined>(
-    [requestId],
-    () =>
-      fetch(`/api/event/${agentResponse?.requestId}`, { method: 'POST' }).then((res) => {
-        if (res.status !== 200) {
-          throw new Error(`${res.statusText}`);
-        }
-        return res.json();
-      }),
-    {
-      enabled: Boolean(agentResponse),
-      retry: false,
-      onSuccess: (data) => {
-        if (data) {
-          setCachedEvent(data);
-          config?.onServerApiSuccess?.(data);
-        }
-      },
+  } = useQuery<EventResponse | undefined>({
+    queryKey: [requestId],
+    queryFn: async () => {
+      const res = await fetch(`/api/event/${agentResponse?.requestId}`, { method: 'POST' });
+      if (res.status !== 200) {
+        throw new Error(res.statusText);
+      }
+      return res.json();
     },
-  );
+    enabled: Boolean(agentResponse),
+    retry: false,
+  });
+
+  useEffect(() => {
+    if (identificationEvent) {
+      setCachedEvent(identificationEvent);
+      config?.onServerApiSuccess?.(identificationEvent);
+    }
+  }, [identificationEvent, config]);
 
   return {
     agentResponse,

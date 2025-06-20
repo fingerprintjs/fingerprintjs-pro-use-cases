@@ -10,7 +10,7 @@ import { Alert } from '../../client/components/Alert/Alert';
 import Button from '../../client/components/Button/Button';
 import { Cart } from '../../client/components/Cart/Cart';
 import { FingerprintJSPro, FpjsProvider, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { ActivateRegionalPricingPayload, ActivateRegionalPricingResponse } from './api/activate-ppp/route';
 import { useUnsealedResult } from '../../client/hooks/useUnsealedResult';
 import { getFlagEmoji, getIpLocation } from '../../utils/locationUtils';
@@ -35,7 +35,7 @@ const VpnDetectionUseCase: FunctionComponent = () => {
 
   const {
     mutate: activateRegionalPricing,
-    isLoading,
+    isPending: isLoading,
     data: activateResponse,
     error: activateError,
   } = useMutation({
