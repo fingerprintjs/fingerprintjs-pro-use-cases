@@ -59,7 +59,7 @@ export function Personalization({ embed }: { embed?: boolean }) {
       data?.incognito &&
       data.visitorFound &&
       !userWelcomed &&
-      (searchHistoryQuery.data?.data?.length || cartQuery.data?.data?.length)
+      (searchHistoryQuery.data.data?.length || cartQuery.data?.data?.length)
     ) {
       enqueueSnackbar('Welcome back! We synced your cart and search terms.', {
         variant: 'info',
@@ -109,7 +109,7 @@ export function Personalization({ embed }: { embed?: boolean }) {
             <div className={styles.search}>
               <Search search={search} setSearch={setSearch} />
               <SearchHistory
-                searchHistory={searchHistoryQuery.data?.data?.map((searchTerm) => searchTerm.query)}
+                searchHistory={searchHistoryQuery.data.data?.map((searchTerm) => searchTerm.query)}
                 setSearchHistory={(searchTerm) => setSearch(searchTerm)}
               />
             </div>
