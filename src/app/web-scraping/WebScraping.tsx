@@ -3,7 +3,7 @@
 import { UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useQueryState } from 'next-usequerystate';
-import { useQuery, UseQueryResult } from 'react-query';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { USE_CASES } from '../../client/content';
 import { Select, SelectItem } from '../../client/components/Select/Select';
 import ArrowIcon from '../../client/img/arrowRight.svg';
@@ -55,9 +55,9 @@ const WebScraping: FunctionComponent<{ embed?: boolean }> = ({ embed }) => {
    * We use React Query to easily keep track of the state of the flights request (https://react-query-v3.tanstack.com/)
    * But you can achieve the same result with plain old `fetch` and `useState`
    */
-  const getFlightsQuery = useQuery<FlightQueryResult, Error>(
-    ['getFlights'],
-    async () => {
+  const getFlightsQuery = useQuery<FlightQueryResult, Error>({
+    queryKey: ['getFlights'],
+    queryFn: async () => {
       const { requestId } = await getVisitorData();
       const response = await fetch(`/web-scraping/api/flights`, {
         method: 'POST',
@@ -77,11 +77,9 @@ const WebScraping: FunctionComponent<{ embed?: boolean }> = ({ embed }) => {
         throw new Error('Failed to fetch flights: ' + response.statusText);
       }
     },
-    {
-      refetchOnMount: 'always',
-      retry: false,
-    },
-  );
+    refetchOnMount: 'always',
+    retry: false,
+  });
 
   const { isFetching } = getFlightsQuery;
 

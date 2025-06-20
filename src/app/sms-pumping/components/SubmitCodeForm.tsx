@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { FunctionComponent, useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { SubmitCodeResponse, SubmitCodePayload } from '../api/submit-code/route';
 import { TEST_IDS } from '../../../client/testIDs';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
@@ -55,7 +55,7 @@ export const SubmitCodeForm: FunctionComponent<SubmitCodeFormProps> = ({ phoneNu
     mutate: submitCode,
     data: submitCodeResponse,
     error: submitCodeError,
-    isLoading: isLoadingSubmitCode,
+    isPending: isPendingSubmitCode,
   } = useSubmitCode();
 
   return (
@@ -94,8 +94,8 @@ export const SubmitCodeForm: FunctionComponent<SubmitCodeFormProps> = ({ phoneNu
           {submitCodeResponse.message}
         </Alert>
       )}
-      <Button disabled={isLoadingSubmitCode} type='submit' data-testid={TEST_IDS.smsFraud.sendCode} outlined={true}>
-        {isLoadingSubmitCode ? 'Verifying...' : 'Verify'}
+      <Button disabled={isPendingSubmitCode} type='submit' data-testid={TEST_IDS.smsFraud.sendCode} outlined={true}>
+        {isPendingSubmitCode ? 'Verifying...' : 'Verify'}
       </Button>
     </form>
   );

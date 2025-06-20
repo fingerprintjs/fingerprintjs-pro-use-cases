@@ -17,7 +17,7 @@ interface MobileNavbarProps {
 export default function MobileNavbar({ darkMode, closeMobileMenu, onReset }: MobileNavbarProps) {
   const {
     mutate: resetScenarios,
-    isLoading: isResetLoading,
+    isPending: isResetLoading,
     shouldDisplayResetButton,
   } = useReset({ onSuccess: onReset });
 
