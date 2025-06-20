@@ -40,7 +40,8 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
   noInnerPadding,
   onReset,
 }) => {
-  const { title, description, articleUrl, instructions, moreResources, doNotMentionResetButton, githubUrl } = useCase;
+  const { title, titleH1, description, articleUrl, instructions, moreResources, doNotMentionResetButton, githubUrl } =
+    useCase;
   const learnMoreRef = useRef<ElementRef<'h3'>>(null);
 
   const { mutate: resetScenarios, shouldDisplayResetButton, isPending } = useReset({ onSuccess: onReset });
@@ -78,7 +79,7 @@ export const UseCaseWrapper: FunctionComponent<UseCaseWrapperProps> = ({
         </Tooltip>
       )}
       <Container size='large'>
-        <h1 className={styles.title}>{title}</h1>
+        <h1 className={styles.title}>{titleH1 ?? title}</h1>
         <div className={styles.description}>{description}</div>
         <div className={styles.externalLinks}>
           {!hideSrcListItem && (
