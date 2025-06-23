@@ -11,7 +11,7 @@ import styles from '../../accountSharing.module.scss';
 import { LogoutResponse } from '../../api/logout/route';
 import { Alert } from '../../../../client/components/Alert/Alert';
 import { useRouter } from 'next/navigation';
-import { FunctionComponent, useState, useRef, useCallback, useEffect } from 'react';
+import { FunctionComponent, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { GoChevronLeft } from 'react-icons/go';
 import { GoChevronRight } from 'react-icons/go';
@@ -83,9 +83,6 @@ const ContentCategory: FunctionComponent<{ title: string; cards: Card[] }> = ({ 
 export function AccountSharingHome({ username, embed }: { username: string; embed?: boolean }) {
   // Identify the visitor with Fingerprint
   const { data: visitorData, isLoading: isLoadingVisitorData } = useVisitorData({ timeout: FPJS_CLIENT_TIMEOUT });
-
-  // To display the loading state even before Fingerprint JavaScript agent is loaded
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const router = useRouter();
 
   const youHaveBeenLoggedOut = useCallback(
@@ -101,11 +98,7 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
     [router, embed],
   );
 
-  const {
-    data: loggedInData,
-    isPending: isPendingLoggedIn,
-    error: loggedInError,
-  } = useQuery<IsLoggedInResponse, Error, IsLoggedInResponse>({
+  const { data: loggedInData, error: loggedInError } = useQuery<IsLoggedInResponse, Error, IsLoggedInResponse>({
     queryKey: ['isLoggedIn', username, visitorData?.requestId],
     queryFn: async () => {
       const response = await fetch(`/account-sharing/api/is-logged-in`, {
@@ -125,6 +118,9 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
     refetchInterval: 2000,
   });
 
+  // To display the loading state even before Fingerprint JavaScript agent is loaded
+  const isInitialLoading = !loggedInData && !loggedInError;
+
   // Handle side-effects previously in onSuccess and onSettled
   useEffect(() => {
     if (loggedInData?.severity === 'error') {
@@ -133,10 +129,6 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
           ? `${loggedInData.otherDevice.deviceName} (${loggedInData.otherDevice.deviceLocation})`
           : undefined,
       );
-    }
-
-    if (loggedInData || loggedInError) {
-      setIsInitialLoading(false);
     }
   }, [loggedInData, loggedInError, youHaveBeenLoggedOut]);
 
@@ -183,7 +175,7 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
               {logoutData.message}
             </Alert>
           )}
-          {isInitialLoading || isLoadingVisitorData || isPendingLoggedIn ? (
+          {isInitialLoading || isLoadingVisitorData ? (
             <div className={styles.loading}>Loading your content library...</div>
           ) : null}
           {loggedInError && (
