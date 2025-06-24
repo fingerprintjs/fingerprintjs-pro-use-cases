@@ -709,7 +709,7 @@ export const USE_CASES = {
     titleH1: 'New Account Fraud Prevention Test',
     titleMeta: 'New Account Fraud Prevention Test | Fingerprint',
     url: '/new-account-fraud',
-    articleUrl: 'https://fingerprint.com/blog/account-creation-fraud/',
+    articleUrl: 'https://fingerprint.com/blog/new-account-fraud/',
     githubUrl: 'https://github.com/fingerprintjs/fingerprintjs-pro-use-cases/tree/main/src/app/new-account-fraud',
     descriptionMeta:
       'See in real-time how Fingerprint can fight trial abuse. Try out our live demo to see Fingerprint prevent visitors from creating multiple accounts from the same browser or device',
@@ -737,12 +737,7 @@ export const USE_CASES = {
       {
         type: 'Use case tutorial',
         title: 'Preventing new account fraud',
-        url: 'https://fingerprint.com/blog/account-creation-fraud/',
-      },
-      {
-        type: 'Article',
-        title: 'New account fraud guide',
-        url: 'https://fingerprint.com/blog/account-fraud/',
+        url: 'https://fingerprint.com/blog/new-account-fraud/',
       },
       {
         type: 'Case study',
