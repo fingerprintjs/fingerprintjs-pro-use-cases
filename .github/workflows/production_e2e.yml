@@ -6,6 +6,7 @@ on:
 env:
   # Run e2e tests against production
   PRODUCTION_E2E_TEST_BASE_URL: 'https://demo.fingerprint.com'
+  E2E_TEST_PASSWORD_HEADER: '${{ secrets.E2E_TEST_PASSWORD_HEADER }}'
 
 jobs:
   e2e-prod:

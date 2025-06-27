@@ -45,6 +45,11 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: PRODUCTION_E2E_TEST_BASE_URL ?? LOCALHOST_URL,
 
+    /* Add e2e test password header to all requests */
+    extraHTTPHeaders: {
+      'e2e-test-password': process.env.E2E_TEST_PASSWORD_HEADER || '',
+    },
+
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'retain-on-failure',
 
