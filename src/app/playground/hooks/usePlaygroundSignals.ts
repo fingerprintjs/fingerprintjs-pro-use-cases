@@ -1,8 +1,7 @@
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { FPJS_CLIENT_TIMEOUT } from '../../../const';
-import { useWithPreviousData } from '../../../client/hooks/usePreviousQueryData';
 import { useEffect } from 'react';
 
 export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: EventResponse) => void }) {
@@ -17,24 +16,22 @@ export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Even
 
   const {
     data: identificationEvent,
-    previousData: previousIdentificationEvent,
     isPending: isPendingServerResponse,
     isSuccess: isSuccessServerResponse,
     error: serverError,
-  } = useWithPreviousData(
-    useQuery<EventResponse | undefined>({
-      queryKey: [requestId],
-      queryFn: async () => {
-        const res = await fetch(`/api/event/${agentResponse?.requestId}`, { method: 'POST' });
-        if (res.status !== 200) {
-          throw new Error(res.statusText);
-        }
-        return res.json();
-      },
-      enabled: Boolean(agentResponse),
-      retry: false,
-    }),
-  );
+  } = useQuery<EventResponse | undefined>({
+    queryKey: [requestId],
+    queryFn: async () => {
+      const res = await fetch(`/api/event/${agentResponse?.requestId}`, { method: 'POST' });
+      if (res.status !== 200) {
+        throw new Error(res.statusText);
+      }
+      return res.json();
+    },
+    enabled: Boolean(agentResponse),
+    retry: false,
+    placeholderData: keepPreviousData,
+  });
 
   useEffect(() => {
     if (isSuccessServerResponse && identificationEvent) {
@@ -48,7 +45,6 @@ export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Even
     getAgentData,
     agentError,
     identificationEvent,
-    previousIdentificationEvent,
     isPendingServerResponse,
     serverError,
   };

@@ -91,7 +91,6 @@ export function Playground() {
     getAgentData,
     agentError,
     identificationEvent,
-    previousIdentificationEvent,
     isPendingServerResponse,
     serverError,
   } = usePlaygroundSignals();
@@ -111,12 +110,11 @@ export function Playground() {
     return <Alert severity={'error'}>Server API Request {serverError.toString()}.</Alert>;
   }
 
-  const usedIdentificationEvent = identificationEvent ?? previousIdentificationEvent;
   const { ipLocation, ...displayedAgentResponse } = agentResponse ?? {};
   const { latitude, longitude, accuracyRadius } = ipLocation ?? {};
   const zoom = getZoomLevel(accuracyRadius);
 
-  const isBadBot = usedIdentificationEvent?.products.botd?.data?.bot.result === 'bad';
+  const isBadBot = identificationEvent?.products.botd?.data?.bot.result === 'bad';
 
   const identificationSignals: TableCellData[][] = [
     [
@@ -195,10 +193,10 @@ export function Playground() {
     ],
   ];
 
-  const suspectScore = usedIdentificationEvent?.products.suspectScore?.data?.result;
-  const remoteControl: boolean | undefined = usedIdentificationEvent?.products.remoteControl?.data?.result;
-
-  const ipVelocity: number | undefined = usedIdentificationEvent?.products.velocity?.data?.distinctIp.intervals?.['1h'];
+  const products = identificationEvent?.products;
+  const suspectScore = products?.suspectScore?.data?.result;
+  const remoteControl = products?.remoteControl?.data?.result;
+  const ipVelocity = products?.velocity?.data?.distinctIp.intervals?.['1h'];
   const firstCellHeight = '95px';
 
   const smartSignals: TableCellData[][] = [
@@ -247,10 +245,10 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='incognito'>
-            {usedIdentificationEvent?.products.incognito?.data?.result ? 'You are incognito 🕶' : 'Not detected'}
+            {identificationEvent?.products.incognito?.data?.result ? 'You are incognito 🕶' : 'Not detected'}
           </JsonLink>
         ),
-        className: usedIdentificationEvent?.products.incognito?.data?.result ? tableStyles.red : tableStyles.green,
+        className: identificationEvent?.products.incognito?.data?.result ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -262,7 +260,7 @@ export function Playground() {
         ],
       },
       {
-        content: <JsonLink propertyName='botd'>{botDetectionResult({ event: usedIdentificationEvent })}</JsonLink>,
+        content: <JsonLink propertyName='botd'>{botDetectionResult({ event: identificationEvent })}</JsonLink>,
         className: isBadBot ? tableStyles.red : tableStyles.green,
       },
     ],
@@ -278,8 +276,8 @@ export function Playground() {
         ],
       },
       {
-        content: <JsonLink propertyName='vpn'>{vpnDetectionResult({ event: usedIdentificationEvent })}</JsonLink>,
-        className: usedIdentificationEvent?.products.vpn?.data?.result === true ? tableStyles.red : tableStyles.green,
+        content: <JsonLink propertyName='vpn'>{vpnDetectionResult({ event: identificationEvent })}</JsonLink>,
+        className: identificationEvent?.products.vpn?.data?.result === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -296,12 +294,11 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='tampering'>
-            {usedIdentificationEvent?.products.tampering?.data?.result === true ? 'Yes 🖥️🔧' : 'Not detected'}
+            {identificationEvent?.products.tampering?.data?.result === true ? 'Yes 🖥️🔧' : 'Not detected'}
           </JsonLink>
         ),
 
-        className:
-          usedIdentificationEvent?.products.tampering?.data?.result === true ? tableStyles.red : tableStyles.green,
+        className: identificationEvent?.products.tampering?.data?.result === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -318,11 +315,11 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='developerTools'>
-            {usedIdentificationEvent?.products.developerTools?.data?.result === true ? 'Yes 🔧' : 'Not detected'}
+            {identificationEvent?.products.developerTools?.data?.result === true ? 'Yes 🔧' : 'Not detected'}
           </JsonLink>
         ),
         className:
-          usedIdentificationEvent?.products.developerTools?.data?.result === true ? tableStyles.red : tableStyles.green,
+          identificationEvent?.products.developerTools?.data?.result === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -336,12 +333,12 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='virtualMachine'>
-            {usedIdentificationEvent?.products.virtualMachine?.data?.result === true ? 'Yes ☁️💻' : 'Not detected'}
+            {identificationEvent?.products.virtualMachine?.data?.result === true ? 'Yes ☁️💻' : 'Not detected'}
           </JsonLink>
         ),
 
         className:
-          usedIdentificationEvent?.products.virtualMachine?.data?.result === true ? tableStyles.red : tableStyles.green,
+          identificationEvent?.products.virtualMachine?.data?.result === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -355,13 +352,11 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='privacySettings'>
-            {usedIdentificationEvent?.products.privacySettings?.data?.result === true ? 'Yes 🙈💻' : 'Not detected'}
+            {identificationEvent?.products.privacySettings?.data?.result === true ? 'Yes 🙈💻' : 'Not detected'}
           </JsonLink>
         ),
         className:
-          usedIdentificationEvent?.products.privacySettings?.data?.result === true
-            ? tableStyles.red
-            : tableStyles.green,
+          identificationEvent?.products.privacySettings?.data?.result === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -402,13 +397,11 @@ export function Playground() {
         ],
       },
       {
-        content: (
-          <JsonLink propertyName='ipBlocklist'>{ipBlocklistResult({ event: usedIdentificationEvent })}</JsonLink>
-        ),
+        content: <JsonLink propertyName='ipBlocklist'>{ipBlocklistResult({ event: identificationEvent })}</JsonLink>,
         className:
-          usedIdentificationEvent?.products.ipBlocklist?.data?.result ||
-          usedIdentificationEvent?.products.proxy?.data?.result ||
-          usedIdentificationEvent?.products.tor?.data?.result
+          identificationEvent?.products.ipBlocklist?.data?.result ||
+          identificationEvent?.products.proxy?.data?.result ||
+          identificationEvent?.products.tor?.data?.result
             ? tableStyles.red
             : tableStyles.green,
       },
@@ -427,12 +420,12 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='highActivity'>
-            {usedIdentificationEvent?.products.highActivity?.data?.result === true ? 'Yes 🔥' : 'Not detected'}
+            {identificationEvent?.products.highActivity?.data?.result === true ? 'Yes 🔥' : 'Not detected'}
           </JsonLink>
         ),
 
         className:
-          usedIdentificationEvent?.products.highActivity?.data?.result === true ? tableStyles.red : tableStyles.green,
+          identificationEvent?.products.highActivity?.data?.result === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -609,7 +602,7 @@ export function Playground() {
       </Container>
       <Container size='large'>
         <div className={styles.runningIntelligence}>
-          {!usedIdentificationEvent ? (
+          {!identificationEvent ? (
             <h2>
               Running Device Intelligence<span className={styles.blink}>_</span>
             </h2>
@@ -646,7 +639,7 @@ export function Playground() {
               // Spacer element to push footer down when no data is ready
               <div style={{ height: '800px' }} />
             )}
-            {usedIdentificationEvent ? (
+            {identificationEvent ? (
               <>
                 <MyCollapsible defaultOpen>
                   <TableTitle>
@@ -674,7 +667,7 @@ export function Playground() {
             ) : null}
           </div>
         </Container>
-        {usedIdentificationEvent ? (
+        {identificationEvent ? (
           <>
             <Container size='large' className={styles.isSection}>
               <h2 className={styles.sectionTitle}>How to use this demo</h2>
@@ -697,7 +690,7 @@ export function Playground() {
                   </h4>
                   <CollapsibleJsonViewer
                     dataTestId={TEST_IDS.playground.serverResponseJSON}
-                    json={usedIdentificationEvent}
+                    json={identificationEvent}
                   />
                 </div>
               </div>
