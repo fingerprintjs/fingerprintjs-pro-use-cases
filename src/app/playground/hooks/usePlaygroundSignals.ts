@@ -2,7 +2,7 @@ import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { FPJS_CLIENT_TIMEOUT } from '../../../const';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: EventResponse) => void }) {
   const {
@@ -33,11 +33,19 @@ export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Even
     placeholderData: keepPreviousData,
   });
 
+  // Store the callback in a ref to avoid dependency issues
+  // Update the ref whenever the callback changes
+  const onServerApiSuccessRef = useRef(config?.onServerApiSuccess);
+  useEffect(() => {
+    onServerApiSuccessRef.current = config?.onServerApiSuccess;
+  });
+
+  // Call the callback on every successful Server API request
   useEffect(() => {
     if (isSuccessServerResponse && identificationEvent) {
-      config?.onServerApiSuccess?.(identificationEvent);
+      onServerApiSuccessRef.current?.(identificationEvent);
     }
-  }, [identificationEvent, isSuccessServerResponse, config]);
+  }, [identificationEvent, isSuccessServerResponse]);
 
   return {
     agentResponse,
