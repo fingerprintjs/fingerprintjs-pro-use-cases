@@ -9,6 +9,7 @@ import { PRODUCTION_E2E_TEST_BASE_URL } from './src/envShared';
 const IS_CI = Boolean(process.env.CI);
 const PORT = process.env.PORT || 3000;
 const LOCALHOST_URL = `http://localhost:${PORT}`;
+const E2E_TEST_PASSWORD_HEADER = process.env.E2E_TEST_PASSWORD_HEADER;
 
 // Use a more square/vertical viewport to make sure important elements are visible in test report screenshots/videos
 const VIEWPORT = { width: 1280, height: 800 };
@@ -46,9 +47,7 @@ export default defineConfig({
     baseURL: PRODUCTION_E2E_TEST_BASE_URL ?? LOCALHOST_URL,
 
     /* Add e2e test password header to all requests */
-    extraHTTPHeaders: {
-      'e2e-test-password': process.env.E2E_TEST_PASSWORD_HEADER || '',
-    },
+    extraHTTPHeaders: E2E_TEST_PASSWORD_HEADER ? { 'e2e-test-password': E2E_TEST_PASSWORD_HEADER } : {},
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'retain-on-failure',
