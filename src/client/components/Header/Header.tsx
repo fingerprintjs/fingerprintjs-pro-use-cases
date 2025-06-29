@@ -50,7 +50,7 @@ export default function Header({ notificationBar, onReset }: HeaderProps) {
 
   const {
     mutate: resetScenarios,
-    isLoading: isResetLoading,
+    isPending: isResetLoading,
     shouldDisplayResetButton,
   } = useReset({ onSuccess: onReset });
 

@@ -13,7 +13,7 @@ import classNames from 'classnames';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { TEST_IDS } from '../../client/testIDs';
 import { PaymentPayload, PaymentResponse } from './api/place-order/route';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
 export function PaymentFraud({ embed }: { embed?: boolean }) {
@@ -31,7 +31,7 @@ export function PaymentFraud({ embed }: { embed?: boolean }) {
 
   const {
     mutate: submitPayment,
-    isLoading: isLoadingPayment,
+    isPending: isPendingPayment,
     data: paymentResponse,
     error: paymentNetworkError,
   } = useMutation<PaymentResponse, Error, Omit<PaymentPayload, 'requestId'>, unknown>({
@@ -133,12 +133,12 @@ export function PaymentFraud({ embed }: { embed?: boolean }) {
           {paymentNetworkError ? <Alert severity='error'>{paymentNetworkError.message}</Alert> : null}
           {paymentResponse ? <Alert severity={paymentResponse.severity}>{paymentResponse.message}</Alert> : null}
           <Button
-            disabled={isLoadingPayment}
+            disabled={isPendingPayment}
             size='large'
             type='submit'
             data-testid={TEST_IDS.paymentFraud.submitPayment}
           >
-            {isLoadingPayment ? 'Hold on, doing magic...' : 'Place Order'}
+            {isPendingPayment ? 'Hold on, doing magic...' : 'Place Order'}
           </Button>
         </form>
       </div>

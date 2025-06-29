@@ -13,8 +13,8 @@ import { UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWr
 import { USE_CASES } from '../../client/content';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
 import { Alert } from '../../client/components/Alert/Alert';
-import { useMutation } from 'react-query';
 import { CreateAccountPayload } from './api/create-account/route';
+import { useMutation } from '@tanstack/react-query';
 
 type CreateAccountStatus = 'not-attempted' | 'pending' | 'success' | 'trial-exists' | 'unexpected-error';
 
@@ -31,7 +31,7 @@ export function NewAccountFraud({ embed }: { embed?: boolean }) {
 
   const {
     mutate: createAccount,
-    isLoading,
+    isPending,
     data: createAccountResponse,
     reset,
   } = useMutation({
@@ -50,7 +50,7 @@ export function NewAccountFraud({ embed }: { embed?: boolean }) {
 
   const handleGoBack = () => reset();
 
-  const createAccountStatus = calculateCreateAccountStatus(isLoading, createAccountResponse);
+  const createAccountStatus = calculateCreateAccountStatus(isPending, createAccountResponse);
 
   return (
     <UseCaseWrapper useCase={USE_CASES.newAccountFraud} embed={embed}>

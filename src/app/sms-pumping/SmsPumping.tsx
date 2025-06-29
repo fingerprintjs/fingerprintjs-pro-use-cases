@@ -15,7 +15,7 @@ import { GetServerSideProps } from 'next';
 import { SubmitCodeForm } from './components/SubmitCodeForm';
 import { PhoneNumberForm } from './components/PhoneNumberForm';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { SendSMSPayload, SendSMSResponse } from './api/send-verification-sms/route';
 import { TEST_PHONE_NUMBER } from './api/smsPumpingConst';
@@ -51,7 +51,7 @@ export const useSendMessage = ({ onSuccess, disableBotDetection = false }: SendM
     },
   );
   return useMutation<SendSMSResponse, Error, { phoneNumber: string; email: string }>({
-    mutationKey: 'sendSms',
+    mutationKey: ['sendSms'],
     mutationFn: async ({ phoneNumber, email }) => {
       const { requestId } = await getData();
       const response = await fetch(`/sms-pumping/api/send-verification-sms`, {

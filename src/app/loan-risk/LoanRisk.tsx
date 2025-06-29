@@ -14,7 +14,7 @@ import styles from './loanRisk.module.scss';
 import classNames from 'classnames';
 import { TEST_IDS } from '../../client/testIDs';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { LoanRequestData, LoanRequestPayload, LoanRequestResponse } from './api/request-loan/route';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
@@ -85,7 +85,7 @@ export function LoanRisk({ embed }: { embed?: boolean }) {
 
   const {
     mutate: requestLoan,
-    isLoading: isLoanRequestLoading,
+    isPending: isLoanRequestLoading,
     data: loanRequestResponse,
     error: loanRequestNetworkError,
   } = useMutation<LoanRequestResponse, Error, LoanRequestData, unknown>({
