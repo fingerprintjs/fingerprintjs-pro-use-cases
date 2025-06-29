@@ -130,7 +130,7 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
           : undefined,
       );
     }
-  }, [loggedInData, loggedInError, youHaveBeenLoggedOut]);
+  }, [loggedInData, youHaveBeenLoggedOut]);
 
   const {
     mutate: logout,
