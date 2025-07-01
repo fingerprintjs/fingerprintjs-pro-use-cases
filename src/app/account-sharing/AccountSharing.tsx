@@ -13,7 +13,7 @@ import Image from 'next/image';
 import { TEST_IDS } from '../../client/testIDs';
 import Button from '../../client/components/Button/Button';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { CreateAccountPayload, CreateAccountResponse } from './api/create-account/route';
 import { Alert } from '../../client/components/Alert/Alert';
@@ -82,7 +82,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
 
   const {
     mutate: createAccount,
-    isLoading: isLoadingCreateAccount,
+    isPending: isPendingCreateAccount,
     data: createAccountResponse,
     error: createAccountError,
     reset: resetCreateAccountMutation,
@@ -108,7 +108,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
 
   const {
     mutate: login,
-    isLoading: isLoadingLogin,
+    isPending: isPendingLogin,
     data: loginResponse,
     error: loginError,
     reset: resetLoginMutation,
@@ -169,8 +169,8 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
   const signUpMarkup = (
     <>
       {formMarkup}
-      <Button disabled={isLoadingCreateAccount} type='submit' data-testid={TEST_ID.signUpButton}>
-        {isLoadingCreateAccount ? 'One moment...' : 'Sign up'}
+      <Button disabled={isPendingCreateAccount} type='submit' data-testid={TEST_ID.signUpButton}>
+        {isPendingCreateAccount ? 'One moment...' : 'Sign up'}
       </Button>
       {createAccountError && <Alert severity='error'>{createAccountError.message}</Alert>}
       {createAccountResponse?.message && (
@@ -197,8 +197,8 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
   const loginMarkup = (
     <>
       {formMarkup}
-      <Button disabled={isLoadingLogin} type='submit' data-testid={TEST_ID.loginButton}>
-        {isLoadingLogin || loginResponse?.severity === 'success' ? 'One moment...' : 'Log in'}
+      <Button disabled={isPendingLogin} type='submit' data-testid={TEST_ID.loginButton}>
+        {isPendingLogin || loginResponse?.severity === 'success' ? 'One moment...' : 'Log in'}
       </Button>
       {loginError && <Alert severity='error'>{loginError.message}</Alert>}
       {loginResponse?.message && loginResponse.severity !== 'success' && (
@@ -238,7 +238,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
               onClick={() => login({ username, password, force: true })}
               data-testid={TEST_ID.forceLoginButton}
             >
-              {isLoadingLogin || loginResponse?.severity === 'success' ? 'One moment...' : 'Log in here, log out there'}
+              {isPendingLogin || loginResponse?.severity === 'success' ? 'One moment...' : 'Log in here, log out there'}
             </Button>
             <Button variant='green' size='medium' disabled>
               Upgrade account

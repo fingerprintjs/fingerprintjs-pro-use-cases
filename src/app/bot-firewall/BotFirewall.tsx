@@ -2,7 +2,7 @@
 
 import { INSTRUCTION_ANCHOR_ID, UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
 import { USE_CASES } from '../../client/content';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import Button from '../../client/components/Button/Button';
 import { BlockIpPayload, BlockIpResponse } from './api/block-ip/route';
 import styles from './components/botFirewallComponents.module.scss';
@@ -73,7 +73,7 @@ const useBlockUnblockIpAddress = (
   getVisitorData: VisitorQueryContext<true>['getData'],
   refetchBlockedIps: () => void,
 ) => {
-  const { mutate: blockIp, isLoading: isLoadingBlockIp } = useMutation({
+  const { mutate: blockIp, isPending: isPendingBlockIp } = useMutation({
     mutationKey: ['block IP'],
     mutationFn: async ({ ip, blocked }: Omit<BlockIpPayload, 'requestId'>) => {
       const { requestId } = await getVisitorData({ ignoreCache: true });
@@ -107,7 +107,7 @@ const useBlockUnblockIpAddress = (
     },
   });
 
-  return { blockIp, isLoadingBlockIp };
+  return { blockIp, isPendingBlockIp };
 };
 
 /**
@@ -131,7 +131,7 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
   const { blockedIps, refetchBlockedIps, isFetchingBlockedIps: isLoadingBlockedIps } = useBlockedIps();
 
   // Post request mutation to block/unblock IP addresses
-  const { blockIp, isLoadingBlockIp } = useBlockUnblockIpAddress(getVisitorData, refetchBlockedIps);
+  const { blockIp, isPendingBlockIp } = useBlockUnblockIpAddress(getVisitorData, refetchBlockedIps);
 
   const [displayedVisits, setDisplayedVisits] = useState(DEFAULT_DISPLAYED_VISITS);
 
@@ -185,7 +185,7 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
                       ip={botVisit.ip}
                       isBlockedNow={isIpBlocked(botVisit.ip)}
                       blockIp={blockIp}
-                      isLoadingBlockIp={isLoadingBlockIp}
+                      isPendingBlockIp={isPendingBlockIp}
                       isVisitorsIp={botVisit.ip === visitorData?.ip}
                     />
                   </td>
@@ -221,7 +221,7 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
                   ip={botVisit.ip}
                   isBlockedNow={isIpBlocked(botVisit.ip)}
                   blockIp={blockIp}
-                  isLoadingBlockIp={isLoadingBlockIp}
+                  isPendingBlockIp={isPendingBlockIp}
                   isVisitorsIp={botVisit.ip === visitorData?.ip}
                 />
               </div>

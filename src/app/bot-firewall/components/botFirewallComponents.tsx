@@ -14,7 +14,7 @@ type BotVisitActionProps = {
   isBlockedNow: boolean;
   isVisitorsIp: boolean;
   blockIp: (payload: Omit<BlockIpPayload, 'requestId'>) => void;
-  isLoadingBlockIp: boolean;
+  isPendingBlockIp: boolean;
 };
 
 export const BotVisitAction: FunctionComponent<BotVisitActionProps> = ({
@@ -22,18 +22,18 @@ export const BotVisitAction: FunctionComponent<BotVisitActionProps> = ({
   isBlockedNow,
   isVisitorsIp,
   blockIp,
-  isLoadingBlockIp,
+  isPendingBlockIp,
 }) => {
   if (isVisitorsIp) {
     return (
       <Button
         onClick={() => blockIp({ ip, blocked: !isBlockedNow })}
-        disabled={isLoadingBlockIp}
+        disabled={isPendingBlockIp}
         size='medium'
         style={{ minWidth: '150px' }}
         variant={isBlockedNow ? 'danger' : 'green'}
       >
-        {isLoadingBlockIp ? 'Working on it ⏳' : isBlockedNow ? BOT_FIREWALL_COPY.unblockIp : BOT_FIREWALL_COPY.blockIp}
+        {isPendingBlockIp ? 'Working on it ⏳' : isBlockedNow ? BOT_FIREWALL_COPY.unblockIp : BOT_FIREWALL_COPY.blockIp}
       </Button>
     );
   }

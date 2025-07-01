@@ -4,14 +4,14 @@ import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { UseCaseWrapper } from '../../../../client/components/UseCaseWrapper/UseCaseWrapper';
 import { USE_CASES } from '../../../../client/content';
 import { FPJS_CLIENT_TIMEOUT } from '../../../../const';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { IsLoggedInPayload, IsLoggedInResponse } from '../../api/is-logged-in/route';
 import Button from '../../../../client/components/Button/Button';
 import styles from '../../accountSharing.module.scss';
 import { LogoutResponse } from '../../api/logout/route';
 import { Alert } from '../../../../client/components/Alert/Alert';
 import { useRouter } from 'next/navigation';
-import { FunctionComponent, useState, useRef, useCallback } from 'react';
+import { FunctionComponent, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { GoChevronLeft } from 'react-icons/go';
 import { GoChevronRight } from 'react-icons/go';
@@ -83,9 +83,6 @@ const ContentCategory: FunctionComponent<{ title: string; cards: Card[] }> = ({ 
 export function AccountSharingHome({ username, embed }: { username: string; embed?: boolean }) {
   // Identify the visitor with Fingerprint
   const { data: visitorData, isLoading: isLoadingVisitorData } = useVisitorData({ timeout: FPJS_CLIENT_TIMEOUT });
-
-  // To display the loading state even before Fingerprint JavaScript agent is loaded
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const router = useRouter();
 
   const youHaveBeenLoggedOut = useCallback(
@@ -101,11 +98,7 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
     [router, embed],
   );
 
-  const {
-    data: loggedInData,
-    isLoading: isLoadingLoggedIn,
-    error: loggedInError,
-  } = useQuery<IsLoggedInResponse, Error, IsLoggedInResponse>({
+  const { data: loggedInData, error: loggedInError } = useQuery<IsLoggedInResponse, Error, IsLoggedInResponse>({
     queryKey: ['isLoggedIn', username, visitorData?.requestId],
     queryFn: async () => {
       const response = await fetch(`/account-sharing/api/is-logged-in`, {
@@ -123,21 +116,25 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
      * In a real-world application, you might opt to use a server-sent events (SSE) or web sockets to get real-time updates.
      */
     refetchInterval: 2000,
-    onSuccess: (data) => {
-      if (data.severity === 'error') {
-        youHaveBeenLoggedOut(
-          data.otherDevice ? `${data.otherDevice.deviceName} (${data.otherDevice.deviceLocation})` : undefined,
-        );
-      }
-    },
-    onSettled: () => {
-      setIsInitialLoading(false);
-    },
   });
+
+  // To display the loading state even before Fingerprint JavaScript agent is loaded
+  const isInitialLoading = !loggedInData && !loggedInError;
+
+  // Handle side-effects previously in onSuccess and onSettled
+  useEffect(() => {
+    if (loggedInData?.severity === 'error') {
+      youHaveBeenLoggedOut(
+        loggedInData.otherDevice
+          ? `${loggedInData.otherDevice.deviceName} (${loggedInData.otherDevice.deviceLocation})`
+          : undefined,
+      );
+    }
+  }, [loggedInData, youHaveBeenLoggedOut]);
 
   const {
     mutate: logout,
-    isLoading: isLoadingLogout,
+    isPending: isPendingLogout,
     data: logoutData,
     error: logoutError,
   } = useMutation<LogoutResponse, Error>({
@@ -162,7 +159,7 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
           <h1>FraudFlix</h1>
           <div className={styles.headerRight}>
             <Button size='medium' onClick={() => logout()} data-testid={TEST_ID.logoutButton}>
-              {isLoadingLogout || logoutData?.severity === 'success' ? 'Logging out...' : 'Log out'}
+              {isPendingLogout || logoutData?.severity === 'success' ? 'Logging out...' : 'Log out'}
             </Button>
           </div>
         </div>
@@ -178,7 +175,7 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
               {logoutData.message}
             </Alert>
           )}
-          {isInitialLoading || isLoadingVisitorData || isLoadingLoggedIn ? (
+          {isInitialLoading || isLoadingVisitorData ? (
             <div className={styles.loading}>Loading your content library...</div>
           ) : null}
           {loggedInError && (

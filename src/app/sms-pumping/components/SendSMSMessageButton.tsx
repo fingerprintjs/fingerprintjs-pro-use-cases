@@ -22,7 +22,7 @@ export const SendMessageButton: FunctionComponent<SendMessageButtonProps> = ({
     mutate: sendMessage,
     data: sendMessageResponse,
     error: sendMessageError,
-    isLoading: isLoadingSendSms,
+    isPending: isPendingSendSms,
   } = sendMessageMutation;
 
   return (
@@ -38,12 +38,12 @@ export const SendMessageButton: FunctionComponent<SendMessageButtonProps> = ({
         </Alert>
       )}
       <Button
-        disabled={isLoadingSendSms || sendMessageResponse?.data?.remainingAttempts === 0}
+        disabled={isPendingSendSms || sendMessageResponse?.data?.remainingAttempts === 0}
         type={type}
         onClick={type === 'submit' ? undefined : () => sendMessage({ email, phoneNumber })}
         data-testid={TEST_IDS.smsFraud.sendMessage}
       >
-        {isLoadingSendSms
+        {isPendingSendSms
           ? `Sending code to ${phoneNumber}`
           : sendMessageResponse
             ? 'Resend code via SMS'
