@@ -195,7 +195,6 @@ export function Playground() {
 
   const products = identificationEvent?.products;
   const suspectScore = products?.suspectScore?.data?.result;
-  const remoteControl = products?.remoteControl?.data?.result;
   const ipVelocity = products?.velocity?.data?.distinctIp.intervals?.['1h'];
   const firstCellHeight = '95px';
 
@@ -357,32 +356,6 @@ export function Playground() {
         ),
         className:
           identificationEvent?.products.privacySettings?.data?.result === true ? tableStyles.red : tableStyles.green,
-      },
-    ],
-    [
-      {
-        content: [
-          <DocsLink
-            href='https://dev.fingerprint.com/docs/smart-signals-reference#remote-control-tools-detection'
-            key='remote-control-tools'
-          >
-            Remote Control Tools
-          </DocsLink>,
-        ],
-      },
-      {
-        content:
-          remoteControl === undefined ? (
-            'Not available'
-          ) : (
-            <JsonLink propertyName='remoteControl'>{remoteControl === true ? 'Yes 🕹️' : 'Not detected'}</JsonLink>
-          ),
-        className:
-          remoteControl === undefined
-            ? tableStyles.neutral
-            : remoteControl === true
-              ? tableStyles.red
-              : tableStyles.green,
       },
     ],
     [
