@@ -20,7 +20,6 @@ export const FP_LOAD_OPTIONS: FingerprintJSPro.LoadOptions = {
   scriptUrlPattern: [env.NEXT_PUBLIC_SCRIPT_URL_PATTERN, FingerprintJSPro.defaultScriptUrlPattern],
   endpoint: [env.NEXT_PUBLIC_ENDPOINT, FingerprintJSPro.defaultEndpoint],
   region: env.NEXT_PUBLIC_REGION,
-  remoteControlDetection: true,
 };
 
 function Providers({ children }: PropsWithChildren) {
