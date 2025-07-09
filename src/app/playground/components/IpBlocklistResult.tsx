@@ -15,7 +15,7 @@ export const ipBlocklistResult = ({ event }: { event: EventResponse | undefined 
     return 'Your IP is a Tor exit node 🧅';
   }
   if (event?.products.proxy?.data?.result === true) {
-    return 'Your IP is used by a public proxy provider 🔄';
+    return 'Your IP is used by a proxy provider 🔄';
   }
   if (blocklistData?.result === false) {
     return 'Not detected';
