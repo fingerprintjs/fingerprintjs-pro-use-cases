@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useCallbackRef } from '../../../client/hooks/useCallbackRef';
 import { useSessionId } from '../../../client/hooks/useSessionId';
 
-export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: EventResponse) => void }) {
+export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: EventsGetResponse) => void }) {
   const sessionId = useSessionId();
 
   const {

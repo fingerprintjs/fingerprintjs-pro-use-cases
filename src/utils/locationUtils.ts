@@ -1,4 +1,4 @@
-import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { EventsGetResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { EventResponseIpInfoV4Geolocation } from './types';
 
 export const UNKNOWN_LOCATION = 'Unknown';
@@ -27,7 +27,7 @@ export function getLocationName(ipLocation?: EventResponseIpInfoV4Geolocation, i
   return addressParts.join(', ');
 }
 
-export const getIpLocation = (eventResponse?: EventResponse): EventResponseIpInfoV4Geolocation | undefined => {
+export const getIpLocation = (eventResponse?: EventsGetResponse): EventResponseIpInfoV4Geolocation | undefined => {
   return eventResponse?.products.ipInfo?.data?.v4?.geolocation;
 };
 

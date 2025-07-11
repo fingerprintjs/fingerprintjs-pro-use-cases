@@ -1,11 +1,11 @@
-import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { EventsGetResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { decryptSealedResult } from '../../../server/decryptSealedResult';
 
 export type DecryptPayload = {
   sealedResult: string;
 };
 
-export type DecryptResponse = EventResponse;
+export type DecryptResponse = EventsGetResponse;
 
 export async function POST(request: Request) {
   try {

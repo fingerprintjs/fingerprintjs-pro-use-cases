@@ -1,5 +1,5 @@
 import { FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react';
-import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { EventsGetResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import Link from 'next/link';
 import { FunctionComponent, useEffect, useRef } from 'react';
 import { ExternalLinkArrowSvg } from '../../../client/img/externalLinkArrowSvg';
@@ -26,7 +26,7 @@ export const DocsLink: FunctionComponent<{ children: string; href: string; style
   );
 };
 
-type PropertyName = keyof EventResponse['products'] | keyof FingerprintJSPro.ExtendedGetResult;
+type PropertyName = keyof EventsGetResponse['products'] | keyof FingerprintJSPro.ExtendedGetResult;
 
 export const JsonLink: FunctionComponent<{
   children: string;
