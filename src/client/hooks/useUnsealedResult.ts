@@ -1,8 +1,8 @@
-import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { EventsGetResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { useQuery } from '@tanstack/react-query';
 
 export const useUnsealedResult = (sealedResult?: string) => {
-  return useQuery<EventResponse>({
+  return useQuery<EventsGetResponse>({
     queryKey: ['event', sealedResult],
     queryFn: async () => {
       const response = await fetch('/api/decrypt', {

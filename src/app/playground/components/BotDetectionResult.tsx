@@ -1,6 +1,6 @@
-import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { EventsGetResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 
-const botDetectionResult = ({ event }: { event: EventResponse | undefined }): string => {
+const botDetectionResult = ({ event }: { event: EventsGetResponse | undefined }): string => {
   switch (event?.products.botd?.data?.bot.result) {
     case 'good':
       return 'You are a good bot 🤖';

@@ -1,6 +1,6 @@
-import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { EventsGetResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 
-export const vpnDetectionResult = ({ event }: { event: EventResponse | undefined }): string => {
+export const vpnDetectionResult = ({ event }: { event: EventsGetResponse | undefined }): string => {
   const VpnData = event?.products.vpn?.data;
   if (!VpnData) {
     return 'Signal not available';

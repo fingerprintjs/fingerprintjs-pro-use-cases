@@ -195,7 +195,8 @@ export function Playground() {
 
   const products = identificationEvent?.products;
   const suspectScore = products?.suspectScore?.data?.result;
-  const ipVelocity = products?.velocity?.data?.distinctIp.intervals?.['1h'];
+  const ipVelocity = products?.velocity?.data?.distinctIp.intervals?.['24h'];
+  const linkedIdVelocity = products?.velocity?.data?.distinctLinkedId.intervals?.['24h'];
   const firstCellHeight = '95px';
 
   const smartSignals: TableCellData[][] = [
@@ -412,11 +413,22 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='velocity'>
-            {ipVelocity === undefined ? 'Not available' : `${pluralize(ipVelocity, 'IP')} in the past hour`}
+            {(ipVelocity || linkedIdVelocity) === undefined
+              ? 'Not available'
+              : `${[
+                  ipVelocity && pluralize(ipVelocity, 'IP'),
+                  linkedIdVelocity && pluralize(linkedIdVelocity, 'Linked ID'),
+                ]
+                  .filter(Boolean)
+                  .join(', ')} in the past 24 hours`}
           </JsonLink>
         ),
         className:
-          ipVelocity === undefined ? tableStyles.neutral : ipVelocity > 1 ? tableStyles.red : tableStyles.green,
+          (ipVelocity || linkedIdVelocity) === undefined
+            ? tableStyles.neutral
+            : (ipVelocity && ipVelocity > 1) || (linkedIdVelocity && linkedIdVelocity > 3)
+              ? tableStyles.red
+              : tableStyles.green,
       },
     ],
     [

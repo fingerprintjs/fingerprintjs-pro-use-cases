@@ -1,6 +1,6 @@
-import { EventResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { EventsGetResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 
-export const ipBlocklistResult = ({ event }: { event: EventResponse | undefined }): string => {
+export const ipBlocklistResult = ({ event }: { event: EventsGetResponse | undefined }): string => {
   const blocklistData = event?.products.ipBlocklist?.data;
   if (blocklistData?.details.attackSource && blocklistData.details.emailSpam) {
     return 'Your IP is on a blocklist 🚫 (it was part of multiple attacks)';

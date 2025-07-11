@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { EventResponse, isEventError } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { EventsGetResponse, RequestError } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { OUR_ORIGINS, Severity } from '../../../../server/checks';
 import { IS_PRODUCTION } from '../../../../envShared';
 import { fingerprintServerApiClient } from '../../../../server/fingerprint-server-api';
@@ -16,7 +16,7 @@ const getCorsHeaders = (origin: string | null) => ({
 
 type CorsHeaders = ReturnType<typeof getCorsHeaders>;
 
-type GetEventPayload = EventResponse | { severity: Severity; message: string };
+type GetEventPayload = EventsGetResponse | { severity: Severity; message: string };
 
 export async function OPTIONS(request: NextRequest) {
   const origin = request.headers.get('origin');
@@ -78,13 +78,13 @@ async function tryGetFingerprintEvent(
   requestId: string,
   retryCount = 5,
   retryDelay: number = 3000,
-): Promise<{ okay: true; data: EventResponse } | { okay: false; error: unknown }> {
+): Promise<{ okay: true; data: EventsGetResponse } | { okay: false; error: unknown }> {
   try {
     const eventResponse = await fingerprintServerApiClient.getEvent(requestId);
     return { okay: true, data: eventResponse };
   } catch (error) {
     // Retry only Not Found (404) requests.
-    if (isEventError(error) && error.statusCode === 404 && retryCount > 1) {
+    if (error instanceof RequestError && error.statusCode === 404 && retryCount > 1) {
       await new Promise((resolve) => setTimeout(resolve, retryDelay));
       return tryGetFingerprintEvent(requestId, retryCount - 1, retryDelay);
     } else {
@@ -95,7 +95,7 @@ async function tryGetFingerprintEvent(
 }
 
 function sendErrorResponse(error: unknown, corsHeaders: CorsHeaders): NextResponse<GetEventPayload> {
-  if (isEventError(error)) {
+  if (error instanceof RequestError) {
     return NextResponse.json(
       { message: error.message, severity: 'error' },
       { status: error.statusCode, statusText: error.message, headers: corsHeaders },
