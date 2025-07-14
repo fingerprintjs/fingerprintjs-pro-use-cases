@@ -1,8 +1,8 @@
 import {
-  EventResponse,
+  EventsGetResponse,
   FingerprintJsServerApiClient,
   Region,
-  isEventError,
+  RequestError,
 } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { ValidationDataResult } from '../utils/types';
 import { decryptSealedResult } from './decryptSealedResult';
@@ -100,8 +100,8 @@ export const getAndValidateFingerprintResult = async ({
   serverApiKey: apiKey = env.SERVER_API_KEY,
   region = getServerRegion(env.NEXT_PUBLIC_REGION),
   options,
-}: GetFingerprintResultArgs): Promise<ValidationDataResult<EventResponse>> => {
-  let identificationEvent: EventResponse | undefined;
+}: GetFingerprintResultArgs): Promise<ValidationDataResult<EventsGetResponse>> => {
+  let identificationEvent: EventsGetResponse | undefined;
 
   /**
    * If a sealed result was provided, try to decrypt it.
@@ -137,7 +137,7 @@ export const getAndValidateFingerprintResult = async ({
     } catch (error) {
       console.error(error);
       // Throw a specific error if the request ID is not found
-      if (isEventError(error) && error.statusCode === 404) {
+      if (error instanceof RequestError && error.statusCode === 404) {
         return { okay: false, error: 'Request ID not found, potential spoofing attack.' };
       }
       return { okay: false, error: String(error) };
