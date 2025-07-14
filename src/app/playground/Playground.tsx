@@ -528,6 +528,16 @@ export function Playground() {
     [
       {
         content: [
+          <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-reference#mitm-attack-detection' key='mitm'>
+            Man-in-the-middle attack
+          </DocsLink>,
+        ],
+      },
+      { content: PLAYGROUND_COPY.mobileOnly, className: tableStyles.neutral },
+    ],
+    [
+      {
+        content: [
           <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-reference#cloned-app-detection' key='cloned'>
             Cloned App
           </DocsLink>,
