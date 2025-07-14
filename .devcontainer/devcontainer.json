@@ -1,0 +1,4 @@
+{
+    "name": "Fingerprint Playground CodeSandbox Dev Container",
+    "image": "mcr.microsoft.com/devcontainers/javascript-node:22"
+}
