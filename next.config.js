@@ -6,34 +6,20 @@ const path = require('path');
  * Using nonces would be better but also has performacne implications
  * We can upgrade to that approach if necessary
  */
-const CSP_HEADER = `
-    default-src 'self';
-    script-src
-        'self'
-        'unsafe-eval'
-        'unsafe-inline'
-        https://www.googletagmanager.com
-        https://fpjscdn.net;
-    style-src 'self' 'unsafe-inline';
-    img-src
-        'self'
-        blob:
-        data:;
-    font-src 'self';
-    connect-src
-        'self'
-        https://api.inkeep.com
-        https://api.io.inkeep.com
-        https://www.googletagmanager.com
-        https://www.google.com
-        https://api.fpjs.io
-        https://*.api.fpjs.io;
-    object-src 'none';
-    base-uri 'self';
-    form-action 'self';
-    frame-ancestors 'none';
-    upgrade-insecure-requests;
-`;
+const CSP_HEADER =
+  "default-src 'self'; " +
+  "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://fpnpmcdn.net https://metrics.fingerprinthub.com; " +
+  "style-src 'self' 'unsafe-inline'; " +
+  "img-src 'self' blob: data: https://fpnpmcdn.net https://api.mapbox.com; " +
+  "font-src 'self' data:; " +
+  "connect-src 'self' https://api.inkeep.com https://api.io.inkeep.com https://www.googletagmanager.com https://www.google.com https://api.fpjs.io https://*.api.fpjs.io https://metrics.fingerprinthub.com; " +
+  "worker-src 'self' blob: 'unsafe-eval' https://fpnpmcdn.net; " +
+  "child-src 'self' blob: https://fpnpmcdn.net; " +
+  "object-src 'none'; " +
+  "base-uri 'self'; " +
+  "form-action 'self'; " +
+  "frame-ancestors 'none'; " +
+  "upgrade-insecure-requests;";
 
 /**
  * @type {import('next').NextConfig}
