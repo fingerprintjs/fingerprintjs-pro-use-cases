@@ -2,6 +2,40 @@
 const path = require('path');
 
 /**
+ * https://nextjs.org/docs/14/app/building-your-application/configuring/content-security-policy#without-nonces
+ * Using nonces would be better but also has performacne implications
+ * We can upgrade to that approach if necessary
+ */
+const CSP_HEADER = `
+    default-src 'self';
+    script-src
+        'self'
+        'unsafe-eval'
+        'unsafe-inline'
+        https://www.googletagmanager.com
+        https://fpjscdn.net;
+    style-src 'self' 'unsafe-inline';
+    img-src
+        'self'
+        blob:
+        data:;
+    font-src 'self';
+    connect-src
+        'self'
+        https://api.inkeep.com
+        https://api.io.inkeep.com
+        https://www.googletagmanager.com
+        https://www.google.com
+        https://api.fpjs.io
+        https://*.api.fpjs.io;
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+    frame-ancestors 'none';
+    upgrade-insecure-requests;
+`;
+
+/**
  * @type {import('next').NextConfig}
  **/
 module.exports = {
@@ -24,6 +58,10 @@ module.exports = {
           {
             key: 'Strict-Transport-Security',
             value: 'max-age=63072000; includeSubDomains; preload',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: CSP_HEADER,
           },
         ],
       },
