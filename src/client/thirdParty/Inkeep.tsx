@@ -13,10 +13,55 @@ import type {
 } from '@inkeep/cxkit-types';
 
 import { trackAskAIHelpChosen, trackAskAIOpen } from './Amplitude';
+import { UserTheme } from '@inkeep/cxkit-react';
 
 const ChatButton = dynamic(() => import('@inkeep/cxkit-react').then((mod) => mod.InkeepChatButton), {
   ssr: false,
 });
+
+const Theme: UserTheme = {
+  disableLoadingDefaultFont: true,
+  styles: [
+    {
+      key: 'custom-theme',
+      type: 'style',
+      value: `
+              .ikp-markdown-link,
+              .ikp-markdown-source-link {
+                color: var(--orange-gradient, hsl(16, 100%, 57%)) !important;
+              }
+              .ikp-markdown-link:hover,
+              .ikp-markdown-source-link:hover {
+                color: #bd3200 !important;
+              }
+              .ikp-markdown-ul,
+              .ikp-markdown-ol {
+                padding-left: 2.5rem;
+              }
+              .ikp-ai-chat-wrapper {
+                box-shadow: none !important;
+              }
+              .ikp-ai-chat-content {
+                justify-content: flex-start !important;
+              }
+              .ikp-ai-chat-wrapper {
+                height: 100% !important;
+              }
+              .ikp-ai-chat-message-avatar-image,
+              .ikp-ai-chat-message-avatar-content {
+                padding: 2px;
+              }
+            `,
+    },
+  ],
+  primaryColors: {
+    textColorOnPrimary: '#ffffff',
+  },
+  fontFamily: {
+    body: "'Inter'",
+    heading: "'Inter'",
+  },
+};
 
 const useInkeepSettings = () => {
   const apiKey = env.NEXT_PUBLIC_INKEEP_API_KEY;
@@ -25,6 +70,7 @@ const useInkeepSettings = () => {
     apiKey,
     organizationDisplayName: 'Fingerprint',
     primaryBrandColor: '#F04405',
+    theme: Theme,
 
     onEvent: (event: InkeepCallbackEvent) => {
       if (event.eventName === 'get_help_option_clicked') {
