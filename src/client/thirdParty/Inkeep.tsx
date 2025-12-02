@@ -9,7 +9,6 @@ import type {
   InkeepAIChatSettings,
   InkeepSearchSettings,
   InkeepCallbackEvent,
-  GetHelpOptionClickedEvent,
 } from '@inkeep/cxkit-types';
 
 import { trackAskAIHelpChosen, trackAskAIOpen } from './Amplitude';
@@ -40,12 +39,10 @@ const Theme: UserTheme = {
               }
               .ikp-ai-chat-wrapper {
                 box-shadow: none !important;
+                height: 100% !important;
               }
               .ikp-ai-chat-content {
                 justify-content: flex-start !important;
-              }
-              .ikp-ai-chat-wrapper {
-                height: 100% !important;
               }
               .ikp-ai-chat-message-avatar-image,
               .ikp-ai-chat-message-avatar-content {
@@ -74,9 +71,8 @@ const useInkeepSettings = () => {
 
     onEvent: (event: InkeepCallbackEvent) => {
       if (event.eventName === 'get_help_option_clicked') {
-        const e = event as GetHelpOptionClickedEvent;
         trackAskAIHelpChosen({
-          helpMethod: e.properties.getHelpOption.name,
+          helpMethod: event.properties.getHelpOption.name,
           'Demo Page Path': document.location.pathname,
           'Demo Page Title': document.title,
         });

@@ -6,7 +6,7 @@ const AMPLITUDE_INGRESS_PROXY = 'https://demo.fingerprint.com/ampl-api/2/httpapi
 const AMPLITUDE_EVENT = {
   DEMO_PAGE_VIEWED: 'Demo Page Viewed',
   DEMO_ASK_AI_HELP_CHOSEN: 'Demo Ask AI Help Chosen',
-  DEMO_ASK_AI_OPENED: 'Demo Ask AI Open',
+  DEMO_ASK_AI_OPENED: 'Demo Ask AI Opened',
 } as const;
 
 /**
