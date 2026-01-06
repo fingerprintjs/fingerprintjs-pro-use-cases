@@ -95,6 +95,8 @@ export function Playground() {
     serverError,
   } = usePlaygroundSignals();
 
+  const identificationData = identificationEvent?.products.identification?.data;
+
   /**
    * Prevent restoring scroll position on page refresh since there is nothing to scroll to while the data is being loaded
    */
@@ -110,7 +112,7 @@ export function Playground() {
     return <Alert severity={'error'}>Server API Request {serverError.toString()}.</Alert>;
   }
 
-  const { ipLocation, ...displayedAgentResponse } = agentResponse ?? {};
+  const { ipLocation } = identificationData ?? {};
   const { latitude, longitude, accuracyRadius } = ipLocation ?? {};
   const zoom = getZoomLevel(accuracyRadius);
 
@@ -121,8 +123,8 @@ export function Playground() {
       { content: 'Browser' },
       {
         content: (
-          <JsonLink propertyName='browserVersion' elementOrder='first'>
-            {`${agentResponse?.browserName} ${agentResponse?.browserVersion}`}
+          <JsonLink propertyName='browserDetails' elementOrder='first'>
+            {`${identificationData?.browserDetails.browserName} ${identificationData?.browserDetails.browserFullVersion}`}
           </JsonLink>
         ),
 
@@ -136,7 +138,7 @@ export function Playground() {
           <JsonLink
             propertyName='osVersion'
             elementOrder='first'
-          >{`${agentResponse?.os} ${agentResponse?.osVersion}`}</JsonLink>
+          >{`${identificationData?.browserDetails.os} ${identificationData?.browserDetails.osVersion}`}</JsonLink>
         ),
         className: tableStyles.neutral,
       },
@@ -147,7 +149,7 @@ export function Playground() {
         content: (
           <span className={styles.ipAddress}>
             <JsonLink propertyName='ip' elementOrder='first'>
-              {`${agentResponse?.ip}`}
+              {`${identificationData?.ip}`}
             </JsonLink>
           </span>
         ),
@@ -159,9 +161,9 @@ export function Playground() {
         content: <DocsLink href='https://dev.fingerprint.com/docs/useful-timestamps'>Last Seen</DocsLink>,
       },
       {
-        content: agentResponse?.lastSeenAt.global ? (
+        content: identificationData?.lastSeenAt.global ? (
           <JsonLink propertyName='lastSeenAt' elementOrder='first'>
-            {timeAgoLabel(agentResponse.lastSeenAt.global)}
+            {timeAgoLabel(identificationData.lastSeenAt.global)}
           </JsonLink>
         ) : (
           'Unknown'
@@ -181,14 +183,17 @@ export function Playground() {
         ],
       },
       {
-        content: agentResponse?.confidence.score ? (
+        content: identificationData?.confidence?.score ? (
           <JsonLink propertyName='confidence' elementOrder='first'>
-            {String(Math.trunc(agentResponse.confidence.score * 100) / 100)}
+            {String(Math.trunc(identificationData.confidence.score * 100) / 100)}
           </JsonLink>
         ) : (
           'Not available'
         ),
-        className: agentResponse && agentResponse.confidence.score >= 0.7 ? tableStyles.green : tableStyles.red,
+        className:
+          identificationData?.confidence?.score && identificationData.confidence.score >= 0.7
+            ? tableStyles.green
+            : tableStyles.red,
       },
     ],
   ];
@@ -597,7 +602,7 @@ export function Playground() {
       </Container>
       <Container size='large'>
         <div className={styles.runningIntelligence}>
-          {!identificationEvent ? (
+          {!identificationData ? (
             <h2>
               Running Device Intelligence<span className={styles.blink}>_</span>
             </h2>
@@ -613,7 +618,7 @@ export function Playground() {
       <>
         <Container size='large'>
           <div className={styles.tablesContainer}>
-            {agentResponse ? (
+            {identificationData ? (
               <MyCollapsible defaultOpen>
                 <TableTitle>
                   Identification{' '}
@@ -624,7 +629,7 @@ export function Playground() {
                 <MyCollapsibleContent>
                   <div className={styles.visitorIdBox}>
                     <p>Your Visitor ID is </p>
-                    <h2 className={styles.visitorId}>{agentResponse.visitorId}</h2>
+                    <h2 className={styles.visitorId}>{identificationData.visitorId}</h2>
                   </div>
 
                   <SignalTable data={identificationSignals} />
@@ -670,15 +675,14 @@ export function Playground() {
             </Container>
             <Container size='large' className={classnames(styles.isSection, styles.jsonSection)}>
               <div className={styles.jsonContainer}>
-                <div>
-                  <h4 className={styles.jsonTitle}>
-                    JavaScript Agent Response {isLoadingAgentResponse && <Spinner size={16} />}
-                  </h4>
-                  <CollapsibleJsonViewer
-                    dataTestId={TEST_IDS.playground.agentResponseJSON}
-                    json={displayedAgentResponse}
-                  />
-                </div>
+                {agentResponse && (
+                  <div>
+                    <h4 className={styles.jsonTitle}>
+                      JavaScript Agent Response {isLoadingAgentResponse && <Spinner size={16} />}
+                    </h4>
+                    <CollapsibleJsonViewer dataTestId={TEST_IDS.playground.agentResponseJSON} json={agentResponse} />
+                  </div>
+                )}
                 <div>
                   <h4 className={styles.jsonTitle}>
                     Server API Response {isPendingServerResponse && <Spinner size={16} />}

@@ -78,10 +78,11 @@ const loanDurationValidation = {
 };
 
 export function LoanRisk({ embed }: { embed?: boolean }) {
-  const { getData: getVisitorData, isLoading: isVisitorDataLoading } = useVisitorData(
-    { ignoreCache: true, timeout: FPJS_CLIENT_TIMEOUT },
-    { immediate: false },
-  );
+  const { getData: getVisitorData, isLoading: isVisitorDataLoading } = useVisitorData({
+    /*    ignoreCache: true,*/
+    timeout: FPJS_CLIENT_TIMEOUT,
+    immediate: false,
+  });
 
   const {
     mutate: requestLoan,
@@ -91,7 +92,7 @@ export function LoanRisk({ embed }: { embed?: boolean }) {
   } = useMutation<LoanRequestResponse, Error, LoanRequestData, unknown>({
     mutationKey: ['request loan'],
     mutationFn: async (loanRequest: LoanRequestData) => {
-      const { requestId } = await getVisitorData({ ignoreCache: true });
+      const { event_id: requestId } = await getVisitorData(/*{ ignoreCache: true }*/);
       const response = await fetch('/loan-risk/api/request-loan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

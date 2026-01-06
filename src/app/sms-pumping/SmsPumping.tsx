@@ -44,16 +44,11 @@ type SendMessageMutationArgs = {
 
 export type SendMessageMutation = ReturnType<typeof useSendMessage>;
 export const useSendMessage = ({ onSuccess, disableBotDetection = false }: SendMessageMutationArgs) => {
-  const { getData } = useVisitorData(
-    { ignoreCache: true, timeout: FPJS_CLIENT_TIMEOUT },
-    {
-      immediate: false,
-    },
-  );
+  const { getData } = useVisitorData({ /* ignoreCache: true,*/ timeout: FPJS_CLIENT_TIMEOUT, immediate: false });
   return useMutation<SendSMSResponse, Error, { phoneNumber: string; email: string }>({
     mutationKey: ['sendSms'],
     mutationFn: async ({ phoneNumber, email }) => {
-      const { requestId } = await getData();
+      const { event_id: requestId } = await getData();
       const response = await fetch(`/sms-pumping/api/send-verification-sms`, {
         method: 'POST',
         headers: {
