@@ -77,9 +77,12 @@ export const getTwoBrowsers = async () => {
   const chromeBrowser = await chromium.launch();
   const firefoxBrowser = await firefox.launch();
 
-  const chromeContext = await chromeBrowser.newContext();
+  const chromeContext = await chromeBrowser.newContext({
+    bypassCSP: true,
+  });
   const firefoxContext = await firefoxBrowser.newContext({
     permissions: [],
+    bypassCSP: true,
   });
 
   const chromePage = await chromeContext.newPage();
