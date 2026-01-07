@@ -79,9 +79,7 @@ const assertElementWhileRepeatedlyReloadingPage = async (
   let elementVisible = false;
   for (let i = 0; i < tries; i++) {
     const browser = await chromium.launch();
-    const context = await browser.newContext({
-      bypassCSP: true,
-    });
+    const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto(url);
     if (await locatorFunction(page).isVisible()) {
