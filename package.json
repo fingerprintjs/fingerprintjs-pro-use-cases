@@ -63,7 +63,7 @@
     "@fingerprintjs/eslint-config-dx-team": "^0.1.0",
     "@fingerprintjs/prettier-config-dx-team": "^0.1.0",
     "@fingerprintjs/tsconfig-dx-team": "^0.0.2",
-    "@playwright/test": "^1.42.1",
+    "@playwright/test": "^1.57.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.3.0",
     "@types/cors": "^2.8.17",
