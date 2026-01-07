@@ -56,6 +56,9 @@ export default defineConfig({
 
     /* Record video of the failed tests */
     video: { mode: 'retain-on-failure' },
+
+    /* Fixes problems with flaky tests related to Fingerprint worker */
+    bypassCSP: true,
   },
 
   /* In CI/GitHub action, run the production server before running tests
