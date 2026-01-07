@@ -120,7 +120,7 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
     isLoading: isLoadingVisitorData,
   } = useVisitorData({
     timeout: FPJS_CLIENT_TIMEOUT,
-    immediate: false,
+    immediate: true,
   });
 
   const { data: eventData, isPending: isPendingServerResponse } = useEventsGetResponse(visitorData?.event_id);
