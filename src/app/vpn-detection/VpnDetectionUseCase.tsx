@@ -30,7 +30,8 @@ const VpnDetectionUseCase: FunctionComponent = () => {
     timeout: FPJS_CLIENT_TIMEOUT,
     immediate: true,
   });
-  const { data: unsealedVisitorData } = useUnsealedResult(visitorData?.sealed_result?.base64());
+  const sealedResult = visitorData?.sealed_result?.base64();
+  const { data: unsealedVisitorData } = useUnsealedResult(sealedResult);
   const visitorIpCountry = getIpLocation(unsealedVisitorData)?.country;
   const potentialDiscount = getRegionalDiscount(visitorIpCountry?.code);
 
