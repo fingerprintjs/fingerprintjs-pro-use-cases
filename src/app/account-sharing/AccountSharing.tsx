@@ -28,12 +28,10 @@ const TEST_ID = TEST_IDS.accountSharing;
 
 export const AccountSharing = ({ embed }: { embed?: boolean }) => {
   // Identify the visitor with Fingerprint
-  const { getData: getVisitorData } = useVisitorData(
-    { ignoreCache: true, timeout: FPJS_CLIENT_TIMEOUT },
-    {
-      immediate: false,
-    },
-  );
+  const { getData: getVisitorData } = useVisitorData({
+    /*ignoreCache: true,*/ timeout: FPJS_CLIENT_TIMEOUT,
+    immediate: false,
+  });
 
   // Start with empty username and password to make user create their own account
   // and avoid potentially interfering with other people's demos
@@ -89,7 +87,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
   } = useMutation<CreateAccountResponse, Error, Omit<CreateAccountPayload, 'requestId' | 'visitorId'>>({
     mutationKey: ['login attempt'],
     mutationFn: async ({ username, password }) => {
-      const { requestId } = await getVisitorData({ ignoreCache: true });
+      const { event_id: requestId } = await getVisitorData(/*{ ignoreCache: true }*/);
       const response = await fetch('/account-sharing/api/create-account', {
         method: 'POST',
         headers: {
@@ -117,7 +115,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
     mutationFn: async ({ username, password, force }) => {
       setJustLoggedOut(null);
       setOtherDevice(null);
-      const { requestId } = await getVisitorData({ ignoreCache: true });
+      const { event_id: requestId } = await getVisitorData(/*{ ignoreCache: true }*/);
       const response = await fetch('/account-sharing/api/login', {
         method: 'POST',
         headers: {

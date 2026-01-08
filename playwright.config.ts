@@ -77,6 +77,7 @@ export default defineConfig({
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
+        bypassCSP: true,
         viewport: VIEWPORT,
         permissions: ['clipboard-read'],
       },
@@ -85,6 +86,7 @@ export default defineConfig({
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
+        bypassCSP: true,
         viewport: VIEWPORT,
         // Firefox is extra secure, so you need to enable clipboard read permission like this
         // https://github.com/microsoft/playwright/issues/13037#issuecomment-1739856724
@@ -100,6 +102,7 @@ export default defineConfig({
       name: 'webkit',
       use: {
         ...devices['Desktop Safari'],
+        bypassCSP: true,
         viewport: VIEWPORT,
       },
 

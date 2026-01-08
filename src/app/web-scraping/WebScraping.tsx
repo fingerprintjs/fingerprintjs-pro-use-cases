@@ -41,15 +41,13 @@ const WebScraping: FunctionComponent<{ embed?: boolean }> = ({ embed }) => {
    * For Vue, Angular, Svelte, and other frameworks, see https://dev.fingerprint.com/docs/frontend-libraries
    * See '/client/use-visitor-data.js' for an example implementation of similar functionality without the SDK
    */
-  const { getData: getVisitorData } = useVisitorData(
-    {
-      // Don't use a cached fingerprint, it must be fresh to avoid replay attacks
-      ignoreCache: true,
-      timeout: FPJS_CLIENT_TIMEOUT,
-    },
+  const { getData: getVisitorData } = useVisitorData({
+    // Don't use a cached fingerprint, it must be fresh to avoid replay attacks
+    /*ignoreCache: true,*/
+    timeout: FPJS_CLIENT_TIMEOUT,
     // Don't fingerprint the visitor on mount, but when they click "Search flights", the fingerprint must be fresh
-    { immediate: false },
-  );
+    immediate: false,
+  });
 
   /**
    * We use React Query to easily keep track of the state of the flights request (https://react-query-v3.tanstack.com/)
@@ -58,7 +56,7 @@ const WebScraping: FunctionComponent<{ embed?: boolean }> = ({ embed }) => {
   const getFlightsQuery = useQuery<FlightQueryResult, Error>({
     queryKey: ['getFlights'],
     queryFn: async () => {
-      const { requestId } = await getVisitorData();
+      const { event_id: requestId } = await getVisitorData();
       const response = await fetch(`/web-scraping/api/flights`, {
         method: 'POST',
         headers: {

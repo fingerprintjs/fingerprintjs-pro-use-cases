@@ -11,7 +11,7 @@ const ADD_CART_ITEM_MUTATION = 'ADD_CART_ITEM_MUTATION';
 const REMOVE_CART_ITEM_MUTATION = 'REMOVE_CART_ITEM_MUTATION';
 
 export function useCart() {
-  const { data: visitorData } = useVisitorData({ timeout: FPJS_CLIENT_TIMEOUT });
+  const { data: visitorData } = useVisitorData({ timeout: FPJS_CLIENT_TIMEOUT, immediate: true });
 
   const cartQuery = useQuery<GetCartItemsResponse>({
     queryKey: [GET_CART_QUERY],
@@ -23,7 +23,7 @@ export function useCart() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          requestId: visitorData.requestId,
+          requestId: visitorData.event_id,
         } satisfies GetCartItemsPayload),
       });
       return await response.json();
@@ -45,7 +45,7 @@ export function useCart() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          requestId: visitorData.requestId,
+          requestId: visitorData.event_id,
           productId,
         } satisfies AddCartItemPayload),
       });
@@ -64,7 +64,7 @@ export function useCart() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          requestId: visitorData.requestId,
+          requestId: visitorData.event_id,
           itemId,
         } satisfies RemoveCartItemPayload),
       });

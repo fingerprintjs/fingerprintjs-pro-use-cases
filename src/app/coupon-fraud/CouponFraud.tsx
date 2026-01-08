@@ -23,13 +23,11 @@ const ALLSTAR_PRICE = 102.5;
 const TAXES = 6;
 
 export function CouponFraudUseCase({ embed }: { embed?: boolean }) {
-  const { getData: getVisitorData } = useVisitorData(
-    {
-      ignoreCache: true,
-      timeout: FPJS_CLIENT_TIMEOUT,
-    },
-    { immediate: false },
-  );
+  const { getData: getVisitorData } = useVisitorData({
+    /*ignoreCache: true,*/
+    timeout: FPJS_CLIENT_TIMEOUT,
+    immediate: false,
+  });
 
   const {
     mutate: claimCoupon,
@@ -38,7 +36,7 @@ export function CouponFraudUseCase({ embed }: { embed?: boolean }) {
   } = useMutation({
     mutationKey: ['request coupon claim'],
     mutationFn: async ({ couponCode }: Omit<CouponClaimPayload, 'requestId'>) => {
-      const { requestId } = await getVisitorData({ ignoreCache: true });
+      const { event_id: requestId } = await getVisitorData(/*{ ignoreCache: true }*/);
       const response = await fetch('/coupon-fraud/api/claim', {
         method: 'POST',
         headers: {

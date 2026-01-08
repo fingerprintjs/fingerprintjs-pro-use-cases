@@ -41,7 +41,7 @@ describe('usePlaygroundSignals', () => {
 
   it('should call onServerApiSuccess callback *ONCE* every time Server API request succeeds', async () => {
     const mockRequestId = 'test-request-id';
-    const mockAgentResponse = { requestId: mockRequestId };
+    const mockAgentResponse = { event_id: mockRequestId };
     const mockServerResponse = {
       requestId: mockRequestId,
       products: { identification: { data: { visitorId: 'test-visitor' } } },
@@ -53,6 +53,8 @@ describe('usePlaygroundSignals', () => {
       data: mockAgentResponse as any,
       isLoading: false,
       getData: vi.fn(),
+      error: undefined,
+      isFetched: true,
     });
 
     // Mock fetch response

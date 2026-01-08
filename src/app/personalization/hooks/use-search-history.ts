@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import { SearchHistoryPayload, SearchHistoryResponse } from '../../../app/personalization/api/get-search-history/route';
+import { SearchHistoryPayload, SearchHistoryResponse } from '../api/get-search-history/route';
 
 export const SEARCH_HISTORY_QUERY = 'SEARCH_HISTORY_QUERY';
 
@@ -9,10 +9,10 @@ export function useSearchHistory() {
   return useQuery<SearchHistoryResponse>({
     queryKey: [SEARCH_HISTORY_QUERY],
     queryFn: async () => {
-      if (!visitorData) {
+      if (!visitorData?.event_id) {
         throw new Error('Visitor data is undefined');
       }
-      const { requestId } = visitorData;
+      const { event_id: requestId } = visitorData;
       const response = await fetch('/personalization/api/get-search-history', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

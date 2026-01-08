@@ -9,7 +9,7 @@ import classNames from 'classnames';
 import { Alert } from '../../client/components/Alert/Alert';
 import Button from '../../client/components/Button/Button';
 import { Cart } from '../../client/components/Cart/Cart';
-import { FingerprintJSPro, FpjsProvider, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { FpProvider, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useMutation } from '@tanstack/react-query';
 import { ActivateRegionalPricingPayload, ActivateRegionalPricingResponse } from './api/activate-ppp/route';
 import { useUnsealedResult } from '../../client/hooks/useUnsealedResult';
@@ -26,10 +26,12 @@ const TAXES = 15;
 
 const VpnDetectionUseCase: FunctionComponent = () => {
   const { getData: getVisitorData, data: visitorData } = useVisitorData({
-    ignoreCache: true,
+    /*ignoreCache: true,*/
     timeout: FPJS_CLIENT_TIMEOUT,
+    immediate: true,
   });
-  const { data: unsealedVisitorData } = useUnsealedResult(visitorData?.sealedResult);
+  const sealedResult = visitorData?.sealed_result?.base64();
+  const { data: unsealedVisitorData } = useUnsealedResult(sealedResult);
   const visitorIpCountry = getIpLocation(unsealedVisitorData)?.country;
   const potentialDiscount = getRegionalDiscount(visitorIpCountry?.code);
 
@@ -41,13 +43,16 @@ const VpnDetectionUseCase: FunctionComponent = () => {
   } = useMutation({
     mutationKey: ['activate regional pricing'],
     mutationFn: async () => {
-      const { requestId, sealedResult } = await getVisitorData({ ignoreCache: true });
+      const { event_id: requestId, sealed_result: sealedResult } = await getVisitorData(/*{ ignoreCache: true }*/);
       const response = await fetch('/vpn-detection/api/activate-ppp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ requestId, sealedResult } satisfies ActivateRegionalPricingPayload),
+        body: JSON.stringify({
+          requestId,
+          sealedResult: sealedResult?.base64(),
+        } satisfies ActivateRegionalPricingPayload),
       });
       return await response.json();
     },
@@ -130,16 +135,13 @@ const VpnDetectionUseCase: FunctionComponent = () => {
 
 export const VpnDetectionUseCaseWrapped: FunctionComponent<{ embed?: boolean }> = ({ embed }) => {
   return (
-    <FpjsProvider
-      loadOptions={{
-        apiKey: env.NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY,
-        scriptUrlPattern: [env.NEXT_PUBLIC_SEALED_RESULTS_SCRIPT_URL, FingerprintJSPro.defaultScriptUrlPattern],
-        endpoint: [env.NEXT_PUBLIC_SEALED_RESULTS_ENDPOINT, FingerprintJSPro.defaultEndpoint],
-      }}
+    <FpProvider
+      apiKey={env.NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY}
+      endpoints={env.NEXT_PUBLIC_SEALED_RESULTS_ENDPOINT}
     >
       <UseCaseWrapper useCase={USE_CASES.vpnDetection} embed={embed}>
         <VpnDetectionUseCase />
       </UseCaseWrapper>
-    </FpjsProvider>
+    </FpProvider>
   );
 };

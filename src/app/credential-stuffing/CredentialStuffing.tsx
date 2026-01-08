@@ -19,12 +19,11 @@ import { LoginPayload, LoginResponse } from './api/authenticate/route';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
 export function CredentialStuffing({ embed }: { embed?: boolean }) {
-  const { getData: getVisitorData } = useVisitorData(
-    { ignoreCache: true, timeout: FPJS_CLIENT_TIMEOUT },
-    {
-      immediate: false,
-    },
-  );
+  const { getData: getVisitorData } = useVisitorData({
+    /*    ignoreCache: true,*/
+    timeout: FPJS_CLIENT_TIMEOUT,
+    immediate: false,
+  });
 
   const {
     mutate: tryToLogIn,
@@ -34,7 +33,7 @@ export function CredentialStuffing({ embed }: { embed?: boolean }) {
   } = useMutation<LoginResponse, Error, Omit<LoginPayload, 'requestId' | 'visitorId'>>({
     mutationKey: ['login attempt'],
     mutationFn: async ({ username, password }) => {
-      const { requestId, visitorId } = await getVisitorData({ ignoreCache: true });
+      const { event_id: requestId, visitor_id: visitorId = '' } = await getVisitorData(/*{ ignoreCache: true }*/);
       const response = await fetch('/credential-stuffing/api/authenticate', {
         method: 'POST',
         headers: {

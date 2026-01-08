@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 export const GET_PRODUCTS_QUERY = 'GET_PRODUCTS_QUERY';
 
 export function useProducts(search: string) {
-  const { data: visitorData } = useVisitorData({ timeout: FPJS_CLIENT_TIMEOUT });
+  const { data: visitorData } = useVisitorData({ timeout: FPJS_CLIENT_TIMEOUT, immediate: true });
   const queryClient = useQueryClient();
 
   const queryResult = useQuery<GetProductsResponse>({
@@ -18,7 +18,7 @@ export function useProducts(search: string) {
       if (!visitorData) {
         throw new Error('Visitor data is undefined');
       }
-      const { requestId } = visitorData;
+      const { event_id: requestId } = visitorData;
       const response = await fetch('/personalization/api/get-products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

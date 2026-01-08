@@ -19,15 +19,11 @@ import { useMutation } from '@tanstack/react-query';
 type CreateAccountStatus = 'not-attempted' | 'pending' | 'success' | 'trial-exists' | 'unexpected-error';
 
 export function NewAccountFraud({ embed }: { embed?: boolean }) {
-  const { getData: getVisitorData } = useVisitorData(
-    {
-      ignoreCache: true,
-      timeout: FPJS_CLIENT_TIMEOUT,
-    },
-    {
-      immediate: false,
-    },
-  );
+  const { getData: getVisitorData } = useVisitorData({
+    /*ignoreCache: true,*/
+    timeout: FPJS_CLIENT_TIMEOUT,
+    immediate: false,
+  });
 
   const {
     mutate: createAccount,
@@ -37,7 +33,7 @@ export function NewAccountFraud({ embed }: { embed?: boolean }) {
   } = useMutation({
     mutationKey: ['create trial account'],
     mutationFn: async ({ username, password }: Omit<CreateAccountPayload, 'requestId'>) => {
-      const { requestId } = await getVisitorData({ ignoreCache: true });
+      const { event_id: requestId } = await getVisitorData(/*{ ignoreCache: true }*/);
       return await fetch('/new-account-fraud/api/create-account', {
         method: 'POST',
         headers: {
