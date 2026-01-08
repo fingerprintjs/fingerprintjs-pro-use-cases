@@ -33,13 +33,13 @@ export function NewAccountFraud({ embed }: { embed?: boolean }) {
   } = useMutation({
     mutationKey: ['create trial account'],
     mutationFn: async ({ username, password }: Omit<CreateAccountPayload, 'requestId'>) => {
-      const { event_id: requestId } = await getVisitorData(/*{ ignoreCache: true }*/);
+      const { event_id: eventId } = await getVisitorData(/*{ ignoreCache: true }*/);
       return await fetch('/new-account-fraud/api/create-account', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password, requestId } satisfies CreateAccountPayload),
+        body: JSON.stringify({ username, password, requestId: eventId } satisfies CreateAccountPayload),
       });
     },
   });

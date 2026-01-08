@@ -87,13 +87,13 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
   } = useMutation<CreateAccountResponse, Error, Omit<CreateAccountPayload, 'requestId' | 'visitorId'>>({
     mutationKey: ['login attempt'],
     mutationFn: async ({ username, password }) => {
-      const { event_id: requestId } = await getVisitorData(/*{ ignoreCache: true }*/);
+      const { event_id: eventId } = await getVisitorData(/*{ ignoreCache: true }*/);
       const response = await fetch('/account-sharing/api/create-account', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password, requestId } satisfies CreateAccountPayload),
+        body: JSON.stringify({ username, password, requestId: eventId } satisfies CreateAccountPayload),
       });
       return await response.json();
     },
@@ -115,13 +115,13 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
     mutationFn: async ({ username, password, force }) => {
       setJustLoggedOut(null);
       setOtherDevice(null);
-      const { event_id: requestId } = await getVisitorData(/*{ ignoreCache: true }*/);
+      const { event_id: eventId } = await getVisitorData(/*{ ignoreCache: true }*/);
       const response = await fetch('/account-sharing/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password, requestId, force } satisfies LoginPayload),
+        body: JSON.stringify({ username, password, requestId: eventId, force } satisfies LoginPayload),
       });
       return await response.json();
     },

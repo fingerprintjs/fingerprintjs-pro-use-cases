@@ -38,13 +38,13 @@ export function PaymentFraud({ embed }: { embed?: boolean }) {
   } = useMutation<PaymentResponse, Error, Omit<PaymentPayload, 'requestId'>, unknown>({
     mutationKey: ['request loan'],
     mutationFn: async (payment) => {
-      const { event_id: requestId } = await getVisitorData(/*{ ignoreCache: true }*/);
+      const { event_id: eventId } = await getVisitorData(/*{ ignoreCache: true }*/);
       const response = await fetch('/payment-fraud/api/place-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...payment,
-          requestId,
+          requestId: eventId,
         } satisfies PaymentPayload),
       });
       return await response.json();

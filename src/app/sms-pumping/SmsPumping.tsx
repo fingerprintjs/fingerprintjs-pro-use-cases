@@ -48,7 +48,7 @@ export const useSendMessage = ({ onSuccess, disableBotDetection = false }: SendM
   return useMutation<SendSMSResponse, Error, { phoneNumber: string; email: string }>({
     mutationKey: ['sendSms'],
     mutationFn: async ({ phoneNumber, email }) => {
-      const { event_id: requestId } = await getData();
+      const { event_id: eventId } = await getData();
       const response = await fetch(`/sms-pumping/api/send-verification-sms`, {
         method: 'POST',
         headers: {
@@ -56,7 +56,7 @@ export const useSendMessage = ({ onSuccess, disableBotDetection = false }: SendM
         },
         body: JSON.stringify({
           phoneNumber,
-          requestId,
+          requestId: eventId,
           email,
           disableBotDetection,
         } satisfies SendSMSPayload),

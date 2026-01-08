@@ -75,13 +75,13 @@ const useBlockUnblockIpAddress = (getVisitorData: UseVisitorDataReturn['getData'
   const { mutate: blockIp, isPending: isPendingBlockIp } = useMutation({
     mutationKey: ['block IP'],
     mutationFn: async ({ ip, blocked }: Omit<BlockIpPayload, 'requestId'>) => {
-      const { event_id: requestId } = await getVisitorData(/*{ ignoreCache: true }*/);
+      const { event_id: eventId } = await getVisitorData(/*{ ignoreCache: true }*/);
       const response = await fetch('/bot-firewall/api/block-ip', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ip, blocked, requestId } satisfies BlockIpPayload),
+        body: JSON.stringify({ ip, blocked, requestId: eventId } satisfies BlockIpPayload),
       });
       if (!response.ok) {
         throw new Error('Failed to update firewall: ' + ((await response.json()).message ?? response.statusText));

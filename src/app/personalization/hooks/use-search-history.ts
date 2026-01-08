@@ -12,11 +12,11 @@ export function useSearchHistory() {
       if (!visitorData?.event_id) {
         throw new Error('Visitor data is undefined');
       }
-      const { event_id: requestId } = visitorData;
+      const { event_id: eventId } = visitorData;
       const response = await fetch('/personalization/api/get-search-history', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ requestId } satisfies SearchHistoryPayload),
+        body: JSON.stringify({ requestId: eventId } satisfies SearchHistoryPayload),
       });
       return await response.json();
     },

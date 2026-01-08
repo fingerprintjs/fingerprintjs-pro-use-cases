@@ -31,10 +31,10 @@ export function Article({ articleId, embed }: { articleId: string; embed: boolea
   const { data: articleData, error: articleError } = useQuery<ArticleRequestPayload, Error, ArticleResponse>({
     queryKey: ['GET_ARTICLE_QUERY', articleId],
     queryFn: async () => {
-      const { event_id: requestId } = await getVisitorData();
+      const { event_id: eventId } = await getVisitorData();
       const response = await fetch(`/paywall/api/article/${articleId}`, {
         method: 'POST',
-        body: JSON.stringify({ requestId } satisfies ArticleRequestPayload),
+        body: JSON.stringify({ requestId: eventId } satisfies ArticleRequestPayload),
       });
       return await response.json();
     },

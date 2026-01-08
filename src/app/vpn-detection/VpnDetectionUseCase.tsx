@@ -44,14 +44,14 @@ const VpnDetectionUseCase: FunctionComponent = () => {
   } = useMutation({
     mutationKey: ['activate regional pricing'],
     mutationFn: async () => {
-      const { event_id: requestId, sealed_result: sealedResult } = await getVisitorData(/*{ ignoreCache: true }*/);
+      const { event_id: eventId, sealed_result: sealedResult } = await getVisitorData(/*{ ignoreCache: true }*/);
       const response = await fetch('/vpn-detection/api/activate-ppp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          requestId,
+          requestId: eventId,
           sealedResult: sealedResult?.base64(),
         } satisfies ActivateRegionalPricingPayload),
       });
