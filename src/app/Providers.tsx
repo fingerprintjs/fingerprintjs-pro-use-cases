@@ -16,10 +16,21 @@ const queryClient = new QueryClient({
   },
 });
 
+function getEndpoint() {
+  const endpoint = env.NEXT_PUBLIC_ENDPOINT;
+
+  if (!endpoint) {
+    return undefined;
+  }
+
+  // In Agent V4, the endpoint must be a valid URL
+  return new URL(endpoint, location.origin).toString();
+}
+
 export const FP_LOAD_OPTIONS: StartOptions = {
   apiKey: env.NEXT_PUBLIC_API_KEY,
   //scriptUrlPattern: [env.NEXT_PUBLIC_SCRIPT_URL_PATTERN, FingerprintJSPro.defaultScriptUrlPattern],
-  endpoints: env.NEXT_PUBLIC_ENDPOINT,
+  endpoints: getEndpoint(),
   region: env.NEXT_PUBLIC_REGION,
 };
 
