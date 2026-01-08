@@ -33,7 +33,12 @@ export function CredentialStuffing({ embed }: { embed?: boolean }) {
   } = useMutation<LoginResponse, Error, Omit<LoginPayload, 'requestId' | 'visitorId'>>({
     mutationKey: ['login attempt'],
     mutationFn: async ({ username, password }) => {
-      const { event_id: requestId, visitor_id: visitorId = '' } = await getVisitorData(/*{ ignoreCache: true }*/);
+      const { event_id: requestId, visitor_id: visitorId } = await getVisitorData(/*{ ignoreCache: true }*/);
+
+      if (!visitorId) {
+        throw new Error('Visitor ID is missing');
+      }
+
       const response = await fetch('/credential-stuffing/api/authenticate', {
         method: 'POST',
         headers: {
