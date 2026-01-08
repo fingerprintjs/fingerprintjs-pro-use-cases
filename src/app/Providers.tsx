@@ -16,10 +16,8 @@ const queryClient = new QueryClient({
   },
 });
 
-function getEndpoint() {
-  const endpoint = env.NEXT_PUBLIC_ENDPOINT;
-
-  if (!endpoint || typeof window === 'undefined') {
+export function getFingerprintEndpoint(endpoint?: string) {
+  if (typeof window === 'undefined' || !endpoint) {
     return undefined;
   }
 
@@ -30,7 +28,7 @@ function getEndpoint() {
 export const FP_LOAD_OPTIONS: StartOptions = {
   apiKey: env.NEXT_PUBLIC_API_KEY,
   //scriptUrlPattern: [env.NEXT_PUBLIC_SCRIPT_URL_PATTERN, FingerprintJSPro.defaultScriptUrlPattern],
-  endpoints: getEndpoint(),
+  endpoints: getFingerprintEndpoint(env.NEXT_PUBLIC_ENDPOINT),
   region: env.NEXT_PUBLIC_REGION,
 };
 
