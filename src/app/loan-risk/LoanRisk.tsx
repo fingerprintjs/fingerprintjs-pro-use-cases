@@ -92,13 +92,13 @@ export function LoanRisk({ embed }: { embed?: boolean }) {
   } = useMutation<LoanRequestResponse, Error, LoanRequestData, unknown>({
     mutationKey: ['request loan'],
     mutationFn: async (loanRequest: LoanRequestData) => {
-      const { event_id: requestId } = await getVisitorData(/*{ ignoreCache: true }*/);
+      const { event_id: eventId } = await getVisitorData(/*{ ignoreCache: true }*/);
       const response = await fetch('/loan-risk/api/request-loan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...loanRequest,
-          requestId,
+          requestId: eventId,
         } satisfies LoanRequestPayload),
       });
       return await response.json();

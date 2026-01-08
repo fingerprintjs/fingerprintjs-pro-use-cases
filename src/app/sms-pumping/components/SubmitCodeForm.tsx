@@ -17,7 +17,7 @@ export const useSubmitCode = (params?: { onSuccess?: () => void }) => {
   return useMutation<SubmitCodeResponse, Error, { phoneNumber: string; code: string }>({
     mutationKey: ['submitCode'],
     mutationFn: async ({ code, phoneNumber }) => {
-      const { event_id: requestId } = await getData();
+      const { event_id: eventId } = await getData();
       const response = await fetch(`/sms-pumping/api/submit-code`, {
         method: 'POST',
         headers: {
@@ -26,7 +26,7 @@ export const useSubmitCode = (params?: { onSuccess?: () => void }) => {
         body: JSON.stringify({
           code: Number(code),
           phoneNumber,
-          requestId,
+          requestId: eventId,
         } satisfies SubmitCodePayload),
       });
       if (response.status >= 500) {

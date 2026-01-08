@@ -56,7 +56,7 @@ const WebScraping: FunctionComponent<{ embed?: boolean }> = ({ embed }) => {
   const getFlightsQuery = useQuery<FlightQueryResult, Error>({
     queryKey: ['getFlights'],
     queryFn: async () => {
-      const { event_id: requestId } = await getVisitorData();
+      const { event_id: eventId } = await getVisitorData();
       const response = await fetch(`/web-scraping/api/flights`, {
         method: 'POST',
         headers: {
@@ -65,7 +65,7 @@ const WebScraping: FunctionComponent<{ embed?: boolean }> = ({ embed }) => {
         body: JSON.stringify({
           from: fromCode,
           to: toCode,
-          requestId,
+          requestId: eventId,
           disableBotDetection: Boolean(searchParams.get('disableBotDetection')),
         } satisfies FlightQuery),
       });
