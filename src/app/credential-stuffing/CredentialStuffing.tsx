@@ -20,7 +20,6 @@ import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
 export function CredentialStuffing({ embed }: { embed?: boolean }) {
   const { getData: getVisitorData } = useVisitorData({
-    /*    ignoreCache: true,*/
     timeout: FPJS_CLIENT_TIMEOUT,
     immediate: false,
   });
@@ -33,7 +32,7 @@ export function CredentialStuffing({ embed }: { embed?: boolean }) {
   } = useMutation<LoginResponse, Error, Omit<LoginPayload, 'requestId' | 'visitorId'>>({
     mutationKey: ['login attempt'],
     mutationFn: async ({ username, password }) => {
-      const { event_id: eventId, visitor_id: visitorId } = await getVisitorData(/*{ ignoreCache: true }*/);
+      const { event_id: eventId, visitor_id: visitorId } = await getVisitorData();
 
       if (!visitorId) {
         throw new Error('Visitor ID is missing');

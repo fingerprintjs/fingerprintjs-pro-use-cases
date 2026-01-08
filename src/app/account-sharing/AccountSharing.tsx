@@ -29,7 +29,7 @@ const TEST_ID = TEST_IDS.accountSharing;
 export const AccountSharing = ({ embed }: { embed?: boolean }) => {
   // Identify the visitor with Fingerprint
   const { getData: getVisitorData } = useVisitorData({
-    /*ignoreCache: true,*/ timeout: FPJS_CLIENT_TIMEOUT,
+    timeout: FPJS_CLIENT_TIMEOUT,
     immediate: false,
   });
 
@@ -87,7 +87,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
   } = useMutation<CreateAccountResponse, Error, Omit<CreateAccountPayload, 'requestId' | 'visitorId'>>({
     mutationKey: ['login attempt'],
     mutationFn: async ({ username, password }) => {
-      const { event_id: eventId } = await getVisitorData(/*{ ignoreCache: true }*/);
+      const { event_id: eventId } = await getVisitorData();
       const response = await fetch('/account-sharing/api/create-account', {
         method: 'POST',
         headers: {
@@ -115,7 +115,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
     mutationFn: async ({ username, password, force }) => {
       setJustLoggedOut(null);
       setOtherDevice(null);
-      const { event_id: eventId } = await getVisitorData(/*{ ignoreCache: true }*/);
+      const { event_id: eventId } = await getVisitorData();
       const response = await fetch('/account-sharing/api/login', {
         method: 'POST',
         headers: {

@@ -43,7 +43,7 @@ const WebScraping: FunctionComponent<{ embed?: boolean }> = ({ embed }) => {
    */
   const { getData: getVisitorData } = useVisitorData({
     // Don't use a cached fingerprint, it must be fresh to avoid replay attacks
-    /*ignoreCache: true,*/
+
     timeout: FPJS_CLIENT_TIMEOUT,
     // Don't fingerprint the visitor on mount, but when they click "Search flights", the fingerprint must be fresh
     immediate: false,

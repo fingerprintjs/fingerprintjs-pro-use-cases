@@ -16,7 +16,7 @@ type UseResetParams = {
 };
 
 export const useReset = ({ onError, onSuccess }: UseResetParams) => {
-  const { getData } = useVisitorData({ /*ignoreCache: true,*/ timeout: FPJS_CLIENT_TIMEOUT, immediate: false });
+  const { getData } = useVisitorData({ timeout: FPJS_CLIENT_TIMEOUT, immediate: false });
   const { enqueueSnackbar } = useSnackbar();
   const pathname = usePathname();
 

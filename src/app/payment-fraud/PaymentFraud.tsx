@@ -18,7 +18,6 @@ import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
 export function PaymentFraud({ embed }: { embed?: boolean }) {
   const { getData: getVisitorData } = useVisitorData({
-    /*ignoreCache: true,*/
     timeout: FPJS_CLIENT_TIMEOUT,
     immediate: false,
   });
@@ -38,7 +37,7 @@ export function PaymentFraud({ embed }: { embed?: boolean }) {
   } = useMutation<PaymentResponse, Error, Omit<PaymentPayload, 'requestId'>, unknown>({
     mutationKey: ['request loan'],
     mutationFn: async (payment) => {
-      const { event_id: eventId } = await getVisitorData(/*{ ignoreCache: true }*/);
+      const { event_id: eventId } = await getVisitorData();
       const response = await fetch('/payment-fraud/api/place-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

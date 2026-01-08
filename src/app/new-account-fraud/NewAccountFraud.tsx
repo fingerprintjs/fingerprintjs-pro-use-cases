@@ -20,7 +20,6 @@ type CreateAccountStatus = 'not-attempted' | 'pending' | 'success' | 'trial-exis
 
 export function NewAccountFraud({ embed }: { embed?: boolean }) {
   const { getData: getVisitorData } = useVisitorData({
-    /*ignoreCache: true,*/
     timeout: FPJS_CLIENT_TIMEOUT,
     immediate: false,
   });
@@ -33,7 +32,7 @@ export function NewAccountFraud({ embed }: { embed?: boolean }) {
   } = useMutation({
     mutationKey: ['create trial account'],
     mutationFn: async ({ username, password }: Omit<CreateAccountPayload, 'requestId'>) => {
-      const { event_id: eventId } = await getVisitorData(/*{ ignoreCache: true }*/);
+      const { event_id: eventId } = await getVisitorData();
       return await fetch('/new-account-fraud/api/create-account', {
         method: 'POST',
         headers: {

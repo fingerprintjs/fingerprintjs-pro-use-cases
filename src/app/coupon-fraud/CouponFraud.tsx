@@ -24,7 +24,6 @@ const TAXES = 6;
 
 export function CouponFraudUseCase({ embed }: { embed?: boolean }) {
   const { getData: getVisitorData } = useVisitorData({
-    /*ignoreCache: true,*/
     timeout: FPJS_CLIENT_TIMEOUT,
     immediate: false,
   });
@@ -36,7 +35,7 @@ export function CouponFraudUseCase({ embed }: { embed?: boolean }) {
   } = useMutation({
     mutationKey: ['request coupon claim'],
     mutationFn: async ({ couponCode }: Omit<CouponClaimPayload, 'requestId'>) => {
-      const { event_id: eventId } = await getVisitorData(/*{ ignoreCache: true }*/);
+      const { event_id: eventId } = await getVisitorData();
       const response = await fetch('/coupon-fraud/api/claim', {
         method: 'POST',
         headers: {

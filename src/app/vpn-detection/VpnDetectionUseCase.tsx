@@ -27,7 +27,6 @@ const TAXES = 15;
 
 const VpnDetectionUseCase: FunctionComponent = () => {
   const { getData: getVisitorData, data: visitorData } = useVisitorData({
-    /*ignoreCache: true,*/
     timeout: FPJS_CLIENT_TIMEOUT,
     immediate: true,
   });
@@ -44,7 +43,7 @@ const VpnDetectionUseCase: FunctionComponent = () => {
   } = useMutation({
     mutationKey: ['activate regional pricing'],
     mutationFn: async () => {
-      const { event_id: eventId, sealed_result: sealedResult } = await getVisitorData(/*{ ignoreCache: true }*/);
+      const { event_id: eventId, sealed_result: sealedResult } = await getVisitorData();
       const response = await fetch('/vpn-detection/api/activate-ppp', {
         method: 'POST',
         headers: {
