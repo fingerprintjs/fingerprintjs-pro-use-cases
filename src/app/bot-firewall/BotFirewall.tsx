@@ -75,7 +75,7 @@ const useBlockUnblockIpAddress = (getVisitorData: UseVisitorDataReturn['getData'
   const { mutate: blockIp, isPending: isPendingBlockIp } = useMutation({
     mutationKey: ['block IP'],
     mutationFn: async ({ ip, blocked }: Omit<BlockIpPayload, 'requestId'>) => {
-      const { event_id: eventId } = await getVisitorData(/*{ ignoreCache: true }*/);
+      const { event_id: eventId } = await getVisitorData();
       const response = await fetch('/bot-firewall/api/block-ip', {
         method: 'POST',
         headers: {

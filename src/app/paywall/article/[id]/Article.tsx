@@ -23,7 +23,6 @@ function ArticleSkeleton({ animation = false }: { animation?: SkeletonTypeMap['p
 
 export function Article({ articleId, embed }: { articleId: string; embed: boolean }) {
   const { getData: getVisitorData } = useVisitorData({
-    /*ignoreCache: true,*/
     timeout: FPJS_CLIENT_TIMEOUT,
     immediate: false,
   });
