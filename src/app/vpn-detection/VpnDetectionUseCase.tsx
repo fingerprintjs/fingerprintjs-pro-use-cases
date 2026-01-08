@@ -20,6 +20,7 @@ import { env } from '../../env';
 import { TEST_IDS } from '../../client/testIDs';
 import { VPN_DETECTION_COPY } from './copy';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
+import { getFingerprintEndpoint } from '../Providers';
 
 const COURSE_PRICE = 100;
 const TAXES = 15;
@@ -137,7 +138,7 @@ export const VpnDetectionUseCaseWrapped: FunctionComponent<{ embed?: boolean }> 
   return (
     <FpProvider
       apiKey={env.NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY}
-      endpoints={env.NEXT_PUBLIC_SEALED_RESULTS_ENDPOINT}
+      endpoints={getFingerprintEndpoint(env.NEXT_PUBLIC_SEALED_RESULTS_ENDPOINT)}
     >
       <UseCaseWrapper useCase={USE_CASES.vpnDetection} embed={embed}>
         <VpnDetectionUseCase />
