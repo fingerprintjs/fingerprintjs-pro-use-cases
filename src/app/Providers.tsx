@@ -19,7 +19,7 @@ const queryClient = new QueryClient({
 function getEndpoint() {
   const endpoint = env.NEXT_PUBLIC_ENDPOINT;
 
-  if (!endpoint) {
+  if (!endpoint || typeof window === 'undefined') {
     return undefined;
   }
 
