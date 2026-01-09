@@ -17,7 +17,7 @@ const getServerResponse = async (page: Page) => {
 };
 
 function parseRequestId(inputString: string) {
-  const regex = /requestId:\s*"([^"]+)"/;
+  const regex = /event_id:\s*"([^"]+)"/;
   const match = inputString.match(regex);
 
   if (match && match[1]) {
@@ -64,10 +64,8 @@ test.describe('Playground page', () => {
 
   test('Page renders agent response', async ({ page }) => {
     const agentResponse = await getAgentResponse(page);
-    expect(agentResponse).toContain('requestId');
-    expect(agentResponse).toContain('browserName');
-    expect(agentResponse).toContain('browserVersion');
-    expect(agentResponse).toContain('visitorId');
+    expect(agentResponse).toContain('event_id');
+    expect(agentResponse).toContain('visitor_id');
   });
 
   test('Page renders server response', async ({ page }) => {

@@ -21,11 +21,18 @@ import { useSearchHistory } from './hooks/use-search-history';
 import { useProducts } from './hooks/use-products';
 import { usePersonalizationNotification } from './hooks/use-personalization-notification';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
+import { useEventsGetResponse } from '../../client/hooks/useEventsGetResponse';
 
 export function Personalization({ embed }: { embed?: boolean }) {
   const { enqueueSnackbar } = useSnackbar();
 
-  const { isLoading: isFpDataLoading, data } = useVisitorData({ extendedResult: true, timeout: FPJS_CLIENT_TIMEOUT });
+  const { isLoading: isFpDataLoading, data } = useVisitorData({
+    immediate: true,
+    timeout: FPJS_CLIENT_TIMEOUT,
+  });
+
+  const { isPending: isEventsPending, data: eventsResponse } = useEventsGetResponse(data?.event_id);
+  const identificationData = eventsResponse?.products.identification?.data;
 
   const [didAcknowledge, setDidAcknowledge] = useSessionStorage('didAcknowledgePersonalizationUseCaseWarning', false);
   const [search, setSearch] = useState('');
@@ -36,7 +43,7 @@ export function Personalization({ embed }: { embed?: boolean }) {
   const { addCartItemMutation, removeCartItemMutation, cartQuery } = useCart();
   const productsQuery = useProducts(searchQuery);
 
-  const isLoading = productsQuery.isPending || isFpDataLoading;
+  const isLoading = productsQuery.isPending || isFpDataLoading || isEventsPending;
 
   const { showNotification } = usePersonalizationNotification();
 
@@ -56,8 +63,8 @@ export function Personalization({ embed }: { embed?: boolean }) {
 
   useEffect(() => {
     if (
-      data?.incognito &&
-      data.visitorFound &&
+      identificationData?.incognito &&
+      identificationData.visitorFound &&
       !userWelcomed &&
       (searchHistoryQuery.data.data?.length || cartQuery.data?.data?.length)
     ) {
@@ -68,7 +75,7 @@ export function Personalization({ embed }: { embed?: boolean }) {
 
       setUserWelcomed(true);
     }
-  }, [cartQuery.data, data, enqueueSnackbar, searchHistoryQuery.data, userWelcomed]);
+  }, [cartQuery.data, data, enqueueSnackbar, identificationData, searchHistoryQuery.data, userWelcomed]);
 
   const cartItems: CartProduct[] | undefined = cartQuery.data?.data?.map((item) => {
     return {

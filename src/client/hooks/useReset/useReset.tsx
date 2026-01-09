@@ -16,15 +16,15 @@ type UseResetParams = {
 };
 
 export const useReset = ({ onError, onSuccess }: UseResetParams) => {
-  const { getData } = useVisitorData({ ignoreCache: true, timeout: FPJS_CLIENT_TIMEOUT }, { immediate: false });
+  const { getData } = useVisitorData({ timeout: FPJS_CLIENT_TIMEOUT, immediate: false });
   const { enqueueSnackbar } = useSnackbar();
   const pathname = usePathname();
 
   const resetMutation = useMutation<ResetResponse>({
     mutationKey: ['resetMutation'],
     mutationFn: async () => {
-      const { requestId } = await getData();
-      const body: ResetRequest = { requestId };
+      const { event_id: eventId } = await getData();
+      const body: ResetRequest = { requestId: eventId };
 
       return fetch('/api/admin/reset', {
         method: 'POST',

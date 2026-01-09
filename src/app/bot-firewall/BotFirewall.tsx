@@ -6,8 +6,8 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import Button from '../../client/components/Button/Button';
 import { BlockIpPayload, BlockIpResponse } from './api/block-ip/route';
 import styles from './components/botFirewallComponents.module.scss';
-import { VisitorQueryContext, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import { OptionsObject as SnackbarOptions, enqueueSnackbar } from 'notistack';
+import { useVisitorData, UseVisitorDataReturn } from '@fingerprintjs/fingerprintjs-pro-react';
+import { enqueueSnackbar, OptionsObject as SnackbarOptions } from 'notistack';
 import ChevronIcon from '../../client/img/chevronBlack.svg';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,6 +18,7 @@ import { Alert } from '../../client/components/Alert/Alert';
 import { BotVisit } from './api/get-bot-visits/botVisitDatabase';
 import { BotTypeInfo, BotVisitAction, InstructionPrompt } from './components/botFirewallComponents';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
+import { useEventsGetResponse } from '../../client/hooks/useEventsGetResponse';
 
 const DEFAULT_DISPLAYED_VISITS = 10;
 const DISPLAYED_VISITS_INCREMENT = 10;
@@ -46,8 +47,9 @@ const useBotVisits = () => {
     status: botVisitsQueryStatus,
   } = useQuery({
     queryKey: ['get bot visits'],
-    queryFn: (): Promise<BotVisit[]> => {
-      return fetch(`/bot-firewall/api/get-bot-visits?limit=${BOT_VISITS_FETCH_LIMIT}`).then((res) => res.json());
+    queryFn: async (): Promise<BotVisit[]> => {
+      const res = await fetch(`/bot-firewall/api/get-bot-visits?limit=${BOT_VISITS_FETCH_LIMIT}`);
+      return await res.json();
     },
   });
   return { botVisits, refetchBotVisits, isFetchingBotVisits, botVisitsQueryStatus };
@@ -69,20 +71,17 @@ const useBlockedIps = () => {
 };
 
 /** Mutation (POST request) to block/unblock an IP */
-const useBlockUnblockIpAddress = (
-  getVisitorData: VisitorQueryContext<true>['getData'],
-  refetchBlockedIps: () => void,
-) => {
+const useBlockUnblockIpAddress = (getVisitorData: UseVisitorDataReturn['getData'], refetchBlockedIps: () => void) => {
   const { mutate: blockIp, isPending: isPendingBlockIp } = useMutation({
     mutationKey: ['block IP'],
     mutationFn: async ({ ip, blocked }: Omit<BlockIpPayload, 'requestId'>) => {
-      const { requestId } = await getVisitorData({ ignoreCache: true });
+      const { event_id: eventId } = await getVisitorData();
       const response = await fetch('/bot-firewall/api/block-ip', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ip, blocked, requestId } satisfies BlockIpPayload),
+        body: JSON.stringify({ ip, blocked, requestId: eventId } satisfies BlockIpPayload),
       });
       if (!response.ok) {
         throw new Error('Failed to update firewall: ' + ((await response.json()).message ?? response.statusText));
@@ -120,9 +119,12 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
     data: visitorData,
     isLoading: isLoadingVisitorData,
   } = useVisitorData({
-    extendedResult: true,
     timeout: FPJS_CLIENT_TIMEOUT,
+    immediate: true,
   });
+
+  const { data: eventData, isPending: isPendingServerResponse } = useEventsGetResponse(visitorData?.event_id);
+  const identificationData = eventData?.products.identification?.data;
 
   // Get a list of bot visits
   const { botVisits, refetchBotVisits, isFetchingBotVisits: isLoadingBotVisits, botVisitsQueryStatus } = useBotVisits();
@@ -137,7 +139,12 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
 
   // Loading bot visits is usually really fast, use a minimum loading time to prevent UI flashing
   const [isArtificiallyLoading, setIsArtificiallyLoading] = useState(false);
-  const isLoading = isLoadingVisitorData || isLoadingBotVisits || isLoadingBlockedIps || isArtificiallyLoading;
+  const isLoading =
+    isPendingServerResponse ||
+    isLoadingVisitorData ||
+    isLoadingBotVisits ||
+    isLoadingBlockedIps ||
+    isArtificiallyLoading;
 
   const isIpBlocked = (ip: string): boolean => {
     return Boolean(blockedIps?.find((blockedIp) => blockedIp === ip));
@@ -186,7 +193,7 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
                       isBlockedNow={isIpBlocked(botVisit.ip)}
                       blockIp={blockIp}
                       isPendingBlockIp={isPendingBlockIp}
-                      isVisitorsIp={botVisit.ip === visitorData?.ip}
+                      isVisitorsIp={botVisit.ip === identificationData?.ip}
                     />
                   </td>
                 </tr>
@@ -222,7 +229,7 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
                   isBlockedNow={isIpBlocked(botVisit.ip)}
                   blockIp={blockIp}
                   isPendingBlockIp={isPendingBlockIp}
-                  isVisitorsIp={botVisit.ip === visitorData?.ip}
+                  isVisitorsIp={botVisit.ip === identificationData?.ip}
                 />
               </div>
             );
@@ -237,7 +244,7 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
       <UseCaseWrapper
         useCase={USE_CASES.botFirewall}
         embed={embed}
-        instructionsNote={`For the purposes of this demo, you can only block/unblock your own IP address (${visitorData?.ip}). The block expires after one hour. The database of bot visits is cleared on every website update.`}
+        instructionsNote={`For the purposes of this demo, you can only block/unblock your own IP address (${identificationData?.ip}). The block expires after one hour. The database of bot visits is cleared on every website update.`}
       >
         <div className={styles.container}>
           <div className={styles.header}>

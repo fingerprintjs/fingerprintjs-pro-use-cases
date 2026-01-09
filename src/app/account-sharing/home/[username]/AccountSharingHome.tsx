@@ -82,7 +82,10 @@ const ContentCategory: FunctionComponent<{ title: string; cards: Card[] }> = ({ 
 
 export function AccountSharingHome({ username, embed }: { username: string; embed?: boolean }) {
   // Identify the visitor with Fingerprint
-  const { data: visitorData, isLoading: isLoadingVisitorData } = useVisitorData({ timeout: FPJS_CLIENT_TIMEOUT });
+  const { data: visitorData, isLoading: isLoadingVisitorData } = useVisitorData({
+    timeout: FPJS_CLIENT_TIMEOUT,
+    immediate: true,
+  });
   const router = useRouter();
 
   const youHaveBeenLoggedOut = useCallback(
@@ -99,18 +102,18 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
   );
 
   const { data: loggedInData, error: loggedInError } = useQuery<IsLoggedInResponse, Error, IsLoggedInResponse>({
-    queryKey: ['isLoggedIn', username, visitorData?.requestId],
+    queryKey: ['isLoggedIn', username, visitorData?.event_id],
     queryFn: async () => {
       const response = await fetch(`/account-sharing/api/is-logged-in`, {
         method: 'POST',
         body: JSON.stringify({
           username,
-          requestId: visitorData?.requestId ?? '',
+          requestId: visitorData?.event_id ?? '',
         } satisfies IsLoggedInPayload),
       });
       return await response.json();
     },
-    enabled: Boolean(visitorData?.requestId),
+    enabled: Boolean(visitorData?.event_id),
     /**
      * To keep the demo simple, we are using polling to check if the user has been logged out from this device.
      * In a real-world application, you might opt to use a server-sent events (SSE) or web sockets to get real-time updates.
@@ -141,7 +144,7 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
     mutationFn: async () => {
       const response = await fetch(`/account-sharing/api/logout`, {
         method: 'POST',
-        body: JSON.stringify({ username, requestId: visitorData?.requestId ?? '' }),
+        body: JSON.stringify({ username, requestId: visitorData?.event_id ?? '' }),
       });
       return await response.json();
     },

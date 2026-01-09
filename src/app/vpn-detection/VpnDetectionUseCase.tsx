@@ -9,28 +9,28 @@ import classNames from 'classnames';
 import { Alert } from '../../client/components/Alert/Alert';
 import Button from '../../client/components/Button/Button';
 import { Cart } from '../../client/components/Cart/Cart';
-import { FingerprintJSPro, FpjsProvider, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { useMutation } from '@tanstack/react-query';
 import { ActivateRegionalPricingPayload, ActivateRegionalPricingResponse } from './api/activate-ppp/route';
-import { useUnsealedResult } from '../../client/hooks/useUnsealedResult';
 import { getFlagEmoji, getIpLocation } from '../../utils/locationUtils';
 import { getRegionalDiscount } from './data/getDiscountByCountry';
 import courseLogo from './fingerprintLogoLowOpacitySquareBordered.svg';
-import { env } from '../../env';
 import { TEST_IDS } from '../../client/testIDs';
 import { VPN_DETECTION_COPY } from './copy';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
+import { useEventsGetResponse } from '../../client/hooks/useEventsGetResponse';
 
 const COURSE_PRICE = 100;
 const TAXES = 15;
 
 const VpnDetectionUseCase: FunctionComponent = () => {
   const { getData: getVisitorData, data: visitorData } = useVisitorData({
-    ignoreCache: true,
     timeout: FPJS_CLIENT_TIMEOUT,
+    immediate: true,
   });
-  const { data: unsealedVisitorData } = useUnsealedResult(visitorData?.sealedResult);
-  const visitorIpCountry = getIpLocation(unsealedVisitorData)?.country;
+  // TODO Restore sealed results usage when V4 support is added to Node SDK
+  const { data: identificationEvent } = useEventsGetResponse(visitorData?.event_id);
+  const visitorIpCountry = getIpLocation(identificationEvent)?.country;
   const potentialDiscount = getRegionalDiscount(visitorIpCountry?.code);
 
   const {
@@ -41,13 +41,15 @@ const VpnDetectionUseCase: FunctionComponent = () => {
   } = useMutation({
     mutationKey: ['activate regional pricing'],
     mutationFn: async () => {
-      const { requestId, sealedResult } = await getVisitorData({ ignoreCache: true });
+      const { event_id: eventId } = await getVisitorData();
       const response = await fetch('/vpn-detection/api/activate-ppp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ requestId, sealedResult } satisfies ActivateRegionalPricingPayload),
+        body: JSON.stringify({
+          requestId: eventId,
+        } satisfies ActivateRegionalPricingPayload),
       });
       return await response.json();
     },
@@ -130,16 +132,8 @@ const VpnDetectionUseCase: FunctionComponent = () => {
 
 export const VpnDetectionUseCaseWrapped: FunctionComponent<{ embed?: boolean }> = ({ embed }) => {
   return (
-    <FpjsProvider
-      loadOptions={{
-        apiKey: env.NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY,
-        scriptUrlPattern: [env.NEXT_PUBLIC_SEALED_RESULTS_SCRIPT_URL, FingerprintJSPro.defaultScriptUrlPattern],
-        endpoint: [env.NEXT_PUBLIC_SEALED_RESULTS_ENDPOINT, FingerprintJSPro.defaultEndpoint],
-      }}
-    >
-      <UseCaseWrapper useCase={USE_CASES.vpnDetection} embed={embed}>
-        <VpnDetectionUseCase />
-      </UseCaseWrapper>
-    </FpjsProvider>
+    <UseCaseWrapper useCase={USE_CASES.vpnDetection} embed={embed}>
+      <VpnDetectionUseCase />
+    </UseCaseWrapper>
   );
 };

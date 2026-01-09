@@ -4,9 +4,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SnackbarProvider } from 'notistack';
 import { PropsWithChildren } from 'react';
-import { FingerprintJSPro, FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
+import { FpProvider, StartOptions } from '@fingerprintjs/fingerprintjs-pro-react';
 import { env } from '../env';
 import { CloseSnackbarButton, CustomSnackbar } from '../client/components/Alert/Alert';
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -15,10 +16,19 @@ const queryClient = new QueryClient({
   },
 });
 
-export const FP_LOAD_OPTIONS: FingerprintJSPro.LoadOptions = {
+export function getFingerprintEndpoint(endpoint?: string) {
+  if (typeof window === 'undefined' || !endpoint) {
+    return undefined;
+  }
+
+  // In Agent V4, the endpoint must be a valid URL
+  return new URL(endpoint, location.origin).toString();
+}
+
+export const FP_LOAD_OPTIONS: StartOptions = {
   apiKey: env.NEXT_PUBLIC_API_KEY,
-  scriptUrlPattern: [env.NEXT_PUBLIC_SCRIPT_URL_PATTERN, FingerprintJSPro.defaultScriptUrlPattern],
-  endpoint: [env.NEXT_PUBLIC_ENDPOINT, FingerprintJSPro.defaultEndpoint],
+  //scriptUrlPattern: [env.NEXT_PUBLIC_SCRIPT_URL_PATTERN, FingerprintJSPro.defaultScriptUrlPattern],
+  endpoints: getFingerprintEndpoint(env.NEXT_PUBLIC_ENDPOINT),
   region: env.NEXT_PUBLIC_REGION,
 };
 
@@ -42,7 +52,7 @@ function Providers({ children }: PropsWithChildren) {
           info: CustomSnackbar,
         }}
       >
-        <FpjsProvider loadOptions={FP_LOAD_OPTIONS}>{children}</FpjsProvider>
+        <FpProvider {...FP_LOAD_OPTIONS}>{children}</FpProvider>
       </SnackbarProvider>
     </QueryClientProvider>
   );

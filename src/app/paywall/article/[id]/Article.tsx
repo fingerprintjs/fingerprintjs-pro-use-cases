@@ -23,17 +23,17 @@ function ArticleSkeleton({ animation = false }: { animation?: SkeletonTypeMap['p
 
 export function Article({ articleId, embed }: { articleId: string; embed: boolean }) {
   const { getData: getVisitorData } = useVisitorData({
-    ignoreCache: true,
     timeout: FPJS_CLIENT_TIMEOUT,
+    immediate: false,
   });
 
   const { data: articleData, error: articleError } = useQuery<ArticleRequestPayload, Error, ArticleResponse>({
     queryKey: ['GET_ARTICLE_QUERY', articleId],
     queryFn: async () => {
-      const { requestId } = await getVisitorData();
+      const { event_id: eventId } = await getVisitorData();
       const response = await fetch(`/paywall/api/article/${articleId}`, {
         method: 'POST',
-        body: JSON.stringify({ requestId } satisfies ArticleRequestPayload),
+        body: JSON.stringify({ requestId: eventId } satisfies ArticleRequestPayload),
       });
       return await response.json();
     },

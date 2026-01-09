@@ -688,14 +688,7 @@ export const USE_CASES = {
       <>Turn on your VPN and pick an exit node different from your true location.</>,
       <>Try activating the discount again. You will not get the discount while using a VPN.</>,
     ],
-    instructionsNote: (
-      <>
-        This use case demo uses{' '}
-        <Link href='https://dev.fingerprint.com/docs/sealed-client-results'>Sealed client results</Link> to process the
-        identification data. This provides lower latency and stronger tampering protection compared to only using the
-        Server API.
-      </>
-    ),
+
     moreResources: [
       {
         url: 'https://fingerprint.com/blog/vpn-detection-how-it-works/',

@@ -13,11 +13,11 @@ import { SendMessageMutation } from '../SmsPumping';
 import { FPJS_CLIENT_TIMEOUT } from '../../../const';
 
 export const useSubmitCode = (params?: { onSuccess?: () => void }) => {
-  const { getData } = useVisitorData({ ignoreCache: true, timeout: FPJS_CLIENT_TIMEOUT }, { immediate: false });
+  const { getData } = useVisitorData({ timeout: FPJS_CLIENT_TIMEOUT, immediate: false });
   return useMutation<SubmitCodeResponse, Error, { phoneNumber: string; code: string }>({
     mutationKey: ['submitCode'],
     mutationFn: async ({ code, phoneNumber }) => {
-      const { requestId } = await getData();
+      const { event_id: eventId } = await getData();
       const response = await fetch(`/sms-pumping/api/submit-code`, {
         method: 'POST',
         headers: {
@@ -26,7 +26,7 @@ export const useSubmitCode = (params?: { onSuccess?: () => void }) => {
         body: JSON.stringify({
           code: Number(code),
           phoneNumber,
-          requestId,
+          requestId: eventId,
         } satisfies SubmitCodePayload),
       });
       if (response.status >= 500) {

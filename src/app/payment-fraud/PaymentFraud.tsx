@@ -17,10 +17,10 @@ import { useMutation } from '@tanstack/react-query';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
 export function PaymentFraud({ embed }: { embed?: boolean }) {
-  const { getData: getVisitorData } = useVisitorData(
-    { ignoreCache: true, timeout: FPJS_CLIENT_TIMEOUT },
-    { immediate: false },
-  );
+  const { getData: getVisitorData } = useVisitorData({
+    timeout: FPJS_CLIENT_TIMEOUT,
+    immediate: false,
+  });
 
   // Default mocked card data
   const [cardNumber, setCardNumber] = useState('4242 4242 4242 4242');
@@ -37,13 +37,13 @@ export function PaymentFraud({ embed }: { embed?: boolean }) {
   } = useMutation<PaymentResponse, Error, Omit<PaymentPayload, 'requestId'>, unknown>({
     mutationKey: ['request loan'],
     mutationFn: async (payment) => {
-      const { requestId } = await getVisitorData({ ignoreCache: true });
+      const { event_id: eventId } = await getVisitorData();
       const response = await fetch('/payment-fraud/api/place-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...payment,
-          requestId,
+          requestId: eventId,
         } satisfies PaymentPayload),
       });
       return await response.json();
