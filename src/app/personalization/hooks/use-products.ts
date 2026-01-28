@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { GetProductsResponse, GetProductsPayload } from '../../../app/personalization/api/get-products/route';
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData } from '@fingerprint/react';
 import { FPJS_CLIENT_TIMEOUT } from '../../../const';
 import { SEARCH_HISTORY_QUERY } from './use-search-history';
 import { useEffect } from 'react';

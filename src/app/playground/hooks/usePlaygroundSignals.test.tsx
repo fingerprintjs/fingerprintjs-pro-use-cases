@@ -2,11 +2,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { usePlaygroundSignals } from './usePlaygroundSignals';
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData } from '@fingerprint/react';
 import { ReactNode } from 'react';
 
 // Mock the useVisitorData hook
-vi.mock('@fingerprintjs/fingerprintjs-pro-react', () => ({
+vi.mock('@fingerprint/react', () => ({
   useVisitorData: vi.fn(),
 }));
 

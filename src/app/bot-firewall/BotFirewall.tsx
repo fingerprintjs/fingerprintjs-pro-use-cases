@@ -6,7 +6,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import Button from '../../client/components/Button/Button';
 import { BlockIpPayload, BlockIpResponse } from './api/block-ip/route';
 import styles from './components/botFirewallComponents.module.scss';
-import { useVisitorData, UseVisitorDataReturn } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData, UseVisitorDataReturn } from '@fingerprint/react';
 import { enqueueSnackbar, OptionsObject as SnackbarOptions } from 'notistack';
 import ChevronIcon from '../../client/img/chevronBlack.svg';
 import Image from 'next/image';

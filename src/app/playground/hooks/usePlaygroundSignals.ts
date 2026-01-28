@@ -1,4 +1,4 @@
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData } from '@fingerprint/react';
 import { EventsGetResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { FPJS_CLIENT_TIMEOUT } from '../../../const';
 import { useEffect } from 'react';

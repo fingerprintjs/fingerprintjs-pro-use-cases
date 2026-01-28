@@ -1,6 +1,6 @@
 'use client';
 
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData } from '@fingerprint/react';
 import { UseCaseWrapper } from '../../../../client/components/UseCaseWrapper/UseCaseWrapper';
 import { USE_CASES } from '../../../../client/content';
 import { FPJS_CLIENT_TIMEOUT } from '../../../../const';

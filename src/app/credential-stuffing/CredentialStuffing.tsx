@@ -12,7 +12,7 @@ import classNames from 'classnames';
 import hiddenIcon from '../../client/img/iconHidden.svg';
 import shownIcon from '../../client/img/iconShown.svg';
 import Image from 'next/image';
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData } from '@fingerprint/react';
 import { TEST_IDS } from '../../client/testIDs';
 import { useMutation } from '@tanstack/react-query';
 import { LoginPayload, LoginResponse } from './api/authenticate/route';

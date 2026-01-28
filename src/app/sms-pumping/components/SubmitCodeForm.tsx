@@ -3,7 +3,7 @@ import { FunctionComponent, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { SubmitCodeResponse, SubmitCodePayload } from '../api/submit-code/route';
 import { TEST_IDS } from '../../../client/testIDs';
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData } from '@fingerprint/react';
 import { SendMessageButton } from './SendSMSMessageButton';
 import { Alert } from '../../../client/components/Alert/Alert';
 import Button from '../../../client/components/Button/Button';

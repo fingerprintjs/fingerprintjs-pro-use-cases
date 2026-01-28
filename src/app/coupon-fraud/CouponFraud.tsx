@@ -12,7 +12,7 @@ import AllStar from './shoeAllStar.svg';
 import { Alert } from '../../client/components/Alert/Alert';
 import Button from '../../client/components/Button/Button';
 import { Cart } from '../../client/components/Cart/Cart';
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData } from '@fingerprint/react';
 import { TEST_IDS } from '../../client/testIDs';
 import { useMutation } from '@tanstack/react-query';
 import { CouponClaimPayload, CouponClaimResponse } from './api/claim/route';

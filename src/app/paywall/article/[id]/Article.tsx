@@ -7,7 +7,7 @@ import { USE_CASES } from '../../../../client/content';
 import Image from 'next/image';
 import styles from '../../paywall.module.scss';
 import { Alert } from '../../../../client/components/Alert/Alert';
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData } from '@fingerprint/react';
 import { useQuery } from '@tanstack/react-query';
 import { TEST_IDS } from '../../../../client/testIDs';
 import { ArticleGrid, Byline } from '../../components/ArticleGrid';

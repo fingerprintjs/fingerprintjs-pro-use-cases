@@ -1,6 +1,6 @@
 'use client';
 
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData } from '@fingerprint/react';
 import { useMutation } from '@tanstack/react-query';
 import { ResetRequest, ResetResponse } from '../../../app/api/admin/reset/route';
 import { useSnackbar } from 'notistack';

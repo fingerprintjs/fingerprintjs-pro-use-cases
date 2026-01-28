@@ -13,7 +13,7 @@ import { NumberInputWithUnits } from '../../client/components/InputNumberWithUni
 import styles from './loanRisk.module.scss';
 import classNames from 'classnames';
 import { TEST_IDS } from '../../client/testIDs';
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData } from '@fingerprint/react';
 import { useMutation } from '@tanstack/react-query';
 import { LoanRequestData, LoanRequestPayload, LoanRequestResponse } from './api/request-loan/route';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';

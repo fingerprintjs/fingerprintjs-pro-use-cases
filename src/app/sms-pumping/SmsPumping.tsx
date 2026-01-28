@@ -14,7 +14,7 @@ import { BackArrow } from '../../client/components/BackArrow/BackArrow';
 import { GetServerSideProps } from 'next';
 import { SubmitCodeForm } from './components/SubmitCodeForm';
 import { PhoneNumberForm } from './components/PhoneNumberForm';
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData } from '@fingerprint/react';
 import { useMutation } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { SendSMSPayload, SendSMSResponse } from './api/send-verification-sms/route';

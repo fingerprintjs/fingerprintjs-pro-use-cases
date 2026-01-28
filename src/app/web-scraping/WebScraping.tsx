@@ -1,7 +1,7 @@
 'use client';
 
 import { UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData } from '@fingerprint/react';
 import { useQueryState } from 'next-usequerystate';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { USE_CASES } from '../../client/content';
