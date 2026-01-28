@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useCallback } from 'react';
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData } from '@fingerprint/react';
 import { GetCartItemsPayload, GetCartItemsResponse } from '../api/cart/get-items/route';
 import { AddCartItemPayload, AddCartItemResponse } from '../api/cart/add-item/route';
 import { RemoveCartItemPayload, RemoveCartItemResponse } from '../api/cart/remove-item/route';

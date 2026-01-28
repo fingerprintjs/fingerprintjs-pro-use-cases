@@ -10,7 +10,7 @@ import styles from './paymentFraud.module.scss';
 import formStyles from '../../client/styles/forms.module.scss';
 import { Alert } from '../../client/components/Alert/Alert';
 import classNames from 'classnames';
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData } from '@fingerprint/react';
 import { TEST_IDS } from '../../client/testIDs';
 import { PaymentPayload, PaymentResponse } from './api/place-order/route';
 import { useMutation } from '@tanstack/react-query';

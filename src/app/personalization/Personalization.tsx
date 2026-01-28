@@ -15,7 +15,7 @@ import CartIcon from '../../client/img/cart.svg';
 import { Cart, CartProduct } from '../../client/components/Cart/Cart';
 import { Search, SearchHistory } from './components/searchComponents';
 import { ProductCard } from './components/productCard';
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData } from '@fingerprint/react';
 import { Spinner } from '../../client/components/Spinner/Spinner';
 import { useSearchHistory } from './hooks/use-search-history';
 import { useProducts } from './hooks/use-products';

@@ -26,7 +26,7 @@
     "@amplitude/analytics-browser": "^2.11.5",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
-    "@fingerprintjs/fingerprintjs-pro-react": "^3.0.0-test.2",
+    "@fingerprint/react": "^3.0.0-test.3",
     "@fingerprintjs/fingerprintjs-pro-server-api": "^6.10.0",
     "@inkeep/cxkit-react": "^0.5.107",
     "@mui/icons-material": "^5.15.11",

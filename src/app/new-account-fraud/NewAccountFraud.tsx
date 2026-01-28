@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { useVisitorData } from '@fingerprint/react';
 import classNames from 'classnames';
 import Image from 'next/image';
 import styles from './newAccountFraud.module.scss';
