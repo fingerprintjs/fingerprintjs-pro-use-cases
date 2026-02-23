@@ -17,7 +17,7 @@ const getServerResponse = async (page: Page) => {
 };
 
 function parseRequestId(inputString: string) {
-  const regex = /event_id:\s*"([^"]+)"/;
+  const regex = /(?:event_id|requestId):\s*"([^"]+)"/;
   const match = inputString.match(regex);
 
   if (match && match[1]) {
@@ -84,6 +84,8 @@ test.describe('Playground page', () => {
     await clickPlaygroundRefreshButton(page);
     const requestId = parseRequestId(await getAgentResponse(page));
 
+    expect(oldRequestId).not.toBeNull();
+    expect(requestId).not.toBeNull();
     expect(oldRequestId).toHaveLength(20);
     expect(requestId).toHaveLength(20);
     expect(requestId).not.toEqual(oldRequestId);
@@ -94,6 +96,8 @@ test.describe('Playground page', () => {
     await clickPlaygroundRefreshButton(page);
     const requestId = parseRequestId(await getServerResponse(page));
 
+    expect(oldRequestId).not.toBeNull();
+    expect(requestId).not.toBeNull();
     expect(oldRequestId).toHaveLength(20);
     expect(requestId).toHaveLength(20);
     expect(requestId).not.toEqual(oldRequestId);
