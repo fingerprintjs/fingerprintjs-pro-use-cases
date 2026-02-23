@@ -521,10 +521,36 @@ export function Playground() {
       {
         content: [
           <DocsLink
+            href='https://docs.fingerprint.com/docs/mobile-identification#proximity-detection-for-mobile-devices'
+            key='proximity'
+          >
+            Proximity Detection
+          </DocsLink>,
+        ],
+      },
+      { content: PLAYGROUND_COPY.mobileOnly, className: tableStyles.neutral },
+    ],
+    [
+      {
+        content: [
+          <DocsLink
             href='https://dev.fingerprint.com/docs/smart-signals-reference#geolocation-spoofing-detection'
             key='spoof'
           >
             Location Spoofing
+          </DocsLink>,
+        ],
+      },
+      { content: PLAYGROUND_COPY.mobileOnly, className: tableStyles.neutral },
+    ],
+    [
+      {
+        content: [
+          <DocsLink
+            href='https://docs.fingerprint.com/docs/smart-signals-reference#vpn-detection-for-mobile-devices'
+            key='mobile-vpn'
+          >
+            VPN (Mobile)
           </DocsLink>,
         ],
       },
@@ -540,6 +566,21 @@ export function Playground() {
       },
       { content: PLAYGROUND_COPY.mobileOnly, className: tableStyles.neutral },
     ],
+
+    [
+      {
+        content: [
+          <DocsLink
+            href='https://docs.fingerprint.com/docs/smart-signals-reference#tampered-request-detection-for-mobile-apps'
+            key='tampered-request'
+          >
+            Tampered Request
+          </DocsLink>,
+        ],
+      },
+      { content: PLAYGROUND_COPY.mobileOnly, className: tableStyles.neutral },
+    ],
+
     [
       {
         content: [

@@ -60,6 +60,9 @@ test.describe('Playground page', () => {
 
     await page.getByText('IP Blocklist', { exact: true }).waitFor();
     await page.getByText('Emulator', { exact: true }).waitFor();
+    await page.getByText('Proximity Detection', { exact: true }).waitFor();
+    await page.getByText('Tampered Request', { exact: true }).waitFor();
+    await page.getByText('VPN (Mobile)', { exact: true }).waitFor();
   });
 
   test('Page renders agent response', async ({ page }) => {
