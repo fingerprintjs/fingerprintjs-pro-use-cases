@@ -4,7 +4,7 @@ import { SessionDbModel, UserDbModel } from '../database';
 import { ACCOUNT_SHARING_COPY } from '../../const';
 
 export type IsLoggedInPayload = {
-  requestId: string;
+  eventId: string;
   username: string;
 };
 
@@ -18,11 +18,11 @@ export type IsLoggedInResponse = {
 };
 
 export async function POST(req: Request): Promise<NextResponse<IsLoggedInResponse>> {
-  const { username, requestId } = (await req.json()) as IsLoggedInPayload;
+  const { username, eventId } = (await req.json()) as IsLoggedInPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
   const fingerprintResult = await getAndValidateFingerprintResult({
-    requestId,
+    eventId,
     req,
     // We use the built-in React SDK caching to get user to the homepage faster, so we disable the freshness check
     // Alternatively, we could keep the check and disable caching with useVisitorData({ ignoreCache: true })
@@ -33,7 +33,7 @@ export async function POST(req: Request): Promise<NextResponse<IsLoggedInRespons
   }
 
   // Get visitorId from the Server API Identification event
-  const visitorId = fingerprintResult.data.products.identification?.data?.visitorId;
+  const visitorId = fingerprintResult.data.identification?.visitor_id;
   if (!visitorId) {
     return NextResponse.json({ message: ACCOUNT_SHARING_COPY.visitorIdNotFound, severity: 'error' }, { status: 403 });
   }

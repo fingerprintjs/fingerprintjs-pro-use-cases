@@ -26,7 +26,7 @@ export const useSubmitCode = (params?: { onSuccess?: () => void }) => {
         body: JSON.stringify({
           code: Number(code),
           phoneNumber,
-          requestId: eventId,
+          eventId,
         } satisfies SubmitCodePayload),
       });
       if (response.status >= 500) {

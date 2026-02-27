@@ -97,7 +97,7 @@ export function LoanRisk({ embed }: { embed?: boolean }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...loanRequest,
-          requestId: eventId,
+          eventId,
         } satisfies LoanRequestPayload),
       });
       return await response.json();

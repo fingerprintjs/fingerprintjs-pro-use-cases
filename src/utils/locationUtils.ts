@@ -1,4 +1,4 @@
-import { EventsGetResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { Event } from '@fingerprint/node-sdk';
 import { EventResponseIpInfoV4Geolocation } from './types';
 
 export const UNKNOWN_LOCATION = 'Unknown';
@@ -7,17 +7,17 @@ export function getLocationName(ipLocation?: EventResponseIpInfoV4Geolocation, i
   if (!ipLocation) {
     return UNKNOWN_LOCATION;
   }
-  const { city, country, subdivisions } = ipLocation;
-  if (city?.name && ipLocation.accuracyRadius && ipLocation.accuracyRadius <= 50) {
-    addressParts.push(city.name);
+  const { city_name, country_name, subdivisions, accuracy_radius } = ipLocation;
+  if (city_name && accuracy_radius && accuracy_radius <= 50) {
+    addressParts.push(city_name);
   }
 
-  if (subdivisions?.[0]?.name && ipLocation.accuracyRadius && ipLocation.accuracyRadius <= 100 && includeSubdivision) {
+  if (subdivisions?.[0]?.name && accuracy_radius && accuracy_radius <= 100 && includeSubdivision) {
     addressParts.push(subdivisions[0].name);
   }
 
-  if (country) {
-    addressParts.push(country.name);
+  if (country_name) {
+    addressParts.push(country_name);
   }
 
   if (addressParts.length === 0) {
@@ -27,8 +27,8 @@ export function getLocationName(ipLocation?: EventResponseIpInfoV4Geolocation, i
   return addressParts.join(', ');
 }
 
-export const getIpLocation = (eventResponse?: EventsGetResponse): EventResponseIpInfoV4Geolocation | undefined => {
-  return eventResponse?.products.ipInfo?.data?.v4?.geolocation;
+export const getIpLocation = (eventResponse?: Event): EventResponseIpInfoV4Geolocation | undefined => {
+  return eventResponse?.ip_info?.v4?.geolocation;
 };
 
 // Courtesy of https://dev.to/jorik/country-code-to-flag-emoji-a21

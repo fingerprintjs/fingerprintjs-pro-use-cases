@@ -166,7 +166,7 @@ test.describe('Account Sharing - multi-browser tests', () => {
     // Force log in with Firefox
     await firefoxPage.getByTestId(TEST_ID.forceLoginButton).click();
 
-    // Firefix login should be successful
+    // Firefox login should be successful
     await firefoxPage.waitForURL(`/account-sharing/home/${TEST_USER.username}`);
     await assertAlert({
       page: firefoxPage,

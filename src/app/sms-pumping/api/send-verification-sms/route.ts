@@ -16,7 +16,7 @@ import {
 } from '../smsPumpingConst';
 
 export type SendSMSPayload = {
-  requestId: string;
+  eventId: string;
   phoneNumber: string;
   email: string;
   disableBotDetection?: boolean;
@@ -84,11 +84,11 @@ const sendSms = async (phone: string, body: string, visitorId: string) => {
 };
 
 export async function POST(req: NextRequest): Promise<NextResponse<SendSMSResponse>> {
-  const { phoneNumber: phone, email, requestId, disableBotDetection } = (await req.json()) as SendSMSPayload;
+  const { phoneNumber: phone, email, eventId, disableBotDetection } = (await req.json()) as SendSMSPayload;
 
   // Get the full identification Fingerprint Server API, check it authenticity and filter away Bot and Tor requests
   const fingerprintResult = await getAndValidateFingerprintResult({
-    requestId,
+    eventId,
     req,
     options: {
       blockBots: !disableBotDetection,
@@ -100,7 +100,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<SendSMSRespon
   }
 
   // If identification data is missing, return an error
-  const visitorId = fingerprintResult.data.products.identification?.data?.visitorId;
+  const visitorId = fingerprintResult.data.identification?.visitor_id;
   if (!visitorId) {
     return NextResponse.json({ message: 'Identification data not found.', severity: 'error' }, { status: 403 });
   }

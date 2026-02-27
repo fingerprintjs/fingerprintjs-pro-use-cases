@@ -1,11 +1,11 @@
 import { Attributes, DataTypes, FindOptions, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import { sequelize } from '../../../../server/sequelize';
-import { EventResponseBotData } from '../../../../utils/types';
+import { Event } from '@fingerprint/node-sdk';
 
 interface BotVisitAttributes
   extends Model<InferAttributes<BotVisitAttributes>, InferCreationAttributes<BotVisitAttributes>> {
   visitorId: string;
-  requestId: string;
+  eventId: string;
   ip: string;
   timestamp: string;
   botResult: string;
@@ -18,7 +18,7 @@ const BotVisitDbModel = sequelize.define<BotVisitAttributes>('bot_visits', {
   visitorId: {
     type: DataTypes.STRING,
   },
-  requestId: {
+  eventId: {
     type: DataTypes.STRING,
   },
   ip: {
@@ -45,20 +45,16 @@ BotVisitDbModel.sync({ force: false });
 
 export type BotVisit = Attributes<BotVisitAttributes>;
 
-export const saveBotVisit = async (botData: EventResponseBotData, visitorId: string) => {
-  if (!botData) {
-    return;
-  }
-
+export const saveBotVisit = async (eventData: Event, visitorId: string) => {
   BotVisitDbModel.create({
-    ip: botData.ip,
+    ip: eventData.ip_address ?? '',
     visitorId: visitorId,
-    requestId: botData.requestId,
-    timestamp: botData.time,
-    botResult: botData.bot.result,
-    botType: botData.bot.type ?? '',
-    userAgent: botData.userAgent,
-    url: botData.url,
+    eventId: eventData.event_id,
+    timestamp: new Date(eventData.timestamp).toISOString(),
+    botResult: eventData.bot ?? 'not_detected',
+    botType: eventData.bot_type ?? '',
+    userAgent: eventData.user_agent ?? '',
+    url: eventData.url ?? '',
   });
 };
 

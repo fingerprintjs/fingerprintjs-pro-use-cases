@@ -34,14 +34,14 @@ export function CouponFraudUseCase({ embed }: { embed?: boolean }) {
     data: claimResponse,
   } = useMutation({
     mutationKey: ['request coupon claim'],
-    mutationFn: async ({ couponCode }: Omit<CouponClaimPayload, 'requestId'>) => {
+    mutationFn: async ({ couponCode }: Omit<CouponClaimPayload, 'eventId'>) => {
       const { event_id: eventId } = await getVisitorData();
       const response = await fetch('/coupon-fraud/api/claim', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ couponCode, requestId: eventId } satisfies CouponClaimPayload),
+        body: JSON.stringify({ couponCode, eventId } satisfies CouponClaimPayload),
       });
       return await response.json();
     },

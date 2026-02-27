@@ -33,7 +33,7 @@ export function Article({ articleId, embed }: { articleId: string; embed: boolea
       const { event_id: eventId } = await getVisitorData();
       const response = await fetch(`/paywall/api/article/${articleId}`, {
         method: 'POST',
-        body: JSON.stringify({ requestId: eventId } satisfies ArticleRequestPayload),
+        body: JSON.stringify({ eventId } satisfies ArticleRequestPayload),
       });
       return await response.json();
     },

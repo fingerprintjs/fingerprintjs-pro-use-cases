@@ -30,8 +30,8 @@ const VpnDetectionUseCase: FunctionComponent = () => {
   });
   // TODO Restore sealed results usage when V4 support is added to Node SDK
   const { data: identificationEvent } = useEventsGetResponse(visitorData?.event_id);
-  const visitorIpCountry = getIpLocation(identificationEvent)?.country;
-  const potentialDiscount = getRegionalDiscount(visitorIpCountry?.code);
+  const ipGeolocation = getIpLocation(identificationEvent);
+  const potentialDiscount = getRegionalDiscount(ipGeolocation?.country_code);
 
   const {
     mutate: activateRegionalPricing,
@@ -48,7 +48,7 @@ const VpnDetectionUseCase: FunctionComponent = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          requestId: eventId,
+          eventId,
         } satisfies ActivateRegionalPricingPayload),
       });
       return await response.json();
@@ -95,10 +95,10 @@ const VpnDetectionUseCase: FunctionComponent = () => {
           className={classNames(formStyles.useCaseForm, styles.regionalPricingForm)}
         >
           <p data-testid={TEST_IDS.vpnDetection.callout}>
-            {visitorIpCountry && (
+            {ipGeolocation?.country_code && (
               <>
-                {VPN_DETECTION_COPY.personalizedCallout} {getFlagEmoji(visitorIpCountry.code)} {visitorIpCountry.name}!
-                👋{' '}
+                {VPN_DETECTION_COPY.personalizedCallout} {getFlagEmoji(ipGeolocation.country_code)}{' '}
+                {ipGeolocation.country_name}! 👋{' '}
               </>
             )}
             We are offering purchasing power parity pricing.

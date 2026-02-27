@@ -3,7 +3,7 @@ import { getAndValidateFingerprintResult, Severity } from '../../../../../server
 import { NextRequest, NextResponse } from 'next/server';
 
 export type RemoveCartItemPayload = {
-  requestId: string;
+  eventId: string;
   itemId: number;
 };
 
@@ -16,14 +16,14 @@ export type RemoveCartItemResponse = {
 
 // Removes an item from cart for given visitorId
 export async function POST(req: NextRequest): Promise<NextResponse<RemoveCartItemResponse>> {
-  const { requestId, itemId } = (await req.json()) as RemoveCartItemPayload;
+  const { eventId, itemId } = (await req.json()) as RemoveCartItemPayload;
 
   const fingerprintResult = await getAndValidateFingerprintResult({
-    requestId,
+    eventId,
     req,
     options: { disableFreshnessCheck: true },
   });
-  const visitorId = fingerprintResult.okay ? fingerprintResult.data.products.identification?.data?.visitorId : null;
+  const visitorId = fingerprintResult.okay ? fingerprintResult.data.identification?.visitor_id : null;
 
   if (!visitorId) {
     return NextResponse.json(

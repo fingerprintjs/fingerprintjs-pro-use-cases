@@ -16,7 +16,7 @@ const getServerResponse = async (page: Page) => {
   return serverResponseText ?? 'Server response not found';
 };
 
-function parseRequestId(inputString: string) {
+function parseEventId(inputString: string) {
   const regex = /(?:event_id|requestId):\s*"([^"]+)"/;
   const match = inputString.match(regex);
 
@@ -74,43 +74,43 @@ test.describe('Playground page', () => {
   test('Page renders server response', async ({ page }) => {
     const serverResponse = await getServerResponse(page);
 
-    expect(serverResponse).toContain('requestId');
-    expect(serverResponse).toContain('visitorId');
+    expect(serverResponse).toContain('event_id');
+    expect(serverResponse).toContain('visitor_id');
     expect(serverResponse).toContain('incognito');
-    expect(serverResponse).toContain('botd');
+    expect(serverResponse).toContain('bot');
     expect(serverResponse).toContain('vpn');
-    expect(serverResponse).toContain('privacySettings');
+    expect(serverResponse).toContain('privacy_settings');
   });
 
   test('Reload button updates agent response', async ({ page }) => {
-    const oldRequestId = parseRequestId(await getAgentResponse(page));
+    const oldEventId = parseEventId(await getAgentResponse(page));
     await clickPlaygroundRefreshButton(page);
-    const requestId = parseRequestId(await getAgentResponse(page));
+    const eventId = parseEventId(await getAgentResponse(page));
 
-    expect(oldRequestId).not.toBeNull();
-    expect(requestId).not.toBeNull();
-    expect(oldRequestId).toHaveLength(20);
-    expect(requestId).toHaveLength(20);
-    expect(requestId).not.toEqual(oldRequestId);
+    expect(oldEventId).not.toBeNull();
+    expect(eventId).not.toBeNull();
+    expect(oldEventId).toHaveLength(20);
+    expect(eventId).toHaveLength(20);
+    expect(eventId).not.toEqual(oldEventId);
   });
 
   test('Reload button updates server response', async ({ page }) => {
-    const oldRequestId = parseRequestId(await getServerResponse(page));
+    const oldEventId = parseEventId(await getServerResponse(page));
     await clickPlaygroundRefreshButton(page);
-    const requestId = parseRequestId(await getServerResponse(page));
+    const eventId = parseEventId(await getServerResponse(page));
 
-    expect(oldRequestId).not.toBeNull();
-    expect(requestId).not.toBeNull();
-    expect(oldRequestId).toHaveLength(20);
-    expect(requestId).toHaveLength(20);
-    expect(requestId).not.toEqual(oldRequestId);
+    expect(oldEventId).not.toBeNull();
+    expect(eventId).not.toBeNull();
+    expect(oldEventId).toHaveLength(20);
+    expect(eventId).toHaveLength(20);
+    expect(eventId).not.toEqual(oldEventId);
   });
 
   test('Clicking JSON link scrolls to appropriate JSON property', async ({ page }) => {
     const seeJsonLink = await page.getByText('See the JSON below');
     await scrollToView(seeJsonLink);
     await seeJsonLink.click();
-    await expect(page.locator('span.json-view--property:text("rawDeviceAttributes")')).toBeInViewport();
+    await expect(page.locator('span.json-view--property:text("raw_device_attributes")')).toBeInViewport();
   });
 });
 

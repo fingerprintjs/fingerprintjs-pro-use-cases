@@ -31,7 +31,7 @@ async function savePaymentAttempt(paymentAttempt: PaymentAttemptData) {
 }
 
 export type PaymentPayload = {
-  requestId: string;
+  eventId: string;
   filedChargeback: boolean;
   usingStolenCard: boolean;
   card: Card;
@@ -43,11 +43,11 @@ export type PaymentResponse = {
 };
 
 export async function POST(req: Request): Promise<NextResponse<PaymentResponse>> {
-  const { requestId, filedChargeback, usingStolenCard, card } = (await req.json()) as PaymentPayload;
+  const { eventId, filedChargeback, usingStolenCard, card } = (await req.json()) as PaymentPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
   const fingerprintResult = await getAndValidateFingerprintResult({
-    requestId,
+    eventId,
     req,
   });
   if (!fingerprintResult.okay) {
@@ -55,7 +55,7 @@ export async function POST(req: Request): Promise<NextResponse<PaymentResponse>>
   }
 
   // Get visitorId from the Server API Identification event
-  const visitorId = fingerprintResult.data.products.identification?.data?.visitorId;
+  const visitorId = fingerprintResult.data.identification?.visitor_id;
   if (!visitorId) {
     return NextResponse.json({ severity: 'error', message: 'Visitor ID not found.' }, { status: 403 });
   }

@@ -1,18 +1,19 @@
-import { EventsGetResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { Event } from '@fingerprint/node-sdk';
 
-export const vpnDetectionResult = ({ event }: { event: EventsGetResponse | undefined }): string => {
-  const VpnData = event?.products.vpn?.data;
-  if (!VpnData) {
-    return 'Signal not available';
-  }
-  if (VpnData.result === false) {
+export const vpnDetectionResult = ({ event }: { event: Event | undefined }): string => {
+  if (event?.vpn !== true) {
     return 'Not detected';
   }
+
+  const methods = event.vpn_methods;
   const reasons = [
-    VpnData.methods.publicVPN ? 'public VPN IP' : undefined,
-    VpnData.methods.timezoneMismatch ? 'timezone mismatch' : undefined,
-    VpnData.methods.osMismatch ? 'OS mismatch' : undefined,
+    methods?.public_vpn ? 'public VPN IP' : undefined,
+    methods?.timezone_mismatch ? 'timezone mismatch' : undefined,
+    methods?.os_mismatch ? 'OS mismatch' : undefined,
+    methods?.relay ? 'relay service' : undefined,
+    methods?.auxiliary_mobile ? 'mobile VPN' : undefined,
   ].filter(Boolean);
+
   const reasonsString = reasons.length > 0 ? ` (${reasons.join(', ')})` : '';
   return `You are using a VPN 🌐 ${reasonsString}`;
 };

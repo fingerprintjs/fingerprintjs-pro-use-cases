@@ -1,4 +1,4 @@
-import { DecryptionAlgorithm, unsealEventsResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { DecryptionAlgorithm, unsealEventsResponse } from '@fingerprint/node-sdk';
 import { env } from '../env';
 
 export const decryptSealedResult = async (sealedResult: string) => {

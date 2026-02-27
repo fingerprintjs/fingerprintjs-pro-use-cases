@@ -1,9 +1,4 @@
-import {
-  EventsGetResponse,
-  FingerprintJsServerApiClient,
-  Region,
-  RequestError,
-} from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { Event, FingerprintServerApiClient, Region, RequestError } from '@fingerprint/node-sdk';
 import { ValidationDataResult } from '../utils/types';
 import { decryptSealedResult } from './decryptSealedResult';
 import { env } from '../env';
@@ -25,11 +20,11 @@ export const OUR_ORIGINS = [
 
 export type Severity = 'success' | 'warning' | 'error';
 
-// Validates format of visitorId and requestId.
+// Validates format of visitorId and eventId.
 export const isVisitorIdFormatValid = (visitorId: string) => /^[a-zA-Z0-9]{20}$/.test(visitorId);
-export const isRequestIdFormatValid = (requestId: string) => /^\d{13}\.[a-zA-Z0-9]{6}$/.test(requestId);
-export function areVisitorIdAndRequestIdValid(visitorId: string, requestId: string) {
-  return isRequestIdFormatValid(requestId) && isVisitorIdFormatValid(visitorId);
+export const isEventIdFormatValid = (eventId: string) => /^\d{13}\.[a-zA-Z0-9]{6}$/.test(eventId);
+export function areVisitorIdAndEventIdValid(visitorId: string, eventId: string) {
+  return isEventIdFormatValid(eventId) && isVisitorIdFormatValid(visitorId);
 }
 
 export function visitIpMatchesRequestIp(visitIp = '', request: Request) {
@@ -80,7 +75,7 @@ export function originIsAllowed(url = '', request: Request) {
  */
 
 type GetFingerprintResultArgs = {
-  requestId: string;
+  eventId: string;
   req: Request;
   sealedResult?: string;
   serverApiKey?: string;
@@ -94,14 +89,14 @@ type GetFingerprintResultArgs = {
 };
 
 export const getAndValidateFingerprintResult = async ({
-  requestId,
+  eventId,
   req,
   sealedResult,
   serverApiKey: apiKey = env.SERVER_API_KEY,
   region = getServerRegion(env.NEXT_PUBLIC_REGION),
   options,
-}: GetFingerprintResultArgs): Promise<ValidationDataResult<EventsGetResponse>> => {
-  let identificationEvent: EventsGetResponse | undefined;
+}: GetFingerprintResultArgs): Promise<ValidationDataResult<Event>> => {
+  let identificationEvent: Event | undefined;
 
   /**
    * If a sealed result was provided, try to decrypt it.
@@ -111,7 +106,7 @@ export const getAndValidateFingerprintResult = async ({
   if (sealedResult) {
     try {
       identificationEvent = await decryptSealedResult(sealedResult);
-      if (identificationEvent.products.identification?.data?.requestId !== requestId) {
+      if (identificationEvent.event_id !== eventId) {
         return {
           okay: false,
           error: 'Sealed result request ID does not match provided request ID, potential spoofing attack',
@@ -132,8 +127,8 @@ export const getAndValidateFingerprintResult = async ({
    */
   if (!identificationEvent) {
     try {
-      const client = new FingerprintJsServerApiClient({ region, apiKey });
-      identificationEvent = await client.getEvent(requestId);
+      const client = new FingerprintServerApiClient({ region, apiKey });
+      identificationEvent = await client.getEvent(eventId);
     } catch (error) {
       console.error(error);
       // Throw a specific error if the request ID is not found
@@ -145,13 +140,13 @@ export const getAndValidateFingerprintResult = async ({
   }
 
   // Identification event must contain identification data
-  const identification = identificationEvent.products.identification?.data;
+  const identification = identificationEvent.identification;
   if (!identification) {
     return { okay: false, error: 'Identification data not found, potential spoofing attack.' };
   }
 
   // The client request must come from the same IP address as the identification request.
-  if (!visitIpMatchesRequestIp(identification.ip, req)) {
+  if (!visitIpMatchesRequestIp(identificationEvent.ip_address, req)) {
     return { okay: false, error: 'Identification IP does not match request IP, potential spoofing attack.' };
   }
 
@@ -159,16 +154,16 @@ export const getAndValidateFingerprintResult = async ({
    * The client request must come from an expected origin (usually your website)
    * and its origin must match the identification request origin
    */
-  if (!originIsAllowed(identification.url, req)) {
+  if (!originIsAllowed(identificationEvent.url, req)) {
     return { okay: false, error: 'Visit origin does not match request origin, potential spoofing attack.' };
   }
 
   /**
-   * An attacker might have acquired a valid requestId and visitorId via phishing.
+   * An attacker might have acquired a valid eventId and visitorId via phishing.
    * It's recommended to check freshness of the identification request to prevent replay attacks.
    */
   if (
-    Date.now() - Number(new Date(identification.time)) > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS &&
+    Date.now() - identificationEvent.timestamp > ALLOWED_REQUEST_TIMESTAMP_DIFF_MS &&
     !options?.disableFreshnessCheck
   ) {
     return { okay: false, error: 'Old identification request, potential replay attack.' };
@@ -177,14 +172,14 @@ export const getAndValidateFingerprintResult = async ({
   /**
    * You can prevent Tor network users from performing sensitive actions in your application.
    */
-  if (options?.blockTor && identificationEvent.products.tor?.data?.result === true) {
+  if (options?.blockTor && identificationEvent.ip_blocklist?.tor_node === true) {
     return { okay: false, error: 'Tor network detected, please use a regular browser instead.' };
   }
 
   /**
    * You can prevent bots from performing sensitive actions in your application.
    */
-  if (options?.blockBots && identificationEvent.products.botd?.data?.bot.result === 'bad') {
+  if (options?.blockBots && identificationEvent.bot === 'bad') {
     return { okay: false, error: '🤖 Malicious bot detected, the attempted action was denied.' };
   }
 

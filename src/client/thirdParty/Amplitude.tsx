@@ -60,8 +60,8 @@ export function trackAskAIOpen(properties: AskAIProperties) {
 export const Amplitude: FunctionComponent<AmplitudeProps> = ({ apiKey }) => {
   usePlaygroundSignals({
     onServerApiSuccess: (event) => {
-      const visitorId = event.products.identification?.data?.visitorId;
-      const botDetected = event.products.botd?.data?.bot.result === 'bad' ? 'True' : 'False';
+      const visitorId = event.identification?.visitor_id;
+      const botDetected = event.bot === 'bad' ? 'True' : 'False';
 
       amplitude.add(demoPageViewedEventPropertiesEnrichment(botDetected));
       amplitude.init(apiKey, {

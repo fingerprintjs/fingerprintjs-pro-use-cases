@@ -14,7 +14,7 @@ export type LoanRequestData = {
 };
 
 export type LoanRequestPayload = LoanRequestData & {
-  requestId: string;
+  eventId: string;
 };
 
 export type LoanRequestResponse = {
@@ -24,17 +24,17 @@ export type LoanRequestResponse = {
 };
 
 export async function POST(req: Request): Promise<NextResponse<LoanRequestResponse>> {
-  const { loanValue, monthlyIncome, loanDuration, firstName, lastName, requestId } =
+  const { loanValue, monthlyIncome, loanDuration, firstName, lastName, eventId } =
     (await req.json()) as LoanRequestPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
-  const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
+  const fingerprintResult = await getAndValidateFingerprintResult({ eventId, req });
   if (!fingerprintResult.okay) {
     return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });
   }
 
   // Get visitorId from the Server API Identification event
-  const visitorId = fingerprintResult.data.products.identification?.data?.visitorId;
+  const visitorId = fingerprintResult.data.identification?.visitor_id;
   if (!visitorId) {
     return NextResponse.json({ severity: 'error', message: 'Visitor ID not found.' }, { status: 403 });
   }

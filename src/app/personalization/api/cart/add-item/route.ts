@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult, Severity } from '../../../../../server/checks';
 
 export type AddCartItemPayload = {
-  requestId: string;
+  eventId: string;
   productId: number;
 };
 
@@ -15,11 +15,11 @@ export type AddCartItemResponse = {
 };
 
 export async function POST(req: NextRequest): Promise<NextResponse<AddCartItemResponse>> {
-  const { requestId, productId } = (await req.json()) as AddCartItemPayload;
+  const { eventId, productId } = (await req.json()) as AddCartItemPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
   const fingerprintResult = await getAndValidateFingerprintResult({
-    requestId,
+    eventId,
     req,
     options: { disableFreshnessCheck: true },
   });
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<AddCartItemRe
   }
 
   // Get visitorId from the Server API Identification event
-  const visitorId = fingerprintResult.data.products.identification?.data?.visitorId;
+  const visitorId = fingerprintResult.data.identification?.visitor_id;
   if (!visitorId) {
     return NextResponse.json({ severity: 'error', message: 'Visitor ID not found.' }, { status: 403 });
   }

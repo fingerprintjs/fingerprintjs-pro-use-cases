@@ -5,7 +5,7 @@ import { ACCOUNT_SHARING_COPY } from '../../const';
 
 export type LogoutPayload = {
   username: string;
-  requestId: string;
+  eventId: string;
 };
 
 export type LogoutResponse = {
@@ -14,11 +14,11 @@ export type LogoutResponse = {
 };
 
 export async function POST(req: Request): Promise<NextResponse<LogoutResponse>> {
-  const { username, requestId } = (await req.json()) as LogoutPayload;
+  const { username, eventId } = (await req.json()) as LogoutPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
   const fingerprintResult = await getAndValidateFingerprintResult({
-    requestId,
+    eventId,
     req,
     options: { disableFreshnessCheck: true },
   });
@@ -27,7 +27,7 @@ export async function POST(req: Request): Promise<NextResponse<LogoutResponse>> 
   }
 
   // Get visitorId from the Server API Identification event
-  const visitorId = fingerprintResult.data.products.identification?.data?.visitorId;
+  const visitorId = fingerprintResult.data.identification?.visitor_id;
   if (!visitorId) {
     return NextResponse.json({ message: ACCOUNT_SHARING_COPY.visitorIdNotFound, severity: 'error' }, { status: 403 });
   }

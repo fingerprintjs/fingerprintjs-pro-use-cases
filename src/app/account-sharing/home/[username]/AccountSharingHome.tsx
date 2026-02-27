@@ -108,7 +108,7 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
         method: 'POST',
         body: JSON.stringify({
           username,
-          requestId: visitorData?.event_id ?? '',
+          eventId: visitorData?.event_id ?? '',
         } satisfies IsLoggedInPayload),
       });
       return await response.json();
@@ -144,7 +144,7 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
     mutationFn: async () => {
       const response = await fetch(`/account-sharing/api/logout`, {
         method: 'POST',
-        body: JSON.stringify({ username, requestId: visitorData?.event_id ?? '' }),
+        body: JSON.stringify({ username, eventId: visitorData?.event_id ?? '' }),
       });
       return await response.json();
     },

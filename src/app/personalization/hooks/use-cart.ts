@@ -23,7 +23,7 @@ export function useCart() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          requestId: visitorData.event_id,
+          eventId: visitorData.event_id,
         } satisfies GetCartItemsPayload),
       });
       return await response.json();
@@ -45,7 +45,7 @@ export function useCart() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          requestId: visitorData.event_id,
+          eventId: visitorData.event_id,
           productId,
         } satisfies AddCartItemPayload),
       });
@@ -64,7 +64,7 @@ export function useCart() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          requestId: visitorData.event_id,
+          eventId: visitorData.event_id,
           itemId,
         } satisfies RemoveCartItemPayload),
       });

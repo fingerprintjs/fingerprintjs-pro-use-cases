@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic';
 export type BlockIpPayload = {
   ip: string;
   blocked: boolean;
-  requestId: string;
+  eventId: string;
 };
 
 export type BlockIpResponse = {
@@ -24,8 +24,8 @@ export type BlockIpResponse = {
 
 export async function POST(req: NextRequest): Promise<NextResponse<BlockIpResponse>> {
   // Validate block/unblock request
-  const { ip, blocked, requestId } = (await req.json()) as BlockIpPayload;
-  const validationResult = await isValidBlockIpRequest(requestId, ip, req);
+  const { ip, blocked, eventId } = (await req.json()) as BlockIpPayload;
+  const validationResult = await isValidBlockIpRequest(eventId, ip, req);
   if (!validationResult.okay) {
     return NextResponse.json({ severity: 'error', message: validationResult.error }, { status: 403 });
   }
@@ -52,12 +52,12 @@ export async function POST(req: NextRequest): Promise<NextResponse<BlockIpRespon
 
 // For this demo, we want to only enable visitors to block their own IP, not other people's IPs, to not interfere with their demo experience.
 // In the actual scenario, only your authenticated admins could block bot IPs (or they would be blocked automatically) so this check would not be necessary.
-const isValidBlockIpRequest = async (requestId: string, ip: string, req: Request): Promise<ValidationResult> => {
+const isValidBlockIpRequest = async (eventId: string, ip: string, req: Request): Promise<ValidationResult> => {
   // Validate IP address
   if (!isIP(ip)) {
     return { okay: false, error: 'Invalid IP address.' };
   }
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
-  return await getAndValidateFingerprintResult({ requestId, req });
+  return await getAndValidateFingerprintResult({ eventId, req });
 };

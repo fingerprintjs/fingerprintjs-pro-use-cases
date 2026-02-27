@@ -15,7 +15,7 @@ export type ArticleResponse = {
 };
 
 export type ArticleRequestPayload = {
-  requestId: string;
+  eventId: string;
 };
 
 const ARTICLE_VIEW_LIMIT = 2;
@@ -28,16 +28,16 @@ export async function POST(
   req: Request,
   { params }: { params: { id: string } },
 ): Promise<NextResponse<ArticleResponse>> {
-  const { requestId } = (await req.json()) as ArticleRequestPayload;
+  const { eventId } = (await req.json()) as ArticleRequestPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
-  const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
+  const fingerprintResult = await getAndValidateFingerprintResult({ eventId, req });
   if (!fingerprintResult.okay) {
     return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });
   }
 
   // Get visitorId from the Server API Identification event
-  const visitorId = fingerprintResult.data.products.identification?.data?.visitorId;
+  const visitorId = fingerprintResult.data.identification?.visitor_id;
   if (!visitorId) {
     return NextResponse.json({ severity: 'error', message: 'Visitor ID not found.' }, { status: 403 });
   }

@@ -5,7 +5,7 @@ import { VPN_DETECTION_COPY } from '../../copy';
 import { getIpLocation, getLocationName } from '../../../../utils/locationUtils';
 
 export type ActivateRegionalPricingPayload = {
-  requestId: string;
+  eventId: string;
   sealedResult?: string;
 };
 
@@ -17,12 +17,12 @@ export type ActivateRegionalPricingResponse =
     };
 
 export async function POST(req: Request): Promise<NextResponse<ActivateRegionalPricingResponse>> {
-  const { requestId } = (await req.json()) as ActivateRegionalPricingPayload;
+  const { eventId } = (await req.json()) as ActivateRegionalPricingPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
   // TODO Restore sealed results usage when V4 support is added to Node SDK
   const fingerprintResult = await getAndValidateFingerprintResult({
-    requestId,
+    eventId,
     req,
   });
   if (!fingerprintResult.okay) {
@@ -31,9 +31,10 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
 
   const location = getIpLocation(fingerprintResult.data);
   const locationName = getLocationName(location, false);
-  const vpnDetection = fingerprintResult.data.products.vpn?.data;
+  const vpnMethods = fingerprintResult.data.vpn_methods;
+  const isVpn = fingerprintResult.data.vpn === true;
 
-  if (!location?.country) {
+  if (!location?.country_code) {
     return NextResponse.json(
       {
         severity: 'error',
@@ -43,7 +44,7 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
     );
   }
 
-  const discount = getRegionalDiscount(location.country.code);
+  const discount = getRegionalDiscount(location.country_code);
 
   /**
    * Handle cases like Apple [iCloud Private Relay](https://support.apple.com/en-us/102602)
@@ -51,28 +52,28 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
    * (timezone mismatch is false)
    * So we still return a successful response while acknowledging the result.
    */
-  if (vpnDetection?.methods.osMismatch === true && vpnDetection.methods.timezoneMismatch === false) {
+  if (vpnMethods?.os_mismatch === true && vpnMethods.timezone_mismatch === false) {
     const privateRelayNote =
       'It looks like you are using an IP anonymizing service (for example, Apple Private relay) without changing your location. You still get the discount!';
     return NextResponse.json(
       {
         severity: 'success',
         data: { discount },
-        message: `${VPN_DETECTION_COPY.success({ discount, country: location.country.name })} ${privateRelayNote}`,
+        message: `${VPN_DETECTION_COPY.success({ discount, country: location.country_name ?? 'your country' })} ${privateRelayNote}`,
       },
       { status: 200 },
     );
   }
 
-  if (vpnDetection?.result === true) {
+  if (isVpn) {
     let reason = '';
-    if (vpnDetection.methods.publicVPN) {
+    if (vpnMethods?.public_vpn) {
       reason = `Your IP address appears to be in ${locationName} but it's a known VPN IP address.`;
     }
-    if (vpnDetection.methods.timezoneMismatch && vpnDetection.originTimezone) {
-      reason = `Your IP address appears to be in ${locationName}, but your timezone is ${vpnDetection.originTimezone}.`;
+    if (vpnMethods?.timezone_mismatch && fingerprintResult.data.vpn_origin_timezone) {
+      reason = `Your IP address appears to be in ${locationName}, but your timezone is ${fingerprintResult.data.vpn_origin_timezone}.`;
     }
-    if (vpnDetection.methods.auxiliaryMobile) {
+    if (vpnMethods?.auxiliary_mobile) {
       reason = `Your IP address appears to be in ${locationName}, but your phone is not.`;
     }
     return NextResponse.json(
@@ -86,7 +87,7 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
 
   return NextResponse.json({
     severity: 'success',
-    message: VPN_DETECTION_COPY.success({ discount, country: location.country.name }),
+    message: VPN_DETECTION_COPY.success({ discount, country: location.country_name ?? 'your country' }),
     data: { discount },
   });
 }

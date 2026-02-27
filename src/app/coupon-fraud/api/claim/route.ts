@@ -6,7 +6,7 @@ import { NextResponse } from 'next/server';
 
 export type CouponClaimPayload = {
   couponCode: string;
-  requestId: string;
+  eventId: string;
 };
 
 export type CouponClaimResponse = {
@@ -19,16 +19,16 @@ const isCouponCode = (couponCode: string): couponCode is CouponCodeString => {
 };
 
 export async function POST(req: Request): Promise<NextResponse<CouponClaimResponse>> {
-  const { couponCode, requestId } = (await req.json()) as CouponClaimPayload;
+  const { couponCode, eventId } = (await req.json()) as CouponClaimPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
-  const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
+  const fingerprintResult = await getAndValidateFingerprintResult({ eventId, req });
   if (!fingerprintResult.okay) {
     return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });
   }
 
   // Get visitorId from the Server API Identification event
-  const visitorId = fingerprintResult.data.products.identification?.data?.visitorId;
+  const visitorId = fingerprintResult.data.identification?.visitor_id;
   if (!visitorId) {
     return NextResponse.json({ severity: 'error', message: 'Visitor ID not found.' }, { status: 403 });
   }
