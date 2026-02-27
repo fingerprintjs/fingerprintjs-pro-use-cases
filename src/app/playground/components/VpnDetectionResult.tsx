@@ -1,7 +1,6 @@
 import { Event } from '@fingerprint/node-sdk';
 
 export const vpnDetectionResult = ({ event }: { event: Event | undefined }): string => {
-  // VPN detection in v7 is a top-level boolean with confidence and methods
   if (event?.vpn !== true) {
     return 'Not detected';
   }

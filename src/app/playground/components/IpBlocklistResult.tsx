@@ -14,7 +14,6 @@ export const ipBlocklistResult = ({ event }: { event: Event | undefined }): stri
   if (blocklistData?.tor_node === true) {
     return 'Your IP is a Tor exit node 🧅';
   }
-  // Proxy detection in v7 - top level boolean property
   if (event?.proxy === true) {
     const proxyType = event.proxy_details?.proxy_type ?? 'unknown';
     return `Your IP is used by a ${proxyType} proxy provider 🔄`;
