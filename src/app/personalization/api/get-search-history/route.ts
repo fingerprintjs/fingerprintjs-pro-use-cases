@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult, Severity } from '../../../../server/checks';
 
 export type SearchHistoryPayload = {
-  requestId: string;
+  eventId: string;
 };
 
 export type SearchHistoryResponse = {
@@ -15,11 +15,11 @@ export type SearchHistoryResponse = {
 };
 
 export async function POST(req: NextRequest): Promise<NextResponse<SearchHistoryResponse>> {
-  const { requestId } = (await req.json()) as SearchHistoryPayload;
+  const { eventId } = (await req.json()) as SearchHistoryPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
   const fingerprintResult = await getAndValidateFingerprintResult({
-    requestId,
+    eventId,
     req,
     options: { disableFreshnessCheck: true },
   });

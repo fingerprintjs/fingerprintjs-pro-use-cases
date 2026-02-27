@@ -5,7 +5,7 @@ import { VPN_DETECTION_COPY } from '../../copy';
 import { getIpLocation, getLocationName } from '../../../../utils/locationUtils';
 
 export type ActivateRegionalPricingPayload = {
-  requestId: string;
+  eventId: string;
   sealedResult?: string;
 };
 
@@ -17,12 +17,12 @@ export type ActivateRegionalPricingResponse =
     };
 
 export async function POST(req: Request): Promise<NextResponse<ActivateRegionalPricingResponse>> {
-  const { requestId } = (await req.json()) as ActivateRegionalPricingPayload;
+  const { eventId } = (await req.json()) as ActivateRegionalPricingPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
   // TODO Restore sealed results usage when V4 support is added to Node SDK
   const fingerprintResult = await getAndValidateFingerprintResult({
-    requestId,
+    eventId,
     req,
   });
   if (!fingerprintResult.okay) {

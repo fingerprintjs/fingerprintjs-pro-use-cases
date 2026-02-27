@@ -8,7 +8,7 @@ import { ACCOUNT_SHARING_COPY } from '../../const';
 export type LoginPayload = {
   username: string;
   password: string;
-  requestId: string;
+  eventId: string;
   force?: boolean;
 };
 
@@ -22,11 +22,11 @@ export type LoginResponse = {
 };
 
 export async function POST(req: Request): Promise<NextResponse<LoginResponse>> {
-  const { username, password, requestId, force } = (await req.json()) as LoginPayload;
+  const { username, password, eventId, force } = (await req.json()) as LoginPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
   const fingerprintResult = await getAndValidateFingerprintResult({
-    requestId,
+    eventId,
     req,
   });
   if (!fingerprintResult.okay) {

@@ -6,7 +6,7 @@ import { hashString } from '../../../../server/server-utils';
 
 export type CreateAccountPayload = {
   password: string;
-  requestId: string;
+  eventId: string;
   username: string;
 };
 
@@ -16,7 +16,7 @@ export type CreateAccountResponse = {
 };
 
 export async function POST(req: Request): Promise<NextResponse<CreateAccountResponse>> {
-  const { username, password, requestId } = (await req.json()) as CreateAccountPayload;
+  const { username, password, eventId } = (await req.json()) as CreateAccountPayload;
 
   // Validate the input data from the request
   if (!username) {
@@ -25,12 +25,12 @@ export async function POST(req: Request): Promise<NextResponse<CreateAccountResp
   if (!password) {
     return NextResponse.json({ severity: 'error', message: '"password" is required.' }, { status: 400 });
   }
-  if (!requestId) {
-    return NextResponse.json({ severity: 'error', message: '"requestId" is required.' }, { status: 400 });
+  if (!eventId) {
+    return NextResponse.json({ severity: 'error', message: '"eventId" is required.' }, { status: 400 });
   }
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
-  const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
+  const fingerprintResult = await getAndValidateFingerprintResult({ eventId, req });
   if (!fingerprintResult.okay) {
     return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });
   }

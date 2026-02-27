@@ -65,7 +65,7 @@ const WebScraping: FunctionComponent<{ embed?: boolean }> = ({ embed }) => {
         body: JSON.stringify({
           from: fromCode,
           to: toCode,
-          requestId: eventId,
+          eventId: eventId,
           disableBotDetection: Boolean(searchParams.get('disableBotDetection')),
         } satisfies FlightQuery),
       });

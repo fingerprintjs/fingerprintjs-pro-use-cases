@@ -74,14 +74,14 @@ const useBlockedIps = () => {
 const useBlockUnblockIpAddress = (getVisitorData: UseVisitorDataReturn['getData'], refetchBlockedIps: () => void) => {
   const { mutate: blockIp, isPending: isPendingBlockIp } = useMutation({
     mutationKey: ['block IP'],
-    mutationFn: async ({ ip, blocked }: Omit<BlockIpPayload, 'requestId'>) => {
+    mutationFn: async ({ ip, blocked }: Omit<BlockIpPayload, 'eventId'>) => {
       const { event_id: eventId } = await getVisitorData();
       const response = await fetch('/bot-firewall/api/block-ip', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ip, blocked, requestId: eventId } satisfies BlockIpPayload),
+        body: JSON.stringify({ ip, blocked, eventId } satisfies BlockIpPayload),
       });
       if (!response.ok) {
         throw new Error('Failed to update firewall: ' + ((await response.json()).message ?? response.statusText));
@@ -180,9 +180,9 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
           <tbody>
             {botVisits.slice(0, displayedVisits).map((botVisit) => {
               return (
-                <tr key={botVisit.requestId}>
+                <tr key={botVisit.eventId}>
                   <td>{formatDate(botVisit.timestamp)}</td>
-                  <td>{botVisit.requestId}</td>
+                  <td>{botVisit.eventId}</td>
                   <td>
                     {botVisit.botResult} ({botVisit.botType})
                   </td>
@@ -206,13 +206,13 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
         <div className={styles.cards}>
           {botVisits.slice(0, displayedVisits).map((botVisit) => {
             return (
-              <div key={botVisit.requestId} className={styles.card}>
+              <div key={botVisit.eventId} className={styles.card}>
                 <div className={styles.cardContent}>
                   <div>Timestamp</div>
                   <div>{formatDate(botVisit.timestamp)}</div>
 
-                  <div>Request ID</div>
-                  <div>{botVisit.requestId}</div>
+                  <div>Event ID</div>
+                  <div>{botVisit.eventId}</div>
 
                   <div>
                     Bot Type <BotTypeInfo />

@@ -22,7 +22,7 @@ export function useProducts(search: string) {
       const response = await fetch('/personalization/api/get-products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ requestId: eventId, query: search } satisfies GetProductsPayload),
+        body: JSON.stringify({ eventId, query: search } satisfies GetProductsPayload),
       });
       return response.json();
     },

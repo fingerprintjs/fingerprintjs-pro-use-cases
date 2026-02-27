@@ -56,7 +56,7 @@ export const useSendMessage = ({ onSuccess, disableBotDetection = false }: SendM
         },
         body: JSON.stringify({
           phoneNumber,
-          requestId: eventId,
+          eventId,
           email,
           disableBotDetection,
         } satisfies SendSMSPayload),

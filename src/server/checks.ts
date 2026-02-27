@@ -20,11 +20,11 @@ export const OUR_ORIGINS = [
 
 export type Severity = 'success' | 'warning' | 'error';
 
-// Validates format of visitorId and requestId.
+// Validates format of visitorId and eventId.
 export const isVisitorIdFormatValid = (visitorId: string) => /^[a-zA-Z0-9]{20}$/.test(visitorId);
-export const isRequestIdFormatValid = (requestId: string) => /^\d{13}\.[a-zA-Z0-9]{6}$/.test(requestId);
-export function areVisitorIdAndRequestIdValid(visitorId: string, requestId: string) {
-  return isRequestIdFormatValid(requestId) && isVisitorIdFormatValid(visitorId);
+export const isEventIdFormatValid = (eventId: string) => /^\d{13}\.[a-zA-Z0-9]{6}$/.test(eventId);
+export function areVisitorIdAndEventIdValid(visitorId: string, eventId: string) {
+  return isEventIdFormatValid(eventId) && isVisitorIdFormatValid(visitorId);
 }
 
 export function visitIpMatchesRequestIp(visitIp = '', request: Request) {
@@ -75,7 +75,7 @@ export function originIsAllowed(url = '', request: Request) {
  */
 
 type GetFingerprintResultArgs = {
-  requestId: string;
+  eventId: string;
   req: Request;
   sealedResult?: string;
   serverApiKey?: string;
@@ -89,7 +89,7 @@ type GetFingerprintResultArgs = {
 };
 
 export const getAndValidateFingerprintResult = async ({
-  requestId,
+  eventId,
   req,
   sealedResult,
   serverApiKey: apiKey = env.SERVER_API_KEY,
@@ -106,7 +106,7 @@ export const getAndValidateFingerprintResult = async ({
   if (sealedResult) {
     try {
       identificationEvent = await decryptSealedResult(sealedResult);
-      if (identificationEvent.event_id !== requestId) {
+      if (identificationEvent.event_id !== eventId) {
         return {
           okay: false,
           error: 'Sealed result request ID does not match provided request ID, potential spoofing attack',
@@ -128,7 +128,7 @@ export const getAndValidateFingerprintResult = async ({
   if (!identificationEvent) {
     try {
       const client = new FingerprintServerApiClient({ region, apiKey });
-      identificationEvent = await client.getEvent(requestId);
+      identificationEvent = await client.getEvent(eventId);
     } catch (error) {
       console.error(error);
       // Throw a specific error if the request ID is not found
@@ -159,7 +159,7 @@ export const getAndValidateFingerprintResult = async ({
   }
 
   /**
-   * An attacker might have acquired a valid requestId and visitorId via phishing.
+   * An attacker might have acquired a valid eventId and visitorId via phishing.
    * It's recommended to check freshness of the identification request to prevent replay attacks.
    */
   if (

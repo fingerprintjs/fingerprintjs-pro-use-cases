@@ -25,14 +25,14 @@ export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Even
     immediate: true,
   });
 
-  const requestId = agentResponse?.event_id;
+  const eventId = agentResponse?.event_id;
 
   const {
     data: identificationEvent,
     isPending: isPendingServerResponse,
     isSuccess: isSuccessServerResponse,
     error: serverError,
-  } = useEventsGetResponse(requestId);
+  } = useEventsGetResponse(eventId);
 
   const onServerApiSuccessCallback = useCallbackRef(config?.onServerApiSuccess);
 

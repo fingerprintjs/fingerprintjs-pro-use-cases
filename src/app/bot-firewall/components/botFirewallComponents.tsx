@@ -13,7 +13,7 @@ type BotVisitActionProps = {
   ip: string;
   isBlockedNow: boolean;
   isVisitorsIp: boolean;
-  blockIp: (payload: Omit<BlockIpPayload, 'requestId'>) => void;
+  blockIp: (payload: Omit<BlockIpPayload, 'eventId'>) => void;
   isPendingBlockIp: boolean;
 };
 

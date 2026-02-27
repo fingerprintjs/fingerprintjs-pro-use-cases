@@ -40,10 +40,9 @@ describe('usePlaygroundSignals', () => {
   });
 
   it('should call onServerApiSuccess callback *ONCE* every time Server API request succeeds', async () => {
-    const mockRequestId = 'test-request-id';
-    const mockAgentResponse = { event_id: mockRequestId };
+    const mockEventId = 'test-event-id';
+    const mockAgentResponse = { event_id: mockEventId };
     const mockServerResponse = {
-      requestId: mockRequestId,
       products: { identification: { data: { visitorId: 'test-visitor' } } },
     };
     const onServerApiSuccess = vi.fn();

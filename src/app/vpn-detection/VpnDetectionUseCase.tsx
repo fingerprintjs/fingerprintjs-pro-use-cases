@@ -48,7 +48,7 @@ const VpnDetectionUseCase: FunctionComponent = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          requestId: eventId,
+          eventId,
         } satisfies ActivateRegionalPricingPayload),
       });
       return await response.json();

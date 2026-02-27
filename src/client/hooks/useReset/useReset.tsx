@@ -24,7 +24,7 @@ export const useReset = ({ onError, onSuccess }: UseResetParams) => {
     mutationKey: ['resetMutation'],
     mutationFn: async () => {
       const { event_id: eventId } = await getData();
-      const body: ResetRequest = { requestId: eventId };
+      const body: ResetRequest = { eventId };
 
       return fetch('/api/admin/reset', {
         method: 'POST',

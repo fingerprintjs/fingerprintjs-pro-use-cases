@@ -10,7 +10,7 @@ const roundToFiveMinutes = (time: number) => Math.round(time / FIVE_MINUTES_MS) 
 export type FlightQuery = {
   from: string;
   to: string;
-  requestId: string;
+  eventId: string;
   disableBotDetection: boolean;
 };
 
@@ -21,11 +21,11 @@ export type FlightsResponse = {
 };
 
 export async function POST(req: NextRequest): Promise<NextResponse<FlightsResponse>> {
-  const { from, to, requestId, disableBotDetection } = (await req.json()) as FlightQuery;
+  const { from, to, eventId, disableBotDetection } = (await req.json()) as FlightQuery;
 
   // Get the full Identification and Bot Detection result from Fingerprint Server API and validate its authenticity
   const fingerprintResult = await getAndValidateFingerprintResult({
-    requestId,
+    eventId,
     req,
   });
   if (!fingerprintResult.okay) {

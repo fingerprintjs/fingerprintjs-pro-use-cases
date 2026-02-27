@@ -56,7 +56,7 @@ export type GetProductsResponse = {
 
 export type GetProductsPayload = {
   query: string;
-  requestId: string;
+  eventId: string;
 };
 
 // Returns products from database, supports simple search query.
@@ -64,7 +64,7 @@ export type GetProductsPayload = {
 export async function POST(req: NextRequest): Promise<NextResponse<GetProductsResponse>> {
   let querySaved = false;
 
-  const { query, requestId } = (await req.json()) as GetProductsPayload;
+  const { query, eventId } = (await req.json()) as GetProductsPayload;
 
   const productsCount = await ProductDbModel.count();
   if (!productsCount) {
@@ -75,7 +75,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<GetProductsRe
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
   const fingerprintResult = await getAndValidateFingerprintResult({
-    requestId,
+    eventId,
     req,
     options: { disableFreshnessCheck: true },
   });

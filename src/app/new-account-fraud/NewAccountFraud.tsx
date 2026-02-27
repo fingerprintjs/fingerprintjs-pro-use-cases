@@ -31,14 +31,14 @@ export function NewAccountFraud({ embed }: { embed?: boolean }) {
     reset,
   } = useMutation({
     mutationKey: ['create trial account'],
-    mutationFn: async ({ username, password }: Omit<CreateAccountPayload, 'requestId'>) => {
+    mutationFn: async ({ username, password }: Omit<CreateAccountPayload, 'eventId'>) => {
       const { event_id: eventId } = await getVisitorData();
       return await fetch('/new-account-fraud/api/create-account', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password, requestId: eventId } satisfies CreateAccountPayload),
+        body: JSON.stringify({ username, password, eventId } satisfies CreateAccountPayload),
       });
     },
   });
@@ -60,7 +60,7 @@ export function NewAccountFraud({ embed }: { embed?: boolean }) {
 
 interface CreateTrialFormProps {
   createAccountStatus: Omit<CreateAccountStatus, 'success'>;
-  onCreate: (payload: Omit<CreateAccountPayload, 'requestId'>) => void;
+  onCreate: (payload: Omit<CreateAccountPayload, 'eventId'>) => void;
 }
 
 function CreateTrialForm({ createAccountStatus, onCreate }: CreateTrialFormProps) {

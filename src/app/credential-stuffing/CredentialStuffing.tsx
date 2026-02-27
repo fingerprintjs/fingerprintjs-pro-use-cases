@@ -29,7 +29,7 @@ export function CredentialStuffing({ embed }: { embed?: boolean }) {
     data: loginResponse,
     isPending,
     error: loginNetworkError,
-  } = useMutation<LoginResponse, Error, Omit<LoginPayload, 'requestId' | 'visitorId'>>({
+  } = useMutation<LoginResponse, Error, Omit<LoginPayload, 'eventId' | 'visitorId'>>({
     mutationKey: ['login attempt'],
     mutationFn: async ({ username, password }) => {
       const { event_id: eventId, visitor_id: visitorId } = await getVisitorData();
@@ -43,7 +43,7 @@ export function CredentialStuffing({ embed }: { embed?: boolean }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password, visitorId, requestId: eventId } satisfies LoginPayload),
+        body: JSON.stringify({ username, password, visitorId, eventId } satisfies LoginPayload),
       });
       return await response.json();
     },

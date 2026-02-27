@@ -2,7 +2,7 @@ import { Attributes, DataTypes, InferAttributes, InferCreationAttributes, Model 
 import { sequelize } from '../../../../server/sequelize';
 
 export type LoginAttemptResult =
-  | 'RequestIdValidationFailed'
+  | 'EventIdValidationFailed'
   | 'TooManyLoginAttempts'
   | 'IncorrectCredentials'
   | 'UnknownBrowserEnforceMFA'

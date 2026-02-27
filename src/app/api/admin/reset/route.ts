@@ -19,15 +19,15 @@ export type ResetResponse = {
 };
 
 export type ResetRequest = {
-  requestId: string;
+  eventId: string;
 };
 
 export async function POST(req: NextRequest): Promise<NextResponse<ResetResponse>> {
-  const { requestId } = (await req.json()) as ResetRequest;
+  const { eventId } = (await req.json()) as ResetRequest;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
   const fingerprintResult = await getAndValidateFingerprintResult({
-    requestId,
+    eventId,
     req,
   });
   if (!fingerprintResult.okay) {

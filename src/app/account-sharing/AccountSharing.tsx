@@ -84,7 +84,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
     data: createAccountResponse,
     error: createAccountError,
     reset: resetCreateAccountMutation,
-  } = useMutation<CreateAccountResponse, Error, Omit<CreateAccountPayload, 'requestId' | 'visitorId'>>({
+  } = useMutation<CreateAccountResponse, Error, Omit<CreateAccountPayload, 'eventId' | 'visitorId'>>({
     mutationKey: ['login attempt'],
     mutationFn: async ({ username, password }) => {
       const { event_id: eventId } = await getVisitorData();
@@ -93,7 +93,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password, requestId: eventId } satisfies CreateAccountPayload),
+        body: JSON.stringify({ username, password, eventId } satisfies CreateAccountPayload),
       });
       return await response.json();
     },
@@ -110,7 +110,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
     data: loginResponse,
     error: loginError,
     reset: resetLoginMutation,
-  } = useMutation<LoginResponse, Error, Omit<LoginPayload, 'requestId' | 'visitorId'>>({
+  } = useMutation<LoginResponse, Error, Omit<LoginPayload, 'eventId' | 'visitorId'>>({
     mutationKey: ['login attempt'],
     mutationFn: async ({ username, password, force }) => {
       setJustLoggedOut(null);
@@ -121,7 +121,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password, requestId: eventId, force } satisfies LoginPayload),
+        body: JSON.stringify({ username, password, eventId, force } satisfies LoginPayload),
       });
       return await response.json();
     },

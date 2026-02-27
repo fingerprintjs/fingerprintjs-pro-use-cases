@@ -34,7 +34,7 @@ export function PaymentFraud({ embed }: { embed?: boolean }) {
     isPending: isPendingPayment,
     data: paymentResponse,
     error: paymentNetworkError,
-  } = useMutation<PaymentResponse, Error, Omit<PaymentPayload, 'requestId'>, unknown>({
+  } = useMutation<PaymentResponse, Error, Omit<PaymentPayload, 'eventId'>, unknown>({
     mutationKey: ['request loan'],
     mutationFn: async (payment) => {
       const { event_id: eventId } = await getVisitorData();
@@ -43,7 +43,7 @@ export function PaymentFraud({ embed }: { embed?: boolean }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...payment,
-          requestId: eventId,
+          eventId,
         } satisfies PaymentPayload),
       });
       return await response.json();

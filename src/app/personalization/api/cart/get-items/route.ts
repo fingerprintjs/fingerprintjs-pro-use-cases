@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult, Severity } from '../../../../../server/checks';
 
 export type GetCartItemsPayload = {
-  requestId: string;
+  eventId: string;
 };
 
 export type GetCartItemsResponse = {
@@ -16,10 +16,10 @@ export type GetCartItemsResponse = {
 
 // Returns cart items for the given visitorId
 export async function POST(req: NextRequest): Promise<NextResponse<GetCartItemsResponse>> {
-  const { requestId } = (await req.json()) as GetCartItemsPayload;
+  const { eventId } = (await req.json()) as GetCartItemsPayload;
 
   const fingerprintResult = await getAndValidateFingerprintResult({
-    requestId,
+    eventId,
     req,
     options: { disableFreshnessCheck: true },
   });

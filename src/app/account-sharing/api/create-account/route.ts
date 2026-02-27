@@ -6,7 +6,7 @@ import { getLocationName } from '../../../../utils/locationUtils';
 import { ACCOUNT_SHARING_COPY } from '../../const';
 
 export type CreateAccountPayload = {
-  requestId: string;
+  eventId: string;
   username: string;
   password: string;
 };
@@ -17,10 +17,10 @@ export type CreateAccountResponse = {
 };
 
 export async function POST(req: Request): Promise<NextResponse<CreateAccountResponse>> {
-  const { requestId, username, password } = (await req.json()) as CreateAccountPayload;
+  const { eventId, username, password } = (await req.json()) as CreateAccountPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
-  const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
+  const fingerprintResult = await getAndValidateFingerprintResult({ eventId, req });
   if (!fingerprintResult.okay) {
     return NextResponse.json({ message: fingerprintResult.error, severity: 'error' }, { status: 403 });
   }

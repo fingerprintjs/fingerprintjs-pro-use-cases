@@ -9,7 +9,7 @@ import { sequelize } from '../../../../server/sequelize';
 export type LoginPayload = {
   username: string;
   password: string;
-  requestId: string;
+  eventId: string;
   visitorId: string;
 };
 
@@ -34,24 +34,24 @@ function getKnownVisitorIds() {
 }
 
 export async function POST(req: Request): Promise<NextResponse<LoginResponse>> {
-  const { requestId, username, password, visitorId: clientVisitorId } = (await req.json()) as LoginPayload;
+  const { eventId, username, password, visitorId: clientVisitorId } = (await req.json()) as LoginPayload;
 
   // Get the full Identification result from Fingerprint Server API and validate its authenticity
-  const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
+  const fingerprintResult = await getAndValidateFingerprintResult({ eventId, req });
   if (!fingerprintResult.okay) {
-    logLoginAttempt(clientVisitorId, username, 'RequestIdValidationFailed');
+    logLoginAttempt(clientVisitorId, username, 'EventIdValidationFailed');
     return NextResponse.json({ message: fingerprintResult.error, severity: 'error' }, { status: 403 });
   }
 
   // Get visitorId from the Server API Identification event
   const visitorId = fingerprintResult.data.identification?.visitor_id;
   if (!visitorId) {
-    logLoginAttempt(clientVisitorId, username, 'RequestIdValidationFailed');
+    logLoginAttempt(clientVisitorId, username, 'EventIdValidationFailed');
     return NextResponse.json({ message: 'Visitor ID not found.', severity: 'error' }, { status: 403 });
   }
 
   // If the visitor ID performed 5 unsuccessful login attempts during the last 24 hours we do not perform the login.
-  const failedLoginTypes: LoginAttemptResult[] = ['IncorrectCredentials', 'RequestIdValidationFailed'];
+  const failedLoginTypes: LoginAttemptResult[] = ['IncorrectCredentials', 'EventIdValidationFailed'];
   const failedLoginsToday = await LoginAttemptDbModel.findAndCountAll({
     where: {
       visitorId,

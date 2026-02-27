@@ -6,7 +6,7 @@ import { SmsVerificationDatabaseModel } from '../database';
 import { SMS_FRAUD_COPY } from '../smsPumpingConst';
 
 export type SubmitCodePayload = {
-  requestId: string;
+  eventId: string;
   phoneNumber: string;
   code: number;
 };
@@ -17,10 +17,10 @@ export type SubmitCodeResponse = {
 };
 
 export async function POST(req: NextRequest): Promise<NextResponse<SubmitCodeResponse>> {
-  const { phoneNumber, code, requestId } = (await req.json()) as SubmitCodePayload;
+  const { phoneNumber, code, eventId } = (await req.json()) as SubmitCodePayload;
 
   // Get the full identification result from Fingerprint Server API and validate its authenticity
-  const fingerprintResult = await getAndValidateFingerprintResult({ requestId, req });
+  const fingerprintResult = await getAndValidateFingerprintResult({ eventId, req });
   if (!fingerprintResult.okay) {
     return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });
   }
