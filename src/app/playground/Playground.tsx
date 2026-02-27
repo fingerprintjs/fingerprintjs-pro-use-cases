@@ -95,7 +95,7 @@ export function Playground() {
     serverError,
   } = usePlaygroundSignals();
 
-  const identificationData = identificationEvent?.products.identification?.data;
+  const identificationData = identificationEvent?.identification;
 
   /**
    * Prevent restoring scroll position on page refresh since there is nothing to scroll to while the data is being loaded
@@ -112,19 +112,19 @@ export function Playground() {
     return <Alert severity={'error'}>Server API Request {serverError.toString()}.</Alert>;
   }
 
-  const { ipLocation } = identificationData ?? {};
-  const { latitude, longitude, accuracyRadius } = ipLocation ?? {};
+  const ipLocation = identificationEvent?.ip_info?.v4?.geolocation;
+  const { latitude, longitude, accuracy_radius: accuracyRadius } = ipLocation ?? {};
   const zoom = getZoomLevel(accuracyRadius);
 
-  const isBadBot = identificationEvent?.products.botd?.data?.bot.result === 'bad';
+  const isBadBot = identificationEvent?.bot === 'bad';
 
   const identificationSignals: TableCellData[][] = [
     [
       { content: 'Browser' },
       {
         content: (
-          <JsonLink propertyName='browserDetails' elementOrder='first'>
-            {`${identificationData?.browserDetails.browserName} ${identificationData?.browserDetails.browserFullVersion}`}
+          <JsonLink propertyName='browser_details' elementOrder='first'>
+            {`${identificationEvent?.browser_details?.browser_name} ${identificationEvent?.browser_details?.browser_full_version}`}
           </JsonLink>
         ),
 
@@ -136,9 +136,9 @@ export function Playground() {
       {
         content: (
           <JsonLink
-            propertyName='osVersion'
+            propertyName='browser_details'
             elementOrder='first'
-          >{`${identificationData?.browserDetails.os} ${identificationData?.browserDetails.osVersion}`}</JsonLink>
+          >{`${identificationEvent?.browser_details?.os} ${identificationEvent?.browser_details?.os_version}`}</JsonLink>
         ),
         className: tableStyles.neutral,
       },
@@ -148,8 +148,8 @@ export function Playground() {
       {
         content: (
           <span className={styles.ipAddress}>
-            <JsonLink propertyName='ip' elementOrder='first'>
-              {`${identificationData?.ip}`}
+            <JsonLink propertyName='ip_address' elementOrder='first'>
+              {`${identificationEvent?.ip_address}`}
             </JsonLink>
           </span>
         ),
@@ -161,9 +161,9 @@ export function Playground() {
         content: <DocsLink href='https://dev.fingerprint.com/docs/useful-timestamps'>Last Seen</DocsLink>,
       },
       {
-        content: identificationData?.lastSeenAt.global ? (
-          <JsonLink propertyName='lastSeenAt' elementOrder='first'>
-            {timeAgoLabel(identificationData.lastSeenAt.global)}
+        content: identificationData?.last_seen_at ? (
+          <JsonLink propertyName='last_seen_at' elementOrder='first'>
+            {timeAgoLabel(new Date(identificationData.last_seen_at).toISOString())}
           </JsonLink>
         ) : (
           'Unknown'
@@ -198,10 +198,9 @@ export function Playground() {
     ],
   ];
 
-  const products = identificationEvent?.products;
-  const suspectScore = products?.suspectScore?.data?.result;
-  const ipVelocity = products?.velocity?.data?.distinctIp.intervals?.['24h'];
-  const linkedIdVelocity = products?.velocity?.data?.distinctLinkedId.intervals?.['24h'];
+  const suspectScore = identificationEvent?.suspect_score;
+  const ipVelocity = identificationEvent?.velocity?.distinct_ip?.['24_hours'];
+  const linkedIdVelocity = identificationEvent?.velocity?.distinct_linked_id?.['24_hours'];
   const firstCellHeight = '95px';
 
   const smartSignals: TableCellData[][] = [
@@ -213,7 +212,7 @@ export function Playground() {
               Geolocation
             </DocsLink>
             <div className={styles.locationText}>
-              <JsonLink propertyName='ipInfo' arrowPosition='inline'>
+              <JsonLink propertyName='ip_info' arrowPosition='inline'>
                 {getLocationName(ipLocation)}
               </JsonLink>
             </div>
@@ -250,10 +249,10 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='incognito'>
-            {identificationEvent?.products.incognito?.data?.result ? 'You are incognito 🕶' : 'Not detected'}
+            {identificationEvent?.incognito ? 'You are incognito 🕶' : 'Not detected'}
           </JsonLink>
         ),
-        className: identificationEvent?.products.incognito?.data?.result ? tableStyles.red : tableStyles.green,
+        className: identificationEvent?.incognito ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -265,7 +264,7 @@ export function Playground() {
         ],
       },
       {
-        content: <JsonLink propertyName='botd'>{botDetectionResult({ event: identificationEvent })}</JsonLink>,
+        content: <JsonLink propertyName='bot'>{botDetectionResult({ event: identificationEvent })}</JsonLink>,
         className: isBadBot ? tableStyles.red : tableStyles.green,
       },
     ],
@@ -282,7 +281,7 @@ export function Playground() {
       },
       {
         content: <JsonLink propertyName='vpn'>{vpnDetectionResult({ event: identificationEvent })}</JsonLink>,
-        className: identificationEvent?.products.vpn?.data?.result === true ? tableStyles.red : tableStyles.green,
+        className: identificationEvent?.vpn === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -299,11 +298,11 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='tampering'>
-            {identificationEvent?.products.tampering?.data?.result === true ? 'Yes 🖥️🔧' : 'Not detected'}
+            {identificationEvent?.tampering === true ? 'Yes 🖥️🔧' : 'Not detected'}
           </JsonLink>
         ),
 
-        className: identificationEvent?.products.tampering?.data?.result === true ? tableStyles.red : tableStyles.green,
+        className: identificationEvent?.tampering === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -319,12 +318,11 @@ export function Playground() {
       },
       {
         content: (
-          <JsonLink propertyName='developerTools'>
-            {identificationEvent?.products.developerTools?.data?.result === true ? 'Yes 🔧' : 'Not detected'}
+          <JsonLink propertyName='developer_tools'>
+            {identificationEvent?.developer_tools === true ? 'Yes 🔧' : 'Not detected'}
           </JsonLink>
         ),
-        className:
-          identificationEvent?.products.developerTools?.data?.result === true ? tableStyles.red : tableStyles.green,
+        className: identificationEvent?.developer_tools === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -337,13 +335,12 @@ export function Playground() {
       },
       {
         content: (
-          <JsonLink propertyName='virtualMachine'>
-            {identificationEvent?.products.virtualMachine?.data?.result === true ? 'Yes ☁️💻' : 'Not detected'}
+          <JsonLink propertyName='virtual_machine'>
+            {identificationEvent?.virtual_machine === true ? 'Yes ☁️💻' : 'Not detected'}
           </JsonLink>
         ),
 
-        className:
-          identificationEvent?.products.virtualMachine?.data?.result === true ? tableStyles.red : tableStyles.green,
+        className: identificationEvent?.virtual_machine === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -356,12 +353,11 @@ export function Playground() {
       },
       {
         content: (
-          <JsonLink propertyName='privacySettings'>
-            {identificationEvent?.products.privacySettings?.data?.result === true ? 'Yes 🙈💻' : 'Not detected'}
+          <JsonLink propertyName='privacy_settings'>
+            {identificationEvent?.privacy_settings === true ? 'Yes 🙈💻' : 'Not detected'}
           </JsonLink>
         ),
-        className:
-          identificationEvent?.products.privacySettings?.data?.result === true ? tableStyles.red : tableStyles.green,
+        className: identificationEvent?.privacy_settings === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -376,11 +372,12 @@ export function Playground() {
         ],
       },
       {
-        content: <JsonLink propertyName='ipBlocklist'>{ipBlocklistResult({ event: identificationEvent })}</JsonLink>,
+        content: <JsonLink propertyName='ip_blocklist'>{ipBlocklistResult({ event: identificationEvent })}</JsonLink>,
         className:
-          identificationEvent?.products.ipBlocklist?.data?.result ||
-          identificationEvent?.products.proxy?.data?.result ||
-          identificationEvent?.products.tor?.data?.result
+          identificationEvent?.ip_blocklist?.attack_source ||
+          identificationEvent?.ip_blocklist?.email_spam ||
+          identificationEvent?.ip_blocklist?.tor_node ||
+          identificationEvent?.proxy
             ? tableStyles.red
             : tableStyles.green,
       },
@@ -398,13 +395,12 @@ export function Playground() {
       },
       {
         content: (
-          <JsonLink propertyName='highActivity'>
-            {identificationEvent?.products.highActivity?.data?.result === true ? 'Yes 🔥' : 'Not detected'}
+          <JsonLink propertyName='high_activity_device'>
+            {identificationEvent?.high_activity_device === true ? 'Yes 🔥' : 'Not detected'}
           </JsonLink>
         ),
 
-        className:
-          identificationEvent?.products.highActivity?.data?.result === true ? tableStyles.red : tableStyles.green,
+        className: identificationEvent?.high_activity_device === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -447,7 +443,7 @@ export function Playground() {
       {
         content:
           suspectScore !== undefined ? (
-            <JsonLink propertyName='suspectScore'>{String(suspectScore)}</JsonLink>
+            <JsonLink propertyName='suspect_score'>{String(suspectScore)}</JsonLink>
           ) : (
             'Not available'
           ),
@@ -468,7 +464,7 @@ export function Playground() {
         ],
       },
       {
-        content: <JsonLink propertyName='rawDeviceAttributes'>See the JSON below</JsonLink>,
+        content: <JsonLink propertyName='raw_device_attributes'>See the JSON below</JsonLink>,
         className: tableStyles.green,
       },
     ],
@@ -670,7 +666,7 @@ export function Playground() {
                 <MyCollapsibleContent>
                   <div className={styles.visitorIdBox}>
                     <p>Your Visitor ID is </p>
-                    <h2 className={styles.visitorId}>{identificationData.visitorId}</h2>
+                    <h2 className={styles.visitorId}>{identificationData.visitor_id}</h2>
                   </div>
 
                   <SignalTable data={identificationSignals} />

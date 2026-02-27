@@ -23,7 +23,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<RemoveCartIte
     req,
     options: { disableFreshnessCheck: true },
   });
-  const visitorId = fingerprintResult.okay ? fingerprintResult.data.products.identification?.data?.visitorId : null;
+  const visitorId = fingerprintResult.okay ? fingerprintResult.data.identification?.visitor_id : null;
 
   if (!visitorId) {
     return NextResponse.json(

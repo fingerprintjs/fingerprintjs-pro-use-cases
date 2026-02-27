@@ -66,13 +66,13 @@
   border: 1px solid v('gray-box-stroke');
   color: unset;
   cursor: pointer;
-  
+
   // We need this for the useCaseTitle pseudo element below
   position: relative;
-  
+
   @include shadowMedium();
   @include transition((border));
-  
+
   @include media('<=phoneLandscape') {
     padding: rem(24px) rem(16px);
   }
@@ -84,7 +84,7 @@
    * https://tobiasahlin.com/blog/how-to-animate-box-shadow/
    */
   &::after {
-    content: "";
+    content: '';
     border-radius: 12px;
     position: absolute;
     top: 0;

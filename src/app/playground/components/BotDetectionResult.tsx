@@ -1,12 +1,14 @@
-import { EventsGetResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { Event } from '@fingerprint/node-sdk';
 
-const botDetectionResult = ({ event }: { event: EventsGetResponse | undefined }): string => {
-  switch (event?.products.botd?.data?.bot.result) {
+const botDetectionResult = ({ event }: { event: Event | undefined }): string => {
+  const bot = event?.bot;
+  const botType = event?.bot_type;
+  switch (bot) {
     case 'good':
       return 'You are a good bot 🤖';
     case 'bad':
-      return `You are a bad bot 🤖 (type: ${event.products.botd.data.bot.type})`;
-    case 'notDetected':
+      return `You are a bad bot 🤖 (type: ${botType ?? 'unknown'})`;
+    case 'not_detected':
       return 'Not detected';
     default:
       return 'Unknown';

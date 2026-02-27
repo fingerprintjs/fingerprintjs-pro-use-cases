@@ -1,4 +1,4 @@
-import { EventsGetResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { Event } from '@fingerprint/node-sdk';
 import Link from 'next/link';
 import { FunctionComponent, useEffect, useRef } from 'react';
 import { ExternalLinkArrowSvg } from '../../../client/img/externalLinkArrowSvg';
@@ -27,9 +27,9 @@ export const DocsLink: FunctionComponent<{ children: string; href: string; style
 
 type AllNestedKeys<T> = T extends object ? keyof T | AllNestedKeys<T[keyof T]> : never;
 
-type PropertyName =
-  | keyof EventsGetResponse['products']
-  | AllNestedKeys<NonNullable<NonNullable<EventsGetResponse['products']['identification']>['data']>>;
+type EventIdentification = NonNullable<Event['identification']>;
+
+type PropertyName = keyof Event | AllNestedKeys<EventIdentification>;
 
 export const JsonLink: FunctionComponent<{
   children: string;

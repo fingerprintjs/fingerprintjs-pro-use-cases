@@ -1,8 +1,8 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { EventsGetResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { Event } from '@fingerprint/node-sdk';
 
 export function useEventsGetResponse(requestId?: string) {
-  return useQuery<EventsGetResponse | undefined>({
+  return useQuery<Event | undefined>({
     queryKey: ['get-event', requestId],
     queryFn: async () => {
       const res = await fetch(`/api/event/${requestId}`, { method: 'POST' });

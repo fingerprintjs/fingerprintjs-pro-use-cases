@@ -26,7 +26,7 @@ export async function POST(req: Request): Promise<NextResponse<CreateAccountResp
   }
 
   // Get visitorId from the Server API Identification event
-  const visitorId = fingerprintResult.data.products.identification?.data?.visitorId;
+  const visitorId = fingerprintResult.data.identification?.visitor_id;
   if (!visitorId) {
     return NextResponse.json({ message: 'Visitor ID not found.', severity: 'error' }, { status: 403 });
   }
@@ -48,8 +48,8 @@ export async function POST(req: Request): Promise<NextResponse<CreateAccountResp
   await SessionDbModel.create({
     visitorId,
     username,
-    deviceName: fingerprintResult.data.products.identification?.data?.browserDetails.browserName ?? 'the other device',
-    deviceLocation: getLocationName(fingerprintResult.data.products.ipInfo?.data?.v4?.geolocation, false),
+    deviceName: fingerprintResult.data.browser_details?.browser_name ?? 'the other device',
+    deviceLocation: getLocationName(fingerprintResult.data.ip_info?.v4?.geolocation, false),
   });
 
   // Return success

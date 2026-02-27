@@ -1,12 +1,12 @@
 import { useVisitorData } from '@fingerprint/react';
-import { EventsGetResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { Event } from '@fingerprint/node-sdk';
 import { FPJS_CLIENT_TIMEOUT } from '../../../const';
 import { useEffect } from 'react';
 import { useCallbackRef } from '../../../client/hooks/useCallbackRef';
 import { useSessionId } from '../../../client/hooks/useSessionId';
 import { useEventsGetResponse } from '../../../client/hooks/useEventsGetResponse';
 
-export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: EventsGetResponse) => void }) {
+export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Event) => void }) {
   const sessionId = useSessionId();
 
   const {

@@ -124,7 +124,7 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
   });
 
   const { data: eventData, isPending: isPendingServerResponse } = useEventsGetResponse(visitorData?.event_id);
-  const identificationData = eventData?.products.identification?.data;
+  const ipAddress = eventData?.ip_address;
 
   // Get a list of bot visits
   const { botVisits, refetchBotVisits, isFetchingBotVisits: isLoadingBotVisits, botVisitsQueryStatus } = useBotVisits();
@@ -193,7 +193,7 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
                       isBlockedNow={isIpBlocked(botVisit.ip)}
                       blockIp={blockIp}
                       isPendingBlockIp={isPendingBlockIp}
-                      isVisitorsIp={botVisit.ip === identificationData?.ip}
+                      isVisitorsIp={botVisit.ip === ipAddress}
                     />
                   </td>
                 </tr>
@@ -229,7 +229,7 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
                   isBlockedNow={isIpBlocked(botVisit.ip)}
                   blockIp={blockIp}
                   isPendingBlockIp={isPendingBlockIp}
-                  isVisitorsIp={botVisit.ip === identificationData?.ip}
+                  isVisitorsIp={botVisit.ip === ipAddress}
                 />
               </div>
             );
@@ -244,7 +244,7 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
       <UseCaseWrapper
         useCase={USE_CASES.botFirewall}
         embed={embed}
-        instructionsNote={`For the purposes of this demo, you can only block/unblock your own IP address (${identificationData?.ip}). The block expires after one hour. The database of bot visits is cleared on every website update.`}
+        instructionsNote={`For the purposes of this demo, you can only block/unblock your own IP address (${ipAddress}). The block expires after one hour. The database of bot visits is cleared on every website update.`}
       >
         <div className={styles.container}>
           <div className={styles.header}>

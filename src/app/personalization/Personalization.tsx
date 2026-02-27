@@ -32,7 +32,7 @@ export function Personalization({ embed }: { embed?: boolean }) {
   });
 
   const { isPending: isEventsPending, data: eventsResponse } = useEventsGetResponse(data?.event_id);
-  const identificationData = eventsResponse?.products.identification?.data;
+  const identificationData = eventsResponse?.identification;
 
   const [didAcknowledge, setDidAcknowledge] = useSessionStorage('didAcknowledgePersonalizationUseCaseWarning', false);
   const [search, setSearch] = useState('');
@@ -63,8 +63,8 @@ export function Personalization({ embed }: { embed?: boolean }) {
 
   useEffect(() => {
     if (
-      identificationData?.incognito &&
-      identificationData.visitorFound &&
+      eventsResponse?.incognito &&
+      identificationData?.visitor_found &&
       !userWelcomed &&
       (searchHistoryQuery.data.data?.length || cartQuery.data?.data?.length)
     ) {
@@ -75,7 +75,15 @@ export function Personalization({ embed }: { embed?: boolean }) {
 
       setUserWelcomed(true);
     }
-  }, [cartQuery.data, data, enqueueSnackbar, identificationData, searchHistoryQuery.data, userWelcomed]);
+  }, [
+    cartQuery.data,
+    data,
+    enqueueSnackbar,
+    eventsResponse,
+    identificationData,
+    searchHistoryQuery.data,
+    userWelcomed,
+  ]);
 
   const cartItems: CartProduct[] | undefined = cartQuery.data?.data?.map((item) => {
     return {

@@ -39,9 +39,7 @@ export const ThirdPartyIntegrations = () => {
 
   const { identificationEvent } = usePlaygroundSignals();
   const isNotBot =
-    identificationEvent &&
-    identificationEvent.products.botd?.data?.bot.result === 'notDetected' &&
-    identificationEvent.products.virtualMachine?.data?.result === false;
+    identificationEvent && identificationEvent.bot === 'not_detected' && identificationEvent.virtual_machine === false;
 
   return (
     <>

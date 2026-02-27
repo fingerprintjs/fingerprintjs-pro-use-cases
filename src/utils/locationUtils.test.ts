@@ -13,9 +13,9 @@ describe('getLocationName test', () => {
   it('Should return only country in case of high accuracyRadius', () => {
     expect(
       getLocationName({
-        city: { name: 'Columbus' },
-        country: { code: 'US', name: 'United States' },
-        accuracyRadius: 1000,
+        city_name: 'Columbus',
+        country_name: 'United States',
+        accuracy_radius: 1000,
       }),
     ).toBe('United States');
   });
@@ -23,21 +23,12 @@ describe('getLocationName test', () => {
   it('Should return only subdivision in case of medium accuracyRadius', () => {
     expect(
       getLocationName({
-        accuracyRadius: 100,
-        city: {
-          name: 'Nova',
-        },
-        country: {
-          code: 'PT',
-          name: 'Portugal',
-        },
-        continent: {
-          code: 'EU',
-          name: 'Europe',
-        },
+        accuracy_radius: 100,
+        city_name: 'Nova',
+        country_name: 'Portugal',
         subdivisions: [
           {
-            isoCode: '13',
+            iso_code: '13',
             name: 'Porto',
           },
         ],
@@ -46,15 +37,15 @@ describe('getLocationName test', () => {
   });
 
   it('Should return only city in case of other empty params', () => {
-    expect(getLocationName({ city: { name: 'Berlin' }, accuracyRadius: 20 })).toBe('Berlin');
+    expect(getLocationName({ city_name: 'Berlin', accuracy_radius: 20 })).toBe('Berlin');
   });
 
   it('Should return city and country in case of empty subdivisions', () => {
     expect(
       getLocationName({
-        city: { name: 'Columbus' },
-        country: { code: 'US', name: 'United States' },
-        accuracyRadius: 20,
+        city_name: 'Columbus',
+        country_name: 'United States',
+        accuracy_radius: 20,
       }),
     ).toBe('Columbus, United States');
   });
@@ -62,10 +53,10 @@ describe('getLocationName test', () => {
   it('Should return city, country and subdivision', () => {
     expect(
       getLocationName({
-        city: { name: 'Columbus' },
-        country: { code: 'US', name: 'United States' },
-        subdivisions: [{ isoCode: 'OH', name: 'Ohio' }],
-        accuracyRadius: 20,
+        city_name: 'Columbus',
+        country_name: 'United States',
+        subdivisions: [{ iso_code: 'OH', name: 'Ohio' }],
+        accuracy_radius: 20,
       }),
     ).toBe('Columbus, Ohio, United States');
   });
@@ -73,13 +64,13 @@ describe('getLocationName test', () => {
   it('Should return city, country and only first subdivision', () => {
     expect(
       getLocationName({
-        city: { name: 'Columbus' },
-        country: { code: 'US', name: 'United States' },
-        accuracyRadius: 20,
+        city_name: 'Columbus',
+        country_name: 'United States',
+        accuracy_radius: 20,
         subdivisions: [
-          { isoCode: 'OH', name: 'Ohio' },
+          { iso_code: 'OH', name: 'Ohio' },
           // @ts-ignore Mock test object
-          { isoCode: 'FK', name: 'Fake additional subdivision' },
+          { iso_code: 'FK', name: 'Fake additional subdivision' },
         ],
       }),
     ).toBe('Columbus, Ohio, United States');

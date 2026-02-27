@@ -1,24 +1,24 @@
-import { EventsGetResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { Event } from '@fingerprint/node-sdk';
 
-export const ipBlocklistResult = ({ event }: { event: EventsGetResponse | undefined }): string => {
-  const blocklistData = event?.products.ipBlocklist?.data;
-  if (blocklistData?.details.attackSource && blocklistData.details.emailSpam) {
+export const ipBlocklistResult = ({ event }: { event: Event | undefined }): string => {
+  const blocklistData = event?.ip_blocklist;
+  if (blocklistData?.attack_source && blocklistData.email_spam) {
     return 'Your IP is on a blocklist 🚫 (it was part of multiple attacks)';
   }
-  if (blocklistData?.details.attackSource) {
+  if (blocklistData?.attack_source) {
     return 'Your IP is on a blocklist 🚫 (it was part of a network attack)';
   }
-  if (blocklistData?.details.emailSpam) {
+  if (blocklistData?.email_spam) {
     return 'Your IP is on a blocklist 🚫 (it was part of a spam attack)';
   }
-  if (event?.products.tor?.data?.result === true) {
+  if (blocklistData?.tor_node === true) {
     return 'Your IP is a Tor exit node 🧅';
   }
-  if (event?.products.proxy?.data?.result === true) {
-    return 'Your IP is used by a proxy provider 🔄';
+  // Proxy detection in v7 - top level boolean property
+  if (event?.proxy === true) {
+    const proxyType = event.proxy_details?.proxy_type ?? 'unknown';
+    return `Your IP is used by a ${proxyType} proxy provider 🔄`;
   }
-  if (blocklistData?.result === false) {
-    return 'Not detected';
-  }
-  return 'Unknown';
+  // If we reach here, nothing was detected
+  return 'Not detected';
 };

@@ -34,7 +34,8 @@ export async function POST(req: NextRequest): Promise<NextResponse<ResetResponse
     return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });
   }
 
-  const { visitorId, ip } = fingerprintResult.data.products.identification?.data ?? {};
+  const visitorId = fingerprintResult.data.identification?.visitor_id;
+  const ip = fingerprintResult.data.ip_address;
   if (!visitorId) {
     return NextResponse.json({ severity: 'error', message: 'Visitor ID not found.' }, { status: 403 });
   }

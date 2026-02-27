@@ -32,7 +32,9 @@ form.accountSharingForm {
   letter-spacing: -0.03em;
 
   span {
-    font-family: Bebas Neue, sans-serif;
+    font-family:
+      Bebas Neue,
+      sans-serif;
     font-weight: 700;
     font-size: rem(32px);
     letter-spacing: 0;
@@ -89,7 +91,6 @@ form.accountSharingForm {
   margin-bottom: rem(10px);
 }
 
-
 /**
  * Home page
  */
@@ -116,7 +117,9 @@ form.accountSharingForm {
   h1 {
     font-size: rem(32px);
     font-weight: 700;
-    font-family: Bebas Neue, sans-serif;
+    font-family:
+      Bebas Neue,
+      sans-serif;
     margin: 0;
     padding: 0;
   }
@@ -150,7 +153,6 @@ form.accountSharingForm {
     font-family: Inter;
     font-weight: 500;
   }
-
 }
 
 .categoryTitle {
@@ -170,7 +172,7 @@ form.accountSharingForm {
     &:first-of-type {
       margin-left: 4px;
     }
-  } 
+  }
 }
 
 .cardsRow {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { EventsGetResponse, RequestError } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { Event, RequestError } from '@fingerprint/node-sdk';
 import { OUR_ORIGINS, Severity } from '../../../../server/checks';
 import { IS_PRODUCTION } from '../../../../envShared';
 import { fingerprintServerApiClient } from '../../../../server/fingerprint-server-api';
@@ -16,7 +16,7 @@ const getCorsHeaders = (origin: string | null) => ({
 
 type CorsHeaders = ReturnType<typeof getCorsHeaders>;
 
-type GetEventPayload = EventsGetResponse | { severity: Severity; message: string };
+type GetEventPayload = Event | { severity: Severity; message: string };
 
 export async function OPTIONS(request: NextRequest) {
   const origin = request.headers.get('origin');
@@ -78,7 +78,7 @@ async function tryGetFingerprintEvent(
   requestId: string,
   retryCount = 5,
   retryDelay: number = 3000,
-): Promise<{ okay: true; data: EventsGetResponse } | { okay: false; error: unknown }> {
+): Promise<{ okay: true; data: Event } | { okay: false; error: unknown }> {
   try {
     const eventResponse = await fingerprintServerApiClient.getEvent(requestId);
     return { okay: true, data: eventResponse };

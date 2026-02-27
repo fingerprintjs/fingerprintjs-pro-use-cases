@@ -45,20 +45,16 @@ BotVisitDbModel.sync({ force: false });
 
 export type BotVisit = Attributes<BotVisitAttributes>;
 
-export const saveBotVisit = async (botData: EventResponseBotData, visitorId: string) => {
-  if (!botData) {
-    return;
-  }
-
+export const saveBotVisit = async (eventData: EventResponseBotData, visitorId: string) => {
   BotVisitDbModel.create({
-    ip: botData.ip,
+    ip: eventData.ip_address ?? '',
     visitorId: visitorId,
-    requestId: botData.requestId,
-    timestamp: botData.time,
-    botResult: botData.bot.result,
-    botType: botData.bot.type ?? '',
-    userAgent: botData.userAgent,
-    url: botData.url,
+    requestId: eventData.event_id,
+    timestamp: new Date(eventData.timestamp).toISOString(),
+    botResult: eventData.bot ?? 'not_detected',
+    botType: eventData.bot_type ?? '',
+    userAgent: eventData.user_agent ?? '',
+    url: eventData.url ?? '',
   });
 };
 
