@@ -74,12 +74,12 @@ test.describe('Playground page', () => {
   test('Page renders server response', async ({ page }) => {
     const serverResponse = await getServerResponse(page);
 
-    expect(serverResponse).toContain('requestId');
-    expect(serverResponse).toContain('visitorId');
+    expect(serverResponse).toContain('event_id');
+    expect(serverResponse).toContain('visitor_id');
     expect(serverResponse).toContain('incognito');
-    expect(serverResponse).toContain('botd');
+    expect(serverResponse).toContain('bot');
     expect(serverResponse).toContain('vpn');
-    expect(serverResponse).toContain('privacySettings');
+    expect(serverResponse).toContain('privacy_settings');
   });
 
   test('Reload button updates agent response', async ({ page }) => {
@@ -110,7 +110,7 @@ test.describe('Playground page', () => {
     const seeJsonLink = await page.getByText('See the JSON below');
     await scrollToView(seeJsonLink);
     await seeJsonLink.click();
-    await expect(page.locator('span.json-view--property:text("rawDeviceAttributes")')).toBeInViewport();
+    await expect(page.locator('span.json-view--property:text("raw_device_attributes")')).toBeInViewport();
   });
 });
 
