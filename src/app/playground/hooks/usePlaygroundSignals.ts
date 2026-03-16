@@ -27,12 +27,12 @@ export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Even
 
   const eventId = agentResponse?.event_id;
 
-   useEffect(() => {
-     if (!eventId) return;
+  useEffect(() => {
+    if (!eventId) return;
 
-     fetch(`https://metric.fingerprinthub.com/${eventId}`).catch(() => undefined);
-     fetch(`https://metric.fingerprinthub.com:8443/${eventId}`).catch(() => undefined);
-   }, [eventId]);
+    fetch(`https://metric.fingerprinthub.com/${eventId}`).catch(() => undefined);
+    fetch(`https://metric.fingerprinthub.com:8443/${eventId}`).catch(() => undefined);
+  }, [eventId]);
 
   const {
     data: identificationEvent,
