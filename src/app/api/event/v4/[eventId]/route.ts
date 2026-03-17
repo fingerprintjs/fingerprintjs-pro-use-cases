@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Event, RequestError } from '@fingerprint/node-sdk';
-import { OUR_ORIGINS, Severity } from '../../../../server/checks';
-import { IS_PRODUCTION } from '../../../../envShared';
-import { fingerprintServerApiClient } from '../../../../server/fingerprint-server-api';
+import { OUR_ORIGINS, Severity } from '../../../../../server/checks';
+import { IS_PRODUCTION } from '../../../../../envShared';
+import { fingerprintServerApiClient } from '../../../../../server/fingerprint-server-api';
 
 // Also allow our documentation to use the endpoint
 const allowedOrigins = [...OUR_ORIGINS, 'https://dev.fingerprint.com'];
