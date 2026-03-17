@@ -60,7 +60,7 @@ const handleRequest = async (
 
   // In production, validate the origin
   if (IS_PRODUCTION && (!origin || !allowedOrigins.includes(origin))) {
-    const message = `Origin "${origin}" is not allowed to call this endpoint,`;
+    const message = `Origin "${origin}" is not allowed to call this endpoint.`;
     return NextResponse.json(
       { severity: 'error', message },
       { status: 403, statusText: message, headers: getCorsHeaders(origin) },
