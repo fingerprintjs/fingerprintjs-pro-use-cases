@@ -5,7 +5,7 @@ export function useEventsGetResponse(eventId?: string) {
   return useQuery<Event | undefined>({
     queryKey: ['get-event', eventId],
     queryFn: async () => {
-      const res = await fetch(`/api/event/${eventId}`, { method: 'POST' });
+      const res = await fetch(`/api/event/v4/${eventId}`, { method: 'POST' });
       if (res.status !== 200) {
         throw new Error(res.statusText);
       }
