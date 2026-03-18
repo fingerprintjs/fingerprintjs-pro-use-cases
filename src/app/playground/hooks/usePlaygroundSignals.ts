@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { useCallbackRef } from '../../../client/hooks/useCallbackRef';
 import { useSessionId } from '../../../client/hooks/useSessionId';
 import { useEventsGetResponse } from '../../../client/hooks/useEventsGetResponse';
+import { IS_PRODUCTION } from '../../../envShared';
 
 export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Event) => void }) {
   const sessionId = useSessionId();
@@ -26,6 +27,13 @@ export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Even
   });
 
   const eventId = agentResponse?.event_id;
+
+  useEffect(() => {
+    if (!eventId || !IS_PRODUCTION || window.location.hostname !== 'demo.fingerprint.com') return;
+
+    fetch(`https://metric.fingerprinthub.com/${eventId}`).catch(() => undefined);
+    fetch(`https://metric.fingerprinthub.com:8443/${eventId}`).catch(() => undefined);
+  }, [eventId]);
 
   const {
     data: identificationEvent,
