@@ -35,7 +35,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<FlightsRespon
   const event = fingerprintResult.data;
   const identification = event.identification;
   const bot = event.bot;
-  const antiDetectBroswer = event.tampering_details?.anti_detect_browser;
+  const antiDetectBrowser = event.tampering_details?.anti_detect_browser;
 
   // Backdoor for demo and testing purposes
   // If bot detection is disabled, just send the result
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<FlightsRespon
 
   // Anti-detect browsers often overlap with bots
   // https://docs.fingerprint.com/docs/smart-signals-reference#anti_detect_browser
-  if (antiDetectBroswer) {
+  if (antiDetectBrowser) {
     return NextResponse.json(
       {
         severity: 'error',
