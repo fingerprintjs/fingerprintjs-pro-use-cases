@@ -32,8 +32,10 @@ export async function POST(req: NextRequest): Promise<NextResponse<FlightsRespon
     return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });
   }
 
-  const identification = fingerprintResult.data.identification;
-  const bot = fingerprintResult.data.bot;
+  const event = fingerprintResult.data;
+  const identification = event.identification;
+  const bot = event.bot;
+  const antiDetectBrowser = event.tampering_details?.anti_detect_browser;
 
   // Backdoor for demo and testing purposes
   // If bot detection is disabled, just send the result
@@ -61,6 +63,18 @@ export async function POST(req: NextRequest): Promise<NextResponse<FlightsRespon
     return NextResponse.json(
       { severity: 'error', message: 'Server error, unexpected bot detection value.' },
       { status: 500 },
+    );
+  }
+
+  // Anti-detect browsers often overlap with bots
+  // https://docs.fingerprint.com/docs/smart-signals-reference#anti_detect_browser
+  if (antiDetectBrowser) {
+    return NextResponse.json(
+      {
+        severity: 'error',
+        message: 'Anti-detect browser tampering detected, potentially a bot, access denied.',
+      },
+      { status: 403 },
     );
   }
 
