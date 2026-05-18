@@ -627,6 +627,19 @@ export function Playground() {
       },
       { content: PLAYGROUND_COPY.iosOnly, className: tableStyles.neutral },
     ],
+    [
+      {
+        content: [
+          <DocsLink
+            href='https://docs.fingerprint.com/docs/smart-signals-reference#ios-simulator-detection'
+            key='ios-simulator'
+          >
+            iOS Simulator
+          </DocsLink>,
+        ],
+      },
+      { content: PLAYGROUND_COPY.iosOnly, className: tableStyles.neutral },
+    ],
   ];
 
   return (
