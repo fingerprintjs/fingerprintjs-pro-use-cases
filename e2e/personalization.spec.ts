@@ -66,7 +66,7 @@ test.describe('Personalization', () => {
 
     await page.reload();
 
-    await expect(cartItem).toHaveCount(1, { timeout: PERSISTENCE_TIMEOUT });
+    await expect(cartItems).toHaveCount(1, { timeout: PERSISTENCE_TIMEOUT });
     await expect(cartItem.getByTestId(CART_ID.cartItemCount)).toHaveText('02', { timeout: PERSISTENCE_TIMEOUT });
   });
 
