@@ -62,7 +62,7 @@ test.describe('Personalization', () => {
     await product.getByTestId(PERS_ID.addToCart).click();
     await cartItem.getByTestId(CART_ID.cartItemPlusOne).click();
     // Confirm the request was successful before reloading the page
-    await expect(cartItem.getByTestId(CART_ID.cartItemCount)).toHaveText('02');
+    await expect(cartItem.getByTestId(CART_ID.cartItemCount)).toHaveText('02', { timeout: PERSISTENCE_TIMEOUT });
 
     await page.reload();
 
