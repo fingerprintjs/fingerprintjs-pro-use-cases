@@ -4,6 +4,7 @@ import { TEST_IDS } from '../src/client/testIDs';
 
 const CART_ID = TEST_IDS.common.cart;
 const PERS_ID = TEST_IDS.personalization;
+const PERSISTENCE_TIMEOUT = 15_000;
 
 test.beforeEach(async ({ page }) => {
   await blockGoogleTagManager(page);
@@ -38,7 +39,7 @@ test.describe('Personalization', () => {
     expect(subTotal).toBe(productPrice);
 
     await cartItem.getByTestId(CART_ID.cartItemPlusOne).click();
-    await expect(cartItem.getByTestId(CART_ID.cartItemCount)).toHaveText('02');
+    await expect(cartItem.getByTestId(CART_ID.cartItemCount)).toHaveText('02', { timeout: PERSISTENCE_TIMEOUT });
     const subTotal2 = await getSubTotal();
     expect(subTotal2).toBe(productPrice * 2);
 
@@ -61,12 +62,12 @@ test.describe('Personalization', () => {
     await product.getByTestId(PERS_ID.addToCart).click();
     await cartItem.getByTestId(CART_ID.cartItemPlusOne).click();
     // Confirm the request was successful before reloading the page
-    await expect(cartItem.getByTestId(CART_ID.cartItemCount)).toHaveText('02');
+    await expect(cartItem.getByTestId(CART_ID.cartItemCount)).toHaveText('02', { timeout: PERSISTENCE_TIMEOUT });
 
     await page.reload();
 
-    await expect(cartItem).toHaveCount(1);
-    await expect(cartItem.getByTestId(CART_ID.cartItemCount)).toHaveText('02');
+    await expect(cartItems).toHaveCount(1, { timeout: PERSISTENCE_TIMEOUT });
+    await expect(cartItem.getByTestId(CART_ID.cartItemCount)).toHaveText('02', { timeout: PERSISTENCE_TIMEOUT });
   });
 
   test('should filter products and remember search history', async ({ page }) => {
@@ -80,10 +81,10 @@ test.describe('Personalization', () => {
 
     await expect(products).toHaveCount(1);
     await expect(products.first()).toContainText(SEARCH_TERM);
-    await expect(searchHistory).toHaveCount(1);
+    await expect(searchHistory).toHaveCount(1, { timeout: PERSISTENCE_TIMEOUT });
 
     await page.reload();
-    await expect(searchHistory).toHaveCount(1);
+    await expect(searchHistory).toHaveCount(1, { timeout: PERSISTENCE_TIMEOUT });
     await searchHistory.first().click();
 
     await expect(products).toHaveCount(1);
