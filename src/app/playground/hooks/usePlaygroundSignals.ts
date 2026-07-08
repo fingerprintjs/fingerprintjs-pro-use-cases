@@ -1,11 +1,17 @@
 import { useVisitorData } from '@fingerprint/react';
 import { Event } from '@fingerprint/node-sdk';
 import { FPJS_CLIENT_TIMEOUT } from '../../../const';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useCallbackRef } from '../../../client/hooks/useCallbackRef';
 import { useSessionId } from '../../../client/hooks/useSessionId';
 import { useEventsGetResponse } from '../../../client/hooks/useEventsGetResponse';
 import { IS_PRODUCTION } from '../../../envShared';
+
+export function formatRequestError(agentError?: Error | null, serverError?: Error | null) {
+  return agentError
+    ? `JavaScript Agent Error: ${agentError.message}.`
+    : `Server API Request ${serverError?.toString()}.`;
+}
 
 export function usePlaygroundSignals(config?: {
   onServerApiSuccess?: (data: Event) => void;
@@ -47,7 +53,6 @@ export function usePlaygroundSignals(config?: {
 
   const onServerApiSuccessCallback = useCallbackRef(config?.onServerApiSuccess);
   const onErrorCallback = useCallbackRef(config?.onError);
-  const shownErrorRef = useRef<unknown>(null);
   const requestError = agentError ?? serverError;
 
   // Call the callback on every successful Server API request
@@ -57,19 +62,12 @@ export function usePlaygroundSignals(config?: {
     }
   }, [identificationEvent, isSuccessServerResponse, onServerApiSuccessCallback]);
 
-  // Once results are on screen, a later failure shows a snackbar instead of replacing data.
+  // Once results are on screen, a later failure is surfaced non-destructively (e.g. a snackbar)
+  // instead of replacing them. requestError is stable per error, so this fires once per failure.
   useEffect(() => {
-    if (!requestError) {
-      shownErrorRef.current = null;
-      return;
+    if (requestError && identificationEvent) {
+      onErrorCallback(formatRequestError(agentError, serverError));
     }
-    if (!identificationEvent || requestError === shownErrorRef.current) {
-      return;
-    }
-    shownErrorRef.current = requestError;
-    onErrorCallback(
-      agentError ? `JavaScript Agent Error: ${agentError.message}.` : `Server API Request ${serverError!.toString()}.`,
-    );
   }, [requestError, identificationEvent, agentError, serverError, onErrorCallback]);
 
   return {
@@ -80,5 +78,6 @@ export function usePlaygroundSignals(config?: {
     identificationEvent,
     isPendingServerResponse,
     serverError,
+    requestError,
   };
 }

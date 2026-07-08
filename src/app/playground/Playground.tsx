@@ -8,7 +8,7 @@ import botDetectionResult from './components/BotDetectionResult';
 import { RefreshButton } from './components/RefreshButton';
 import { ipBlocklistResult } from './components/IpBlocklistResult';
 import { vpnDetectionResult } from './components/VpnDetectionResult';
-import { usePlaygroundSignals } from './hooks/usePlaygroundSignals';
+import { usePlaygroundSignals, formatRequestError } from './hooks/usePlaygroundSignals';
 import { getLocationName, getZoomLevel } from '../../utils/locationUtils';
 import Link from 'next/link';
 import styles from './playground.module.scss';
@@ -95,6 +95,7 @@ export function Playground() {
     identificationEvent,
     isPendingServerResponse,
     serverError,
+    requestError,
   } = usePlaygroundSignals({
     onError: (message) => {
       enqueueSnackbar(message, { variant: 'error' });
@@ -110,12 +111,8 @@ export function Playground() {
     window.history.scrollRestoration = 'manual';
   }, []);
 
-  if (agentError && !identificationEvent) {
-    return <Alert severity={'error'}>JavaScript Agent Error: {agentError.message}.</Alert>;
-  }
-
-  if (serverError && !identificationEvent) {
-    return <Alert severity={'error'}>Server API Request {serverError.toString()}.</Alert>;
+  if (requestError && !identificationEvent) {
+    return <Alert severity={'error'}>{formatRequestError(agentError, serverError)}</Alert>;
   }
 
   const ipLocation = identificationEvent?.ip_info?.v4?.geolocation;
