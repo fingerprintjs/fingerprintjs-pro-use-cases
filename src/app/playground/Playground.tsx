@@ -673,7 +673,7 @@ export function Playground() {
       </Container>
       {requestError && identificationEvent && requestError !== dismissedError && (
         <Container size='large'>
-          <Alert severity='error' onClose={() => setDismissedError(requestError)}>
+          <Alert severity='error' className={styles.errorAlert} onClose={() => setDismissedError(requestError)}>
             {formatRequestError(agentError, serverError)}
           </Alert>
         </Container>
