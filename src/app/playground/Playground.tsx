@@ -8,7 +8,7 @@ import botDetectionResult from './components/BotDetectionResult';
 import { RefreshButton } from './components/RefreshButton';
 import { ipBlocklistResult } from './components/IpBlocklistResult';
 import { vpnDetectionResult } from './components/VpnDetectionResult';
-import { usePlaygroundSignals, formatRequestError } from './hooks/usePlaygroundSignals';
+import { usePlaygroundSignals } from './hooks/usePlaygroundSignals';
 import { getLocationName, getZoomLevel } from '../../utils/locationUtils';
 import Link from 'next/link';
 import styles from './playground.module.scss';
@@ -84,6 +84,12 @@ const TableTitle = ({ children }: { children: ReactNode }) => (
   </motion.h3>
 );
 
+function formatRequestError(agentError?: Error | null, serverError?: Error | null) {
+  return agentError
+    ? `JavaScript Agent Error: ${agentError.message}.`
+    : `Server API Request ${serverError?.toString()}.`;
+}
+
 export function Playground() {
   const {
     agentResponse,
@@ -93,9 +99,9 @@ export function Playground() {
     identificationEvent,
     isPendingServerResponse,
     serverError,
-    requestError,
   } = usePlaygroundSignals();
 
+  const requestError = agentError ?? serverError;
   // Track which error the user dismissed so a new failure re-shows the inline alert.
   const [dismissedError, setDismissedError] = useState<unknown>(null);
 

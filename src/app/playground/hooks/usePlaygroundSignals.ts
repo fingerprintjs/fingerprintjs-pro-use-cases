@@ -7,12 +7,6 @@ import { useSessionId } from '../../../client/hooks/useSessionId';
 import { useEventsGetResponse } from '../../../client/hooks/useEventsGetResponse';
 import { IS_PRODUCTION } from '../../../envShared';
 
-export function formatRequestError(agentError?: Error | null, serverError?: Error | null) {
-  return agentError
-    ? `JavaScript Agent Error: ${agentError.message}.`
-    : `Server API Request ${serverError?.toString()}.`;
-}
-
 export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Event) => void }) {
   const sessionId = useSessionId();
 
@@ -49,7 +43,6 @@ export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Even
   } = useEventsGetResponse(eventId);
 
   const onServerApiSuccessCallback = useCallbackRef(config?.onServerApiSuccess);
-  const requestError = agentError ?? serverError;
 
   // Call the callback on every successful Server API request
   useEffect(() => {
@@ -66,6 +59,5 @@ export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Even
     identificationEvent,
     isPendingServerResponse,
     serverError,
-    requestError,
   };
 }
