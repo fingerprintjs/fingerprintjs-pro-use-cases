@@ -25,6 +25,9 @@ export function useEventsGetResponse(eventId?: string) {
 
   return {
     ...query,
-    data: eventId ? query.data ?? lastSuccessfulDataRef.current : undefined,
+    // Keep the last successful event even when eventId is briefly missing during agent
+    // refresh, or when a refetch fails, so Playground can show a snackbar instead of
+    // replacing already-loaded results with a full-page error.
+    data: query.data ?? lastSuccessfulDataRef.current,
   };
 }
