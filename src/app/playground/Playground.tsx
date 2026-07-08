@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, ReactNode } from 'react';
+import { useEffect, ReactNode } from 'react';
 import { CollapsibleJsonViewer } from '../../client/components/CodeSnippet/CodeSnippet';
 import dynamic from 'next/dynamic';
 import SignalTable, { TableCellData } from './components/SignalTable';
@@ -14,6 +14,7 @@ import Link from 'next/link';
 import styles from './playground.module.scss';
 import { Spinner } from '../../client/components/Spinner/Spinner';
 import { Alert } from '../../client/components/Alert/Alert';
+import { useSnackbar } from 'notistack';
 import { timeAgoLabel } from '../../utils/timeUtils';
 import Container from '../../client/components/Container';
 import { TEST_IDS } from '../../client/testIDs';
@@ -85,6 +86,7 @@ const TableTitle = ({ children }: { children: ReactNode }) => (
 );
 
 export function Playground() {
+  const { enqueueSnackbar } = useSnackbar();
   const {
     agentResponse,
     isLoadingAgentResponse,
@@ -93,7 +95,11 @@ export function Playground() {
     identificationEvent,
     isPendingServerResponse,
     serverError,
-  } = usePlaygroundSignals();
+  } = usePlaygroundSignals({
+    onError: (message) => {
+      enqueueSnackbar(message, { variant: 'error' });
+    },
+  });
 
   const identificationData = identificationEvent?.identification;
 
@@ -104,26 +110,13 @@ export function Playground() {
     window.history.scrollRestoration = 'manual';
   }, []);
 
-  // Either the JavaScript Agent or the Server API request ("analyze my browser again") can fail.
-  const requestError = agentError ?? serverError;
-  const requestErrorMessage = agentError
-    ? `JavaScript Agent Error: ${agentError.message}.`
-    : serverError
-      ? `Server API Request ${serverError.toString()}.`
-      : null;
-
-  // Track which error the user has dismissed. Compared by reference, so a new failure
-  // (a fresh Error instance) resurfaces the alert.
-  const [dismissedError, setDismissedError] = useState<unknown>(null);
-
-  // On the initial load there is no result to keep, so show the error as the whole page.
-  if (requestError && !identificationEvent) {
-    return <Alert severity={'error'}>{requestErrorMessage}</Alert>;
+  if (agentError && !identificationEvent) {
+    return <Alert severity={'error'}>JavaScript Agent Error: {agentError.message}.</Alert>;
   }
 
-  // Once results are on screen, a later failure (e.g. from refreshing) shows a dismissible
-  // alert instead of replacing the already-loaded data.
-  const showErrorAlert = Boolean(requestError) && requestError !== dismissedError;
+  if (serverError && !identificationEvent) {
+    return <Alert severity={'error'}>Server API Request {serverError.toString()}.</Alert>;
+  }
 
   const ipLocation = identificationEvent?.ip_info?.v4?.geolocation;
   const { latitude, longitude, accuracy_radius: accuracyRadius } = ipLocation ?? {};
@@ -663,17 +656,6 @@ export function Playground() {
         </h1>
         <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>
       </Container>
-      {showErrorAlert && (
-        <Container size='large'>
-          <Alert
-            severity='error'
-            onClose={() => setDismissedError(requestError)}
-            dataTestId={TEST_IDS.playground.errorAlert}
-          >
-            {requestErrorMessage}
-          </Alert>
-        </Container>
-      )}
       <Container size='large'>
         <div className={styles.runningIntelligence}>
           {!identificationData ? (

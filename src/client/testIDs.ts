@@ -90,7 +90,6 @@ export const TEST_IDS = {
     serverResponseJSON: 'serverResponseJSON',
     refreshButton: 'refreshButton',
     jsonLink: 'jsonLink',
-    errorAlert: 'playgroundErrorAlert',
   },
   accountSharing: {
     usernameInput: 'usernameInput',
