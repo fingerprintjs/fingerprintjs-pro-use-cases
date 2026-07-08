@@ -80,67 +80,6 @@ describe('usePlaygroundSignals', () => {
     expect(onServerApiSuccess).toHaveBeenCalledTimes(1);
   });
 
-  it('should call onError when Server API request fails after data was loaded', async () => {
-    const mockServerResponse = { identification: { visitor_id: 'test-visitor' } };
-    const onError = vi.fn();
-    const serverError = new TypeError('Failed to fetch');
-
-    mockUseVisitorData.mockReturnValue({
-      data: { event_id: 'test-event-id' } as any,
-      isLoading: false,
-      getData: vi.fn(),
-      error: undefined,
-      isFetched: true,
-    });
-
-    mockUseEventsGetResponse.mockReturnValue({
-      data: mockServerResponse,
-      isPending: false,
-      isSuccess: false,
-      error: serverError,
-    } as ReturnType<typeof useEventsGetResponse>);
-
-    const { rerender } = renderHook(() => usePlaygroundSignals({ onError }), {
-      wrapper: createWrapper(),
-    });
-
-    await waitFor(() => {
-      expect(onError).toHaveBeenCalledWith('Server API Request TypeError: Failed to fetch.');
-    });
-
-    rerender();
-    expect(onError).toHaveBeenCalledTimes(1);
-  });
-
-  it('should call onError when JavaScript Agent request fails after data was loaded', async () => {
-    const mockServerResponse = { identification: { visitor_id: 'test-visitor' } };
-    const onError = vi.fn();
-    const agentError = new Error('Agent timeout');
-
-    mockUseVisitorData.mockReturnValue({
-      data: undefined,
-      isLoading: false,
-      getData: vi.fn(),
-      error: agentError,
-      isFetched: true,
-    });
-
-    mockUseEventsGetResponse.mockReturnValue({
-      data: mockServerResponse,
-      isPending: false,
-      isSuccess: true,
-      error: null,
-    } as ReturnType<typeof useEventsGetResponse>);
-
-    const { rerender } = renderHook(() => usePlaygroundSignals({ onError }), {
-      wrapper: createWrapper(),
-    });
-
-    await waitFor(() => {
-      expect(onError).toHaveBeenCalledWith('JavaScript Agent Error: Agent timeout.');
-    });
-
-    rerender();
-    expect(onError).toHaveBeenCalledTimes(1);
-  });
+  // Option A: error presentation moved to the component (dismissible inline Alert),
+  // so the hook no longer has onError. requestError is asserted via the component / e2e.
 });

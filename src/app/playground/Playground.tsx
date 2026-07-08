@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, ReactNode } from 'react';
+import { useEffect, useState, ReactNode } from 'react';
 import { CollapsibleJsonViewer } from '../../client/components/CodeSnippet/CodeSnippet';
 import dynamic from 'next/dynamic';
 import SignalTable, { TableCellData } from './components/SignalTable';
@@ -14,7 +14,6 @@ import Link from 'next/link';
 import styles from './playground.module.scss';
 import { Spinner } from '../../client/components/Spinner/Spinner';
 import { Alert } from '../../client/components/Alert/Alert';
-import { useSnackbar } from 'notistack';
 import { timeAgoLabel } from '../../utils/timeUtils';
 import Container from '../../client/components/Container';
 import { TEST_IDS } from '../../client/testIDs';
@@ -86,7 +85,6 @@ const TableTitle = ({ children }: { children: ReactNode }) => (
 );
 
 export function Playground() {
-  const { enqueueSnackbar } = useSnackbar();
   const {
     agentResponse,
     isLoadingAgentResponse,
@@ -96,11 +94,10 @@ export function Playground() {
     isPendingServerResponse,
     serverError,
     requestError,
-  } = usePlaygroundSignals({
-    onError: (message) => {
-      enqueueSnackbar(message, { variant: 'error' });
-    },
-  });
+  } = usePlaygroundSignals();
+
+  // Track which error the user dismissed so a new failure re-shows the inline alert.
+  const [dismissedError, setDismissedError] = useState<unknown>(null);
 
   const identificationData = identificationEvent?.identification;
 
@@ -668,6 +665,13 @@ export function Playground() {
           )}
         </div>
       </Container>
+      {requestError && identificationEvent && requestError !== dismissedError && (
+        <Container size='large'>
+          <Alert severity='error' onClose={() => setDismissedError(requestError)}>
+            {formatRequestError(agentError, serverError)}
+          </Alert>
+        </Container>
+      )}
       <>
         <Container size='large'>
           <div className={styles.tablesContainer}>

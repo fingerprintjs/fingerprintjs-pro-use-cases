@@ -1,5 +1,5 @@
 import { Page, expect, test } from '@playwright/test';
-import { assertSnackbar, blockGoogleTagManager, scrollToView } from './e2eTestUtils';
+import { assertAlert, blockGoogleTagManager, scrollToView } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
 
 const TEST_ID = TEST_IDS.playground;
@@ -114,14 +114,14 @@ test.describe('Playground page', () => {
     await expect(page.locator('span.json-view--property:text("raw_device_attributes")')).toBeInViewport();
   });
 
-  test('shows error snackbar while keeping results when server API fails on refresh', async ({ page }) => {
+  test('shows error alert while keeping results when server API fails on refresh', async ({ page }) => {
     await page.getByText('Your Visitor ID is').waitFor();
 
     await page.route('**/api/event/v4/**', (route) => route.abort('failed'));
 
     await clickPlaygroundRefreshButton(page);
 
-    await assertSnackbar({ page, severity: 'error', text: 'Server API Request' });
+    await assertAlert({ page, severity: 'error', text: 'Server API Request' });
     await expect(page.getByText('Your Visitor ID is')).toBeVisible();
   });
 });

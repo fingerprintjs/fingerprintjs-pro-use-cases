@@ -13,10 +13,7 @@ export function formatRequestError(agentError?: Error | null, serverError?: Erro
     : `Server API Request ${serverError?.toString()}.`;
 }
 
-export function usePlaygroundSignals(config?: {
-  onServerApiSuccess?: (data: Event) => void;
-  onError?: (message: string) => void;
-}) {
+export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Event) => void }) {
   const sessionId = useSessionId();
 
   const {
@@ -52,7 +49,6 @@ export function usePlaygroundSignals(config?: {
   } = useEventsGetResponse(eventId);
 
   const onServerApiSuccessCallback = useCallbackRef(config?.onServerApiSuccess);
-  const onErrorCallback = useCallbackRef(config?.onError);
   const requestError = agentError ?? serverError;
 
   // Call the callback on every successful Server API request
@@ -61,14 +57,6 @@ export function usePlaygroundSignals(config?: {
       onServerApiSuccessCallback(identificationEvent);
     }
   }, [identificationEvent, isSuccessServerResponse, onServerApiSuccessCallback]);
-
-  // Once results are on screen, a later failure is surfaced non-destructively (e.g. a snackbar)
-  // instead of replacing them. requestError is stable per error, so this fires once per failure.
-  useEffect(() => {
-    if (requestError && identificationEvent) {
-      onErrorCallback(formatRequestError(agentError, serverError));
-    }
-  }, [requestError, identificationEvent, agentError, serverError, onErrorCallback]);
 
   return {
     agentResponse,
