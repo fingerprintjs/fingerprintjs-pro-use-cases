@@ -25,6 +25,6 @@ export function useEventsGetResponse(eventId?: string) {
 
   return {
     ...query,
-    data: eventId ? (query.data ?? lastSuccessfulDataRef.current) : undefined,
+    data: eventId ? query.data ?? lastSuccessfulDataRef.current : undefined,
   };
 }

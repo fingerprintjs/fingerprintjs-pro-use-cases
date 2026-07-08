@@ -68,9 +68,7 @@ export function usePlaygroundSignals(config?: {
     }
     shownErrorRef.current = requestError;
     onErrorCallback(
-      agentError
-        ? `JavaScript Agent Error: ${agentError.message}.`
-        : `Server API Request ${serverError!.toString()}.`,
+      agentError ? `JavaScript Agent Error: ${agentError.message}.` : `Server API Request ${serverError!.toString()}.`,
     );
   }, [requestError, identificationEvent, agentError, serverError, onErrorCallback]);
 
