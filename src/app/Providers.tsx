@@ -12,9 +12,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      // Don't silently re-fire stale queries when the browser reconnects after the tab
-      // has been idle (e.g. laptop sleep). Such a background refetch can fail transiently
-      // with "TypeError: Failed to fetch" and would otherwise replace already-loaded data.
+      // Avoid background refetches on reconnect that can fail transiently and replace loaded data.
       refetchOnReconnect: false,
     },
   },

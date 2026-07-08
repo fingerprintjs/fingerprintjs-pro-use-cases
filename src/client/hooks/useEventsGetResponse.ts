@@ -25,9 +25,8 @@ export function useEventsGetResponse(eventId?: string) {
 
   return {
     ...query,
-    // Keep the last successful event even when eventId is briefly missing during agent
-    // refresh, or when a refetch fails, so Playground can show a snackbar instead of
-    // replacing already-loaded results with a full-page error.
+    // Retain the last successful event when the id clears or a refetch fails, so
+    // consumers keep showing results instead of blanking.
     data: query.data ?? lastSuccessfulDataRef.current,
   };
 }
