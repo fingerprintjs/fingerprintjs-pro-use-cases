@@ -3,7 +3,6 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { usePlaygroundSignals } from './usePlaygroundSignals';
 import { useVisitorData } from '@fingerprint/react';
-import { useEventsGetResponse } from '../../../client/hooks/useEventsGetResponse';
 import { ReactNode } from 'react';
 
 // Mock the useVisitorData hook
@@ -11,12 +10,11 @@ vi.mock('@fingerprint/react', () => ({
   useVisitorData: vi.fn(),
 }));
 
-vi.mock('../../../client/hooks/useEventsGetResponse', () => ({
-  useEventsGetResponse: vi.fn(),
-}));
+// Mock fetch
+global.fetch = vi.fn();
 
 const mockUseVisitorData = vi.mocked(useVisitorData);
-const mockUseEventsGetResponse = vi.mocked(useEventsGetResponse);
+const mockFetch = vi.mocked(fetch);
 
 // Test wrapper with QueryClient
 const createWrapper = () => {
@@ -58,17 +56,17 @@ describe('usePlaygroundSignals', () => {
       isFetched: true,
     });
 
-    mockUseEventsGetResponse.mockReturnValue({
-      data: mockServerResponse,
-      isPending: false,
-      isSuccess: true,
-      error: null,
-    } as ReturnType<typeof useEventsGetResponse>);
+    // Mock fetch response
+    mockFetch.mockResolvedValueOnce({
+      status: 200,
+      json: () => Promise.resolve(mockServerResponse),
+    } as Response);
 
     const { rerender } = renderHook(() => usePlaygroundSignals({ onServerApiSuccess }), {
       wrapper: createWrapper(),
     });
 
+    // Wait for server API call to complete and callback to be called
     await waitFor(() => {
       expect(onServerApiSuccess).toHaveBeenCalledWith(mockServerResponse);
     });
@@ -79,7 +77,4 @@ describe('usePlaygroundSignals', () => {
     // Verify callback was called exactly once
     expect(onServerApiSuccess).toHaveBeenCalledTimes(1);
   });
-
-  // Option A: error presentation moved to the component (dismissible inline Alert),
-  // so the hook no longer has onError. requestError is asserted via the component / e2e.
 });
