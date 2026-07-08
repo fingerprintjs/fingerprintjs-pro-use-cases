@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, ReactNode } from 'react';
+import { useEffect, useState, ReactNode } from 'react';
 import { CollapsibleJsonViewer } from '../../client/components/CodeSnippet/CodeSnippet';
 import dynamic from 'next/dynamic';
 import SignalTable, { TableCellData } from './components/SignalTable';
@@ -84,6 +84,12 @@ const TableTitle = ({ children }: { children: ReactNode }) => (
   </motion.h3>
 );
 
+function formatRequestError(agentError?: Error | null, serverError?: Error | null) {
+  return agentError
+    ? `JavaScript Agent Error: ${agentError.message}.`
+    : `Server API Request ${serverError?.toString()}.`;
+}
+
 export function Playground() {
   const {
     agentResponse,
@@ -95,6 +101,10 @@ export function Playground() {
     serverError,
   } = usePlaygroundSignals();
 
+  const requestError = agentError ?? serverError;
+  // Track which error the user dismissed so a new failure re-shows the inline alert.
+  const [dismissedError, setDismissedError] = useState<unknown>(null);
+
   const identificationData = identificationEvent?.identification;
 
   /**
@@ -104,12 +114,8 @@ export function Playground() {
     window.history.scrollRestoration = 'manual';
   }, []);
 
-  if (agentError) {
-    return <Alert severity={'error'}>JavaScript Agent Error: {agentError.message}.</Alert>;
-  }
-
-  if (serverError) {
-    return <Alert severity={'error'}>Server API Request {serverError.toString()}.</Alert>;
+  if (requestError && !identificationEvent) {
+    return <Alert severity={'error'}>{formatRequestError(agentError, serverError)}</Alert>;
   }
 
   const ipLocation = identificationEvent?.ip_info?.v4?.geolocation;
@@ -665,6 +671,13 @@ export function Playground() {
           )}
         </div>
       </Container>
+      {requestError && identificationEvent && requestError !== dismissedError && (
+        <Container size='large'>
+          <Alert severity='error' className={styles.errorAlert} onClose={() => setDismissedError(requestError)}>
+            {formatRequestError(agentError, serverError)}
+          </Alert>
+        </Container>
+      )}
       <>
         <Container size='large'>
           <div className={styles.tablesContainer}>

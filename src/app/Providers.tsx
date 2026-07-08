@@ -12,6 +12,8 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
+      // Avoid background refetches on reconnect that can fail transiently and replace loaded data.
+      refetchOnReconnect: false,
     },
   },
 });
