@@ -4,6 +4,7 @@ import { defineConfig, devices } from '@playwright/test';
  * https://github.com/motdotla/dotenv
  */
 import 'dotenv/config';
+import { FINGERPRINT_BOT_USER_AGENT } from './e2e/fingerprintBotUserAgent';
 import { PRODUCTION_E2E_TEST_BASE_URL } from './src/envShared';
 
 const IS_CI = Boolean(process.env.CI);
@@ -13,14 +14,6 @@ const E2E_TEST_PASSWORD_HEADER = process.env.E2E_TEST_PASSWORD_HEADER;
 
 // Use a more square/vertical viewport to make sure important elements are visible in test report screenshots/videos
 const VIEWPORT = { width: 1280, height: 800 };
-
-/**
- * Identify our own E2E test traffic with a dedicated bot user agent, so it can be
- * recognized as first-party traffic instead of polluting third-party bot detection analytics.
- */
-const FINGERPRINT_BOT_USER_AGENT =
-  'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; FingerprintBot/1.0; +https://fingerprint.com/fingerprint-bot';
-
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
