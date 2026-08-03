@@ -15,6 +15,14 @@ const E2E_TEST_PASSWORD_HEADER = process.env.E2E_TEST_PASSWORD_HEADER;
 const VIEWPORT = { width: 1280, height: 800 };
 
 /**
+ * Identify our own E2E test traffic with a dedicated bot user agent, so it can be
+ * recognized as first-party traffic instead of polluting third-party bot detection analytics.
+ * See https://fingerprintjs.slack.com/archives/C02P7D7TCS3/p1785783943800919
+ */
+const FINGERPRINT_BOT_USER_AGENT =
+  'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; FingerprintBot/1.0; +https://fingerprint.com/fingerprint-bot';
+
+/**
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
@@ -79,6 +87,7 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         viewport: VIEWPORT,
         permissions: ['clipboard-read'],
+        userAgent: FINGERPRINT_BOT_USER_AGENT,
       },
     },
     {
@@ -86,6 +95,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Firefox'],
         viewport: VIEWPORT,
+        userAgent: FINGERPRINT_BOT_USER_AGENT,
         // Firefox is extra secure, so you need to enable clipboard read permission like this
         // https://github.com/microsoft/playwright/issues/13037#issuecomment-1739856724
         launchOptions: {
@@ -101,6 +111,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Safari'],
         viewport: VIEWPORT,
+        userAgent: FINGERPRINT_BOT_USER_AGENT,
       },
 
       // Webkit cannot read the clipboard at all, skip that part of the tests for webkit
