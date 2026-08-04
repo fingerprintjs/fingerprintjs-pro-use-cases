@@ -4,6 +4,7 @@ import { defineConfig, devices } from '@playwright/test';
  * https://github.com/motdotla/dotenv
  */
 import 'dotenv/config';
+import { FINGERPRINT_BOT_USER_AGENT } from './e2e/fingerprintBotUserAgent';
 import { PRODUCTION_E2E_TEST_BASE_URL } from './src/envShared';
 
 const IS_CI = Boolean(process.env.CI);
@@ -13,7 +14,6 @@ const E2E_TEST_PASSWORD_HEADER = process.env.E2E_TEST_PASSWORD_HEADER;
 
 // Use a more square/vertical viewport to make sure important elements are visible in test report screenshots/videos
 const VIEWPORT = { width: 1280, height: 800 };
-
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
@@ -79,6 +79,7 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         viewport: VIEWPORT,
         permissions: ['clipboard-read'],
+        userAgent: FINGERPRINT_BOT_USER_AGENT,
       },
     },
     {
@@ -86,6 +87,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Firefox'],
         viewport: VIEWPORT,
+        userAgent: FINGERPRINT_BOT_USER_AGENT,
         // Firefox is extra secure, so you need to enable clipboard read permission like this
         // https://github.com/microsoft/playwright/issues/13037#issuecomment-1739856724
         launchOptions: {
@@ -101,6 +103,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Safari'],
         viewport: VIEWPORT,
+        userAgent: FINGERPRINT_BOT_USER_AGENT,
       },
 
       // Webkit cannot read the clipboard at all, skip that part of the tests for webkit
