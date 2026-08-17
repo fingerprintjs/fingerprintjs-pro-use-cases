@@ -79,7 +79,8 @@ test.describe('Playground page', () => {
     expect(serverResponse).toContain('visitor_id');
     expect(serverResponse).toContain('incognito');
     expect(serverResponse).toContain('bot');
-    expect(serverResponse).toContain('vpn');
+    // Note: `vpn` is an optional Smart Signal and is omitted from the response
+    // entirely when it can't be computed for a given request, so it's not asserted here.
     expect(serverResponse).toContain('privacy_settings');
   });
 
