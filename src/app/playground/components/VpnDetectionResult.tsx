@@ -5,7 +5,7 @@ export const vpnDetectionResult = ({ event }: { event: Event | undefined }): str
     return 'Not available';
   }
 
-  if (event?.vpn !== true) {
+  if (!event.vpn) {
     return 'Not detected';
   }
 

@@ -414,10 +414,10 @@ export function Playground() {
         className:
           identificationEvent?.ip_blocklist === undefined && identificationEvent?.proxy === undefined
             ? tableStyles.neutral
-            : identificationEvent?.ip_blocklist?.attack_source ||
-                identificationEvent?.ip_blocklist?.email_spam ||
-                identificationEvent?.ip_blocklist?.tor_node ||
-                identificationEvent?.proxy
+            : identificationEvent.ip_blocklist?.attack_source ||
+                identificationEvent.ip_blocklist?.email_spam ||
+                identificationEvent.ip_blocklist?.tor_node ||
+                identificationEvent.proxy
               ? tableStyles.red
               : tableStyles.green,
       },
