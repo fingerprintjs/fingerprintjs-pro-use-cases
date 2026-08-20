@@ -11,7 +11,7 @@ const botDetectionResult = ({ event }: { event: Event | undefined }): string => 
     case 'not_detected':
       return 'Not detected';
     default:
-      return 'Unknown';
+      return bot === undefined ? 'Not available' : 'Unknown';
   }
 };
 

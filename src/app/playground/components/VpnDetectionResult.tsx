@@ -1,6 +1,10 @@
 import { Event } from '@fingerprint/node-sdk';
 
 export const vpnDetectionResult = ({ event }: { event: Event | undefined }): string => {
+  if (event?.vpn === undefined) {
+    return 'Not available';
+  }
+
   if (event?.vpn !== true) {
     return 'Not detected';
   }

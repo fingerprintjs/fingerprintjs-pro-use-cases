@@ -2,6 +2,10 @@ import { Event } from '@fingerprint/node-sdk';
 
 export const ipBlocklistResult = ({ event }: { event: Event | undefined }): string => {
   const blocklistData = event?.ip_blocklist;
+  if (blocklistData === undefined && event?.proxy === undefined) {
+    return 'Not available';
+  }
+
   if (blocklistData?.attack_source && blocklistData.email_spam) {
     return 'Your IP is on a blocklist 🚫 (it was part of multiple attacks)';
   }

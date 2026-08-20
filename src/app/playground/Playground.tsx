@@ -30,6 +30,7 @@ import { ChevronSvg } from '../../client/img/chevronSvg';
 import { pluralize } from '../../utils/utils';
 import { motion } from 'framer-motion';
 import { JsonLink, DocsLink } from './components/ArrowLinks';
+import { booleanDetectionResult } from './components/SmartSignalResult';
 import { LayoutUI } from '../LayoutUI';
 import Image from 'next/image';
 import GooglePlaySvg from './img/google_play.svg';
@@ -255,10 +256,15 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='incognito'>
-            {identificationEvent?.incognito ? 'You are incognito 🕶' : 'Not detected'}
+            {booleanDetectionResult(identificationEvent?.incognito, 'You are incognito 🕶')}
           </JsonLink>
         ),
-        className: identificationEvent?.incognito ? tableStyles.red : tableStyles.green,
+        className:
+          identificationEvent?.incognito === undefined
+            ? tableStyles.neutral
+            : identificationEvent.incognito
+              ? tableStyles.red
+              : tableStyles.green,
       },
     ],
     [
@@ -271,7 +277,8 @@ export function Playground() {
       },
       {
         content: <JsonLink propertyName='bot'>{botDetectionResult({ event: identificationEvent })}</JsonLink>,
-        className: isBadBot ? tableStyles.red : tableStyles.green,
+        className:
+          identificationEvent?.bot === undefined ? tableStyles.neutral : isBadBot ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -287,7 +294,12 @@ export function Playground() {
       },
       {
         content: <JsonLink propertyName='vpn'>{vpnDetectionResult({ event: identificationEvent })}</JsonLink>,
-        className: identificationEvent?.vpn === true ? tableStyles.red : tableStyles.green,
+        className:
+          identificationEvent?.vpn === undefined
+            ? tableStyles.neutral
+            : identificationEvent.vpn
+              ? tableStyles.red
+              : tableStyles.green,
       },
     ],
     [
@@ -304,11 +316,16 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='tampering'>
-            {identificationEvent?.tampering === true ? 'Yes 🖥️🔧' : 'Not detected'}
+            {booleanDetectionResult(identificationEvent?.tampering, 'Yes 🖥️🔧')}
           </JsonLink>
         ),
 
-        className: identificationEvent?.tampering === true ? tableStyles.red : tableStyles.green,
+        className:
+          identificationEvent?.tampering === undefined
+            ? tableStyles.neutral
+            : identificationEvent.tampering
+              ? tableStyles.red
+              : tableStyles.green,
       },
     ],
     [
@@ -325,10 +342,15 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='developer_tools'>
-            {identificationEvent?.developer_tools === true ? 'Yes 🔧' : 'Not detected'}
+            {booleanDetectionResult(identificationEvent?.developer_tools, 'Yes 🔧')}
           </JsonLink>
         ),
-        className: identificationEvent?.developer_tools === true ? tableStyles.red : tableStyles.green,
+        className:
+          identificationEvent?.developer_tools === undefined
+            ? tableStyles.neutral
+            : identificationEvent.developer_tools
+              ? tableStyles.red
+              : tableStyles.green,
       },
     ],
     [
@@ -342,11 +364,16 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='virtual_machine'>
-            {identificationEvent?.virtual_machine === true ? 'Yes ☁️💻' : 'Not detected'}
+            {booleanDetectionResult(identificationEvent?.virtual_machine, 'Yes ☁️💻')}
           </JsonLink>
         ),
 
-        className: identificationEvent?.virtual_machine === true ? tableStyles.red : tableStyles.green,
+        className:
+          identificationEvent?.virtual_machine === undefined
+            ? tableStyles.neutral
+            : identificationEvent.virtual_machine
+              ? tableStyles.red
+              : tableStyles.green,
       },
     ],
     [
@@ -360,10 +387,15 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='privacy_settings'>
-            {identificationEvent?.privacy_settings === true ? 'Yes 🙈💻' : 'Not detected'}
+            {booleanDetectionResult(identificationEvent?.privacy_settings, 'Yes 🙈💻')}
           </JsonLink>
         ),
-        className: identificationEvent?.privacy_settings === true ? tableStyles.red : tableStyles.green,
+        className:
+          identificationEvent?.privacy_settings === undefined
+            ? tableStyles.neutral
+            : identificationEvent.privacy_settings
+              ? tableStyles.red
+              : tableStyles.green,
       },
     ],
     [
@@ -380,12 +412,14 @@ export function Playground() {
       {
         content: <JsonLink propertyName='ip_blocklist'>{ipBlocklistResult({ event: identificationEvent })}</JsonLink>,
         className:
-          identificationEvent?.ip_blocklist?.attack_source ||
-          identificationEvent?.ip_blocklist?.email_spam ||
-          identificationEvent?.ip_blocklist?.tor_node ||
-          identificationEvent?.proxy
-            ? tableStyles.red
-            : tableStyles.green,
+          identificationEvent?.ip_blocklist === undefined && identificationEvent?.proxy === undefined
+            ? tableStyles.neutral
+            : identificationEvent?.ip_blocklist?.attack_source ||
+                identificationEvent?.ip_blocklist?.email_spam ||
+                identificationEvent?.ip_blocklist?.tor_node ||
+                identificationEvent?.proxy
+              ? tableStyles.red
+              : tableStyles.green,
       },
     ],
     [
@@ -402,11 +436,16 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='high_activity_device'>
-            {identificationEvent?.high_activity_device === true ? 'Yes 🔥' : 'Not detected'}
+            {booleanDetectionResult(identificationEvent?.high_activity_device, 'Yes 🔥')}
           </JsonLink>
         ),
 
-        className: identificationEvent?.high_activity_device === true ? tableStyles.red : tableStyles.green,
+        className:
+          identificationEvent?.high_activity_device === undefined
+            ? tableStyles.neutral
+            : identificationEvent.high_activity_device
+              ? tableStyles.red
+              : tableStyles.green,
       },
     ],
     [
