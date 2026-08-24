@@ -4,6 +4,9 @@ export const proxyDetectionResult = ({ event }: { event: Event | undefined }): s
   if (event?.proxy !== true) {
     return 'Not detected';
   }
-  const proxyType = event.proxy_details?.proxy_type ?? 'unknown';
-  return `Your IP is used by a ${proxyType} proxy provider 🔄`;
+  const details = event.proxy_details;
+  const typeText = details?.proxy_type ? `${details.proxy_type.replace('_', ' ')} ` : '';
+  const providerText = details?.provider ? ` from ${details.provider}` : '';
+  const confidenceText = event.proxy_confidence ? ` (confidence: ${event.proxy_confidence})` : '';
+  return `Your IP is used by a ${typeText}proxy provider${providerText} 🔄${confidenceText}`;
 };
