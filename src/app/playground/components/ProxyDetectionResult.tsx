@@ -14,8 +14,8 @@ export const proxyDetectionResult = ({ event }: { event: Event | undefined }): s
   const providerText = details?.provider ? ` from ${details.provider}` : '';
 
   if (details?.proxy_type === 'residential' || details?.proxy_type === 'data_center') {
-    return `Your IP is used by a ${details.proxy_type.replaceAll('_', ' ')} proxy${providerText} 🔄${extrasText}`;
+    return `Your IP is used by a ${details.proxy_type.replaceAll('_', ' ')} proxy${providerText}${extrasText}`;
   }
 
-  return `Proxy detected 🔄${extrasText}`;
+  return `Proxy detected${extrasText}`;
 };
