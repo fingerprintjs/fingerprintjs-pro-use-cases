@@ -6,17 +6,16 @@ export const proxyDetectionResult = ({ event }: { event: Event | undefined }): s
   }
 
   const details = event.proxy_details;
-  const proxyType = details?.proxy_type;
-  // Docs also return "unknown" for ML-only detections (not in current SDK types).
-  // https://dev.fingerprint.com/docs/smart-signals-reference#proxy-detection
-  const typeLabel =
-    proxyType === 'residential' || proxyType === 'data_center' ? proxyType.replaceAll('_', ' ') : undefined;
+  const extras = [
+    event.proxy_confidence ? `confidence: ${event.proxy_confidence}` : undefined,
+    event.proxy_ml_score != null ? `ML score: ${event.proxy_ml_score}` : undefined,
+  ].filter(Boolean);
+  const extrasText = extras.length > 0 ? ` (${extras.join(', ')})` : '';
   const providerText = details?.provider ? ` from ${details.provider}` : '';
-  const confidenceText = event.proxy_confidence ? ` (confidence: ${event.proxy_confidence})` : '';
 
-  if (!typeLabel) {
-    return `Proxy detected 🔄${confidenceText}`;
+  if (details?.proxy_type === 'residential' || details?.proxy_type === 'data_center') {
+    return `Your IP is used by a ${details.proxy_type.replaceAll('_', ' ')} proxy${providerText} 🔄${extrasText}`;
   }
 
-  return `Your IP is used by a ${typeLabel} proxy${providerText} 🔄${confidenceText}`;
+  return `Proxy detected 🔄${extrasText}`;
 };
