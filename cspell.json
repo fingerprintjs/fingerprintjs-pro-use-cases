@@ -56,6 +56,7 @@
   "ignorePaths": [
     "node_modules",
     "dist",
-    "src/env/server.ts"
+    "src/env/server.ts",
+    "src/env/client.ts"
   ]
 }
