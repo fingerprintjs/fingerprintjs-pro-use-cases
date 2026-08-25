@@ -1,9 +1,10 @@
 import type { NextRequest } from 'next/server';
 
 /**
- * This middleware runs on every requests and redirects from fingerprinthub.com/* to demo.fingerprint.com/*
+ * Redirects fingerprinthub.com/* to demo.fingerprint.com/*.
+ * Renamed from middleware → proxy in Next.js 16.
  */
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   // Note: We need to read the hostname from a header because request.url, request.nextURL just say "localhost" on Digital Ocean
   const host = request.headers.get('host');
   if (host === 'fingerprinthub.com') {
