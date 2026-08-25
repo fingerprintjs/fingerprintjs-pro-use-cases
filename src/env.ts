@@ -25,8 +25,8 @@ export const env = createEnv({
     // It can be pretty nuanced: https://dev.fingerprint.com/docs/identification-accuracy-and-confidence#confidence-score
     MIN_CONFIDENCE_SCORE: z.coerce.number().min(0.0).max(1.0).default(0.4),
     // Proxies that append to X-Forwarded-For after the client IP.
-    // demo.fingerprint.com is CloudFront → Digital Ocean App Platform, so 1.
-    TRUSTED_PROXY_COUNT: z.coerce.number().int().min(0).max(10).default(1),
+    // Measured on staging: client, CloudFront, Digital Ocean (Cloudflare) → 2.
+    TRUSTED_PROXY_COUNT: z.coerce.number().int().min(0).max(10).default(2),
 
     // Credential stuffing demo
     KNOWN_VISITOR_IDS: z.string().min(1).default('').optional(),
