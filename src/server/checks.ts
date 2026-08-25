@@ -1,7 +1,8 @@
 import { Event, FingerprintServerApiClient, Region, RequestError } from '@fingerprint/node-sdk';
 import { ValidationDataResult } from '../utils/types';
 import { decryptSealedResult } from './decryptSealedResult';
-import { env } from '../env';
+import { clientEnv } from '../env/client';
+import { serverEnv } from '../env/server';
 import { getServerRegion } from './fingerprint-server-api';
 import { IS_DEVELOPMENT } from '../envShared';
 
@@ -92,8 +93,8 @@ export const getAndValidateFingerprintResult = async ({
   eventId,
   req,
   sealedResult,
-  serverApiKey: apiKey = env.SERVER_API_KEY,
-  region = getServerRegion(env.NEXT_PUBLIC_REGION),
+  serverApiKey: apiKey = serverEnv.SERVER_API_KEY,
+  region = getServerRegion(clientEnv.NEXT_PUBLIC_REGION),
   options,
 }: GetFingerprintResultArgs): Promise<ValidationDataResult<Event>> => {
   let identificationEvent: Event | undefined;
@@ -191,7 +192,7 @@ export const getAndValidateFingerprintResult = async ({
    */
   if (
     identification.confidence?.score &&
-    identification.confidence.score < (options?.minConfidenceScore ?? env.MIN_CONFIDENCE_SCORE)
+    identification.confidence.score < (options?.minConfidenceScore ?? serverEnv.MIN_CONFIDENCE_SCORE)
   ) {
     return {
       okay: false,
