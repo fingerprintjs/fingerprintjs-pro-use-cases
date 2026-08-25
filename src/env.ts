@@ -24,6 +24,9 @@ export const env = createEnv({
     // Users are advised to decide for themselves the correct threshold for their use case
     // It can be pretty nuanced: https://dev.fingerprint.com/docs/identification-accuracy-and-confidence#confidence-score
     MIN_CONFIDENCE_SCORE: z.coerce.number().min(0.0).max(1.0).default(0.4),
+    // Proxies that append to X-Forwarded-For after the client IP.
+    // demo.fingerprint.com is CloudFront → Digital Ocean App Platform, so 1.
+    TRUSTED_PROXY_COUNT: z.coerce.number().int().min(0).max(10).default(1),
 
     // Credential stuffing demo
     KNOWN_VISITOR_IDS: z.string().min(1).default('').optional(),
@@ -96,6 +99,7 @@ export const env = createEnv({
 
     // E2E tests
     MIN_CONFIDENCE_SCORE: process.env.MIN_CONFIDENCE_SCORE,
+    TRUSTED_PROXY_COUNT: process.env.TRUSTED_PROXY_COUNT,
 
     // Credential stuffing demo
     KNOWN_VISITOR_IDS: process.env.KNOWN_VISITOR_IDS,

@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { BotVisit, getBotVisits } from './botVisitDatabase';
+import { getBotVisits, PublicBotVisit } from './botVisitDatabase';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(req: NextRequest): Promise<NextResponse<BotVisit[]>> {
+export async function GET(req: NextRequest): Promise<NextResponse<PublicBotVisit[]>> {
   try {
     const searchParams = req.nextUrl.searchParams;
     const limit = searchParams.get('limit');
