@@ -6,6 +6,8 @@ import { isServer } from './isServer';
 /**
  * Server-side environment variables.
  * `import 'server-only'` makes Next.js fail the client compile if this module is imported from client code.
+ * Node entry points that are not Next (tsx cron, Vitest) must set the `react-server` condition
+ * or alias `server-only`, or this import throws.
  *
  * Some default values are defined here to provide users with a "git-clone-and-it-just-works" experience when trying the demo,
  * with other protections in place to prevent abuse. This only makes sense in an education demo project like this one.
