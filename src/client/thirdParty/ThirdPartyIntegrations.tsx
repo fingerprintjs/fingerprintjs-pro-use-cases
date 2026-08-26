@@ -17,7 +17,7 @@ import { usePlaygroundSignals } from '../../app/playground/hooks/usePlaygroundSi
 // GTM API requires dataLayer access through global window variable
 declare global {
   interface Window {
-    dataLayer?: object[];
+    dataLayer?: Array<Record<string, unknown>>;
   }
 }
 
