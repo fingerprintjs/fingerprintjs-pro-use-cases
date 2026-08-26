@@ -38,9 +38,14 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
   const [username, setUsername] = useSessionStorage('username', '');
   const [password, setPassword] = useSessionStorage('password', '');
   const [showPassword, setShowPassword] = useSessionStorage('showPassword', false);
+  // Next router update so the URL change is a real navigation (e2e waitForURL).
+  // Keep default `mode=signup` in the query string. https://nuqs.dev/docs/options
   const [mode, setMode] = useQueryState<'signup' | 'login'>(
     'mode',
-    parseAsStringEnum(['signup', 'login']).withDefault('signup'),
+    parseAsStringEnum(['signup', 'login']).withDefault('signup').withOptions({
+      shallow: false,
+      clearOnDefault: false,
+    }),
   );
 
   const router = useRouter();
