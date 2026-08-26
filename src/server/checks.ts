@@ -85,6 +85,32 @@ export function getRequestClientIp(request: Request, trustedProxyCount = env.TRU
   );
 }
 
+export function isLoopbackIp(ip: string): boolean {
+  const normalized = ip
+    .trim()
+    .toLowerCase()
+    .replace(/^\[|\]$/g, '')
+    .replace(/^::ffff:/, '');
+  return normalized === '::1' || normalized === '0:0:0:0:0:0:0:1' || normalized.startsWith('127.');
+}
+
+function forwardedIps(request: Request): string[] {
+  const cloudfront = clientIpFromCloudFrontViewerAddress(request.headers.get('cloudfront-viewer-address'));
+  const hops =
+    request.headers
+      .get('x-forwarded-for')
+      ?.split(',')
+      .map((hop) => hop.trim())
+      .filter((hop) => hop.length > 0) ?? [];
+  return cloudfront ? [cloudfront, ...hops] : hops;
+}
+
+/** True when the request never left this machine. Fingerprint's event IP is the public address, so it cannot match. */
+export function isLocalhostRequest(request: Request): boolean {
+  const ips = forwardedIps(request);
+  return ips.length === 0 || ips.every(isLoopbackIp);
+}
+
 function logXForwardedForHops(request: Request) {
   // Temporary: confirm hop count on staging.fingerprinthub.com, then remove.
   const xForwardedFor = request.headers.get('x-forwarded-for');
@@ -107,8 +133,9 @@ function logXForwardedForHops(request: Request) {
 }
 
 export function visitIpMatchesRequestIp(visitIp = '', request: Request, trustedProxyCount = env.TRUSTED_PROXY_COUNT) {
-  // This check is skipped on purpose in localhost environments.
-  if (IS_DEVELOPMENT) {
+  // Localhost (yarn dev or yarn start): Next sets X-Forwarded-For to 127.0.0.1 or ::1.
+  // Fingerprint's event IP is the public address, so this check cannot succeed there.
+  if (IS_DEVELOPMENT || isLocalhostRequest(request)) {
     return true;
   }
 

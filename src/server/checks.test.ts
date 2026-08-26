@@ -3,6 +3,8 @@ import {
   clientIpFromCloudFrontViewerAddress,
   clientIpFromXForwardedFor,
   getRequestClientIp,
+  isLocalhostRequest,
+  isLoopbackIp,
   visitIpMatchesRequestIp,
 } from './checks';
 
@@ -48,6 +50,35 @@ describe('clientIpFromCloudFrontViewerAddress', () => {
 
   it('strips the TCP port from an IPv6 address', () => {
     expect(clientIpFromCloudFrontViewerAddress('[2001:db8::1]:443')).toBe('2001:db8::1');
+  });
+});
+
+describe('isLoopbackIp', () => {
+  it('detects IPv4 and IPv6 loopback', () => {
+    expect(isLoopbackIp('127.0.0.1')).toBe(true);
+    expect(isLoopbackIp('::1')).toBe(true);
+    expect(isLoopbackIp('::ffff:127.0.0.1')).toBe(true);
+    expect(isLoopbackIp('192.0.2.146')).toBe(false);
+  });
+});
+
+describe('isLocalhostRequest', () => {
+  it('is true when Next only recorded a loopback hop', () => {
+    expect(isLocalhostRequest(requestWithHeaders({ 'x-forwarded-for': '127.0.0.1' }))).toBe(true);
+    expect(isLocalhostRequest(requestWithHeaders({ 'x-forwarded-for': '::1' }))).toBe(true);
+    expect(isLocalhostRequest(requestWithHeaders({}))).toBe(true);
+  });
+
+  it('is false when a public hop or CloudFront viewer address is present', () => {
+    expect(isLocalhostRequest(requestWithHeaders({ 'x-forwarded-for': honestXff(sampleIps.ipv4[0]) }))).toBe(false);
+    expect(
+      isLocalhostRequest(
+        requestWithHeaders({
+          'cloudfront-viewer-address': `${sampleIps.ipv4[0]}:57917`,
+          'x-forwarded-for': '127.0.0.1',
+        }),
+      ),
+    ).toBe(false);
   });
 });
 
@@ -110,9 +141,16 @@ describe('visitIpMatchesRequestIp', () => {
     expect(result).toBe(true);
   });
 
-  it('returns false when X-Forwarded-For is missing', () => {
+  it('skips the check when forwarded IPs are missing (localhost with no XFF)', () => {
     const result = visitIpMatchesRequestIp(sampleIps.ipv4[0], requestWithHeaders({}), TRUSTED_PROXY_COUNT);
-    expect(result).toBe(false);
+    expect(result).toBe(true);
+  });
+
+  it('skips the check for a Next.js localhost hop', () => {
+    expect(visitIpMatchesRequestIp(sampleIps.ipv4[0], requestWithHeaders({ 'x-forwarded-for': '127.0.0.1' }))).toBe(
+      true,
+    );
+    expect(visitIpMatchesRequestIp(sampleIps.ipv4[0], requestWithHeaders({ 'x-forwarded-for': '::1' }))).toBe(true);
   });
 
   it('matches using CloudFront-Viewer-Address even if X-Forwarded-For is spoofed', () => {
