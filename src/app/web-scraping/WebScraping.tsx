@@ -17,7 +17,7 @@ import { FunctionComponent, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AIRPORTS } from './data/airports';
 import { Flight, FlightCard } from './components/FlightCard';
-import { Severity } from '../../server/checks';
+import type { Severity } from '../../server/checks';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
 type FlightQueryResult = {

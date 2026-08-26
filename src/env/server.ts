@@ -1,15 +1,17 @@
+import 'server-only';
 import { createEnv } from '@t3-oss/env-nextjs';
 import { z } from 'zod';
 import { isServer } from './isServer';
 
 /**
- * Server-side environment variables. Never import this module from client components.
+ * Server-side environment variables.
+ * `import 'server-only'` makes Next.js fail the client compile if this module is imported from client code.
  *
  * Some default values are defined here to provide users with a "git-clone-and-it-just-works" experience when trying the demo,
  * with other protections in place to prevent abuse. This only makes sense in an education demo project like this one.
  * DO NOT expose your server-side secrets in your source code!
  *
- * Kept in a server-only file so Zod `.default(...)` secret strings are not bundled into client JavaScript.
+ * Split from the client schema so Zod `.default(...)` secret strings are not bundled into client JavaScript.
  * https://env.t3.gg/docs/nextjs
  */
 export const serverEnv = createEnv({

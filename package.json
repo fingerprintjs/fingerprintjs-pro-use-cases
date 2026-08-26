@@ -57,6 +57,7 @@
     "react-use": "^17.6.0",
     "react18-json-view": "^0.2.9-canary.0",
     "sequelize": "^6.37.3",
+    "server-only": "^0.0.1",
     "sharp": "^0.33.2",
     "twilio": "^5.0.1"
   },
