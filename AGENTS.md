@@ -1,0 +1,18 @@
+- Variables
+  - Exported variables should have unique names
+- Structure
+  - Keep code readable top to bottom without jumping around
+  - Avoid thin wrapper functions and helpers, minimize layers of indirection
+- Tests
+  - Test APIs and contracts like a real consumer uses them
+  - DO NOT test internal implementation details 
+- Comments & Docs
+  - Keep short, use simple english
+  - Write like a terse note to a self or teammate, no m-dashed essays
+  - Prefer separate bullet points over long `;` chains
+  - Avoid ambiguous jargon (seam, boundary, gate, envelope, wire shapes, ...), be plain, precise, specific
+  - Docs must stand alone, make sense later without PR/conversation context
+  - Module files begin with short overview comment explaining purpose and links to relevant docs
+  - Any non-obvious design decision, requirement, or claim gets a short explanatory note + exact docs link
+    - close to affected code + commit message body (always)
+    - in PR description (if significant)
