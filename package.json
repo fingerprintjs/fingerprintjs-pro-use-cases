@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "start:with-cron-jobs": "run-p start cron",
-    "cron": "tsx cron-jobs/delete_expired_ip_rules.ts",
+    "cron": "tsx --conditions=react-server cron-jobs/delete_expired_ip_rules.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prettier": "prettier src --check",

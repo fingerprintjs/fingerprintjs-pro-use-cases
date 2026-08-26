@@ -8,6 +8,9 @@ import { BlockedIpDbModel } from '../src/app/bot-firewall/api/get-blocked-ips/bl
 /**
  * In production, run this file in conjunction with the production web server like:
  * yarn start:with-cron-jobs
+ *
+ * `tsx` is invoked with `--conditions=react-server` so `import 'server-only'` in
+ * src/env/server.ts is a no-op (same export Next uses on the server).
  */
 
 // Every 5 minutes
