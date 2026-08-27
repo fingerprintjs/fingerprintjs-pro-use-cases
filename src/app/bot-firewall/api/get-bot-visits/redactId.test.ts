@@ -8,6 +8,9 @@ describe('redactId', () => {
   });
 
   it('redacts the whole value when it is three characters or shorter', () => {
+    expect(redactId('')).toBe('');
+    expect(redactId(null)).toBe('');
+    expect(redactId(undefined)).toBe('');
     expect(redactId('ab')).toBe('**');
     expect(redactId('abc')).toBe('***');
   });
