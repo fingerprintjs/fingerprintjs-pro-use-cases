@@ -7,7 +7,7 @@ import { BlockedIpDbModel } from '../src/app/bot-firewall/api/get-blocked-ips/bl
 
 /**
  * In production, run this file in conjunction with the production web server like:
- * yarn start:with-cron-jobs
+ * pnpm start:with-cron-jobs
  */
 
 // Every 5 minutes
