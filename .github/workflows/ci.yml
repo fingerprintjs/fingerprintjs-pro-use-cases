@@ -38,6 +38,17 @@ jobs:
 
       - name: Spellcheck
         run: yarn spellcheck
+  actionlint:
+    name: Lint GitHub Actions
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check workflow files
+        # Ignore setup-node@v3 "runner too old"; bumping those actions is out of scope.
+        run: |
+          bash <(curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/v1.7.12/scripts/download-actionlint.bash) 1.7.12
+          ./actionlint -color -ignore 'the runner of ".+" action is too old'
+        shell: bash
   unit-tests:
     name: Unit tests
     runs-on: ubuntu-22.04
