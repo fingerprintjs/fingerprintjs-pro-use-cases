@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npx --yes pnpm@11.24.0 install --frozen-lockfile && next build",
+    "build": "cp do-pnpm-lock.yaml pnpm-lock.yaml && npx --yes pnpm@11.24.0 install --frozen-lockfile && next build",
     "start": "next start",
     "start:with-cron-jobs": "run-p start cron",
     "cron": "tsx cron-jobs/delete_expired_ip_rules.ts",
