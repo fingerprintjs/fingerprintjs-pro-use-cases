@@ -53,51 +53,19 @@ export function clientIpFromXForwardedFor(xForwardedFor: string | null, trustedP
   return hops[clientIndex];
 }
 
-export function getRequestClientIp(request: Request, trustedProxyCount = env.TRUSTED_PROXY_COUNT): string | undefined {
-  return clientIpFromXForwardedFor(request.headers.get('x-forwarded-for'), trustedProxyCount);
-}
-
-export function isLoopbackIp(ip: string): boolean {
-  const normalized = ip
-    .trim()
-    .toLowerCase()
-    .replace(/^\[|\]$/g, '')
-    .replace(/^::ffff:/, '');
-  return normalized === '::1' || normalized === '0:0:0:0:0:0:0:1' || normalized.startsWith('127.');
-}
-
-function forwardedIps(request: Request): string[] {
-  return (
-    request.headers
-      .get('x-forwarded-for')
-      ?.split(',')
-      .map((hop) => hop.trim())
-      .filter((hop) => hop.length > 0) ?? []
-  );
-}
-
-/** True when the request never left this machine. Fingerprint's event IP is the public address, so it cannot match. */
-export function isLocalhostRequest(request: Request): boolean {
-  const ips = forwardedIps(request);
-  return ips.length === 0 || ips.every(isLoopbackIp);
-}
-
 export function visitIpMatchesRequestIp(visitIp = '', request: Request, trustedProxyCount = env.TRUSTED_PROXY_COUNT) {
-  // Localhost (yarn dev or yarn start): Next sets X-Forwarded-For to 127.0.0.1 or ::1.
-  // Fingerprint's event IP is the public address, so this check cannot succeed there.
-  if (IS_DEVELOPMENT || isLocalhostRequest(request)) {
+  // yarn dev. yarn start is NODE_ENV=production, so it still needs the loopback skip below.
+  if (IS_DEVELOPMENT) {
     return true;
   }
 
-  const requestIp = getRequestClientIp(request, trustedProxyCount);
-
-  // Fail closed when the client IP cannot be derived from a trusted hop.
+  const requestIp = clientIpFromXForwardedFor(request.headers.get('x-forwarded-for'), trustedProxyCount);
   if (!requestIp) {
     return false;
   }
 
-  // IPv6 is not compared yet (event IP and request IP can disagree on v4 vs v6).
-  if (isIPv6(requestIp) || isIPv6(visitIp)) {
+  // Loopback (yarn start) and IPv6 cannot be compared to Fingerprint's public event IP.
+  if (requestIp.startsWith('127.') || isIPv6(requestIp) || isIPv6(visitIp)) {
     return true;
   }
 

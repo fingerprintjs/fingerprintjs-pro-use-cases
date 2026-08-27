@@ -1,11 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  clientIpFromXForwardedFor,
-  getRequestClientIp,
-  isLocalhostRequest,
-  isLoopbackIp,
-  visitIpMatchesRequestIp,
-} from './checks';
+import { clientIpFromXForwardedFor, visitIpMatchesRequestIp } from './checks';
 
 const TRUSTED_PROXY_COUNT = 2;
 const PROXY_HOP_A = '18.68.31.6';
@@ -39,37 +33,6 @@ describe('clientIpFromXForwardedFor', () => {
 
   it('takes the only hop when trustedProxyCount is 0', () => {
     expect(clientIpFromXForwardedFor(sampleIps.ipv4[0], 0)).toBe(sampleIps.ipv4[0]);
-  });
-});
-
-describe('isLoopbackIp', () => {
-  it('detects IPv4 and IPv6 loopback', () => {
-    expect(isLoopbackIp('127.0.0.1')).toBe(true);
-    expect(isLoopbackIp('::1')).toBe(true);
-    expect(isLoopbackIp('::ffff:127.0.0.1')).toBe(true);
-    expect(isLoopbackIp('192.0.2.146')).toBe(false);
-  });
-});
-
-describe('isLocalhostRequest', () => {
-  it('is true when Next only recorded a loopback hop', () => {
-    expect(isLocalhostRequest(requestWithHeaders({ 'x-forwarded-for': '127.0.0.1' }))).toBe(true);
-    expect(isLocalhostRequest(requestWithHeaders({ 'x-forwarded-for': '::1' }))).toBe(true);
-    expect(isLocalhostRequest(requestWithHeaders({}))).toBe(true);
-  });
-
-  it('is false when a public hop is present', () => {
-    expect(isLocalhostRequest(requestWithHeaders({ 'x-forwarded-for': honestXff(sampleIps.ipv4[0]) }))).toBe(false);
-  });
-});
-
-describe('getRequestClientIp', () => {
-  it('uses X-Forwarded-For after skipping trusted proxy hops', () => {
-    const ip = getRequestClientIp(
-      requestWithHeaders({ 'x-forwarded-for': honestXff(sampleIps.ipv4[0]) }),
-      TRUSTED_PROXY_COUNT,
-    );
-    expect(ip).toBe(sampleIps.ipv4[0]);
   });
 });
 
@@ -119,9 +82,9 @@ describe('visitIpMatchesRequestIp', () => {
     expect(result).toBe(true);
   });
 
-  it('skips the check when forwarded IPs are missing (localhost with no XFF)', () => {
+  it('fails closed when the client IP cannot be derived', () => {
     const result = visitIpMatchesRequestIp(sampleIps.ipv4[0], requestWithHeaders({}), TRUSTED_PROXY_COUNT);
-    expect(result).toBe(true);
+    expect(result).toBe(false);
   });
 
   it('skips the check for a Next.js localhost hop', () => {
@@ -129,5 +92,8 @@ describe('visitIpMatchesRequestIp', () => {
       true,
     );
     expect(visitIpMatchesRequestIp(sampleIps.ipv4[0], requestWithHeaders({ 'x-forwarded-for': '::1' }))).toBe(true);
+    expect(
+      visitIpMatchesRequestIp(sampleIps.ipv4[0], requestWithHeaders({ 'x-forwarded-for': '::ffff:127.0.0.1' })),
+    ).toBe(true);
   });
 });
