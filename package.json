@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npx --yes pnpm@11.24.0 install --frozen-lockfile && next build",
     "start": "next start",
     "start:with-cron-jobs": "run-p start cron",
     "cron": "tsx cron-jobs/delete_expired_ip_rules.ts",
@@ -19,9 +19,8 @@
     "test:e2e": "playwright test",
     "test:e2e:chrome": "playwright test --project='chromium'"
   },
-  "packageManager": "pnpm@11.24.0",
   "engines": {
-    "node": "22.23.1",
+    "node": "22.x",
     "pnpm": "11.24.0"
   },
   "dependencies": {
