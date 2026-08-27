@@ -9,6 +9,7 @@ import {
 } from 'sequelize';
 import { sequelize } from '../../../../server/sequelize';
 import { Event } from '@fingerprint/node-sdk';
+import { redactId } from './redactId';
 
 interface BotVisitAttributes
   extends Model<InferAttributes<BotVisitAttributes>, InferCreationAttributes<BotVisitAttributes>> {
@@ -59,9 +60,6 @@ BotVisitDbModel.sync({ force: false });
 
 export type BotVisit = Attributes<BotVisitAttributes>;
 
-/** Public bot-visit row. Omits eventId and visitorId so the unauthenticated list cannot be used to impersonate visitors. */
-export type PublicBotVisit = Pick<BotVisit, 'id' | 'ip' | 'timestamp' | 'botResult' | 'botType'>;
-
 export const saveBotVisit = async (eventData: Event, visitorId: string) => {
   BotVisitDbModel.create({
     ip: eventData.ip_address ?? '',
@@ -75,20 +73,20 @@ export const saveBotVisit = async (eventData: Event, visitorId: string) => {
   });
 };
 
-export const getBotVisits = async (limit?: number): Promise<PublicBotVisit[]> => {
+export const getBotVisits = async (limit?: number): Promise<BotVisit[]> => {
   const options: FindOptions = {
     order: [['timestamp', 'DESC']],
-    attributes: ['id', 'ip', 'timestamp', 'botResult', 'botType'],
   };
   if (limit) {
     options.limit = limit;
   }
   const rows = await BotVisitDbModel.findAll(options);
-  return rows.map((row) => ({
-    id: row.id,
-    ip: row.ip,
-    timestamp: row.timestamp,
-    botResult: row.botResult,
-    botType: row.botType,
-  }));
+  return rows.map((row) => {
+    const visit = row.get({ plain: true });
+    return {
+      ...visit,
+      eventId: redactId(visit.eventId),
+      visitorId: redactId(visit.visitorId),
+    };
+  });
 };
