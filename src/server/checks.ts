@@ -31,14 +31,8 @@ export function areVisitorIdAndEventIdValid(visitorId: string, eventId: string) 
 /**
  * Client IP from X-Forwarded-For, skipping `trustedProxyCount` hops from the right.
  *
- * CDNs and load balancers append the connecting IP; they do not replace a client-supplied list.
- * The left-most value is therefore attacker-controlled. Never use it.
- *
- * Measured on staging.fingerprinthub.com (CloudFront → Digital Ocean App Platform):
- *   client, <cloudfront-edge>, <digital-ocean-hop>
- * A spoofed request looks like:
- *   <spoof>, client, <cloudfront-edge>, <digital-ocean-hop>
- * so trustedProxyCount is 2. Prefer CloudFront-Viewer-Address when the origin policy forwards it.
+ * Each proxy appends the connecting IP. The left-most value is client-controlled. Never use it.
+ * Set TRUSTED_PROXY_COUNT to the number of proxies in front of the app.
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
  * https://adam-p.ca/blog/2022/03/x-forwarded-for/
  */
@@ -59,30 +53,8 @@ export function clientIpFromXForwardedFor(xForwardedFor: string | null, trustedP
   return hops[clientIndex];
 }
 
-/** CloudFront-Viewer-Address is `ip:port` or `[ipv6]:port`. CloudFront overwrites this header. */
-export function clientIpFromCloudFrontViewerAddress(value: string | null): string | undefined {
-  if (!value) {
-    return undefined;
-  }
-  const trimmed = value.trim();
-  if (trimmed.startsWith('[')) {
-    const end = trimmed.indexOf(']');
-    if (end > 1) {
-      return trimmed.slice(1, end);
-    }
-  }
-  const colon = trimmed.lastIndexOf(':');
-  if (colon <= 0) {
-    return trimmed;
-  }
-  return trimmed.slice(0, colon);
-}
-
 export function getRequestClientIp(request: Request, trustedProxyCount = env.TRUSTED_PROXY_COUNT): string | undefined {
-  return (
-    clientIpFromCloudFrontViewerAddress(request.headers.get('cloudfront-viewer-address')) ??
-    clientIpFromXForwardedFor(request.headers.get('x-forwarded-for'), trustedProxyCount)
-  );
+  return clientIpFromXForwardedFor(request.headers.get('x-forwarded-for'), trustedProxyCount);
 }
 
 export function isLoopbackIp(ip: string): boolean {
@@ -95,14 +67,13 @@ export function isLoopbackIp(ip: string): boolean {
 }
 
 function forwardedIps(request: Request): string[] {
-  const cloudfront = clientIpFromCloudFrontViewerAddress(request.headers.get('cloudfront-viewer-address'));
-  const hops =
+  return (
     request.headers
       .get('x-forwarded-for')
       ?.split(',')
       .map((hop) => hop.trim())
-      .filter((hop) => hop.length > 0) ?? [];
-  return cloudfront ? [cloudfront, ...hops] : hops;
+      .filter((hop) => hop.length > 0) ?? []
+  );
 }
 
 /** True when the request never left this machine. Fingerprint's event IP is the public address, so it cannot match. */
@@ -112,23 +83,14 @@ export function isLocalhostRequest(request: Request): boolean {
 }
 
 function logXForwardedForHops(request: Request) {
-  // Temporary: confirm hop count on staging.fingerprinthub.com, then remove.
-  const xForwardedFor = request.headers.get('x-forwarded-for');
-  const hops =
-    xForwardedFor
-      ?.split(',')
-      .map((hop) => hop.trim())
-      .filter((hop) => hop.length > 0) ?? [];
+  // Temporary: confirm hop count in your environment, then remove.
+  const hops = forwardedIps(request);
   console.info('[xff-hops]', {
     host: request.headers.get('host'),
     hopCount: hops.length,
     hops,
     trustedProxyCount: env.TRUSTED_PROXY_COUNT,
     derivedClientIp: getRequestClientIp(request),
-    cloudfrontViewerAddress: request.headers.get('cloudfront-viewer-address'),
-    cfConnectingIp: request.headers.get('cf-connecting-ip'),
-    xRealIp: request.headers.get('x-real-ip'),
-    trueClientIp: request.headers.get('true-client-ip'),
   });
 }
 
