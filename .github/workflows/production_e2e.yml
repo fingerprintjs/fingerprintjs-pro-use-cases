@@ -15,25 +15,17 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '22.x'
-      - name: Cache node modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: nodemodules-${{ hashFiles('yarn.lock') }}
-          restore-keys: nodemodules-
-
-      - name: Install yarn
-        # Yarn is installed by default on GitHub Actions runner
-        # but install it just in case you are running this workflow locally
-        run: npm install -g yarn
+          cache: 'pnpm'
 
       - name: Install node modules
         ## E2E tests might have other dependencies besides Playwright, like Zod for example
-        run: yarn install --prefer-offline --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Get installed Playwright version (used in cache key)
         id: playwright-version
@@ -48,15 +40,15 @@ jobs:
           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
 
       - name: Install Chromium browser binary if cache missed
-        run: yarn playwright install --with-deps chromium
+        run: pnpm exec playwright install --with-deps chromium
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
       - name: Install Firefox browser binary
-        run: yarn playwright install --with-deps firefox
+        run: pnpm exec playwright install --with-deps firefox
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
       - name: Run Playwright tests on Chrome
-        run: yarn test:e2e:chrome
+        run: pnpm test:e2e:chrome
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
