@@ -68,9 +68,16 @@ jobs:
   report-status:
     needs: e2e-prod
     if: failure()
-    uses: fingerprintjs/dx-team-toolkit/.github/workflows/report-workflow-status.yml@v1
-    with:
-      notification_title: 'Hey, <@U04GNKK5ZTQ>! Production e2e tests on demo.fingerprint.com have {status_message}'
-      job_status: ${{ needs.e2e.result }}
-    secrets:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report Status
+        # mention_users puts <@id> in attachment text (the only field with mrkdwn).
+        # Putting the mention in notification_title lands in pretext and does not ping.
+        uses: ravsamhq/notify-slack-action@be814b201e233b2dc673608aa46e5447c8ab13f2
+        with:
+          status: ${{ needs.e2e-prod.result }}
+          notification_title: 'Production e2e tests on demo.fingerprint.com have {status_message}'
+          mention_users: 'U04GNKK5ZTQ'
+          mention_users_when: 'failure'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
