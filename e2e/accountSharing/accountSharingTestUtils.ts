@@ -1,9 +1,9 @@
 import { chromium, firefox, Page } from '@playwright/test';
-import { AccountSharingAdminPayload } from '../../src/app/account-sharing/api/admin/route';
+import type { AccountSharingAdminPayload } from '../../src/app/account-sharing/api/admin/route';
 import {
   productionE2eTestActions,
-  ProductionE2eTestActionName,
   TEST_USER,
+  type ProductionE2eTestActionName,
 } from '../../src/app/account-sharing/api/admin/productionE2eTestActions';
 import { ACCOUNT_SHARING_COPY } from '../../src/app/account-sharing/const';
 import { TEST_IDS } from '../../src/client/testIDs';
