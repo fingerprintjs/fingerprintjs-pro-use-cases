@@ -82,18 +82,6 @@ export function isLocalhostRequest(request: Request): boolean {
   return ips.length === 0 || ips.every(isLoopbackIp);
 }
 
-function logXForwardedForHops(request: Request) {
-  // Temporary: confirm hop count in your environment, then remove.
-  const hops = forwardedIps(request);
-  console.info('[xff-hops]', {
-    host: request.headers.get('host'),
-    hopCount: hops.length,
-    hops,
-    trustedProxyCount: env.TRUSTED_PROXY_COUNT,
-    derivedClientIp: getRequestClientIp(request),
-  });
-}
-
 export function visitIpMatchesRequestIp(visitIp = '', request: Request, trustedProxyCount = env.TRUSTED_PROXY_COUNT) {
   // Localhost (yarn dev or yarn start): Next sets X-Forwarded-For to 127.0.0.1 or ::1.
   // Fingerprint's event IP is the public address, so this check cannot succeed there.
@@ -169,7 +157,6 @@ export const getAndValidateFingerprintResult = async ({
   region = getServerRegion(env.NEXT_PUBLIC_REGION),
   options,
 }: GetFingerprintResultArgs): Promise<ValidationDataResult<Event>> => {
-  logXForwardedForHops(req);
   let identificationEvent: Event | undefined;
 
   /**
