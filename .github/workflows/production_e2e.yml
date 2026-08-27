@@ -71,13 +71,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Report Status
-        # mention_users puts <@id> in attachment text (the only field with mrkdwn).
-        # Putting the mention in notification_title lands in pretext and does not ping.
-        uses: ravsamhq/notify-slack-action@be814b201e233b2dc673608aa46e5447c8ab13f2
+        # Incoming webhooks render <@id> but do not notify. chat.postMessage does.
+        # https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks
+        uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
         with:
-          status: ${{ needs.e2e-prod.result }}
-          notification_title: 'Production e2e tests on demo.fingerprint.com have {status_message}'
-          mention_users: 'U04GNKK5ZTQ'
-          mention_users_when: 'failure'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          payload: |
+            channel: C042EFTCAPJ
+            text: "<@U04GNKK5ZTQ> Production e2e tests on demo.fingerprint.com have failed. <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>"
