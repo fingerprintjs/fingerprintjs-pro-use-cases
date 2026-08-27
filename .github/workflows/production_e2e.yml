@@ -77,4 +77,4 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
-            text: "<@U04GNKK5ZTQ> Production e2e tests on demo.fingerprint.com have failed. <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>"
+            text: ":x: :x: :x: <@U04GNKK5ZTQ> Production e2e tests on demo.fingerprint.com have failed. <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>"
