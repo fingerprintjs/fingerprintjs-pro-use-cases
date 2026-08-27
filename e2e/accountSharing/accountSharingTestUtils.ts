@@ -1,34 +1,19 @@
 import { chromium, firefox, Page } from '@playwright/test';
-import { UserDbModel, SessionDbModel } from '../../src/app/account-sharing/api/database';
+import { AccountSharingAdminPayload } from '../../src/app/account-sharing/api/admin/route';
+import {
+  productionE2eTestActions,
+  ProductionE2eTestActionName,
+  TEST_USER,
+} from '../../src/app/account-sharing/api/admin/productionE2eTestActions';
 import { ACCOUNT_SHARING_COPY } from '../../src/app/account-sharing/const';
-import { hashString } from '../../src/server/server-utils';
-import { assertAlert, blockGoogleTagManager } from '../e2eTestUtils';
 import { TEST_IDS } from '../../src/client/testIDs';
 import { E2E_TEST_TOKEN, PRODUCTION_E2E_TEST_BASE_URL } from '../../src/envShared';
-import { AccountSharingAdminPayload } from '../../src/app/account-sharing/api/admin/route';
+import { assertAlert, blockGoogleTagManager } from '../e2eTestUtils';
+
+export { productionE2eTestActions, TEST_USER };
+export type { ProductionE2eTestActionName };
 
 const TEST_ID = TEST_IDS.accountSharing;
-
-export const TEST_USER = {
-  username: 'e2eTestUser',
-  password: 'e2eTestPassword',
-};
-
-export const ensureTestUserExists = async () => {
-  const { username, password } = TEST_USER;
-  await UserDbModel.findOrCreate({
-    where: { username },
-    defaults: { username, passwordHash: hashString(password), createdWithVisitorId: '' },
-  });
-};
-
-export const deleteTestUser = async () => {
-  await UserDbModel.destroy({ where: { username: TEST_USER.username } });
-};
-
-export const logOutTestUserEverywhere = async () => {
-  await SessionDbModel.destroy({ where: { username: TEST_USER.username } });
-};
 
 export const fillForm = async (page: Page, username: string, password: string) => {
   await page.getByTestId(TEST_ID.usernameInput).fill(username);
@@ -99,15 +84,6 @@ export const getTwoBrowsers = async () => {
   };
 };
 
-/**
- * Production E2E test utils actions
- */
-export const productionE2eTestActions = {
-  ensureTestUserExists,
-  deleteTestUser,
-  logOutTestUserEverywhere,
-} as const;
-export type ProductionE2eTestActionName = keyof typeof productionE2eTestActions;
 export const sendProductionE2eTestActionRequest = async (action: ProductionE2eTestActionName) => {
   const url = PRODUCTION_E2E_TEST_BASE_URL;
   if (!url) {

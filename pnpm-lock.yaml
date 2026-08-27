@@ -29,6 +29,9 @@ importers:
       '@inkeep/cxkit-react':
         specifier: ^0.5.107
         version: 0.5.107(@types/react@18.2.64)(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(supports-color@7.2.0)(zod@3.22.4)
+      '@inkeep/cxkit-types':
+        specifier: 0.5.107
+        version: 0.5.107
       '@mui/icons-material':
         specifier: ^5.15.11
         version: 5.15.12(@mui/material@5.15.12(@emotion/react@11.11.4(@types/react@18.2.64)(react@18.2.0))(@emotion/styled@11.11.0(@emotion/react@11.11.4(@types/react@18.2.64)(react@18.2.0))(@types/react@18.2.64)(react@18.2.0))(@types/react@18.2.64)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@types/react@18.2.64)(react@18.2.0)
