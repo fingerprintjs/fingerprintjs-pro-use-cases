@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '22.x'
       - name: 'Cache'
@@ -44,10 +44,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Check workflow files
-        # Ignore setup-node@v3 "runner too old"; bumping those actions is out of scope.
         run: |
           bash <(curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/v1.7.12/scripts/download-actionlint.bash) 1.7.12
-          ./actionlint -color -ignore 'the runner of ".+" action is too old'
+          ./actionlint -color
         shell: bash
   unit-tests:
     name: Unit tests
@@ -55,7 +54,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '22.x'
       - name: 'Cache'
@@ -82,7 +81,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '22.x'
       - name: Cache node modules
