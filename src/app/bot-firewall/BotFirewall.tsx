@@ -15,7 +15,7 @@ import { FunctionComponent, useState } from 'react';
 import { wait } from '../../utils/timeUtils';
 import { Spinner } from '../../client/components/Spinner/Spinner';
 import { Alert } from '../../client/components/Alert/Alert';
-import { BotVisit } from './api/get-bot-visits/botVisitDatabase';
+import { PublicBotVisit } from './api/get-bot-visits/botVisitDatabase';
 import { BotTypeInfo, BotVisitAction, InstructionPrompt } from './components/botFirewallComponents';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
 import { useEventsGetResponse } from '../../client/hooks/useEventsGetResponse';
@@ -47,7 +47,7 @@ const useBotVisits = () => {
     status: botVisitsQueryStatus,
   } = useQuery({
     queryKey: ['get bot visits'],
-    queryFn: async (): Promise<BotVisit[]> => {
+    queryFn: async (): Promise<PublicBotVisit[]> => {
       const res = await fetch(`/bot-firewall/api/get-bot-visits?limit=${BOT_VISITS_FETCH_LIMIT}`);
       return await res.json();
     },
@@ -169,7 +169,6 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
               <th>
                 Timestamp <Image src={ChevronIcon} alt='' />
               </th>
-              <th>Request ID</th>
               <th>
                 Bot Type <BotTypeInfo />
               </th>
@@ -180,9 +179,8 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
           <tbody>
             {botVisits.slice(0, displayedVisits).map((botVisit) => {
               return (
-                <tr key={botVisit.eventId}>
+                <tr key={botVisit.id}>
                   <td>{formatDate(botVisit.timestamp)}</td>
-                  <td>{botVisit.eventId}</td>
                   <td>
                     {botVisit.botResult} ({botVisit.botType})
                   </td>
@@ -206,13 +204,10 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
         <div className={styles.cards}>
           {botVisits.slice(0, displayedVisits).map((botVisit) => {
             return (
-              <div key={botVisit.eventId} className={styles.card}>
+              <div key={botVisit.id} className={styles.card}>
                 <div className={styles.cardContent}>
                   <div>Timestamp</div>
                   <div>{formatDate(botVisit.timestamp)}</div>
-
-                  <div>Event ID</div>
-                  <div>{botVisit.eventId}</div>
 
                   <div>
                     Bot Type <BotTypeInfo />
