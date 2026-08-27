@@ -71,12 +71,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Report Status
-        # Incoming webhooks render <@id> but do not notify. chat.postMessage does.
-        # https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks
+        # Incoming webhooks only notify if <@id> is in top-level text, not attachments.
         uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
         with:
-          method: chat.postMessage
-          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
           payload: |
-            channel: C042EFTCAPJ
             text: "<@U04GNKK5ZTQ> Production e2e tests on demo.fingerprint.com have failed. <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>"
