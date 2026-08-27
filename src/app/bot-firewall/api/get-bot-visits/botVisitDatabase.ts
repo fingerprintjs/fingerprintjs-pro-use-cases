@@ -1,18 +1,9 @@
-import {
-  Attributes,
-  CreationOptional,
-  DataTypes,
-  FindOptions,
-  InferAttributes,
-  InferCreationAttributes,
-  Model,
-} from 'sequelize';
+import { Attributes, DataTypes, FindOptions, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import { sequelize } from '../../../../server/sequelize';
 import { Event } from '@fingerprint/node-sdk';
 
 interface BotVisitAttributes
   extends Model<InferAttributes<BotVisitAttributes>, InferCreationAttributes<BotVisitAttributes>> {
-  id: CreationOptional<number>;
   visitorId: string;
   eventId: string;
   ip: string;
@@ -24,11 +15,6 @@ interface BotVisitAttributes
 }
 
 const BotVisitDbModel = sequelize.define<BotVisitAttributes>('bot_visits', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  },
   visitorId: {
     type: DataTypes.STRING,
   },
@@ -59,9 +45,6 @@ BotVisitDbModel.sync({ force: false });
 
 export type BotVisit = Attributes<BotVisitAttributes>;
 
-/** Public bot-visit row. Omits eventId and visitorId so the unauthenticated list cannot be used to impersonate visitors. */
-export type PublicBotVisit = Pick<BotVisit, 'id' | 'ip' | 'timestamp' | 'botResult' | 'botType'>;
-
 export const saveBotVisit = async (eventData: Event, visitorId: string) => {
   BotVisitDbModel.create({
     ip: eventData.ip_address ?? '',
@@ -75,20 +58,12 @@ export const saveBotVisit = async (eventData: Event, visitorId: string) => {
   });
 };
 
-export const getBotVisits = async (limit?: number): Promise<PublicBotVisit[]> => {
+export const getBotVisits = async (limit?: number) => {
   const options: FindOptions = {
     order: [['timestamp', 'DESC']],
-    attributes: ['id', 'ip', 'timestamp', 'botResult', 'botType'],
   };
   if (limit) {
     options.limit = limit;
   }
-  const rows = await BotVisitDbModel.findAll(options);
-  return rows.map((row) => ({
-    id: row.id,
-    ip: row.ip,
-    timestamp: row.timestamp,
-    botResult: row.botResult,
-    botType: row.botType,
-  }));
+  return await BotVisitDbModel.findAll(options);
 };
