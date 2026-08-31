@@ -1,4 +1,5 @@
 import { Event, FingerprintServerApiClient, Region, RequestError } from '@fingerprint/node-sdk';
+import { isIPv6 } from 'is-ip';
 import { ValidationDataResult } from '../utils/types';
 import { decryptSealedResult } from './decryptSealedResult';
 import { clientEnv } from '../env/client';
@@ -28,32 +29,64 @@ export function areVisitorIdAndEventIdValid(visitorId: string, eventId: string) 
   return isEventIdFormatValid(eventId) && isVisitorIdFormatValid(visitorId);
 }
 
-export function visitIpMatchesRequestIp(visitIp = '', request: Request) {
-  // This check is skipped on purpose in localhost environments.
+/**
+ * Client IP from X-Forwarded-For, skipping `trustedProxyCount` hops from the right.
+ *
+ * Each proxy appends the connecting IP. The left-most value is client-controlled. Never use it.
+ * Set TRUSTED_PROXY_COUNT to the number of proxies in front of the app.
+ * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
+ * https://adam-p.ca/blog/2022/03/x-forwarded-for/
+ */
+export function clientIpFromXForwardedFor(xForwardedFor: string | null, trustedProxyCount: number): string | undefined {
+  if (!xForwardedFor) {
+    return undefined;
+  }
+
+  const hops = xForwardedFor
+    .split(',')
+    .map((hop) => hop.trim())
+    .filter((hop) => hop.length > 0);
+  const clientIndex = hops.length - trustedProxyCount - 1;
+  if (clientIndex < 0) {
+    return undefined;
+  }
+
+  return hops[clientIndex];
+}
+
+export function visitIpMatchesRequestIp(
+  visitIp = '',
+  request: Request,
+  trustedProxyCount = serverEnv.TRUSTED_PROXY_COUNT,
+) {
+  // yarn dev. yarn start is NODE_ENV=production, so it still needs the loopback skip below.
   if (IS_DEVELOPMENT) {
     return true;
   }
 
-  /**
-   * Parsing the user IP from `x-forwarded-for` can be unreliable as any proxy between your server
-   * and the visitor can overwrite or spoof the header. In most cases, using the right-most external
-   * IP is more appropriate than the left-most one as is demonstrated here.
-   * You might need to adjust or skip this check depending on your use case and server configuration.
-   * You can learn more at:
-   * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
-   * https://adam-p.ca/blog/2022/03/x-forwarded-for/.
-   */
-  const xForwardedFor = request.headers.get('x-forwarded-for');
-  const requestIp = Array.isArray(xForwardedFor) ? xForwardedFor[0] : xForwardedFor?.split(',')[0] ?? '';
+  const requestIp = clientIpFromXForwardedFor(request.headers.get('x-forwarded-for'), trustedProxyCount);
+  if (!requestIp) {
+    return false;
+  }
 
-  // IPv6 addresses are not supported yet, skip the check
-  if (!IPv4_REGEX.test(requestIp)) {
+  // Loopback (yarn start) and IPv6 cannot be compared to Fingerprint's public event IP.
+  if (requestIp.startsWith('127.') || isIPv6(requestIp) || isIPv6(visitIp)) {
     return true;
+  }
+
+  if (!IPv4_REGEX.test(requestIp) || !IPv4_REGEX.test(visitIp)) {
+    return false;
   }
 
   return requestIp === visitIp;
 }
 
+/**
+ * Checks that the identification event URL and the request Origin are one of our sites.
+ *
+ * Origin is not a visitor identity check. Non-browser clients set it freely.
+ * Keep a freshness check and a trusted client IP to stop replay; do not treat Origin as proof of who called.
+ */
 export function originIsAllowed(url = '', request: Request) {
   // This check is skipped on purpose in localhost environments.
   if (IS_DEVELOPMENT) {
@@ -152,8 +185,8 @@ export const getAndValidateFingerprintResult = async ({
   }
 
   /**
-   * The client request must come from an expected origin (usually your website)
-   * and its origin must match the identification request origin
+   * Origin must match the identification event and be one of our sites.
+   * This is not proof of visitor identity (non-browser clients set Origin freely).
    */
   if (!originIsAllowed(identificationEvent.url, req)) {
     return { okay: false, error: 'Visit origin does not match request origin, potential spoofing attack.' };

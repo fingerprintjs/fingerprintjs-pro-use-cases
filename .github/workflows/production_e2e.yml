@@ -68,9 +68,13 @@ jobs:
   report-status:
     needs: e2e-prod
     if: failure()
-    uses: fingerprintjs/dx-team-toolkit/.github/workflows/report-workflow-status.yml@v1
-    with:
-      notification_title: 'Hey, <@U04GNKK5ZTQ>! Production e2e tests on demo.fingerprint.com have {status_message}'
-      job_status: ${{ needs.e2e.result }}
-    secrets:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report Status
+        # Incoming webhooks only notify if <@id> is in top-level text, not attachments.
+        uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: ":x: :x: :x: <@U04GNKK5ZTQ> Production e2e tests on demo.fingerprint.com have failed. <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>"
