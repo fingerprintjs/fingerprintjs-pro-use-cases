@@ -25,7 +25,7 @@ export const serverEnv = createEnv({
     // It can be pretty nuanced: https://dev.fingerprint.com/docs/identification-accuracy-and-confidence#confidence-score
     MIN_CONFIDENCE_SCORE: z.coerce.number().min(0.0).max(1.0).default(0.4),
     // Proxies that append to X-Forwarded-For after the client IP. 0 = use the right-most hop.
-    // This deploy (CloudFront → Digital Ocean) needs 2; set it in the host env, not here.
+    // Set this to the number of trusted reverse proxies in front of the app.
     TRUSTED_PROXY_COUNT: z.coerce.number().int().min(0).max(10).default(0),
 
     // Credential stuffing demo
