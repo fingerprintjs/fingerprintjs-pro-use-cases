@@ -11,7 +11,7 @@ import { CustomContentProps, VariantType, useSnackbar, SnackbarKey } from 'notis
 import React from 'react';
 import Button from '../Button/Button';
 import { CrossIconSvg } from '../../img/crossIconSvg';
-import { Severity } from '../../../server/checks';
+import type { Severity } from '../../../server/checks';
 
 type AlertProps = {
   severity: Severity;

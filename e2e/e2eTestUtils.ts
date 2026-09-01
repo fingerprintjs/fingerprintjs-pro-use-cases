@@ -1,6 +1,6 @@
 import { Locator, Page, expect } from '@playwright/test';
 import { TEST_ATTRIBUTES, TEST_IDS } from '../src/client/testIDs';
-import { Severity } from '../src/server/checks';
+import type { Severity } from '../src/server/checks';
 
 /**
  *

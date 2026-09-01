@@ -2,7 +2,8 @@ import { Event, FingerprintServerApiClient, Region, RequestError } from '@finger
 import { isIPv6 } from 'is-ip';
 import { ValidationDataResult } from '../utils/types';
 import { decryptSealedResult } from './decryptSealedResult';
-import { env } from '../env';
+import { clientEnv } from '../env/client';
+import { serverEnv } from '../env/server';
 import { getServerRegion } from './fingerprint-server-api';
 import { IS_DEVELOPMENT } from '../envShared';
 
@@ -53,7 +54,11 @@ export function clientIpFromXForwardedFor(xForwardedFor: string | null, trustedP
   return hops[clientIndex];
 }
 
-export function visitIpMatchesRequestIp(visitIp = '', request: Request, trustedProxyCount = env.TRUSTED_PROXY_COUNT) {
+export function visitIpMatchesRequestIp(
+  visitIp = '',
+  request: Request,
+  trustedProxyCount = serverEnv.TRUSTED_PROXY_COUNT,
+) {
   // yarn dev. yarn start is NODE_ENV=production, so it still needs the loopback skip below.
   if (IS_DEVELOPMENT) {
     return true;
@@ -121,8 +126,8 @@ export const getAndValidateFingerprintResult = async ({
   eventId,
   req,
   sealedResult,
-  serverApiKey: apiKey = env.SERVER_API_KEY,
-  region = getServerRegion(env.NEXT_PUBLIC_REGION),
+  serverApiKey: apiKey = serverEnv.SERVER_API_KEY,
+  region = getServerRegion(clientEnv.NEXT_PUBLIC_REGION),
   options,
 }: GetFingerprintResultArgs): Promise<ValidationDataResult<Event>> => {
   let identificationEvent: Event | undefined;
@@ -220,7 +225,7 @@ export const getAndValidateFingerprintResult = async ({
    */
   if (
     identification.confidence?.score &&
-    identification.confidence.score < (options?.minConfidenceScore ?? env.MIN_CONFIDENCE_SCORE)
+    identification.confidence.score < (options?.minConfidenceScore ?? serverEnv.MIN_CONFIDENCE_SCORE)
   ) {
     return {
       okay: false,
