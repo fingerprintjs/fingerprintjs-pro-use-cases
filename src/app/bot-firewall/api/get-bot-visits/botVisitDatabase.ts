@@ -1,9 +1,19 @@
-import { Attributes, DataTypes, FindOptions, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
+import {
+  Attributes,
+  CreationOptional,
+  DataTypes,
+  FindOptions,
+  InferAttributes,
+  InferCreationAttributes,
+  Model,
+} from 'sequelize';
 import { sequelize } from '../../../../server/sequelize';
 import { Event } from '@fingerprint/node-sdk';
+import { redactId } from './redactId';
 
 interface BotVisitAttributes
   extends Model<InferAttributes<BotVisitAttributes>, InferCreationAttributes<BotVisitAttributes>> {
+  id: CreationOptional<number>;
   visitorId: string;
   eventId: string;
   ip: string;
@@ -15,6 +25,11 @@ interface BotVisitAttributes
 }
 
 const BotVisitDbModel = sequelize.define<BotVisitAttributes>('bot_visits', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
   visitorId: {
     type: DataTypes.STRING,
   },
@@ -58,12 +73,20 @@ export const saveBotVisit = async (eventData: Event, visitorId: string) => {
   });
 };
 
-export const getBotVisits = async (limit?: number) => {
+export const getBotVisits = async (limit?: number): Promise<BotVisit[]> => {
   const options: FindOptions = {
     order: [['timestamp', 'DESC']],
   };
   if (limit) {
     options.limit = limit;
   }
-  return await BotVisitDbModel.findAll(options);
+  const rows = await BotVisitDbModel.findAll(options);
+  return rows.map((row) => {
+    const visit = row.get({ plain: true });
+    return {
+      ...visit,
+      eventId: redactId(visit.eventId),
+      visitorId: redactId(visit.visitorId),
+    };
+  });
 };

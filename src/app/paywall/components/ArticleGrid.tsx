@@ -52,9 +52,7 @@ export const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article, embe
       <Image src={article.image} alt='' className={styles.articleCardImage} sizes='100vw' />
       <div className={styles.articleCardContent}>
         <Byline article={article} />
-        <a href={link} key={article.id} className={styles.articleCardTitle}>
-          {article.title}
-        </a>
+        <div className={styles.articleCardTitle}>{article.title}</div>
         <p className={styles.articleCardDescription}>{article.description}</p>
         <div className={styles.articleCardTags}>
           {article.tags.map((tag) => (

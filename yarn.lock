@@ -1249,10 +1249,10 @@
   resolved "https://registry.yarnpkg.com/@fingerprint/agent/-/agent-4.0.0.tgz#e046103297ab5385f1f3b6f4ddf8c53971a10ed0"
   integrity sha512-GdFdBeaDqLc3hVQLcxPwckk+1217raR/ouxBkGXSykxAswl1xxrt6GLaR93cKY8ehjp7ZFYSjSu4aLKUesgvIg==
 
-"@fingerprint/node-sdk@^7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@fingerprint/node-sdk/-/node-sdk-7.0.0.tgz#7ebc564a3020a5036372444a7f36f010e6a18b7f"
-  integrity sha512-v+8A+hZacJNn5hFj5HHKabm76IpLbRULnY5Jc0JTTsjsRyxiXN9YGYGPYMNGBpqPACtLWAs/yK2WlnGt9+6I4w==
+"@fingerprint/node-sdk@^7.7.0":
+  version "7.7.0"
+  resolved "https://registry.yarnpkg.com/@fingerprint/node-sdk/-/node-sdk-7.7.0.tgz#7e00f0c551f53f2aa327c2890c034dad24bef153"
+  integrity sha512-7FjFJpI4CoV/alS3fGvR6yBo89eSG2jkQOrhHM9CPqgzEYglU2pBdJbQALcJOw7hmJItdV4ozj4+Tx1+lFHpPQ==
 
 "@fingerprint/react@^3.0.0":
   version "3.0.0"

@@ -7,6 +7,7 @@ import SignalTable, { TableCellData } from './components/SignalTable';
 import botDetectionResult from './components/BotDetectionResult';
 import { RefreshButton } from './components/RefreshButton';
 import { ipBlocklistResult } from './components/IpBlocklistResult';
+import { proxyDetectionResult } from './components/ProxyDetectionResult';
 import { vpnDetectionResult } from './components/VpnDetectionResult';
 import { usePlaygroundSignals } from './hooks/usePlaygroundSignals';
 import { getLocationName, getZoomLevel } from '../../utils/locationUtils';
@@ -382,10 +383,25 @@ export function Playground() {
         className:
           identificationEvent?.ip_blocklist?.attack_source ||
           identificationEvent?.ip_blocklist?.email_spam ||
-          identificationEvent?.ip_blocklist?.tor_node ||
-          identificationEvent?.proxy
+          identificationEvent?.ip_blocklist?.tor_node
             ? tableStyles.red
             : tableStyles.green,
+      },
+    ],
+    [
+      {
+        content: [
+          <DocsLink
+            href='https://dev.fingerprint.com/docs/smart-signals-reference#proxy-detection'
+            key='proxy-detection'
+          >
+            Proxy Detection
+          </DocsLink>,
+        ],
+      },
+      {
+        content: <JsonLink propertyName='proxy'>{proxyDetectionResult({ event: identificationEvent })}</JsonLink>,
+        className: identificationEvent?.proxy === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
