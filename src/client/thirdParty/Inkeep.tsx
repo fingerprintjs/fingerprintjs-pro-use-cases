@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { env } from '../../env';
+import { clientEnv } from '../../env/client';
 
 import type {
   InkeepBaseSettings,
@@ -61,7 +61,7 @@ const Theme: UserTheme = {
 };
 
 const useInkeepSettings = () => {
-  const apiKey = env.NEXT_PUBLIC_INKEEP_API_KEY;
+  const apiKey = clientEnv.NEXT_PUBLIC_INKEEP_API_KEY;
 
   const baseSettings: InkeepBaseSettings = {
     apiKey,

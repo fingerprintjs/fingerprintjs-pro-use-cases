@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SnackbarProvider } from 'notistack';
 import { PropsWithChildren } from 'react';
 import { Fingerprint, FingerprintProvider } from '@fingerprint/react';
-import { env } from '../env';
+import { clientEnv } from '../env/client';
 import { CloseSnackbarButton, CustomSnackbar } from '../client/components/Alert/Alert';
 
 const queryClient = new QueryClient({
@@ -28,10 +28,10 @@ export function getFingerprintEndpoint(endpoint?: string) {
 }
 
 export const FP_LOAD_OPTIONS: Fingerprint.StartOptions = {
-  apiKey: env.NEXT_PUBLIC_API_KEY,
-  //scriptUrlPattern: [env.NEXT_PUBLIC_SCRIPT_URL_PATTERN, FingerprintJSPro.defaultScriptUrlPattern],
-  endpoints: getFingerprintEndpoint(env.NEXT_PUBLIC_ENDPOINT),
-  region: env.NEXT_PUBLIC_REGION,
+  apiKey: clientEnv.NEXT_PUBLIC_API_KEY,
+  //scriptUrlPattern: [clientEnv.NEXT_PUBLIC_SCRIPT_URL_PATTERN, FingerprintJSPro.defaultScriptUrlPattern],
+  endpoints: getFingerprintEndpoint(clientEnv.NEXT_PUBLIC_ENDPOINT),
+  region: clientEnv.NEXT_PUBLIC_REGION,
 };
 
 function Providers({ children }: PropsWithChildren) {

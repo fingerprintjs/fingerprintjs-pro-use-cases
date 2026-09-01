@@ -7,7 +7,8 @@ import {
 import { OUR_ORIGINS, Severity } from '../../../../server/checks';
 import { IS_PRODUCTION } from '../../../../envShared';
 import { getServerRegion } from '../../../../server/fingerprint-server-api';
-import { env } from '../../../../env';
+import { clientEnv } from '../../../../env/client';
+import { serverEnv } from '../../../../env/server';
 
 /**
  * This v3 endpoint is deprecated and kept here just for backward compatibility with mobile applications.
@@ -85,8 +86,8 @@ const handleRequest = async (
 };
 
 const client = new FingerprintJsServerApiClient({
-  region: getServerRegion(env.NEXT_PUBLIC_REGION),
-  apiKey: env.SERVER_API_KEY,
+  region: getServerRegion(clientEnv.NEXT_PUBLIC_REGION),
+  apiKey: serverEnv.SERVER_API_KEY,
 });
 
 async function tryGetFingerprintEvent(
