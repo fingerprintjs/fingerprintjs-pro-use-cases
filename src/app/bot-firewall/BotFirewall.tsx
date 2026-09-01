@@ -180,7 +180,7 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
           <tbody>
             {botVisits.slice(0, displayedVisits).map((botVisit) => {
               return (
-                <tr key={botVisit.eventId}>
+                <tr key={botVisit.id}>
                   <td>{formatDate(botVisit.timestamp)}</td>
                   <td>{botVisit.eventId}</td>
                   <td>
@@ -206,7 +206,7 @@ export const BotFirewall: FunctionComponent<{ embed?: boolean }> = ({ embed }) =
         <div className={styles.cards}>
           {botVisits.slice(0, displayedVisits).map((botVisit) => {
             return (
-              <div key={botVisit.eventId} className={styles.card}>
+              <div key={botVisit.id} className={styles.card}>
                 <div className={styles.cardContent}>
                   <div>Timestamp</div>
                   <div>{formatDate(botVisit.timestamp)}</div>
