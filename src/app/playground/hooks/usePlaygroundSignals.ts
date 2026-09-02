@@ -39,9 +39,10 @@ export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Even
       },
     ];
 
-    if (!window.RTCPeerConnection) return;
+    const RTCPeerConnectionCtor = globalThis.RTCPeerConnection;
+    if (typeof RTCPeerConnectionCtor !== 'function') return;
 
-    const pc = new RTCPeerConnection({ iceServers });
+    const pc = new RTCPeerConnectionCtor({ iceServers });
     pc.createDataChannel('probe');
     pc.createOffer()
       .then((offer: RTCSessionDescriptionInit) => pc.setLocalDescription(offer))
