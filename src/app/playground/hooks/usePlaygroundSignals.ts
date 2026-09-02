@@ -39,16 +39,25 @@ export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Even
       },
     ];
 
+    if (!window.RTCPeerConnection) return;
+
     const pc = new RTCPeerConnection({ iceServers });
     pc.createDataChannel('probe');
     pc.createOffer()
       .then((offer: RTCSessionDescriptionInit) => pc.setLocalDescription(offer))
-      .catch(() => {});
+      .catch(() => undefined);
+
     pc.onconnectionstatechange = () => {
-      if (pc.connectionState === 'failed' || pc.connectionState === 'disconnected') {
+      if (
+        pc.connectionState === 'failed' ||
+        pc.connectionState === 'disconnected' ||
+        pc.connectionState === 'connected'
+      ) {
         pc.close();
       }
     };
+
+    return () => pc.close();
   }, [eventId]);
 
   const {
