@@ -32,6 +32,13 @@ export const FP_LOAD_OPTIONS: Fingerprint.StartOptions = {
   //scriptUrlPattern: [clientEnv.NEXT_PUBLIC_SCRIPT_URL_PATTERN, FingerprintJSPro.defaultScriptUrlPattern],
   endpoints: getFingerprintEndpoint(clientEnv.NEXT_PUBLIC_ENDPOINT),
   region: clientEnv.NEXT_PUBLIC_REGION,
+  // Hash query/fragment so PII in URLs is not sent raw.
+  // https://docs.fingerprint.com/reference/js-agent-start-function#urlhashing
+  urlHashing: {
+    path: false,
+    query: true,
+    fragment: true,
+  },
 };
 
 function Providers({ children }: PropsWithChildren) {
