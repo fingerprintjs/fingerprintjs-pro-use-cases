@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SnackbarProvider } from 'notistack';
 import { PropsWithChildren } from 'react';
 import { Fingerprint, FingerprintProvider } from '@fingerprint/react';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { clientEnv } from '../env/client';
 import { CloseSnackbarButton, CustomSnackbar } from '../client/components/Alert/Alert';
 
@@ -54,7 +55,9 @@ function Providers({ children }: PropsWithChildren) {
           info: CustomSnackbar,
         }}
       >
-        <FingerprintProvider {...FP_LOAD_OPTIONS}>{children}</FingerprintProvider>
+        <FingerprintProvider {...FP_LOAD_OPTIONS}>
+          <NuqsAdapter>{children}</NuqsAdapter>
+        </FingerprintProvider>
       </SnackbarProvider>
     </QueryClientProvider>
   );

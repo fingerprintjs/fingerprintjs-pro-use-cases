@@ -28,6 +28,10 @@ See the [package.json](./package.json) -> `scripts` section for more useful comm
 - The app is deployed behind a CloudFront distribution in the Fingerprint DEV AWS environment (search for `demo.fingerprint.com` in the distribution description).
   - If you ever encounter caching issues, for example, a cached index.html pointing to no longer existing resources, you can fix it by [creating a cache invalidation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Invalidation_Requests.html#invalidating-objects-console) (`/*` is fine) in the CloudFront distribution.
 
+### Staging deployment
+
+- Push your branch to the `staging` branch to trigger a deployment of a staging environment on https://staging.fingerprinthub.com
+
 ### Rollbacks and incident response
 
 If an incident occurs, any member of the Fingerprint team on Digital Ocean can rollback the app to the previous version. In case of any problems, please contact @JuroUhlar and the Integrations team.

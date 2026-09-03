@@ -3,7 +3,7 @@ import { Event } from '@fingerprint/node-sdk';
 import { useRef } from 'react';
 
 export function useEventsGetResponse(eventId?: string) {
-  const lastSuccessfulDataRef = useRef<Event | undefined>();
+  const lastSuccessfulDataRef = useRef<Event | undefined>(undefined);
 
   const query = useQuery<Event | undefined>({
     queryKey: ['get-event', eventId],
