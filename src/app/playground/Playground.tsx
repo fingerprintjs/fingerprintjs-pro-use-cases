@@ -428,6 +428,27 @@ export function Playground() {
     [
       {
         content: [
+          <DocsLink
+            href='https://docs.fingerprint.com/docs/smart-signals-reference#device-rarity-detection'
+            key='rare-device'
+          >
+            Rare Device
+          </DocsLink>,
+        ],
+      },
+      {
+        content: (
+          <JsonLink propertyName='rare_device'>
+            {identificationEvent?.rare_device === true ? 'Yes 💎' : 'Not detected'}
+          </JsonLink>
+        ),
+
+        className: identificationEvent?.rare_device === true ? tableStyles.red : tableStyles.green,
+      },
+    ],
+    [
+      {
+        content: [
           <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-reference#velocity-signals' key='velocity '>
             Velocity Signals
           </DocsLink>,
@@ -593,6 +614,34 @@ export function Playground() {
             key='tampered-request'
           >
             Tampered Request
+          </DocsLink>,
+        ],
+      },
+      { content: PLAYGROUND_COPY.mobileOnly, className: tableStyles.neutral },
+    ],
+
+    [
+      {
+        content: [
+          <DocsLink
+            href='https://docs.fingerprint.com/docs/smart-signals-reference#active-call-detection'
+            key='active-call'
+          >
+            Active Call Detection
+          </DocsLink>,
+        ],
+      },
+      { content: PLAYGROUND_COPY.mobileOnly, className: tableStyles.neutral },
+    ],
+
+    [
+      {
+        content: [
+          <DocsLink
+            href='https://docs.fingerprint.com/docs/smart-signals-reference#developer-tools-detection-for-mobile-devices'
+            key='mobile-developer-tools'
+          >
+            Developer Tools (Mobile)
           </DocsLink>,
         ],
       },
