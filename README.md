@@ -31,14 +31,14 @@ Alternatively, you can use [CodeSandbox](https://codesandbox.io/p/devbox/github/
 Prevent visitors from using a promo code multiple times. Protect yourself from customers abusing your promotional campaigns and increase sales.
 
 [🎟 Coupon & Promo Abuse Live Demo](https://demo.fingerprint.com/coupon-fraud)  
-[📖 Coupon & Promo Abuse Article](https://fingerprint.com/blog/prevent-coupon-promo-abuse-increase-sales/)
+[📖 Coupon & Promo Abuse Tutorial](https://docs.fingerprint.com/docs/coupon-abuse-use-case-tutorial)
 
 ### Credential Stuffing
 
 Protect your login page from repeated attempts to log in with stolen credentials and other account takeover threats. Without compromising the user experience of legitimate users.
 
 [🔐 Credential Stuffing Live Demo](https://demo.fingerprint.com/credential-stuffing)  
-[📖 Credential Stuffing Article](https://fingerprint.com/blog/stop-credential-stuffing/)
+[📖 Credential Stuffing Tutorial](https://docs.fingerprint.com/docs/credential-stuffing-use-case-tutorial)
 
 ### Loan Risk
 
@@ -52,14 +52,14 @@ Detect fraudulent loan applications submitted by previously rejected applicants.
 Protect your checkout from the use of stolen credit cards, chargebacks, and other payment fraud threats.
 
 [💵 Payment Fraud Live Demo](https://demo.fingerprint.com/payment-fraud)  
-[📖 Payment Fraud Article](https://fingerprint.com/blog/reducing-payment-fraud-with-reliable-visitor-identification/)
+[📖 Payment Fraud Tutorial](https://docs.fingerprint.com/docs/card-testing-use-case-tutorial)
 
 ### Paywall
 
 Protect your content and build a paywall that actually works. Prevent visitors from resetting their free content quota by clearing cookies, going incognito, or using a VPN.
 
 [🗞 Paywall Live Demo](https://demo.fingerprint.com/paywall)  
-[📖 Paywall Article](https://fingerprint.com/blog/how-paywalls-work-paywall-protection-tutorial/)
+[📖 Paywall Tutorial](https://docs.fingerprint.com/docs/paywall-use-case-tutorial)
 
 ### Personalization
 
@@ -87,7 +87,7 @@ Integrate Fingerprint Bot Detection with your Web Application Firewall and dynam
 Prevent financial losses from SMS pumping. Link every verification text message to a browser fingerprint and limit the number of verification requests from a single browser.
 
 [📱 SMS Pumping Protection Live Demo](https://demo.fingerprint.com/sms-pumping)  
-[📖 SMS Pumping Protection Article](https://fingerprint.com/blog/what-is-sms-fraud-prevention-tutorial/)
+[📖 SMS Pumping Protection Tutorial](https://docs.fingerprint.com/docs/sms-pumping-use-case-tutorial)
 
 ### VPN Detection and Location Spoofing Protection
 
@@ -101,7 +101,7 @@ Detect when visitors are using VPN to access your application. Prevent people sp
 Detect when multiple devices are using the same account. Prevent people from sharing their account with others.
 
 [👥 Account Sharing Prevention Live Demo](https://demo.fingerprint.com/account-sharing)  
-[📖 Account Sharing Prevention Article](https://fingerprint.com/blog/prevent-coupon-promo-abuse-increase-sales/)
+[📖 Account Sharing Prevention Tutorial](https://docs.fingerprint.com/docs/account-sharing-use-case-tutorial)
 
 ### New Account Fraud Prevention
 
