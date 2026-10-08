@@ -1,0 +1,30 @@
+# Checks markdown links, including #anchors.
+# https://github.com/fingerprintjs/docs-link-checker#github-action
+name: Check links
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    name: Markdown links
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: fingerprintjs/docs-link-checker@main
+        id: links
+        with:
+          files: |
+            README.md
+            contributing.md
+            src/**/*.md
+      - name: Upload report
+        if: ${{ !cancelled() && steps.links.outputs.report-html-path }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: link-check-report
+          path: ${{ steps.links.outputs.report-html-path }}

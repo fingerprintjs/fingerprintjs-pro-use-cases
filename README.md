@@ -24,6 +24,11 @@ You can learn more about these use cases on our [website](https://fingerprint.co
 
 Alternatively, you can use [CodeSandbox](https://codesandbox.io/p/devbox/github/fingerprintjs/fingerprintjs-pro-use-cases/) to run the project in your browser.
 
+<!-- TEST: known-broken links for docs-link-checker. Remove before merge. -->
+- [Missing page](https://demo.fingerprint.com/this-page-does-not-exist-link-checker-test)
+- [Missing file](./this-file-does-not-exist.md)
+- [Missing heading](#this-heading-does-not-exist)
+
 ## Use cases
 
 ### Coupon & Promo Abuse
