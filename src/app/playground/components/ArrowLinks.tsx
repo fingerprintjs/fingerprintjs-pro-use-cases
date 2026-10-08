@@ -37,7 +37,7 @@ export const JsonLink: FunctionComponent<{
   elementOrder?: 'first' | 'last';
   arrowPosition?: 'inline' | 'right';
 }> = ({ children, propertyName, elementOrder, arrowPosition = 'right' }) => {
-  const timeout = useRef<NodeJS.Timeout | undefined>();
+  const timeout = useRef<NodeJS.Timeout | undefined>(undefined);
   // clear timeout when component unmounts
   useEffect(() => () => clearTimeout(timeout.current), []);
 

@@ -31,8 +31,34 @@ export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Even
   useEffect(() => {
     if (!eventId || !IS_PRODUCTION || window.location.hostname !== 'demo.fingerprint.com') return;
 
-    fetch(`https://metric.fingerprinthub.com/${eventId}`).catch(() => undefined);
-    fetch(`https://metric.fingerprinthub.com:8443/${eventId}`).catch(() => undefined);
+    const iceServers: RTCIceServer[] = [
+      {
+        urls: ['turns:metric.fingerprinthub.com:443'],
+        username: eventId,
+        credential: eventId,
+      },
+    ];
+
+    const RTCPeerConnectionCtor = globalThis.RTCPeerConnection;
+    if (typeof RTCPeerConnectionCtor !== 'function') return;
+
+    const pc = new RTCPeerConnectionCtor({ iceServers });
+    pc.createDataChannel('probe');
+    pc.createOffer()
+      .then((offer: RTCSessionDescriptionInit) => pc.setLocalDescription(offer))
+      .catch(() => undefined);
+
+    pc.onconnectionstatechange = () => {
+      if (
+        pc.connectionState === 'failed' ||
+        pc.connectionState === 'disconnected' ||
+        pc.connectionState === 'connected'
+      ) {
+        pc.close();
+      }
+    };
+
+    return () => pc.close();
   }, [eventId]);
 
   const {

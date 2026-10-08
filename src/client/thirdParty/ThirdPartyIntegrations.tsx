@@ -6,7 +6,7 @@
  **/
 'use client';
 
-import { env } from '../../env';
+import { clientEnv } from '../../env/client';
 
 import { GoogleTagManager } from './Gtm';
 import { Amplitude } from './Amplitude';
@@ -16,10 +16,8 @@ import { usePlaygroundSignals } from '../../app/playground/hooks/usePlaygroundSi
 
 // GTM API requires dataLayer access through global window variable
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Window {
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    dataLayer?: object[];
+    dataLayer?: Array<Record<string, unknown>>;
   }
 }
 
@@ -29,8 +27,8 @@ const enableAnalytics = () => {
   window.dataLayer.push({ event: 'event.enableAnalytics' }, { enableAnalytics: true });
 };
 
-const GTM_ID = env.NEXT_PUBLIC_GTM_ID;
-const AMPLITUDE_API_KEY = env.NEXT_PUBLIC_AMPLITUDE_API_KEY;
+const GTM_ID = clientEnv.NEXT_PUBLIC_GTM_ID;
+const AMPLITUDE_API_KEY = clientEnv.NEXT_PUBLIC_AMPLITUDE_API_KEY;
 
 export const ThirdPartyIntegrations = () => {
   useEffect(() => {

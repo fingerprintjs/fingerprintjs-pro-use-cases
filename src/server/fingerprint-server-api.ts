@@ -1,5 +1,6 @@
 import { FingerprintServerApiClient, Region } from '@fingerprint/node-sdk';
-import { env } from '../env';
+import { clientEnv } from '../env/client';
+import { serverEnv } from '../env/server';
 
 const backendRegionMap = {
   eu: Region.EU,
@@ -10,6 +11,6 @@ const backendRegionMap = {
 export const getServerRegion = (region: 'eu' | 'ap' | 'us') => backendRegionMap[region];
 
 export const fingerprintServerApiClient = new FingerprintServerApiClient({
-  apiKey: env.SERVER_API_KEY,
-  region: getServerRegion(env.NEXT_PUBLIC_REGION),
+  apiKey: serverEnv.SERVER_API_KEY,
+  region: getServerRegion(clientEnv.NEXT_PUBLIC_REGION),
 });

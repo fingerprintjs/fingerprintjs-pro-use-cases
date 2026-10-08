@@ -110,7 +110,7 @@ describe('visitIpMatchesRequestIp', () => {
     expect(result).toBe(true);
   });
 
-  it('returns false when X-Forwarded-For is missing', () => {
+  it('fails closed when the client IP cannot be derived', () => {
     const result = visitIpMatchesRequestIp(sampleIps.ipv4[0], requestWithHeaders({}), TRUSTED_PROXY_COUNT);
     expect(result).toBe(false);
   });
@@ -125,5 +125,15 @@ describe('visitIpMatchesRequestIp', () => {
       TRUSTED_PROXY_COUNT,
     );
     expect(result).toBe(true);
+  });
+
+  it('skips the check for a Next.js localhost hop', () => {
+    expect(visitIpMatchesRequestIp(sampleIps.ipv4[0], requestWithHeaders({ 'x-forwarded-for': '127.0.0.1' }))).toBe(
+      true,
+    );
+    expect(visitIpMatchesRequestIp(sampleIps.ipv4[0], requestWithHeaders({ 'x-forwarded-for': '::1' }))).toBe(true);
+    expect(
+      visitIpMatchesRequestIp(sampleIps.ipv4[0], requestWithHeaders({ 'x-forwarded-for': '::ffff:127.0.0.1' })),
+    ).toBe(true);
   });
 });

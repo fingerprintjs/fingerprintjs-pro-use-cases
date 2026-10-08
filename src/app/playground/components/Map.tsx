@@ -6,7 +6,7 @@ import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import React from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { env } from '../../../env';
+import { clientEnv } from '../../../env/client';
 
 // This is a workaround for the marker icon not showing up out of the box
 const DefaultIcon = L.divIcon({
@@ -28,7 +28,7 @@ type MapProps = {
   zoom?: number;
 };
 
-const MAPBOX_ACCESS_TOKEN = env.NEXT_PUBLIC_MAPBOX_API_TOKEN;
+const MAPBOX_ACCESS_TOKEN = clientEnv.NEXT_PUBLIC_MAPBOX_API_TOKEN;
 
 export const Map: FunctionComponent<MapProps> = (props) => {
   const defaultZoom = 9; // Shows you roughly inside a specific city

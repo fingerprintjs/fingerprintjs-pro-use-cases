@@ -2,7 +2,8 @@ import { Event, FingerprintServerApiClient, Region, RequestError } from '@finger
 import { isIPv6 } from 'is-ip';
 import { ValidationDataResult } from '../utils/types';
 import { decryptSealedResult } from './decryptSealedResult';
-import { env } from '../env';
+import { clientEnv } from '../env/client';
+import { serverEnv } from '../env/server';
 import { getServerRegion } from './fingerprint-server-api';
 import { IS_DEVELOPMENT } from '../envShared';
 
@@ -78,7 +79,10 @@ export function clientIpFromCloudFrontViewerAddress(value: string | null): strin
   return trimmed.slice(0, colon);
 }
 
-export function getRequestClientIp(request: Request, trustedProxyCount = env.TRUSTED_PROXY_COUNT): string | undefined {
+export function getRequestClientIp(
+  request: Request,
+  trustedProxyCount = serverEnv.TRUSTED_PROXY_COUNT,
+): string | undefined {
   return (
     clientIpFromCloudFrontViewerAddress(request.headers.get('cloudfront-viewer-address')) ??
     clientIpFromXForwardedFor(request.headers.get('x-forwarded-for'), trustedProxyCount)
@@ -97,7 +101,7 @@ function logXForwardedForHops(request: Request) {
     host: request.headers.get('host'),
     hopCount: hops.length,
     hops,
-    trustedProxyCount: env.TRUSTED_PROXY_COUNT,
+    trustedProxyCount: serverEnv.TRUSTED_PROXY_COUNT,
     derivedClientIp: getRequestClientIp(request),
     cloudfrontViewerAddress: request.headers.get('cloudfront-viewer-address'),
     cfConnectingIp: request.headers.get('cf-connecting-ip'),
@@ -106,8 +110,12 @@ function logXForwardedForHops(request: Request) {
   });
 }
 
-export function visitIpMatchesRequestIp(visitIp = '', request: Request, trustedProxyCount = env.TRUSTED_PROXY_COUNT) {
-  // This check is skipped on purpose in localhost environments.
+export function visitIpMatchesRequestIp(
+  visitIp = '',
+  request: Request,
+  trustedProxyCount = serverEnv.TRUSTED_PROXY_COUNT,
+) {
+  // pnpm dev. pnpm start is NODE_ENV=production, so it still needs the loopback skip below.
   if (IS_DEVELOPMENT) {
     return true;
   }
@@ -119,8 +127,8 @@ export function visitIpMatchesRequestIp(visitIp = '', request: Request, trustedP
     return false;
   }
 
-  // IPv6 is not compared yet (event IP and request IP can disagree on v4 vs v6).
-  if (isIPv6(requestIp) || isIPv6(visitIp)) {
+  // Loopback (pnpm start) and IPv6 cannot be compared to Fingerprint's public event IP.
+  if (requestIp.startsWith('127.') || isIPv6(requestIp) || isIPv6(visitIp)) {
     return true;
   }
 
@@ -176,8 +184,8 @@ export const getAndValidateFingerprintResult = async ({
   eventId,
   req,
   sealedResult,
-  serverApiKey: apiKey = env.SERVER_API_KEY,
-  region = getServerRegion(env.NEXT_PUBLIC_REGION),
+  serverApiKey: apiKey = serverEnv.SERVER_API_KEY,
+  region = getServerRegion(clientEnv.NEXT_PUBLIC_REGION),
   options,
 }: GetFingerprintResultArgs): Promise<ValidationDataResult<Event>> => {
   logXForwardedForHops(req);
@@ -276,7 +284,7 @@ export const getAndValidateFingerprintResult = async ({
    */
   if (
     identification.confidence?.score &&
-    identification.confidence.score < (options?.minConfidenceScore ?? env.MIN_CONFIDENCE_SCORE)
+    identification.confidence.score < (options?.minConfidenceScore ?? serverEnv.MIN_CONFIDENCE_SCORE)
   ) {
     return {
       okay: false,

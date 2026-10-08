@@ -1,6 +1,6 @@
 import { Locator, Page, expect } from '@playwright/test';
 import { TEST_ATTRIBUTES, TEST_IDS } from '../src/client/testIDs';
-import { Severity } from '../src/server/checks';
+import type { Severity } from '../src/server/checks';
 
 /**
  *
@@ -10,8 +10,11 @@ import { Severity } from '../src/server/checks';
  */
 export async function blockGoogleTagManager(page: Page) {
   await page.route('**/*', (request) => {
-    request.request().url().includes('googletagmanager.com') ? request.abort() : request.continue();
-    return;
+    if (request.request().url().includes('googletagmanager.com')) {
+      request.abort();
+      return;
+    }
+    request.continue();
   });
 }
 

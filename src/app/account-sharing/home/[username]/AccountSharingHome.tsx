@@ -25,7 +25,7 @@ type Card = {
   url?: string;
 };
 
-const CardRow: FunctionComponent<{ cards: Card[]; scrollContainerRef?: React.RefObject<HTMLDivElement> }> = ({
+const CardRow: FunctionComponent<{ cards: Card[]; scrollContainerRef?: React.RefObject<HTMLDivElement | null> }> = ({
   cards,
   scrollContainerRef,
 }) => {
