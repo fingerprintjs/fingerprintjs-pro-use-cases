@@ -1,0 +1,57 @@
+/**
+ * CollapsibleJsonViewer global overrides for react18-json-view.
+ * Kept in a plain global stylesheet because Turbopack fails on nested
+ * :global { ... } blocks inside CSS modules.
+ */
+.reactJsonViewerWrapper {
+  padding: 16px;
+
+  .json-view {
+    color: v('dark-gray');
+    --json-property: rgb(201, 44, 44);
+    --json-index: var(--gray-5);
+    --json-number: #676dff;
+    --json-string: rgb(47, 156, 10);
+    --json-boolean: #676dff;
+    --json-null: #676dff;
+
+    font-weight: 400;
+  }
+  .json-view .json-view--property {
+    color: var(--json-property);
+  }
+  .json-view .json-view--index {
+    color: var(--json-index);
+  }
+  .json-view .json-view--number {
+    color: var(--json-number);
+  }
+  .json-view .json-view--string {
+    color: var(--json-string);
+  }
+  .json-view .json-view--boolean {
+    color: var(--json-boolean);
+  }
+  .json-view .json-view--null {
+    color: var(--json-null);
+  }
+
+  // Make expand object button look more obviously clickable
+  .json-view .jv-button {
+    visibility: hidden;
+    position: relative;
+
+    &:after {
+      visibility: visible;
+      position: absolute;
+      top: 0;
+      left: 0;
+      content: '···';
+      background: v('gray-box-stroke');
+      border-radius: 8px;
+      letter-spacing: -3px;
+      padding-left: 3px;
+      padding-right: 6px;
+    }
+  }
+}

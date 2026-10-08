@@ -35,6 +35,16 @@ jobs:
 
       - name: Spellcheck
         run: pnpm spellcheck
+  actionlint:
+    name: Lint GitHub Actions
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check workflow files
+        run: |
+          bash <(curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/914e7df21a07ef503a81201c76d2b11c789d3fca/scripts/download-actionlint.bash) 1.7.12
+          ./actionlint -color
+        shell: bash
   unit-tests:
     name: Unit tests
     runs-on: ubuntu-22.04
@@ -77,7 +87,7 @@ jobs:
 
       - name: Get installed Playwright version (used in cache key)
         id: playwright-version
-        run: echo "PLAYWRIGHT_VERSION=$(node -e "process.stdout.write(require('@playwright/test/package.json').version)")" >> $GITHUB_ENV
+        run: echo "PLAYWRIGHT_VERSION=$(node -e "process.stdout.write(require('@playwright/test/package.json').version)")" >> "$GITHUB_ENV"
 
       - name: Cache Playwright browser binaries
         uses: actions/cache@v4

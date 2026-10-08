@@ -1,37 +1,99 @@
-import { beforeEach, describe, expect, it } from 'vitest';
-import { visitIpMatchesRequestIp } from './checks';
+import { describe, expect, it } from 'vitest';
+import { clientIpFromXForwardedFor, visitIpMatchesRequestIp } from './checks';
 
-describe('checks', () => {
-  describe('checkIpAddressIntegrity', () => {
-    beforeEach(() => {
-      Object.assign(process.env, {
-        NODE_ENV: 'production',
-      });
-    });
-    const sampleIps = {
-      ipv6: ['2001:db8:3333:4444:5555:6666:7777:8888.'],
-      ipv4: ['192.0.2.146', '192.1.2.122'],
-    };
+const TRUSTED_PROXY_COUNT = 2;
+const PROXY_HOP_A = '18.68.31.6';
+const PROXY_HOP_B = '172.68.134.34';
+const sampleIps = {
+  ipv6: '2001:db8:3333:4444:5555:6666:7777:8888',
+  ipv4: ['192.0.2.146', '192.1.2.122'],
+};
 
-    it('should skip ipv6 addresses', () => {
-      const result = visitIpMatchesRequestIp(sampleIps.ipv4[0], {
-        headers: new Headers([['x-forwarded-for', sampleIps.ipv6[0]]]),
-      } as unknown as Request);
-      expect(result).toBe(true);
-    });
+const requestWithHeaders = (headers: Record<string, string>) =>
+  ({
+    headers: new Headers(Object.entries(headers)),
+  }) as unknown as Request;
 
-    it('should return true if ipv4 matches', () => {
-      const result = visitIpMatchesRequestIp(sampleIps.ipv4[0], {
-        headers: new Headers([['x-forwarded-for', sampleIps.ipv4[0]]]),
-      } as unknown as Request);
-      expect(result).toBe(true);
-    });
+const honestXff = (clientIp: string) => `${clientIp}, ${PROXY_HOP_A}, ${PROXY_HOP_B}`;
+const spoofedXff = (spoof: string, clientIp: string) => `${spoof}, ${clientIp}, ${PROXY_HOP_A}, ${PROXY_HOP_B}`;
 
-    it('should return false if ipv4 does not match', () => {
-      const result = visitIpMatchesRequestIp(sampleIps.ipv4[0], {
-        headers: new Headers([['x-forwarded-for', sampleIps.ipv4[1]]]),
-      } as unknown as Request);
-      expect(result).toBe(false);
-    });
+describe('clientIpFromXForwardedFor', () => {
+  it('takes the hop before the trusted proxies', () => {
+    expect(clientIpFromXForwardedFor(honestXff(sampleIps.ipv4[0]), 2)).toBe(sampleIps.ipv4[0]);
+  });
+
+  it('ignores a client-supplied left-most value', () => {
+    expect(clientIpFromXForwardedFor(spoofedXff(sampleIps.ipv4[1], sampleIps.ipv4[0]), 2)).toBe(sampleIps.ipv4[0]);
+  });
+
+  it('returns undefined when there are not enough hops', () => {
+    expect(clientIpFromXForwardedFor(sampleIps.ipv4[0], 2)).toBeUndefined();
+    expect(clientIpFromXForwardedFor(null, 2)).toBeUndefined();
+  });
+
+  it('takes the only hop when trustedProxyCount is 0', () => {
+    expect(clientIpFromXForwardedFor(sampleIps.ipv4[0], 0)).toBe(sampleIps.ipv4[0]);
+  });
+});
+
+describe('visitIpMatchesRequestIp', () => {
+  it('skips ipv6 addresses', () => {
+    const result = visitIpMatchesRequestIp(
+      sampleIps.ipv4[0],
+      requestWithHeaders({ 'x-forwarded-for': honestXff(sampleIps.ipv6) }),
+      TRUSTED_PROXY_COUNT,
+    );
+    expect(result).toBe(true);
+  });
+
+  it('returns true if ipv4 matches', () => {
+    const result = visitIpMatchesRequestIp(
+      sampleIps.ipv4[0],
+      requestWithHeaders({ 'x-forwarded-for': honestXff(sampleIps.ipv4[0]) }),
+      TRUSTED_PROXY_COUNT,
+    );
+    expect(result).toBe(true);
+  });
+
+  it('returns false if ipv4 does not match', () => {
+    const result = visitIpMatchesRequestIp(
+      sampleIps.ipv4[0],
+      requestWithHeaders({ 'x-forwarded-for': honestXff(sampleIps.ipv4[1]) }),
+      TRUSTED_PROXY_COUNT,
+    );
+    expect(result).toBe(false);
+  });
+
+  it('does not trust a spoofed left-most X-Forwarded-For value', () => {
+    const result = visitIpMatchesRequestIp(
+      sampleIps.ipv4[0],
+      requestWithHeaders({ 'x-forwarded-for': spoofedXff(sampleIps.ipv4[0], sampleIps.ipv4[1]) }),
+      TRUSTED_PROXY_COUNT,
+    );
+    expect(result).toBe(false);
+  });
+
+  it('does not skip the check for a non-IP left-most value', () => {
+    const result = visitIpMatchesRequestIp(
+      sampleIps.ipv4[0],
+      requestWithHeaders({ 'x-forwarded-for': spoofedXff('spoof', sampleIps.ipv4[0]) }),
+      TRUSTED_PROXY_COUNT,
+    );
+    expect(result).toBe(true);
+  });
+
+  it('fails closed when the client IP cannot be derived', () => {
+    const result = visitIpMatchesRequestIp(sampleIps.ipv4[0], requestWithHeaders({}), TRUSTED_PROXY_COUNT);
+    expect(result).toBe(false);
+  });
+
+  it('skips the check for a Next.js localhost hop', () => {
+    expect(visitIpMatchesRequestIp(sampleIps.ipv4[0], requestWithHeaders({ 'x-forwarded-for': '127.0.0.1' }))).toBe(
+      true,
+    );
+    expect(visitIpMatchesRequestIp(sampleIps.ipv4[0], requestWithHeaders({ 'x-forwarded-for': '::1' }))).toBe(true);
+    expect(
+      visitIpMatchesRequestIp(sampleIps.ipv4[0], requestWithHeaders({ 'x-forwarded-for': '::ffff:127.0.0.1' })),
+    ).toBe(true);
   });
 });

@@ -20,7 +20,7 @@ import { Alert } from '../../client/components/Alert/Alert';
 import { LoginPayload, LoginResponse } from './api/login/route';
 import { BackArrow } from '../../client/components/BackArrow/BackArrow';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useQueryState, parseAsStringEnum } from 'next-usequerystate';
+import { useQueryState, parseAsStringEnum } from 'nuqs';
 import { ACCOUNT_SHARING_COPY } from './const';
 import { useSessionStorage } from 'react-use';
 
