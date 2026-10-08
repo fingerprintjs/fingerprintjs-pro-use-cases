@@ -2,7 +2,7 @@
 
 import { UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
 import { useVisitorData } from '@fingerprint/react';
-import { useQueryState } from 'next-usequerystate';
+import { useQueryState } from 'nuqs';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { USE_CASES } from '../../client/content';
 import { Select, SelectItem } from '../../client/components/Select/Select';

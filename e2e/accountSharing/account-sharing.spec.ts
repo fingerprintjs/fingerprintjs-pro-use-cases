@@ -96,12 +96,14 @@ test.describe('Account Sharing - single browser tests', () => {
   });
 
   test('should allow switching between signup and login', async ({ page }) => {
+    // nuqs writes the query with history.replaceState, not a Next navigation, so waitForURL hangs.
+    // Signup is the default, so that param is omitted. https://nuqs.dev/docs/options
     await page.getByTestId(TEST_ID.switchToLoginButton).click();
-    await page.waitForURL('/account-sharing?mode=login');
+    await expect.poll(() => new URL(page.url()).searchParams.get('mode')).toBe('login');
     await expect(page.getByTestId(TEST_ID.loginButton)).toBeVisible();
 
     await page.getByTestId(TEST_ID.switchToSignUpButton).click();
-    await page.waitForURL('/account-sharing?mode=signup');
+    await expect.poll(() => new URL(page.url()).searchParams.get('mode')).toBeNull();
     await expect(page.getByTestId(TEST_ID.signUpButton)).toBeVisible();
   });
 

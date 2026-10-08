@@ -29,6 +29,7 @@
     "Korsit",
     "mapbox",
     "notistack",
+    "nuqs",
     "omnichannel",
     "pastable",
     "paypod",
@@ -57,6 +58,7 @@
     "node_modules",
     "dist",
     "src/env/server.ts",
+    "src/env/serverEnv.ts",
     "src/env/client.ts"
   ]
 }

@@ -9,6 +9,7 @@ export async function generateStaticParams() {
 
 export const metadata = generateUseCaseMetadata(USE_CASES.paywall);
 
-export default function ArticlePage({ params }: { params: { id: string } }) {
-  return <Article articleId={params.id} embed={false} />;
+export default async function ArticlePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  return <Article articleId={id} embed={false} />;
 }

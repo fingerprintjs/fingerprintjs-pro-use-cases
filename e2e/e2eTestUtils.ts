@@ -10,8 +10,11 @@ import type { Severity } from '../src/server/checks';
  */
 export async function blockGoogleTagManager(page: Page) {
   await page.route('**/*', (request) => {
-    request.request().url().includes('googletagmanager.com') ? request.abort() : request.continue();
-    return;
+    if (request.request().url().includes('googletagmanager.com')) {
+      request.abort();
+      return;
+    }
+    request.continue();
   });
 }
 
