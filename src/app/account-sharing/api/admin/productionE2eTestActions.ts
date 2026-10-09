@@ -1,3 +1,7 @@
+/**
+ * Database actions used by the account-sharing admin route for production E2E setup and cleanup.
+ * Keep them in `src` so the Next.js server route does not import and bundle Playwright test helpers.
+ */
 import { SessionDbModel, UserDbModel } from '../database';
 import { hashString } from '../../../../server/server-utils';
 
