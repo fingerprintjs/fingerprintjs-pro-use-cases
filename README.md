@@ -19,8 +19,8 @@ You can learn more about these use cases on our [website](https://fingerprint.co
 
 ## How to run
 
-1. `yarn install`
-2. `yarn dev`
+1. `pnpm install`
+2. `pnpm dev`
 
 Alternatively, you can use [CodeSandbox](https://codesandbox.io/p/devbox/github/fingerprintjs/fingerprintjs-pro-use-cases/) to run the project in your browser.
 

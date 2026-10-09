@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server';
-import {
-  ProductionE2eTestActionName,
-  productionE2eTestActions,
-} from '../../../../../e2e/accountSharing/accountSharingTestUtils';
 import { E2E_TEST_TOKEN } from '../../../../envShared';
+import { ProductionE2eTestActionName, productionE2eTestActions } from './productionE2eTestActions';
 
 /**
  * Sometimes e2e tests manipulate the database to set up or clean up test data.
