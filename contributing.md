@@ -4,22 +4,22 @@ The `main` branch is locked for the push action. For proposing changes, use the 
 
 ## Working with code
 
-We prefer using [yarn](https://yarnpkg.com/) for installing dependencies and running scripts.
+We prefer using [pnpm](https://pnpm.io/) for installing dependencies and running scripts.
 
-* Run `yarn install` to install dependencies.
-* Run `yarn dev` to start the local development server.
-* Run `yarn build` to build a production build of the project.
-* Run `yarn start` to start the production build of the project.
-* Run `yarn lint` to check the code style using [ESLint](https://eslint.org/).
+* Run `pnpm install` to install dependencies.
+* Run `pnpm dev` to start the local development server.
+* Run `pnpm build` to build a production build of the project.
+* Run `pnpm start` to start the production build of the project.
+* Run `pnpm lint` to check the code style using [ESLint](https://eslint.org/).
 
 See the [package.json](./package.json) -> `scripts` section for more useful commands.
 
 ## Testing
 
-* Run `yarn test` to run unit tests using [Vitest](https://vitest.dev/).
+* Run `pnpm test` to run unit tests using [Vitest](https://vitest.dev/).
 * To run end-to-end tests using [Playwright](https://playwright.dev/):
-  *  First run `yarn dev` or `yarn start` to start the development or production server. 
-  *  Then run `yarn test:e2e:chrome` to run the tests in Chrome.
+  *  First run `pnpm dev` or `pnpm start` to start the development or production server. 
+  *  Then run `pnpm test:e2e:chrome` to run the tests in Chrome.
 
 ### Deployment
 
