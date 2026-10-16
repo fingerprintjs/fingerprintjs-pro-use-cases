@@ -9,6 +9,7 @@ import { RefreshButton } from './components/RefreshButton';
 import { ipBlocklistResult } from './components/IpBlocklistResult';
 import { proxyDetectionResult } from './components/ProxyDetectionResult';
 import { vpnDetectionResult } from './components/VpnDetectionResult';
+import { ProximityDetectionResult } from './components/ProximityDetectionResult';
 import { usePlaygroundSignals } from './hooks/usePlaygroundSignals';
 import { getLocationName, getZoomLevel } from '../../utils/locationUtils';
 import Link from 'next/link';
@@ -500,6 +501,19 @@ export function Playground() {
     ],
     [
       {
+        content: (
+          <DocsLink href='https://docs.fingerprint.com/docs/smart-signals-reference#proximity-detection'>
+            Proximity Detection
+          </DocsLink>
+        ),
+      },
+      {
+        content: <ProximityDetectionResult event={identificationEvent} />,
+        className: identificationEvent?.proximity ? tableStyles.green : tableStyles.neutral,
+      },
+    ],
+    [
+      {
         content: [
           <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-reference#raw-device-attributes' key='raw'>
             Raw Device Attributes
@@ -561,9 +575,9 @@ export function Playground() {
         content: [
           <DocsLink
             href='https://docs.fingerprint.com/docs/mobile-identification#proximity-detection-for-mobile-devices'
-            key='proximity'
+            key='mobile-proximity'
           >
-            Proximity Detection
+            Proximity Detection (Mobile)
           </DocsLink>,
         ],
       },

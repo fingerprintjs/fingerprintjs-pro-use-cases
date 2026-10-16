@@ -253,6 +253,15 @@ h2.sectionTitle {
     monospace;
 }
 
+// Button flows inline after the text to keep the row as short as text-only rows
+.proximityAction button {
+  display: inline-flex;
+  vertical-align: middle;
+  margin-left: rem(8px);
+  padding: rem(1px) rem(10px);
+  font-size: rem(13px);
+}
+
 .locationText {
   color: v('dark-black');
   font-family: Inter;
