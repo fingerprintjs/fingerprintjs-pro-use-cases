@@ -40,12 +40,26 @@ test.beforeEach(async ({ page }) => {
 test.describe('Playground page without JavaScript', () => {
   test.use({ javaScriptEnabled: false });
 
-  // The AI API result is fetched on the server. It is either a result table or an "unavailable" note.
-  test('server-renders the Automation Intelligence API section', async ({ page }) => {
-    const section = page.getByTestId(TEST_ID.aiApiSection);
-    await expect(section).toBeVisible();
-    await expect(section.getByText('Automation Intelligence API', { exact: true })).toBeVisible();
-    await expect(section.getByText(/Bot|result unavailable/).first()).toBeVisible();
+  // The AI API is called from the Next server, so the browser cannot mock it.
+  // X-Forwarded-For picks the client IP the server sends to the real AI API (TRUSTED_PROXY_COUNT is 0 in tests).
+  test.describe('with a known client IP', () => {
+    test.use({ extraHTTPHeaders: { 'x-forwarded-for': '8.8.8.8' } });
+
+    test('server-renders the AI API result table', async ({ page }) => {
+      const section = page.getByTestId(TEST_ID.aiApiSection);
+      await expect(section.getByText('Automation Intelligence API', { exact: true })).toBeVisible();
+      await expect(section.getByRole('row', { name: 'IP address 8.8.8.8' })).toBeVisible();
+      await expect(section.getByRole('row', { name: 'Data center IP Yes (Google)' })).toBeVisible();
+    });
+  });
+
+  test.describe('with an invalid client IP', () => {
+    test.use({ extraHTTPHeaders: { 'x-forwarded-for': 'not-an-ip' } });
+
+    test('server-renders the AI API unavailable note', async ({ page }) => {
+      const section = page.getByTestId(TEST_ID.aiApiSection);
+      await expect(section.getByText(/result unavailable: AI API returned 400/)).toBeVisible();
+    });
   });
 });
 
@@ -139,6 +153,14 @@ test.describe('Playground page', () => {
 
     await assertAlert({ page, severity: 'error', text: 'Server API Request' });
     await expect(page.getByText('Your Visitor ID is')).toBeVisible();
+  });
+
+  test('keeps the AI API section when the first Server API request fails', async ({ page }) => {
+    await page.route('**/api/event/v4/**', (route) => route.abort('failed'));
+    await page.reload();
+
+    await assertAlert({ page, severity: 'error', text: 'Server API Request' });
+    await expect(page.getByTestId(TEST_ID.aiApiSection)).toBeVisible();
   });
 });
 
