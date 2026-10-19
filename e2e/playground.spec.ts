@@ -1,6 +1,7 @@
 import { Page, expect, test } from '@playwright/test';
 import { assertAlert, blockGoogleTagManager, scrollToView } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
+import { PRODUCTION_E2E_TEST_BASE_URL } from '../src/envShared';
 
 const TEST_ID = TEST_IDS.playground;
 
@@ -40,9 +41,17 @@ test.beforeEach(async ({ page }) => {
 test.describe('Playground page without JavaScript', () => {
   test.use({ javaScriptEnabled: false });
 
+  // The hourly production run cannot pick the client IP, so it only checks that a result renders.
+  test('server-renders the AI API result table on the hosted site', async ({ page }) => {
+    test.skip(!PRODUCTION_E2E_TEST_BASE_URL, 'Hosted site only');
+    await expect(page.getByTestId(TEST_ID.aiApiSection).getByRole('row', { name: /^IP address/ })).toBeVisible();
+  });
+
   // The AI API is called from the Next server, so the browser cannot mock it.
   // X-Forwarded-For picks the client IP the server sends to the real AI API (TRUSTED_PROXY_COUNT is 0 in tests).
+  // Behind the production proxies, the server takes the real client IP instead, so skip these there.
   test.describe('with a known client IP', () => {
+    test.skip(Boolean(PRODUCTION_E2E_TEST_BASE_URL), 'Needs control of X-Forwarded-For');
     test.use({ extraHTTPHeaders: { 'x-forwarded-for': '8.8.8.8' } });
 
     test('server-renders the AI API result table', async ({ page }) => {
@@ -54,6 +63,7 @@ test.describe('Playground page without JavaScript', () => {
   });
 
   test.describe('with an invalid client IP', () => {
+    test.skip(Boolean(PRODUCTION_E2E_TEST_BASE_URL), 'Needs control of X-Forwarded-For');
     test.use({ extraHTTPHeaders: { 'x-forwarded-for': 'not-an-ip' } });
 
     test('server-renders the AI API unavailable note', async ({ page }) => {
