@@ -11,7 +11,6 @@
  */
 import { Event } from '@fingerprint/node-sdk';
 import { useEffect, useRef, useState } from 'react';
-import Button from '../../../client/components/Button/Button';
 import { TEST_IDS } from '../../../client/testIDs';
 import { JsonLink } from './ArrowLinks';
 import styles from '../playground.module.scss';
@@ -100,30 +99,28 @@ export function ProximityDetectionResult({ event }: { event: Event | undefined }
     if (locationError) return locationError;
     if (isLocationTooSlow) {
       return (
-        <div className={styles.proximityAction}>
-          Location was too slow
-          <Button size='small' variant='primary' outlined onClick={reloadToCollectLocation}>
+        <>
+          Location was too slow.{' '}
+          <button className={styles.inlineLinkButton} onClick={reloadToCollectLocation}>
             Try again
-          </Button>
-        </div>
+          </button>
+        </>
       );
     }
     if (permission === 'denied') return 'Location denied in browser settings';
     if (permission === 'granted') return 'Not available';
     if (permission === 'prompt' || permission === 'unsupported') {
       return (
-        <div className={styles.proximityAction}>
-          Requires location permission
-          <Button
-            size='small'
-            variant='primary'
-            outlined
+        <>
+          Location required.{' '}
+          <button
+            className={styles.inlineLinkButton}
             data-testid={TEST_IDS.playground.grantLocationButton}
             onClick={requestLocation}
           >
-            Grant
-          </Button>
-        </div>
+            Grant permission
+          </button>
+        </>
       );
     }
     return null;
