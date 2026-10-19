@@ -29,11 +29,14 @@ Proof is the test output plus the trace (`pnpm exec playwright show-trace <trace
 
 ## Gotchas
 
-- **Use port 3000 only.** The default public key belongs to the demo's Fingerprint staging workspace, which allows `localhost:3000` but not 3001. On other ports, identification fails with 403 `origin_not_available`. To use another port, put your own `NEXT_PUBLIC_API_KEY`, `NEXT_PUBLIC_REGION` `SERVER_API_KEY` in `.env`.
+- **Use port 3000 only.** The default public key belongs to the demo's Fingerprint staging workspace, which allows `localhost:3000` but not 3001. On other ports, identification fails with 403 `origin_not_available`. To use another port, put your own `NEXT_PUBLIC_API_KEY`, `NEXT_PUBLIC_REGION`, and `SERVER_API_KEY` in `.env`.
 - **Port 3000 may be the user's server.** Check with `lsof -nP -iTCP:3000 -sTCP:LISTEN`. Drive it only if it runs from the checkout you are verifying. Never stop it.
 - **Without a server on `PORT`, Playwright starts `pnpm start`,** which serves the last production build, not your code.
 - **Stop only what you started, by process group, never by name.** `pnpm dev` puts Next in a separate process group, so start `next dev` directly. To give it its own group from zsh, use `bash -c 'set -m; PORT=3000 node_modules/.bin/next dev > server.log 2>&1 & echo $! > server.pgid'`, then stop it with `kill -TERM -- -$(cat server.pgid)`.
 - **`.data/database.sqlite` in the user's checkout holds their local data.** Don't delete it. For fresh state, run in a worktree (`git worktree add`, copy `.env`, `pnpm install`). SQLite creates the file on the first API call.
+- **The server writes `.data/` in the directory it runs from.** In a worktree, read the database from the worktree, not the main checkout.
+- **`Updating firewall ruleset failed ... not authorized` in the server log after Restart is harmless** without Cloudflare env vars. The reset still succeeds.
+- **Playwright needs its browsers installed.** On a fresh machine, run `pnpm exec playwright install chromium` first.
 - **E2E tests click Restart first,** which clears data for the current visitor only. Skip it and earlier runs change the result.
 - **Playwright empties the `--output` directory on each run.** Use a new directory per run.
 - **Keep the specs' `FINGERPRINT_BOT_USER_AGENT`.** Some routes deny `bad` bots.
