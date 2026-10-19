@@ -35,6 +35,8 @@ import { LayoutUI } from '../LayoutUI';
 import Image from 'next/image';
 import GooglePlaySvg from './img/google_play.svg';
 import AppStoreSvg from './img/app_store.svg';
+import { AiApiSection } from './components/AiApiSection';
+import type { AiApiResult } from '../../server/automation-intelligence-api';
 
 // Nothing magic about `8` here, each customer must define their own use-case specific threshold
 const SUSPECT_SCORE_RED_THRESHOLD = 8;
@@ -91,7 +93,7 @@ function formatRequestError(agentError?: Error | null, serverError?: Error | nul
     : `Server API Request ${serverError?.toString()}.`;
 }
 
-export function Playground() {
+export function Playground({ aiApiResult }: { aiApiResult?: AiApiResult }) {
   const {
     agentResponse,
     isLoadingAgentResponse,
@@ -721,6 +723,8 @@ export function Playground() {
         </h1>
         <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>
       </Container>
+      {/* Not passed in the embed page */}
+      {aiApiResult && <AiApiSection result={aiApiResult} />}
       <Container size='large'>
         <div className={styles.runningIntelligence}>
           {!identificationData ? (

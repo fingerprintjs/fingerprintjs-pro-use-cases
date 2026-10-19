@@ -37,6 +37,18 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/playground', { waitUntil: 'networkidle' });
 });
 
+test.describe('Playground page without JavaScript', () => {
+  test.use({ javaScriptEnabled: false });
+
+  // The AI API result is fetched on the server. It is either a result table or an "unavailable" note.
+  test('server-renders the Automation Intelligence API section', async ({ page }) => {
+    const section = page.getByTestId(TEST_ID.aiApiSection);
+    await expect(section).toBeVisible();
+    await expect(section.getByText('Automation Intelligence API', { exact: true })).toBeVisible();
+    await expect(section.getByText(/Bot|result unavailable/).first()).toBeVisible();
+  });
+});
+
 test.describe('Playground page', () => {
   test('Page renders basic skeleton elements', async ({ page }) => {
     await page.getByText('Fingerprint Pro Playground', { exact: true }).waitFor();

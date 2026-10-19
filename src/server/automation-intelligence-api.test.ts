@@ -1,0 +1,59 @@
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { fetchAiApiResult } from './automation-intelligence-api';
+
+const pageRequestHeaders = new Headers({
+  host: 'demo.fingerprint.com',
+  'x-forwarded-proto': 'https',
+  'x-forwarded-for': '203.0.113.7',
+  'user-agent': 'test-agent',
+  cookie: 'session=secret',
+  authorization: 'Bearer secret',
+  'e2e-test-password': 'secret',
+});
+
+const stubFetch = (response: Response) => {
+  const fetchMock = vi.fn().mockResolvedValue(response);
+  vi.stubGlobal('fetch', fetchMock);
+  return fetchMock;
+};
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
+
+describe('fetchAiApiResult', () => {
+  it('sends the page request to the AI API without secret header values', async () => {
+    const fetchMock = stubFetch(Response.json({ event_id: '1.abc', timestamp: 1, source: 'edge' }));
+
+    const result = await fetchAiApiResult(pageRequestHeaders);
+
+    expect(result).toEqual({ event: { event_id: '1.abc', timestamp: 1, source: 'edge' } });
+    const [url, init] = fetchMock.mock.calls[0];
+    expect(url).toMatch(/^https:\/\/(eu\.|ap\.)?api\.fpjs\.io\/v4\/edge$/);
+    expect(init.headers.Authorization).toMatch(/^Bearer .+/);
+    const body = JSON.parse(init.body);
+    expect(body).toMatchObject({
+      method: 'GET',
+      url: 'https://demo.fingerprint.com/playground',
+      ipv4_address: '203.0.113.7',
+    });
+    expect(body.headers).toContainEqual({ name: 'user-agent', value: 'test-agent' });
+    for (const name of ['cookie', 'authorization', 'e2e-test-password']) {
+      expect(body.headers).toContainEqual({ name, value: '' });
+    }
+  });
+
+  it('returns an error instead of throwing when the API fails', async () => {
+    stubFetch(Response.json({ error: { code: 'wrong_region', message: 'wrong region' } }, { status: 403 }));
+    expect(await fetchAiApiResult(pageRequestHeaders)).toEqual({ error: 'AI API returned 403 wrong_region' });
+
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new DOMException('timed out', 'TimeoutError')));
+    expect(await fetchAiApiResult(pageRequestHeaders)).toEqual({ error: expect.stringContaining('timed out') });
+  });
+
+  it('returns an error when there is no client IP', async () => {
+    expect(await fetchAiApiResult(new Headers({ host: 'localhost:3000' }))).toEqual({
+      error: 'No client IP found in X-Forwarded-For.',
+    });
+  });
+});
