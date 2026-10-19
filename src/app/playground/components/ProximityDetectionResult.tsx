@@ -5,7 +5,7 @@
  * - Once granted, we reload the page so the new event includes `proximity`.
  *   - The agent reads location only when it loads, calling `getData()` again on the same page does not collect it.
  *   - The agent does not wait for location, it sends as soon as its other signals are ready (~160 ms on a fast device).
- *     If location was slower than that, the user can reload again with a button.
+ *     If location was slower than that, the user can reload again with a "Reload" link.
  * - Server API omits `proximity` when location was not available.
  * https://docs.fingerprint.com/docs/smart-signals-reference#proximity-detection
  */
@@ -15,7 +15,7 @@ import { TEST_IDS } from '../../../client/testIDs';
 import { JsonLink } from './ArrowLinks';
 import styles from '../playground.module.scss';
 
-// Set right before our reload, so the reloaded page knows to check the result and scroll to it
+// Set right before our reload, so the reloaded page knows to scroll to the result
 const PROXIMITY_RELOAD_KEY = 'playgroundProximityReload';
 
 // Same options the JS agent uses, so the browser has a fresh fix ready when the agent asks after the reload
@@ -28,7 +28,6 @@ export function ProximityDetectionResult({ event }: { event: Event | undefined }
   const [permission, setPermission] = useState<LocationPermission>();
   const [locationError, setLocationError] = useState<string>();
   const [isReloading, setIsReloading] = useState(false);
-  const [isLocationTooSlow, setIsLocationTooSlow] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Reading the permission state does not prompt the user
@@ -58,7 +57,6 @@ export function ProximityDetectionResult({ event }: { event: Event | undefined }
   useEffect(() => {
     if (!event || !sessionStorage.getItem(PROXIMITY_RELOAD_KEY)) return;
     sessionStorage.removeItem(PROXIMITY_RELOAD_KEY);
-    setIsLocationTooSlow(!event.proximity);
     containerRef.current?.scrollIntoView({ block: 'center' });
   }, [event]);
 
@@ -87,7 +85,8 @@ export function ProximityDetectionResult({ event }: { event: Event | undefined }
     );
 
   const renderResult = () => {
-    const proximity = event?.proximity;
+    if (!event) return null;
+    const proximity = event.proximity;
     if (proximity) {
       return (
         <JsonLink propertyName='proximity'>
@@ -97,18 +96,18 @@ export function ProximityDetectionResult({ event }: { event: Event | undefined }
     }
     if (isReloading) return 'Reloading the page to collect location...';
     if (locationError) return locationError;
-    if (isLocationTooSlow) {
+    if (permission === 'denied') return 'Location denied. Allow it in browser settings and reload.';
+    if (permission === 'granted') {
+      // Location was slower than the agent, or the user allowed it in settings after the page loaded
       return (
         <>
-          Location was too slow.{' '}
+          Location not collected.{' '}
           <button className={styles.inlineLinkButton} onClick={reloadToCollectLocation}>
-            Try again
+            Reload
           </button>
         </>
       );
     }
-    if (permission === 'denied') return 'Location denied. Allow it in browser settings and reload.';
-    if (permission === 'granted') return 'Not available';
     if (permission === 'prompt' || permission === 'unsupported') {
       return (
         <>

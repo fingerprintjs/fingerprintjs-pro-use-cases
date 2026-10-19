@@ -187,15 +187,15 @@ test.describe('Proximity detection', () => {
   });
 
   test('offers to try again when location is too slow for the agent', async ({ page, context }) => {
-    // Read 1: our button, read 2: agent after the reload (too slow), read 3: agent after "Try again"
+    // Read 1: our button, read 2: agent after the reload (too slow), read 3: agent after "Reload"
     await fakeFirstVisitLocation(page, context, [2]);
     await page.reload({ waitUntil: 'networkidle' });
 
     await page.getByTestId(TEST_ID.grantLocationButton).click();
 
     const proximityRow = getWebProximityRow(page);
-    await expect(proximityRow).toContainText('Location was too slow', { timeout: 15000 });
-    await proximityRow.getByRole('button', { name: 'Try again' }).click();
+    await expect(proximityRow).toContainText('Location not collected', { timeout: 15000 });
+    await proximityRow.getByRole('button', { name: 'Reload' }).click();
 
     await expect(proximityRow).toContainText(/Zone .+ m radius/, { timeout: 15000 });
     expect(await getLocationReads(page)).toBe(3);
