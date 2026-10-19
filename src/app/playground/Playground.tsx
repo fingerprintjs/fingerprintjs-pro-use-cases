@@ -118,7 +118,13 @@ export function Playground({ aiApiResult }: { aiApiResult?: AiApiResult }) {
   }, []);
 
   if (requestError && !identificationEvent) {
-    return <Alert severity={'error'}>{formatRequestError(agentError, serverError)}</Alert>;
+    return (
+      <>
+        <Alert severity={'error'}>{formatRequestError(agentError, serverError)}</Alert>
+        {/* The AI API result does not depend on the JS agent, so keep showing it */}
+        {aiApiResult && <AiApiSection result={aiApiResult} />}
+      </>
+    );
   }
 
   const ipLocation = identificationEvent?.ip_info?.v4?.geolocation;
