@@ -574,7 +574,7 @@ export function Playground() {
       {
         content: [
           <DocsLink
-            href='https://docs.fingerprint.com/docs/mobile-identification#proximity-detection-for-mobile-devices'
+            href='https://docs.fingerprint.com/docs/smart-signals-reference#proximity-detection'
             key='mobile-proximity'
           >
             Proximity Detection (Mobile)
