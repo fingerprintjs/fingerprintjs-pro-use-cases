@@ -139,39 +139,63 @@ test.describe('Proximity detection', () => {
 
   /**
    * Headless Chromium reports `denied` for ungranted permissions.
-   * Fake a real browser instead: `prompt` until the user accepts, then `granted`, kept across reloads.
+   * Fake a real browser instead: `initialPermission` until the user accepts, then `granted`, kept across reloads.
    * The real permission is granted before the page loads, because Playwright Firefox often ignores a grant made on an already loaded page.
    * `slowReadNumbers`: which location reads (1-based, counted across reloads) answer after 1.5 s, like a cold fix
+   * `readError`: every read fails
+   *   - `denied`: the user denies the prompt
+   *   - `unavailable`: the browser has permission, but the OS does not give it a location (e.g. macOS Location Services off)
    */
-  const fakeFirstVisitLocation = async (page: Page, context: BrowserContext, slowReadNumbers: number[] = []) => {
+  const fakeLocation = async (
+    page: Page,
+    context: BrowserContext,
+    {
+      initialPermission = 'prompt',
+      slowReadNumbers = [],
+      readError,
+    }: { initialPermission?: PermissionState; slowReadNumbers?: number[]; readError?: 'denied' | 'unavailable' } = {},
+  ) => {
     await context.grantPermissions(['geolocation']);
     await context.setGeolocation(PRAGUE);
-    await page.addInitScript((slowReads) => {
-      const query = navigator.permissions.query.bind(navigator.permissions);
-      navigator.permissions.query = (descriptor) =>
-        descriptor.name === 'geolocation'
-          ? Promise.resolve({
-              state: sessionStorage.getItem('e2eLocationGranted') ? 'granted' : 'prompt',
-              onchange: null,
-            } as PermissionStatus)
-          : query(descriptor);
-      const getCurrentPosition = navigator.geolocation.getCurrentPosition.bind(navigator.geolocation);
-      navigator.geolocation.getCurrentPosition = (onSuccess, ...rest) => {
-        const readNumber = Number(sessionStorage.getItem('e2eLocationReads') ?? 0) + 1;
-        sessionStorage.setItem('e2eLocationReads', String(readNumber));
-        getCurrentPosition((position) => {
-          sessionStorage.setItem('e2eLocationGranted', 'true');
-          setTimeout(() => onSuccess(position), slowReads.includes(readNumber) ? 1500 : 0);
-        }, ...rest);
-      };
-    }, slowReadNumbers);
+    await page.addInitScript(
+      ({ initialPermission, slowReadNumbers, readError }) => {
+        const query = navigator.permissions.query.bind(navigator.permissions);
+        navigator.permissions.query = (descriptor) =>
+          descriptor.name === 'geolocation'
+            ? Promise.resolve({
+                state: sessionStorage.getItem('e2eLocationPermission') ?? initialPermission,
+                onchange: null,
+              } as PermissionStatus)
+            : query(descriptor);
+        const getCurrentPosition = navigator.geolocation.getCurrentPosition.bind(navigator.geolocation);
+        navigator.geolocation.getCurrentPosition = (onSuccess, onError, options) => {
+          const readNumber = Number(sessionStorage.getItem('e2eLocationReads') ?? 0) + 1;
+          sessionStorage.setItem('e2eLocationReads', String(readNumber));
+          if (readError) {
+            if (readError === 'denied') sessionStorage.setItem('e2eLocationPermission', 'denied');
+            const error = { PERMISSION_DENIED: 1, POSITION_UNAVAILABLE: 2, TIMEOUT: 3, message: 'Fake error' };
+            const code = readError === 'denied' ? error.PERMISSION_DENIED : error.POSITION_UNAVAILABLE;
+            setTimeout(() => onError?.({ ...error, code } as GeolocationPositionError));
+            return;
+          }
+          getCurrentPosition(
+            (position) => {
+              sessionStorage.setItem('e2eLocationPermission', 'granted');
+              setTimeout(() => onSuccess(position), slowReadNumbers.includes(readNumber) ? 1500 : 0);
+            },
+            onError,
+            options,
+          );
+        };
+      },
+      { initialPermission, slowReadNumbers, readError },
+    );
   };
 
-  const getLocationReads = (page: Page) =>
-    page.evaluate(() => Number(sessionStorage.getItem('e2eLocationReads') ?? 0));
+  const getLocationReads = (page: Page) => page.evaluate(() => Number(sessionStorage.getItem('e2eLocationReads') ?? 0));
 
   test('shows the proximity result after the user grants location permission', async ({ page, context }) => {
-    await fakeFirstVisitLocation(page, context);
+    await fakeLocation(page, context);
     await page.reload({ waitUntil: 'networkidle' });
 
     await expect(page.getByTestId(TEST_ID.grantLocationButton)).toBeVisible();
@@ -188,7 +212,7 @@ test.describe('Proximity detection', () => {
 
   test('offers to try again when location is too slow for the agent', async ({ page, context }) => {
     // Read 1: our button, read 2: agent after the reload (too slow), read 3: agent after "Reload"
-    await fakeFirstVisitLocation(page, context, [2]);
+    await fakeLocation(page, context, { slowReadNumbers: [2] });
     await page.reload({ waitUntil: 'networkidle' });
 
     await page.getByTestId(TEST_ID.grantLocationButton).click();
@@ -199,6 +223,23 @@ test.describe('Proximity detection', () => {
 
     await expect(proximityRow).toContainText(/Zone .+ m radius/, { timeout: 15000 });
     expect(await getLocationReads(page)).toBe(3);
+  });
+
+  test('tells the user how to allow location when it is already denied', async ({ page, context }) => {
+    await fakeLocation(page, context, { initialPermission: 'denied' });
+    await page.reload({ waitUntil: 'networkidle' });
+
+    await expect(getWebProximityRow(page)).toContainText('Location denied. Allow it in browser settings and reload.');
+    await expect(page.getByTestId(TEST_ID.grantLocationButton)).toHaveCount(0);
+  });
+
+  test('tells the user how to allow location after they deny the prompt', async ({ page, context }) => {
+    await fakeLocation(page, context, { readError: 'denied' });
+    await page.reload({ waitUntil: 'networkidle' });
+
+    await page.getByTestId(TEST_ID.grantLocationButton).click();
+
+    await expect(getWebProximityRow(page)).toContainText('Location denied. Allow it in browser settings and reload.');
   });
 
   test.describe('with location permission granted', () => {
