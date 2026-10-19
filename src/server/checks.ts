@@ -59,7 +59,7 @@ export function visitIpMatchesRequestIp(
   request: Request,
   trustedProxyCount = serverEnv.TRUSTED_PROXY_COUNT,
 ) {
-  // yarn dev. yarn start is NODE_ENV=production, so it still needs the loopback skip below.
+  // pnpm dev. pnpm start is NODE_ENV=production, so it still needs the loopback skip below.
   if (IS_DEVELOPMENT) {
     return true;
   }
@@ -69,7 +69,7 @@ export function visitIpMatchesRequestIp(
     return false;
   }
 
-  // Loopback (yarn start) and IPv6 cannot be compared to Fingerprint's public event IP.
+  // Loopback (pnpm start) and IPv6 cannot be compared to Fingerprint's public event IP.
   if (requestIp.startsWith('127.') || isIPv6(requestIp) || isIPv6(visitIp)) {
     return true;
   }
