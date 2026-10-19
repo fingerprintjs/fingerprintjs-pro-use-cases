@@ -140,10 +140,13 @@ test.describe('Proximity detection', () => {
   /**
    * Headless Chromium reports `denied` for ungranted permissions.
    * Fake a real browser instead: `prompt` until the user accepts, then `granted`, kept across reloads.
+   * The real permission is granted before the page loads, because Playwright Firefox often ignores a grant made on an already loaded page.
    * `slowReadNumbers`: which location reads (1-based, counted across reloads) answer after 1.5 s, like a cold fix
    */
-  const fakeFirstVisitLocation = (page: Page, slowReadNumbers: number[] = []) =>
-    page.addInitScript((slowReads) => {
+  const fakeFirstVisitLocation = async (page: Page, context: BrowserContext, slowReadNumbers: number[] = []) => {
+    await context.grantPermissions(['geolocation']);
+    await context.setGeolocation(PRAGUE);
+    await page.addInitScript((slowReads) => {
       const query = navigator.permissions.query.bind(navigator.permissions);
       navigator.permissions.query = (descriptor) =>
         descriptor.name === 'geolocation'
@@ -162,26 +165,20 @@ test.describe('Proximity detection', () => {
         }, ...rest);
       };
     }, slowReadNumbers);
+  };
 
   const getLocationReads = (page: Page) =>
     page.evaluate(() => Number(sessionStorage.getItem('e2eLocationReads') ?? 0));
 
-  const grantLocation = async (page: Page, context: BrowserContext) => {
-    // Stands in for the user accepting the browser prompt
-    await context.grantPermissions(['geolocation']);
-    await context.setGeolocation(PRAGUE);
-    await page.getByTestId(TEST_ID.grantLocationButton).click();
-  };
-
   test('shows the proximity result after the user grants location permission', async ({ page, context }) => {
-    await fakeFirstVisitLocation(page);
+    await fakeFirstVisitLocation(page, context);
     await page.reload({ waitUntil: 'networkidle' });
 
     await expect(page.getByTestId(TEST_ID.grantLocationButton)).toBeVisible();
     // Nothing asks for location before the click
     expect(await getLocationReads(page)).toBe(0);
 
-    await grantLocation(page, context);
+    await page.getByTestId(TEST_ID.grantLocationButton).click();
 
     const proximityRow = getWebProximityRow(page);
     await expect(proximityRow).toContainText(/Zone .+ m radius/, { timeout: 15000 });
@@ -191,10 +188,10 @@ test.describe('Proximity detection', () => {
 
   test('offers to try again when location is too slow for the agent', async ({ page, context }) => {
     // Read 1: our button, read 2: agent after the reload (too slow), read 3: agent after "Try again"
-    await fakeFirstVisitLocation(page, [2]);
+    await fakeFirstVisitLocation(page, context, [2]);
     await page.reload({ waitUntil: 'networkidle' });
 
-    await grantLocation(page, context);
+    await page.getByTestId(TEST_ID.grantLocationButton).click();
 
     const proximityRow = getWebProximityRow(page);
     await expect(proximityRow).toContainText('Location was too slow', { timeout: 15000 });
