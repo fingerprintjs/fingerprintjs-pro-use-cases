@@ -107,7 +107,7 @@ export function ProximityDetectionResult({ event }: { event: Event | undefined }
         </>
       );
     }
-    if (permission === 'denied') return 'Location denied in browser settings';
+    if (permission === 'denied') return 'Location denied. Allow it in browser settings and reload.';
     if (permission === 'granted') return 'Not available';
     if (permission === 'prompt' || permission === 'unsupported') {
       return (
