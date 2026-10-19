@@ -72,6 +72,11 @@ export function ProximityDetectionResult({ event }: { event: Event | undefined }
       reloadToCollectLocation,
       (error) => {
         if (error.code === error.PERMISSION_DENIED) {
+          // Without the Permissions API we cannot tell a dismiss from a deny, assume denied
+          if (!('permissions' in navigator)) {
+            setPermission('denied');
+            return;
+          }
           // Dismissing the prompt also gives PERMISSION_DENIED, but the state stays `prompt`, so read it again
           navigator.permissions
             .query({ name: 'geolocation' })
