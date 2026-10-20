@@ -9,6 +9,7 @@ import { RefreshButton } from './components/RefreshButton';
 import { ipBlocklistResult } from './components/IpBlocklistResult';
 import { proxyDetectionResult } from './components/ProxyDetectionResult';
 import { vpnDetectionResult } from './components/VpnDetectionResult';
+import { ProximityDetectionResult } from './components/ProximityDetectionResult';
 import { usePlaygroundSignals } from './hooks/usePlaygroundSignals';
 import { getLocationName, getZoomLevel } from '../../utils/locationUtils';
 import Link from 'next/link';
@@ -91,6 +92,19 @@ function formatRequestError(agentError?: Error | null, serverError?: Error | nul
     : `Server API Request ${serverError?.toString()}.`;
 }
 
+/**
+ * The Server API returns the literal string "Not Available" when it cannot detect a version,
+ * for example `browser_full_version` for "Chromium-Based Browser" on Android tablets.
+ * Printing it reads like the signal is broken, so show just the name instead.
+ * The raw value is still visible in the Server API Response JSON.
+ */
+function formatNameWithVersion(name: string | undefined, version: string | undefined) {
+  if (!version || version === 'Not Available') {
+    return `${name}`;
+  }
+  return `${name} ${version}`;
+}
+
 export function Playground() {
   const {
     agentResponse,
@@ -131,7 +145,10 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='browser_details' elementOrder='first'>
-            {`${identificationEvent?.browser_details?.browser_name} ${identificationEvent?.browser_details?.browser_full_version}`}
+            {formatNameWithVersion(
+              identificationEvent?.browser_details?.browser_name,
+              identificationEvent?.browser_details?.browser_full_version,
+            )}
           </JsonLink>
         ),
 
@@ -142,10 +159,12 @@ export function Playground() {
       { content: 'Operating System' },
       {
         content: (
-          <JsonLink
-            propertyName='browser_details'
-            elementOrder='first'
-          >{`${identificationEvent?.browser_details?.os} ${identificationEvent?.browser_details?.os_version}`}</JsonLink>
+          <JsonLink propertyName='browser_details' elementOrder='first'>
+            {formatNameWithVersion(
+              identificationEvent?.browser_details?.os,
+              identificationEvent?.browser_details?.os_version,
+            )}
+          </JsonLink>
         ),
         className: tableStyles.neutral,
       },
@@ -500,6 +519,19 @@ export function Playground() {
     ],
     [
       {
+        content: (
+          <DocsLink href='https://docs.fingerprint.com/docs/smart-signals-reference#proximity-detection'>
+            Proximity Detection
+          </DocsLink>
+        ),
+      },
+      {
+        content: <ProximityDetectionResult event={identificationEvent} />,
+        className: identificationEvent?.proximity ? tableStyles.green : tableStyles.neutral,
+      },
+    ],
+    [
+      {
         content: [
           <DocsLink href='https://dev.fingerprint.com/docs/smart-signals-reference#raw-device-attributes' key='raw'>
             Raw Device Attributes
@@ -560,10 +592,10 @@ export function Playground() {
       {
         content: [
           <DocsLink
-            href='https://docs.fingerprint.com/docs/mobile-identification#proximity-detection-for-mobile-devices'
-            key='proximity'
+            href='https://docs.fingerprint.com/docs/smart-signals-reference#proximity-detection'
+            key='mobile-proximity'
           >
-            Proximity Detection
+            Proximity Detection (Mobile)
           </DocsLink>,
         ],
       },
