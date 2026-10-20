@@ -14,12 +14,13 @@ Use this skill when a spec edit doesn't fit:
 - You want before and after side by side, for example `main` and your branch.
 - You need screenshots for a human to check, or a deployed environment like staging.
 
-Then read the spec of the feature you changed, and write a scratch `e2e/verify-<topic>.spec.ts` next to it that repeats the steps you need to prove and saves a screenshot after each visible result (see [Proof](#proof)). Delete it when done, `e2e/` is tracked.
+Then read the spec of the feature you changed, and write a scratch `e2e/verify-<topic>.spec.ts` next to it that repeats the steps you need to prove and saves a screenshot after each visible result (see [Proof](#proof)). When done, copy it into the evidence folder and delete it from `e2e/`, which is tracked.
 
 ## Rules
 
-- `.env` holds secrets. Never print its values. To see which keys are set: `grep -E '^[A-Z_]+=' .env | cut -d= -f1`.
+- `.env` holds secrets. Never print its values. To see which keys are set: `grep -E '^[A-Z0-9_]+=' .env | cut -d= -f1`.
 - Never deploy to staging or stop a server you didn't start without asking the user.
+- Don't call state-changing API routes by hand (e.g. `/api/admin/reset`) on a shared deployment. Drive them through the page.
 
 ## Pick where to run it
 
@@ -32,7 +33,13 @@ Ordered from cheapest to most expensive. Pick the first one that can show your c
    - Start: `pnpm build && PORT=3000 pnpm start`
    - Test: same command as for the dev server.
 3. **Staging.** For behavior that needs a public deployment, such as real client IPs, proxy headers (`TRUSTED_PROXY_COUNT`), and the CloudFront setup.
-   - Deploy: push your branch to the `staging` branch, which deploys https://staging.fingerprinthub.com (see [contributing.md](../../../contributing.md#staging-deployment)). Ask the user first. Other people may be using staging.
+   - Deploy: pushing to the `staging` branch deploys https://staging.fingerprinthub.com (see [contributing.md](../../../contributing.md#staging-deployment)). Ask the user first. The branch is shared and diverges from yours, so check what you replace and push with a lease:
+     ```sh
+     git ls-remote origin staging   # note the sha, check it's merged or not someone's live work
+     git push --force-with-lease=staging:<seen-sha> origin HEAD:refs/heads/staging
+     ```
+   - Live: there's no status check, and a deploy takes about 5 minutes. Poll a served page or JS chunk until it contains something your change added or removed.
+   - Proof: there's no database to read. In the scratch spec, write each API response's status and body to a file in the evidence folder.
    - Test: `EVIDENCE_DIR=<evidence-dir> PRODUCTION_E2E_TEST_BASE_URL=https://staging.fingerprinthub.com pnpm exec playwright test e2e/<name>.spec.ts --project=chromium --trace on --output <evidence-dir>/run1`
 
 To compare `main` with your branch, run the same scratch spec against each, one after the other, since only one server can use port 3000. Start the `main` server from a worktree (`git worktree add --detach <dir> origin/main`, copy `.env`, `pnpm install`), and keep each run's evidence in its own folder.
