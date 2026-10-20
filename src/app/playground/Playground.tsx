@@ -31,6 +31,7 @@ import { ChevronSvg } from '../../client/img/chevronSvg';
 import { pluralize } from '../../utils/utils';
 import { motion } from 'framer-motion';
 import { JsonLink, DocsLink } from './components/ArrowLinks';
+import { formatNameWithVersion } from './utils/formatNameWithVersion';
 import { LayoutUI } from '../LayoutUI';
 import Image from 'next/image';
 import GooglePlaySvg from './img/google_play.svg';
@@ -131,7 +132,10 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='browser_details' elementOrder='first'>
-            {`${identificationEvent?.browser_details?.browser_name} ${identificationEvent?.browser_details?.browser_full_version}`}
+            {formatNameWithVersion(
+              identificationEvent?.browser_details?.browser_name,
+              identificationEvent?.browser_details?.browser_full_version,
+            )}
           </JsonLink>
         ),
 
@@ -142,10 +146,12 @@ export function Playground() {
       { content: 'Operating System' },
       {
         content: (
-          <JsonLink
-            propertyName='browser_details'
-            elementOrder='first'
-          >{`${identificationEvent?.browser_details?.os} ${identificationEvent?.browser_details?.os_version}`}</JsonLink>
+          <JsonLink propertyName='browser_details' elementOrder='first'>
+            {formatNameWithVersion(
+              identificationEvent?.browser_details?.os,
+              identificationEvent?.browser_details?.os_version,
+            )}
+          </JsonLink>
         ),
         className: tableStyles.neutral,
       },
