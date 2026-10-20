@@ -1,14 +1,25 @@
 ---
 name: verify-use-cases
-description: Run the Fingerprint use-cases demo (Next.js web app, demo.fingerprint.com) locally or on staging and drive it with Playwright to prove a change works. Use when verifying changes to the playground or any use-case demo page.
+description: Run the Fingerprint use-cases demo (Next.js web app, demo.fingerprint.com) locally or on staging and drive it with Playwright to prove a change works, with screenshots. Use for exploratory checks, before/after comparisons, or behavior you aren't sure how to assert yet. For checks that can be stable assertions, edit the e2e tests instead.
 ---
 
 # Verify the use-cases demo
 
 This is a Next.js web app. Pages identify the browser with the Fingerprint JS agent, then call their own API routes, which check the event with the Server API and store state in SQLite (`.data/database.sqlite`).
 
-* Each use case has a spec in [e2e/](../../../e2e/), for example `e2e/coupon-fraud.spec.ts`. Read the spec of the feature you changed.
-* Write a scratch `e2e/verify-<topic>.spec.ts` next to it that repeats the steps you need to prove and saves a screenshot after each visible result (see [Proof](#proof)). Delete it when done, `e2e/` is tracked.
+Each use case has a spec in [e2e/](../../../e2e/), for example `e2e/coupon-fraud.spec.ts`. CI runs them on every PR. **If what you want to check should stay true, add or edit an assertion in that spec and run it.** That's the permanent proof.
+
+Use this skill when a spec edit doesn't fit:
+- You're prototyping or iterating, and don't know yet what to assert.
+- You want before and after side by side, for example `main` and your branch.
+- You need screenshots for a human to check, or a deployed environment like staging.
+
+Then read the spec of the feature you changed, and write a scratch `e2e/verify-<topic>.spec.ts` next to it that repeats the steps you need to prove and saves a screenshot after each visible result (see [Proof](#proof)). Delete it when done, `e2e/` is tracked.
+
+## Rules
+
+- `.env` holds secrets. Never print its values. To see which keys are set: `grep -E '^[A-Z_]+=' .env | cut -d= -f1`.
+- Never deploy to staging or stop a server you didn't start without asking the user.
 
 ## Pick where to run it
 
@@ -23,6 +34,8 @@ Ordered from cheapest to most expensive. Pick the first one that can show your c
 3. **Staging.** For behavior that needs a public deployment, such as real client IPs, proxy headers (`TRUSTED_PROXY_COUNT`), and the CloudFront setup.
    - Deploy: push your branch to the `staging` branch, which deploys https://staging.fingerprinthub.com (see [contributing.md](../../../contributing.md#staging-deployment)). Ask the user first. Other people may be using staging.
    - Test: `EVIDENCE_DIR=<evidence-dir> PRODUCTION_E2E_TEST_BASE_URL=https://staging.fingerprinthub.com pnpm exec playwright test e2e/<name>.spec.ts --project=chromium --trace on --output <evidence-dir>/run1`
+
+To compare `main` with your branch, run the same scratch spec against each, one after the other, since only one server can use port 3000. Start the `main` server from a worktree (`git worktree add --detach <dir> origin/main`, copy `.env`, `pnpm install`), and keep each run's evidence in its own folder.
 
 ## Proof
 
@@ -45,6 +58,10 @@ Keep evidence in `.scratchpad/verify/<YYYYMMDD-HHMM>-<topic>/` in the user's mai
 
 - **Test output and trace.** Open a trace with `pnpm exec playwright show-trace <trace.zip>`.
 - **Database rows** where the change writes data. List tables with `sqlite3 .data/database.sqlite .tables`, names vary per use case. Quote names with dashes: `select * from "coupon-claims";`.
+
+Report each check with what you did, what you observed, and PASS or FAIL. A FAIL stays a FAIL. On `main`, failures are the "before" picture.
+
+When done, consider which checks should become permanent assertions in the feature's spec. Suggest them to the user rather than adding them unasked.
 
 ## Gotchas
 
