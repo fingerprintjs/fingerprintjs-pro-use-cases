@@ -5,13 +5,21 @@ import { LOAN_RISK_COPY } from '../src/app/loan-risk/api/request-loan/copy';
 
 const testIds = TEST_IDS.loanRisk;
 
-async function waitForSuccessfulSubmit(page: Page) {
+// Wait for the API response, not just the message.
+// The message from the previous submit stays on screen, so waiting for its text alone can pass too early.
+async function submitApplication(page: Page) {
+  const response = page.waitForResponse('**/loan-risk/api/request-loan');
   await page.getByTestId(testIds.submitApplication).click();
+  await response;
+}
+
+async function waitForSuccessfulSubmit(page: Page) {
+  await submitApplication(page);
   await page.getByText(LOAN_RISK_COPY.approved).waitFor();
 }
 
 async function waitForBlockedLoanSubmit(page: Page) {
-  await page.getByTestId(testIds.submitApplication).click();
+  await submitApplication(page);
   await page.getByText(LOAN_RISK_COPY.inconsistentApplicationChallenged).waitFor();
 }
 
