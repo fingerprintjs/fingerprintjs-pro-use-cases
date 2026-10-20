@@ -26,14 +26,22 @@ Ordered from cheapest to most expensive. Pick the first one that can show your c
 
 ## Proof
 
+Keep evidence in `.scratchpad/verify/<YYYYMMDD-HHMM>-<topic>/` in the user's main checkout, even when the server runs from a worktree. Git ignores it, and links to it open from the workspace. Use that folder as `<evidence-dir>`.
+
 - **Screenshots** of each visible result, so a human can check them at a glance. The config only takes screenshots on failure, so save them in the scratch spec. Screenshot the demo area, not the page:
 
   ```ts
   await page.locator('header').evaluate((el) => (el.style.visibility = 'hidden')); // sticky site header, covers the demo
-  await page.getByTestId(TEST_IDS.common.demoBrowser).screenshot({ path: `${process.env.EVIDENCE_DIR}/3-article-blocked.png` });
+  await page.getByTestId(TEST_IDS.common.demoBrowser).screenshot({ path: `${process.env.EVIDENCE_DIR}/<step>.png` });
   ```
 
-  `page.screenshot()` often misses the result. The sticky site header covers alerts near the top, and scrolling first didn't help on the paywall article page.
+  - Hide the header again after each page load. Navigation brings it back.
+  - `page.screenshot()` often misses the result. The sticky site header covers alerts near the top, and scrolling first didn't help on the paywall article page.
+
+  In the report, list each screenshot as a clickable markdown link relative to the repo root, with one line on what it shows: `[3-sixth-refused.png](.scratchpad/verify/20261020-1400-cred/3-sixth-refused.png): 6th login refused`. Pick the format for where the user reads:
+  - IDE chat (VS Code): links. Inline images (`![]()`) don't render there.
+  - A client that renders local images: embed them inline.
+  - Plain terminal: links plus `open <evidence-dir>` (macOS) to browse the folder.
 
 - **Test output and trace.** Open a trace with `pnpm exec playwright show-trace <trace.zip>`.
 - **Database rows** where the change writes data. List tables with `sqlite3 .data/database.sqlite .tables`, names vary per use case. Quote names with dashes: `select * from "coupon-claims";`.
@@ -44,7 +52,7 @@ Ordered from cheapest to most expensive. Pick the first one that can show your c
 - **Port 3000 may be the user's server.** Check with `lsof -nP -iTCP:3000 -sTCP:LISTEN`. Drive it only if it runs from the checkout you are verifying. Never stop it.
 - **Stop only what you started, by process group, never by name.** `pnpm dev` puts Next in a separate process group, so start `next dev` directly. To give it its own group from zsh, use `bash -c 'set -m; PORT=3000 node_modules/.bin/next dev > server.log 2>&1 & echo $! > server.pgid'`, then stop it with `kill -TERM -- -$(cat server.pgid)`.
 - **`.data/database.sqlite` in the user's checkout holds their local data.** Don't delete it. For fresh state, run in a worktree (`git worktree add`, copy `.env`, `pnpm install`). SQLite creates the file on the first API call.
-- **The server writes `.data/` in the directory it runs from.** In a worktree, read the database from the worktree, not the main checkout.
+- **The server writes `.data/` in the directory it runs from.** In a worktree, read the database from the worktree, not the main checkout. Copy it into the evidence folder before `git worktree remove`, which deletes it.
 - **Playwright needs its browsers installed.** On a fresh machine, run `pnpm exec playwright install chromium` first.
 - **E2E tests click Restart first,** which clears data for the current visitor only. Skip it and earlier runs change the result.
 - **Each test's Restart wipes the previous test's rows.** Put all the steps you need to prove in one scratch test. To read the database after an existing spec, run only that test with `-g "<test name>"`.
