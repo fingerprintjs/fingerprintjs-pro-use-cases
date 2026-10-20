@@ -16,13 +16,13 @@ Ordered from cheapest to most expensive. Pick the first one that can show your c
 
 1. **Dev server.** For UI and API route changes.
    - Start: `PORT=3000 node_modules/.bin/next dev`
-   - Test: `EVIDENCE_DIR=<evidence-dir> PORT=3000 pnpm exec playwright test e2e/<name>.spec.ts --project=chromium --trace on --reporter=list --output <evidence-dir>/run1`
+   - Test: `EVIDENCE_DIR=<evidence-dir> PORT=3000 pnpm exec playwright test e2e/<name>.spec.ts --project=chromium --trace on --output <evidence-dir>/run1`
 2. **Production build.** For build-only behavior: env validation at build time, caching, static output.
    - Start: `pnpm build && PORT=3000 pnpm start`
    - Test: same command as for the dev server.
 3. **Staging.** For behavior that needs a public deployment, such as real client IPs, proxy headers (`TRUSTED_PROXY_COUNT`), and the CloudFront setup.
    - Deploy: push your branch to the `staging` branch, which deploys https://staging.fingerprinthub.com (see [contributing.md](../../../contributing.md#staging-deployment)). Ask the user first. Other people may be using staging.
-   - Test: `PRODUCTION_E2E_TEST_BASE_URL=https://staging.fingerprinthub.com pnpm exec playwright test e2e/<name>.spec.ts --project=chromium --trace on --reporter=list`
+   - Test: `PRODUCTION_E2E_TEST_BASE_URL=https://staging.fingerprinthub.com pnpm exec playwright test e2e/<name>.spec.ts --project=chromium --trace on`
 
 ## Proof
 
@@ -42,7 +42,6 @@ Ordered from cheapest to most expensive. Pick the first one that can show your c
 
 - **Use port 3000 only.** The default public key belongs to the demo's Fingerprint staging workspace, which allows `localhost:3000` but not 3001. On other ports, identification fails with 403 `origin_not_available`. To use another port, put your own `NEXT_PUBLIC_API_KEY`, `NEXT_PUBLIC_REGION`, and `SERVER_API_KEY` in `.env`.
 - **Port 3000 may be the user's server.** Check with `lsof -nP -iTCP:3000 -sTCP:LISTEN`. Drive it only if it runs from the checkout you are verifying. Never stop it.
-- **Without a server on `PORT`, Playwright starts `pnpm start`,** which serves the last production build, not your code.
 - **Stop only what you started, by process group, never by name.** `pnpm dev` puts Next in a separate process group, so start `next dev` directly. To give it its own group from zsh, use `bash -c 'set -m; PORT=3000 node_modules/.bin/next dev > server.log 2>&1 & echo $! > server.pgid'`, then stop it with `kill -TERM -- -$(cat server.pgid)`.
 - **`.data/database.sqlite` in the user's checkout holds their local data.** Don't delete it. For fresh state, run in a worktree (`git worktree add`, copy `.env`, `pnpm install`). SQLite creates the file on the first API call.
 - **The server writes `.data/` in the directory it runs from.** In a worktree, read the database from the worktree, not the main checkout.
@@ -51,7 +50,6 @@ Ordered from cheapest to most expensive. Pick the first one that can show your c
 - **E2E tests click Restart first,** which clears data for the current visitor only. Skip it and earlier runs change the result.
 - **Each test's Restart wipes the previous test's rows.** Put all the steps you need to prove in one scratch test. To read the database after an existing spec, run only that test with `-g "<test name>"`.
 - **A result message from the previous submit can still be on screen.** Waiting for its text can pass before the new response arrives. Wait for the response instead, for example `page.waitForResponse('**/request-loan')`, and check its status.
-- **Use `--reporter=list`.** The config's HTML reporter can open a report server when a test fails, which hangs a non-interactive shell.
 - **Playwright empties the `--output` directory on each run.** Use a new directory per run.
 - **Keep the specs' `FINGERPRINT_BOT_USER_AGENT`.** Some routes deny `bad` bots.
 - **Some flows need env vars:**
