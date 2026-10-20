@@ -7,9 +7,8 @@ description: Run the Fingerprint use-cases demo (Next.js web app, demo.fingerpri
 
 This is a Next.js web app. Pages identify the browser with the Fingerprint JS agent, then call their own API routes, which check the event with the Server API and store state in SQLite (`.data/database.sqlite`).
 
-* Drive it with a browser or playwright, API endpoints can be testable with `curl`, depending on context. 
-* Each use case has a spec in [e2e/](../../../e2e/), for example `e2e/coupon-fraud.spec.ts`. 
-* Read the spec of the feature you changed, then run it or write a scratch `e2e/verify-<topic>.spec.ts` next to it.
+* Each use case has a spec in [e2e/](../../../e2e/), for example `e2e/coupon-fraud.spec.ts`. Read the spec of the feature you changed.
+* Write a scratch `e2e/verify-<topic>.spec.ts` next to it that repeats the steps you need to prove and saves a screenshot after each visible result (see [Proof](#proof)). Delete it when done, `e2e/` is tracked.
 
 ## Pick where to run it
 
@@ -17,15 +16,26 @@ Ordered from cheapest to most expensive. Pick the first one that can show your c
 
 1. **Dev server.** For UI and API route changes.
    - Start: `PORT=3000 node_modules/.bin/next dev`
-   - Test: `PORT=3000 pnpm exec playwright test e2e/<name>.spec.ts --project=chromium --trace on --output <evidence-dir>`
+   - Test: `PORT=3000 pnpm exec playwright test e2e/<name>.spec.ts --project=chromium --trace on --reporter=list --output <evidence-dir>`
 2. **Production build.** For build-only behavior: env validation at build time, caching, static output.
    - Start: `pnpm build && PORT=3000 pnpm start`
    - Test: same command as for the dev server.
 3. **Staging.** For behavior that needs a public deployment, such as real client IPs, proxy headers (`TRUSTED_PROXY_COUNT`), and the CloudFront setup.
    - Deploy: push your branch to the `staging` branch, which deploys https://staging.fingerprinthub.com (see [contributing.md](../../../contributing.md#staging-deployment)). Ask the user first. Other people may be using staging.
-   - Test: `PRODUCTION_E2E_TEST_BASE_URL=https://staging.fingerprinthub.com pnpm exec playwright test e2e/<name>.spec.ts --project=chromium --trace on`
+   - Test: `PRODUCTION_E2E_TEST_BASE_URL=https://staging.fingerprinthub.com pnpm exec playwright test e2e/<name>.spec.ts --project=chromium --trace on --reporter=list`
 
-Proof is the test output plus the trace (`pnpm exec playwright show-trace <trace.zip>`). Read side effects back from SQLite where they matter, for example `sqlite3 .data/database.sqlite 'select * from "coupon-claims";'`.
+## Proof
+
+- **Screenshots** of each visible result, so a human can check them at a glance. The config only takes screenshots on failure, so save them in the scratch spec. Screenshot the demo area, not the page:
+
+  ```ts
+  await page.getByTestId(TEST_IDS.common.demoBrowser).screenshot({ path: `${process.env.EVIDENCE_DIR}/3-article-blocked.png` });
+  ```
+
+  `page.screenshot()` often misses the result. The sticky site header covers alerts near the top, and scrolling first didn't help on the paywall article page.
+
+- **Test output and trace.** Open a trace with `pnpm exec playwright show-trace <trace.zip>`.
+- **Database rows** where the change writes data. List tables with `sqlite3 .data/database.sqlite .tables`, names vary per use case. Quote names with dashes: `select * from "coupon-claims";`.
 
 ## Gotchas
 
@@ -38,6 +48,8 @@ Proof is the test output plus the trace (`pnpm exec playwright show-trace <trace
 - **`Updating firewall ruleset failed ... not authorized` in the server log after Restart is harmless** without Cloudflare env vars. The reset still succeeds.
 - **Playwright needs its browsers installed.** On a fresh machine, run `pnpm exec playwright install chromium` first.
 - **E2E tests click Restart first,** which clears data for the current visitor only. Skip it and earlier runs change the result.
+- **Each test's Restart wipes the previous test's rows.** To read the database after a test, run only that test with `-g "<test name>"`.
+- **Use `--reporter=list`.** The config's HTML reporter can open a report server when a test fails, which hangs a non-interactive shell.
 - **Playwright empties the `--output` directory on each run.** Use a new directory per run.
 - **Keep the specs' `FINGERPRINT_BOT_USER_AGENT`.** Some routes deny `bad` bots.
 - **Some flows need env vars:**
