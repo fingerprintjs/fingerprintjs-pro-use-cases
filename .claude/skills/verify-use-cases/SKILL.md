@@ -22,7 +22,7 @@ Ordered from cheapest to most expensive. Pick the first one that can show your c
    - Test: same command as for the dev server.
 3. **Staging.** For behavior that needs a public deployment, such as real client IPs, proxy headers (`TRUSTED_PROXY_COUNT`), and the CloudFront setup.
    - Deploy: push your branch to the `staging` branch, which deploys https://staging.fingerprinthub.com (see [contributing.md](../../../contributing.md#staging-deployment)). Ask the user first. Other people may be using staging.
-   - Test: `PRODUCTION_E2E_TEST_BASE_URL=https://staging.fingerprinthub.com pnpm exec playwright test e2e/<name>.spec.ts --project=chromium --trace on`
+   - Test: `EVIDENCE_DIR=<evidence-dir> PRODUCTION_E2E_TEST_BASE_URL=https://staging.fingerprinthub.com pnpm exec playwright test e2e/<name>.spec.ts --project=chromium --trace on --output <evidence-dir>/run1`
 
 ## Proof
 
