@@ -253,6 +253,21 @@ h2.sectionTitle {
     monospace;
 }
 
+// Action that reads like a link inside result text, a <button> because it does not navigate
+.inlineLinkButton {
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    color: v('orange-gradient');
+  }
+}
+
 .locationText {
   color: v('dark-black');
   font-family: Inter;

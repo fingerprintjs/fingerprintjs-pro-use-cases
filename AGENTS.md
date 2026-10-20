@@ -12,9 +12,8 @@
   - Prefer separate bullet points over long `;` chains
   - Avoid ambiguous jargon (seam, boundary, gate, envelope, wire shapes, ...), be plain, precise, specific
   - Docs must stand alone, make sense later without PR/conversation context
-  - Module files begin with short overview comment explaining purpose and links to relevant docs
+  - Module files begin with very short overview comment explaining purpose and links to relevant docs
   - Any non-obvious design decision, requirement, or claim gets a short explanatory note + exact docs link
-    - close to affected code + commit message body (always)
-    - in PR description (if significant)
+    - close to affected code + commit message body
 - Debugging
   - Unless instructed otherwise, run targeted unit and e2e tests locally to verify the changes, CI is just final confirmation
