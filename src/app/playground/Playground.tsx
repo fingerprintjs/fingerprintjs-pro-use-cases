@@ -91,6 +91,19 @@ function formatRequestError(agentError?: Error | null, serverError?: Error | nul
     : `Server API Request ${serverError?.toString()}.`;
 }
 
+/**
+ * The Server API returns the literal string "Not Available" when it cannot detect a version,
+ * for example `browser_full_version` for "Chromium-Based Browser" on Android tablets.
+ * Printing it reads like the signal is broken, so show just the name instead.
+ * The raw value is still visible in the Server API Response JSON.
+ */
+function formatNameWithVersion(name: string | undefined, version: string | undefined) {
+  if (!version || version === 'Not Available') {
+    return `${name}`;
+  }
+  return `${name} ${version}`;
+}
+
 export function Playground() {
   const {
     agentResponse,
@@ -131,7 +144,10 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='browser_details' elementOrder='first'>
-            {`${identificationEvent?.browser_details?.browser_name} ${identificationEvent?.browser_details?.browser_full_version}`}
+            {formatNameWithVersion(
+              identificationEvent?.browser_details?.browser_name,
+              identificationEvent?.browser_details?.browser_full_version,
+            )}
           </JsonLink>
         ),
 
@@ -142,10 +158,12 @@ export function Playground() {
       { content: 'Operating System' },
       {
         content: (
-          <JsonLink
-            propertyName='browser_details'
-            elementOrder='first'
-          >{`${identificationEvent?.browser_details?.os} ${identificationEvent?.browser_details?.os_version}`}</JsonLink>
+          <JsonLink propertyName='browser_details' elementOrder='first'>
+            {formatNameWithVersion(
+              identificationEvent?.browser_details?.os,
+              identificationEvent?.browser_details?.os_version,
+            )}
+          </JsonLink>
         ),
         className: tableStyles.neutral,
       },
