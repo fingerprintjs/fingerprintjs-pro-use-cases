@@ -45,7 +45,6 @@ Ordered from cheapest to most expensive. Pick the first one that can show your c
 - **Stop only what you started, by process group, never by name.** `pnpm dev` puts Next in a separate process group, so start `next dev` directly. To give it its own group from zsh, use `bash -c 'set -m; PORT=3000 node_modules/.bin/next dev > server.log 2>&1 & echo $! > server.pgid'`, then stop it with `kill -TERM -- -$(cat server.pgid)`.
 - **`.data/database.sqlite` in the user's checkout holds their local data.** Don't delete it. For fresh state, run in a worktree (`git worktree add`, copy `.env`, `pnpm install`). SQLite creates the file on the first API call.
 - **The server writes `.data/` in the directory it runs from.** In a worktree, read the database from the worktree, not the main checkout.
-- **`Updating firewall ruleset failed ... not authorized` in the server log after Restart is harmless** without Cloudflare env vars. The reset still succeeds.
 - **Playwright needs its browsers installed.** On a fresh machine, run `pnpm exec playwright install chromium` first.
 - **E2E tests click Restart first,** which clears data for the current visitor only. Skip it and earlier runs change the result.
 - **Each test's Restart wipes the previous test's rows.** Put all the steps you need to prove in one scratch test. To read the database after an existing spec, run only that test with `-g "<test name>"`.
