@@ -36,7 +36,7 @@ Keep evidence in `.scratchpad/verify/<YYYYMMDD-HHMM>-<topic>/` in the user's mai
   ```
 
   - Hide the header again after each page load. Navigation brings it back.
-  - `page.screenshot()` often misses the result. The sticky site header covers alerts near the top, and scrolling first didn't help on the paywall article page.
+  - `page.screenshot()` often misses the result. The sticky site header covers alerts near the top, and scrolling first doesn't always help.
 
   In the report, list each screenshot as a clickable markdown link relative to the repo root, with one line on what it shows: `[3-sixth-refused.png](.scratchpad/verify/20261020-1400-cred/3-sixth-refused.png): 6th login refused`. Pick the format for where the user reads:
   - IDE chat (VS Code): links. Inline images (`![]()`) don't render there.
