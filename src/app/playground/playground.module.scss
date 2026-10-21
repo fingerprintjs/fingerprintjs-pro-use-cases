@@ -289,6 +289,29 @@ h2.sectionTitle {
   margin-bottom: rem(48px);
 }
 
+// Same outer width as .tablesContainer below, so the edges line up
+.aiApiSection {
+  max-width: calc(3 * 405px + 2 * 16px);
+  margin: rem(40px) auto rem(48px);
+
+  @include media('<=1200px') {
+    max-width: 500px;
+    margin-top: rem(32px);
+  }
+}
+
+// Table on the left, raw JSON on the right
+.aiApiColumns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: rem(16px);
+
+  @include media('<=1200px') {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .tableTitle {
   color: v('dark-black');
   font-family: 'JetBrains Mono';

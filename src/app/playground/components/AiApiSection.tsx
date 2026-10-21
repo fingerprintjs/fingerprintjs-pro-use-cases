@@ -33,10 +33,10 @@ export function AiApiSection({ result }: { result: AiApiResult }) {
 
   return (
     <Container size='large'>
-      <div data-testid={TEST_IDS.playground.aiApiSection} style={{ marginBottom: 48 }}>
+      <div data-testid={TEST_IDS.playground.aiApiSection} className={styles.aiApiSection}>
         <h3 className={styles.tableTitle}>Automation Intelligence API</h3>
         {event ? (
-          <>
+          <div className={styles.aiApiColumns}>
             <table className={tableStyles.signalTable}>
               <tbody>
                 {rows.map(([label, value]) => (
@@ -48,7 +48,7 @@ export function AiApiSection({ result }: { result: AiApiResult }) {
               </tbody>
             </table>
             <CollapsibleJsonViewer json={event} />
-          </>
+          </div>
         ) : (
           <p>Automation Intelligence API result unavailable: {'error' in result && result.error}</p>
         )}
