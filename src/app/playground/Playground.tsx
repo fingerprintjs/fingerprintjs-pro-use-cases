@@ -107,7 +107,7 @@ function formatNameWithVersion(name: string | undefined, version: string | undef
   return `${name} ${version}`;
 }
 
-export function Playground({ aiApiResult }: { aiApiResult?: AiApiResult }) {
+export function Playground({ aiApiResult }: { aiApiResult: AiApiResult }) {
   const {
     agentResponse,
     isLoadingAgentResponse,
@@ -136,7 +136,7 @@ export function Playground({ aiApiResult }: { aiApiResult?: AiApiResult }) {
       <>
         <Alert severity={'error'}>{formatRequestError(agentError, serverError)}</Alert>
         {/* The AI API result does not depend on the JS agent, so keep showing it */}
-        {aiApiResult && <AiApiSection result={aiApiResult} />}
+        <AiApiSection result={aiApiResult} />
       </>
     );
   }
@@ -761,8 +761,7 @@ export function Playground({ aiApiResult }: { aiApiResult?: AiApiResult }) {
         </h1>
         <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>
       </Container>
-      {/* Not passed in the embed page */}
-      {aiApiResult && <AiApiSection result={aiApiResult} />}
+      <AiApiSection result={aiApiResult} />
       <Container size='large'>
         <div className={styles.runningIntelligence}>
           {!identificationData ? (
