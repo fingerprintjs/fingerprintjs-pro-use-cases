@@ -304,11 +304,19 @@ h2.sectionTitle {
 .aiApiColumns {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
   gap: rem(16px);
 
   @include media('<=1200px') {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+// Side by side, the JSON is as tall as the table and scrolls.
+// `contain: size` stops the long JSON from setting the row height. Stacked, it keeps the default height.
+.aiApiJson {
+  @include media('>1200px') {
+    contain: size;
+    --json-viewer-height: 100%;
   }
 }
 
