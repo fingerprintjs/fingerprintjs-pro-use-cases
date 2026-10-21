@@ -39,25 +39,23 @@ export async function fetchAiApiResult(requestHeaders: Headers, path: string): P
       return { error: 'No client IP found in X-Forwarded-For.' };
     }
 
-    // Behind CloudFront and DigitalOcean, `request.url` only says "localhost" (see src/proxy.ts), so rebuild it.
-    // CloudFront also replaces Host with the Digital Ocean hostname, and no other header has the public one.
-    // Forwarding the viewer Host breaks TLS to Digital Ocean (502), since it has no cert for the public domain.
-    // So deployments set PUBLIC_ORIGIN, and local runs fall back to the request headers.
-    const protocol = requestHeaders.get('x-forwarded-proto')?.split(',')[0]?.trim() || 'http';
-    const origin = new URL(serverEnv.PUBLIC_ORIGIN ?? `${protocol}://${requestHeaders.get('host')}`);
-    const url = `${origin.origin}${path}`;
+    // Behind CloudFront, Host is the Digital Ocean hostname and no header has the public one.
+    // CloudFront can't forward the viewer Host: Digital Ocean has no TLS cert for it (502).
+    const publicUrl = new URL(path, serverEnv.PUBLIC_ORIGIN);
 
     const response = await fetch(`${AI_API_HOSTS[clientEnv.NEXT_PUBLIC_REGION]}/v4/edge`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${serverEnv.SERVER_API_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        headers: Array.from(requestHeaders, ([name, value]) => ({
-          name,
-          // Signed agents (Web Bot Auth) sign the public host, so send that, not the Digital Ocean one
-          value: SENSITIVE_HEADER_REGEX.test(name) ? '' : name === 'host' ? origin.host : value,
-        })),
+        headers: Array.from(requestHeaders, ([name, value]) => {
+          if (SENSITIVE_HEADER_REGEX.test(name)) {
+            return { name, value: '' };
+          }
+          // Signed agents (Web Bot Auth) sign the public host
+          return { name, value: name === 'host' ? publicUrl.host : value };
+        }),
         method: 'GET',
-        url,
+        url: publicUrl.href,
         ...(isIPv6(ip) ? { ipv6_address: ip } : { ipv4_address: ip }),
       }),
       signal: AbortSignal.timeout(AI_API_TIMEOUT_MS),

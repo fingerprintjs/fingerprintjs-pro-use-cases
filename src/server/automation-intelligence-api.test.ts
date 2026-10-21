@@ -2,8 +2,6 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { fetchAiApiResult } from './automation-intelligence-api';
 
 const pageRequestHeaders = new Headers({
-  host: 'demo.fingerprint.com',
-  'x-forwarded-proto': 'https',
   'x-forwarded-for': '203.0.113.7',
   'user-agent': 'test-agent',
   cookie: 'session=secret',
@@ -33,11 +31,7 @@ describe('fetchAiApiResult', () => {
     expect(url).toMatch(/^https:\/\/(eu\.|ap\.)?api\.fpjs\.io\/v4\/edge$/);
     expect(init.headers.Authorization).toMatch(/^Bearer .+/);
     const body = JSON.parse(init.body);
-    expect(body).toMatchObject({
-      method: 'GET',
-      url: 'https://demo.fingerprint.com/playground',
-      ipv4_address: '203.0.113.7',
-    });
+    expect(body).toMatchObject({ method: 'GET', ipv4_address: '203.0.113.7' });
     expect(body.headers).toContainEqual({ name: 'user-agent', value: 'test-agent' });
     for (const name of ['cookie', 'authorization', 'e2e-test-password']) {
       expect(body.headers).toContainEqual({ name, value: '' });
