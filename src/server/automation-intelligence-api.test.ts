@@ -19,6 +19,7 @@ const stubFetch = (response: Response) => {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  vi.unstubAllEnvs();
 });
 
 describe('fetchAiApiResult', () => {
@@ -41,6 +42,21 @@ describe('fetchAiApiResult', () => {
     for (const name of ['cookie', 'authorization', 'e2e-test-password']) {
       expect(body.headers).toContainEqual({ name, value: '' });
     }
+  });
+
+  it('sends PUBLIC_ORIGIN as the URL and Host instead of the origin server host', async () => {
+    vi.stubEnv('PUBLIC_ORIGIN', 'https://demo.fingerprint.com');
+    vi.resetModules();
+    const { fetchAiApiResult } = await import('./automation-intelligence-api');
+    const fetchMock = stubFetch(Response.json({ event_id: '1.abc', timestamp: 1, source: 'edge' }));
+
+    await fetchAiApiResult(
+      new Headers({ host: 'jellyfish-app-cnbob.ondigitalocean.app', 'x-forwarded-for': '203.0.113.7' }),
+    );
+
+    const body = JSON.parse(fetchMock.mock.calls[0][1].body);
+    expect(body.url).toBe('https://demo.fingerprint.com/playground');
+    expect(body.headers).toContainEqual({ name: 'host', value: 'demo.fingerprint.com' });
   });
 
   it('returns an error instead of throwing when the API fails', async () => {

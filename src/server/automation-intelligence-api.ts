@@ -36,10 +36,14 @@ export async function fetchAiApiResult(requestHeaders: Headers): Promise<AiApiRe
       return { error: 'No client IP found in X-Forwarded-For.' };
     }
 
-    // Behind CloudFront and DigitalOcean, `request.url` only says "localhost" (see src/proxy.ts), so rebuild it from headers.
+    // Behind CloudFront and DigitalOcean, `request.url` only says "localhost" (see src/proxy.ts), so rebuild it.
+    // CloudFront also replaces Host with the Digital Ocean hostname, and no other header has the public one.
+    // Forwarding the viewer Host breaks TLS to Digital Ocean (502), since it has no cert for the public domain.
+    // So deployments set PUBLIC_ORIGIN, and local runs fall back to the request headers.
     // A page cannot read its own path or fragment from headers, and the API rejects `#fragment`.
     const protocol = requestHeaders.get('x-forwarded-proto')?.split(',')[0]?.trim() || 'http';
-    const url = `${protocol}://${requestHeaders.get('host')}/playground`;
+    const origin = new URL(serverEnv.PUBLIC_ORIGIN ?? `${protocol}://${requestHeaders.get('host')}`);
+    const url = `${origin.origin}/playground`;
 
     const response = await fetch(`${AI_API_HOSTS[clientEnv.NEXT_PUBLIC_REGION]}/v4/edge`, {
       method: 'POST',
@@ -47,7 +51,8 @@ export async function fetchAiApiResult(requestHeaders: Headers): Promise<AiApiRe
       body: JSON.stringify({
         headers: Array.from(requestHeaders, ([name, value]) => ({
           name,
-          value: SENSITIVE_HEADER_REGEX.test(name) ? '' : value,
+          // Signed agents (Web Bot Auth) sign the public host, so send that, not the Digital Ocean one
+          value: SENSITIVE_HEADER_REGEX.test(name) ? '' : name === 'host' ? origin.host : value,
         })),
         method: 'GET',
         url,

@@ -24,6 +24,9 @@ export const serverEnv = createEnv({
     // Proxies that append to X-Forwarded-For after the client IP. 0 = use the right-most hop.
     // This deploy (CloudFront → Digital Ocean) needs 2; set it in the host env, not here.
     TRUSTED_PROXY_COUNT: z.coerce.number().int().min(0).max(10).default(0),
+    // Public origin, e.g. https://demo.fingerprint.com. Set it when a proxy rewrites the Host header.
+    // CloudFront sends the Digital Ocean hostname as Host, see src/server/automation-intelligence-api.ts.
+    PUBLIC_ORIGIN: z.string().url().optional(),
 
     // Credential stuffing demo
     KNOWN_VISITOR_IDS: z.string().min(1).default('').optional(),
