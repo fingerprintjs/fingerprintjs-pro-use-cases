@@ -8,6 +8,6 @@ export const metadata = generateUseCaseMetadata(PLAYGROUND_METADATA);
 
 export default async function PlaygroundPage() {
   // Reading headers makes this page render per request, which the AI API needs.
-  const aiApiResult = await fetchAiApiResult(await headers());
+  const aiApiResult = await fetchAiApiResult(await headers(), '/playground');
   return <Playground aiApiResult={aiApiResult} />;
 }

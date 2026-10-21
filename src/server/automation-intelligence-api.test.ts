@@ -26,7 +26,7 @@ describe('fetchAiApiResult', () => {
   it('sends the page request to the AI API without secret header values', async () => {
     const fetchMock = stubFetch(Response.json({ event_id: '1.abc', timestamp: 1, source: 'edge' }));
 
-    const result = await fetchAiApiResult(pageRequestHeaders);
+    const result = await fetchAiApiResult(pageRequestHeaders, '/playground');
 
     expect(result).toEqual({ event: { event_id: '1.abc', timestamp: 1, source: 'edge' } });
     const [url, init] = fetchMock.mock.calls[0];
@@ -52,6 +52,7 @@ describe('fetchAiApiResult', () => {
 
     await fetchAiApiResult(
       new Headers({ host: 'jellyfish-app-cnbob.ondigitalocean.app', 'x-forwarded-for': '203.0.113.7' }),
+      '/playground',
     );
 
     const body = JSON.parse(fetchMock.mock.calls[0][1].body);
@@ -61,14 +62,18 @@ describe('fetchAiApiResult', () => {
 
   it('returns an error instead of throwing when the API fails', async () => {
     stubFetch(Response.json({ error: { code: 'wrong_region', message: 'wrong region' } }, { status: 403 }));
-    expect(await fetchAiApiResult(pageRequestHeaders)).toEqual({ error: 'AI API returned 403 wrong_region' });
+    expect(await fetchAiApiResult(pageRequestHeaders, '/playground')).toEqual({
+      error: 'AI API returned 403 wrong_region',
+    });
 
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new DOMException('timed out', 'TimeoutError')));
-    expect(await fetchAiApiResult(pageRequestHeaders)).toEqual({ error: expect.stringContaining('timed out') });
+    expect(await fetchAiApiResult(pageRequestHeaders, '/playground')).toEqual({
+      error: expect.stringContaining('timed out'),
+    });
   });
 
   it('returns an error when there is no client IP', async () => {
-    expect(await fetchAiApiResult(new Headers({ host: 'localhost:3000' }))).toEqual({
+    expect(await fetchAiApiResult(new Headers({ host: 'localhost:3000' }), '/playground')).toEqual({
       error: 'No client IP found in X-Forwarded-For.',
     });
   });
