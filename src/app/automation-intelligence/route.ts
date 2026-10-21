@@ -6,8 +6,8 @@
  * https://docs.fingerprint.com/reference/automation-intelligence-api
  */
 import { NextRequest } from 'next/server';
-import { fetchAiApiResult } from '../../../server/automation-intelligence-api';
-import { getAiApiSummary } from '../../../utils/aiApiSummary';
+import { fetchAiApiResult } from '../../server/automation-intelligence-api';
+import { getAiApiSummary } from '../../utils/aiApiSummary';
 
 const FORMATS = ['json', 'text', 'html'];
 

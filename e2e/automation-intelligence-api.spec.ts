@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { PRODUCTION_E2E_TEST_BASE_URL } from '../src/envShared';
 
-const URL = '/api/automation-intelligence';
+const URL = '/automation-intelligence';
 
 // The hourly production run cannot pick the client IP, so it only checks that a result comes back.
 test('returns the AI API event on the hosted site', async ({ request }) => {
