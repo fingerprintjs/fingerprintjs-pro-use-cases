@@ -45,7 +45,7 @@ describe('fetchAiApiResult', () => {
     const fetchMock = stubFetch(Response.json({ event_id: '1.abc', timestamp: 1, source: 'edge' }));
 
     await fetchAiApiResult(
-      new Headers({ host: 'jellyfish-app-cnbob.ondigitalocean.app', 'x-forwarded-for': '203.0.113.7' }),
+      new Headers({ host: 'origin-server.example.com', 'x-forwarded-for': '203.0.113.7' }),
       '/playground',
     );
 
