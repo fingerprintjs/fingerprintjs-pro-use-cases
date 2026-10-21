@@ -38,7 +38,8 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [['html'], ['list']],
+  // `open: 'never'`: by default a failed local run serves the report and blocks the terminal until Ctrl+C
+  reporter: [['html', { open: 'never' }], ['list']],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
@@ -60,16 +61,16 @@ export default defineConfig({
 
   /* In CI/GitHub action, run the production server before running tests
    * (assumes `pnpm build` was called before)
+   * Locally, start `pnpm dev` yourself. Starting `pnpm start` here would test a stale build, not your code.
    */
-  webServer: PRODUCTION_E2E_TEST_BASE_URL
-    ? undefined
-    : {
-        command: `pnpm start`,
-        url: LOCALHOST_URL,
-        timeout: 120 * 1000,
-        // Don't `pnpm start` (reuse existing server instead) if you are running locally
-        reuseExistingServer: !IS_CI,
-      },
+  webServer:
+    IS_CI && !PRODUCTION_E2E_TEST_BASE_URL
+      ? {
+          command: `pnpm start`,
+          url: LOCALHOST_URL,
+          timeout: 120 * 1000,
+        }
+      : undefined,
 
   /* Configure projects for major browsers */
   projects: [

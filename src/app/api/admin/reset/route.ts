@@ -9,6 +9,7 @@ import { syncFirewallRuleset } from '../../../bot-firewall/api/block-ip/cloudfla
 import { deleteBlockedIp } from '../../../bot-firewall/api/get-blocked-ips/blockedIpsDatabase';
 import { PaymentAttemptDbModel } from '../../../payment-fraud/api/place-order/database';
 import { NextRequest, NextResponse } from 'next/server';
+import { serverEnv } from '../../../../env/server';
 import { SessionDbModel, UserDbModel } from '../../../account-sharing/api/database';
 import { AccountDbModel } from '../../../new-account-fraud/api/create-account/database';
 
@@ -67,7 +68,10 @@ const deleteVisitorData = async (visitorId: string, ip: string) => {
     deletedArticleViews: await tryToDestroy(() => ArticleViewDbModel.destroy(options)),
     deletedBlockedIps: await tryToDestroy(async () => {
       const deletedIpCount = await deleteBlockedIp(ip);
-      await syncFirewallRuleset();
+      // Only the bot firewall demo needs Cloudflare. Without it, skip the sync so every reset doesn't log an error.
+      if (serverEnv.CLOUDFLARE_API_TOKEN && serverEnv.CLOUDFLARE_ZONE_ID && serverEnv.CLOUDFLARE_RULESET_ID) {
+        await syncFirewallRuleset();
+      }
       return deletedIpCount;
     }),
     deletedSmsVerificationRequests: await tryToDestroy(() => SmsVerificationDatabaseModel.destroy(options)),
