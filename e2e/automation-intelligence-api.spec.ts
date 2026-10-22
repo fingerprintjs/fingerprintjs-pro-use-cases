@@ -6,7 +6,7 @@ import { Page, expect, test } from '@playwright/test';
 import { TEST_IDS } from '../src/client/testIDs';
 import { PRODUCTION_E2E_TEST_BASE_URL } from '../src/envShared';
 
-const URL = '/automation-intelligence';
+const ENDPOINT = '/automation-intelligence';
 const getAiApiSection = async (page: Page) => {
   await page.goto('/playground');
   return page.getByTestId(TEST_IDS.playground.aiApiSection);
@@ -20,9 +20,12 @@ test.describe('on the hosted site', () => {
   test.skip(!PRODUCTION_E2E_TEST_BASE_URL, 'Hosted site only');
 
   test('endpoint returns the AI API event', async ({ request }) => {
-    const response = await request.get(URL);
+    const response = await request.get(ENDPOINT);
     expect(response.status()).toBe(200);
-    expect((await response.json()).ip_info).toBeDefined();
+    const event = await response.json();
+    expect(event.source).toBe('edge');
+    // Checks PUBLIC_ORIGIN: behind CloudFront the server only sees the Digital Ocean host
+    expect(event.url).toBe(new URL(ENDPOINT, PRODUCTION_E2E_TEST_BASE_URL).href);
   });
 
   test('Playground shows the AI API result', async ({ page }) => {
@@ -41,7 +44,7 @@ test.describe('with a chosen client IP', () => {
     test.use({ extraHTTPHeaders: { 'x-forwarded-for': '8.8.8.8' } });
 
     test('endpoint returns the raw event as JSON', async ({ request }) => {
-      const response = await request.get(URL);
+      const response = await request.get(ENDPOINT);
       expect(response.status()).toBe(200);
       expect(response.headers()['cache-control']).toBe('no-store');
       const event = await response.json();
@@ -60,7 +63,7 @@ test.describe('with a chosen client IP', () => {
     test.use({ extraHTTPHeaders: { 'x-forwarded-for': '2001:4860:4860::8888' } });
 
     test('endpoint returns the event for an IPv6 client', async ({ request }) => {
-      const response = await request.get(URL);
+      const response = await request.get(ENDPOINT);
       expect(response.status()).toBe(200);
       expect((await response.json()).ip_info.v6.address).toBe('2001:4860:4860::8888');
     });
@@ -70,7 +73,7 @@ test.describe('with a chosen client IP', () => {
     test.use({ extraHTTPHeaders: { 'x-forwarded-for': 'not-an-ip' } });
 
     test('endpoint returns the error', async ({ request }) => {
-      const response = await request.get(URL);
+      const response = await request.get(ENDPOINT);
       expect(response.status()).toBe(502);
       expect((await response.json()).error).toMatch(/^AI API returned 400/);
     });
