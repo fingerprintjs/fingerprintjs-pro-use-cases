@@ -47,7 +47,7 @@ test.describe('page request URLs', () => {
         ...(!PRODUCTION_E2E_TEST_BASE_URL ? { 'x-forwarded-for': '8.8.8.8' } : {}),
         'x-fp-original-request-target': '/spoofed?ignored=1',
       });
-      const requestPath = `${pagePath}?tag=one&probe=%31&tag=two&empty=&encoded=a%2fb%20c`;
+      const requestPath = `${pagePath}?a=%31&b=1&a=2&c=&x=%2f%20`;
       await page.goto(requestPath);
       await expect(page.getByTestId(TEST_IDS.playground.aiApiSection)).toContainText(`${baseURL}${requestPath}`);
     });
