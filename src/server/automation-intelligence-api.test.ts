@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { fetchAiApiResult } from './automation-intelligence-api';
+import { ORIGINAL_REQUEST_TARGET_HEADER } from './request-target';
 
 const pageRequestHeaders = new Headers({
   'x-forwarded-for': '203.0.113.7',
@@ -36,6 +37,18 @@ describe('fetchAiApiResult', () => {
     for (const name of ['cookie', 'authorization', 'e2e-test-password']) {
       expect(body.headers).toContainEqual({ name, value: '' });
     }
+  });
+
+  it('does not send the internal request target header added by Proxy', async () => {
+    const fetchMock = stubFetch(Response.json({ event_id: '1.abc', timestamp: 1, source: 'edge' }));
+
+    await fetchAiApiResult(
+      new Headers({ 'x-forwarded-for': '203.0.113.7', [ORIGINAL_REQUEST_TARGET_HEADER]: '/playground?a=1' }),
+      '/playground?a=1',
+    );
+
+    const body = JSON.parse(fetchMock.mock.calls[0][1].body);
+    expect(body.headers.map((header: { name: string }) => header.name)).not.toContain(ORIGINAL_REQUEST_TARGET_HEADER);
   });
 
   it('sends PUBLIC_ORIGIN as the URL and Host instead of the origin server host', async () => {

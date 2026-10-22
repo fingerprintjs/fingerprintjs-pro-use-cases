@@ -3,6 +3,7 @@ import { isIPv6 } from 'is-ip';
 import { clientEnv } from '../env/client';
 import { serverEnv } from '../env/server';
 import { clientIpFromXForwardedFor } from './checks';
+import { ORIGINAL_REQUEST_TARGET_HEADER } from './request-target';
 
 /**
  * Calls the Fingerprint Automation Intelligence API (AI API) for the current page request.
@@ -11,7 +12,6 @@ import { clientIpFromXForwardedFor } from './checks';
  * - https://docs.fingerprint.com/reference/automation-intelligence-api-collect-intelligence
  *
  * `@fingerprint/node-sdk` 7.7.0 has no method for this endpoint yet, so this uses plain `fetch`.
- * The response matches the SDK `Event` type (`source: 'edge'`).
  */
 
 const AI_API_HOSTS = {
@@ -20,14 +20,20 @@ const AI_API_HOSTS = {
   ap: 'https://ap.api.fpjs.io',
 };
 
-// The API rejects requests sent later than 5 seconds after the original request. Keep the page fast too.
+// Keep the page fast. The AI API adds this much latency at most.
 const AI_API_TIMEOUT_MS = 1500;
 
 // Sent with empty values, as the docs require. The API only needs to see that they were present.
 // Also covers e2e-test-password (see playwright.config.ts).
 const SENSITIVE_HEADER_REGEX = /authorization|cookie|password|token|secret|api-key|apikey/i;
 
-export type AiApiResult = { event: Event } | { error: string };
+/**
+ * Only the fields the Playground reads. The JSON viewer and the curl endpoint show the full response.
+ * Fields: https://docs.fingerprint.com/reference/automation-intelligence-api-collect-intelligence
+ */
+export type AiApiEvent = Pick<Event, 'ip_info' | 'bot_info' | 'vpn' | 'proxy' | 'proxy_details'>;
+
+export type AiApiResult = { event: AiApiEvent } | { error: string };
 
 /**
  * @param path Original request pathname and query, e.g. `/playground?foo=bar`.
@@ -48,13 +54,17 @@ export async function fetchAiApiResult(requestHeaders: Headers, path: string): P
       method: 'POST',
       headers: { Authorization: `Bearer ${serverEnv.SERVER_API_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        headers: Array.from(requestHeaders, ([name, value]) => {
-          if (SENSITIVE_HEADER_REGEX.test(name)) {
-            return { name, value: '' };
-          }
-          // Signed agents (Web Bot Auth) sign the public host
-          return { name, value: name === 'host' ? publicUrl.host : value };
-        }),
+        headers: Array.from(requestHeaders)
+          // Added by our Proxy, not sent by the client
+          .filter(([name]) => name !== ORIGINAL_REQUEST_TARGET_HEADER)
+          .map(([name, value]) => {
+            if (SENSITIVE_HEADER_REGEX.test(name)) {
+              return { name, value: '' };
+            }
+            // Signed agents (Web Bot Auth) sign the public host
+            return { name, value: name === 'host' ? publicUrl.host : value };
+          }),
+        // Callers only serve GET. Next also answers HEAD with them, but pages can't read the method.
         method: 'GET',
         url: publicUrl.href,
         ...(isIPv6(ip) ? { ipv6_address: ip } : { ipv4_address: ip }),
@@ -69,7 +79,7 @@ export async function fetchAiApiResult(requestHeaders: Headers, path: string): P
       console.error(`AI API request failed: ${response.status}`, body);
       return { error: `AI API returned ${response.status} ${body?.error?.code ?? ''}`.trim() };
     }
-    return { event: (await response.json()) as Event };
+    return { event: (await response.json()) as AiApiEvent };
   } catch (error) {
     // Includes timeouts. The page must render without this section.
     console.error('AI API request failed:', error);
