@@ -48,7 +48,7 @@ export function AiApiSection({ result }: { result: AiApiResult }) {
     <Container size='large'>
       <div data-testid={TEST_IDS.playground.aiApiSection} className={styles.aiApiSection}>
         <h3 className={styles.tableTitle}>Automation Intelligence API</h3>
-        <p>Detect AI agent network requests without browsers or JavaScript</p>
+        <p className={styles.aiApiDescription}>Detect AI agent network requests without browsers or JavaScript</p>
         {event ? (
           <div className={styles.aiApiColumns}>
             <table className={tableStyles.signalTable}>

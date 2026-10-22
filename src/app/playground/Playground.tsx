@@ -879,6 +879,11 @@ export function Playground({ aiApiResult }: { aiApiResult: AiApiResult }) {
                   type: 'Article',
                 },
                 {
+                  title: 'Automation Intelligence API',
+                  url: 'https://docs.fingerprint.com/reference/automation-intelligence-api',
+                  type: 'Documentation',
+                },
+                {
                   title: 'Intro to Device Intelligence Webinar',
                   url: 'https://www.youtube.com/watch?v=YTRmWUeQWyY',
                   type: 'Webinar',

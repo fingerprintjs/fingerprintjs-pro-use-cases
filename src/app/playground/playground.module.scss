@@ -300,6 +300,15 @@ h2.sectionTitle {
   }
 }
 
+// Subtitle under the section title, pulled up closer to it
+.aiApiDescription {
+  margin: rem(-8px) 0 rem(16px);
+  color: v('dark-gray');
+  font-family: Inter;
+  font-size: rem(14px);
+  line-height: 160%;
+}
+
 // Table on the left, raw JSON on the right
 .aiApiColumns {
   display: grid;
