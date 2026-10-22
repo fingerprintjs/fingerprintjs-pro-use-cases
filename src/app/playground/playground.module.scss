@@ -309,6 +309,11 @@ h2.sectionTitle {
   @include media('<=1200px') {
     grid-template-columns: minmax(0, 1fr);
   }
+
+  // Without a set width, the long location name under "Location" makes the label column too wide
+  td:first-child {
+    width: 40%;
+  }
 }
 
 // Side by side, the JSON is as tall as the table and scrolls.
