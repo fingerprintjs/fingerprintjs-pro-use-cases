@@ -79,8 +79,8 @@ test.describe('Playground page', () => {
     await page.getByText('Your Visitor ID is').waitFor();
     await page.getByTestId(TEST_ID.refreshButton).first().waitFor();
 
-    await page.getByText('Identification', { exact: true }).waitFor();
-    await page.getByText('Smart signals', { exact: true }).waitFor();
+    await page.getByText('Browser Identification', { exact: true }).waitFor();
+    await page.getByText('Browser Smart signals', { exact: true }).waitFor();
     await page.getByText('Mobile Smart signals', { exact: true }).waitFor();
 
     await page.getByText('JavaScript Agent Response', { exact: true }).waitFor();
