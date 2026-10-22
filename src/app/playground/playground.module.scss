@@ -300,15 +300,37 @@ h2.sectionTitle {
   }
 }
 
+// Subtitle under the section title, pulled up closer to it
+.aiApiDescription {
+  margin: rem(-8px) 0 rem(16px);
+  color: v('dark-gray');
+  font-family: Inter;
+  font-size: rem(14px);
+  line-height: 160%;
+}
+
 // Table on the left, raw JSON on the right
 .aiApiColumns {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
   gap: rem(16px);
 
   @include media('<=1200px') {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  // Without a set width, the long location name under "Location" makes the label column too wide
+  td:first-child {
+    width: 40%;
+  }
+}
+
+// Side by side, the JSON is as tall as the table and scrolls.
+// `contain: size` stops the long JSON from setting the row height. Stacked, it keeps the default height.
+.aiApiJson {
+  @include media('>1200px') {
+    contain: size;
+    --json-viewer-height: 100%;
   }
 }
 
