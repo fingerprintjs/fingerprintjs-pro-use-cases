@@ -56,22 +56,27 @@ export function AiApiSection({ result }: { result: AiApiResult }) {
                   <td>IP address</td>
                   <td className={tableStyles.neutral}>{ip?.address ?? 'Unknown'}</td>
                 </tr>
-                <tr>
-                  <td>
-                    Location
-                    <div className={styles.locationText}>{getLocationName(location)}</div>
-                  </td>
-                  <td className={tableStyles.noPadding}>
-                    {/* Do not show Map to bots, avoid needless MapBox API calls */}
-                    {location?.latitude && location.longitude && !bot && (
+                {/* Do not show Map to bots, avoid needless MapBox API calls */}
+                {location?.latitude && location.longitude && !bot ? (
+                  <tr>
+                    <td>
+                      Location
+                      <div className={styles.locationText}>{getLocationName(location)}</div>
+                    </td>
+                    <td className={tableStyles.noPadding}>
                       <Map
                         position={[location.latitude, location.longitude]}
                         zoom={getZoomLevel(location.accuracy_radius)}
                         height='95px'
                       />
-                    )}
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
+                ) : (
+                  <tr>
+                    <td>Location</td>
+                    <td className={tableStyles.neutral}>{getLocationName(location)}</td>
+                  </tr>
+                )}
                 {detections.map(([label, value, detected]) => (
                   <tr key={label}>
                     <td>{label}</td>
