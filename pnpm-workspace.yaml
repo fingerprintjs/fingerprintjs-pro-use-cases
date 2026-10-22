@@ -4,3 +4,9 @@ allowBuilds:
   sharp: true
   sqlite3: true
   unrs-resolver: true
+
+overrides:
+  # sqlite3 5 pins tar 6, which has a critical advisory: https://github.com/advisories/GHSA-23hp-3jrh-7fpw
+  # sqlite3 6 would bring tar 7, but its prebuilt binary needs glibc 2.38 and CI runs ubuntu-22.04 (glibc 2.35).
+  # sqlite3 5 only uses tar to build from source, through tar.extract(), which tar 7 still supports.
+  tar: ^7.5.19
