@@ -37,11 +37,17 @@ test.describe('on the hosted site', () => {
 
 test.describe('page request URLs', () => {
   for (const pagePath of ['/playground', '/playground/embed']) {
-    test(`${pagePath} preserves query parameters without JavaScript`, async ({ page, baseURL }) => {
-      if (!PRODUCTION_E2E_TEST_BASE_URL) {
-        await page.setExtraHTTPHeaders({ 'x-forwarded-for': '8.8.8.8' });
-      }
-      const requestPath = `${pagePath}?probe=1&tag=one&tag=two&empty=&encoded=a%2Fb+c`;
+    test(`${pagePath} preserves query encoding and order without JavaScript`, async ({
+      page,
+      baseURL,
+      extraHTTPHeaders,
+    }) => {
+      await page.setExtraHTTPHeaders({
+        ...extraHTTPHeaders,
+        ...(!PRODUCTION_E2E_TEST_BASE_URL ? { 'x-forwarded-for': '8.8.8.8' } : {}),
+        'x-fp-original-request-target': '/spoofed?ignored=1',
+      });
+      const requestPath = `${pagePath}?tag=one&probe=%31&tag=two&empty=&encoded=a%2fb%20c`;
       await page.goto(requestPath);
       await expect(page.getByTestId(TEST_IDS.playground.aiApiSection)).toContainText(`${baseURL}${requestPath}`);
     });

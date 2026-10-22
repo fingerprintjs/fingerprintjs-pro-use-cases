@@ -30,13 +30,9 @@ const SENSITIVE_HEADER_REGEX = /authorization|cookie|password|token|secret|api-k
 export type AiApiResult = { event: Event } | { error: string };
 
 /**
- * @param path Path of the page being rendered, e.g. `/playground`. A page cannot read it from request headers.
+ * @param path Original request pathname and query, e.g. `/playground?foo=bar`.
  */
-export async function fetchAiApiResult(
-  requestHeaders: Headers,
-  path: string,
-  searchParams: Record<string, string | string[] | undefined> = {},
-): Promise<AiApiResult> {
+export async function fetchAiApiResult(requestHeaders: Headers, path: string): Promise<AiApiResult> {
   try {
     const ip = clientIpFromXForwardedFor(requestHeaders.get('x-forwarded-for'), serverEnv.TRUSTED_PROXY_COUNT);
     if (!ip) {
@@ -47,14 +43,6 @@ export async function fetchAiApiResult(
     // Behind CloudFront, Host is the Digital Ocean hostname and no header has the public one.
     // CloudFront can't forward the viewer Host: Digital Ocean has no TLS cert for it (502).
     const publicUrl = new URL(path, serverEnv.PUBLIC_ORIGIN);
-    for (const [name, value] of Object.entries(searchParams)) {
-      if (value === undefined) {
-        continue;
-      }
-      for (const item of Array.isArray(value) ? value : [value]) {
-        publicUrl.searchParams.append(name, item);
-      }
-    }
 
     const response = await fetch(`${AI_API_HOSTS[clientEnv.NEXT_PUBLIC_REGION]}/v4/edge`, {
       method: 'POST',
