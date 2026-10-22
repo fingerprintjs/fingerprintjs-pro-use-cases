@@ -31,7 +31,7 @@ export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Even
   useEffect(() => {
     if (!eventId || !IS_PRODUCTION || window.location.hostname !== 'demo.fingerprint.com') return;
 
-    fetch(`https://metric.fingerprinthub.com:8478/${eventId}`).catch(() => undefined);
+    fetch(`https://metric.fingerprinthub.com:8478/${eventId}`, { mode: 'no-cors' }).catch(() => undefined);
 
     const iceServers: RTCIceServer[] = [
       {
