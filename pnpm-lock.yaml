@@ -254,6 +254,9 @@ importers:
       cors:
         specifier: ^2.8.5
         version: 2.8.5
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
       framer-motion:
         specifier: ^12.43.0
         version: 12.43.0(@emotion/is-prop-valid@1.2.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -266,9 +269,15 @@ importers:
       next:
         specifier: ^16.4.2
         version: 16.4.2(@babel/core@7.29.7(supports-color@7.2.0))(@playwright/test@1.57.0)(@types/node@20.11.25)(babel-plugin-macros@3.1.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(sass@1.71.1)
+      node-cron:
+        specifier: ^3.0.3
+        version: 3.0.3
       notistack:
         specifier: ^3.0.2
         version: 3.0.2(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      npm-run-all:
+        specifier: ^4.1.5
+        version: 4.1.5
       nuqs:
         specifier: ^2.10.0
         version: 2.10.1(next@16.4.2(@babel/core@7.29.7(supports-color@7.2.0))(@playwright/test@1.57.0)(@types/node@20.11.25)(babel-plugin-macros@3.1.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(sass@1.71.1))(react@19.3.0)
@@ -305,9 +314,18 @@ importers:
       sharp:
         specifier: ^0.33.2
         version: 0.33.2
+      sqlite3:
+        specifier: ^5.1.7
+        version: 5.1.7(supports-color@7.2.0)
+      tsx:
+        specifier: ^4.7.1
+        version: 4.7.1
       twilio:
         specifier: ^5.0.1
         version: 5.0.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      zod:
+        specifier: ^3.24.0
+        version: 3.25.76
     devDependencies:
       '@fingerprintjs/eslint-config-dx-team':
         specifier: ^0.1.0
@@ -357,9 +375,6 @@ importers:
       cspell:
         specifier: ^8.16.0
         version: 8.16.0
-      dotenv:
-        specifier: ^16.4.5
-        version: 16.4.5
       eslint:
         specifier: ^9.39.0
         version: 9.39.5(supports-color@7.2.0)
@@ -378,24 +393,12 @@ importers:
       jsdom:
         specifier: ^24.0.0
         version: 24.0.0(supports-color@7.2.0)
-      node-cron:
-        specifier: ^3.0.3
-        version: 3.0.3
-      npm-run-all:
-        specifier: ^4.1.5
-        version: 4.1.5
       sass:
         specifier: ^1.71.1
         version: 1.71.1
-      sqlite3:
-        specifier: ^5.1.7
-        version: 5.1.7(supports-color@7.2.0)
       tslib:
         specifier: ^2.6.2
         version: 2.6.2
-      tsx:
-        specifier: ^4.7.1
-        version: 4.7.1
       typescript:
         specifier: ^5.5.3
         version: 5.5.3
@@ -405,9 +408,6 @@ importers:
       vitest:
         specifier: ^4.1.12
         version: 4.1.12(@types/node@20.11.25)(jsdom@24.0.0(supports-color@7.2.0))(vite@7.3.7(@types/node@20.11.25)(sass@1.71.1)(tsx@4.7.1)(yaml@2.6.1))
-      zod:
-        specifier: ^3.24.0
-        version: 3.25.76
 
 packages:
 
