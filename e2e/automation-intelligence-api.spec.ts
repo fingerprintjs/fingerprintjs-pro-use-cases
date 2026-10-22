@@ -36,6 +36,10 @@ test.describe('on the hosted site', () => {
 });
 
 test.describe('page request URLs', () => {
+  // Linux WebKit rewrites percent escapes before sending (`%31` -> `1`, `%2f` -> `%2F`).
+  // `page.url()` still shows the typed URL, so the test cannot know what the server got.
+  test.skip(({ browserName }) => browserName === 'webkit', 'Linux WebKit rewrites the query');
+
   for (const pagePath of ['/playground', '/playground/embed']) {
     test(`${pagePath} preserves query encoding and order without JavaScript`, async ({
       page,
