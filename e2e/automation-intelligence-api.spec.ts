@@ -15,7 +15,8 @@ const getAiApiSection = async (page: Page) => {
 // The Playground server-renders the AI API section, so check it without JS
 test.use({ javaScriptEnabled: false });
 
-// The hourly production run cannot pick the client IP, so it only checks that a result comes back.
+// Runs only against a deployed site: the hourly production e2e run, or staging by hand.
+// It cannot pick the client IP, so it checks the parts that do not depend on it.
 test.describe('on the hosted site', () => {
   test.skip(!PRODUCTION_E2E_TEST_BASE_URL, 'Hosted site only');
 
@@ -34,9 +35,10 @@ test.describe('on the hosted site', () => {
   });
 });
 
-// The AI API is called from the Next server, so the test cannot mock it.
-// X-Forwarded-For picks the client IP the server sends to the real AI API (TRUSTED_PROXY_COUNT is 0 in tests).
-// Behind the production proxies, the server takes the real client IP instead, so skip these there.
+// Runs locally and in PR CI only. Skipped in the hourly production e2e run.
+// - The test picks the client IP with X-Forwarded-For (TRUSTED_PROXY_COUNT is 0 in tests).
+// - Behind the production proxies, the server ignores it and uses the real client IP.
+// - The AI API is called from the Next server, not the browser, so the test cannot mock it.
 test.describe('with a chosen client IP', () => {
   test.skip(Boolean(PRODUCTION_E2E_TEST_BASE_URL), 'Needs control of X-Forwarded-For');
 
