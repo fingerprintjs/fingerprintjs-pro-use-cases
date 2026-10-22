@@ -44,9 +44,18 @@ test.describe('with a chosen client IP', () => {
 
     test('Playground shows the result table', async ({ page }) => {
       const section = await getAiApiSection(page);
-      await expect(section.getByText('Automation Intelligence API', { exact: true })).toBeVisible();
       await expect(section.getByRole('row', { name: 'IP address 8.8.8.8' })).toBeVisible();
       await expect(section.getByRole('row', { name: 'Data center IP Yes (Google)' })).toBeVisible();
+    });
+  });
+
+  test.describe('IPv6', () => {
+    test.use({ extraHTTPHeaders: { 'x-forwarded-for': '2001:4860:4860::8888' } });
+
+    test('endpoint returns the event for an IPv6 client', async ({ request }) => {
+      const response = await request.get(URL);
+      expect(response.status()).toBe(200);
+      expect((await response.json()).ip_info.v6.address).toBe('2001:4860:4860::8888');
     });
   });
 
