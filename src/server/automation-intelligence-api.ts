@@ -21,7 +21,7 @@ const AI_API_HOSTS = {
 };
 
 // The API rejects requests sent later than 5 seconds after the original request. Keep the page fast too.
-const AI_API_TIMEOUT_MS = 3000;
+const AI_API_TIMEOUT_MS = 1000;
 
 // Sent with empty values, as the docs require. The API only needs to see that they were present.
 // Also covers e2e-test-password (see playwright.config.ts).
