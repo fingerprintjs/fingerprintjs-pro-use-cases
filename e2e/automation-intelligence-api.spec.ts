@@ -35,6 +35,19 @@ test.describe('on the hosted site', () => {
   });
 });
 
+test.describe('page request URLs', () => {
+  for (const pagePath of ['/playground', '/playground/embed']) {
+    test(`${pagePath} preserves query parameters without JavaScript`, async ({ page, baseURL }) => {
+      if (!PRODUCTION_E2E_TEST_BASE_URL) {
+        await page.setExtraHTTPHeaders({ 'x-forwarded-for': '8.8.8.8' });
+      }
+      const requestPath = `${pagePath}?probe=1&tag=one&tag=two&empty=&encoded=a%2Fb+c`;
+      await page.goto(requestPath);
+      await expect(page.getByTestId(TEST_IDS.playground.aiApiSection)).toContainText(`${baseURL}${requestPath}`);
+    });
+  }
+});
+
 // Runs locally and in PR CI only. Skipped in the hourly production e2e run.
 // - The test picks the client IP with X-Forwarded-For (TRUSTED_PROXY_COUNT is 0 in tests).
 // - Behind the production proxies, the server ignores it and uses the real client IP.

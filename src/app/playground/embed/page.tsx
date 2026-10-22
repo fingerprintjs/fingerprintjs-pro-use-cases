@@ -6,8 +6,8 @@ import { Playground } from '../Playground';
 
 export const metadata = generateUseCaseMetadata(PLAYGROUND_METADATA);
 
-export default async function PlaygroundPage() {
+export default async function PlaygroundPage({ searchParams }: PageProps<'/playground/embed'>) {
   // Reading headers makes this page render per request, which the AI API needs.
-  const aiApiResult = await fetchAiApiResult(await headers(), '/playground/embed');
+  const aiApiResult = await fetchAiApiResult(await headers(), '/playground/embed', await searchParams);
   return <Playground aiApiResult={aiApiResult} />;
 }
