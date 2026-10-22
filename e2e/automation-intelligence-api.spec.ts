@@ -16,12 +16,19 @@ const getAiApiSection = async (page: Page) => {
 test.use({ javaScriptEnabled: false });
 
 // The hourly production run cannot pick the client IP, so it only checks that a result comes back.
-test('returns the AI API result on the hosted site', async ({ page, request }) => {
+test.describe('on the hosted site', () => {
   test.skip(!PRODUCTION_E2E_TEST_BASE_URL, 'Hosted site only');
-  const response = await request.get(URL);
-  expect(response.status()).toBe(200);
-  expect((await response.json()).ip_info).toBeDefined();
-  await expect((await getAiApiSection(page)).getByRole('row', { name: /^IP address/ })).toBeVisible();
+
+  test('endpoint returns the AI API event', async ({ request }) => {
+    const response = await request.get(URL);
+    expect(response.status()).toBe(200);
+    expect((await response.json()).ip_info).toBeDefined();
+  });
+
+  test('Playground shows the AI API result', async ({ page }) => {
+    const section = await getAiApiSection(page);
+    await expect(section.getByRole('row', { name: /^IP address/ })).toBeVisible();
+  });
 });
 
 // The AI API is called from the Next server, so the test cannot mock it.
