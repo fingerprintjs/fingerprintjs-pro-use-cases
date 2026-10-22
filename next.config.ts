@@ -12,6 +12,9 @@ const configDir = path.dirname(fileURLToPath(import.meta.url));
 const stylesDir = path.join(configDir, 'src/client/styles');
 
 const nextConfig: NextConfig = {
+  // Stop `next dev` from adding its agent instructions block to AGENTS.md on every run.
+  // https://nextjs.org/docs/app/api-reference/config/next-config-js/agentRules
+  agentRules: false,
   images: {
     formats: ['image/webp'],
   },

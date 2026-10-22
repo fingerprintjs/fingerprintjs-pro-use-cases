@@ -90,6 +90,7 @@ export const TEST_IDS = {
     serverResponseJSON: 'serverResponseJSON',
     refreshButton: 'refreshButton',
     jsonLink: 'jsonLink',
+    grantLocationButton: 'grantLocationButton',
   },
   accountSharing: {
     usernameInput: 'usernameInput',

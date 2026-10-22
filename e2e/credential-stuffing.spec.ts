@@ -3,9 +3,13 @@ import { blockGoogleTagManager, resetScenarios } from './e2eTestUtils';
 import { TEST_IDS } from '../src/client/testIDs';
 import { CREDENTIAL_STUFFING_COPY } from '../src/app/credential-stuffing/api/authenticate/copy';
 
+// Wait for the API response, not just the message.
+// The message from the previous attempt stays on screen, so waiting for its text alone can pass too early.
 const submitForm = async (page: Page) => {
+  const response = page.waitForResponse('**/credential-stuffing/api/authenticate');
   // Waits for the button to be clickable out of the box
   await page.getByTestId(TEST_IDS.credentialStuffing.login).click();
+  await response;
 };
 
 test.beforeEach(async ({ page }) => {
