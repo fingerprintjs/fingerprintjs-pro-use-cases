@@ -759,7 +759,7 @@ export function Playground({ aiApiResult }: { aiApiResult: AiApiResult }) {
         <h1>
           <span>Fingerprint Pro</span> Playground
         </h1>
-        <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>
+        <p>Analyze your network request and browser with Fingerprint and see all the available signals.</p>
       </Container>
       <AiApiSection result={aiApiResult} />
       <Container size='large'>
@@ -790,7 +790,7 @@ export function Playground({ aiApiResult }: { aiApiResult: AiApiResult }) {
             {identificationData ? (
               <MyCollapsible defaultOpen>
                 <TableTitle>
-                  Identification{' '}
+                  Browser Identification{' '}
                   <MyCollapsibleTrigger>
                     <ChevronSvg />
                   </MyCollapsibleTrigger>
@@ -812,7 +812,7 @@ export function Playground({ aiApiResult }: { aiApiResult: AiApiResult }) {
               <>
                 <MyCollapsible defaultOpen>
                   <TableTitle>
-                    Smart signals{' '}
+                    Browser Smart signals{' '}
                     <MyCollapsibleTrigger>
                       <ChevronSvg />
                     </MyCollapsibleTrigger>
