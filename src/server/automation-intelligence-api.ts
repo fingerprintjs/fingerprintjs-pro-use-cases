@@ -36,6 +36,7 @@ export async function fetchAiApiResult(requestHeaders: Headers, path: string): P
   try {
     const ip = clientIpFromXForwardedFor(requestHeaders.get('x-forwarded-for'), serverEnv.TRUSTED_PROXY_COUNT);
     if (!ip) {
+      console.error('AI API request skipped: no client IP found in X-Forwarded-For.');
       return { error: 'No client IP found in X-Forwarded-For.' };
     }
 
@@ -65,11 +66,13 @@ export async function fetchAiApiResult(requestHeaders: Headers, path: string): P
     if (!response.ok) {
       // Error body is `{ error: { code, message } }`, e.g. wrong_region, too_many_requests.
       const body = await response.json().catch(() => undefined);
+      console.error(`AI API request failed: ${response.status}`, body);
       return { error: `AI API returned ${response.status} ${body?.error?.code ?? ''}`.trim() };
     }
     return { event: (await response.json()) as Event };
   } catch (error) {
     // Includes timeouts. The page must render without this section.
+    console.error('AI API request failed:', error);
     return { error: error instanceof Error ? error.message : String(error) };
   }
 }
