@@ -91,6 +91,7 @@ export const TEST_IDS = {
     refreshButton: 'refreshButton',
     jsonLink: 'jsonLink',
     grantLocationButton: 'grantLocationButton',
+    aiApiSection: 'aiApiSection',
   },
   accountSharing: {
     usernameInput: 'usernameInput',

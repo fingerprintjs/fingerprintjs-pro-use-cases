@@ -43,8 +43,8 @@ test.describe('Playground page', () => {
     await page.getByText('Your Visitor ID is').waitFor();
     await page.getByTestId(TEST_ID.refreshButton).first().waitFor();
 
-    await page.getByText('Identification', { exact: true }).waitFor();
-    await page.getByText('Smart signals', { exact: true }).waitFor();
+    await page.getByText('Browser Identification', { exact: true }).waitFor();
+    await page.getByText('Browser Smart signals', { exact: true }).waitFor();
     await page.getByText('Mobile Smart signals', { exact: true }).waitFor();
 
     await page.getByText('JavaScript Agent Response', { exact: true }).waitFor();
@@ -128,6 +128,14 @@ test.describe('Playground page', () => {
 
     await assertAlert({ page, severity: 'error', text: 'Server API Request' });
     await expect(page.getByText('Your Visitor ID is')).toBeVisible();
+  });
+
+  test('keeps the AI API section when the first Server API request fails', async ({ page }) => {
+    await page.route('**/api/event/v4/**', (route) => route.abort('failed'));
+    await page.reload();
+
+    await assertAlert({ page, severity: 'error', text: 'Server API Request' });
+    await expect(page.getByTestId(TEST_ID.aiApiSection)).toBeVisible();
   });
 });
 

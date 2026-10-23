@@ -36,6 +36,8 @@ import { LayoutUI } from '../LayoutUI';
 import Image from 'next/image';
 import GooglePlaySvg from './img/google_play.svg';
 import AppStoreSvg from './img/app_store.svg';
+import { AiApiSection } from './components/AiApiSection';
+import type { AiApiResult } from '../../server/automation-intelligence-api';
 
 // Nothing magic about `8` here, each customer must define their own use-case specific threshold
 const SUSPECT_SCORE_RED_THRESHOLD = 8;
@@ -105,7 +107,7 @@ function formatNameWithVersion(name: string | undefined, version: string | undef
   return `${name} ${version}`;
 }
 
-export function Playground() {
+export function Playground({ aiApiResult }: { aiApiResult: AiApiResult }) {
   const {
     agentResponse,
     isLoadingAgentResponse,
@@ -130,7 +132,13 @@ export function Playground() {
   }, []);
 
   if (requestError && !identificationEvent) {
-    return <Alert severity={'error'}>{formatRequestError(agentError, serverError)}</Alert>;
+    return (
+      <>
+        <Alert severity={'error'}>{formatRequestError(agentError, serverError)}</Alert>
+        {/* The AI API result does not depend on the JS agent, so keep showing it */}
+        <AiApiSection result={aiApiResult} />
+      </>
+    );
   }
 
   const ipLocation = identificationEvent?.ip_info?.v4?.geolocation;
@@ -751,8 +759,9 @@ export function Playground() {
         <h1>
           <span>Fingerprint Pro</span> Playground
         </h1>
-        <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>
+        <p>Analyze your network request and browser with Fingerprint and see all the available signals.</p>
       </Container>
+      <AiApiSection result={aiApiResult} />
       <Container size='large'>
         <div className={styles.runningIntelligence}>
           {!identificationData ? (
@@ -781,7 +790,7 @@ export function Playground() {
             {identificationData ? (
               <MyCollapsible defaultOpen>
                 <TableTitle>
-                  Identification{' '}
+                  Browser Identification{' '}
                   <MyCollapsibleTrigger>
                     <ChevronSvg />
                   </MyCollapsibleTrigger>
@@ -803,7 +812,7 @@ export function Playground() {
               <>
                 <MyCollapsible defaultOpen>
                   <TableTitle>
-                    Smart signals{' '}
+                    Browser Smart signals{' '}
                     <MyCollapsibleTrigger>
                       <ChevronSvg />
                     </MyCollapsibleTrigger>
@@ -868,6 +877,11 @@ export function Playground() {
                   title: 'What is Fingerprint',
                   url: 'https://dev.fingerprint.com/docs/what-is-fingerprint',
                   type: 'Article',
+                },
+                {
+                  title: 'Automation Intelligence API',
+                  url: 'https://docs.fingerprint.com/reference/automation-intelligence-api',
+                  type: 'Documentation',
                 },
                 {
                   title: 'Intro to Device Intelligence Webinar',
