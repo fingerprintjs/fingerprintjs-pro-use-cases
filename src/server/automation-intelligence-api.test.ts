@@ -67,6 +67,23 @@ describe('fetchAiApiResult', () => {
     expect(body.headers).toContainEqual({ name: 'host', value: 'demo.fingerprint.com' });
   });
 
+  it('appends the request target without parsing it', async () => {
+    vi.stubEnv('PUBLIC_ORIGIN', 'https://demo.fingerprint.com');
+    vi.resetModules();
+    const { fetchAiApiResult } = await import('./automation-intelligence-api');
+    const fetchMock = stubFetch(Response.json({ event_id: '1.abc', timestamp: 1, source: 'edge' }));
+
+    // A leading `//` is a new host to the URL parser, and `\` becomes `/`.
+    await fetchAiApiResult(
+      new Headers({ host: 'origin-server.example.com', 'x-forwarded-for': '203.0.113.7' }),
+      '//evil.example/foo\\/bar?a=%31&b=1&a=2&c=&x=%2f%20',
+    );
+
+    const body = JSON.parse(fetchMock.mock.calls[0][1].body);
+    expect(body.url).toBe('https://demo.fingerprint.com//evil.example/foo\\/bar?a=%31&b=1&a=2&c=&x=%2f%20');
+    expect(body.headers).toContainEqual({ name: 'host', value: 'demo.fingerprint.com' });
+  });
+
   it('returns an error instead of throwing when the API fails', async () => {
     stubFetch(Response.json({ error: { code: 'wrong_region', message: 'wrong region' } }, { status: 403 }));
     expect(await fetchAiApiResult(pageRequestHeaders, '/playground')).toEqual({

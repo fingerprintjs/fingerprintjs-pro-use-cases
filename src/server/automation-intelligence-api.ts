@@ -48,7 +48,10 @@ export async function fetchAiApiResult(requestHeaders: Headers, path: string): P
 
     // Behind CloudFront, Host is the Digital Ocean hostname and no header has the public one.
     // CloudFront can't forward the viewer Host: Digital Ocean has no TLS cert for it (502).
-    const publicUrl = new URL(path, serverEnv.PUBLIC_ORIGIN);
+    // Don't parse `path` with `new URL(path, origin)`. A leading `//` replaces the host, and `\` becomes `/`.
+    // https://url.spec.whatwg.org/#url-parsing
+    const origin = new URL(serverEnv.PUBLIC_ORIGIN);
+    const pageUrl = `${origin.origin}${path.startsWith('/') ? path : `/${path}`}`;
 
     const response = await fetch(`${AI_API_HOSTS[clientEnv.NEXT_PUBLIC_REGION]}/v4/edge`, {
       method: 'POST',
@@ -62,11 +65,11 @@ export async function fetchAiApiResult(requestHeaders: Headers, path: string): P
               return { name, value: '' };
             }
             // Signed agents (Web Bot Auth) sign the public host
-            return { name, value: name === 'host' ? publicUrl.host : value };
+            return { name, value: name === 'host' ? origin.host : value };
           }),
         // Callers only serve GET. Next also answers HEAD with them, but pages can't read the method.
         method: 'GET',
-        url: publicUrl.href,
+        url: pageUrl,
         ...(isIPv6(ip) ? { ipv6_address: ip } : { ipv4_address: ip }),
       }),
       signal: AbortSignal.timeout(AI_API_TIMEOUT_MS),
