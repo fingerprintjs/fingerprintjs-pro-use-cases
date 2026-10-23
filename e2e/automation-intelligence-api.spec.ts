@@ -26,6 +26,7 @@ test.describe('on the hosted site', () => {
     const event = await response.json();
     expect(event.source).toBe('edge');
     // Checks PUBLIC_ORIGIN: behind CloudFront the server only sees the Digital Ocean host
+    // eslint-disable-next-line no-restricted-syntax -- AI_API_ENDPOINT is a fixed relative path
     expect(event.url).toBe(new URL(AI_API_ENDPOINT, PRODUCTION_E2E_TEST_BASE_URL).href);
   });
 
