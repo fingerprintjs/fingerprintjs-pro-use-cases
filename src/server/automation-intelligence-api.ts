@@ -11,7 +11,7 @@ import { ORIGINAL_REQUEST_TARGET_HEADER } from './request-target';
  * - https://docs.fingerprint.com/reference/automation-intelligence-api
  * - https://docs.fingerprint.com/reference/automation-intelligence-api-collect-intelligence
  *
- * `@fingerprint/node-sdk` 7.7.0 has no method for this endpoint yet, so this uses plain `fetch`.
+ * `@fingerprint/node-sdk`has no method for this endpoint yet, so this uses plain `fetch`.
  */
 
 const AI_API_HOSTS = {
