@@ -39,7 +39,7 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('Playground page', () => {
   test('Page renders basic skeleton elements', async ({ page }) => {
-    await page.getByText('Fingerprint Pro Playground', { exact: true }).waitFor();
+    await page.getByText('Fingerprint Playground', { exact: true }).waitFor();
     await page.getByText('Your Visitor ID is').waitFor();
     await page.getByTestId(TEST_ID.refreshButton).first().waitFor();
 

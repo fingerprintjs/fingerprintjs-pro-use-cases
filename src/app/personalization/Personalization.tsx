@@ -106,9 +106,9 @@ export function Personalization({ embed }: { embed?: boolean }) {
         <DialogTitle>Heads up!</DialogTitle>
         <DialogContent>
           <DialogContentText whiteSpace='pre-line'>
-            Fingerprint Pro technology cannot be used to circumvent GDPR and other regulations and must fully comply
-            with the laws in the jurisdiction. You should not implement personalization elements across incognito mode
-            and normal mode because it violates the users expectations and will lead to a bad experience.
+            Fingerprint technology cannot be used to circumvent GDPR and other regulations and must fully comply with
+            the laws in the jurisdiction. You should not implement personalization elements across incognito mode and
+            normal mode because it violates the users expectations and will lead to a bad experience.
             <br />
             <br />
             This technical demo only uses incognito mode to demonstrate cookie expiration for non-technical folks.

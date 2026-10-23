@@ -37,7 +37,7 @@ const WebScraping: FunctionComponent<{ embed?: boolean }> = ({ embed }) => {
   });
 
   /**
-   * We use the Fingerprint Pro React SDK hook to get visitor data (https://github.com/fingerprintjs/fingerprintjs-pro-react)
+   * We use the Fingerprint React SDK hook to get visitor data (https://github.com/fingerprintjs/fingerprintjs-pro-react)
    * For Vue, Angular, Svelte, and other frameworks, see https://dev.fingerprint.com/docs/frontend-libraries
    * See '/client/use-visitor-data.js' for an example implementation of similar functionality without the SDK
    */
