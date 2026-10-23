@@ -757,7 +757,7 @@ export function Playground({ aiApiResult }: { aiApiResult: AiApiResult }) {
     <LayoutUI>
       <Container size='large' className={styles.hero}>
         <h1>
-          <span>Fingerprint Pro</span> Playground
+          <span>Fingerprint</span> Playground
         </h1>
         <p>Analyze your network request and browser with Fingerprint and see all the available signals.</p>
       </Container>
