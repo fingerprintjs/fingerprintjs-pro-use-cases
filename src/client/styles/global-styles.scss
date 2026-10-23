@@ -2,7 +2,6 @@
 @import './custom-properties.scss';
 @import './vendors/normalize.scss';
 @import './vendors/tippy.scss';
-@import './vendors/swiper.scss';
 @import './vendors/code-theme.scss';
 
 * {
@@ -93,29 +92,6 @@ button {
   -webkit-appearance: none;
   border: 0;
   padding: 0;
-}
-
-// SWIPPER
-
-.swiper {
-  padding-bottom: 3rem;
-}
-
-.swiper-pagination {
-  bottom: -5px !important;
-}
-
-.swiper-pagination-bullet {
-  background: #d0d0d0;
-  opacity: 1;
-}
-
-.swiper-pagination-bullet-active {
-  background: linear-gradient(94.48deg, #f5614b 0%, #f5614b 0.01%, #fa7545 100%);
-}
-
-.swiper-lazy:not(.swiper-lazy-loaded) {
-  display: none;
 }
 
 /*
