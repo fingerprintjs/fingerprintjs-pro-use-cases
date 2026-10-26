@@ -13,14 +13,14 @@ type LocationPermission = PermissionState | 'unsupported';
 
 export function ProximityDetectionResult({
   event,
-  onLocationGranted,
-  onRetryIdentification,
+  onLocationRequest,
   scrollToResult,
+  isCollectingLocation,
 }: {
   event: Event | undefined;
-  onLocationGranted: () => void;
-  onRetryIdentification: () => void;
+  onLocationRequest: (onError: (error: GeolocationPositionError | Error) => void) => void;
   scrollToResult: boolean;
+  isCollectingLocation: boolean;
 }) {
   const [permission, setPermission] = useState<LocationPermission>();
   const [locationError, setLocationError] = useState<string>();
@@ -60,27 +60,23 @@ export function ProximityDetectionResult({
   const requestLocation = () => {
     setLocationError(undefined);
     setIsRequestingLocation(true);
-    navigator.geolocation.getCurrentPosition(
-      onLocationGranted,
-      (error) => {
-        setIsRequestingLocation(false);
-        if (error.code === error.PERMISSION_DENIED) {
-          // Without the Permissions API we cannot tell a dismiss from a deny, assume denied
-          if (!('permissions' in navigator)) {
-            setPermission('denied');
-            return;
-          }
-          // Dismissing the prompt also gives PERMISSION_DENIED, but the state stays `prompt`, so read it again
-          navigator.permissions
-            .query({ name: 'geolocation' })
-            .then((result) => setPermission(result.state))
-            .catch(() => setPermission('denied'));
-        } else {
-          setLocationError(`Location not available: ${error.message}`);
+    onLocationRequest((error) => {
+      setIsRequestingLocation(false);
+      if ('code' in error && error.code === error.PERMISSION_DENIED) {
+        // Without the Permissions API we cannot tell a dismiss from a deny, assume denied
+        if (!('permissions' in navigator)) {
+          setPermission('denied');
+          return;
         }
-      },
-      { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 },
-    );
+        // Dismissing the prompt also gives PERMISSION_DENIED, but the state stays `prompt`, so read it again
+        navigator.permissions
+          .query({ name: 'geolocation' })
+          .then((result) => setPermission(result.state))
+          .catch(() => setPermission('denied'));
+      } else {
+        setLocationError(`Location not available: ${error.message}`);
+      }
+    });
   };
 
   const renderResult = () => {
@@ -93,28 +89,15 @@ export function ProximityDetectionResult({
         </JsonLink>
       );
     }
-    if (isRequestingLocation) return 'Collecting location...';
+    if (isRequestingLocation || isCollectingLocation) return 'Collecting location...';
     if (permission === 'denied') return 'Location denied. Allow it in browser settings and reload.';
-    // Keep the agent when its location callback finishes after identification.
-    // https://docs.fingerprint.com/reference/js-agent-start-function
     if (locationError || permission === 'granted' || scrollToResult) {
       return (
         <>
           {locationError ?? 'Location not collected.'}{' '}
-          <button
-            className={styles.inlineLinkButton}
-            onClick={() => (locationError ? requestLocation() : onRetryIdentification())}
-          >
+          <button className={styles.inlineLinkButton} onClick={requestLocation}>
             Try again
           </button>
-          {!locationError && (
-            <>
-              {' or '}
-              <button className={styles.inlineLinkButton} onClick={requestLocation}>
-                Request location again
-              </button>
-            </>
-          )}
         </>
       );
     }

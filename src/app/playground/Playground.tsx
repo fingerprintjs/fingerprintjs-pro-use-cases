@@ -1,8 +1,8 @@
 // Browser signals and their Server API event. https://docs.fingerprint.com/docs/smart-signals-reference
 'use client';
 
-import { useEffect, useState, ReactNode } from 'react';
-import { FingerprintProvider } from '@fingerprint/react';
+import { useCallback, useEffect, useRef, useState, ReactNode } from 'react';
+import { Fingerprint, FingerprintContext, FingerprintContextInterface } from '@fingerprint/react';
 import { FP_LOAD_OPTIONS } from '../Providers';
 import { CollapsibleJsonViewer } from '../../client/components/CodeSnippet/CodeSnippet';
 import dynamic from 'next/dynamic';
@@ -108,32 +108,108 @@ function formatNameWithVersion(name: string | undefined, version: string | undef
   return `${name} ${version}`;
 }
 
+// Bound location collection and follow-ups to the browser acquisition budget.
+// https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition#timeout
+const PLAYGROUND_LOCATION_TIMEOUT_MS = 10000;
+const PLAYGROUND_LOCATION_CHECK_INTERVAL_MS = 1000;
+
+type LocationIdentification = FingerprintContextInterface & {
+  attempt: number;
+  expiresAt: number;
+  complete: () => void;
+};
+
 export function Playground() {
-  const [locationAttempt, setLocationAttempt] = useState(0);
-  const content = (
-    <PlaygroundContent
-      onLocationGranted={() => setLocationAttempt((attempt) => attempt + 1)}
-      scrollToProximity={locationAttempt > 0}
-    />
-  );
+  const [locationIdentification, setLocationIdentification] = useState<LocationIdentification>();
+  const locationAttempt = locationIdentification?.attempt ?? 0;
+  const locationWatchRef = useRef<{ id: number; attempt: number } | undefined>(undefined);
+  const stopWatchingLocation = useCallback((attempt?: number) => {
+    const watch = locationWatchRef.current;
+    if (!watch || (attempt !== undefined && watch.attempt !== attempt)) return;
+    navigator.geolocation.clearWatch(watch.id);
+    locationWatchRef.current = undefined;
+  }, []);
+
+  useEffect(() => () => stopWatchingLocation(), [stopWatchingLocation]);
+
+  const requestLocation = (onError: (error: GeolocationPositionError | Error) => void) => {
+    stopWatchingLocation();
+    const attempt = locationAttempt + 1;
+    // An active watch keeps temporary consent available to the agent's own location read.
+    // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/watchPosition
+    let agent: ReturnType<typeof Fingerprint.start> | undefined;
+    const watchId = navigator.geolocation.watchPosition(
+      () => {
+        if (agent || locationWatchRef.current?.id !== watchId) return;
+        // Start inside the callback to share Firefox's temporary location grant.
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=1752141
+        agent = Fingerprint.start(FP_LOAD_OPTIONS);
+        const locationAgent = agent;
+        const expiresAt = performance.now() + PLAYGROUND_LOCATION_TIMEOUT_MS;
+        // Collect before replacing the UI, then allow the documented initialization period.
+        // https://docs.fingerprint.com/reference/js-agent-get-function
+        void locationAgent
+          .collect({ timeout: PLAYGROUND_LOCATION_TIMEOUT_MS })
+          .then(
+            () =>
+              new Promise<void>((resolve) =>
+                window.setTimeout(
+                  resolve,
+                  Math.min(PLAYGROUND_LOCATION_CHECK_INTERVAL_MS, Math.max(0, expiresAt - performance.now())),
+                ),
+              ),
+          )
+          .then(() => {
+            if (locationWatchRef.current?.id !== watchId) return;
+            // Serialize overlapping requests so an older result cannot replace the final check.
+            // https://docs.fingerprint.com/reference/js-agent-get-function
+            let previousRequest: Promise<unknown> = Promise.resolve();
+            setLocationIdentification({
+              attempt,
+              expiresAt,
+              complete: () => stopWatchingLocation(attempt),
+              getVisitorData: (options) => {
+                const request = previousRequest.catch(() => undefined).then(() => locationAgent.get(options));
+                previousRequest = request;
+                return request;
+              },
+            });
+          })
+          .catch((error: unknown) => {
+            if (locationWatchRef.current?.id !== watchId) return;
+            stopWatchingLocation(attempt);
+            onError(error instanceof Error ? error : new Error(String(error)));
+          });
+      },
+      (error) => {
+        if (agent || locationWatchRef.current?.id !== watchId) return;
+        stopWatchingLocation(attempt);
+        onError(error);
+      },
+      { enableHighAccuracy: true, maximumAge: 0, timeout: PLAYGROUND_LOCATION_TIMEOUT_MS },
+    );
+    locationWatchRef.current = { id: watchId, attempt };
+  };
+
+  const content = <PlaygroundContent onLocationRequest={requestLocation} locationRequest={locationIdentification} />;
 
   // Collection starts when the agent starts. Rebuild it after permission changes.
   // https://docs.fingerprint.com/reference/js-agent-start-function
-  return locationAttempt > 0 ? (
-    <FingerprintProvider key={locationAttempt} {...FP_LOAD_OPTIONS}>
+  return locationIdentification ? (
+    <FingerprintContext.Provider key={locationAttempt} value={locationIdentification}>
       {content}
-    </FingerprintProvider>
+    </FingerprintContext.Provider>
   ) : (
     content
   );
 }
 
 function PlaygroundContent({
-  onLocationGranted,
-  scrollToProximity,
+  onLocationRequest,
+  locationRequest,
 }: {
-  onLocationGranted: () => void;
-  scrollToProximity: boolean;
+  onLocationRequest: (onError: (error: GeolocationPositionError | Error) => void) => void;
+  locationRequest?: Pick<LocationIdentification, 'expiresAt' | 'complete'>;
 }) {
   const {
     agentResponse,
@@ -144,6 +220,55 @@ function PlaygroundContent({
     isPendingServerResponse,
     serverError,
   } = usePlaygroundSignals();
+
+  const [hasLocationExpired, setHasLocationExpired] = useState(false);
+
+  useEffect(() => {
+    if (!locationRequest || identificationEvent?.proximity || agentError || serverError) return;
+    const timeout = window.setTimeout(
+      () => {
+        locationRequest.complete();
+        setHasLocationExpired(true);
+        // Include the last collected location after stopping the native watch.
+        // https://docs.fingerprint.com/reference/js-agent-get-function
+        void getAgentData().catch(() => undefined);
+      },
+      Math.max(0, locationRequest.expiresAt - performance.now()),
+    );
+    return () => window.clearTimeout(timeout);
+  }, [locationRequest, identificationEvent?.proximity, agentError, serverError, getAgentData]);
+
+  useEffect(() => {
+    if (!locationRequest) return;
+    if (agentError || serverError) {
+      locationRequest.complete();
+      return;
+    }
+    if (!identificationEvent) return;
+    const remaining = locationRequest.expiresAt - performance.now();
+    if (identificationEvent.proximity || hasLocationExpired || remaining <= 0) {
+      locationRequest.complete();
+      return;
+    }
+    // A new event can include location that finished after the previous identification.
+    // https://docs.fingerprint.com/reference/js-agent-get-function
+    const retry = window.setTimeout(
+      () => {
+        if (performance.now() >= locationRequest.expiresAt) {
+          locationRequest.complete();
+          setHasLocationExpired(true);
+          return;
+        }
+        void getAgentData().catch(() => undefined);
+      },
+      Math.min(PLAYGROUND_LOCATION_CHECK_INTERVAL_MS, remaining),
+    );
+    return () => window.clearTimeout(retry);
+  }, [locationRequest, identificationEvent, agentError, serverError, getAgentData, hasLocationExpired]);
+
+  const isCollectingLocation = Boolean(
+    locationRequest && !identificationEvent?.proximity && !agentError && !serverError && !hasLocationExpired,
+  );
 
   const requestError = agentError ?? serverError;
   // Track which error the user dismissed so a new failure re-shows the inline alert.
@@ -558,9 +683,9 @@ function PlaygroundContent({
         content: (
           <ProximityDetectionResult
             event={identificationEvent}
-            onLocationGranted={onLocationGranted}
-            onRetryIdentification={getAgentData}
-            scrollToResult={scrollToProximity}
+            onLocationRequest={onLocationRequest}
+            scrollToResult={Boolean(locationRequest)}
+            isCollectingLocation={isCollectingLocation}
           />
         ),
         className: identificationEvent?.proximity ? tableStyles.green : tableStyles.neutral,

@@ -138,7 +138,7 @@ test.describe('Proximity detection', () => {
   // Positive accuracy is required for proximity. https://docs.fingerprint.com/docs/smart-signals-reference#proximity-detection
   const PRAGUE = { latitude: 50.0755, longitude: 14.4378, accuracy: 20 };
 
-  // Model temporary access for one request or one document.
+  // Model temporary access while a request or watch is active, or for one document.
   // https://support.mozilla.org/en-US/kb/does-firefox-share-my-location-websites
   // Native permission is pregranted; only the browser permission APIs are simulated below.
   const fakeLocation = async (
@@ -147,12 +147,14 @@ test.describe('Proximity detection', () => {
     {
       initialPermission = 'prompt',
       slowReadNumbers = [],
+      readDelayMs = 1500,
       readError,
       failReadNumbers,
       permissionLifetime = 'document',
     }: {
       initialPermission?: PermissionState;
       slowReadNumbers?: number[];
+      readDelayMs?: number;
       readError?: 'denied' | 'unavailable' | 'timeout';
       failReadNumbers?: number[];
       permissionLifetime?: 'document' | 'request';
@@ -161,7 +163,7 @@ test.describe('Proximity detection', () => {
     await context.grantPermissions(['geolocation']);
     await context.setGeolocation(PRAGUE);
     await page.addInitScript(
-      ({ initialPermission, slowReadNumbers, readError, failReadNumbers, permissionLifetime }) => {
+      ({ initialPermission, slowReadNumbers, readDelayMs, readError, failReadNumbers, permissionLifetime }) => {
         class LocationPermissionStatus extends EventTarget implements PermissionStatus {
           readonly name = 'geolocation';
           state = initialPermission;
@@ -178,7 +180,10 @@ test.describe('Proximity detection', () => {
         const query = navigator.permissions.query.bind(navigator.permissions);
         navigator.permissions.query = (descriptor) =>
           descriptor.name === 'geolocation' ? Promise.resolve(permission) : query(descriptor);
+        const activeWatches = new Set<number>();
         const getCurrentPosition = navigator.geolocation.getCurrentPosition.bind(navigator.geolocation);
+        const watchPosition = navigator.geolocation.watchPosition.bind(navigator.geolocation);
+        const clearWatch = navigator.geolocation.clearWatch.bind(navigator.geolocation);
         const readLocation = (onSuccess: PositionCallback, onError: PositionErrorCallback | null | undefined) => {
           const readNumber = Number(sessionStorage.getItem('e2eLocationReads') ?? 0) + 1;
           sessionStorage.setItem('e2eLocationReads', String(readNumber));
@@ -189,14 +194,10 @@ test.describe('Proximity detection', () => {
               setTimeout(
                 () => {
                   onSuccess(position);
-                  sessionStorage.setItem(
-                    'e2eLocationCompletions',
-                    String(Number(sessionStorage.getItem('e2eLocationCompletions') ?? 0) + 1),
-                  );
-                  if (permissionLifetime === 'request' && permission.state === 'granted')
+                  if (permissionLifetime === 'request' && activeWatches.size === 0 && permission.state === 'granted')
                     permission.update(initialPermission);
                 },
-                slowReadNumbers.includes(readNumber) ? 1500 : 0,
+                slowReadNumbers.includes(readNumber) ? readDelayMs : 0,
               );
             },
             fail: () => {
@@ -215,10 +216,26 @@ test.describe('Proximity detection', () => {
         navigator.geolocation.getCurrentPosition = (onSuccess, onError, options) => {
           const read = readLocation(onSuccess, onError);
           if (read.failed) setTimeout(() => read.fail());
-          else getCurrentPosition(read.onSuccess, onError, options);
+          // The emulator supplies one fixed position; reuse it for concurrent native reads.
+          else getCurrentPosition(read.onSuccess, onError, { ...options, maximumAge: Infinity });
+        };
+        navigator.geolocation.watchPosition = (onSuccess, onError, options) => {
+          const read = readLocation(onSuccess, onError);
+          const watch = read.failed
+            ? -Number(sessionStorage.getItem('e2eLocationReads'))
+            : watchPosition(read.onSuccess, onError, options);
+          activeWatches.add(watch);
+          if (read.failed) setTimeout(() => read.fail());
+          return watch;
+        };
+        navigator.geolocation.clearWatch = (watch) => {
+          clearWatch(watch);
+          activeWatches.delete(watch);
+          if (permissionLifetime === 'request' && activeWatches.size === 0 && permission.state === 'granted')
+            permission.update(initialPermission);
         };
       },
-      { initialPermission, slowReadNumbers, readError, failReadNumbers, permissionLifetime },
+      { initialPermission, slowReadNumbers, readDelayMs, readError, failReadNumbers, permissionLifetime },
     );
   };
 
@@ -246,39 +263,134 @@ test.describe('Proximity detection', () => {
     expect(parseEventId(await getServerResponse(page))).toEqual(eventId);
   });
 
-  test('offers retry when permission expires before agent collection', async ({ page, context }) => {
+  test('shows proximity after one temporary permission action', async ({ page, context }) => {
     await fakeLocation(page, context, { permissionLifetime: 'request' });
     await page.reload({ waitUntil: 'networkidle' });
+    const navigations: string[] = [];
+    page.on('framenavigated', (frame) => {
+      if (frame === page.mainFrame()) navigations.push(frame.url());
+    });
     await page.getByTestId(TEST_ID.grantLocationButton).click();
 
     const proximityRow = getWebProximityRow(page);
-    await expect(proximityRow).toContainText('Location not collected', { timeout: 15000 });
-    await expect(proximityRow.getByRole('button', { name: 'Try again' })).toBeVisible();
-    await expect(page.getByTestId(TEST_ID.grantLocationButton)).toHaveCount(0);
-    expect(await getServerResponse(page)).not.toContain('precision_radius');
-  });
-
-  test('uses the completed location read when retrying identification', async ({ page, context }) => {
-    // Delay the fresh agent's location read beyond its identification request.
-    await fakeLocation(page, context, { slowReadNumbers: [2] });
-    await page.reload({ waitUntil: 'networkidle' });
-
-    await page.getByTestId(TEST_ID.grantLocationButton).click();
-
-    const proximityRow = getWebProximityRow(page);
-    await expect(proximityRow).toContainText('Location not collected', { timeout: 15000 });
-    await expect.poll(() => page.evaluate(() => Number(sessionStorage.getItem('e2eLocationCompletions') ?? 0))).toBe(2);
-    const readsBeforeRetry = await getLocationReads(page);
-    const previousEventId = parseEventId(await getAgentResponse(page));
-    await proximityRow.getByRole('button', { name: 'Try again' }).click();
-
     await expect(proximityRow).toContainText(/Zone .+ m radius/, { timeout: 15000 });
-    expect(await getLocationReads(page)).toBe(readsBeforeRetry);
+    expect(navigations).toEqual([]);
     const eventId = parseEventId(await getAgentResponse(page));
     expect(eventId).toMatch(/^\d{13}\.[a-zA-Z0-9]{6}$/);
     expect(parseEventId(await getServerResponse(page))).toEqual(eventId);
-    expect(eventId).not.toEqual(previousEventId);
+    await expect
+      .poll(() => page.evaluate(async () => (await navigator.permissions.query({ name: 'geolocation' })).state))
+      .toBe('prompt');
   });
+
+  test('stops collecting location when leaving the Playground', async ({ page, context }) => {
+    await fakeLocation(page, context, { permissionLifetime: 'request', slowReadNumbers: [2] });
+    await page.reload({ waitUntil: 'networkidle' });
+    await page.getByTestId(TEST_ID.grantLocationButton).click();
+    await expect
+      .poll(() => page.evaluate(async () => (await navigator.permissions.query({ name: 'geolocation' })).state))
+      .toBe('granted');
+
+    await page.getByRole('link', { name: 'Home', exact: true }).click();
+
+    await expect(page).toHaveURL('/');
+    await expect
+      .poll(() => page.evaluate(async () => (await navigator.permissions.query({ name: 'geolocation' })).state))
+      .toBe('prompt');
+  });
+
+  test('stops collecting location when identification fails', async ({ page, context }) => {
+    // Development effect replay can queue two agent timeouts.
+    // https://react.dev/reference/react/StrictMode#fixing-bugs-found-by-re-running-effects-in-development
+    test.setTimeout(45000);
+    await fakeLocation(page, context, { permissionLifetime: 'request' });
+    await page.reload({ waitUntil: 'networkidle' });
+    await expect(page.getByTestId(TEST_ID.grantLocationButton)).toBeVisible();
+    await page.route('**/*', (route) => {
+      const request = route.request();
+      return request.method() === 'POST' && !new URL(request.url()).pathname.startsWith('/api/')
+        ? route.abort('failed')
+        : route.continue();
+    });
+    await page.getByTestId(TEST_ID.grantLocationButton).click();
+
+    await expect
+      .poll(() => page.evaluate(async () => (await navigator.permissions.query({ name: 'geolocation' })).state))
+      .toBe('granted');
+    await expect
+      .poll(() => page.evaluate(async () => (await navigator.permissions.query({ name: 'geolocation' })).state), {
+        timeout: 12000,
+      })
+      .toBe('prompt');
+    await expect(page.getByTestId(TEST_IDS.common.alert)).toContainText('JavaScript Agent Error', { timeout: 30000 });
+  });
+
+  test('stops collecting location when the Server API fails', async ({ page, context }) => {
+    await fakeLocation(page, context, { permissionLifetime: 'request' });
+    await page.reload({ waitUntil: 'networkidle' });
+    await expect(page.getByTestId(TEST_ID.grantLocationButton)).toBeVisible();
+    await page.route('**/api/event/v4/**', (route) => route.abort('failed'));
+    await page.getByTestId(TEST_ID.grantLocationButton).click();
+
+    await assertAlert({ page, severity: 'error', text: 'Server API Request' });
+    await expect
+      .poll(() => page.evaluate(async () => (await navigator.permissions.query({ name: 'geolocation' })).state))
+      .toBe('prompt');
+  });
+
+  for (const readDelayMs of [1500, 9000]) {
+    test(`shows proximity after the agent finishes collecting location (${readDelayMs} ms)`, async ({
+      page,
+      context,
+    }) => {
+      await fakeLocation(page, context, { slowReadNumbers: [2], readDelayMs, permissionLifetime: 'request' });
+      await page.reload({ waitUntil: 'networkidle' });
+      await page.getByTestId(TEST_ID.grantLocationButton).click();
+
+      await expect(getWebProximityRow(page)).toContainText(/Zone .+ m radius/, { timeout: 15000 });
+      const eventId = parseEventId(await getAgentResponse(page));
+      expect(eventId).toMatch(/^\d{13}\.[a-zA-Z0-9]{6}$/);
+      expect(parseEventId(await getServerResponse(page))).toEqual(eventId);
+      expect(await getLocationReads(page)).toBe(2);
+    });
+  }
+
+  for (const heldRequest of [1, 2]) {
+    test(`stops location at the deadline while server response ${heldRequest} is pending`, async ({
+      page,
+      context,
+    }) => {
+      await fakeLocation(page, context, {
+        permissionLifetime: 'request',
+        slowReadNumbers: heldRequest === 2 ? [2] : [],
+      });
+      await page.reload({ waitUntil: 'networkidle' });
+      await expect(page.getByTestId(TEST_ID.grantLocationButton)).toBeVisible();
+      const held = Promise.withResolvers<void>();
+      const release = Promise.withResolvers<void>();
+      let requests = 0;
+      await page.route('**/api/event/v4/**', async (route) => {
+        if (++requests === heldRequest) {
+          held.resolve();
+          await release.promise;
+        }
+        await route.continue();
+      });
+
+      try {
+        await page.getByTestId(TEST_ID.grantLocationButton).click();
+        await held.promise;
+        await expect
+          .poll(() => page.evaluate(async () => (await navigator.permissions.query({ name: 'geolocation' })).state), {
+            timeout: 12000,
+          })
+          .toBe('prompt');
+      } finally {
+        release.resolve();
+      }
+      await expect(getWebProximityRow(page)).toContainText(/Zone .+ m radius/, { timeout: 15000 });
+    });
+  }
 
   for (const readError of ['unavailable', 'timeout'] as const) {
     test(`can retry after location is ${readError}`, async ({ page, context }) => {
@@ -300,13 +412,16 @@ test.describe('Proximity detection', () => {
 
   for (const readError of ['unavailable', 'timeout'] as const) {
     test(`can restart location after the agent read is ${readError}`, async ({ page, context }) => {
-      await fakeLocation(page, context, { readError, failReadNumbers: [2] });
+      await fakeLocation(page, context, { readError, failReadNumbers: [2], permissionLifetime: 'request' });
       await page.reload({ waitUntil: 'networkidle' });
       await page.getByTestId(TEST_ID.grantLocationButton).click();
 
       const proximityRow = getWebProximityRow(page);
       await expect(proximityRow).toContainText('Location not collected', { timeout: 15000 });
-      await proximityRow.getByRole('button', { name: 'Request location again' }).click();
+      await expect
+        .poll(() => page.evaluate(async () => (await navigator.permissions.query({ name: 'geolocation' })).state))
+        .toBe('prompt');
+      await proximityRow.getByRole('button', { name: 'Try again' }).click();
 
       await expect(proximityRow).toContainText(/Zone .+ m radius/, { timeout: 15000 });
       const eventId = parseEventId(await getAgentResponse(page));
