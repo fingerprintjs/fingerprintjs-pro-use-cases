@@ -147,6 +147,7 @@ test.describe('Proximity detection', () => {
     {
       initialPermission = 'prompt',
       slowReadNumbers = [],
+      promptReadNumbers = [],
       readDelayMs = 1500,
       readError,
       failReadNumbers,
@@ -154,6 +155,7 @@ test.describe('Proximity detection', () => {
     }: {
       initialPermission?: PermissionState;
       slowReadNumbers?: number[];
+      promptReadNumbers?: number[];
       readDelayMs?: number;
       readError?: 'denied' | 'unavailable' | 'timeout';
       failReadNumbers?: number[];
@@ -163,13 +165,22 @@ test.describe('Proximity detection', () => {
     await context.grantPermissions(['geolocation']);
     await context.setGeolocation(PRAGUE);
     await page.addInitScript(
-      ({ initialPermission, slowReadNumbers, readDelayMs, readError, failReadNumbers, permissionLifetime }) => {
+      ({
+        initialPermission,
+        slowReadNumbers,
+        promptReadNumbers,
+        readDelayMs,
+        readError,
+        failReadNumbers,
+        permissionLifetime,
+      }) => {
         class LocationPermissionStatus extends EventTarget implements PermissionStatus {
           readonly name = 'geolocation';
           state = initialPermission;
           onchange: PermissionStatus['onchange'] = null;
 
           update(state: PermissionState) {
+            if (this.state === state) return;
             this.state = state;
             const event = new Event('change');
             this.dispatchEvent(event);
@@ -190,14 +201,16 @@ test.describe('Proximity detection', () => {
           const failed = readError && (!failReadNumbers || failReadNumbers.includes(readNumber));
           return {
             onSuccess: (position: GeolocationPosition) => {
-              permission.update('granted');
+              const awaitsPermission = promptReadNumbers.includes(readNumber);
+              permission.update(awaitsPermission ? 'prompt' : 'granted');
               setTimeout(
                 () => {
+                  if (awaitsPermission) permission.update('granted');
                   onSuccess(position);
                   if (permissionLifetime === 'request' && activeWatches.size === 0 && permission.state === 'granted')
                     permission.update(initialPermission);
                 },
-                slowReadNumbers.includes(readNumber) ? readDelayMs : 0,
+                slowReadNumbers.includes(readNumber) || awaitsPermission ? readDelayMs : 0,
               );
             },
             fail: () => {
@@ -235,7 +248,15 @@ test.describe('Proximity detection', () => {
             permission.update(initialPermission);
         };
       },
-      { initialPermission, slowReadNumbers, readDelayMs, readError, failReadNumbers, permissionLifetime },
+      {
+        initialPermission,
+        slowReadNumbers,
+        promptReadNumbers,
+        readDelayMs,
+        readError,
+        failReadNumbers,
+        permissionLifetime,
+      },
     );
   };
 
@@ -263,8 +284,8 @@ test.describe('Proximity detection', () => {
     expect(parseEventId(await getServerResponse(page))).toEqual(eventId);
   });
 
-  test('shows proximity after one temporary permission action', async ({ page, context }) => {
-    await fakeLocation(page, context, { permissionLifetime: 'request' });
+  test('shows proximity while temporary permission lasts for the active watch', async ({ page, context }) => {
+    await fakeLocation(page, context, { permissionLifetime: 'request', slowReadNumbers: [1], readDelayMs: 9000 });
     await page.reload({ waitUntil: 'networkidle' });
     const navigations: string[] = [];
     page.on('framenavigated', (frame) => {
@@ -272,6 +293,7 @@ test.describe('Proximity detection', () => {
     });
     await page.getByTestId(TEST_ID.grantLocationButton).click();
 
+    await expect(page.getByTestId(TEST_ID.refreshButton).first()).toBeDisabled();
     const proximityRow = getWebProximityRow(page);
     await expect(proximityRow).toContainText(/Zone .+ m radius/, { timeout: 15000 });
     expect(navigations).toEqual([]);
@@ -281,6 +303,25 @@ test.describe('Proximity detection', () => {
     await expect
       .poll(() => page.evaluate(async () => (await navigator.permissions.query({ name: 'geolocation' })).state))
       .toBe('prompt');
+    await expect(page.getByTestId(TEST_ID.refreshButton).first()).toBeEnabled();
+  });
+
+  test('updates automatically after a late second browser permission', async ({ page, context }) => {
+    test.setTimeout(45000);
+    await fakeLocation(page, context, {
+      permissionLifetime: 'request',
+      promptReadNumbers: [2],
+      readDelayMs: 15000,
+    });
+    await page.reload({ waitUntil: 'networkidle' });
+    await page.getByTestId(TEST_ID.grantLocationButton).click();
+
+    // Native prompt time does not count toward acquisition timeout.
+    // https://www.w3.org/TR/geolocation/#timeout-member
+    await expect(page.getByRole('button', { name: 'Try again', exact: true })).toBeVisible({ timeout: 15000 });
+    await expect(getWebProximityRow(page)).toContainText(/Zone .+ m radius/, { timeout: 15000 });
+    expect(await getLocationReads(page)).toBe(2);
+    expect(parseEventId(await getServerResponse(page))).toEqual(parseEventId(await getAgentResponse(page)));
   });
 
   test('stops collecting location when leaving the Playground', async ({ page, context }) => {

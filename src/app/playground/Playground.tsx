@@ -120,8 +120,9 @@ type LocationIdentification = FingerprintContextInterface & {
 };
 
 type LocationCheck =
-  | { status: 'collecting' }
-  | { status: 'finalizing' }
+  | { status: 'preparing' }
+  | { status: 'collecting'; expiresAt: number }
+  | { status: 'finalizing'; expiresAt: number }
   | { status: 'identified'; eventId: string }
   | { status: 'complete' };
 
@@ -141,14 +142,14 @@ export function Playground() {
   const requestLocation = (onError: (error: GeolocationPositionError | Error) => void) => {
     stopWatchingLocation();
     const attempt = locationAttempt + 1;
-    // An active watch keeps temporary consent available to the agent's own location read.
+    // Keep the native location request active until this analysis finishes.
     // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/watchPosition
     let agent: ReturnType<typeof Fingerprint.start> | undefined;
     const watchId = navigator.geolocation.watchPosition(
       () => {
         if (agent || locationWatchRef.current?.id !== watchId) return;
-        // Start inside the callback to share Firefox's temporary location grant.
-        // https://bugzilla.mozilla.org/show_bug.cgi?id=1752141
+        // The initial agent started before consent, so collect with a fresh instance.
+        // https://docs.fingerprint.com/reference/js-agent-start-function
         agent = Fingerprint.start(FP_LOAD_OPTIONS);
         const locationAgent = agent;
         const expiresAt = performance.now() + PLAYGROUND_LOCATION_TIMEOUT_MS;
@@ -227,10 +228,49 @@ function PlaygroundContent({
     serverError,
   } = usePlaygroundSignals();
 
-  const [locationCheck, setLocationCheck] = useState<LocationCheck>({ status: 'collecting' });
+  const [locationCheck, setLocationCheck] = useState<LocationCheck>({
+    status: 'collecting',
+    expiresAt: locationRequest?.expiresAt ?? 0,
+  });
+
+  const isPreparingLocation = locationCheck.status === 'preparing';
+
+  const requestLocation = (onError: (error: GeolocationPositionError | Error) => void) => {
+    setLocationCheck({ status: 'preparing' });
+    onLocationRequest((error) => {
+      setLocationCheck({ status: 'complete' });
+      onError(error);
+    });
+  };
+
+  useEffect(() => {
+    if (!locationRequest || isPreparingLocation || !('permissions' in navigator)) return;
+    let permission: PermissionStatus | undefined;
+    let cancelled = false;
+    // Firefox can prompt again for the SDK read. Resume if that Allow arrives after our deadline.
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1752141
+    const resumeLocationCheck = () => {
+      if (cancelled || permission?.state !== 'granted') return;
+      setLocationCheck({ status: 'collecting', expiresAt: performance.now() + PLAYGROUND_LOCATION_TIMEOUT_MS });
+      void getAgentData().catch(() => undefined);
+    };
+    navigator.permissions
+      .query({ name: 'geolocation' })
+      .then((result) => {
+        if (cancelled) return;
+        permission = result;
+        result.addEventListener('change', resumeLocationCheck);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+      permission?.removeEventListener('change', resumeLocationCheck);
+    };
+  }, [locationRequest, getAgentData, isPreparingLocation]);
 
   useEffect(() => {
     if (
+      locationCheck.status !== 'preparing' &&
       locationCheck.status !== 'complete' &&
       (agentError ||
         serverError ||
@@ -252,17 +292,24 @@ function PlaygroundContent({
     const timeout = window.setTimeout(
       () => {
         locationRequest.complete();
-        setLocationCheck({ status: 'finalizing' });
+        const expiresAt = locationCheck.expiresAt;
+        setLocationCheck({ status: 'finalizing', expiresAt });
         // Include the last collected location after stopping the native watch.
         // https://docs.fingerprint.com/reference/js-agent-get-function
         void getAgentData()
-          .then((result) => setLocationCheck({ status: 'identified', eventId: result.event_id }))
+          .then((result) =>
+            setLocationCheck((current) =>
+              current.status === 'finalizing' && current.expiresAt === expiresAt
+                ? { status: 'identified', eventId: result.event_id }
+                : current,
+            ),
+          )
           .catch(() => undefined);
       },
-      Math.max(0, locationRequest.expiresAt - performance.now()),
+      Math.max(0, locationCheck.expiresAt - performance.now()),
     );
     return () => window.clearTimeout(timeout);
-  }, [locationRequest, locationCheck.status, identificationEvent?.proximity, agentError, serverError, getAgentData]);
+  }, [locationRequest, locationCheck, identificationEvent?.proximity, agentError, serverError, getAgentData]);
 
   useEffect(() => {
     if (!locationRequest) return;
@@ -271,8 +318,12 @@ function PlaygroundContent({
       return;
     }
     if (!identificationEvent) return;
-    const remaining = locationRequest.expiresAt - performance.now();
-    if (identificationEvent.proximity || locationCheck.status !== 'collecting' || remaining <= 0) {
+    if (identificationEvent.proximity || locationCheck.status !== 'collecting') {
+      locationRequest.complete();
+      return;
+    }
+    const remaining = locationCheck.expiresAt - performance.now();
+    if (remaining <= 0) {
       locationRequest.complete();
       return;
     }
@@ -280,7 +331,7 @@ function PlaygroundContent({
     // https://docs.fingerprint.com/reference/js-agent-get-function
     const retry = window.setTimeout(
       () => {
-        if (performance.now() >= locationRequest.expiresAt) {
+        if (performance.now() >= locationCheck.expiresAt) {
           locationRequest.complete();
           return;
         }
@@ -289,15 +340,16 @@ function PlaygroundContent({
       Math.min(PLAYGROUND_LOCATION_CHECK_INTERVAL_MS, remaining),
     );
     return () => window.clearTimeout(retry);
-  }, [locationRequest, identificationEvent, agentError, serverError, getAgentData, locationCheck.status]);
+  }, [locationRequest, identificationEvent, agentError, serverError, getAgentData, locationCheck]);
 
-  const isCollectingLocation = Boolean(
-    locationRequest &&
-      !identificationEvent?.proximity &&
-      !agentError &&
-      !serverError &&
-      locationCheck.status !== 'complete',
-  );
+  const isCollectingLocation =
+    isPreparingLocation ||
+    Boolean(
+      locationRequest &&
+        !agentError &&
+        !serverError &&
+        (locationCheck.status === 'collecting' ? !identificationEvent?.proximity : locationCheck.status !== 'complete'),
+    );
 
   const requestError = agentError ?? serverError;
   // Track which error the user dismissed so a new failure re-shows the inline alert.
@@ -319,7 +371,7 @@ function PlaygroundContent({
         {locationRequest && (
           <ProximityDetectionResult
             event={undefined}
-            onLocationRequest={onLocationRequest}
+            onLocationRequest={requestLocation}
             scrollToResult
             isCollectingLocation={isCollectingLocation}
           />
@@ -724,7 +776,7 @@ function PlaygroundContent({
         content: (
           <ProximityDetectionResult
             event={identificationEvent}
-            onLocationRequest={onLocationRequest}
+            onLocationRequest={requestLocation}
             scrollToResult={Boolean(locationRequest)}
             isCollectingLocation={isCollectingLocation}
           />
