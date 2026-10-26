@@ -119,6 +119,12 @@ type LocationIdentification = FingerprintContextInterface & {
   complete: () => void;
 };
 
+type LocationCheck =
+  | { status: 'collecting' }
+  | { status: 'finalizing' }
+  | { status: 'identified'; eventId: string }
+  | { status: 'complete' };
+
 export function Playground() {
   const [locationIdentification, setLocationIdentification] = useState<LocationIdentification>();
   const locationAttempt = locationIdentification?.attempt ?? 0;
@@ -221,22 +227,42 @@ function PlaygroundContent({
     serverError,
   } = usePlaygroundSignals();
 
-  const [hasLocationExpired, setHasLocationExpired] = useState(false);
+  const [locationCheck, setLocationCheck] = useState<LocationCheck>({ status: 'collecting' });
 
   useEffect(() => {
-    if (!locationRequest || identificationEvent?.proximity || agentError || serverError) return;
+    if (
+      locationCheck.status !== 'complete' &&
+      (agentError ||
+        serverError ||
+        (locationCheck.status === 'identified' && identificationEvent?.event_id === locationCheck.eventId))
+    ) {
+      setLocationCheck({ status: 'complete' });
+    }
+  }, [locationCheck, identificationEvent?.event_id, agentError, serverError]);
+
+  useEffect(() => {
+    if (
+      !locationRequest ||
+      locationCheck.status !== 'collecting' ||
+      identificationEvent?.proximity ||
+      agentError ||
+      serverError
+    )
+      return;
     const timeout = window.setTimeout(
       () => {
         locationRequest.complete();
-        setHasLocationExpired(true);
+        setLocationCheck({ status: 'finalizing' });
         // Include the last collected location after stopping the native watch.
         // https://docs.fingerprint.com/reference/js-agent-get-function
-        void getAgentData().catch(() => undefined);
+        void getAgentData()
+          .then((result) => setLocationCheck({ status: 'identified', eventId: result.event_id }))
+          .catch(() => undefined);
       },
       Math.max(0, locationRequest.expiresAt - performance.now()),
     );
     return () => window.clearTimeout(timeout);
-  }, [locationRequest, identificationEvent?.proximity, agentError, serverError, getAgentData]);
+  }, [locationRequest, locationCheck.status, identificationEvent?.proximity, agentError, serverError, getAgentData]);
 
   useEffect(() => {
     if (!locationRequest) return;
@@ -246,7 +272,7 @@ function PlaygroundContent({
     }
     if (!identificationEvent) return;
     const remaining = locationRequest.expiresAt - performance.now();
-    if (identificationEvent.proximity || hasLocationExpired || remaining <= 0) {
+    if (identificationEvent.proximity || locationCheck.status !== 'collecting' || remaining <= 0) {
       locationRequest.complete();
       return;
     }
@@ -256,7 +282,6 @@ function PlaygroundContent({
       () => {
         if (performance.now() >= locationRequest.expiresAt) {
           locationRequest.complete();
-          setHasLocationExpired(true);
           return;
         }
         void getAgentData().catch(() => undefined);
@@ -264,10 +289,14 @@ function PlaygroundContent({
       Math.min(PLAYGROUND_LOCATION_CHECK_INTERVAL_MS, remaining),
     );
     return () => window.clearTimeout(retry);
-  }, [locationRequest, identificationEvent, agentError, serverError, getAgentData, hasLocationExpired]);
+  }, [locationRequest, identificationEvent, agentError, serverError, getAgentData, locationCheck.status]);
 
   const isCollectingLocation = Boolean(
-    locationRequest && !identificationEvent?.proximity && !agentError && !serverError && !hasLocationExpired,
+    locationRequest &&
+      !identificationEvent?.proximity &&
+      !agentError &&
+      !serverError &&
+      locationCheck.status !== 'complete',
   );
 
   const requestError = agentError ?? serverError;

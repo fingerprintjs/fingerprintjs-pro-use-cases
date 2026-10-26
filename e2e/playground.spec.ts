@@ -300,29 +300,22 @@ test.describe('Proximity detection', () => {
   });
 
   test('stops collecting location when identification fails', async ({ page, context }) => {
-    // Development effect replay can queue two agent timeouts.
-    // https://react.dev/reference/react/StrictMode#fixing-bugs-found-by-re-running-effects-in-development
-    test.setTimeout(45000);
     await fakeLocation(page, context, { permissionLifetime: 'request' });
     await page.reload({ waitUntil: 'networkidle' });
     await expect(page.getByTestId(TEST_ID.grantLocationButton)).toBeVisible();
     await page.route('**/*', (route) => {
       const request = route.request();
       return request.method() === 'POST' && !new URL(request.url()).pathname.startsWith('/api/')
-        ? route.abort('failed')
+        ? route.fulfill({ status: 403, contentType: 'application/json', body: '{}' })
         : route.continue();
     });
     await page.getByTestId(TEST_ID.grantLocationButton).click();
 
+    await assertAlert({ page, severity: 'error', text: 'JavaScript Agent Error' });
     await expect
       .poll(() => page.evaluate(async () => (await navigator.permissions.query({ name: 'geolocation' })).state))
-      .toBe('granted');
-    await expect
-      .poll(() => page.evaluate(async () => (await navigator.permissions.query({ name: 'geolocation' })).state), {
-        timeout: 12000,
-      })
       .toBe('prompt');
-    await expect(page.getByTestId(TEST_IDS.common.alert)).toContainText('JavaScript Agent Error', { timeout: 30000 });
+    expect(await getLocationReads(page)).toBe(2);
   });
 
   test('stops collecting location when the Server API fails', async ({ page, context }) => {
@@ -363,6 +356,7 @@ test.describe('Proximity detection', () => {
       await fakeLocation(page, context, {
         permissionLifetime: 'request',
         slowReadNumbers: heldRequest === 2 ? [2] : [],
+        readDelayMs: 9000,
       });
       await page.reload({ waitUntil: 'networkidle' });
       await expect(page.getByTestId(TEST_ID.grantLocationButton)).toBeVisible();
@@ -370,7 +364,7 @@ test.describe('Proximity detection', () => {
       const release = Promise.withResolvers<void>();
       let requests = 0;
       await page.route('**/api/event/v4/**', async (route) => {
-        if (++requests === heldRequest) {
+        if (++requests >= heldRequest) {
           held.resolve();
           await release.promise;
         }
@@ -385,6 +379,8 @@ test.describe('Proximity detection', () => {
             timeout: 12000,
           })
           .toBe('prompt');
+        if (heldRequest === 2) await expect(getWebProximityRow(page)).toContainText('Collecting location...');
+        await expect(getWebProximityRow(page).getByRole('button', { name: 'Try again' })).not.toBeVisible();
       } finally {
         release.resolve();
       }
@@ -421,6 +417,12 @@ test.describe('Proximity detection', () => {
       await expect
         .poll(() => page.evaluate(async () => (await navigator.permissions.query({ name: 'geolocation' })).state))
         .toBe('prompt');
+      const finalEventId = parseEventId(await getAgentResponse(page));
+      await page.getByTestId(TEST_ID.refreshButton).first().click();
+      await expect.poll(async () => parseEventId(await getAgentResponse(page))).not.toBe(finalEventId);
+      const refreshedEventId = parseEventId(await getAgentResponse(page));
+      await expect.poll(async () => parseEventId(await getServerResponse(page))).toBe(refreshedEventId);
+      await expect(proximityRow).toContainText('Location not collected');
       await proximityRow.getByRole('button', { name: 'Try again' }).click();
 
       await expect(proximityRow).toContainText(/Zone .+ m radius/, { timeout: 15000 });
