@@ -316,6 +316,12 @@ test.describe('Proximity detection', () => {
       .poll(() => page.evaluate(async () => (await navigator.permissions.query({ name: 'geolocation' })).state))
       .toBe('prompt');
     expect(await getLocationReads(page)).toBe(2);
+    await page.unroute('**/*');
+    const retry = page.getByRole('button', { name: 'Try again', exact: true });
+    await expect(retry).toBeVisible();
+    await retry.click();
+    await expect(getWebProximityRow(page)).toContainText(/Zone .+ m radius/, { timeout: 15000 });
+    expect(parseEventId(await getServerResponse(page))).toEqual(parseEventId(await getAgentResponse(page)));
   });
 
   test('stops collecting location when the Server API fails', async ({ page, context }) => {
@@ -329,6 +335,12 @@ test.describe('Proximity detection', () => {
     await expect
       .poll(() => page.evaluate(async () => (await navigator.permissions.query({ name: 'geolocation' })).state))
       .toBe('prompt');
+    await page.unroute('**/api/event/v4/**');
+    const retry = page.getByRole('button', { name: 'Try again', exact: true });
+    await expect(retry).toBeVisible();
+    await retry.click();
+    await expect(getWebProximityRow(page)).toContainText(/Zone .+ m radius/, { timeout: 15000 });
+    expect(parseEventId(await getServerResponse(page))).toEqual(parseEventId(await getAgentResponse(page)));
   });
 
   for (const readDelayMs of [1500, 9000]) {

@@ -80,8 +80,7 @@ export function ProximityDetectionResult({
   };
 
   const renderResult = () => {
-    if (!event) return null;
-    const proximity = event.proximity;
+    const proximity = event?.proximity;
     if (proximity) {
       return (
         <JsonLink propertyName='proximity'>

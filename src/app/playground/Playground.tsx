@@ -313,7 +313,19 @@ function PlaygroundContent({
   }, []);
 
   if (requestError && !identificationEvent) {
-    return <Alert severity={'error'}>{formatRequestError(agentError, serverError)}</Alert>;
+    return (
+      <Alert severity='error'>
+        {formatRequestError(agentError, serverError)}
+        {locationRequest && (
+          <ProximityDetectionResult
+            event={undefined}
+            onLocationRequest={onLocationRequest}
+            scrollToResult
+            isCollectingLocation={isCollectingLocation}
+          />
+        )}
+      </Alert>
+    );
   }
 
   const ipLocation = identificationEvent?.ip_info?.v4?.geolocation;
