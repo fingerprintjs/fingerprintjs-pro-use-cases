@@ -1,6 +1,9 @@
+// Browser signals and their Server API event. https://docs.fingerprint.com/docs/smart-signals-reference
 'use client';
 
 import { useEffect, useState, ReactNode } from 'react';
+import { FingerprintProvider } from '@fingerprint/react';
+import { FP_LOAD_OPTIONS } from '../Providers';
 import { CollapsibleJsonViewer } from '../../client/components/CodeSnippet/CodeSnippet';
 import dynamic from 'next/dynamic';
 import SignalTable, { TableCellData } from './components/SignalTable';
@@ -106,6 +109,32 @@ function formatNameWithVersion(name: string | undefined, version: string | undef
 }
 
 export function Playground() {
+  const [locationAttempt, setLocationAttempt] = useState(0);
+  const content = (
+    <PlaygroundContent
+      onLocationGranted={() => setLocationAttempt((attempt) => attempt + 1)}
+      scrollToProximity={locationAttempt > 0}
+    />
+  );
+
+  // Collection starts when the agent starts. Rebuild it after permission changes.
+  // https://docs.fingerprint.com/reference/js-agent-start-function
+  return locationAttempt > 0 ? (
+    <FingerprintProvider key={locationAttempt} {...FP_LOAD_OPTIONS}>
+      {content}
+    </FingerprintProvider>
+  ) : (
+    content
+  );
+}
+
+function PlaygroundContent({
+  onLocationGranted,
+  scrollToProximity,
+}: {
+  onLocationGranted: () => void;
+  scrollToProximity: boolean;
+}) {
   const {
     agentResponse,
     isLoadingAgentResponse,
@@ -526,7 +555,14 @@ export function Playground() {
         ),
       },
       {
-        content: <ProximityDetectionResult event={identificationEvent} />,
+        content: (
+          <ProximityDetectionResult
+            event={identificationEvent}
+            onLocationGranted={onLocationGranted}
+            onRetryIdentification={getAgentData}
+            scrollToResult={scrollToProximity}
+          />
+        ),
         className: identificationEvent?.proximity ? tableStyles.green : tableStyles.neutral,
       },
     ],

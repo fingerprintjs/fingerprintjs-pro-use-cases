@@ -1,12 +1,5 @@
 /**
- * Proximity detection result for the Playground smart signals table.
- * - On web, the JS agent collects proximity only if the user granted the browser location permission.
- * - The Playground does not ask for location on page load, the user opts in with a button.
- * - Once granted, we reload the page so the new event includes `proximity`.
- *   - The agent reads location only when it loads, calling `getData()` again on the same page does not collect it.
- *   - The agent does not wait for location, it sends as soon as its other signals are ready (~160 ms on a fast device).
- *     If location was slower than that, the user can reload again with a "Reload" link.
- * - Server API omits `proximity` when location was not available.
+ * Request location before starting a fresh identification in the same document.
  * https://docs.fingerprint.com/docs/smart-signals-reference#proximity-detection
  */
 import { Event } from '@fingerprint/node-sdk';
@@ -15,20 +8,25 @@ import { TEST_IDS } from '../../../client/testIDs';
 import { JsonLink } from './ArrowLinks';
 import styles from '../playground.module.scss';
 
-// Set right before our reload, so the reloaded page knows to scroll to the result
-const PROXIMITY_RELOAD_KEY = 'playgroundProximityReload';
-
-// Same options the JS agent uses, so the browser has a fresh fix ready when the agent asks after the reload
-const AGENT_LOCATION_OPTIONS: PositionOptions = { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 };
-
 // `unsupported`: browser has no Permissions API (older Safari), we cannot know the state without prompting
 type LocationPermission = PermissionState | 'unsupported';
 
-export function ProximityDetectionResult({ event }: { event: Event | undefined }) {
+export function ProximityDetectionResult({
+  event,
+  onLocationGranted,
+  onRetryIdentification,
+  scrollToResult,
+}: {
+  event: Event | undefined;
+  onLocationGranted: () => void;
+  onRetryIdentification: () => void;
+  scrollToResult: boolean;
+}) {
   const [permission, setPermission] = useState<LocationPermission>();
   const [locationError, setLocationError] = useState<string>();
-  const [isReloading, setIsReloading] = useState(false);
+  const [isRequestingLocation, setIsRequestingLocation] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const hasScrolledRef = useRef(false);
 
   // Reading the permission state does not prompt the user
   useEffect(() => {
@@ -53,24 +51,19 @@ export function ProximityDetectionResult({ event }: { event: Event | undefined }
     };
   }, []);
 
-  // After our reload: scroll to the result, Playground disables scroll restoration so we do it ourselves
   useEffect(() => {
-    if (!event || !sessionStorage.getItem(PROXIMITY_RELOAD_KEY)) return;
-    sessionStorage.removeItem(PROXIMITY_RELOAD_KEY);
+    if (!event || !scrollToResult || hasScrolledRef.current) return;
+    hasScrolledRef.current = true;
     containerRef.current?.scrollIntoView({ block: 'center' });
-  }, [event]);
+  }, [event, scrollToResult]);
 
-  const reloadToCollectLocation = () => {
-    setIsReloading(true);
-    sessionStorage.setItem(PROXIMITY_RELOAD_KEY, 'true');
-    window.location.reload();
-  };
-
-  const requestLocation = () =>
-    // Shows the browser permission prompt
+  const requestLocation = () => {
+    setLocationError(undefined);
+    setIsRequestingLocation(true);
     navigator.geolocation.getCurrentPosition(
-      reloadToCollectLocation,
+      onLocationGranted,
       (error) => {
+        setIsRequestingLocation(false);
         if (error.code === error.PERMISSION_DENIED) {
           // Without the Permissions API we cannot tell a dismiss from a deny, assume denied
           if (!('permissions' in navigator)) {
@@ -86,8 +79,9 @@ export function ProximityDetectionResult({ event }: { event: Event | undefined }
           setLocationError(`Location not available: ${error.message}`);
         }
       },
-      AGENT_LOCATION_OPTIONS,
+      { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 },
     );
+  };
 
   const renderResult = () => {
     if (!event) return null;
@@ -99,17 +93,28 @@ export function ProximityDetectionResult({ event }: { event: Event | undefined }
         </JsonLink>
       );
     }
-    if (isReloading) return 'Reloading the page to collect location...';
-    if (locationError) return locationError;
+    if (isRequestingLocation) return 'Collecting location...';
     if (permission === 'denied') return 'Location denied. Allow it in browser settings and reload.';
-    if (permission === 'granted') {
-      // Location was slower than the agent, or the user allowed it in settings after the page loaded
+    // Keep the agent when its location callback finishes after identification.
+    // https://docs.fingerprint.com/reference/js-agent-start-function
+    if (locationError || permission === 'granted' || scrollToResult) {
       return (
         <>
-          Location not collected.{' '}
-          <button className={styles.inlineLinkButton} onClick={reloadToCollectLocation}>
-            Reload
+          {locationError ?? 'Location not collected.'}{' '}
+          <button
+            className={styles.inlineLinkButton}
+            onClick={() => (locationError ? requestLocation() : onRetryIdentification())}
+          >
+            Try again
           </button>
+          {!locationError && (
+            <>
+              {' or '}
+              <button className={styles.inlineLinkButton} onClick={requestLocation}>
+                Request location again
+              </button>
+            </>
+          )}
         </>
       );
     }
