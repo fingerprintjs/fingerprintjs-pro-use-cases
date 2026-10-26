@@ -391,12 +391,17 @@ test.describe('Proximity detection', () => {
             timeout: 12000,
           })
           .toBe('prompt');
-        if (heldRequest === 2) await expect(getWebProximityRow(page)).toContainText('Collecting location...');
+        await expect.poll(() => requests).toBeGreaterThanOrEqual(heldRequest + 1);
+        if (heldRequest === 2) {
+          await expect(getWebProximityRow(page)).toContainText('Collecting location...');
+          await expect(page.getByTestId(TEST_ID.refreshButton).first()).toBeDisabled();
+        }
         await expect(getWebProximityRow(page).getByRole('button', { name: 'Try again' })).not.toBeVisible();
       } finally {
         release.resolve();
       }
       await expect(getWebProximityRow(page)).toContainText(/Zone .+ m radius/, { timeout: 15000 });
+      await expect(page.getByTestId(TEST_ID.refreshButton).first()).toBeEnabled();
     });
   }
 

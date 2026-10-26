@@ -963,7 +963,7 @@ function PlaygroundContent({
             </h2>
           ) : (
             <RefreshButton
-              loading={isLoadingAgentResponse || isPendingServerResponse}
+              loading={isLoadingAgentResponse || isPendingServerResponse || isCollectingLocation}
               getAgentData={getAgentData}
               className={styles.reloadButton}
             />
