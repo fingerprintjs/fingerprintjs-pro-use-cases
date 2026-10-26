@@ -10,6 +10,15 @@ import tableStyles from './SignalTable.module.scss';
 // Map cannot be server-side rendered
 const Map = dynamic(() => import('./Map'), { ssr: false });
 
+const capitalize = (word: string) => word.charAt(0).toUpperCase() + word.slice(1);
+
+// `ai_crawler` -> `AI Crawler`
+const formatBotCategory = (category: string) =>
+  category
+    .split('_')
+    .map((word) => (word === 'ai' ? 'AI' : capitalize(word)))
+    .join(' ');
+
 /**
  * Shows the Automation Intelligence API (AI API) result for the page request.
  * The result is fetched on the server, so this is in the first HTML response, with or without JS.
@@ -24,13 +33,6 @@ export function AiApiSection({ result }: { result: AiApiResult }) {
 
   // Red when detected, green when not, like the Smart signals table
   const detections: [label: string, value: string, detected: boolean][] = [
-    [
-      'Bot',
-      bot
-        ? `Detected: ${bot.name} (${bot.category}) by ${bot.provider}, identity ${bot.identity}, ${bot.confidence} confidence`
-        : 'Not detected',
-      Boolean(bot),
-    ],
     ['VPN detected', event?.vpn ? 'Detected' : 'Not detected', Boolean(event?.vpn)],
     [
       'Proxy detected',
@@ -51,41 +53,83 @@ export function AiApiSection({ result }: { result: AiApiResult }) {
         <p className={styles.aiApiDescription}>Detect AI agent network requests without browsers or JavaScript</p>
         {event ? (
           <div className={styles.aiApiColumns}>
-            <table className={tableStyles.signalTable}>
-              <tbody>
-                <tr>
-                  <td>IP address</td>
-                  <td className={tableStyles.neutral}>{ip?.address ?? 'Unknown'}</td>
-                </tr>
-                {/* Do not show Map to bots, avoid needless MapBox API calls */}
-                {location?.latitude && location.longitude && !bot ? (
+            <div className={styles.aiApiSignals}>
+              {/* Same fields and colors as the dashboard bot event page */}
+              {bot ? (
+                <div className={`${styles.aiApiBotCard} ${styles[bot.identity]}`}>
+                  <div className={styles.aiApiBotCardTitle}>{capitalize(bot.identity)} bot identity</div>
+                  <div className={styles.aiApiBotCardRow}>
+                    <span>Category</span>
+                    <span>{formatBotCategory(bot.category)}</span>
+                  </div>
+                  <div className={styles.aiApiBotCardRow}>
+                    <span>Provider</span>
+                    <span>
+                      {bot.provider_url ? (
+                        <a href={bot.provider_url} target='_blank' rel='noreferrer'>
+                          {bot.provider}
+                        </a>
+                      ) : (
+                        bot.provider
+                      )}
+                      {/* Spoofed bots only claim the name and provider */}
+                      {bot.identity === 'spoofed' && (
+                        <span className={styles.aiApiBotCardNote}>
+                          This request claimed to be {bot.name} but its actual identity is unknown.
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                  <div className={styles.aiApiBotCardRow}>
+                    <span>Name</span>
+                    <span>{bot.name}</span>
+                  </div>
+                  <div className={styles.aiApiBotCardRow}>
+                    <span>Confidence</span>
+                    <span>{capitalize(bot.confidence)}</span>
+                  </div>
+                </div>
+              ) : (
+                <div className={`${styles.aiApiBotCard} ${styles.notDetected}`}>
+                  <div className={styles.aiApiBotCardTitle}>Bot not detected</div>
+                </div>
+              )}
+              <table className={tableStyles.signalTable}>
+                <tbody>
                   <tr>
-                    <td>
-                      Location
-                      <div className={styles.locationText}>{getLocationName(location)}</div>
-                    </td>
-                    <td className={tableStyles.noPadding}>
-                      <Map
-                        position={[location.latitude, location.longitude]}
-                        zoom={getZoomLevel(location.accuracy_radius)}
-                        height='95px'
-                      />
-                    </td>
+                    <td>IP address</td>
+                    <td className={tableStyles.neutral}>{ip?.address ?? 'Unknown'}</td>
                   </tr>
-                ) : (
-                  <tr>
-                    <td>Location</td>
-                    <td className={tableStyles.neutral}>{getLocationName(location)}</td>
-                  </tr>
-                )}
-                {detections.map(([label, value, detected]) => (
-                  <tr key={label}>
-                    <td>{label}</td>
-                    <td className={detected ? tableStyles.red : tableStyles.green}>{value}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                  {/* Do not show Map to bots, avoid needless MapBox API calls */}
+                  {location?.latitude && location.longitude && !bot ? (
+                    <tr>
+                      <td>
+                        Location
+                        <div className={styles.locationText}>{getLocationName(location)}</div>
+                      </td>
+                      <td className={tableStyles.noPadding}>
+                        <Map
+                          position={[location.latitude, location.longitude]}
+                          zoom={getZoomLevel(location.accuracy_radius)}
+                          height='95px'
+                        />
+                      </td>
+                    </tr>
+                  ) : (
+                    <tr>
+                      <td>Location</td>
+                      <td className={tableStyles.neutral}>{getLocationName(location)}</td>
+                    </tr>
+                  )}
+                  {detections.map(([label, value, detected]) => (
+                    <tr key={label}>
+                      <td>{label}</td>
+                      <td className={detected ? tableStyles.red : tableStyles.green}>{value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
             <CollapsibleJsonViewer json={event} className={styles.aiApiJson} />
           </div>
         ) : (
