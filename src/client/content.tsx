@@ -760,8 +760,8 @@ export const PLAYGROUND_METADATA: Pick<
       VPN detection, browser tampering detection, IP blocklist matching, and more.
     </p>,
   ],
-  titleMeta: 'Fingerprint Pro Playground | Test Your Browser Signals',
-  descriptionMeta: 'Analyze your browser with Fingerprint Pro and see all the available signals.',
+  titleMeta: 'Fingerprint Playground | Test Your Browser Signals',
+  descriptionMeta: 'Analyze your browser with Fingerprint and see all the available signals.',
 };
 
 export const USE_CASES_ARRAY = Object.values(USE_CASES);
