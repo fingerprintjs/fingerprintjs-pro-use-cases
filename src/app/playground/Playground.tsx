@@ -234,6 +234,7 @@ function PlaygroundContent({
   });
 
   const isPreparingLocation = locationCheck.status === 'preparing';
+  const hasIdentification = Boolean(identificationEvent);
 
   const requestLocation = (onError: (error: GeolocationPositionError | Error) => void) => {
     setLocationCheck({ status: 'preparing' });
@@ -244,7 +245,7 @@ function PlaygroundContent({
   };
 
   useEffect(() => {
-    if (!locationRequest || isPreparingLocation || !('permissions' in navigator)) return;
+    if ((!locationRequest && !hasIdentification) || isPreparingLocation || !('permissions' in navigator)) return;
     let permission: PermissionStatus | undefined;
     let cancelled = false;
     // Firefox can prompt again for the SDK read. Resume if that Allow arrives after our deadline.
@@ -259,14 +260,24 @@ function PlaygroundContent({
       .then((result) => {
         if (cancelled) return;
         permission = result;
-        result.addEventListener('change', resumeLocationCheck);
+        if (locationRequest) {
+          result.addEventListener('change', resumeLocationCheck);
+        } else if (result.state === 'granted') {
+          // Location can arrive after the first event even with a saved grant.
+          // https://docs.fingerprint.com/reference/js-agent-get-function
+          setLocationCheck((current) =>
+            current.status === 'collecting' && current.expiresAt === 0
+              ? { status: 'collecting', expiresAt: performance.now() + PLAYGROUND_LOCATION_TIMEOUT_MS }
+              : current,
+          );
+        }
       })
       .catch(() => undefined);
     return () => {
       cancelled = true;
       permission?.removeEventListener('change', resumeLocationCheck);
     };
-  }, [locationRequest, getAgentData, isPreparingLocation]);
+  }, [locationRequest, getAgentData, isPreparingLocation, hasIdentification]);
 
   useEffect(() => {
     if (
@@ -282,8 +293,8 @@ function PlaygroundContent({
 
   useEffect(() => {
     if (
-      !locationRequest ||
       locationCheck.status !== 'collecting' ||
+      locationCheck.expiresAt === 0 ||
       identificationEvent?.proximity ||
       agentError ||
       serverError
@@ -291,7 +302,7 @@ function PlaygroundContent({
       return;
     const timeout = window.setTimeout(
       () => {
-        locationRequest.complete();
+        locationRequest?.complete();
         const expiresAt = locationCheck.expiresAt;
         setLocationCheck({ status: 'finalizing', expiresAt });
         // Include the last collected location after stopping the native watch.
@@ -312,19 +323,18 @@ function PlaygroundContent({
   }, [locationRequest, locationCheck, identificationEvent?.proximity, agentError, serverError, getAgentData]);
 
   useEffect(() => {
-    if (!locationRequest) return;
     if (agentError || serverError) {
-      locationRequest.complete();
+      locationRequest?.complete();
       return;
     }
     if (!identificationEvent) return;
     if (identificationEvent.proximity || locationCheck.status !== 'collecting') {
-      locationRequest.complete();
+      locationRequest?.complete();
       return;
     }
     const remaining = locationCheck.expiresAt - performance.now();
     if (remaining <= 0) {
-      locationRequest.complete();
+      locationRequest?.complete();
       return;
     }
     // A new event can include location that finished after the previous identification.
@@ -332,7 +342,7 @@ function PlaygroundContent({
     const retry = window.setTimeout(
       () => {
         if (performance.now() >= locationCheck.expiresAt) {
-          locationRequest.complete();
+          locationRequest?.complete();
           return;
         }
         void getAgentData().catch(() => undefined);
@@ -345,10 +355,11 @@ function PlaygroundContent({
   const isCollectingLocation =
     isPreparingLocation ||
     Boolean(
-      locationRequest &&
-        !agentError &&
+      !agentError &&
         !serverError &&
-        (locationCheck.status === 'collecting' ? !identificationEvent?.proximity : locationCheck.status !== 'complete'),
+        (locationCheck.status === 'collecting'
+          ? locationCheck.expiresAt > 0 && !identificationEvent?.proximity
+          : locationCheck.status !== 'complete'),
     );
 
   const requestError = agentError ?? serverError;

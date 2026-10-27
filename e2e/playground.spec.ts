@@ -490,6 +490,51 @@ test.describe('Proximity detection', () => {
     });
   }
 
+  test('shows delayed location automatically when permission is already granted', async ({ page, context }) => {
+    await fakeLocation(page, context, { initialPermission: 'granted' });
+    await page.addInitScript(() => {
+      const read = navigator.geolocation.getCurrentPosition.bind(navigator.geolocation);
+      let released = false;
+      const pending: Array<() => void> = [];
+      window.addEventListener('release-late-location', () => {
+        released = true;
+        pending.splice(0).forEach((deliver) => deliver());
+      });
+      navigator.geolocation.getCurrentPosition = (success, error, options) =>
+        read(
+          (position) => {
+            if (released) success(position);
+            else pending.push(() => success(position));
+          },
+          error,
+          options,
+        );
+    });
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    await expect
+      .poll(async () => parseEventId(await getServerResponse(page)), { timeout: 20000 })
+      .toMatch(/^\d{13}\.[a-zA-Z0-9]{6}$/);
+    expect(await getServerResponse(page)).not.toContain('precision_radius');
+    await page.evaluate(() => window.dispatchEvent(new Event('release-late-location')));
+    await expect(getWebProximityRow(page)).toContainText(/Zone .+ m radius/, { timeout: 15000 });
+    const eventId = parseEventId(await getAgentResponse(page));
+    expect(parseEventId(await getServerResponse(page))).toEqual(eventId);
+  });
+
+  test('keeps location errors visible after retry with remembered permission', async ({ page, context }) => {
+    test.setTimeout(45000);
+    await fakeLocation(page, context, { initialPermission: 'granted', readError: 'unavailable' });
+    await page.reload({ waitUntil: 'networkidle' });
+    const proximityRow = getWebProximityRow(page);
+    await expect(proximityRow.getByRole('button', { name: 'Try again' })).toBeVisible({ timeout: 20000 });
+
+    await proximityRow.getByRole('button', { name: 'Try again' }).click();
+
+    await expect(proximityRow).toContainText('Location not available: Fake error', { timeout: 5000 });
+    await expect(proximityRow.getByRole('button', { name: 'Try again' })).toBeVisible();
+    await expect(page.getByTestId(TEST_ID.refreshButton).first()).toBeEnabled();
+  });
+
   test('tells the user how to allow location when it is already denied', async ({ page, context }) => {
     await fakeLocation(page, context, { initialPermission: 'denied' });
     await page.reload({ waitUntil: 'networkidle' });
