@@ -556,6 +556,7 @@ function PlaygroundContent({ startLocationAgent }: { startLocationAgent: () => v
             event={identificationEvent}
             startLocationAgent={startLocationAgent}
             identify={getAgentData}
+            serverError={serverError}
           />
         ),
         className: identificationEvent?.proximity ? tableStyles.green : tableStyles.neutral,

@@ -32,10 +32,12 @@ export function ProximityDetectionResult({
   event,
   startLocationAgent,
   identify,
+  serverError,
 }: {
   event: Event | undefined;
   startLocationAgent: () => void;
   identify: () => Promise<unknown>;
+  serverError: Error | null;
 }) {
   const [permission, setPermission] = useState<LocationPermission>();
   const [locationError, setLocationError] = useState<string>();
@@ -104,6 +106,11 @@ export function ProximityDetectionResult({
     startLocationAgent();
     return identify();
   };
+
+  // Playground shows the Server API error and keeps the previous event, stop collecting so the user can try again
+  useEffect(() => {
+    if (serverError) setCollectingSince(undefined);
+  }, [serverError]);
 
   const isCollecting = collectingSince !== undefined && collectingSince === event;
 
