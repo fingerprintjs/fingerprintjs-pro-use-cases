@@ -264,13 +264,20 @@ test.describe('Proximity detection', () => {
   test('offers to try again when the Server API request fails', async ({ page }) => {
     await fakeLocation(page);
     await page.reload({ waitUntil: 'networkidle' });
-    await page.route('**/api/event/v4/**', (route) => route.abort('failed'));
+    let failedRequests = 0;
+    await page.route('**/api/event/v4/**', (route) => {
+      failedRequests++;
+      return route.abort('failed');
+    });
 
     await page.getByTestId(TEST_ID.grantLocationButton).click();
 
     const proximityRow = getWebProximityRow(page);
     await assertAlert({ page, severity: 'error', text: 'Server API Request' });
     await expect(proximityRow).toContainText('Location not collected.');
+    // No automatic retry after a failure, the user decides
+    await page.waitForTimeout(2000);
+    expect(failedRequests).toBe(1);
     await page.unroute('**/api/event/v4/**');
     await proximityRow.getByRole('button', { name: 'Try again' }).click();
 
