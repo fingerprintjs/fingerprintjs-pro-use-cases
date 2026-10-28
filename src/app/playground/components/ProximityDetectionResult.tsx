@@ -11,7 +11,7 @@
  *   - With a fresh agent, if the event came from the agent started on page load.
  *   - With the same agent, if we started it, its location read is done by then. Starting another agent
  *     removes iframes, and in Firefox removing any iframe drops a temporary ("Allow once") permission,
- *     so the new agent's location read could prompt again.
+ *     so the new agent's location read could prompt again. https://bugzilla.mozilla.org/show_bug.cgi?id=2086598
  *   If the event still misses location, the user can try again with a button.
  * - Server API omits `proximity` when location was not available.
  * https://docs.fingerprint.com/docs/smart-signals-reference#proximity-detection
