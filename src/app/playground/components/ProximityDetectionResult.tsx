@@ -9,10 +9,9 @@
  *   Seen in Safari on page load, where the agent's first location read can also time out.
  *   We then get a location and identify once more automatically:
  *   - With a fresh agent, if the event came from the agent started on page load.
- *   - With the same agent, if we started it, its location read is done by then. Starting another agent
- *     removes iframes, and in Firefox removing any iframe drops a temporary ("Allow once") permission,
- *     so the new agent's location read could prompt again. https://bugzilla.mozilla.org/show_bug.cgi?id=2086598
+ *   - With the same agent, if we started it, its location read is done by then.
  *   If the event still misses location, the user can try again with a button.
+ *   It starts a fresh agent, because an agent whose location read failed does not reliably read again.
  * - Server API omits `proximity` when location was not available.
  * https://docs.fingerprint.com/docs/smart-signals-reference#proximity-detection
  */
@@ -33,13 +32,13 @@ export function ProximityDetectionResult({
   startLocationAgent,
   hasLocationAgent,
   identify,
-  serverError,
+  requestError,
 }: {
   event: Event | undefined;
   startLocationAgent: () => void;
   hasLocationAgent: () => boolean;
   identify: () => Promise<unknown>;
-  serverError: Error | null;
+  requestError: Error | null | undefined;
 }) {
   const [permission, setPermission] = useState<LocationPermission>();
   const [locationError, setLocationError] = useState<string>();
@@ -107,18 +106,21 @@ export function ProximityDetectionResult({
     return identify();
   };
 
-  // Playground shows the Server API error and keeps the previous event, stop collecting so the user can try again
+  // Playground shows the error and keeps the previous event, stop collecting so the user can try again
   useEffect(() => {
-    if (serverError) setCollectingSince(undefined);
-  }, [serverError]);
+    if (requestError) setCollectingSince(undefined);
+  }, [requestError]);
 
   const isCollecting = collectingSince !== undefined && collectingSince === event;
 
   // The agent missed location, retry once automatically
   useEffect(() => {
     if (!event || event.proximity || permission !== 'granted') return;
-    if (isCollecting || locationError || hasRetried.current) return;
+    if (isCollecting || locationError || requestError || hasRetried.current) return;
     hasRetried.current = true;
+    // Starting another agent removes iframes, and in Firefox removing any iframe drops a temporary
+    // ("Allow once") permission, so the new agent's location read could prompt again.
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=2086598
     requestLocation(hasLocationAgent() ? identify : identifyWithFreshAgent);
   });
 
