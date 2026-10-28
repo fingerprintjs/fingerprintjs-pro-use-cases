@@ -261,6 +261,22 @@ test.describe('Proximity detection', () => {
     await expectProximityInMatchingEvents(page);
   });
 
+  test('offers to try again when the Server API request fails', async ({ page }) => {
+    await fakeLocation(page);
+    await page.reload({ waitUntil: 'networkidle' });
+    await page.route('**/api/event/v4/**', (route) => route.abort('failed'));
+
+    await page.getByTestId(TEST_ID.grantLocationButton).click();
+
+    const proximityRow = getWebProximityRow(page);
+    await assertAlert({ page, severity: 'error', text: 'Server API Request' });
+    await expect(proximityRow).toContainText('Location not collected.');
+    await page.unroute('**/api/event/v4/**');
+    await proximityRow.getByRole('button', { name: 'Try again' }).click();
+
+    await expectProximityInMatchingEvents(page);
+  });
+
   test('tells the user how to allow location when it is already denied', async ({ page }) => {
     await fakeLocation(page, { initialPermission: 'denied' });
     await page.reload({ waitUntil: 'networkidle' });
