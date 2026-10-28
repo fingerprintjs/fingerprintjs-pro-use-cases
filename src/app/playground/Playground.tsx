@@ -749,7 +749,7 @@ export function Playground() {
     <LayoutUI>
       <Container size='large' className={styles.hero}>
         <h1>
-          <span>Fingerprint Pro</span> Playground
+          <span>Fingerprint</span> Playground
         </h1>
         <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>
       </Container>
