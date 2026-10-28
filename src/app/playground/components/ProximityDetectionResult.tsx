@@ -31,11 +31,13 @@ type LocationPermission = PermissionState | 'unsupported';
 export function ProximityDetectionResult({
   event,
   startLocationAgent,
+  hasLocationAgent,
   identify,
   serverError,
 }: {
   event: Event | undefined;
   startLocationAgent: () => void;
+  hasLocationAgent: () => boolean;
   identify: () => Promise<unknown>;
   serverError: Error | null;
 }) {
@@ -44,7 +46,6 @@ export function ProximityDetectionResult({
   // The event shown when we asked for location, we are collecting until a new event replaces it
   const [collectingSince, setCollectingSince] = useState<Event>();
   const hasRetried = useRef(false);
-  const hasFreshAgent = useRef(false);
 
   // Reading the permission state does not prompt the user
   useEffect(() => {
@@ -102,7 +103,6 @@ export function ProximityDetectionResult({
   };
 
   const identifyWithFreshAgent = () => {
-    hasFreshAgent.current = true;
     startLocationAgent();
     return identify();
   };
@@ -119,7 +119,7 @@ export function ProximityDetectionResult({
     if (!event || event.proximity || permission !== 'granted') return;
     if (isCollecting || locationError || hasRetried.current) return;
     hasRetried.current = true;
-    requestLocation(hasFreshAgent.current ? identify : identifyWithFreshAgent);
+    requestLocation(hasLocationAgent() ? identify : identifyWithFreshAgent);
   });
 
   const renderResult = () => {

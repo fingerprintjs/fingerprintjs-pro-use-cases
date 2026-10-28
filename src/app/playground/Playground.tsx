@@ -125,12 +125,21 @@ export function Playground() {
 
   return (
     <FingerprintContext.Provider value={contextValue}>
-      <PlaygroundContent startLocationAgent={() => (locationAgent.current = Fingerprint.start(FP_LOAD_OPTIONS))} />
+      <PlaygroundContent
+        startLocationAgent={() => (locationAgent.current = Fingerprint.start(FP_LOAD_OPTIONS))}
+        hasLocationAgent={() => locationAgent.current !== undefined}
+      />
     </FingerprintContext.Provider>
   );
 }
 
-function PlaygroundContent({ startLocationAgent }: { startLocationAgent: () => void }) {
+function PlaygroundContent({
+  startLocationAgent,
+  hasLocationAgent,
+}: {
+  startLocationAgent: () => void;
+  hasLocationAgent: () => boolean;
+}) {
   const {
     agentResponse,
     isLoadingAgentResponse,
@@ -555,6 +564,7 @@ function PlaygroundContent({ startLocationAgent }: { startLocationAgent: () => v
           <ProximityDetectionResult
             event={identificationEvent}
             startLocationAgent={startLocationAgent}
+            hasLocationAgent={hasLocationAgent}
             identify={getAgentData}
             serverError={serverError}
           />
