@@ -289,6 +289,112 @@ h2.sectionTitle {
   margin-bottom: rem(48px);
 }
 
+// Same outer width as .tablesContainer below, so the edges line up
+.aiApiSection {
+  max-width: calc(3 * 405px + 2 * 16px);
+  margin: rem(40px) auto rem(48px);
+
+  @include media('<=1200px') {
+    max-width: 500px;
+    margin-top: rem(32px);
+  }
+}
+
+// Subtitle under the section title, pulled up closer to it
+.aiApiDescription {
+  margin: rem(-8px) 0 rem(16px);
+  color: v('dark-gray');
+  font-family: Inter;
+  font-size: rem(14px);
+  line-height: 160%;
+}
+
+// Table on the left, raw JSON on the right
+.aiApiColumns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: rem(16px);
+
+  @include media('<=1200px') {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  // Without a set width, the long location name under "Location" makes the label column too wide
+  td:first-child {
+    width: 40%;
+  }
+}
+
+// Bot card on top, other signals table below
+.aiApiSignals {
+  display: flex;
+  flex-direction: column;
+  gap: rem(8px);
+}
+
+// Bot identity card, colored by identity like the dashboard bot event page
+.aiApiBotCard {
+  border-radius: 8px;
+  border: 1px solid v('light-grey');
+  font-family: Inter;
+  font-size: rem(15px);
+  line-height: 160%;
+
+  &.verified {
+    background-color: v('success-background');
+    color: v('success-text');
+  }
+  &.signed {
+    background-color: v('info-background');
+    color: v('info-text');
+  }
+  &.spoofed {
+    background-color: v('error-background');
+    color: v('error-text');
+  }
+  &.unknown {
+    background-color: v('warning-background');
+    color: v('warning-text');
+  }
+  &.notDetected {
+    background-color: v('success-background');
+    color: v('success-text');
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}
+
+.aiApiBotCardTitle {
+  padding: rem(10px) rem(12px);
+  font-weight: 500;
+}
+
+.aiApiBotCardRow {
+  display: grid;
+  grid-template-columns: 40% 1fr;
+  padding: rem(8px) rem(12px);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.aiApiBotCardNote {
+  display: block;
+  margin-top: rem(4px);
+  font-size: rem(13px);
+}
+
+// Side by side, the JSON is as tall as the table and scrolls.
+// `contain: size` stops the long JSON from setting the row height. Stacked, it keeps the default height.
+.aiApiJson {
+  @include media('>1200px') {
+    contain: size;
+    --json-viewer-height: 100%;
+  }
+}
+
 .tableTitle {
   color: v('dark-black');
   font-family: 'JetBrains Mono';
