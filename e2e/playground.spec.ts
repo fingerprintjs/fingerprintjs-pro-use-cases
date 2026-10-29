@@ -275,8 +275,11 @@ test.describe('Proximity detection', () => {
     const proximityRow = getWebProximityRow(page);
     await assertAlert({ page, severity: 'error', text: 'Server API Request' });
     await expect(proximityRow).toContainText('Location not collected.');
-    // No automatic retry after a failure, the user decides
-    await page.waitForTimeout(2000);
+    // No automatic retry after a failure, the user decides.
+    // A retry reads location in an effect right after this render, so waiting one frame is enough.
+    await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve))));
+    // Ours after the grant, and the fresh agent's
+    expect(await getLocationReads(page)).toBe(2);
     expect(failedRequests).toBe(1);
     await page.unroute('**/api/event/v4/**');
     await proximityRow.getByRole('button', { name: 'Try again' }).click();
