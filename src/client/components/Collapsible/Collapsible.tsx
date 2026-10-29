@@ -16,6 +16,7 @@ const MyCollapsibleTrigger = extendUnstyledPrimitiveWithClass(
   'MyCollapsibleTrigger',
 );
 
+// React gotcha: `MyCollapsibleContent` unmounts its children when closed, keep state that must survive in the parent
 const MyCollapsibleContent = extendUnstyledPrimitiveWithClass(
   CollapsiblePrimitive.CollapsibleContent,
   styles.CollapsibleContent,
