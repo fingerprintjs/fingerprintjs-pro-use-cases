@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useEffect, useMemo, useRef, useState, ReactNode } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState, ReactNode, RefObject } from 'react';
 import { Fingerprint, FingerprintContext } from '@fingerprint/react';
 import { FP_LOAD_OPTIONS } from '../Providers';
 import { CollapsibleJsonViewer } from '../../client/components/CodeSnippet/CodeSnippet';
@@ -115,6 +115,7 @@ function formatNameWithVersion(name: string | undefined, version: string | undef
 export function Playground() {
   const fingerprint = useContext(FingerprintContext);
   const locationAgent = useRef<Fingerprint.Agent>(undefined);
+  const hasRetriedLocationRef = useRef(false);
   const contextValue = useMemo(
     () => ({
       getVisitorData: (options?: Fingerprint.GetOptions) =>
@@ -128,6 +129,7 @@ export function Playground() {
       <PlaygroundContent
         startLocationAgent={() => (locationAgent.current = Fingerprint.start(FP_LOAD_OPTIONS))}
         hasLocationAgent={() => locationAgent.current !== undefined}
+        hasRetriedLocationRef={hasRetriedLocationRef}
       />
     </FingerprintContext.Provider>
   );
@@ -136,9 +138,11 @@ export function Playground() {
 function PlaygroundContent({
   startLocationAgent,
   hasLocationAgent,
+  hasRetriedLocationRef,
 }: {
   startLocationAgent: () => void;
   hasLocationAgent: () => boolean;
+  hasRetriedLocationRef: RefObject<boolean>;
 }) {
   const {
     agentResponse,
@@ -565,6 +569,7 @@ function PlaygroundContent({
             event={identificationEvent}
             startLocationAgent={startLocationAgent}
             hasLocationAgent={hasLocationAgent}
+            hasRetriedRef={hasRetriedLocationRef}
             identify={getAgentData}
             requestError={requestError}
           />

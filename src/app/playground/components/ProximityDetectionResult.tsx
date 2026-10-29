@@ -1,22 +1,10 @@
 /**
  * Proximity detection result for the Playground smart signals table.
- * - On web, the JS agent collects proximity only if the user granted the browser location permission.
- * - The Playground does not ask for location on page load, the user opts in with a button.
- * - Once we have a location, we identify again with a fresh agent, see `Playground`.
- *   Its location read is quick then, because the browser just got a location for us.
- * - The agent does not wait for location, it sends as soon as its other signals are ready.
- *   So the event can miss location even with permission granted.
- *   Seen in Safari on page load, where the agent's first location read can also time out.
- *   We then get a location and identify once more automatically:
- *   - With a fresh agent, if the event came from the agent started on page load.
- *   - With the same agent, if we started it, its location read is done by then.
- *   If the event still misses location, the user can try again with a button.
- *   It starts a fresh agent, because an agent whose location read failed does not reliably read again.
- * - Server API omits `proximity` when location was not available.
+ * Asks for the browser location permission and identifies again to collect proximity.
  * https://docs.fingerprint.com/docs/smart-signals-reference#proximity-detection
  */
 import { Event } from '@fingerprint/node-sdk';
-import { useEffect, useRef, useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 import { TEST_IDS } from '../../../client/testIDs';
 import { JsonLink } from './ArrowLinks';
 import styles from '../playground.module.scss';
@@ -31,20 +19,22 @@ export function ProximityDetectionResult({
   event,
   startLocationAgent,
   hasLocationAgent,
+  hasRetriedRef,
   identify,
   requestError,
 }: {
   event: Event | undefined;
   startLocationAgent: () => void;
   hasLocationAgent: () => boolean;
+  // Lives in `Playground`, collapsing the table unmounts this row
+  hasRetriedRef: RefObject<boolean>;
   identify: () => Promise<unknown>;
   requestError: Error | null | undefined;
 }) {
   const [permission, setPermission] = useState<LocationPermission>();
   const [locationError, setLocationError] = useState<string>();
   // The event shown when we asked for location, we are collecting until a new event replaces it
-  const [collectingSince, setCollectingSince] = useState<Event>();
-  const hasRetried = useRef(false);
+  const [eventToReplace, setEventToReplace] = useState<Event>();
 
   // Reading the permission state does not prompt the user
   useEffect(() => {
@@ -71,17 +61,17 @@ export function ProximityDetectionResult({
 
   const requestLocation = (onLocation: () => Promise<unknown>) => {
     setLocationError(undefined);
-    setCollectingSince(event);
+    setEventToReplace(event);
     // Shows the browser permission prompt if needed
     navigator.geolocation.getCurrentPosition(
       () => {
         // Do not rely on `onchange` to learn about the grant
         setPermission('granted');
         // Playground shows the identification error, stop collecting so the user can try again
-        onLocation().catch(() => setCollectingSince(undefined));
+        onLocation().catch(() => setEventToReplace(undefined));
       },
       (error) => {
-        setCollectingSince(undefined);
+        setEventToReplace(undefined);
         if (error.code === error.PERMISSION_DENIED) {
           // Without the Permissions API we cannot tell a dismiss from a deny, assume denied
           if (!('permissions' in navigator)) {
@@ -108,16 +98,22 @@ export function ProximityDetectionResult({
 
   // Playground shows the error and keeps the previous event, stop collecting so the user can try again
   useEffect(() => {
-    if (requestError) setCollectingSince(undefined);
+    if (requestError) setEventToReplace(undefined);
   }, [requestError]);
 
-  const isCollecting = collectingSince !== undefined && collectingSince === event;
+  const isCollecting = eventToReplace !== undefined && eventToReplace === event;
 
-  // The agent missed location, retry once automatically
+  // The agent does not wait for location, it sends as soon as its other signals are ready.
+  // So the event can miss location even with permission granted, e.g. in Safari on page load,
+  // where the agent's first location read can also time out. Get a location and identify once more:
+  // - With a fresh agent, if the event came from the agent started on page load.
+  // - With the same agent, if we started it, its location read is done by then.
+  // "Try again" always starts a fresh agent, because an agent whose location read failed
+  // does not reliably read again.
   useEffect(() => {
     if (!event || event.proximity || permission !== 'granted') return;
-    if (isCollecting || locationError || requestError || hasRetried.current) return;
-    hasRetried.current = true;
+    if (isCollecting || locationError || requestError || hasRetriedRef.current) return;
+    hasRetriedRef.current = true;
     // Starting another agent removes iframes, and in Firefox removing any iframe drops a temporary
     // ("Allow once") permission, so the new agent's location read could prompt again.
     // https://bugzilla.mozilla.org/show_bug.cgi?id=2086598
