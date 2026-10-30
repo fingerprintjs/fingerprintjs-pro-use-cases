@@ -17,3 +17,4 @@
     - close to affected code + commit message body
 - Debugging
   - Unless instructed otherwise, run targeted unit and e2e tests locally to verify the changes, CI is just final confirmation
+  - Locally, Playwright does not start the app, run the dev server on port 3000 first, see [verify-use-cases](.claude/skills/verify-use-cases/SKILL.md)
