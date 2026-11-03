@@ -15,7 +15,6 @@ import { ProximityDetectionResult } from './components/ProximityDetectionResult'
 import { usePlaygroundSignals } from './hooks/usePlaygroundSignals';
 import { getLocationName, getZoomLevel } from '../../utils/locationUtils';
 import Link from 'next/link';
-import { AUTOMATION_INTELLIGENCE_PLAYGROUND_METADATA } from '../../client/content';
 import styles from './playground.module.scss';
 import { Spinner } from '../../client/components/Spinner/Spinner';
 import { Alert } from '../../client/components/Alert/Alert';
@@ -799,11 +798,7 @@ function PlaygroundContent({
         <h1>
           <span>Fingerprint</span> Playground
         </h1>
-        <p>
-          Analyze your browser with Fingerprint and see all the available signals. To detect AI agents from a network
-          request alone, try the{' '}
-          <Link href={AUTOMATION_INTELLIGENCE_PLAYGROUND_METADATA.url}>Automation Intelligence Playground</Link>.
-        </p>
+        <p>Analyze your browser with Fingerprint and see all the available signals.</p>
       </Container>
       <Container size='large'>
         <div className={styles.runningIntelligence}>
