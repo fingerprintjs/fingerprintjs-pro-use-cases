@@ -16,6 +16,12 @@ const getAiApiSection = async (page: Page) => {
 // The page server-renders the AI API section, so check it without JS
 test.use({ javaScriptEnabled: false });
 
+test('page shows every how-to step without JavaScript', async ({ page }) => {
+  await page.goto(AI_API_PAGE);
+  // The last step, only in the HTML if the accordion renders every item open
+  await expect(page.getByText("curl -A 'GPTBot/1.0'")).toBeVisible();
+});
+
 // Runs only against a deployed site: the hourly production e2e run, or staging by hand.
 // It cannot pick the client IP, so it checks the parts that do not depend on it.
 test.describe('on the hosted site', () => {
