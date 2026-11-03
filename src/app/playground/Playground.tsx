@@ -799,11 +799,6 @@ function PlaygroundContent({
           <span>Fingerprint</span> Playground
         </h1>
         <p>Analyze your browser with Fingerprint and see all the available signals.</p>
-        <p className={styles.disclaimer}>
-          Fraud tooling vendors test against public demos like this one. To keep our detection effective for customers,
-          this playground deliberately runs a reduced set of signals and an older model. Accuracy on a production
-          account is significantly higher.
-        </p>
       </Container>
       <Container size='large'>
         <div className={styles.runningIntelligence}>
@@ -884,6 +879,11 @@ function PlaygroundContent({
             <Container size='large' className={styles.isSection}>
               <h2 className={styles.sectionTitle}>How to use this demo</h2>
               <HowToUseThisPlayground />
+              <p className={styles.disclaimer}>
+                Fraud tooling vendors test against public demos like this one. To keep our detection effective for
+                customers, this playground deliberately runs a reduced set of signals and an older model. Accuracy on a
+                production account is significantly higher.
+              </p>
             </Container>
             <Container size='large' className={classnames(styles.isSection, styles.jsonSection)}>
               <div className={styles.jsonContainer}>

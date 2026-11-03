@@ -54,20 +54,6 @@
       text-underline-offset: 4px;
     }
   }
-
-  .disclaimer {
-    max-width: rem(720px);
-    margin: rem(8px) auto 0;
-    font-size: rem(14px);
-
-    @include media('<=tabletWide') {
-      font-size: rem(13px);
-    }
-
-    @include media('<=phoneLandscape') {
-      margin-left: 0;
-    }
-  }
 }
 
 .visitorIdBox {
@@ -419,4 +405,11 @@ h2.sectionTitle {
 
 .errorAlert {
   margin-bottom: rem(24px);
+}
+
+.disclaimer {
+  margin: rem(16px) 0 0;
+  color: v('dark-gray');
+  font-size: rem(13px);
+  line-height: 160%;
 }
