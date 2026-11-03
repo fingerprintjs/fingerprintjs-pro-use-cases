@@ -24,7 +24,8 @@ export function getFingerprintEndpoint(endpoint?: string) {
     return undefined;
   }
 
-  // In Agent V4, the endpoint must be a valid URL
+  // Agent V4 needs an absolute URL. NEXT_PUBLIC_ENDPOINT is deploy config, not a request path.
+  // eslint-disable-next-line no-restricted-syntax -- deploy config, not a request path
   return new URL(endpoint, location.origin).toString();
 }
 

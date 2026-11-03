@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect, useState, ReactNode } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState, ReactNode, RefObject } from 'react';
+import { Fingerprint, FingerprintContext } from '@fingerprint/react';
+import { FP_LOAD_OPTIONS } from '../Providers';
 import { CollapsibleJsonViewer } from '../../client/components/CodeSnippet/CodeSnippet';
 import dynamic from 'next/dynamic';
 import SignalTable, { TableCellData } from './components/SignalTable';
@@ -107,7 +109,46 @@ function formatNameWithVersion(name: string | undefined, version: string | undef
   return `${name} ${version}`;
 }
 
+/**
+ * The JS agent reads location only if location permission was already granted when it started.
+ * Once the user grants it, we start a fresh agent and identify with it, instead of reloading the page,
+ * because a reload drops a temporary ("Allow once") permission.
+ */
 export function Playground({ aiApiResult }: { aiApiResult: AiApiResult }) {
+  const fingerprint = useContext(FingerprintContext);
+  const locationAgent = useRef<Fingerprint.Agent>(undefined);
+  const hasRetriedLocationRef = useRef(false);
+  const contextValue = useMemo(
+    () => ({
+      getVisitorData: (options?: Fingerprint.GetOptions) =>
+        locationAgent.current ? locationAgent.current.get(options) : fingerprint.getVisitorData(options),
+    }),
+    [fingerprint],
+  );
+
+  return (
+    <FingerprintContext.Provider value={contextValue}>
+      <PlaygroundContent
+        startLocationAgent={() => (locationAgent.current = Fingerprint.start(FP_LOAD_OPTIONS))}
+        hasLocationAgent={() => locationAgent.current !== undefined}
+        hasRetriedLocationRef={hasRetriedLocationRef}
+        aiApiResult={aiApiResult}
+      />
+    </FingerprintContext.Provider>
+  );
+}
+
+function PlaygroundContent({
+  startLocationAgent,
+  hasLocationAgent,
+  hasRetriedLocationRef,
+  aiApiResult,
+}: {
+  startLocationAgent: () => void;
+  hasLocationAgent: () => boolean;
+  hasRetriedLocationRef: RefObject<boolean>;
+  aiApiResult: AiApiResult;
+}) {
   const {
     agentResponse,
     isLoadingAgentResponse,
@@ -534,7 +575,16 @@ export function Playground({ aiApiResult }: { aiApiResult: AiApiResult }) {
         ),
       },
       {
-        content: <ProximityDetectionResult event={identificationEvent} />,
+        content: (
+          <ProximityDetectionResult
+            event={identificationEvent}
+            startLocationAgent={startLocationAgent}
+            hasLocationAgent={hasLocationAgent}
+            hasRetriedRef={hasRetriedLocationRef}
+            identify={getAgentData}
+            requestError={requestError}
+          />
+        ),
         className: identificationEvent?.proximity ? tableStyles.green : tableStyles.neutral,
       },
     ],
@@ -757,7 +807,7 @@ export function Playground({ aiApiResult }: { aiApiResult: AiApiResult }) {
     <LayoutUI>
       <Container size='large' className={styles.hero}>
         <h1>
-          <span>Fingerprint Pro</span> Playground
+          <span>Fingerprint</span> Playground
         </h1>
         <p>Analyze your network request and browser with Fingerprint and see all the available signals.</p>
       </Container>

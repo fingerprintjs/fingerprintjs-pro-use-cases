@@ -13,6 +13,17 @@ const eslintConfig = defineConfig([
       },
     },
     rules: {
+      // A variable first argument can replace the base: absolute URL, `//host`, or a backslash.
+      // https://url.spec.whatwg.org/#url-parsing
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector:
+            "NewExpression[callee.name='URL'][arguments.length>=2][arguments.0.type!='Literal'], CallExpression[callee.object.name='URL'][callee.property.name='parse'][arguments.length>=2][arguments.0.type!='Literal']",
+          message:
+            'new URL(path, base) and URL.parse(path, base) ignore base when path is absolute or starts with // or a backslash. Build from a fixed origin and assign pathname and search, or append the path without parsing it.',
+        },
+      ],
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unnecessary-condition': 'error',

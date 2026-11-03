@@ -12,9 +12,9 @@
 <a href="https://discord.gg/39EpE2neBg"><img src="https://img.shields.io/discord/852099967190433792?style=logo&label=Discord&logo=Discord&logoColor=white" alt="Discord server"></a>
 </p>
 
-# Fingerprint Pro Use Cases
+# Fingerprint Demo Use Cases
 
-This repository demonstrates various use cases for [Fingerprint Pro](https://fingerprint.com) — a device intelligence platform offering industry-leading accuracy. Each scenario covers frontend and backend sample implementation with a persistent data layer. A live demo of each use case is available at [demo.fingerprint.com](https://demo.fingerprint.com/).
+This repository demonstrates various use cases for [Fingerprint](https://fingerprint.com) — a device intelligence platform offering industry-leading accuracy. Each scenario covers frontend and backend sample implementation with a persistent data layer. A live demo of each use case is available at [demo.fingerprint.com](https://demo.fingerprint.com/).
 You can learn more about these use cases on our [website](https://fingerprint.com/use-cases).
 
 ## How to run
@@ -112,7 +112,7 @@ Accurately identify visitors who create multiple fake accounts. Fight trial abus
 
 ## Documentation and Support
 
-To dive deeper into Fingerprint Pro, see our [Documentation](https://dev.fingerprint.com/docs). For questions or suggestions specific to this repository, you can [create an issue](https://github.com/fingerprintjs/fingerprintjs-pro-use-cases/issues/new). For general questions and community vibes, visit our [Discord server](https://discord.gg/39EpE2neBg). If you require private support, you can email us at [oss-support@fingerprint.com](mailto:oss-support@fingerprint.com).
+To dive deeper into Fingerprint, see our [Documentation](https://dev.fingerprint.com/docs). For questions or suggestions specific to this repository, you can [create an issue](https://github.com/fingerprintjs/fingerprintjs-pro-use-cases/issues/new). For general questions and community vibes, visit our [Discord server](https://discord.gg/39EpE2neBg). If you require private support, you can email us at [oss-support@fingerprint.com](mailto:oss-support@fingerprint.com).
 
 ## License
 
