@@ -40,13 +40,6 @@ const howTo: HowTo[] = [
       </>,
     ],
   },
-  {
-    title: 'VPN detection',
-    content: [
-      `If you’re not currently browsing using a VPN, the VPN detected row will be green with “Not detected”.`,
-      `Turn on your VPN service and reload the page. The row will be red with “Detected”.`,
-    ],
-  },
 ];
 
 /**
