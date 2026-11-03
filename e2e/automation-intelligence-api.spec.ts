@@ -26,7 +26,7 @@ test.describe('on the hosted site', () => {
     const event = await response.json();
     expect(event.source).toBe('edge');
     // Checks PUBLIC_ORIGIN: behind CloudFront the server only sees the Digital Ocean host
-    expect(event.url).toBe(new URL(AI_API_ENDPOINT, PRODUCTION_E2E_TEST_BASE_URL).href);
+    expect(event.url).toBe(`${PRODUCTION_E2E_TEST_BASE_URL}${AI_API_ENDPOINT}`);
   });
 
   test('Playground shows the AI API result', async ({ page }) => {
