@@ -3,6 +3,7 @@
 import { NextRequest } from 'next/server';
 import { describe, expect, it } from 'vitest';
 import { proxy } from './proxy';
+import { ORIGINAL_REQUEST_TARGET_HEADER } from './server/request-target';
 
 function redirectLocation(url: string) {
   const response = proxy(new NextRequest(url, { headers: { host: 'fingerprinthub.com' } }));
@@ -25,5 +26,17 @@ describe('proxy', () => {
     expect(redirectLocation('https://fingerprinthub.com/\\evil.example?a=1')).toBe(
       'https://demo.fingerprint.com//evil.example?a=1',
     );
+  });
+
+  it('forwards the original request target to the Automation Intelligence Playground', () => {
+    const response = proxy(new NextRequest('https://demo.fingerprint.com/automation-intelligence-playground?a=%31'));
+    // NextResponse.next() passes request header overrides to the page as `x-middleware-request-*` headers
+    expect(response?.headers.get(`x-middleware-request-${ORIGINAL_REQUEST_TARGET_HEADER}`)).toBe(
+      '/automation-intelligence-playground?a=%31',
+    );
+  });
+
+  it('leaves the Playground alone', () => {
+    expect(proxy(new NextRequest('https://demo.fingerprint.com/playground'))).toBeUndefined();
   });
 });
