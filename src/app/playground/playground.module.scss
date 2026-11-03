@@ -54,6 +54,20 @@
       text-underline-offset: 4px;
     }
   }
+
+  .disclaimer {
+    max-width: rem(720px);
+    margin: rem(8px) auto 0;
+    font-size: rem(14px);
+
+    @include media('<=tabletWide') {
+      font-size: rem(13px);
+    }
+
+    @include media('<=phoneLandscape') {
+      margin-left: 0;
+    }
+  }
 }
 
 .visitorIdBox {
