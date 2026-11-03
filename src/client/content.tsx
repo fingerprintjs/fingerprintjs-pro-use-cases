@@ -773,6 +773,18 @@ export const PLAYGROUND_METADATA: Pick<
   descriptionMeta: 'Analyze your browser with Fingerprint and see all the available signals.',
 };
 
+// Not on the home page or in navigation
+export const AUTOMATION_INTELLIGENCE_PLAYGROUND_METADATA: Pick<
+  UseCase,
+  'title' | 'url' | 'titleMeta' | 'descriptionMeta'
+> = {
+  title: 'Automation Intelligence Playground',
+  url: '/automation-intelligence-playground',
+  titleMeta: 'Fingerprint Automation Intelligence Playground | Detect AI Agents',
+  descriptionMeta:
+    'See what the Fingerprint Automation Intelligence API knows about your network request, without a browser or JavaScript.',
+};
+
 export const USE_CASES_ARRAY = Object.values(USE_CASES);
 
 export const USE_CASES_NAVIGATION = USE_CASES_ARRAY.map((useCase) => ({

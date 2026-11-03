@@ -4,11 +4,12 @@ import Container from '../../../client/components/Container';
 import { TEST_IDS } from '../../../client/testIDs';
 import { getLocationName, getZoomLevel } from '../../../utils/locationUtils';
 import type { AiApiResult } from '../../../server/automation-intelligence-api';
-import styles from '../playground.module.scss';
-import tableStyles from './SignalTable.module.scss';
+import playgroundStyles from '../../playground/playground.module.scss';
+import tableStyles from '../../playground/components/SignalTable.module.scss';
+import styles from '../automationIntelligencePlayground.module.scss';
 
 // Map cannot be server-side rendered
-const Map = dynamic(() => import('./Map'), { ssr: false });
+const Map = dynamic(() => import('../../playground/components/Map'), { ssr: false });
 
 const capitalize = (word: string) => word.charAt(0).toUpperCase() + word.slice(1);
 
@@ -48,9 +49,8 @@ export function AiApiSection({ result }: { result: AiApiResult }) {
 
   return (
     <Container size='large'>
-      <div data-testid={TEST_IDS.playground.aiApiSection} className={styles.aiApiSection}>
-        <h3 className={styles.tableTitle}>Automation Intelligence API</h3>
-        <p className={styles.aiApiDescription}>Detect AI agent network requests without browsers or JavaScript</p>
+      <div data-testid={TEST_IDS.automationIntelligencePlayground.aiApiSection} className={styles.aiApiSection}>
+        <h3 className={playgroundStyles.tableTitle}>Automation Intelligence API</h3>
         {event ? (
           <div className={styles.aiApiColumns}>
             <div className={styles.aiApiSignals}>
@@ -105,7 +105,7 @@ export function AiApiSection({ result }: { result: AiApiResult }) {
                     <tr>
                       <td>
                         Location
-                        <div className={styles.locationText}>{getLocationName(location)}</div>
+                        <div className={playgroundStyles.locationText}>{getLocationName(location)}</div>
                       </td>
                       <td className={tableStyles.noPadding}>
                         <Map

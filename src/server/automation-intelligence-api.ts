@@ -28,7 +28,7 @@ const AI_API_TIMEOUT_MS = 1500;
 const SENSITIVE_HEADER_REGEX = /authorization|cookie|password|token|secret|api-key|apikey/i;
 
 /**
- * Only the fields the Playground reads. The JSON viewer and the curl endpoint show the full response.
+ * Only the fields the Automation Intelligence Playground reads. The JSON viewer and the curl endpoint show the full response.
  * Fields: https://docs.fingerprint.com/reference/automation-intelligence-api-collect-intelligence
  */
 export type AiApiEvent = Pick<Event, 'ip_info' | 'bot_info' | 'vpn' | 'proxy' | 'proxy_details'>;
@@ -36,7 +36,7 @@ export type AiApiEvent = Pick<Event, 'ip_info' | 'bot_info' | 'vpn' | 'proxy' | 
 export type AiApiResult = { event: AiApiEvent } | { error: string };
 
 /**
- * @param path Original request pathname and query, e.g. `/playground?foo=bar`.
+ * @param path Original request pathname and query, e.g. `/automation-intelligence-playground?foo=bar`.
  */
 export async function fetchAiApiResult(requestHeaders: Headers, path: string): Promise<AiApiResult> {
   try {

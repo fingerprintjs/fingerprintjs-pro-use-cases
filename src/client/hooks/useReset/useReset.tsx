@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import { ResetRequest, ResetResponse } from '../../../app/api/admin/reset/route';
 import { useSnackbar } from 'notistack';
 import styles from './userReset.module.scss';
-import { PLAYGROUND_METADATA, USE_CASES } from '../../content';
+import { AUTOMATION_INTELLIGENCE_PLAYGROUND_METADATA, PLAYGROUND_METADATA, USE_CASES } from '../../content';
 import { TEST_IDS } from '../../testIDs';
 import { usePathname } from 'next/navigation';
 import { FPJS_CLIENT_TIMEOUT } from '../../../const';
@@ -79,6 +79,7 @@ export const useReset = ({ onError, onSuccess }: UseResetParams) => {
       pathname &&
       pathname !== '/' &&
       !pathname.startsWith(PLAYGROUND_METADATA.url) &&
+      !pathname.startsWith(AUTOMATION_INTELLIGENCE_PLAYGROUND_METADATA.url) &&
       !pathname.startsWith(USE_CASES.webScraping.url) &&
       !pathname.startsWith(USE_CASES.vpnDetection.url),
   };
