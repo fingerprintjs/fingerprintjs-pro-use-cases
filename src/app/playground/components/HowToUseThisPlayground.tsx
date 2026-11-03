@@ -57,6 +57,22 @@ const content: HowTo[] = [
     ],
   },
   {
+    title: 'AI agent detection',
+    content: [
+      `If you’re using a normal browser, the Automation Intelligence API section will show “Bot not detected”.`,
+      `Ask an AI chat app like ChatGPT or Claude: “Open https://demo.fingerprint.com/playground and tell me what you see.” It will show the agent’s name, provider, and identity if detected or disclosed.`,
+      <>
+        To get the raw result, run <code>curl https://demo.fingerprint.com/automation-intelligence</code> in your
+        terminal.
+      </>,
+      <>
+        Pretend to be OpenAI’s crawler with{' '}
+        <code>curl -A &apos;GPTBot/1.0&apos; https://demo.fingerprint.com/automation-intelligence</code>. The result
+        shows <code>&quot;identity&quot;: &quot;spoofed&quot;</code>, because the request doesn’t come from OpenAI.
+      </>,
+    ],
+  },
+  {
     title: 'IP Geolocation',
     content: [`Notice your location is displayed in a small map tile. Try taking a trip and refreshing the browser!`],
   },

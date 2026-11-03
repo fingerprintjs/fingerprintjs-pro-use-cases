@@ -38,6 +38,8 @@ import { LayoutUI } from '../LayoutUI';
 import Image from 'next/image';
 import GooglePlaySvg from './img/google_play.svg';
 import AppStoreSvg from './img/app_store.svg';
+import { AiApiSection } from './components/AiApiSection';
+import type { AiApiResult } from '../../server/automation-intelligence-api';
 
 // Nothing magic about `8` here, each customer must define their own use-case specific threshold
 const SUSPECT_SCORE_RED_THRESHOLD = 8;
@@ -112,7 +114,7 @@ function formatNameWithVersion(name: string | undefined, version: string | undef
  * Once the user grants it, we start a fresh agent and identify with it, instead of reloading the page,
  * because a reload drops a temporary ("Allow once") permission.
  */
-export function Playground() {
+export function Playground({ aiApiResult }: { aiApiResult: AiApiResult }) {
   const fingerprint = useContext(FingerprintContext);
   const locationAgent = useRef<Fingerprint.Agent>(undefined);
   const hasRetriedLocationRef = useRef(false);
@@ -130,6 +132,7 @@ export function Playground() {
         startLocationAgent={() => (locationAgent.current = Fingerprint.start(FP_LOAD_OPTIONS))}
         hasLocationAgent={() => locationAgent.current !== undefined}
         hasRetriedLocationRef={hasRetriedLocationRef}
+        aiApiResult={aiApiResult}
       />
     </FingerprintContext.Provider>
   );
@@ -139,10 +142,12 @@ function PlaygroundContent({
   startLocationAgent,
   hasLocationAgent,
   hasRetriedLocationRef,
+  aiApiResult,
 }: {
   startLocationAgent: () => void;
   hasLocationAgent: () => boolean;
   hasRetriedLocationRef: RefObject<boolean>;
+  aiApiResult: AiApiResult;
 }) {
   const {
     agentResponse,
@@ -168,7 +173,13 @@ function PlaygroundContent({
   }, []);
 
   if (requestError && !identificationEvent) {
-    return <Alert severity={'error'}>{formatRequestError(agentError, serverError)}</Alert>;
+    return (
+      <>
+        <Alert severity={'error'}>{formatRequestError(agentError, serverError)}</Alert>
+        {/* The AI API result does not depend on the JS agent, so keep showing it */}
+        <AiApiSection result={aiApiResult} />
+      </>
+    );
   }
 
   const ipLocation = identificationEvent?.ip_info?.v4?.geolocation;
@@ -798,8 +809,9 @@ function PlaygroundContent({
         <h1>
           <span>Fingerprint</span> Playground
         </h1>
-        <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>
+        <p>Analyze your network request and browser with Fingerprint and see all the available signals.</p>
       </Container>
+      <AiApiSection result={aiApiResult} />
       <Container size='large'>
         <div className={styles.runningIntelligence}>
           {!identificationData ? (
@@ -828,7 +840,7 @@ function PlaygroundContent({
             {identificationData ? (
               <MyCollapsible defaultOpen>
                 <TableTitle>
-                  Identification{' '}
+                  Browser Identification{' '}
                   <MyCollapsibleTrigger>
                     <ChevronSvg />
                   </MyCollapsibleTrigger>
@@ -850,7 +862,7 @@ function PlaygroundContent({
               <>
                 <MyCollapsible defaultOpen>
                   <TableTitle>
-                    Smart signals{' '}
+                    Browser Smart signals{' '}
                     <MyCollapsibleTrigger>
                       <ChevronSvg />
                     </MyCollapsibleTrigger>
@@ -915,6 +927,11 @@ function PlaygroundContent({
                   title: 'What is Fingerprint',
                   url: 'https://dev.fingerprint.com/docs/what-is-fingerprint',
                   type: 'Article',
+                },
+                {
+                  title: 'Automation Intelligence API',
+                  url: 'https://docs.fingerprint.com/reference/automation-intelligence-api',
+                  type: 'Documentation',
                 },
                 {
                   title: 'Intro to Device Intelligence Webinar',

@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
   // Stop `next dev` from adding its agent instructions block to AGENTS.md on every run.
   // https://nextjs.org/docs/app/api-reference/config/next-config-js/agentRules
   agentRules: false,
+  // Keep query encoding intact for request signatures before Proxy reads the URL.
+  // https://nextjs.org/docs/app/api-reference/file-conventions/proxy#advanced-proxy-flags
+  skipProxyUrlNormalize: true,
   images: {
     formats: ['image/webp'],
   },
