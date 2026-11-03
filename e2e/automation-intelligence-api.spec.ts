@@ -1,5 +1,5 @@
 /**
- * Automation Intelligence API (AI API) results on the Playground page and the `/automation-intelligence` endpoint.
+ * Automation Intelligence API (AI API) results on the Automation Intelligence Playground and the `/automation-intelligence` endpoint.
  * https://docs.fingerprint.com/reference/automation-intelligence-api
  */
 import { Page, expect, test } from '@playwright/test';
@@ -7,12 +7,13 @@ import { TEST_IDS } from '../src/client/testIDs';
 import { PRODUCTION_E2E_TEST_BASE_URL } from '../src/envShared';
 
 const AI_API_ENDPOINT = '/automation-intelligence';
+const AI_API_PAGE = '/automation-intelligence-playground';
 const getAiApiSection = async (page: Page) => {
-  await page.goto('/playground');
-  return page.getByTestId(TEST_IDS.playground.aiApiSection);
+  await page.goto(AI_API_PAGE);
+  return page.getByTestId(TEST_IDS.automationIntelligencePlayground.aiApiSection);
 };
 
-// The Playground server-renders the AI API section, so check it without JS
+// The page server-renders the AI API section, so check it without JS
 test.use({ javaScriptEnabled: false });
 
 // Runs only against a deployed site: the hourly production e2e run, or staging by hand.
@@ -29,7 +30,7 @@ test.describe('on the hosted site', () => {
     expect(event.url).toBe(`${PRODUCTION_E2E_TEST_BASE_URL}${AI_API_ENDPOINT}`);
   });
 
-  test('Playground shows the AI API result', async ({ page }) => {
+  test('page shows the AI API result', async ({ page }) => {
     const section = await getAiApiSection(page);
     await expect(section.getByRole('row', { name: /^IP address/ })).toBeVisible();
   });
@@ -40,22 +41,18 @@ test.describe('page request URLs', () => {
   // `page.url()` still shows the typed URL, so the test cannot know what the server got.
   test.skip(({ browserName }) => browserName === 'webkit', 'Linux WebKit rewrites the query');
 
-  for (const pagePath of ['/playground', '/playground/embed']) {
-    test(`${pagePath} preserves query encoding and order without JavaScript`, async ({
-      page,
-      baseURL,
-      extraHTTPHeaders,
-    }) => {
-      await page.setExtraHTTPHeaders({
-        ...extraHTTPHeaders,
-        ...(!PRODUCTION_E2E_TEST_BASE_URL ? { 'x-forwarded-for': '8.8.8.8' } : {}),
-        'x-fp-original-request-target': '/spoofed?ignored=1',
-      });
-      const requestPath = `${pagePath}?a=%31&b=1&a=2&c=&x=%2f%20`;
-      await page.goto(requestPath);
-      await expect(page.getByTestId(TEST_IDS.playground.aiApiSection)).toContainText(`${baseURL}${requestPath}`);
+  test('page preserves query encoding and order without JavaScript', async ({ page, baseURL, extraHTTPHeaders }) => {
+    await page.setExtraHTTPHeaders({
+      ...extraHTTPHeaders,
+      ...(!PRODUCTION_E2E_TEST_BASE_URL ? { 'x-forwarded-for': '8.8.8.8' } : {}),
+      'x-fp-original-request-target': '/spoofed?ignored=1',
     });
-  }
+    const requestPath = `${AI_API_PAGE}?a=%31&b=1&a=2&c=&x=%2f%20`;
+    await page.goto(requestPath);
+    await expect(page.getByTestId(TEST_IDS.automationIntelligencePlayground.aiApiSection)).toContainText(
+      `${baseURL}${requestPath}`,
+    );
+  });
 });
 
 // Runs locally and in PR CI only. Skipped in the hourly production e2e run.
@@ -77,7 +74,7 @@ test.describe('with a chosen client IP', () => {
       expect(event.ip_info.v4.address).toBe('8.8.8.8');
     });
 
-    test('Playground shows the result table', async ({ page }) => {
+    test('page shows the result table', async ({ page }) => {
       const section = await getAiApiSection(page);
       await expect(section.getByRole('row', { name: 'IP address 8.8.8.8' })).toBeVisible();
       await expect(section.getByRole('row', { name: 'Data center IP Yes (Google)' })).toBeVisible();
@@ -103,7 +100,7 @@ test.describe('with a chosen client IP', () => {
       expect((await response.json()).error).toMatch(/^AI API returned 400/);
     });
 
-    test('Playground shows the unavailable note', async ({ page }) => {
+    test('page shows the unavailable note', async ({ page }) => {
       const section = await getAiApiSection(page);
       await expect(section.getByText(/result unavailable: AI API returned 400/)).toBeVisible();
     });

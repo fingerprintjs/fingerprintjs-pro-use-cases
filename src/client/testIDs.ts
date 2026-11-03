@@ -91,6 +91,8 @@ export const TEST_IDS = {
     refreshButton: 'refreshButton',
     jsonLink: 'jsonLink',
     grantLocationButton: 'grantLocationButton',
+  },
+  automationIntelligencePlayground: {
     aiApiSection: 'aiApiSection',
   },
   accountSharing: {
