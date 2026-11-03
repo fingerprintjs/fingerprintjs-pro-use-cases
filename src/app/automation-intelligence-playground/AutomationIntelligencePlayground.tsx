@@ -61,7 +61,7 @@ export function AutomationIntelligencePlayground({ aiApiResult }: { aiApiResult:
       <AiApiSection result={aiApiResult} />
       <Container size='large' className={playgroundStyles.isSection}>
         <h2 className={playgroundStyles.sectionTitle}>How to use this playground</h2>
-        <HowToAccordion items={howTo} />
+        <HowToAccordion items={howTo} openAll />
       </Container>
       <Container size='large' className={playgroundStyles.learnMoreSection}>
         <h2 className={playgroundStyles.sectionTitle}>Learn more</h2>
