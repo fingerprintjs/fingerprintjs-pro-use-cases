@@ -8,6 +8,7 @@ import { Fingerprint, FingerprintProvider } from '@fingerprint/react';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { clientEnv } from '../env/client';
 import { CloseSnackbarButton, CustomSnackbar } from '../client/components/Alert/Alert';
+import { useRemoveGoogleLinkerParam } from '../client/thirdParty/googleLinkerParam';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -44,6 +45,8 @@ export const FP_LOAD_OPTIONS: Fingerprint.StartOptions = {
 };
 
 function Providers({ children }: PropsWithChildren) {
+  useRemoveGoogleLinkerParam();
+
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
