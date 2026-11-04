@@ -68,8 +68,16 @@ const deleteVisitorData = async (visitorId: string, ip: string) => {
     deletedArticleViews: await tryToDestroy(() => ArticleViewDbModel.destroy(options)),
     deletedBlockedIps: await tryToDestroy(async () => {
       const deletedIpCount = await deleteBlockedIp(ip);
-      // Only the bot firewall demo needs Cloudflare. Without it, skip the sync so every reset doesn't log an error.
-      if (serverEnv.CLOUDFLARE_API_TOKEN && serverEnv.CLOUDFLARE_ZONE_ID && serverEnv.CLOUDFLARE_RULESET_ID) {
+      /**
+       * Sync only if this reset unblocked an IP.
+       * The sync replaces the whole Cloudflare ruleset with this server's blocked IPs.
+       * Several servers share one ruleset (CI shards, parallel CI runs, staging).
+       * Syncing on every reset wiped IPs other servers had just blocked, which made the Bot Firewall e2e test flaky.
+       */
+      const cloudflareConfigured = Boolean(
+        serverEnv.CLOUDFLARE_API_TOKEN && serverEnv.CLOUDFLARE_ZONE_ID && serverEnv.CLOUDFLARE_RULESET_ID,
+      );
+      if (deletedIpCount > 0 && cloudflareConfigured) {
         await syncFirewallRuleset();
       }
       return deletedIpCount;
