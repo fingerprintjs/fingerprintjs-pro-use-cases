@@ -779,7 +779,7 @@ export const AUTOMATION_INTELLIGENCE_PLAYGROUND_METADATA: Pick<
   'title' | 'url' | 'titleMeta' | 'descriptionMeta'
 > = {
   title: 'Automation Intelligence Playground',
-  url: '/automation-intelligence-playground',
+  url: '/automation-intelligence',
   titleMeta: 'Fingerprint Automation Intelligence Playground | Detect AI Agents',
   descriptionMeta:
     'See what the Fingerprint Automation Intelligence API knows about your network request, without a browser or JavaScript.',
