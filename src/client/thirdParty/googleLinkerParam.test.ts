@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { urlWithoutGoogleLinkerParam, useRemoveGoogleLinkerParam } from './googleLinkerParam';
 
@@ -6,59 +6,52 @@ import { urlWithoutGoogleLinkerParam, useRemoveGoogleLinkerParam } from './googl
 // cspell:disable-next-line
 const GL_VALUE = '1*1abc2de*_ga*MTIzNDU2Nzg5LjE3NTI2ODEyMzQ.*_ga_ABCDEF1234*czE3NTI2ODEyMzQkbzEkZzAkajYw';
 
+const clean = (href: string) => urlWithoutGoogleLinkerParam(new URL(href));
+
 describe('urlWithoutGoogleLinkerParam', () => {
   it('removes the linker parameter from the home page URL', () => {
-    expect(urlWithoutGoogleLinkerParam(`https://demo.fingerprint.com/?_gl=${GL_VALUE}`)).toBe('/');
+    expect(clean(`https://demo.fingerprint.com/?_gl=${GL_VALUE}`)).toBe('/');
   });
 
   it('removes the linker parameter from a use case URL', () => {
-    expect(urlWithoutGoogleLinkerParam(`https://demo.fingerprint.com/coupon-fraud?_gl=${GL_VALUE}`)).toBe(
-      '/coupon-fraud',
-    );
+    expect(clean(`https://demo.fingerprint.com/coupon-fraud?_gl=${GL_VALUE}`)).toBe('/coupon-fraud');
   });
 
   it('keeps the other query parameters and the hash', () => {
-    expect(
-      urlWithoutGoogleLinkerParam(`https://demo.fingerprint.com/playground?_gl=${GL_VALUE}&utm_source=blog#tab`),
-    ).toBe('/playground?utm_source=blog#tab');
+    expect(clean(`https://demo.fingerprint.com/playground?_gl=${GL_VALUE}&utm_source=blog#tab`)).toBe(
+      '/playground?utm_source=blog#tab',
+    );
   });
 
   it('returns undefined when there is nothing to remove', () => {
-    expect(urlWithoutGoogleLinkerParam('https://demo.fingerprint.com/paywall?article=1')).toBeUndefined();
-    expect(urlWithoutGoogleLinkerParam('https://demo.fingerprint.com/')).toBeUndefined();
+    expect(clean('https://demo.fingerprint.com/paywall?article=1')).toBeUndefined();
+    expect(clean('https://demo.fingerprint.com/')).toBeUndefined();
   });
 
   it('does not confuse other parameters for the linker parameter', () => {
-    expect(urlWithoutGoogleLinkerParam('https://demo.fingerprint.com/?_glossary=1')).toBeUndefined();
+    expect(clean('https://demo.fingerprint.com/?_glossary=1')).toBeUndefined();
+  });
+
+  it('does not mutate the given URL', () => {
+    const url = new URL(`https://demo.fingerprint.com/?_gl=${GL_VALUE}`);
+    urlWithoutGoogleLinkerParam(url);
+    expect(url.searchParams.has('_gl')).toBe(true);
   });
 });
 
 describe('useRemoveGoogleLinkerParam', () => {
-  beforeEach(() => {
-    window.history.replaceState(null, '', `/?_gl=${GL_VALUE}`);
-  });
+  it('removes the parameter from the address bar on mount', () => {
+    window.history.replaceState(null, '', `/paywall?_gl=${GL_VALUE}&utm_source=blog`);
 
-  it('keeps the parameter while the Google tag has not settled yet, so the tag can still read it', () => {
-    renderHook(() => useRemoveGoogleLinkerParam(false));
+    renderHook(() => useRemoveGoogleLinkerParam());
 
-    expect(window.location.search).toContain('_gl=');
-  });
-
-  it('removes the parameter once the Google tag has settled', () => {
-    const { rerender } = renderHook((isGoogleTagSettled: boolean) => useRemoveGoogleLinkerParam(isGoogleTagSettled), {
-      initialProps: false,
-    });
-    expect(window.location.search).toContain('_gl=');
-
-    rerender(true);
-
-    expect(window.location.href).toBe(`${window.location.origin}/`);
+    expect(window.location.href).toBe(`${window.location.origin}/paywall?utm_source=blog`);
   });
 
   it('does not touch the URL when there is no parameter to remove', () => {
     window.history.replaceState(null, '', '/paywall?article=1');
 
-    renderHook(() => useRemoveGoogleLinkerParam(true));
+    renderHook(() => useRemoveGoogleLinkerParam());
 
     expect(window.location.href).toBe(`${window.location.origin}/paywall?article=1`);
   });

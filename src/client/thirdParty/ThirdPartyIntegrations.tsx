@@ -10,7 +10,7 @@ import { clientEnv } from '../../env/client';
 
 import { GoogleTagManager } from './Gtm';
 import { Amplitude } from './Amplitude';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { InkeepChatButton } from './Inkeep';
 import { usePlaygroundSignals } from '../../app/playground/hooks/usePlaygroundSignals';
 import { useRemoveGoogleLinkerParam } from './googleLinkerParam';
@@ -35,24 +35,15 @@ export const ThirdPartyIntegrations = () => {
   useEffect(() => {
     enableAnalytics();
   }, []);
+  useRemoveGoogleLinkerParam();
 
-  const { identificationEvent, agentError, serverError } = usePlaygroundSignals();
+  const { identificationEvent } = usePlaygroundSignals();
   const isNotBot =
     identificationEvent && identificationEvent.bot === 'not_detected' && identificationEvent.virtual_machine === false;
 
-  const [hasGoogleTagSettled, setHasGoogleTagSettled] = useState(false);
-  /**
-   * The Google tag only renders once we know the visitor is not a bot, so until identification is done it might
-   * still be on its way. Once identification is done (or has failed) and the visitor turns out to be a bot, or when
-   * this deployment has no container configured at all, no Google tag is ever going to read the linker parameter.
-   */
-  const isIdentificationDone = Boolean(identificationEvent || agentError || serverError);
-  const willGoogleTagNeverLoad = !GTM_ID || (isIdentificationDone && !isNotBot);
-  useRemoveGoogleLinkerParam(hasGoogleTagSettled || willGoogleTagNeverLoad);
-
   return (
     <>
-      {GTM_ID && isNotBot ? <GoogleTagManager gtmId={GTM_ID} onSettled={() => setHasGoogleTagSettled(true)} /> : null}
+      {GTM_ID && isNotBot ? <GoogleTagManager gtmId={GTM_ID} /> : null}
       {AMPLITUDE_API_KEY ? <Amplitude apiKey={AMPLITUDE_API_KEY} /> : null}
       <InkeepChatButton />
     </>
