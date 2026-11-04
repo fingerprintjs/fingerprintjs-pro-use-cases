@@ -36,6 +36,25 @@ describe('proxy', () => {
     );
   });
 
+  describe('/automation-intelligence', () => {
+    const proxyWithHeaders = (headers: Record<string, string>) =>
+      proxy(new NextRequest('https://demo.fingerprint.com/automation-intelligence?a=%31', { headers }));
+    const rewriteTarget = (response: Response | undefined) => response?.headers.get('x-middleware-rewrite');
+
+    it('rewrites clients that do not accept HTML to the JSON route, keeping the original target', () => {
+      const response = proxyWithHeaders({ accept: '*/*' });
+      expect(rewriteTarget(response)).toBe('https://demo.fingerprint.com/automation-intelligence.json?a=%31');
+      expect(response?.headers.get(`x-middleware-request-${ORIGINAL_REQUEST_TARGET_HEADER}`)).toBe(
+        '/automation-intelligence?a=%31',
+      );
+    });
+
+    it('serves the page to browsers and Next client navigation', () => {
+      expect(rewriteTarget(proxyWithHeaders({ accept: 'text/html,*/*;q=0.8' }))).toBeNull();
+      expect(rewriteTarget(proxyWithHeaders({ accept: '*/*', rsc: '1' }))).toBeNull();
+    });
+  });
+
   it('leaves the Playground alone', () => {
     expect(proxy(new NextRequest('https://demo.fingerprint.com/playground'))).toBeUndefined();
   });
