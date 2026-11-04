@@ -19,9 +19,11 @@ div#__next {
   width: 100%;
 }
 
-/* Make scrolling to anchor links smooth */
-html {
-  scroll-behavior: smooth;
+/* Make scrolling to anchor links smooth, unless the user (or an e2e test) asks for reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 /* Avoid Chrome to see Safari hack */

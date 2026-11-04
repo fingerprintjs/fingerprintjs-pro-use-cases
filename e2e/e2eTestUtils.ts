@@ -56,7 +56,8 @@ export async function assertSnackbar({ page, severity, text, index = 0 }: Assert
 }
 
 export const scrollToView = async (locator: Locator) => {
-  await locator.evaluate((element) => element.scrollIntoView({ behavior: 'smooth', block: 'center' }));
+  // Smooth scrolling keeps moving the page after this returns, and the next click can land on the wrong spot
+  await locator.evaluate((element) => element.scrollIntoView({ behavior: 'instant', block: 'center' }));
 };
 
 export const scrollDemoIntoView = async (page: Page) => {
