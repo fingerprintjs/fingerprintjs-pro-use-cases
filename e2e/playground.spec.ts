@@ -264,13 +264,16 @@ test.describe('Proximity detection', () => {
   test('offers to try again when the Server API request fails', async ({ page }) => {
     await fakeLocation(page);
     await page.reload({ waitUntil: 'networkidle' });
+    // The button needs the page load event, so failing requests before it shows can abort that request instead
+    const grantLocationButton = page.getByTestId(TEST_ID.grantLocationButton);
+    await expect(grantLocationButton).toBeVisible();
     let failedRequests = 0;
     await page.route('**/api/event/v4/**', (route) => {
       failedRequests++;
       return route.abort('failed');
     });
 
-    await page.getByTestId(TEST_ID.grantLocationButton).click();
+    await grantLocationButton.click();
 
     const proximityRow = getWebProximityRow(page);
     await assertAlert({ page, severity: 'error', text: 'Server API Request' });
