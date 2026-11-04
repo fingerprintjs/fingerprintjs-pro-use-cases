@@ -13,7 +13,6 @@ import { Amplitude } from './Amplitude';
 import { useEffect } from 'react';
 import { InkeepChatButton } from './Inkeep';
 import { usePlaygroundSignals } from '../../app/playground/hooks/usePlaygroundSignals';
-import { useRemoveGoogleLinkerParam } from './googleLinkerParam';
 
 // GTM API requires dataLayer access through global window variable
 declare global {
@@ -35,7 +34,6 @@ export const ThirdPartyIntegrations = () => {
   useEffect(() => {
     enableAnalytics();
   }, []);
-  useRemoveGoogleLinkerParam();
 
   const { identificationEvent } = usePlaygroundSignals();
   const isNotBot =
