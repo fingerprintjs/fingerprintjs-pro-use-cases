@@ -3,41 +3,18 @@
 import { useEffect } from 'react';
 
 /**
- * Google Analytics cross-domain measurement appends a `_gl` linker parameter to links from fingerprint.com to
- * demo.fingerprint.com. It is noise in the address bar and leaks into anything the visitor copies or shares.
- * https://support.google.com/analytics/answer/10071811
- *
- * Removing it before the Google tag reads it is safe: both sites are subdomains of fingerprint.com and the Google
- * cookies (`_ga`, `_gcl_au`) are set on `.fingerprint.com`, so the tag picks up the same visitor from the shared
- * cookies anyway.
+ * Removes the `_gl` Google Analytics cross-domain linker parameter that links from fingerprint.com carry.
+ * Safe to drop on load: fingerprint.com and demo.fingerprint.com share the `_ga` cookies on `.fingerprint.com`,
+ * so Google links the visitor without it. https://support.google.com/analytics/answer/10071811
  */
-export const GOOGLE_LINKER_QUERY_PARAM = '_gl';
-
-/**
- * Returns `url` without the Google linker parameter as a relative URL,
- * or `undefined` when the parameter is not present.
- */
-export function urlWithoutGoogleLinkerParam(url: URL): string | undefined {
-  if (!url.searchParams.has(GOOGLE_LINKER_QUERY_PARAM)) {
-    return undefined;
-  }
-
-  const cleanUrl = new URL(url);
-  cleanUrl.searchParams.delete(GOOGLE_LINKER_QUERY_PARAM);
-
-  return `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`;
-}
-
-/** Removes the Google linker parameter from the address bar on mount. */
 export function useRemoveGoogleLinkerParam() {
   useEffect(() => {
-    const cleanUrl = urlWithoutGoogleLinkerParam(new URL(window.location.href));
-
-    if (!cleanUrl) {
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has('_gl')) {
       return;
     }
-
+    url.searchParams.delete('_gl');
     // `null` state lets the Next.js app router copy its own state over and keep `useSearchParams` in sync.
-    window.history.replaceState(null, '', cleanUrl);
+    window.history.replaceState(null, '', url);
   }, []);
 }
