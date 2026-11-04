@@ -1,5 +1,6 @@
 /**
  * Automation Intelligence API (AI API) results on the Automation Intelligence Playground and the `/automation-intelligence` endpoint.
+ * `/automation-intelligence` serves the page to clients that accept HTML, JSON to the rest.
  * https://docs.fingerprint.com/reference/automation-intelligence-api
  */
 import { Page, expect, test } from '@playwright/test';
@@ -7,6 +8,7 @@ import { TEST_IDS } from '../src/client/testIDs';
 import { PRODUCTION_E2E_TEST_BASE_URL } from '../src/envShared';
 
 const AI_API_ENDPOINT = '/automation-intelligence';
+const AI_API_JSON_ENDPOINT = '/automation-intelligence.json';
 const AI_API_PAGE = '/automation-intelligence-playground';
 const getAiApiSection = async (page: Page) => {
   await page.goto(AI_API_PAGE);
@@ -20,6 +22,23 @@ test('page shows every how-to step without JavaScript', async ({ page }) => {
   await page.goto(AI_API_PAGE);
   // The last step, only in the HTML if the accordion renders every item open
   await expect(page.getByText("curl -A 'GPTBot/1.0'")).toBeVisible();
+});
+
+test('endpoint serves the page to browsers', async ({ page }) => {
+  await page.goto(AI_API_ENDPOINT);
+  await expect(page.getByText("curl -A 'GPTBot/1.0'")).toBeVisible();
+});
+
+test('endpoint serves the page to Next client navigation', async ({ request }) => {
+  const response = await request.get(AI_API_ENDPOINT, { headers: { accept: '*/*', rsc: '1' } });
+  expect(response.headers()['content-type']).toContain('text/x-component');
+});
+
+test('.json endpoint returns JSON to browsers', async ({ request }) => {
+  const response = await request.get(AI_API_JSON_ENDPOINT, {
+    headers: { accept: 'text/html,application/xhtml+xml,*/*;q=0.8' },
+  });
+  expect(response.headers()['content-type']).toBe('application/json');
 });
 
 // Runs only against a deployed site: the hourly production e2e run, or staging by hand.
@@ -47,18 +66,24 @@ test.describe('page request URLs', () => {
   // `page.url()` still shows the typed URL, so the test cannot know what the server got.
   test.skip(({ browserName }) => browserName === 'webkit', 'Linux WebKit rewrites the query');
 
-  test('page preserves query encoding and order without JavaScript', async ({ page, baseURL, extraHTTPHeaders }) => {
-    await page.setExtraHTTPHeaders({
-      ...extraHTTPHeaders,
-      ...(!PRODUCTION_E2E_TEST_BASE_URL ? { 'x-forwarded-for': '8.8.8.8' } : {}),
-      'x-fp-original-request-target': '/spoofed?ignored=1',
+  for (const pagePath of [AI_API_PAGE, AI_API_ENDPOINT]) {
+    test(`${pagePath} preserves query encoding and order without JavaScript`, async ({
+      page,
+      baseURL,
+      extraHTTPHeaders,
+    }) => {
+      await page.setExtraHTTPHeaders({
+        ...extraHTTPHeaders,
+        ...(!PRODUCTION_E2E_TEST_BASE_URL ? { 'x-forwarded-for': '8.8.8.8' } : {}),
+        'x-fp-original-request-target': '/spoofed?ignored=1',
+      });
+      const requestPath = `${pagePath}?a=%31&b=1&a=2&c=&x=%2f%20`;
+      await page.goto(requestPath);
+      await expect(page.getByTestId(TEST_IDS.automationIntelligencePlayground.aiApiSection)).toContainText(
+        `${baseURL}${requestPath}`,
+      );
     });
-    const requestPath = `${AI_API_PAGE}?a=%31&b=1&a=2&c=&x=%2f%20`;
-    await page.goto(requestPath);
-    await expect(page.getByTestId(TEST_IDS.automationIntelligencePlayground.aiApiSection)).toContainText(
-      `${baseURL}${requestPath}`,
-    );
-  });
+  }
 });
 
 // Runs locally and in PR CI only. Skipped in the hourly production e2e run.
@@ -78,6 +103,12 @@ test.describe('with a chosen client IP', () => {
       const event = await response.json();
       expect(event.source).toBe('edge');
       expect(event.ip_info.v4.address).toBe('8.8.8.8');
+    });
+
+    test('.json endpoint sends its own URL to the AI API', async ({ request, baseURL }) => {
+      const response = await request.get(`${AI_API_JSON_ENDPOINT}?a=%31`);
+      expect(response.status()).toBe(200);
+      expect((await response.json()).url).toBe(`${baseURL}${AI_API_JSON_ENDPOINT}?a=%31`);
     });
 
     test('page shows the result table', async ({ page }) => {

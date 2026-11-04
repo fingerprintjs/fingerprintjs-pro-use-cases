@@ -15,7 +15,7 @@ const howTo: HowTo[] = [
     title: 'AI agent detection',
     content: [
       `If you’re using a normal browser, you will see a green box with “Bot not detected”.`,
-      `Ask an AI chat app like ChatGPT or Claude: “Open https://demo.fingerprint.com/automation-intelligence-playground and tell me what you see.” It will show the agent’s name, provider, and identity if detected or disclosed.`,
+      `Ask an AI chat app like ChatGPT or Claude: “Open https://demo.fingerprint.com/automation-intelligence and tell me what you see.” It will show the agent’s name, provider, and identity if detected or disclosed.`,
     ],
   },
   {
