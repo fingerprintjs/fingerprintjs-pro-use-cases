@@ -7,7 +7,8 @@ import {
 import { OUR_ORIGINS, Severity } from '../../../../server/checks';
 import { IS_PRODUCTION } from '../../../../envShared';
 import { getServerRegion } from '../../../../server/fingerprint-server-api';
-import { env } from '../../../../env';
+import { clientEnv } from '../../../../env/client';
+import { serverEnv } from '../../../../env/server';
 
 /**
  * This v3 endpoint is deprecated and kept here just for backward compatibility with mobile applications.
@@ -42,13 +43,15 @@ export async function OPTIONS(request: NextRequest) {
   return new NextResponse(null, { status: 204 });
 }
 
-export async function POST(request: NextRequest, { params }: { params: { requestId: string } }) {
-  return await handleRequest(request, params.requestId);
+export async function POST(request: NextRequest, { params }: { params: Promise<{ requestId: string }> }) {
+  const { requestId } = await params;
+  return await handleRequest(request, requestId);
 }
 
 // For backward compatibility with mobile applications, accept GET requests as well
-export async function GET(request: NextRequest, { params }: { params: { requestId: string } }) {
-  return await handleRequest(request, params.requestId);
+export async function GET(request: NextRequest, { params }: { params: Promise<{ requestId: string }> }) {
+  const { requestId } = await params;
+  return await handleRequest(request, requestId);
 }
 
 // Main handler
@@ -85,8 +88,8 @@ const handleRequest = async (
 };
 
 const client = new FingerprintJsServerApiClient({
-  region: getServerRegion(env.NEXT_PUBLIC_REGION),
-  apiKey: env.SERVER_API_KEY,
+  region: getServerRegion(clientEnv.NEXT_PUBLIC_REGION),
+  apiKey: serverEnv.SERVER_API_KEY,
 });
 
 async function tryGetFingerprintEvent(

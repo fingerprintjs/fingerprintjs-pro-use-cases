@@ -4,7 +4,7 @@ import { Op } from 'sequelize';
 import { pluralize } from '../../../../utils/utils';
 import Twilio from 'twilio';
 import { hashString } from '../../../../server/server-utils';
-import { env } from '../../../../env';
+import { serverEnv } from '../../../../env/server';
 import { NextRequest, NextResponse } from 'next/server';
 import { RealSmsPerVisitorModel, SmsVerificationDatabaseModel } from '../database';
 import {
@@ -51,10 +51,10 @@ const sendSms = async (phone: string, body: string, visitorId: string) => {
     },
   });
 
-  const apiKeySid = env.TWILIO_API_KEY_SID;
-  const apiKeySecret = env.TWILIO_API_KEY_SECRET;
-  const accountSid = env.TWILIO_ACCOUNT_SID;
-  const fromNumber = env.TWILIO_FROM_NUMBER;
+  const apiKeySid = serverEnv.TWILIO_API_KEY_SID;
+  const apiKeySecret = serverEnv.TWILIO_API_KEY_SECRET;
+  const accountSid = serverEnv.TWILIO_ACCOUNT_SID;
+  const fromNumber = serverEnv.TWILIO_FROM_NUMBER;
 
   if (!apiKeySid) {
     throw new Error('Twilio API key SID not found.');

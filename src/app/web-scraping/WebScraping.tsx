@@ -2,7 +2,7 @@
 
 import { UseCaseWrapper } from '../../client/components/UseCaseWrapper/UseCaseWrapper';
 import { useVisitorData } from '@fingerprint/react';
-import { useQueryState } from 'next-usequerystate';
+import { useQueryState } from 'nuqs';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { USE_CASES } from '../../client/content';
 import { Select, SelectItem } from '../../client/components/Select/Select';
@@ -17,7 +17,7 @@ import { FunctionComponent, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AIRPORTS } from './data/airports';
 import { Flight, FlightCard } from './components/FlightCard';
-import { Severity } from '../../server/checks';
+import type { Severity } from '../../server/checks';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
 
 type FlightQueryResult = {
@@ -37,7 +37,7 @@ const WebScraping: FunctionComponent<{ embed?: boolean }> = ({ embed }) => {
   });
 
   /**
-   * We use the Fingerprint Pro React SDK hook to get visitor data (https://github.com/fingerprintjs/fingerprintjs-pro-react)
+   * We use the Fingerprint React SDK hook to get visitor data (https://github.com/fingerprintjs/fingerprintjs-pro-react)
    * For Vue, Angular, Svelte, and other frameworks, see https://dev.fingerprint.com/docs/frontend-libraries
    * See '/client/use-visitor-data.js' for an example implementation of similar functionality without the SDK
    */

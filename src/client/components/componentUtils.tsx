@@ -11,7 +11,7 @@ export function extendUnstyledPrimitiveWithClass<P extends { className?: string 
   displayName: string,
 ) {
   const WrappedComponent = React.forwardRef<R, P>(({ className: incomingClassName, ...props }, ref) => (
-    <Component ref={ref} className={classnames(className, incomingClassName)} {...(props as P)} />
+    <Component ref={ref} className={classnames(className, incomingClassName)} {...(props as unknown as P)} />
   ));
 
   WrappedComponent.displayName = displayName;

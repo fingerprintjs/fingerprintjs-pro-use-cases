@@ -5,10 +5,11 @@ import { AccountSharingHome } from './AccountSharingHome';
 
 export const metadata = generateUseCaseMetadata(USE_CASES.accountSharing);
 
-export default function AccountSharingPage({ params }: { params: { username: string } }) {
+export default async function AccountSharingPage({ params }: { params: Promise<{ username: string }> }) {
+  const { username } = await params;
   return (
     <Suspense>
-      <AccountSharingHome username={params.username} />
+      <AccountSharingHome username={username} />
     </Suspense>
   );
 }

@@ -38,7 +38,16 @@ export type UseCase = {
 };
 
 export type ResourceLink = {
-  type: 'Use case tutorial' | 'Case study' | 'Industry' | 'Article' | 'Use case' | 'Video' | 'Webinar' | 'Demo app';
+  type:
+    | 'Use case tutorial'
+    | 'Case study'
+    | 'Industry'
+    | 'Article'
+    | 'Use case'
+    | 'Video'
+    | 'Webinar'
+    | 'Demo app'
+    | 'Documentation';
   title: string;
   url: string;
   description?: string;
@@ -65,7 +74,7 @@ export const USE_CASES = {
       'Use the demo below to see how Fingerprint can help identify fraudsters who repeatedly use the same coupon under different scenarios to gain unauthorized benefits.',
     descriptionMeta:
       'See in real-time how Fingerprint can stop and prevent coupon promotional abuse. Try out our coupon fraud demo and learn how we safeguard your promotions.',
-    articleUrl: 'https://fingerprint.com/blog/prevent-coupon-promo-abuse-increase-sales/',
+    articleUrl: 'https://docs.fingerprint.com/docs/coupon-abuse-use-case-tutorial',
     instructions: [
       <>
         Use the sample coupon code <code>Promo3000</code> and click Apply.
@@ -79,7 +88,7 @@ export const USE_CASES = {
       {
         type: 'Use case tutorial',
         title: 'Coupon Promo Abuse',
-        url: 'https://fingerprint.com/blog/prevent-coupon-promo-abuse-increase-sales/',
+        url: 'https://docs.fingerprint.com/docs/coupon-abuse-use-case-tutorial',
       },
       {
         type: 'Case study',
@@ -108,7 +117,7 @@ export const USE_CASES = {
     titleH1: 'Credential Stuffing Prevention Test',
     titleMeta: 'Credential Stuffing Prevention Test | Fingerprint',
     url: '/credential-stuffing',
-    articleUrl: 'https://fingerprint.com/blog/stop-credential-stuffing/',
+    articleUrl: 'https://docs.fingerprint.com/docs/credential-stuffing-use-case-tutorial',
     instructions: [
       <>
         Put in the username <code>user</code> and password <code>password</code>.
@@ -149,7 +158,7 @@ export const USE_CASES = {
       {
         type: 'Use case tutorial',
         title: 'Credential Stuffing',
-        url: 'https://fingerprint.com/blog/stop-credential-stuffing/',
+        url: 'https://docs.fingerprint.com/docs/credential-stuffing-use-case-tutorial',
       },
       {
         type: 'Case study',
@@ -168,7 +177,7 @@ export const USE_CASES = {
     titleH1: 'Account Sharing Prevention Test',
     titleMeta: 'Account Sharing Prevention Test | Fingerprint',
     url: '/account-sharing',
-    articleUrl: 'https://fingerprint.com/blog/increase-revenue-identifying-preventing-account-sharing/',
+    articleUrl: 'https://docs.fingerprint.com/docs/account-sharing-use-case-tutorial',
     githubUrl: `https://github.com/fingerprintjs/fingerprintjs-pro-use-cases/tree/main/src/app/account-sharing`,
     iconSvg: AccountSharingIcon,
     descriptionMeta:
@@ -208,7 +217,7 @@ export const USE_CASES = {
       {
         type: 'Use case tutorial',
         title: 'Account Sharing Prevention Guide',
-        url: 'https://fingerprint.com/blog/increase-revenue-identifying-preventing-account-sharing/',
+        url: 'https://docs.fingerprint.com/docs/account-sharing-use-case-tutorial',
       },
       {
         type: 'Case study',
@@ -232,7 +241,7 @@ export const USE_CASES = {
     titleH1: 'Payment Fraud Protection Test',
     titleMeta: 'Payment Fraud Protection Test | Fingerprint',
     url: '/payment-fraud',
-    articleUrl: 'https://fingerprint.com/blog/reducing-payment-fraud-with-reliable-visitor-identification/',
+    articleUrl: 'https://docs.fingerprint.com/docs/card-testing-use-case-tutorial',
     iconSvg: PaymentFraudIcon,
     descriptionHomepage: [
       <p key='1'>
@@ -269,8 +278,13 @@ export const USE_CASES = {
     moreResources: [
       {
         type: 'Use case tutorial',
-        title: 'Payment Fraud',
-        url: 'https://fingerprint.com/blog/reducing-payment-fraud-with-reliable-visitor-identification/',
+        title: 'Card Testing',
+        url: 'https://docs.fingerprint.com/docs/card-testing-use-case-tutorial',
+      },
+      {
+        type: 'Use case tutorial',
+        title: 'Chargeback Dispute',
+        url: 'https://docs.fingerprint.com/docs/chargeback-dispute-use-case-tutorial',
       },
       {
         type: 'Case study',
@@ -340,7 +354,7 @@ export const USE_CASES = {
     titleH1: 'Paywall Bypass Prevention Test',
     titleMeta: 'Paywall Bypass Prevention Test | Fingerprint',
     url: '/paywall',
-    articleUrl: 'https://fingerprint.com/blog/how-paywalls-work-paywall-protection-tutorial/',
+    articleUrl: 'https://docs.fingerprint.com/docs/paywall-use-case-tutorial',
     iconSvg: PaywallIcon,
     descriptionHomepage: [
       <p key='1'>
@@ -364,7 +378,7 @@ export const USE_CASES = {
       {
         type: 'Use case tutorial',
         title: 'Paywall',
-        url: 'https://fingerprint.com/blog/how-paywalls-work-paywall-protection-tutorial/',
+        url: 'https://docs.fingerprint.com/docs/paywall-use-case-tutorial',
       },
     ],
   },
@@ -582,7 +596,7 @@ export const USE_CASES = {
     titleH1: 'SMS Pumping Fraud Protection Test',
     titleMeta: 'SMS Pumping Fraud Protection Test | Fingerprint',
     url: '/sms-pumping',
-    articleUrl: 'https://fingerprint.com/blog/what-is-sms-fraud-prevention-tutorial/',
+    articleUrl: 'https://docs.fingerprint.com/docs/sms-pumping-use-case-tutorial',
     iconSvg: SmsIcon,
     descriptionHomepage: [
       <p key='1'>Fraudulent authentication SMS messages can cost your business a fortune.</p>,
@@ -631,7 +645,7 @@ export const USE_CASES = {
       {
         type: 'Use case tutorial',
         title: 'SMS Pumping Fraud',
-        url: 'https://fingerprint.com/blog/what-is-sms-fraud-prevention-tutorial/',
+        url: 'https://docs.fingerprint.com/docs/sms-pumping-use-case-tutorial',
       },
       {
         type: 'Case study',
@@ -755,8 +769,20 @@ export const PLAYGROUND_METADATA: Pick<
       VPN detection, browser tampering detection, IP blocklist matching, and more.
     </p>,
   ],
-  titleMeta: 'Fingerprint Pro Playground | Test Your Browser Signals',
-  descriptionMeta: 'Analyze your browser with Fingerprint Pro and see all the available signals.',
+  titleMeta: 'Fingerprint Playground | Test Your Browser Signals',
+  descriptionMeta: 'Analyze your browser with Fingerprint and see all the available signals.',
+};
+
+// Not on the home page or in navigation
+export const AUTOMATION_INTELLIGENCE_PLAYGROUND_METADATA: Pick<
+  UseCase,
+  'title' | 'url' | 'titleMeta' | 'descriptionMeta'
+> = {
+  title: 'Automation Intelligence Playground',
+  url: '/automation-intelligence-playground',
+  titleMeta: 'Fingerprint Automation Intelligence Playground | Detect AI Agents',
+  descriptionMeta:
+    'See what the Fingerprint Automation Intelligence API knows about your network request, without a browser or JavaScript.',
 };
 
 export const USE_CASES_ARRAY = Object.values(USE_CASES);

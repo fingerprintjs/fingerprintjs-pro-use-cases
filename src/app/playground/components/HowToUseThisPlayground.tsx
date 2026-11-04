@@ -8,7 +8,7 @@ import {
 import { FancyNumberedList } from '../../../client/components/FancyNumberedList/FancyNumberedList';
 import Link from 'next/link';
 
-type HowTo = {
+export type HowTo = {
   title: string;
   content: ReactNode[];
 };
@@ -63,16 +63,28 @@ const content: HowTo[] = [
 ];
 
 export function HowToUseThisPlayground() {
-  return (
-    <Accordion type='single' collapsible defaultValue={content[0].title}>
-      {content.map(({ title, content }) => (
-        <AccordionItem key={title} value={title}>
-          <AccordionTrigger>{title}</AccordionTrigger>
-          <AccordionContent>
-            <FancyNumberedList items={content} />
-          </AccordionContent>
-        </AccordionItem>
-      ))}
+  return <HowToAccordion items={content} />;
+}
+
+/**
+ * @param openAll Open every item, so all steps are in the server-rendered HTML and readable without JavaScript.
+ */
+export function HowToAccordion({ items, openAll }: { items: HowTo[]; openAll?: boolean }) {
+  const children = items.map(({ title, content }) => (
+    <AccordionItem key={title} value={title}>
+      <AccordionTrigger>{title}</AccordionTrigger>
+      <AccordionContent>
+        <FancyNumberedList items={content} />
+      </AccordionContent>
+    </AccordionItem>
+  ));
+  return openAll ? (
+    <Accordion type='multiple' defaultValue={items.map(({ title }) => title)}>
+      {children}
+    </Accordion>
+  ) : (
+    <Accordion type='single' collapsible defaultValue={items[0].title}>
+      {children}
     </Accordion>
   );
 }

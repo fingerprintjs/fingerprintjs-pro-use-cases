@@ -2,6 +2,7 @@ import { CSSProperties, PropsWithChildren } from 'react';
 import { PrismAsyncLight } from 'react-syntax-highlighter';
 import lightTheme from 'react-syntax-highlighter/dist/cjs/styles/prism/coy';
 import styles from './CodeSnippet.module.scss';
+import './jsonViewerOverrides.scss';
 import classnames from 'classnames';
 import { MyScrollArea } from '../ScrollArea/ScrollArea';
 import { MyCopyButton } from '../CopyButton/CopyButton';
@@ -85,7 +86,7 @@ export function CollapsibleJsonViewer({ json, className, dataTestId }: JsonViewe
         <MyCopyButton contentToCopy={JSON.stringify(json, null, 2)} className={styles.copyButton} />
       </div>
       <MyScrollArea className={styles.scrollArea}>
-        <div className={styles.reactJsonViewerWrapper} data-testid={dataTestId}>
+        <div className="reactJsonViewerWrapper" data-testid={dataTestId}>
           <JsonView
             src={json}
             collapseStringMode='word'

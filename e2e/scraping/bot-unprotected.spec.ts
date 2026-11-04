@@ -6,8 +6,8 @@ import { blockGoogleTagManager } from '../e2eTestUtils';
 const TEST_ID = TEST_IDS.webScraping;
 
 const scrapeText = async (parent: Locator, testId: string) => {
-  const element = await parent.getByTestId(testId).first();
-  return element ? await element.textContent() : null;
+  const element = parent.getByTestId(testId).first();
+  return element.textContent();
 };
 
 test.beforeEach(async ({ page }) => {

@@ -1,8 +1,8 @@
 import { DecryptionAlgorithm, unsealEventsResponse } from '@fingerprint/node-sdk';
-import { env } from '../env';
+import { serverEnv } from '../env/server';
 
 export const decryptSealedResult = async (sealedResult: string) => {
-  const decryptionKey = env.SEALED_RESULTS_DECRYPTION_KEY;
+  const decryptionKey = serverEnv.SEALED_RESULTS_DECRYPTION_KEY;
   if (!decryptionKey) {
     throw new Error('Missing SEALED_RESULTS_DECRYPTION_KEY env variable');
   }

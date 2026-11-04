@@ -26,7 +26,7 @@ const ARTICLE_VIEW_LIMIT = 2;
  */
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ): Promise<NextResponse<ArticleResponse>> {
   const { eventId } = (await req.json()) as ArticleRequestPayload;
 
@@ -42,7 +42,7 @@ export async function POST(
     return NextResponse.json({ severity: 'error', message: 'Visitor ID not found.' }, { status: 403 });
   }
 
-  const articleId = params.id;
+  const { id: articleId } = await params;
   const article = ARTICLES.find((article) => article.id === articleId);
   if (!article) {
     return NextResponse.json({ severity: 'error', message: 'Article not found' }, { status: 404 });

@@ -32,13 +32,15 @@ export async function OPTIONS(request: NextRequest) {
   return new NextResponse(null, { status: 204 });
 }
 
-export async function POST(request: NextRequest, { params }: { params: { eventId: string } }) {
-  return await handleRequest(request, params.eventId);
+export async function POST(request: NextRequest, { params }: { params: Promise<{ eventId: string }> }) {
+  const { eventId } = await params;
+  return await handleRequest(request, eventId);
 }
 
 // For backward compatibility with mobile applications, accept GET requests as well
-export async function GET(request: NextRequest, { params }: { params: { eventId: string } }) {
-  return await handleRequest(request, params.eventId);
+export async function GET(request: NextRequest, { params }: { params: Promise<{ eventId: string }> }) {
+  const { eventId } = await params;
+  return await handleRequest(request, eventId);
 }
 
 // Main handler

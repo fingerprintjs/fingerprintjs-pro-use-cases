@@ -38,6 +38,12 @@ ol.fancyNumberedList {
 
     code {
       white-space: nowrap;
+
+      // Long commands (e.g. curl) are cut off on phones, so let them wrap
+      @include media('<=phoneLandscape') {
+        white-space: normal;
+        overflow-wrap: anywhere;
+      }
     }
 
     a {

@@ -5,7 +5,8 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SnackbarProvider } from 'notistack';
 import { PropsWithChildren } from 'react';
 import { Fingerprint, FingerprintProvider } from '@fingerprint/react';
-import { env } from '../env';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
+import { clientEnv } from '../env/client';
 import { CloseSnackbarButton, CustomSnackbar } from '../client/components/Alert/Alert';
 
 const queryClient = new QueryClient({
@@ -23,15 +24,23 @@ export function getFingerprintEndpoint(endpoint?: string) {
     return undefined;
   }
 
-  // In Agent V4, the endpoint must be a valid URL
+  // Agent V4 needs an absolute URL. NEXT_PUBLIC_ENDPOINT is deploy config, not a request path.
+  // eslint-disable-next-line no-restricted-syntax -- deploy config, not a request path
   return new URL(endpoint, location.origin).toString();
 }
 
 export const FP_LOAD_OPTIONS: Fingerprint.StartOptions = {
-  apiKey: env.NEXT_PUBLIC_API_KEY,
-  //scriptUrlPattern: [env.NEXT_PUBLIC_SCRIPT_URL_PATTERN, FingerprintJSPro.defaultScriptUrlPattern],
-  endpoints: getFingerprintEndpoint(env.NEXT_PUBLIC_ENDPOINT),
-  region: env.NEXT_PUBLIC_REGION,
+  apiKey: clientEnv.NEXT_PUBLIC_API_KEY,
+  //scriptUrlPattern: [clientEnv.NEXT_PUBLIC_SCRIPT_URL_PATTERN, FingerprintJSPro.defaultScriptUrlPattern],
+  endpoints: getFingerprintEndpoint(clientEnv.NEXT_PUBLIC_ENDPOINT),
+  region: clientEnv.NEXT_PUBLIC_REGION,
+  // Hash query/fragment so PII in URLs is not sent raw.
+  // https://docs.fingerprint.com/reference/js-agent-start-function#urlhashing
+  urlHashing: {
+    path: false,
+    query: true,
+    fragment: true,
+  },
 };
 
 function Providers({ children }: PropsWithChildren) {
@@ -54,7 +63,9 @@ function Providers({ children }: PropsWithChildren) {
           info: CustomSnackbar,
         }}
       >
-        <FingerprintProvider {...FP_LOAD_OPTIONS}>{children}</FingerprintProvider>
+        <FingerprintProvider {...FP_LOAD_OPTIONS}>
+          <NuqsAdapter>{children}</NuqsAdapter>
+        </FingerprintProvider>
       </SnackbarProvider>
     </QueryClientProvider>
   );

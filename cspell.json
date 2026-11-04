@@ -3,6 +3,7 @@
   "words": [
     "AIRMAX",
     "ALLSTAR",
+    "apikey",
     "botd",
     "Browserless",
     "Catfished",
@@ -11,6 +12,7 @@
     "Chatbubbles",
     "Chegg",
     "cxkit",
+    "datacenter",
     "extrastrong",
     "fingerprintdemo",
     "fingerprinthub",
@@ -29,9 +31,11 @@
     "Korsit",
     "mapbox",
     "notistack",
+    "nuqs",
     "omnichannel",
     "pastable",
     "paypod",
+    "pnpm",
     "refetch",
     "refetches",
     "ruleset",
@@ -40,6 +44,7 @@
     "subheadline",
     "Uhlar",
     "unshredded",
+    "unstub",
     "urlset",
     "usequerystate",
     "Vasilyev",
@@ -56,6 +61,8 @@
   "ignorePaths": [
     "node_modules",
     "dist",
-    "src/env.ts"
+    "src/env/server.ts",
+    "src/env/serverEnv.ts",
+    "src/env/client.ts"
   ]
 }

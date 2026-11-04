@@ -1,13 +1,17 @@
 'use client';
 
-import { useEffect, useState, ReactNode } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState, ReactNode, RefObject } from 'react';
+import { Fingerprint, FingerprintContext } from '@fingerprint/react';
+import { FP_LOAD_OPTIONS } from '../Providers';
 import { CollapsibleJsonViewer } from '../../client/components/CodeSnippet/CodeSnippet';
 import dynamic from 'next/dynamic';
 import SignalTable, { TableCellData } from './components/SignalTable';
 import botDetectionResult from './components/BotDetectionResult';
 import { RefreshButton } from './components/RefreshButton';
 import { ipBlocklistResult } from './components/IpBlocklistResult';
+import { proxyDetectionResult } from './components/ProxyDetectionResult';
 import { vpnDetectionResult } from './components/VpnDetectionResult';
+import { ProximityDetectionResult } from './components/ProximityDetectionResult';
 import { usePlaygroundSignals } from './hooks/usePlaygroundSignals';
 import { getLocationName, getZoomLevel } from '../../utils/locationUtils';
 import Link from 'next/link';
@@ -90,7 +94,56 @@ function formatRequestError(agentError?: Error | null, serverError?: Error | nul
     : `Server API Request ${serverError?.toString()}.`;
 }
 
+/**
+ * The Server API returns the literal string "Not Available" when it cannot detect a version,
+ * for example `browser_full_version` for "Chromium-Based Browser" on Android tablets.
+ * Printing it reads like the signal is broken, so show just the name instead.
+ * The raw value is still visible in the Server API Response JSON.
+ */
+function formatNameWithVersion(name: string | undefined, version: string | undefined) {
+  if (!version || version === 'Not Available') {
+    return `${name}`;
+  }
+  return `${name} ${version}`;
+}
+
+/**
+ * The JS agent reads location only if location permission was already granted when it started.
+ * Once the user grants it, we start a fresh agent and identify with it, instead of reloading the page,
+ * because a reload drops a temporary ("Allow once") permission.
+ */
 export function Playground() {
+  const fingerprint = useContext(FingerprintContext);
+  const locationAgent = useRef<Fingerprint.Agent>(undefined);
+  const hasRetriedLocationRef = useRef(false);
+  const contextValue = useMemo(
+    () => ({
+      getVisitorData: (options?: Fingerprint.GetOptions) =>
+        locationAgent.current ? locationAgent.current.get(options) : fingerprint.getVisitorData(options),
+    }),
+    [fingerprint],
+  );
+
+  return (
+    <FingerprintContext.Provider value={contextValue}>
+      <PlaygroundContent
+        startLocationAgent={() => (locationAgent.current = Fingerprint.start(FP_LOAD_OPTIONS))}
+        hasLocationAgent={() => locationAgent.current !== undefined}
+        hasRetriedLocationRef={hasRetriedLocationRef}
+      />
+    </FingerprintContext.Provider>
+  );
+}
+
+function PlaygroundContent({
+  startLocationAgent,
+  hasLocationAgent,
+  hasRetriedLocationRef,
+}: {
+  startLocationAgent: () => void;
+  hasLocationAgent: () => boolean;
+  hasRetriedLocationRef: RefObject<boolean>;
+}) {
   const {
     agentResponse,
     isLoadingAgentResponse,
@@ -130,7 +183,10 @@ export function Playground() {
       {
         content: (
           <JsonLink propertyName='browser_details' elementOrder='first'>
-            {`${identificationEvent?.browser_details?.browser_name} ${identificationEvent?.browser_details?.browser_full_version}`}
+            {formatNameWithVersion(
+              identificationEvent?.browser_details?.browser_name,
+              identificationEvent?.browser_details?.browser_full_version,
+            )}
           </JsonLink>
         ),
 
@@ -141,10 +197,12 @@ export function Playground() {
       { content: 'Operating System' },
       {
         content: (
-          <JsonLink
-            propertyName='browser_details'
-            elementOrder='first'
-          >{`${identificationEvent?.browser_details?.os} ${identificationEvent?.browser_details?.os_version}`}</JsonLink>
+          <JsonLink propertyName='browser_details' elementOrder='first'>
+            {formatNameWithVersion(
+              identificationEvent?.browser_details?.os,
+              identificationEvent?.browser_details?.os_version,
+            )}
+          </JsonLink>
         ),
         className: tableStyles.neutral,
       },
@@ -382,10 +440,25 @@ export function Playground() {
         className:
           identificationEvent?.ip_blocklist?.attack_source ||
           identificationEvent?.ip_blocklist?.email_spam ||
-          identificationEvent?.ip_blocklist?.tor_node ||
-          identificationEvent?.proxy
+          identificationEvent?.ip_blocklist?.tor_node
             ? tableStyles.red
             : tableStyles.green,
+      },
+    ],
+    [
+      {
+        content: [
+          <DocsLink
+            href='https://dev.fingerprint.com/docs/smart-signals-reference#proxy-detection'
+            key='proxy-detection'
+          >
+            Proxy Detection
+          </DocsLink>,
+        ],
+      },
+      {
+        content: <JsonLink propertyName='proxy'>{proxyDetectionResult({ event: identificationEvent })}</JsonLink>,
+        className: identificationEvent?.proxy === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -407,6 +480,27 @@ export function Playground() {
         ),
 
         className: identificationEvent?.high_activity_device === true ? tableStyles.red : tableStyles.green,
+      },
+    ],
+    [
+      {
+        content: [
+          <DocsLink
+            href='https://docs.fingerprint.com/docs/smart-signals-reference#device-rarity-detection'
+            key='rare-device'
+          >
+            Rare Device
+          </DocsLink>,
+        ],
+      },
+      {
+        content: (
+          <JsonLink propertyName='rare_device'>
+            {identificationEvent?.rare_device === true ? 'Yes 💎' : 'Not detected'}
+          </JsonLink>
+        ),
+
+        className: identificationEvent?.rare_device === true ? tableStyles.red : tableStyles.green,
       },
     ],
     [
@@ -459,6 +553,28 @@ export function Playground() {
             : suspectScore > SUSPECT_SCORE_RED_THRESHOLD
               ? tableStyles.red
               : tableStyles.green,
+      },
+    ],
+    [
+      {
+        content: (
+          <DocsLink href='https://docs.fingerprint.com/docs/smart-signals-reference#proximity-detection'>
+            Proximity Detection
+          </DocsLink>
+        ),
+      },
+      {
+        content: (
+          <ProximityDetectionResult
+            event={identificationEvent}
+            startLocationAgent={startLocationAgent}
+            hasLocationAgent={hasLocationAgent}
+            hasRetriedRef={hasRetriedLocationRef}
+            identify={getAgentData}
+            requestError={requestError}
+          />
+        ),
+        className: identificationEvent?.proximity ? tableStyles.green : tableStyles.neutral,
       },
     ],
     [
@@ -523,10 +639,10 @@ export function Playground() {
       {
         content: [
           <DocsLink
-            href='https://docs.fingerprint.com/docs/mobile-identification#proximity-detection-for-mobile-devices'
-            key='proximity'
+            href='https://docs.fingerprint.com/docs/smart-signals-reference#proximity-detection'
+            key='mobile-proximity'
           >
-            Proximity Detection
+            Proximity Detection (Mobile)
           </DocsLink>,
         ],
       },
@@ -577,6 +693,34 @@ export function Playground() {
             key='tampered-request'
           >
             Tampered Request
+          </DocsLink>,
+        ],
+      },
+      { content: PLAYGROUND_COPY.mobileOnly, className: tableStyles.neutral },
+    ],
+
+    [
+      {
+        content: [
+          <DocsLink
+            href='https://docs.fingerprint.com/docs/smart-signals-reference#active-call-detection'
+            key='active-call'
+          >
+            Active Call Detection
+          </DocsLink>,
+        ],
+      },
+      { content: PLAYGROUND_COPY.mobileOnly, className: tableStyles.neutral },
+    ],
+
+    [
+      {
+        content: [
+          <DocsLink
+            href='https://docs.fingerprint.com/docs/smart-signals-reference#developer-tools-detection-for-mobile-devices'
+            key='mobile-developer-tools'
+          >
+            Developer Tools (Mobile)
           </DocsLink>,
         ],
       },
@@ -652,9 +796,9 @@ export function Playground() {
     <LayoutUI>
       <Container size='large' className={styles.hero}>
         <h1>
-          <span>Fingerprint Pro</span> Playground
+          <span>Fingerprint</span> Playground
         </h1>
-        <p>Analyze your browser with Fingerprint Pro and see all the available signals.</p>
+        <p>Analyze your browser with Fingerprint and see all the available signals.</p>
       </Container>
       <Container size='large'>
         <div className={styles.runningIntelligence}>

@@ -90,6 +90,10 @@ export const TEST_IDS = {
     serverResponseJSON: 'serverResponseJSON',
     refreshButton: 'refreshButton',
     jsonLink: 'jsonLink',
+    grantLocationButton: 'grantLocationButton',
+  },
+  automationIntelligencePlayground: {
+    aiApiSection: 'aiApiSection',
   },
   accountSharing: {
     usernameInput: 'usernameInput',
