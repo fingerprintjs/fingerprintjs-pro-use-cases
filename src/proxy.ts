@@ -32,7 +32,6 @@ export function proxy(request: NextRequest) {
 
   // - Browsers and AI agents ask for HTML, curl sends `*/*`.
   // - Next client navigation sends `RSC: 1` with `Accept: */*` and needs the page.
-  // - Only the JSON response sends `Vary: Accept`. Next replaces Vary on pages. Both are `no-store`, so no cache mixes them up.
   const wantsPage = request.headers.get('accept')?.includes('text/html') || request.headers.has('rsc');
   if (pathname === '/automation-intelligence' && !wantsPage) {
     const jsonUrl = request.nextUrl.clone();

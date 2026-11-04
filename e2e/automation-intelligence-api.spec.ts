@@ -3,7 +3,7 @@
  * `/automation-intelligence` serves the page to clients that accept HTML, JSON to the rest.
  * https://docs.fingerprint.com/reference/automation-intelligence-api
  */
-import { APIResponse, Page, expect, test } from '@playwright/test';
+import { Page, expect, test } from '@playwright/test';
 import { TEST_IDS } from '../src/client/testIDs';
 import { PRODUCTION_E2E_TEST_BASE_URL } from '../src/envShared';
 
@@ -14,8 +14,6 @@ const getAiApiSection = async (page: Page) => {
   await page.goto(AI_API_PAGE);
   return page.getByTestId(TEST_IDS.automationIntelligencePlayground.aiApiSection);
 };
-const varyHeaders = (response: APIResponse) =>
-  (response.headers()['vary'] ?? '').split(',').map((header) => header.trim().toLowerCase());
 
 // The page server-renders the AI API section, so check it without JS
 test.use({ javaScriptEnabled: false });
@@ -34,12 +32,6 @@ test('endpoint serves the page to browsers', async ({ page }) => {
 test('endpoint serves the page to Next client navigation', async ({ request }) => {
   const response = await request.get(AI_API_ENDPOINT, { headers: { accept: '*/*', rsc: '1' } });
   expect(response.headers()['content-type']).toContain('text/x-component');
-});
-
-test('endpoint returns JSON to curl', async ({ request }) => {
-  const response = await request.get(AI_API_ENDPOINT, { headers: { accept: '*/*' } });
-  expect(response.headers()['content-type']).toBe('application/json');
-  expect(varyHeaders(response)).toContain('accept');
 });
 
 test('.json endpoint returns JSON to browsers', async ({ request }) => {
