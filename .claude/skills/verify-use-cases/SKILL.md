@@ -70,6 +70,24 @@ Report each check with what you did, what you observed, and PASS or FAIL. A FAIL
 
 When done, consider which checks should become permanent assertions in the feature's spec. Suggest them to the user rather than adding them unasked.
 
+## What Playwright can't test
+
+- Real permission prompts (location, notifications, camera) can't be clicked from Playwright, and headless Chromium reports `denied` for ungranted permissions.
+- E2E tests fake them instead, for example `fakeLocation` in [e2e/playground.spec.ts](../../../e2e/playground.spec.ts).
+- macOS Location Services must allow the browser. A first location read after a while can time out, that's the OS, not the change.
+
+### Firefox via Marionette
+
+- Start stock Firefox on a temporary profile with `open`, so macOS treats it as Firefox, not the shell:
+  `open -n -a Firefox --args -marionette -remote-allow-system-access -no-remote -profile <tmp-profile>`
+- For location, add `user_pref("remote.prefs.recommended", false);` and `user_pref("geo.provider.testing", false);` to the profile's `user.js`, or Marionette fakes it.
+- Drive it over Marionette on port 2828. To click Allow, run `PopupNotifications.panel.querySelector('popupnotification').button.click()` in the chrome context about 1 s after the prompt shows. Firefox ignores earlier clicks.
+
+### Ask the user
+
+- For Safari, Chrome, or when automation is flaky, ask the user for a quick manual check instead of sinking time into computer use.
+- Give numbered steps, starting with resetting the site permission, and ask for a few trials if results vary.
+
 ## Gotchas
 
 - **Use port 3000 only.** The default public key belongs to the demo's Fingerprint staging workspace, which allows `localhost:3000` but not 3001. On other ports, identification fails with 403 `origin_not_available`. To use another port, put your own `NEXT_PUBLIC_API_KEY`, `NEXT_PUBLIC_REGION`, and `SERVER_API_KEY` in `.env`.
