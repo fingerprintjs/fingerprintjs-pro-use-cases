@@ -20,9 +20,6 @@ export async function GET(request: NextRequest) {
       'Content-Type': 'application/json',
       // The result is per request, so no cache (e.g. CloudFront) may store it
       'Cache-Control': 'no-store',
-      // `/automation-intelligence` is HTML or JSON based on Accept.
-      // Set here: Next drops headers that Proxy sets on a rewrite.
-      Vary: 'Accept',
     },
   });
 }
