@@ -57,6 +57,12 @@ export default defineConfig({
 
     /* Record video of the failed tests */
     video: { mode: 'retain-on-failure' },
+
+    /**
+     * Turns off the site's smooth scrolling (CSS `scroll-behavior`).
+     * In WebKit, clicks after Playwright scrolls an element into view smoothly can land before the scroll ends and miss.
+     */
+    contextOptions: { reducedMotion: 'reduce' },
   },
 
   /* In CI/GitHub action, run the production server before running tests
