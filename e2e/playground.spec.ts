@@ -49,6 +49,7 @@ test.describe('Playground page', () => {
 
     await page.getByText('JavaScript Agent Response', { exact: true }).waitFor();
     await page.getByText('Server API Response', { exact: true }).waitFor();
+    await page.getByText('this playground deliberately runs a reduced set of signals and an older model').waitFor();
   });
 
   test('Page renders signal tables', async ({ page }) => {

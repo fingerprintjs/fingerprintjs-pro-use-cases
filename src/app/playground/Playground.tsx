@@ -826,22 +826,29 @@ function PlaygroundContent({
         <Container size='large'>
           <div className={styles.tablesContainer}>
             {identificationData ? (
-              <MyCollapsible defaultOpen>
-                <TableTitle>
-                  Identification{' '}
-                  <MyCollapsibleTrigger>
-                    <ChevronSvg />
-                  </MyCollapsibleTrigger>
-                </TableTitle>
-                <MyCollapsibleContent>
-                  <div className={styles.visitorIdBox}>
-                    <p>Your Visitor ID is </p>
-                    <h2 className={styles.visitorId}>{identificationData.visitor_id}</h2>
-                  </div>
+              <div>
+                <MyCollapsible defaultOpen>
+                  <TableTitle>
+                    Identification{' '}
+                    <MyCollapsibleTrigger>
+                      <ChevronSvg />
+                    </MyCollapsibleTrigger>
+                  </TableTitle>
+                  <MyCollapsibleContent>
+                    <div className={styles.visitorIdBox}>
+                      <p>Your Visitor ID is </p>
+                      <h2 className={styles.visitorId}>{identificationData.visitor_id}</h2>
+                    </div>
 
-                  <SignalTable data={identificationSignals} />
-                </MyCollapsibleContent>
-              </MyCollapsible>
+                    <SignalTable data={identificationSignals} />
+                  </MyCollapsibleContent>
+                </MyCollapsible>
+                <p className={styles.disclaimer}>
+                  <b>Note:</b> Fraud tooling vendors test against public demos like this one. To keep our detection
+                  effective for customers, this playground deliberately runs a reduced set of signals and an older
+                  model. Accuracy on a production account is significantly higher.
+                </p>
+              </div>
             ) : (
               // Spacer element to push footer down when no data is ready
               <div style={{ height: '800px' }} />
