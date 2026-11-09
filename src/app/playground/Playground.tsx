@@ -840,6 +840,11 @@ function PlaygroundContent({
                   </div>
 
                   <SignalTable data={identificationSignals} />
+                  <p className={styles.disclaimer}>
+                    <b>Note:</b> Fraud tooling vendors test against public demos like this one. To keep our detection
+                    effective for customers, this playground deliberately runs a reduced set of signals and an older
+                    model. Accuracy on a production account is significantly higher.
+                  </p>
                 </MyCollapsibleContent>
               </MyCollapsible>
             ) : (

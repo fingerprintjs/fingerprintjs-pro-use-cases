@@ -406,3 +406,13 @@ h2.sectionTitle {
 .errorAlert {
   margin-bottom: rem(24px);
 }
+
+.disclaimer {
+  margin: rem(20px) 0 0;
+  padding: rem(12px) rem(16px);
+  border-radius: 8px;
+  background-color: v('light-gray-background');
+  color: v('dark-gray');
+  font-size: rem(13px);
+  line-height: 160%;
+}
