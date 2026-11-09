@@ -54,6 +54,7 @@ next-env.d.ts
 
 # environment variables
 .env
+.env*.local
 
 # VS code workspace settings
 .vscode
