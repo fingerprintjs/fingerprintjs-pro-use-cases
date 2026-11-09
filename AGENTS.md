@@ -15,5 +15,7 @@
   - Module files begin with very short overview comment explaining purpose and links to relevant docs
   - Any non-obvious design decision, requirement, or claim gets a short explanatory note + exact docs link
     - close to affected code + commit message body
+- UI
+  - Check UI changes on mobile and desktop, and in every state the page has (collapsed, loading, error)
 - Debugging
   - Unless instructed otherwise, run targeted unit and e2e tests locally to verify the changes, CI is just final confirmation
