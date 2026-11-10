@@ -143,7 +143,7 @@ export const USE_CASES = {
     description: (
       <>
         <p>
-          Use the this demo below to see how Fingerprint protects your login page from account takeover even if your
+          Use the demo below to see how Fingerprint protects your login page from account takeover even if your
           credentials are stolen.
         </p>
         <p>
