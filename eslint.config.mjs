@@ -3,31 +3,32 @@ import nextVitals from 'eslint-config-next/core-web-vitals';
 import nextTs from 'eslint-config-next/typescript';
 
 // Known copy mistakes in user-facing text: string literals, template literals, and JSX text.
+// `\s+` between words also matches JSX text wrapped across lines.
 // A spell checker misses these because every word is a real word.
 const BANNED_COPY = [
   { pattern: String.raw`\bGithub\b`, message: 'Write "GitHub".' },
   { pattern: String.raw`client-site`, message: 'Write "client-side".' },
-  { pattern: String.raw`\b([a-z]+) \1\b`, flags: 'i', message: 'Doubled word.' },
-  { pattern: String.raw`\bthe (this|that)\b`, flags: 'i', message: 'Drop "the" or "this"/"that".' },
+  { pattern: String.raw`\b([a-z]+)\s+\1\b`, flags: 'i', message: 'Doubled word.' },
+  { pattern: String.raw`\bthe\s+(this|that)\b`, flags: 'i', message: 'Drop "the" or "this"/"that".' },
   {
-    pattern: String.raw`\bto login (with|using|again|from)\b`,
+    pattern: String.raw`\bto\s+login\s+(with|using|again|from)\b`,
     flags: 'i',
     message: 'Use "log in" as a verb; "login" is a noun.',
   },
-  { pattern: String.raw`\byour (currently|not|going)\b`, flags: 'i', message: 'Write "you\'re".' },
+  { pattern: String.raw`\byour\s+(currently|not|going)\b`, flags: 'i', message: 'Write "you\'re".' },
 ];
 
 const bannedCopyRules = BANNED_COPY.map(({ pattern, flags = '', message }) => {
   const re = `/${pattern}/${flags}`;
   return {
-    selector: `:matches(Literal[value=${re}], TemplateElement[value.raw=${re}], JSXText[value=${re}])`,
+    selector: `:matches(Literal[value=${re}], TemplateElement[value.cooked=${re}], JSXText[value=${re}])`,
     message: `Copy typo: ${message}`,
   };
 });
 
 // Two spaces between words. JSX text is skipped because its line breaks and indentation collapse when rendered.
 const doubleSpaceRule = {
-  selector: String.raw`:matches(Literal[value=/\S  +\S/], TemplateElement[value.raw=/\S  +\S/])`,
+  selector: String.raw`:matches(Literal[value=/\S  +\S/], TemplateElement[value.cooked=/\S  +\S/])`,
   message: 'Copy typo: double space between words.',
 };
 
