@@ -272,7 +272,7 @@ export const AccountSharing = ({ embed }: { embed?: boolean }) => {
           }}
         >
           <div className={styles.loggedOutAlertTitle}>{ACCOUNT_SHARING_COPY.youWereLoggedOut}</div>
-          You are logged in on {otherDevice}. You current plan allows you to use FraudFlix on one device at a time.
+          You are logged in on {otherDevice}. Your current plan allows you to use FraudFlix on one device at a time.
           Consider <span style={{ textDecoration: 'underline' }}> upgrading your plan</span> to enjoy fraud content on
           multiple devices.
         </Alert>

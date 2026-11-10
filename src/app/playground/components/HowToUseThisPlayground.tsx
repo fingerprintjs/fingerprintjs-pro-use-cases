@@ -35,7 +35,7 @@ const content: HowTo[] = [
     title: 'Browser tampering',
     content: [
       `Right-click on the demo page and select “Inspect” at the bottom of the drop-down menu.`,
-      `Under “Dimensions” at the top of the page, select a device that your currently not browsing on. So if you’re currently using a desktop, try selecting a mobile device like iPhone 12 Pro.`,
+      `Under “Dimensions” at the top of the page, select a device that you’re not currently browsing on. So if you’re currently using a desktop, try selecting a mobile device like iPhone 12 Pro.`,
       <>
         Click <b>Analyze my browser again</b>.
       </>,
