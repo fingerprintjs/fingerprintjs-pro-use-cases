@@ -3,7 +3,7 @@ import { TEST_IDS } from '../../src/client/testIDs';
 import { assertAlert, blockGoogleTagManager } from '../e2eTestUtils';
 
 // TODO Remove once fixed
-test.skip(({ browserName }) => browserName == 'firefox', 'This test currently fails in Github CI on Firefox');
+test.skip(({ browserName }) => browserName == 'firefox', 'This test currently fails in GitHub CI on Firefox');
 
 test.beforeEach(async ({ page }) => {
   await blockGoogleTagManager(page);
