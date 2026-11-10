@@ -126,7 +126,7 @@ export const USE_CASES = {
         Click <b>Log in</b>. You won't be able to log in despite having the correct credentials.
       </>,
       <>Try calling the login endpoint directly or using JavaScript to spoof the request ID and visitor ID.</>,
-      <>Try to login with different passwords. You will be blocked after 5 attempts.</>,
+      <>Try to log in with different passwords. You will be blocked after 5 attempts.</>,
       <>Try using incognito mode to log into this page.</>,
     ],
     iconSvg: CredentialStuffingIcon,
@@ -143,7 +143,7 @@ export const USE_CASES = {
     description: (
       <>
         <p>
-          Use the this demo below to see how Fingerprint protects your login page from account takeover even if your
+          Use the demo below to see how Fingerprint protects your login page from account takeover even if your
           credentials are stolen.
         </p>
         <p>
@@ -271,7 +271,8 @@ export const USE_CASES = {
         </>
       ),
       <>
-        Select "Flag this as stolen credit card after purchase" to simulate using a stolen card and place your order.
+        Select "Flag this visitor using stolen card after purchase" to simulate using a stolen card and place your
+        order.
       </>,
       <>Try placing an order again. You won't be able to with your history of stealing credit cards.</>,
     ],
@@ -469,9 +470,9 @@ export const USE_CASES = {
     instructions: [
       <>Use a normal browser and search for flights.</>,
       <>
-        Now, try scrape the results using an automation tool like Selenium, Puppeteer, Playwright, Cypress, or similar.
-        Note that the bot IP will be collected and displayed in the <Link href={'/bot-firewall'}>Bot Firewall</Link>{' '}
-        demo.
+        Now, try scraping the results using an automation tool like Selenium, Puppeteer, Playwright, Cypress, or
+        similar. Note that the bot IP will be collected and displayed in the{' '}
+        <Link href={'/bot-firewall'}>Bot Firewall</Link> demo.
       </>,
       <>
         You will only see an error message if the request is coming from a bot. Try it using a tool like Playwright
@@ -537,7 +538,7 @@ export const USE_CASES = {
           <Link href={'/web-scraping'} target='_blank'>
             Web scraping demo
           </Link>{' '}
-          for an example of protecting client-site content from bots. This demo goes a step further. It uses Bot
+          for an example of protecting client-side content from bots. This demo goes a step further. It uses Bot
           Detection results to block previously recognized bots on their next visit completely — before they even reach
           your web page.
         </p>
@@ -686,7 +687,7 @@ export const USE_CASES = {
             VPN Detection
           </Link>{' '}
           allows you to detect if a visitor is using a virtual private network and spoofing their location. You can
-          prevent these visitors and other suspicious browsers from applying purchase-power-parity discounts or
+          prevent these visitors and other suspicious browsers from applying purchasing-power-parity discounts or
           accessing geographically restricted content.
         </p>
       </>

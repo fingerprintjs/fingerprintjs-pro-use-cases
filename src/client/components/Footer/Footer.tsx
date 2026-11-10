@@ -33,7 +33,7 @@ export default function Footer({ darkVariant }: FooterProps) {
           <ul className={styles.socials}>
             <li className={styles.link}>
               <a href={URLS.githubRepoUrl} target='_blank' rel='noreferrer' aria-label='GitHub link'>
-                <Image src={GithubSVG} alt='Github logo' />
+                <Image src={GithubSVG} alt='GitHub logo' />
               </a>
             </li>
             <li className={styles.link}>

@@ -233,7 +233,7 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
               title='Webinars'
               cards={[
                 {
-                  title: 'Fingerprint  101',
+                  title: 'Fingerprint 101',
                   url: 'https://www.youtube.com/watch?v=YTRmWUeQWyY&list=PLjhozvP52rLMYFiBLs6wm6E1b2TSbk0yt',
                   backgroundImage: '/account-sharing/img/back-to-school.jpg',
                 },
