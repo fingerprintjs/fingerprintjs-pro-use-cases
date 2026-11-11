@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult } from '../../../../server/checks';
 import { getRegionalDiscount } from '../../data/getDiscountByCountry';
+import { serverEnv } from '../../../../env/server';
 import { VPN_DETECTION_COPY } from '../../copy';
 import { getIpLocation, getLocationName } from '../../../../utils/locationUtils';
 
@@ -17,13 +18,14 @@ export type ActivateRegionalPricingResponse =
     };
 
 export async function POST(req: Request): Promise<NextResponse<ActivateRegionalPricingResponse>> {
-  const { eventId } = (await req.json()) as ActivateRegionalPricingPayload;
+  const { eventId, sealedResult } = (await req.json()) as ActivateRegionalPricingPayload;
 
-  // Get the full Identification result from Fingerprint Server API and validate its authenticity
-  // TODO Restore sealed results usage when V4 support is added to Node SDK
+  // Decrypt the sealed result (falls back to Server API if it is missing) and validate its authenticity
   const fingerprintResult = await getAndValidateFingerprintResult({
     eventId,
     req,
+    sealedResult,
+    serverApiKey: serverEnv.SEALED_RESULTS_SERVER_API_KEY,
   });
   if (!fingerprintResult.okay) {
     return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });
