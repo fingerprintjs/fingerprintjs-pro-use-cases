@@ -180,6 +180,17 @@ export async function POST(req: NextRequest): Promise<NextResponse<SendSMSRespon
     });
   } catch (error) {
     console.error(error);
+    // Twilio error 21612: the recipient's carrier refuses texts from our US number, for example in the UK
+    // https://www.twilio.com/docs/api/errors/21612
+    if (error instanceof Error && 'code' in error && error.code === 21612) {
+      return NextResponse.json(
+        {
+          severity: 'error',
+          message: `We couldn't text this number. Some carriers refuse texts from a foreign number, and this demo sends from a US number. Use the simulated phone number ${TEST_PHONE_NUMBER} to try the demo.`,
+        },
+        { status: 422 },
+      );
+    }
     return NextResponse.json(
       { severity: 'error', message: `An error occurred while sending the verification SMS message: ${error}` },
       { status: 500 },

@@ -30,7 +30,7 @@ export const useSubmitCode = (params?: { onSuccess?: () => void }) => {
         } satisfies SubmitCodePayload),
       });
       if (response.status >= 500) {
-        throw new Error('Failed to submit code: ' + response.statusText);
+        throw new Error(`Failed to submit code (HTTP ${response.status})`);
       }
       return await response.json();
     },
