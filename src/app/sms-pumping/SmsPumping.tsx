@@ -64,7 +64,7 @@ export const useSendMessage = ({ onSuccess, disableBotDetection = false }: SendM
       if (response.status < 500) {
         return await response.json();
       } else {
-        throw new Error('Failed to send verification SMS: ' + response.statusText);
+        throw new Error(`Failed to send verification SMS (HTTP ${response.status})`);
       }
     },
     onSuccess: (data: SendSMSResponse) => {
