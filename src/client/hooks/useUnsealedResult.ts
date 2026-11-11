@@ -10,7 +10,12 @@ export const useUnsealedResult = (sealedResult?: string) => {
         body: JSON.stringify({ sealedResult }),
       });
       if (response.status !== 200) {
-        throw new Error('Failed to unseal result: ' + response.statusText);
+        const body: unknown = await response.json().catch(() => undefined);
+        const reason =
+          typeof body === 'object' && body !== null && 'error' in body && typeof body.error === 'string'
+            ? body.error
+            : response.statusText;
+        throw new Error('Failed to unseal result: ' + reason);
       }
       return await response.json();
     },

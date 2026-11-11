@@ -7,6 +7,8 @@ export type DecryptPayload = {
 
 export type DecryptResponse = Event;
 
+export type DecryptErrorResponse = { error: string };
+
 export async function POST(request: Request) {
   try {
     const sealedData = ((await request.json()) as DecryptPayload).sealedResult;
@@ -14,6 +16,6 @@ export async function POST(request: Request) {
     return Response.json(data);
   } catch (e) {
     console.error(e);
-    return Response.json({ error: e }, { status: 500, statusText: String(e) });
+    return Response.json({ error: 'Decryption failed' } satisfies DecryptErrorResponse, { status: 500 });
   }
 }
