@@ -1,3 +1,4 @@
+import { Region } from '@fingerprint/node-sdk';
 import { NextResponse } from 'next/server';
 import { getAndValidateFingerprintResult } from '../../../../server/checks';
 import { getRegionalDiscount } from '../../data/getDiscountByCountry';
@@ -25,7 +26,9 @@ export async function POST(req: Request): Promise<NextResponse<ActivateRegionalP
     eventId,
     req,
     sealedResult,
+    // The sealed results workspace is separate from the main one (own key and US region)
     serverApiKey: serverEnv.SEALED_RESULTS_SERVER_API_KEY,
+    region: Region.Global,
   });
   if (!fingerprintResult.okay) {
     return NextResponse.json({ severity: 'error', message: fingerprintResult.error }, { status: 403 });

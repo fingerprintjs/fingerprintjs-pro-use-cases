@@ -20,7 +20,7 @@ import { VPN_DETECTION_COPY } from './copy';
 import { FPJS_CLIENT_TIMEOUT } from '../../const';
 import { useUnsealedResult } from '../../client/hooks/useUnsealedResult';
 import { clientEnv } from '../../env/client';
-import { getFingerprintEndpoint } from '../Providers';
+import { FP_LOAD_OPTIONS, getFingerprintEndpoint } from '../Providers';
 
 const COURSE_PRICE = 100;
 const TAXES = 15;
@@ -134,9 +134,13 @@ const VpnDetectionUseCase: FunctionComponent = () => {
 
 export const VpnDetectionUseCaseWrapped: FunctionComponent<{ embed?: boolean }> = ({ embed }) => {
   return (
+    // The sealed results workspace is separate from the main one (own key, endpoint, and US region).
+    // Keep the other main options, such as URL hashing.
     <FingerprintProvider
+      {...FP_LOAD_OPTIONS}
       apiKey={clientEnv.NEXT_PUBLIC_SEALED_RESULTS_PUBLIC_API_KEY}
       endpoints={getFingerprintEndpoint(clientEnv.NEXT_PUBLIC_SEALED_RESULTS_ENDPOINT)}
+      region='us'
     >
       <UseCaseWrapper useCase={USE_CASES.vpnDetection} embed={embed}>
         <VpnDetectionUseCase />
