@@ -284,7 +284,7 @@ export function AccountSharingHome({ username, embed }: { username: string; embe
                 },
                 {
                   title: 'CTO Valentin Vasilyev on Code Story podcast',
-                  url: 'https://codestory.co/podcast/bonus-valentin-vasilyev-fingerprint-com-device-identity/',
+                  url: 'https://www.codestory.co/episodes/s7-bonus-the-death-of-cookies-engineering-995-accurate-device-identification-with-valentin-vasilyev-of-fingerprint/',
                   backgroundImage: '/account-sharing/img/code-story.webp',
                 },
                 {

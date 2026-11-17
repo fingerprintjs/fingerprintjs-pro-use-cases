@@ -1,0 +1,32 @@
+{
+  "ignore": [
+    {
+      "href": "https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.CD?end=2022",
+      "reason": "Citation of the data source. The World Bank site times out for the headless browser and returns 502 for some clients, but the page loads in a normal browser."
+    },
+    {
+      "href": "https://api.github.com/repos/fingerprintjs",
+      "reason": "Base URL of the GitHub API. Code appends a path such as /repos/fingerprintjs/<repo>, so the bare URL is not a page."
+    },
+    {
+      "href": "https://demo.fingerprint.com/ampl-api/2/httpapi",
+      "reason": "Amplitude proxy API endpoint. It only accepts POST requests with a body, so a GET returns 400."
+    },
+    {
+      "href": "https://www.googletagmanager.com/gtm.js?id=",
+      "reason": "URL prefix. The GTM container id is appended in code, so the bare URL returns 400."
+    },
+    {
+      "href": "https://metrics.fingerprinthub.com/web/v",
+      "reason": "Template default in src/env/client.ts. The checker cuts it at the first `<`, and the placeholders (<version>, <apiKey>, <loaderVersion>) are filled in at runtime."
+    },
+    {
+      "href": "https://staging.fingerprinthub.com/fp-sealed/agent?apiKey=",
+      "reason": "Template default in src/env/client.ts. The checker cuts it at the first `<`, and the placeholders (<apiKey>, <version>, <loaderVersion>) are filled in at runtime."
+    },
+    {
+      "pattern": "https://*//evil.example**",
+      "reason": "Test inputs for the open-redirect protection (double-slash paths). They are expected not to resolve to a page."
+    }
+  ]
+}
