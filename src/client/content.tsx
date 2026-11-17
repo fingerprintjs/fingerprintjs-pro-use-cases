@@ -810,7 +810,6 @@ export const URLS = {
   githubApiUrl: 'https://api.github.com/repos/fingerprintjs',
   githubCommunityRepoUrl: 'https://github.com/fingerprintjs/home',
   botDRepoUrl: 'https://github.com/fingerprintjs/BotD',
-  botDIntegrationsRepoUrl: 'https://github.com/fingerprintjs/botd-integrations',
   dashboardLoginUrl: 'https://dashboard.fingerprint.com/login',
   careersUrl: 'https://fingerprint.com/careers/',
   careersConsoleLogUrl: 'https://grnh.se/bb9c55804us',
