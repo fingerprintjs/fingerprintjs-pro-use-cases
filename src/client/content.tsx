@@ -812,7 +812,7 @@ export const URLS = {
   botDRepoUrl: 'https://github.com/fingerprintjs/BotD',
   botDIntegrationsRepoUrl: 'https://github.com/fingerprintjs/botd-integrations',
   dashboardLoginUrl: 'https://dashboard.fingerprint.com/login',
-  careersUrl: 'https://boards.greenhouse.io/fingerprintjs/',
+  careersUrl: 'https://fingerprint.com/careers/',
   careersConsoleLogUrl: 'https://grnh.se/bb9c55804us',
   linkedinUrl: 'https://www.linkedin.com/company/fingerprintjs/',
   twitterUrl: 'https://twitter.com/FingerprintJs/',

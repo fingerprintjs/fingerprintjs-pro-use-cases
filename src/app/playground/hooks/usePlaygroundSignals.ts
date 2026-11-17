@@ -19,7 +19,7 @@ export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Even
     timeout: FPJS_CLIENT_TIMEOUT,
     /**
      * Use a simple session ID to demonstrate linkedId functionality and linked-ID-based velocity signals
-     * https://dev.fingerprint.com/docs/tagging-information#using-linkedid-and-tag-on-the-client
+     * https://docs.fingerprint.com/docs/tagging-information#using-linkedid-and-tags-on-the-client
      * https://dev.fingerprint.com/docs/smart-signals-reference#velocity-signals
      */
     linkedId: sessionId,
