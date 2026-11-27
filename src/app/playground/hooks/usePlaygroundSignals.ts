@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import { useCallbackRef } from '../../../client/hooks/useCallbackRef';
 import { useSessionId } from '../../../client/hooks/useSessionId';
 import { useEventsGetResponse } from '../../../client/hooks/useEventsGetResponse';
-import { IS_PRODUCTION } from '../../../envShared';
 
 export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Event) => void }) {
   const sessionId = useSessionId();
@@ -27,39 +26,6 @@ export function usePlaygroundSignals(config?: { onServerApiSuccess?: (data: Even
   });
 
   const eventId = agentResponse?.event_id;
-
-  useEffect(() => {
-    if (!eventId || !IS_PRODUCTION || window.location.hostname !== 'demo.fingerprint.com') return;
-
-    const iceServers: RTCIceServer[] = [
-      {
-        urls: ['turns:metric.fingerprinthub.com:443'],
-        username: eventId,
-        credential: eventId,
-      },
-    ];
-
-    const RTCPeerConnectionCtor = globalThis.RTCPeerConnection;
-    if (typeof RTCPeerConnectionCtor !== 'function') return;
-
-    const pc = new RTCPeerConnectionCtor({ iceServers });
-    pc.createDataChannel('probe');
-    pc.createOffer()
-      .then((offer: RTCSessionDescriptionInit) => pc.setLocalDescription(offer))
-      .catch(() => undefined);
-
-    pc.onconnectionstatechange = () => {
-      if (
-        pc.connectionState === 'failed' ||
-        pc.connectionState === 'disconnected' ||
-        pc.connectionState === 'connected'
-      ) {
-        pc.close();
-      }
-    };
-
-    return () => pc.close();
-  }, [eventId]);
 
   const {
     data: identificationEvent,
